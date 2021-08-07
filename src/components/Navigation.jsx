@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
 import { greetings, socialLinks } from "../portfolio";
 import Headroom from "headroom.js";
@@ -38,7 +38,7 @@ const Navigation = () => {
             id="navbar-main"
           >
             <Container>
-              <NavbarBrand className="mr-lg-5" to="/" tag={Link}>
+              <NavbarBrand className="mr-lg-5">
                 <h2 className="text-white" id="nav-title">{greetings.name}</h2>
               </NavbarBrand>
               <button className="navbar-toggler" id="navbar_global">
@@ -54,9 +54,9 @@ const Navigation = () => {
                 <div className="navbar-collapse-header">
                   <Row>
                     <Col className="collapse-brand" xs="6">
-                      <Link to="/">
+                      <a to="/">
                         <h3 className="text-black" id="nav-title">{greetings.name}</h3>
-                      </Link>
+                      </a>
                     </Col>
                     <Col className="collapse-close" xs="6">
                       <button className="navbar-toggler" id="navbar_global">
