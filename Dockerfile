@@ -7,7 +7,7 @@ RUN apk add --update --no-cache python3 && ln -sf python3 /usr/bin/python
 RUN python3 -m ensurepip
 RUN pip3 install --no-cache --upgrade pip setuptools
 
-RUN yum install -y make gcc*
+RUN sudo apt-get install build-essential
 
 # set the working direction
 WORKDIR /app
