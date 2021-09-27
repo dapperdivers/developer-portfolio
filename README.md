@@ -107,7 +107,7 @@ If you can help us with these. Please don't hesitate to open a [pull request](ht
 
 ## Author
 
-👤 **Hanzla Tauqeer**
+👤 **Derek Mackley**
 
 * Website: https://hanzla.netlify.app
 * Twitter: [@1hanzla100](https://twitter.com/1hanzla100)
@@ -120,8 +120,8 @@ Give a ⭐️ if this project helped you!
 
 
 
-- Read cvc 
-validate regex 
+- Read cvc
+validate regex
 mx records
 tegex before @
 domain records

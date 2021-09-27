@@ -5,7 +5,7 @@ import github from "./assets/img/icons/common/github.svg";
 import airbnb from "./assets/img/icons/common/airbnbLogo.png";
 
 export const greetings = {
-	name: "Hanzla Tauqeer",
+	name: "Derek Mackley",
 	title: "Hi all, I'm Hanzla",
 	description:
 		"A passionate Full Stack Web Developer and Mobile App Developer having an experience of building Web applications with JavaScript / Reactjs / Nodejs / Python / Django / Flask and some other cool libraries and frameworks and Cross Platform Mobile Apps With Flutter.",
@@ -212,7 +212,7 @@ export const feedbacks = [
 	{
 		name: "Hassan Mehmood",
 		feedback:
-			"We have been very happy with our new website! It looks professional and very easy to navigate. Our experience with the customer service at Hanzla tauqeer has been great. They handle things very efficiently and are available for any questions we have. They also keep us updated on daily reports so we know how our site is doing. I would recommend that u have choose hanzla web developer services for u.",
+			"We have been very happy with our new website! It looks professional and very easy to navigate. Our experience with the customer service at Derek Mackley has been great. They handle things very efficiently and are available for any questions we have. They also keep us updated on daily reports so we know how our site is doing. I would recommend that u have choose hanzla web developer services for u.",
 	},
 	{
 		name: "Maheen Altaf",
