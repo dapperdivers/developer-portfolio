@@ -6,30 +6,27 @@ import airbnb from "./assets/img/icons/common/airbnbLogo.png";
 
 export const greetings = {
 	name: "Derek Mackley",
-	title: "Hi all, I'm Hanzla",
+	title: "Hi all, I'm Derek",
 	description:
 		"A passionate Full Stack Web Developer and Mobile App Developer having an experience of building Web applications with JavaScript / Reactjs / Nodejs / Python / Django / Flask and some other cool libraries and frameworks and Cross Platform Mobile Apps With Flutter.",
-	resumeLink: "https://cv.hanzla.ga",
+	resumeLink: "https://cv.dummY_URl",
 };
 
 export const openSource = {
-	githubUserName: "1hanzla100",
+	githubUserName: "DapperDivers",
 };
 
 export const contact = {};
 
 export const socialLinks = {
-	facebook: "https://www.facebook.com/1hanzla100",
-	instagram: "https://www.instagram.com/1hanzla100",
-	twitter: "https://twitter.com/1hanzla100",
-	github: "https://github.com/1hanzla100",
-	linkedin: "https://www.linkedin.com/in/hanzla-tauqeer-0869281ba/",
+	github: "https://github.com/DapperDivers",
+	linkedin: "https://www.linkedin.com/in/dmackley/",
 };
 
 export const skillsSection = {
 	title: "What I do",
 	subTitle:
-		"CRAZY FULL STACK DEVELOPER WHO WANTS TO EXPLORE EVERY TECH STACK",
+		"CRAZY FULL STACK DEVELOPER WHO TINKERS WITH ANYTHING I CAN GET MY HANDS ON",
 	skills: [
 		emoji(
 			"⚡ Develop highly interactive Front end / User Interfaces for your web and mobile applications"
@@ -117,48 +114,25 @@ export const skillsSection = {
 export const SkillBars = [
 	{
 		Stack: "Frontend/Design", //Insert stack or technology you have experience in
-		progressPercentage: "90", //Insert relative proficiency in percentage
+		progressPercentage: "70", //Insert relative proficiency in percentage
 	},
 	{
 		Stack: "Backend",
-		progressPercentage: "70",
+		progressPercentage: "90",
 	},
 	{
-		Stack: "Programming",
+		Stack: "Software Architecture",
 		progressPercentage: "60",
 	},
 ];
 
 export const educationInfo = [
 	{
-		schoolName: "Harvard University",
-		subHeader: "Master of Science in Computer Science",
-		duration: "September 2017 - April 2019",
-		desc: "Participated in the research of XXX and published 3 papers.",
-		descBullets: [
-			"Lorem ipsum dolor sit amet, consectetur adipdfgiscing elit",
-			"Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-		],
-	},
-	{
-		schoolName: "Harvard",
-		subHeader: "Master of Science in Computer Science",
-		duration: "September 2017 - April 2019",
-		desc: "Participated in the research of XXX and published 3 papers.",
-		descBullets: [
-			"Lorem ipsum dolor sit amet, consectetfgur adipiscing elit",
-			"Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-		],
-	},
-	{
-		schoolName: "Stanford University",
-		subHeader: "Bachelor of Science in Computer Science",
-		duration: "September 2013 - April 2017",
-		desc: "Ranked top 10% in the program. Took courses about Software Engineering, Web Security, Operating Systems, ...",
-		descBullets: [
-			"Lorem ipsum dolorfdg sit amet, consectetur adipiscing elit",
-		],
-	},
+		schoolName: "Georgia State University, J. Mack Robinson College of Business",
+		subHeader: "Bachelor of Business Administration in Computer Information Systems",
+		duration: "January 2015",
+		desc: "Minor in Information Security",
+	}
 ];
 
 export const experience = [
@@ -198,12 +172,12 @@ export const projects = [
 	{
 		name: "lorem ipsum",
 		desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
-		github: "https://github.com/1hanzla100",
+		github: "https://github.com/DapperDivers",
 	},
 	{
 		name: "lorem ipsum",
 		desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
-		github: "https://github.com/1hanzla100",
+		github: "https://github.com/DapperDivers",
 		link: "https://example.com",
 	},
 ];
@@ -212,7 +186,7 @@ export const feedbacks = [
 	{
 		name: "Hassan Mehmood",
 		feedback:
-			"We have been very happy with our new website! It looks professional and very easy to navigate. Our experience with the customer service at Derek Mackley has been great. They handle things very efficiently and are available for any questions we have. They also keep us updated on daily reports so we know how our site is doing. I would recommend that u have choose hanzla web developer services for u.",
+			"We have been very happy with our new website! It looks professional and very easy to navigate. Our experience with the customer service at Derek Mackley has been great. They handle things very efficiently and are available for any questions we have. They also keep us updated on daily reports so we know how our site is doing. I would recommend that u have choose Derek web developer services for u.",
 	},
 	{
 		name: "Maheen Altaf",
