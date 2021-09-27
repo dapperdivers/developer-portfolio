@@ -1,24 +1,30 @@
-# pull the official base image
-FROM node:alpine
+# pull official base image
+FROM node:10 AS builder
 
-# Install python/pip
-ENV PYTHONUNBUFFERED=1
-RUN apk add --update --no-cache python3 && ln -sf python3 /usr/bin/python
-RUN python3 -m ensurepip
-RUN pip3 install --no-cache --upgrade pip setuptools
-
-# fix gyp
-RUN apt-get update && apt-get install build-essential -y
-
-# set working direction
+# set working directory
 WORKDIR /app
-# add `/app/node_modules/.bin` to $PATH
-ENV PATH /app/node_modules/.bin:$PATH
-# install application dependencies
+
+# install app dependencies
+#copies package.json and package-lock.json to Docker environment
 COPY package.json ./
-COPY package-lock.json ./
-RUN npm i --force
-# add app
+
+# Installs all node packages
+RUN npm install
+
+# Copies everything over to Docker environment
 COPY . ./
-# start app
-CMD ["npm", "start"]
+RUN npm run build
+
+#Stage 2
+#######################################
+#pull the official nginx:1.19.0 base image
+FROM nginx:1.19.0
+#copies React to the container directory
+# Set working directory to nginx resources directory
+WORKDIR /usr/share/nginx/html
+# Remove default nginx static resources
+RUN rm -rf ./*
+# Copies static resources from builder stage
+COPY --from=builder /app/build .
+# Containers run nginx with global directives and daemon off
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
