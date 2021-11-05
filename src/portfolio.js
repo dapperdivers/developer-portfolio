@@ -138,8 +138,8 @@ export const educationInfo = [
 export const experience = [
 	{
 		role: "Senior Software Engineer",
-		company: "Traction Tools ",
-		companylogo: airbnb,
+		company: "Traction Tools",
+		companylogo: TractionToolsLogo,
 		date: "February 2021 – Present",
 		desc: "Working as the lead Engineer for a direct-to-consumer site that provides tooling for businesses running EOS. I lead a team of 4 other engineers, doing all code reviews, sprint management, and overseeing the direction of the product from the engineering standpoint. In my first few months I was able to institute Azure Devops, automated deployments, and sprints to the organization. I’m currently working to modernize the tech stack, by methodically migrating the website from .NET Razor and AngualarJS, to a microservices architecture with a react front end.",
 	},
