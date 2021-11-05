@@ -1,8 +1,8 @@
 import emoji from "react-easy-emoji";
 
-import googlelogo from "./assets/img/icons/common/google.svg";
-import github from "./assets/img/icons/common/github.svg";
-import airbnb from "./assets/img/icons/common/airbnbLogo.png";
+import TractionToolsLogo from "./assets/img/icons/common/tt.svg";
+import UbiquiaLogo from "./assets/img/icons/common/ubiquia.png";
+import StarrLogo from "./assets/img/icons/common/Starr_Companies_Logo.png";
 
 export const greetings = {
 	name: "Derek Mackley",
@@ -26,7 +26,7 @@ export const socialLinks = {
 export const skillsSection = {
 	title: "What I do",
 	subTitle:
-		"CRAZY FULL STACK DEVELOPER WHO TINKERS WITH ANYTHING I CAN GET MY HANDS ON",
+		"FULL STACK DEVELOPER THAT TINKERS WITH ANYTHING I CAN GET MY HANDS ON",
 	skills: [
 		emoji(
 			"⚡ Develop extensable, scaleable, and secure web based applications"
@@ -146,14 +146,14 @@ export const experience = [
 	{
 		role: "Senior Software Engineer",
 		company: "Ubicquia",
-		companylogo: github,
+		companylogo: UbiquiaLogo,
 		date: "May 2018 – June 2020",
 		desc: "This role involved creating an enterprise solution to manage cellular connected units on light poles. While in this role, I wrote and managed a php Laravel API, with an Angular front end, as well as wrote automation frameworks, MQTT broker connections, python API’s, virtualized environments, and a whole host of supporting software. While in this role I learned to manage and configure Linux environments, and wrote ansible scripts to migrate and re-architect the business from Azure to the Google Cloud Platform. The last one saving the company 500K annually. This role involved a very small team with big tasks, and short deadlines. This taught me how to move quickly, focus on what is truly important, and to write extensible software with manageable tech debt.",
 	},
 	{
 		role: "Software Engineer",
 		company: "Starr Companies",
-		companylogo: googlelogo,
+		companylogo: StarrLogo,
 		date: "March 2016 – May 2018",
 		desc: "Worked on a Document Management/ Reporting web portal. Myself and one other developer rewrote the site in MVC 5 from webforms, moved from an on-prem virtual machine to an azure web service, moved our most resource intensive page to Angular JS, and at the time I left were in the process of updating the front-end to use modern technologies, like Saas, Twitter Bootstrap, NodeJS, etc. In addition, began moving the service layer from .NET4.6.1 to a .NET Core Web API",
 	}
