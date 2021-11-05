@@ -94,22 +94,13 @@ For adding emoji 😃 into the texts in `Portfolio.js`, use the `emoji()` functi
 
 -   [Lottie File Source](https://lottiefiles.com)
 
-## For the Future
-
-If you can help us with these. Please don't hesitate to open a [pull request](https://github.com/saadpasta/developerFolio/pulls).
-
--   Enable Dark Mode
-
--   Add More Sections
-
 ## Author
 
 👤 **Derek Mackley**
 
-* Website: https://Derek.netlify.app
-* Twitter: [@1Derek100](https://twitter.com/1Derek100)
+* Website: https://www.derekmackley.com
 * Github: [@1Derek100](https://github.com/DapperDivers)
-* LinkedIn: [@1Derek100](https://linkedin.com/in/1Derek100)
+* LinkedIn: [@1Derek100](https://www.linkedin.com/in/dmackley/)
 
 ## Show your support
 
