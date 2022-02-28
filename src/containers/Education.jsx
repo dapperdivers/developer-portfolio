@@ -1,5 +1,5 @@
 import React from 'react';
-import EdutionCard from "../components/EdutionCard";
+import EducationCard from "../components/EducationCard";
 import { educationInfo } from "../portfolio";
 import {
     Container,
@@ -7,8 +7,8 @@ import {
     Col
 } from "reactstrap";
 
-const Edution = () => {
-    return ( 
+const Education = () => {
+    return (
         <section className="section pb-0 bg-gradient-info my-5">
             <Container>
                 <div className="d-flex px-3">
@@ -24,7 +24,7 @@ const Edution = () => {
                 <Row className="row-grid align-items-center">
                     {
                         educationInfo.map(info => {
-                            return  <Col className="order-lg-1" lg="6"  key={info.schoolName}><EdutionCard education={info} /></Col>
+                            return  <Col className="order-lg-1" lg="6"  key={info.schoolName}><EducationCard education={info} /></Col>
                         })
                     }
                 </Row>
@@ -47,5 +47,5 @@ const Edution = () => {
           </section>
      );
 }
- 
-export default Edution;
+
+export default Education;

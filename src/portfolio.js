@@ -8,7 +8,7 @@ export const greetings = {
 	name: "Derek Mackley",
 	title: "Hi There, I'm Derek",
 	description:
-		"A passionate Full Stack Web Developer with experience of building Web applications and APIs with .Net / C# / Python / JavaScript / Reactjs / Nodejs / Angular / Flask / and tons of other cool libraries and frameworks.",
+		"A passionate Full Stack Web Developer with experience building Web applications and APIs using .Net / C# / Python / JavaScript / Reactjs / Nodejs / Angular / Docker / Azure /and tons of other awesome porjects and repositories",
 	resumeLink: "https://cv.dummY_URl",
 };
 
@@ -69,14 +69,6 @@ export const skillsSection = {
 			fontAwesomeClassname: "logos:nodejs-icon",
 		},
 		{
-			skillName: "flutter",
-			fontAwesomeClassname: "logos:flutter",
-		},
-		{
-			skillName: "swift",
-			fontAwesomeClassname: "vscode-icons:file-type-swift",
-		},
-		{
 			skillName: "npm",
 			fontAwesomeClassname: "vscode-icons:file-type-npm",
 		},
@@ -85,16 +77,16 @@ export const skillsSection = {
 			fontAwesomeClassname: "vscode-icons:file-type-sql",
 		},
 		{
-			skillName: "mongoDB",
-			fontAwesomeClassname: "vscode-icons:file-type-mongo",
-		},
-		{
 			skillName: "aws",
 			fontAwesomeClassname: "logos:aws",
 		},
 		{
-			skillName: "firebase",
-			fontAwesomeClassname: "logos:firebase",
+			skillName: "azure",
+			fontAwesomeClassname: "logos:azure",
+		},
+		{
+			skillName: "gpc",
+			fontAwesomeClassname: "logos:google",
 		},
 		{
 			skillName: "python",
@@ -137,14 +129,14 @@ export const educationInfo = [
 
 export const experience = [
 	{
-		role: "Senior Software Engineer",
+		role: "Software Engineering Manager",
 		company: "Traction Tools",
 		companylogo: TractionToolsLogo,
 		date: "February 2021 – Present",
-		desc: "Working as the lead Engineer for a direct-to-consumer site that provides tooling for businesses running EOS. I lead a team of 4 other engineers, doing all code reviews, sprint management, and overseeing the direction of the product from the engineering standpoint. In my first few months I was able to institute Azure Devops, automated deployments, and sprints to the organization. I’m currently working to modernize the tech stack, by methodically migrating the website from .NET Razor and AngualarJS, to a microservices architecture with a react front end.",
+		desc: "Working as the Software Engineering Manager for a direct-to-consumer site that provides tooling for businesses running EOS. I lead the software, QA, and project management teams, overseeing sprint management, code reviews, tech stack, and the direction of the product from an engineering standpoint. Thus far I’ve instituted Azure Devops, automated deployments, unit testing, integration testing, selenium tests and a two-week sprint/release cadence to the organization. I’m currently leading the effort to modernize the tech stack, by methodically migrating the website from .NET 4.6.1 MVC Razor and AngularJS, to a microservices architecture with a react front end. This involves moving from AWS virtual machines to an ECS cluster, as well as migrating the current project to .NET Core while ensuring no downtime and adding new features. Basically, rebuilding the car piece by piece while in a drag race. "
 	},
 	{
-		role: "Senior Software Engineer",
+		role: "Senior Software Engineer / Development Lead",
 		company: "Ubicquia",
 		companylogo: UbiquiaLogo,
 		date: "May 2018 – June 2020",
