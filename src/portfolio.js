@@ -9,7 +9,7 @@ export const greetings = {
 	title: "Hi There, I'm Derek",
 	description:
 		"A passionate Full Stack Web Developer with experience building Web applications and APIs using .Net / C# / Python / JavaScript / Reactjs / Nodejs / Angular / Docker / Azure /and tons of other awesome porjects and repositories",
-	resumeLink: "https://cv.dummY_URl",
+	resumeLink: "https://www.derekmackley.com/resume",
 };
 
 export const openSource = {
