@@ -6,3 +6,4 @@ services:
       - "3001:80"
     volumes:
       - /Flash/DerekMackley/developer-portfolio/site.conf:/etc/nginx/conf.d/site.conf
+      - /Flash/DerekMackley/developer-portfolio/files:/files
