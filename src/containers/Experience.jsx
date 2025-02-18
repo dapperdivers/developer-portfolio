@@ -4,8 +4,7 @@ import {
     Container,
     Row,
 } from "reactstrap";
-
-import { Fade } from 'react-reveal';
+import { motion } from "framer-motion";
 
 import ExperienceCard from "../components/ExperienceCard";
 
@@ -13,7 +12,11 @@ const Experience = () => {
     return ( 
         <section className="section section-lg">
             <Container>
-              <Fade left duration={1000} distance="40px">
+              <motion.div
+                initial={{ opacity: 0, x: -40 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5 }}
+              >
               <div className="d-flex p-4">
                     <div>
                         <div className="icon icon-lg icon-shape bg-gradient-white shadow rounded-circle text-info">
@@ -31,7 +34,7 @@ const Experience = () => {
                         })
                     }
                 </Row>
-              </Fade>
+              </motion.div>
             </Container>
           </section>
      );

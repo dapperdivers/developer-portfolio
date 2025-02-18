@@ -1,11 +1,14 @@
 import React from "react";
 import { Card, CardBody, Badge } from "reactstrap";
-
-import { Fade } from "react-reveal";
+import { motion } from "framer-motion";
 
 const FeedbackCard = ({ data }) => {
 	return (
-		<Fade right duration={1000} distance="40px">
+		<motion.div
+			initial={{ opacity: 0, x: 40 }}
+			animate={{ opacity: 1, x: 0 }}
+			transition={{ duration: 0.5 }}
+		>
 			<Card className="card-lift--hover shadow mt-4">
 				<CardBody>
 					<div className="d-flex px-3">
@@ -16,7 +19,7 @@ const FeedbackCard = ({ data }) => {
 					</div>
 				</CardBody>
 			</Card>
-		</Fade>
+		</motion.div>
 	);
 };
 

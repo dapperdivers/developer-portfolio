@@ -1,13 +1,15 @@
 import React from "react";
-
 import { Card, CardBody, Col, Button } from "reactstrap";
-
-import { Fade } from "react-reveal";
+import { motion } from "framer-motion";
 
 const ProjectsCard = ({ data }) => {
 	return (
 		<Col lg="6">
-			<Fade bottom duration={1000} distance="40px">
+			<motion.div
+				initial={{ opacity: 0, y: 40 }}
+				animate={{ opacity: 1, y: 0 }}
+				transition={{ duration: 0.5 }}
+			>
 				<Card className="shadow-lg--hover shadow mt-4">
 					<CardBody>
 						<div className="d-flex px-3">
@@ -45,7 +47,7 @@ const ProjectsCard = ({ data }) => {
 						</div>
 					</CardBody>
 				</Card>
-			</Fade>
+			</motion.div>
 		</Col>
 	);
 };

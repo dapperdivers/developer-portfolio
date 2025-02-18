@@ -1,9 +1,7 @@
 import React, {Fragment} from 'react';
-
-import { Fade } from 'react-reveal';
 import DisplayLottie from '../components/DisplayLottie'
 import webdev from '../assets/lottie/webdev.json';
-
+import { motion } from "framer-motion";
 import {
     Container,
     Row,
@@ -15,7 +13,11 @@ import { skillsSection } from "../portfolio";
 
 const Skills = () => {
     return ( 
-        <Fade left duration={1000} distance="40px">
+        <motion.div
+            initial={{ opacity: 0, x: -40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
+        >
             <Container className="text-center my-5 section section-lg">
             <h1 className="h1">{skillsSection.title}</h1>
             <p className="lead">{skillsSection.subTitle}</p>
@@ -52,7 +54,7 @@ const Skills = () => {
                 </Col>
             </Row>
             </Container>
-        </Fade>
+        </motion.div>
      );
 }
  

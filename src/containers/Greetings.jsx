@@ -1,10 +1,7 @@
 import React, { useEffect } from "react";
 import { greetings } from "../portfolio";
 import code from '../assets/lottie/coding.json';
-
-
-import { Fade } from 'react-reveal';
-
+import { motion } from "framer-motion";
 import {
   Button,
   Container,
@@ -21,8 +18,12 @@ const Greetings = () => {
     document.scrollingElement.scrollTop = 0;
   })
   return ( 
-    <Fade top duration={1000} distance="40px">
-        <main ref="main">
+    <motion.div
+      initial={{ opacity: 0, y: -40 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+        <main>
           <div className="position-relative">
             <section className="section section-lg section-shaped pb-250">
               <div className="shape shape-style-1 bg-gradient-info">
@@ -86,7 +87,7 @@ const Greetings = () => {
             {/* 1st Hero Variation */}
           </div>
         </main>
-        </Fade>
+        </motion.div>
    );
 }
  
