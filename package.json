@@ -2,23 +2,26 @@
 	"name": "developer-portfolio",
 	"version": "1.0.0",
 	"description": "Software Developer Portfolio Template built with react.js bootstrap that helps you showcase your work and skills as a software developer.",
-	"main": "index.js",
+	"main": "index.jsx",
+	"engines": {
+		"node": ">=22.0.0"
+	},
 	"repository": "https://github.com/DapperDivers/developer-portfolio.git",
 	"author": "Derek Mackley",
 	"license": "MIT",
 	"dependencies": {
-		"@svgr/webpack": "^8.1.0",
+		"@iconify/react": "^5.2.0",
 		"axios": "^1.6.7",
 		"bootstrap": "^5.3.2",
 		"classnames": "^2.5.1",
 		"colorthief": "^2.4.0",
+		"express": "^4.18.2",
+		"express-rate-limit": "^7.5.0",
 		"framer-motion": "^11.0.3",
+		"helmet": "^8.0.0",
 		"lottie-react": "^2.4.1",
 		"moment": "^2.30.1",
 		"nouislider": "^15.7.1",
-		"nth-check": "^2.1.1",
-		"postcss": "^8.4.31",
-		"puppeteer": "^24.2.1",
 		"react": "^18.2.0",
 		"react-datetime": "^3.2.0",
 		"react-dom": "^18.2.0",
@@ -26,24 +29,16 @@
 		"react-headroom": "^3.2.1",
 		"react-icons": "^5.4.0",
 		"react-router-dom": "^6.22.1",
-		"react-scripts": "^5.0.1",
 		"reactstrap": "^9.2.2",
-		"serialize-javascript": "^6.0.2",
 		"typed.js": "^2.1.0",
-		"workbox-webpack-plugin": "^7.0.0"
-	},
-	"resolutions": {
-		"nth-check": "^2.1.1",
-		"postcss": "^8.4.31",
-		"serialize-javascript": "^6.0.2",
-		"svgo": "^3.2.0",
-		"css-select": "^5.1.0"
+		"@popperjs/core": "^2.11.8",
+		"jquery": "^3.7.1"
 	},
 	"scripts": {
-		"start": "react-scripts start",
-		"build": "react-scripts build",
-		"test": "react-scripts test",
-		"eject": "react-scripts eject"
+		"dev": "vite",
+		"build": "vite build",
+		"serve": "node server.js",
+		"preview": "vite preview"
 	},
 	"browserslist": {
 		"production": [
@@ -56,5 +51,15 @@
 			"last 1 firefox version",
 			"last 1 safari version"
 		]
+	},
+	"devDependencies": {
+		"@types/react": "^19.0.10",
+		"@types/react-dom": "^19.0.4",
+		"@vitejs/plugin-react": "^4.3.4",
+		"cross-env": "^7.0.3",
+		"eslint-plugin-security": "^2.1.0",
+		"npm-check-updates": "^16.14.15",
+		"typescript": "^5.7.3",
+		"vite": "^6.1.0"
 	}
 }

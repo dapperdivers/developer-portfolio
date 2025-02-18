@@ -5,8 +5,12 @@ FROM node:20-slim AS builder
 WORKDIR /app
 
 # Set build-time environment variables
+ARG PORT=3000
 ENV NODE_ENV=production
-ENV PORT=3000
+ENV PORT=${PORT}
+ENV REACT_APP_PORT=${PORT}
+ENV REACT_APP_NODE_ENV=${NODE_ENV}
+ENV GENERATE_SOURCEMAP=false
 
 # Install dependencies first (better layer caching)
 COPY package*.json ./
@@ -19,71 +23,43 @@ COPY . .
 RUN npm run build
 
 # Stage 2: Production
-FROM nginx:1.25-alpine
+FROM node:20-slim
 
 # Set runtime environment variables with defaults
-ENV NGINX_PORT=80
-ENV REACT_APP_PORT=3000
+ARG PORT=3000
+ENV PORT=${PORT}
+# Set Node.js memory limit
+ENV NODE_OPTIONS="--max-old-space-size=512"
 
-# Install additional security packages
-RUN apk add --no-cache \
+# Create non-root user
+RUN groupadd -r nodeapp && useradd -r -g nodeapp nodeapp
+
+WORKDIR /app
+
+# Install required packages with security best practices
+RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
-    tzdata \
-    && rm -rf /var/cache/apk/*
-
-# Create necessary directories and files with proper permissions
-RUN mkdir -p /tmp/nginx \
-    && mkdir -p /var/cache/nginx \
-    && mkdir -p /var/run \
-    && mkdir -p /files \
-    && touch /tmp/nginx/access.log \
-    && touch /tmp/nginx/error.log \
-    && touch /tmp/nginx/nginx.pid \
-    && chown -R nginx:nginx /tmp/nginx \
-    && chown -R nginx:nginx /var/cache/nginx \
-    && chown -R nginx:nginx /files \
-    && chmod -R 755 /tmp/nginx \
-    && chmod -R 755 /var/cache/nginx \
-    && chmod -R 755 /files \
-    && chmod 644 /tmp/nginx/access.log \
-    && chmod 644 /tmp/nginx/error.log \
-    && chmod 644 /tmp/nginx/nginx.pid \
-    # Configure nginx to run as nginx user
-    && sed -i 's/user  nginx;/user nginx;/' /etc/nginx/nginx.conf \
-    && sed -i 's/^pid.*$/pid \/tmp\/nginx\/nginx.pid;/' /etc/nginx/nginx.conf \
-    # Redirect nginx logs to stdout/stderr for Kubernetes logging
-    && ln -sf /dev/stdout /tmp/nginx/access.log \
-    && ln -sf /dev/stderr /tmp/nginx/error.log
-
-# Copy nginx configuration
-COPY site.conf /etc/nginx/conf.d/default.conf
-
-# Remove default nginx static assets
-WORKDIR /usr/share/nginx/html
-RUN rm -rf ./*
+    && rm -rf /var/lib/apt/lists/* \
+    && chown -R nodeapp:nodeapp /app
 
 # Copy built assets from builder
-COPY --from=builder --chown=nginx:nginx /app/build .
+COPY --from=builder /app/build ./build
 
-# Create a simple health check endpoint
-RUN echo "OK" > /usr/share/nginx/html/healthz
-
-# Ensure nginx config is valid
-RUN nginx -t
-
-# Set proper file permissions
-RUN chown -R nginx:nginx /usr/share/nginx/html \
-    && chmod -R 755 /usr/share/nginx/html
-
-# Switch to non-root user
-USER nginx
+# Create files directory
+RUN mkdir -p /app/files
 
 # Add healthcheck
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:${NGINX_PORT}/healthz || exit 1
+    CMD curl -f http://localhost:${PORT}/healthz || exit 1
 
-# Expose configurable port
-EXPOSE ${NGINX_PORT}
+# Expose port
+EXPOSE ${PORT}
 
-# Start nginx
-CMD ["sh", "-c", "nginx -g 'daemon off;'"]
+# Switch to non-root user
+USER nodeapp
+
+# Copy server file
+COPY --chown=nodeapp:nodeapp server.js .
+
+# Start secure express server
+CMD ["node", "server.js"]
