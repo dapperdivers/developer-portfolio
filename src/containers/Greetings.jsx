@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button, Container, Row, Col } from "reactstrap";
 import { FaFileAlt } from 'react-icons/fa';
 import GreetingLottie from "../components/DisplayLottie";
-import SocialLinks from "components/SocialLinks";
+import SocialLinks from "../components/SocialLinks";
 
 const Greetings = () => {
   return ( 
@@ -22,6 +22,7 @@ const Greetings = () => {
         <main role="main">
           <div className="position-relative">
             <section 
+              id="greetings"
               className="section section-lg section-shaped pb-250"
               aria-label="Introduction"
             >

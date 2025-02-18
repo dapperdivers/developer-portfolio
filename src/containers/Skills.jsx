@@ -1,5 +1,6 @@
 import React from 'react';
 import DisplayLottie from '../components/DisplayLottie'
+import { Icon } from '@iconify/react';
 import webdev from '../assets/lottie/webdev.json';
 import { motion, AnimatePresence } from "framer-motion";
 import { Container, Row, Col, UncontrolledTooltip } from "reactstrap";
@@ -19,7 +20,12 @@ const SkillIcon = ({ skill }) => {
                 role="img"
                 aria-label={skill.skillName}
             >
-                <i className={skill.fontAwesomeClassname} aria-hidden="true" />
+                <Icon 
+                    icon={skill.fontAwesomeClassname} 
+                    width="32" 
+                    height="32"
+                    style={{ color: 'currentColor' }}
+                />
             </div>
             <UncontrolledTooltip
                 delay={0}

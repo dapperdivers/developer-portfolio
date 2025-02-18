@@ -1,4 +1,4 @@
-import { feedbacks } from "portfolio";
+import { feedbacks } from "../portfolio";
 import React from "react";
 import { Col, Container, Fade, Row } from "reactstrap";
 import FeedbackCard from "../components/FeedbackCard";
@@ -6,7 +6,7 @@ const Feedbacks = () => {
 	return (
 		<section className="section section-lg">
 			<Container>
-				<Fade bottom duration={1000} distance="40px">
+				<Fade in={true} timeout={1000}>
 					<div className="d-flex p-4">
 						<div>
 							<div className="icon icon-lg icon-shape bg-gradient-white shadow rounded-circle text-info">
