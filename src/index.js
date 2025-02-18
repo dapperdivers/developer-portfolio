@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 
 import Navigation from "./components/Navigation";
 import Greetings from "./containers/Greetings";
@@ -15,8 +15,10 @@ import "./assets/vendor/nucleo/css/nucleo.css";
 import "./assets/vendor/font-awesome/css/font-awesome.min.css";
 import "./assets/css/argon-design-system-react.css";
 
-ReactDOM.render(
-	<>
+const container = document.getElementById("root");
+const root = createRoot(container);
+root.render(
+	<React.StrictMode>
 		<Navigation />
 		<Greetings />
 		<Skills />
@@ -26,6 +28,5 @@ ReactDOM.render(
 		<Feedbacks />
 		<Projects />
 		<GithubProfile />
-	</>,
-	document.getElementById("root")
+	</React.StrictMode>
 );

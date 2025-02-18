@@ -1,18 +1,21 @@
 import React from 'react';
-
 import { projects } from "../portfolio";
 import {
     Container,
     Row,
 } from "reactstrap";
 import ProjectsCard from "../components/ProjectsCard";
-import { Fade } from 'react-reveal';
+import { motion } from "framer-motion";
 
 const Projects = () => {
     return ( 
         <section className="section section-lg">
             <Container>
-              <Fade bottom duration={1000} distance="40px">
+              <motion.div
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+              >
               <div className="d-flex p-4">
                     <div>
                         <div className="icon icon-lg icon-shape bg-gradient-white shadow rounded-circle text-info">
@@ -30,7 +33,7 @@ const Projects = () => {
                         })
                     }
                 </Row>
-              </Fade>
+              </motion.div>
             </Container>
           </section>
      );

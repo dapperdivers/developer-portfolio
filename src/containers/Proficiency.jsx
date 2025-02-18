@@ -1,6 +1,5 @@
 import React from 'react';
 import build from "../assets/lottie/build";
-
 import { SkillBars } from "../portfolio";
 import {
     Container,
@@ -8,15 +7,18 @@ import {
     Progress,
     Col
 } from "reactstrap";
-
-import { Fade } from 'react-reveal';
+import { motion } from "framer-motion";
 
 import GreetingLottie from "../components/DisplayLottie";
 
 const Proficiency = () => {
     return ( 
         <Container className="section section-lg">
-           <Fade bottom duration={1000} distance="40px">
+           <motion.div
+             initial={{ opacity: 0, y: 40 }}
+             animate={{ opacity: 1, y: 0 }}
+             transition={{ duration: 0.5 }}
+           >
             <Row>
                     <Col lg="6">
                         <h1 className="h1">Proficiency</h1>
@@ -38,7 +40,7 @@ const Proficiency = () => {
                         <GreetingLottie animationData={build}/>
                     </Col>
                 </Row>
-           </Fade>
+           </motion.div>
         </Container>
      );
 }
