@@ -4,23 +4,41 @@ import TractionToolsLogo from "./assets/img/icons/common/tt.svg";
 import UbiquiaLogo from "./assets/img/icons/common/ubiquia.png";
 import StarrLogo from "./assets/img/icons/common/Starr_Companies_Logo.png";
 
+// URL validation helper
+const validateUrl = (url) => {
+    try {
+        const urlObj = new URL(url);
+        return urlObj.protocol === 'https:' ? url : `https://${url.replace(/^https?:\/\//, '')}`;
+    } catch {
+        console.error(`Invalid URL: ${url}`);
+        return '#';
+    }
+};
+
+// Sanitize text content
+const sanitizeText = (text) => {
+    if (typeof text !== 'string') return '';
+    return text.replace(/<[^>]*>/g, '').trim();
+};
+
 export const greetings = {
-	name: "Derek Mackley",
-	title: "Hi There, I'm Derek",
-	description:
-		"A passionate Full Stack Web Developer with experience building Web applications and APIs using .Net / C# / Python / JavaScript / Reactjs / Nodejs / Angular / Docker / Azure /and tons of other awesome porjects and repositories",
-	resumeLink: "https://www.derekmackley.com/resume/Mackley_Resume_2022.pdf",
+    name: sanitizeText("Derek Mackley"),
+    title: sanitizeText("Hi There, I'm Derek"),
+    description: sanitizeText(
+        "A passionate Full Stack Web Developer with experience building Web applications and APIs using .Net / C# / Python / JavaScript / Reactjs / Nodejs / Angular / Docker / Azure /and tons of other awesome porjects and repositories"
+    ),
+    resumeLink: validateUrl("https://www.derekmackley.com/resume/Mackley_Resume_2024.pdf"),
 };
 
 export const openSource = {
-	githubUserName: "DapperDivers",
+    githubUserName: sanitizeText("DapperDivers"),
 };
 
 export const contact = {};
 
 export const socialLinks = {
-	github: "https://github.com/DapperDivers",
-	linkedin: "https://www.linkedin.com/in/dmackley/",
+    github: validateUrl("https://github.com/DapperDivers"),
+    linkedin: validateUrl("https://www.linkedin.com/in/dmackley/"),
 };
 
 export const skillsSection = {
@@ -171,9 +189,30 @@ export const projects = [
 	},
 ];
 
+// Sanitize feedback data
 export const feedbacks = [
-	{
-		name: "Scott Latsa",
-		feedback: "Derek Mackley reported directly to me at Ubicquia in Melboure Florida and was an invaluable asset to the team, myself and the company. '\r\n' Derek was a dependable developer that always accomplished the task assigned even in the midst of changing business requirements and priorities.  He was quick to learn new technologies, such as languages, servers, cloud platforms, orchestration systems, and the like. This was despite Derek being from a .NET Windows development environment. He was able to learn PHP Laravel, Python, Debian Linux systems and IOT devices in short order. Derek  was an asset to my team. He was always self-motivated and willing to assist with any project. Along with being a top notch developer, he had strong communication and interpersonal skills. While working with Derek I assigned him many tasks with different scopes and technologies and he was able to learn what was needed and produce a working solution in a minimal timeframe.  I enjoyed working with him and would happily work with him in the future. He has my highest recommendation.",
-	}
+    {
+        name: sanitizeText("Scott Latsa"),
+        feedback: sanitizeText(
+            "Derek Mackley reported directly to me at Ubicquia in Melboure Florida and was an invaluable asset to the team, myself and the company. '\r\n' Derek was a dependable developer that always accomplished the task assigned even in the midst of changing business requirements and priorities.  He was quick to learn new technologies, such as languages, servers, cloud platforms, orchestration systems, and the like. This was despite Derek being from a .NET Windows development environment. He was able to learn PHP Laravel, Python, Debian Linux systems and IOT devices in short order. Derek  was an asset to my team. He was always self-motivated and willing to assist with any project. Along with being a top notch developer, he had strong communication and interpersonal skills. While working with Derek I assigned him many tasks with different scopes and technologies and he was able to learn what was needed and produce a working solution in a minimal timeframe.  I enjoyed working with him and would happily work with him in the future. He has my highest recommendation."
+        ),
+    }
 ];
+
+// Validate all image imports
+const validateImage = (imagePath) => {
+    try {
+        if (typeof imagePath === 'string' && imagePath.startsWith('data:image/')) {
+            return imagePath;
+        }
+        return new URL(imagePath, import.meta.url).href;
+    } catch {
+        console.error(`Invalid image path: ${imagePath}`);
+        return '';
+    }
+};
+
+// Update image imports with validation
+TractionToolsLogo = validateImage(TractionToolsLogo);
+UbiquiaLogo = validateImage(UbiquiaLogo);
+StarrLogo = validateImage(StarrLogo);
