@@ -1,31 +1,30 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { greetings } from "../portfolio";
 import code from '../assets/lottie/coding.json';
-import { motion } from "framer-motion";
-import {
-  Button,
-  Container,
-  Row,
-  Col
-} from "reactstrap";
-
+import { motion, AnimatePresence } from "framer-motion";
+import { Button, Container, Row, Col } from "reactstrap";
+import { FaFileAlt } from 'react-icons/fa';
 import GreetingLottie from "../components/DisplayLottie";
 import SocialLinks from "components/SocialLinks";
 
 const Greetings = () => {
-  useEffect(() => {
-    document.documentElement.scrollTop = 0;
-    document.scrollingElement.scrollTop = 0;
-  })
   return ( 
-    <motion.div
-      initial={{ opacity: 0, y: -40 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-    >
-        <main>
+    <AnimatePresence>
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ 
+          duration: 0.5,
+          ease: "easeOut"
+        }}
+        exit={{ opacity: 0, y: -20 }}
+      >
+        <main role="main">
           <div className="position-relative">
-            <section className="section section-lg section-shaped pb-250">
+            <section 
+              className="section section-lg section-shaped pb-250"
+              aria-label="Introduction"
+            >
               <div className="shape shape-style-1 bg-gradient-info">
                 <span />
                 <span />
@@ -41,10 +40,12 @@ const Greetings = () => {
                 <div className="col px-0">
                   <Row>
                     <Col lg="6">
-                      <h1 className="display-3 text-white">
-                        {greetings.title + " "}
+                      <h1 className="display-3 text-white" tabIndex="0">
+                        {greetings.title}
                       </h1>
-                      <p className="lead text-white">{greetings.description}</p>
+                      <p className="lead text-white" tabIndex="0">
+                        {greetings.description}
+                      </p>
                       <SocialLinks />
                       <div className="btn-wrapper my-4">
                         <Button
@@ -52,12 +53,10 @@ const Greetings = () => {
                           color="default"
                           href={greetings.resumeLink}
                         >
-                          <span className="btn-inner--icon mr-1">
-                            <i className="fa fa-file" />
+                          <span className="btn-inner--icon me-2">
+                            <FaFileAlt aria-hidden="true" />
                           </span>
-                          <span className="btn-inner--text">
-                            See My Resume
-                          </span>
+                          <span className="btn-inner--text">See My Resume</span>
                         </Button>
                       </div>
                     </Col>
@@ -87,7 +86,8 @@ const Greetings = () => {
             {/* 1st Hero Variation */}
           </div>
         </main>
-        </motion.div>
+      </motion.div>
+    </AnimatePresence>
    );
 }
  
