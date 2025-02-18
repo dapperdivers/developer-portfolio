@@ -21,17 +21,23 @@ app.use(
   helmet.contentSecurityPolicy({
     directives: {
       defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
-      styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
-      imgSrc: ["'self'", 'data:', 'https:'],
+      scriptSrc: ["'self'", 'https://fonts.googleapis.com'],
+      styleSrc: ["'self'", 'https://fonts.googleapis.com'],
+      imgSrc: ["'self'", 'data:', 'https://api.github.com'],
       connectSrc: ["'self'", 'https://api.github.com'],
       fontSrc: ["'self'", 'https://fonts.gstatic.com'],
       objectSrc: ["'none'"],
-      mediaSrc: ["'self'"],
-      frameSrc: ["'self'"],
+      mediaSrc: ["'none'"],
+      frameSrc: ["'none'"],
+      formAction: ["'self'"],
+      upgradeInsecureRequests: [],
     },
   })
 );
+
+// Add body parser with limits
+app.use(express.json({ limit: '10kb' }));
+app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 
 // Additional security headers
 app.use(helmet.dnsPrefetchControl());
@@ -44,29 +50,44 @@ app.use(helmet.permittedCrossDomainPolicies());
 app.use(helmet.referrerPolicy());
 app.use(helmet.xssFilter());
 
-// CORS configuration
+// CORS configuration - restrict to specific origins
+const allowedOrigins = ['http://localhost:3000', 'https://yourdomain.com']; // Update with your domain
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.header('Access-Control-Allow-Origin', origin);
+    res.header('Access-Control-Allow-Methods', 'GET, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    res.header('Access-Control-Max-Age', '86400'); // 24 hours
+  }
   next();
 });
 
-// Rate limiting
+// Rate limiting - more restrictive for portfolio site
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
-  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
-  message: 'Too many requests from this IP, please try again later.'
+  max: 50, // limit each IP to 50 requests per windowMs
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: 'Too many requests from this IP, please try again later.',
+  skipSuccessfulRequests: false, // Count successful requests against the rate limit
+  trustProxy: true // Trust the X-Forwarded-For header
 });
 app.use(limiter);
 
-// Serve static files with security headers
+// Serve static files with enhanced security headers
 app.use(express.static(path.join(__dirname, 'build'), {
   maxAge: '1y',
   etag: true,
-  lastModified: true
+  lastModified: true,
+  setHeaders: (res) => {
+    res.set('X-Content-Type-Options', 'nosniff');
+    res.set('X-Frame-Options', 'DENY');
+    res.set('X-XSS-Protection', '1; mode=block');
+    res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.set('Pragma', 'no-cache');
+    res.set('Expires', '0');
+  }
 }));
 
 // Health check endpoint with basic system info
