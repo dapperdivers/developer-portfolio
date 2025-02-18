@@ -1,10 +1,26 @@
 import emoji from "react-easy-emoji";
 
-import TractionToolsLogo from "./assets/img/icons/common/tt.svg";
-import UbiquiaLogo from "./assets/img/icons/common/ubiquia.png";
-import StarrLogo from "./assets/img/icons/common/Starr_Companies_Logo.png";
-
 // URL validation helper
+const validateImage = (imagePath) => {
+    try {
+        if (typeof imagePath === 'string' && imagePath.startsWith('data:image/')) {
+            return imagePath;
+        }
+        return new URL(imagePath, import.meta.url).href;
+    } catch {
+        console.error(`Invalid image path: ${imagePath}`);
+        return '';
+    }
+};
+
+import TractionToolsLogo_raw from "./assets/img/icons/common/tt.svg";
+import UbiquiaLogo_raw from "./assets/img/icons/common/ubiquia.png";
+import StarrLogo_raw from "./assets/img/icons/common/Starr_Companies_Logo.png";
+
+const TractionToolsLogo = validateImage(TractionToolsLogo_raw);
+const UbiquiaLogo = validateImage(UbiquiaLogo_raw);
+const StarrLogo = validateImage(StarrLogo_raw);
+
 const validateUrl = (url) => {
     try {
         const urlObj = new URL(url);
@@ -25,7 +41,7 @@ export const greetings = {
     name: sanitizeText("Derek Mackley"),
     title: sanitizeText("Hi There, I'm Derek"),
     description: sanitizeText(
-        "A passionate Full Stack Web Developer with experience building Web applications and APIs using .Net / C# / Python / JavaScript / Reactjs / Nodejs / Angular / Docker / Azure /and tons of other awesome porjects and repositories"
+        "A passionate Full Stack Web Developer and Security Expert with extensive experience building secure web applications and APIs. Proficient in .NET / C# / Python / JavaScript / React / Node.js / Angular / Docker / Azure and implementing robust security measures across applications."
     ),
     resumeLink: validateUrl("https://www.derekmackley.com/resume/Mackley_Resume_2024.pdf"),
 };
@@ -47,76 +63,79 @@ export const skillsSection = {
 		"FULL STACK DEVELOPER THAT TINKERS WITH ANYTHING I CAN GET MY HANDS ON",
 	skills: [
 		emoji(
-			"⚡ Develop extensable, scaleable, and secure web based applications"
+			"⚡ Develop extensible, scalable, and secure web-based applications with a strong focus on security best practices"
 		),
 		emoji(
-			"⚡ Update and Migrate legacy apps to new frameworks using cutting edge technology"
+			"⚡ Implement robust security measures and conduct security audits to ensure application integrity"
 		),
 		emoji(
-			"⚡ Learn and play with any technology I can; from automation tools and frameworks to hardware."
+			"⚡ Update and migrate legacy apps to modern frameworks using cutting-edge technology"
+		),
+		emoji(
+			"⚡ Learn and experiment with various technologies - from automation tools and security frameworks to hardware"
 		),
 	],
 
 	softwareSkills: [
 		{
 			skillName: "html-5",
-			fontAwesomeClassname: "vscode-icons:file-type-html",
+			fontAwesomeClassname: "simple-icons:html5",
 		},
 		{
 			skillName: "css3",
-			fontAwesomeClassname: "vscode-icons:file-type-css",
+			fontAwesomeClassname: "simple-icons:css3",
 		},
 		{
 			skillName: "sass",
-			fontAwesomeClassname: "logos:sass",
+			fontAwesomeClassname: "simple-icons:sass",
 		},
 		{
 			skillName: "JavaScript",
-			fontAwesomeClassname: "logos:javascript",
+			fontAwesomeClassname: "simple-icons:javascript",
 		},
 		{
 			skillName: "TypeScript",
-			fontAwesomeClassname: "logos:typescript-icon",
+			fontAwesomeClassname: "simple-icons:typescript",
 		},
 		{
 			skillName: "reactjs",
-			fontAwesomeClassname: "vscode-icons:file-type-reactjs",
+			fontAwesomeClassname: "simple-icons:react",
 		},
 		{
 			skillName: "nodejs",
-			fontAwesomeClassname: "logos:nodejs-icon",
+			fontAwesomeClassname: "simple-icons:nodejs",
 		},
 		{
 			skillName: "npm",
-			fontAwesomeClassname: "vscode-icons:file-type-npm",
+			fontAwesomeClassname: "simple-icons:npm",
 		},
 		{
 			skillName: "sql-database",
-			fontAwesomeClassname: "vscode-icons:file-type-sql",
+			fontAwesomeClassname: "simple-icons:mysql",
 		},
 		{
 			skillName: "aws",
-			fontAwesomeClassname: "logos:aws",
+			fontAwesomeClassname: "simple-icons:amazonaws",
 		},
 		{
 			skillName: "azure",
-			fontAwesomeClassname: "logos:azure",
+			fontAwesomeClassname: "simple-icons:microsoftazure",
 		},
 		{
 			skillName: "gpc",
-			fontAwesomeClassname: "logos:google",
+			fontAwesomeClassname: "simple-icons:googlecloud",
 		},
 		{
 			skillName: "python",
-			fontAwesomeClassname: "logos:python",
+			fontAwesomeClassname: "simple-icons:python",
 		},
 		{
 			skillName: "git",
-			fontAwesomeClassname: "logos:git-icon",
+			fontAwesomeClassname: "simple-icons:git",
 		},
 		{
 			skillName: "docker",
-			fontAwesomeClassname: "logos:docker-icon",
+			fontAwesomeClassname: "simple-icons:docker",
 		},
 	],
 };
@@ -172,8 +191,8 @@ export const experience = [
 
 export const projects = [
 	{
-		name: "Homelab",
-		desc: "Welcome you're on it, this site is hosted at home! I beleive that in order to be good at this job you have to love it, and you have to play with new stuff.  My homelab consists of more servers than I know what to do with with around 240TB of storage."
+		name: "Homelab & Security Testing Environment",
+		desc: "Welcome - you're on it! This site is hosted from my home lab. I believe that to excel in this field, you need passion and hands-on experience. My lab serves as both a hosting environment and a security testing playground, featuring multiple servers with around 240TB of storage."
 	},
 	{
 		name: "Tinkering with RFID",
@@ -181,11 +200,15 @@ export const projects = [
 	},
 	{
 		name: "3D Printing",
-		desc: "I love taking a idea on a computer and making a physical object! I currently have 4 printers and find alot of joy customizing them.",
+		desc: "I love turning digital ideas into physical objects! Currently operating 4 printers and finding great joy in customizing them for optimal performance.",
 	},
 	{
-		name: "Automation",
-		desc: "I've got homeAssistant wired up in the house with alexa enabled. Most of my hobbyies are wired in (3D printing, brewing, surf data, light, ect.)",
+		name: "Home Automation & Security",
+		desc: "Running a comprehensive Home Assistant setup integrated with various systems including 3D printing, brewing, environmental controls, and security monitoring. Everything is configured with security best practices in mind.",
+	},
+	{
+		name: "Scuba Diving",
+		desc: "Passionate scuba diver exploring the underwater world. This hobby combines my love for technology with adventure, often incorporating underwater photography and diving computers.",
 	},
 ];
 
@@ -198,21 +221,3 @@ export const feedbacks = [
         ),
     }
 ];
-
-// Validate all image imports
-const validateImage = (imagePath) => {
-    try {
-        if (typeof imagePath === 'string' && imagePath.startsWith('data:image/')) {
-            return imagePath;
-        }
-        return new URL(imagePath, import.meta.url).href;
-    } catch {
-        console.error(`Invalid image path: ${imagePath}`);
-        return '';
-    }
-};
-
-// Update image imports with validation
-TractionToolsLogo = validateImage(TractionToolsLogo);
-UbiquiaLogo = validateImage(UbiquiaLogo);
-StarrLogo = validateImage(StarrLogo);

@@ -1,5 +1,6 @@
-import { feedbacks } from "../portfolio";
 import React from "react";
+import { Icon } from '@iconify/react';
+import { feedbacks } from "../portfolio";
 import { Col, Container, Fade, Row } from "reactstrap";
 import FeedbackCard from "../components/FeedbackCard";
 const Feedbacks = () => {
@@ -10,7 +11,7 @@ const Feedbacks = () => {
 					<div className="d-flex p-4">
 						<div>
 							<div className="icon icon-lg icon-shape bg-gradient-white shadow rounded-circle text-info">
-								<i className="fa fa-star text-info" />
+								<Icon icon="simple-icons:trustpilot" className="text-info" style={{ fontSize: '2rem' }} />
 							</div>
 						</div>
 						<div className="pl-4">

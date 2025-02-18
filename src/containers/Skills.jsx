@@ -24,7 +24,6 @@ const SkillIcon = ({ skill }) => {
                     icon={skill.fontAwesomeClassname} 
                     width="32" 
                     height="32"
-                    style={{ color: 'currentColor' }}
                 />
             </div>
             <UncontrolledTooltip
