@@ -1,24 +1,28 @@
 import React, { Suspense } from 'react';
-import Lottie from 'react-lottie';
-import Loading from './Loading'
+import Lottie from 'lottie-react';
+import Loading from './Loading';
 
-const GreetingLottie = ({animationData}) => {
-    const defaultOptions = {
-        loop: true,
-        autoplay: true,
-        animationData: animationData,
-      };
-    
+const GreetingLottie = ({ animationData }) => {
     return (
         <Suspense fallback={<Loading />}>
-          {/* To override default onClick pause by Lottie */}
-          <div onClick={() => null}>
-            <Lottie 
-              options={defaultOptions}
-            />
-          </div>
+            <div 
+                className="lottie-container"
+                role="img"
+                aria-label="Animation illustrating coding and development"
+            >
+                <Lottie
+                    animationData={animationData}
+                    loop={true}
+                    autoplay={true}
+                    style={{ width: '100%', height: '100%' }}
+                    rendererSettings={{
+                        preserveAspectRatio: 'xMidYMid slice',
+                        progressiveLoad: true
+                    }}
+                />
+            </div>
         </Suspense>
-    )
-}
+    );
+};
  
 export default GreetingLottie;

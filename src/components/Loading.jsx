@@ -1,11 +1,19 @@
 import React from 'react';
+import './Loading.css';
 
 const Loading = () => {
-    return ( 
-        <div className="text-center spinner-grow text-info" style={{width: "50px", height: "50px"}} role="status">
-            <span className="sr-only">Loading...</span>
+    return (
+        <div 
+            className="loading-container"
+            role="status"
+            aria-live="polite"
+            aria-busy="true"
+        >
+            <div className="loading-spinner">
+                <span className="visually-hidden">Content is loading...</span>
+            </div>
         </div>
-     );
-}
- 
+    );
+};
+
 export default Loading;
