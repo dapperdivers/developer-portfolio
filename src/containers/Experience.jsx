@@ -1,4 +1,5 @@
 import React from 'react';
+import { Icon } from '@iconify/react';
 import { experience } from "../portfolio";
 import {
     Container,
@@ -20,7 +21,7 @@ const Experience = () => {
               <div className="d-flex align-items-center p-4">
                     <div className="me-4">
                         <div className="icon icon-lg icon-shape bg-gradient-white shadow rounded-circle text-info d-flex align-items-center justify-content-center">
-                            <i className="ni ni-briefcase-24 text-info" />
+                            <Icon icon="simple-icons:briefcase" className="text-info" style={{ fontSize: '2rem' }} />
                         </div>
                     </div>
                     <div>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Icon } from '@iconify/react';
 import EducationCard from "../components/EducationCard";
 import { educationInfo } from "../portfolio";
 import {
@@ -14,7 +15,7 @@ const Education = () => {
                 <div className="d-flex px-3">
                     <div>
                         <div className="icon icon-lg icon-shape bg-gradient-white shadow rounded-circle text-info">
-                        <i className="ni ni-books text-info" />
+                        <Icon icon="simple-icons:graduationhat" className="text-info" style={{ fontSize: '2rem' }} />
                         </div>
                     </div>
                     <div className="pl-4">
