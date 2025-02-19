@@ -1,20 +1,22 @@
 # Stage 1: Build
-FROM node:20-slim AS builder
+FROM node:22-slim AS builder
 
 # Set working directory
 WORKDIR /app
 
 # Set build-time environment variables
-ARG PORT=3000
+ARG PORT=3001
+ARG ALLOWED_DOMAINS=http://localhost:${PORT}
 ENV NODE_ENV=production
 ENV PORT=${PORT}
+ENV ALLOWED_DOMAINS=${ALLOWED_DOMAINS}
 ENV REACT_APP_PORT=${PORT}
 ENV REACT_APP_NODE_ENV=${NODE_ENV}
 ENV GENERATE_SOURCEMAP=false
 
 # Install dependencies first (better layer caching)
 COPY package*.json ./
-RUN npm ci --only=production
+RUN npm ci --include=dev
 
 # Copy source code
 COPY . .
@@ -23,11 +25,13 @@ COPY . .
 RUN npm run build
 
 # Stage 2: Production
-FROM node:20-slim
+FROM node:22-slim
 
 # Set runtime environment variables with defaults
-ARG PORT=3000
+ARG PORT=3001
+ARG ALLOWED_DOMAINS=http://localhost:3001
 ENV PORT=${PORT}
+ENV ALLOWED_DOMAINS=${ALLOWED_DOMAINS}
 # Set Node.js memory limit
 ENV NODE_OPTIONS="--max-old-space-size=512"
 
@@ -42,24 +46,27 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/* \
     && chown -R nodeapp:nodeapp /app
 
-# Copy built assets from builder
+# Copy necessary files from builder
 COPY --from=builder /app/build ./build
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/files ./files
 
-# Create files directory
-RUN mkdir -p /app/files
+# Install production dependencies
+RUN npm ci --omit=dev
 
 # Add healthcheck
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
     CMD curl -f http://localhost:${PORT}/healthz || exit 1
 
-# Expose port
-EXPOSE ${PORT}
+# Expose port (IPv4 only)
+EXPOSE ${PORT}/tcp
 
 # Switch to non-root user
 USER nodeapp
 
-# Copy server file
+# Copy server file and ensure correct ownership
 COPY --chown=nodeapp:nodeapp server.js .
+
 
 # Start secure express server
 CMD ["node", "server.js"]
