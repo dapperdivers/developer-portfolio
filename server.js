@@ -22,11 +22,11 @@ app.use(
   helmet.contentSecurityPolicy({
     directives: {
       defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", 'https://fonts.googleapis.com'],
-      styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'], // Allow inline styles for animations
-      imgSrc: ["'self'", 'data:', 'https://api.github.com', 'https://*.githubusercontent.com'], // Allow GitHub avatar images
-      connectSrc: ["'self'", 'https://api.github.com'],
-      fontSrc: ["'self'", 'https://fonts.gstatic.com'],
+      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", 'https://fonts.googleapis.com', 'https://code.iconify.design'],
+      styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
+      imgSrc: ["'self'", 'data:', 'https:', 'http:'],
+      connectSrc: ["'self'", 'https://api.github.com', 'https:', 'http:'],
+      fontSrc: ["'self'", 'https://fonts.gstatic.com', 'https:'],
       objectSrc: ["'self'"],  // Allow PDFs
       mediaSrc: ["'none'"],
       frameSrc: ["'none'"],

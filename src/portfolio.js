@@ -43,7 +43,7 @@ export const greetings = {
     description: sanitizeText(
         "A passionate Full Stack Web Developer and Security Expert with extensive experience building secure web applications and APIs. Proficient in .NET / C# / Python / JavaScript / React / Node.js / Angular / Docker / Azure and implementing robust security measures across applications."
     ),
-    resumeLink: validateUrl("https://www.derekmackley.com/resume/Mackley_Resume_2024.pdf"),
+    resumeLink: validateUrl("https://www.derekmackley.com/resume/Derek_Mackley_Resume_2025.pdf"),
 };
 
 export const openSource = {
