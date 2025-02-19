@@ -23,8 +23,8 @@ app.use(
     directives: {
       defaultSrc: ["'self'"],
       scriptSrc: ["'self'", 'https://fonts.googleapis.com'],
-      styleSrc: ["'self'", 'https://fonts.googleapis.com'],
-      imgSrc: ["'self'", 'data:', 'https://api.github.com'],
+      styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'], // Allow inline styles for animations
+      imgSrc: ["'self'", 'data:', 'https://api.github.com', 'https://*.githubusercontent.com'], // Allow GitHub avatar images
       connectSrc: ["'self'", 'https://api.github.com'],
       fontSrc: ["'self'", 'https://fonts.gstatic.com'],
       objectSrc: ["'self'"],  // Allow PDFs
@@ -32,6 +32,7 @@ app.use(
       frameSrc: ["'none'"],
       formAction: ["'self'"],
       upgradeInsecureRequests: [],
+      workerSrc: ["'self'"], // For service workers
     },
   })
 );
