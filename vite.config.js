@@ -23,10 +23,29 @@ export default defineConfig({
   build: {
     outDir: 'build',
     sourcemap: false,
+    chunkSizeWarningLimit: 1600,
     rollupOptions: {
       input: {
         main: path.resolve(__dirname, 'index.html')
+      },
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom', 'lottie-react'],
+          animations: ['lottie-web']
+        }
       }
+    },
+    terserOptions: {
+      parse: {
+        bare_returns: false
+      },
+      compress: {
+        passes: 2,
+        warnings: false,
+        evaluate: false
+      },
+      mangle: true,
+      module: false
     }
   }
 });

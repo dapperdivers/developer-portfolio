@@ -8,7 +8,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
+const ALLOWED_DOMAINS = (process.env.ALLOWED_DOMAINS || 'http://localhost:3001').split(',');
 
 // Trust first proxy for secure headers
 app.set('trust proxy', 1);
@@ -26,7 +27,7 @@ app.use(
       imgSrc: ["'self'", 'data:', 'https://api.github.com'],
       connectSrc: ["'self'", 'https://api.github.com'],
       fontSrc: ["'self'", 'https://fonts.gstatic.com'],
-      objectSrc: ["'none'"],
+      objectSrc: ["'self'"],  // Allow PDFs
       mediaSrc: ["'none'"],
       frameSrc: ["'none'"],
       formAction: ["'self'"],
@@ -50,11 +51,10 @@ app.use(helmet.permittedCrossDomainPolicies());
 app.use(helmet.referrerPolicy());
 app.use(helmet.xssFilter());
 
-// CORS configuration - restrict to specific origins
-const allowedOrigins = ['http://localhost:3000', 'https://yourdomain.com']; // Update with your domain
+// CORS configuration
 app.use((req, res, next) => {
   const origin = req.headers.origin;
-  if (allowedOrigins.includes(origin)) {
+  if (ALLOWED_DOMAINS.includes(origin)) {
     res.header('Access-Control-Allow-Origin', origin);
     res.header('Access-Control-Allow-Methods', 'GET, OPTIONS');
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
@@ -99,6 +99,24 @@ app.get('/healthz', (req, res) => {
   });
 });
 
+// Serve resume file
+app.get('/resume/:filename', (req, res) => {
+  const filename = req.params.filename;
+  const filePath = path.join(__dirname, 'files', filename);
+  res.setHeader('Content-Type', 'application/pdf');
+  res.setHeader('Content-Disposition', 'inline; filename=' + filename);
+  res.sendFile(filePath);
+});
+
+// Serve contact VCF file
+app.get('/contact/:filename', (req, res) => {
+  const filename = req.params.filename;
+  const filePath = path.join(__dirname, 'files', filename);
+  res.setHeader('Content-Type', 'text/vcard');
+  res.setHeader('Content-Disposition', 'attachment; filename=' + filename);
+  res.sendFile(filePath);
+});
+
 // Serve React app
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
@@ -125,6 +143,6 @@ process.on('unhandledRejection', (err) => {
   process.exit(1);
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server is running on port ${PORT}`);
 });
