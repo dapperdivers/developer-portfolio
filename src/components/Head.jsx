@@ -58,9 +58,9 @@ const Head = ({
       {imageAlt && <meta name="twitter:image:alt" content={imageAlt} />}
       
       {/* Performance and security related tags */}
-      <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+      <meta httpEquiv="X-Content-Type-Options" content="nosniff" />
       <meta name="referrer" content="no-referrer-when-downgrade" />
-      <meta http-equiv="Permissions-Policy" content="interest-cohort=()" />
+      <meta httpEquiv="Permissions-Policy" content="interest-cohort=()" />
       
       {/* PWA related tags */}
       <meta name="theme-color" content="#006ee6" />

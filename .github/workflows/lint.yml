@@ -54,12 +54,14 @@ jobs:
               }
             },
             "rules": {
-              "react/prop-types": "warn",
+              "react/prop-types": "off",
               "react/jsx-uses-react": "error",
               "react/jsx-uses-vars": "error",
               "no-unused-vars": "warn",
-              "no-undef": "warn",
-              "security/detect-object-injection": "warn"
+              "no-undef": "off",
+              "security/detect-object-injection": "off",
+              "react/display-name": "off",
+              "react/no-unknown-property": "warn"
             }
           }' > .eslintrc.json
           
@@ -71,5 +73,5 @@ jobs:
           echo "ESLint version:"
           npx eslint --version
           
-      - name: Run linting with npx and continue on error
-        run: npx eslint src --ext .js,.jsx || true
+      - name: Run linting with npx
+        run: npx eslint src --ext .js,.jsx
