@@ -1,0 +1,225 @@
+/* Custom Bootstrap CSS without Argon Design System */
+
+/* Import Bootstrap 5 CSS */
+@import url('https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css');
+
+/* Custom colors to maintain similar look and feel */
+:root {
+  --primary: #5e72e4;
+  --secondary: #8392ab;
+  --success: #2dce89;
+  --info: #11cdef;
+  --warning: #fb6340;
+  --danger: #f5365c;
+  --light: #adb5bd;
+  --dark: #212529;
+  --default: #172b4d;
+  --white: #ffffff;
+  --neutral: #ffffff;
+  --darker: #212529;
+}
+
+/* Gradient backgrounds similar to Argon */
+.bg-gradient-primary {
+  background: linear-gradient(87deg, #5e72e4 0, #825ee4 100%) !important;
+}
+
+.bg-gradient-info {
+  background: linear-gradient(87deg, #11cdef 0, #1171ef 100%) !important;
+}
+
+/* Fix shape dividers */
+.shape {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+.shape-style-1 {
+  overflow: hidden;
+}
+
+.shape-style-1 span {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+}
+
+.shape-style-1 span:nth-child(1) {
+  top: -5%;
+  left: 5%;
+  animation: float 6s ease-in-out infinite;
+}
+
+.shape-style-1 span:nth-child(2) {
+  top: 20%;
+  left: 60%;
+  animation: float 8s ease-in-out infinite;
+}
+
+.shape-style-1 span:nth-child(3) {
+  bottom: 10%;
+  right: 10%;
+  animation: float 7s ease-in-out infinite;
+}
+
+.shape-style-1 span:nth-child(4) {
+  top: 40%;
+  left: 20%;
+  animation: float 10s ease-in-out infinite;
+}
+
+.shape-style-1 span:nth-child(5) {
+  top: 60%;
+  left: 80%;
+  animation: float 6s ease-in-out infinite;
+}
+
+.shape-style-1 span:nth-child(6) {
+  top: 10%;
+  right: 30%;
+  animation: float 9s ease-in-out infinite;
+}
+
+.shape-style-1 span:nth-child(7) {
+  top: 70%;
+  left: 40%;
+  animation: float 5s ease-in-out infinite;
+}
+
+.shape-style-1 span:nth-child(8) {
+  top: 80%;
+  left: 10%;
+  animation: float 8s ease-in-out infinite;
+}
+
+.shape-style-1 span:nth-child(9) {
+  top: 30%;
+  left: 35%;
+  animation: float 7s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% {
+    transform: translatey(0px);
+  }
+  50% {
+    transform: translatey(20px);
+  }
+  100% {
+    transform: translatey(0px);
+  }
+}
+
+/* Separator */
+.separator {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 150px;
+  z-index: 1;
+}
+
+.separator-bottom {
+  top: auto;
+  bottom: 0;
+}
+
+.separator-skew {
+  height: 60px;
+}
+
+/* Fill colors */
+.fill-white {
+  fill: #ffffff;
+}
+
+/* Section styles */
+.section {
+  position: relative;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+.section-lg {
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+}
+
+.section-shaped {
+  position: relative;
+  overflow: hidden;
+}
+
+.pb-250 {
+  padding-bottom: 250px !important;
+}
+
+/* Headers and text */
+.text-white {
+  color: #ffffff !important;
+}
+
+.display-3 {
+  font-weight: 600 !important;
+}
+
+.lead {
+  font-size: 1.25rem;
+  font-weight: 300;
+}
+
+/* Card styles */
+.card {
+  box-shadow: 0 15px 35px rgba(50, 50, 93, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07);
+  border: 0;
+  transition: all 0.15s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 35px rgba(50, 50, 93, 0.1), 0 8px 15px rgba(0, 0, 0, 0.07);
+}
+
+/* Button styles */
+.btn-icon {
+  display: inline-flex;
+  align-items: center;
+}
+
+.btn-white {
+  color: #212529;
+  background-color: #fff;
+  border-color: #fff;
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.btn-white:hover {
+  color: #212529;
+  background-color: #ececec;
+  border-color: #e6e6e6;
+}
+
+.btn-icon .btn-inner--icon {
+  margin-right: 0.5rem;
+}
+
+/* Fix for Firefox autofill */
+@-moz-document url-prefix() {
+  input:-moz-autofill,
+  input:-moz-autofill:focus,
+  textarea:-moz-autofill,
+  textarea:-moz-autofill:focus,
+  select:-moz-autofill,
+  select:-moz-autofill:focus {
+    transition: background-color 5000s ease-in-out 0s !important;
+    background-color: transparent !important;
+    box-shadow: 0 0 0px 1000px transparent inset !important;
+  }
+}

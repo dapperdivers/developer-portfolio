@@ -9,7 +9,9 @@ import Projects from "./containers/Projects";
 import GithubProfile from "./containers/GithubProfile";
 import Feedbacks from "./containers/Feedbacks";
 
-import "./assets/css/argon-design-system-react.css";
+// Import CSS - Replaced Argon Design with custom Bootstrap
+import "./assets/css/custom-bootstrap.css";
+import "./assets/css/browser-fixes.css";
 
 function App() {
   return (

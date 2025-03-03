@@ -1,3 +1,6 @@
+// Import Firefox fix first before other imports to ensure it runs early
+import './utils/firefoxFix';
+
 import React from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App'
