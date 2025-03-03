@@ -22,7 +22,11 @@ Lists technologies used, development setup, technical constraints, and dependenc
 ### 6. progress.md
 Tracks what works, what's left to build, current status, and known issues.
 
-### 7. .clinerules
+### 7. testing/
+Contains testing documentation, best practices and patterns used in the project:
+- **component-testing-best-practices.md**: Guidelines for component testing
+
+### 8. .clinerules
 Project intelligence capturing important patterns, preferences, and project-specific knowledge.
 
 ## How to Use the Memory Bank
