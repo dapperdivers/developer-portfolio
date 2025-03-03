@@ -1,0 +1,41 @@
+/* Skip to content link styles */
+.skip-to-content {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  padding: var(--spacing-2) var(--spacing-4);
+  z-index: 9999;
+  transition: top 0.2s ease;
+  border-radius: 0 0 var(--border-radius-md) 0;
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-base);
+  text-decoration: none;
+  
+  /* High contrast outline for accessibility */
+  outline: 2px solid transparent;
+}
+
+/* Show the skip link when it receives focus */
+.skip-to-content:focus {
+  top: 0;
+  outline: 2px solid var(--color-white);
+  outline-offset: 2px;
+}
+
+/* Ensure visible on high contrast mode */
+@media (forced-colors: active) {
+  .skip-to-content:focus {
+    outline: 2px solid CanvasText;
+  }
+}
+
+/* Prevent flash when tabbing through elements */
+.skip-to-content:not(:focus) {
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+  white-space: nowrap;
+}

@@ -2,10 +2,14 @@ import React from "react";
 import { greetings } from "../portfolio";
 import code from '../assets/lottie/coding.json';
 import { motion, AnimatePresence } from "framer-motion";
-import { Button, Container, Row, Col } from "reactstrap";
-import { FaFileAlt } from 'react-icons/fa';
+import { Container, Row, Col } from "reactstrap";
+import { FaDownload } from 'react-icons/fa';
+import Button from "../components/ui/Button";
 import GreetingLottie from "../components/DisplayLottie";
 import SocialLinks from "../components/SocialLinks";
+
+// Import hero section styles
+import "../assets/css/hero-section.css";
 
 const Greetings = () => {
   return ( 
@@ -14,8 +18,9 @@ const Greetings = () => {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ 
-          duration: 0.5,
-          ease: "easeOut"
+          duration: 0.8,
+          ease: "easeOut",
+          staggerChildren: 0.1
         }}
         exit={{ opacity: 0, y: -20 }}
       >
@@ -23,7 +28,7 @@ const Greetings = () => {
           <div className="position-relative">
             <section 
               id="greetings"
-              className="section section-lg section-shaped pb-250"
+              className="section section-lg section-shaped pb-250 hero-section"
               aria-label="Introduction"
             >
               <div className="shape shape-style-1 bg-gradient-info">
@@ -50,19 +55,23 @@ const Greetings = () => {
                       <SocialLinks />
                       <div className="btn-wrapper my-4">
                         <Button
-                          className="btn-white btn-icon mb-3 mb-sm-0 ml-1"
-                          color="default"
+                          className="resume-download-btn"
+                          variant="success"
+                          size="lg"
                           href={greetings.resumeLink}
+                          ariaLabel="Download my resume"
                         >
-                          <span className="btn-inner--icon me-2">
-                            <FaFileAlt aria-hidden="true" />
+                          <span className="btn-icon-left">
+                            <FaDownload aria-hidden="true" />
                           </span>
-                          <span className="btn-inner--text">See My Resume</span>
+                          Download Resume
                         </Button>
                       </div>
                     </Col>
                     <Col lg="6">
-                      <GreetingLottie animationData={code}/>
+                      <div className="lottie-container">
+                        <GreetingLottie animationData={code}/>
+                      </div>
                     </Col>
                   </Row>
                 </div>

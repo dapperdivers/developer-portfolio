@@ -22,17 +22,36 @@ app.use(
   helmet.contentSecurityPolicy({
     directives: {
       defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", 'https://fonts.googleapis.com', 'https://code.iconify.design', 'https://cdn.jsdelivr.net'],
-      styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com', 'https://cdn.jsdelivr.net'],
-      imgSrc: ["'self'", 'data:', 'https:', 'http:'],
-      connectSrc: ["'self'", 'https://api.github.com', 'https:', 'http:'],
-      fontSrc: ["'self'", 'https://fonts.gstatic.com', 'https:', 'data:'],
+      scriptSrc: [
+        "'self'", 
+        "'unsafe-inline'", // Eventually remove this for better security
+        "'unsafe-eval'", // Eventually remove this for better security
+        'https://fonts.googleapis.com', 
+        'https://code.iconify.design', 
+        'https://cdn.jsdelivr.net'
+      ],
+      styleSrc: [
+        "'self'", 
+        "'unsafe-inline'", 
+        'https://fonts.googleapis.com', 
+        'https://cdn.jsdelivr.net'
+      ],
+      imgSrc: ["'self'", 'data:', 'https:', 'blob:'],
+      connectSrc: [
+        "'self'", 
+        'https://api.github.com', 
+        'https://fonts.googleapis.com',
+        'https://fonts.gstatic.com'
+      ],
+      fontSrc: ["'self'", 'https://fonts.gstatic.com', 'data:'],
       objectSrc: ["'self'"],  // Allow PDFs
       mediaSrc: ["'none'"],
       frameSrc: ["'none'"],
       formAction: ["'self'"],
+      manifestSrc: ["'self'"],
       upgradeInsecureRequests: [],
-      workerSrc: ["'self'"], // For service workers
+      workerSrc: ["'self'", 'blob:'], // For service workers and Wasm
+      childSrc: ["'self'", 'blob:'],
     },
   })
 );

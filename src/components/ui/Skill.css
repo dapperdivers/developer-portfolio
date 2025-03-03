@@ -1,0 +1,133 @@
+/* Skill component styles using design tokens */
+
+.skill-icon-wrapper {
+  display: inline-flex;
+  margin: var(--spacing-2);
+  position: relative;
+}
+
+/* Skill icon */
+.skill-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--border-radius-circle);
+  background-color: var(--color-white);
+  box-shadow: var(--box-shadow-sm);
+  position: relative;
+  transition: var(--transition-base);
+  cursor: pointer;
+  z-index: 1;
+}
+
+.skill-icon:hover,
+.skill-icon:focus {
+  box-shadow: var(--box-shadow);
+  transform: translateY(-3px);
+}
+
+.skill-icon:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Icon sizes */
+.skill-icon-sm .skill-icon {
+  width: calc(var(--spacing-6) * 1.2);
+  height: calc(var(--spacing-6) * 1.2);
+}
+
+.skill-icon-md .skill-icon {
+  width: calc(var(--spacing-7) * 1.25);
+  height: calc(var(--spacing-7) * 1.25);
+}
+
+.skill-icon-lg .skill-icon {
+  width: calc(var(--spacing-8) * 1.25);
+  height: calc(var(--spacing-8) * 1.25);
+}
+
+/* SVG icon inside */
+.skill-icon-svg {
+  width: 50%;
+  height: 50%;
+  color: var(--color-primary);
+  transition: var(--transition-base);
+}
+
+.skill-icon:hover .skill-icon-svg {
+  color: var(--color-primary-dark);
+  transform: scale(1.1);
+}
+
+/* Tooltip */
+.skill-tooltip {
+  position: absolute;
+  bottom: calc(-1 * var(--spacing-4));
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--color-gray-800);
+  color: var(--color-white);
+  padding: var(--spacing-1) var(--spacing-2);
+  border-radius: var(--border-radius);
+  font-size: var(--font-size-sm);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: var(--transition-base);
+  z-index: 2;
+}
+
+.skill-tooltip::before {
+  content: '';
+  position: absolute;
+  top: calc(-1 * var(--spacing-1));
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: var(--spacing-1);
+  border-style: solid;
+  border-color: transparent transparent var(--color-gray-800) transparent;
+}
+
+.skill-icon:hover .skill-tooltip,
+.skill-icon:focus .skill-tooltip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Responsive styles */
+@media (max-width: var(--breakpoint-md)) {
+  .skill-icon-sm .skill-icon {
+    width: calc(var(--spacing-6) * 1);
+    height: calc(var(--spacing-6) * 1);
+  }
+  
+  .skill-icon-md .skill-icon {
+    width: calc(var(--spacing-7) * 1);
+    height: calc(var(--spacing-7) * 1);
+  }
+  
+  .skill-icon-lg .skill-icon {
+    width: calc(var(--spacing-8) * 1);
+    height: calc(var(--spacing-8) * 1);
+  }
+  
+  .skill-icon-wrapper {
+    margin: var(--spacing-1);
+  }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .skill-icon,
+  .skill-icon-svg,
+  .skill-tooltip {
+    transition: none;
+  }
+  
+  .skill-icon:hover,
+  .skill-icon:focus,
+  .skill-icon:hover .skill-icon-svg {
+    transform: none;
+  }
+}
