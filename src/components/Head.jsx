@@ -1,6 +1,5 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { useEffect } from 'react';
 
 const Head = ({ 
   title = "Derek Mackley | Full Stack Developer",

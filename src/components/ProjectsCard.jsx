@@ -1,7 +1,5 @@
 import React, { memo } from "react";
 import PropTypes from 'prop-types';
-import { motion } from "framer-motion";
-import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
 import Card from "./ui/Card";
 import Button from "./ui/Button";
 import ResponsiveImage from "./ui/ResponsiveImage";

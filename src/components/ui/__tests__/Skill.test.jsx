@@ -59,7 +59,7 @@ describe('Skill Component', () => {
   it('renders an animated version when animate is true (default)', () => {
     // In our real app, this would check for Framer Motion props, but with our mock
     // we can just verify it uses the motion component
-    const { container } = render(<Skill skill={mockSkill} />);
+    render(<Skill skill={mockSkill} />);
     
     // With our mocking approach, we won't actually see motion props in the DOM
     // but we can test the component renders properly with the right content

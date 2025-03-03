@@ -4,7 +4,6 @@ import Card from "./ui/Card";
 import ResponsiveImage from "./ui/ResponsiveImage";
 import useIntersectionObserver from "../hooks/useIntersectionObserver";
 import useImageColor from "../hooks/useImageColor";
-import useCallbackHandlers from '../hooks/useCallbackHandlers';
 import { useMemo } from 'react';
 import './ExperienceCard.css';
 
@@ -30,7 +29,7 @@ const ExperienceCard = ({ data, index = 0 }) => {
     });
     
     const { color, getColorFromImage, resetToDefaultColor, rgbToString } = useImageColor();
-    const { handleExternalLink } = useCallbackHandlers();
+    // Not using handleExternalLink from useCallbackHandlers
     
     // Memoize animation configuration to prevent unnecessary recalculations
     const animation = useMemo(() => ({

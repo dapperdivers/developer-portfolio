@@ -1,5 +1,4 @@
 import React, { memo } from 'react';
-import PropTypes from 'prop-types';
 import { Container, Row, Col } from 'reactstrap';
 import { FaHeart, FaChevronUp } from 'react-icons/fa';
 import Button from './ui/Button';

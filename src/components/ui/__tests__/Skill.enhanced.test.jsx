@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import Skill from '../Skill';
 
 // The mock implementations are now in the __mocks__ folder
