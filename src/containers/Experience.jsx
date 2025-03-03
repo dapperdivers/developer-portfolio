@@ -1,5 +1,4 @@
 import React, { memo } from 'react';
-import PropTypes from 'prop-types';
 import ExperienceCard from "../components/ExperienceCard";
 import Section from "../components/layout/Section";
 import useExperience from "../hooks/useExperience";

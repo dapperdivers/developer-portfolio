@@ -1,5 +1,4 @@
 import React from 'react';
-import { Icon } from '@iconify/react';
 import ProjectsCard from "../components/ProjectsCard";
 import Section from "../components/layout/Section";
 import useProjects from "../hooks/useProjects";
