@@ -157,6 +157,11 @@ The project uses a comprehensive design system implemented through CSS custom pr
 - Test user interactions
 - Test accessibility features
 - Test responsive behavior where applicable
+- Use Jest and React Testing Library for component tests
+- Implement ESM-compatible Jest configuration
+- Use mock implementations for complex dependencies
+- Structure tests in basic and enhanced formats
+- Document testing patterns in memory-bank/testing
 
 ## Deployment & Hosting
 
