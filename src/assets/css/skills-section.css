@@ -1,151 +1,119 @@
-/* Enhanced Skills Section Styles */
+/* Skills Section Styles using design tokens */
 
 .skills-section {
   padding: var(--section-padding-y) 0;
   background-color: var(--color-background-alt);
+  position: relative;
+  overflow: hidden;
 }
 
+/* Section header styling - inheriting most styles from Section component */
 .skills-section h1 {
   font-family: var(--font-family-heading);
   font-weight: var(--font-weight-bold);
-  color: var(--color-text);
+  color: var(--color-text-primary);
   margin-bottom: var(--spacing-4);
   position: relative;
   display: inline-block;
 }
 
-.skills-section h1::after {
-  content: "";
-  position: absolute;
-  bottom: calc(-1 * var(--spacing-2));
-  left: 50%;
-  width: 80px;
-  height: 4px;
-  background: var(--color-primary);
-  transform: translateX(-50%);
-  border-radius: var(--border-radius-pill);
-}
-
 .skills-section .lead {
-  color: var(--color-text-muted);
+  color: var(--color-text-secondary);
   margin-bottom: var(--spacing-6);
-  max-width: 800px;
+  max-width: 48rem;
   margin-left: auto;
   margin-right: auto;
+  line-height: var(--line-height-relaxed);
 }
 
 /* Skills grid layout */
 .skills-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 2rem;
-}
-
-/* Enhanced skill icon styles */
-.skill-icon-wrapper {
-  cursor: pointer;
-}
-
-.icon-shape {
-  width: 70px;
-  height: 70px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: white;
-  color: var(--primary);
-  border: 1px solid var(--primary-100);
-  transition: all 0.3s ease;
-  margin: 0 auto 0.5rem;
-}
-
-.icon-shape:hover {
-  background-color: var(--primary);
-  color: white;
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-}
-
-/* Animation timings */
-.icon-shape:nth-child(odd) {
-  transition-duration: 0.4s;
-}
-
-.icon-shape:nth-child(even) {
-  transition-duration: 0.6s;
+  gap: var(--spacing-4);
+  margin-bottom: var(--spacing-6);
+  will-change: opacity, transform;
 }
 
 /* Skill text styling */
 .skills-description {
   text-align: left;
-  padding: 1rem 0;
+  padding: var(--spacing-4) 0;
 }
 
 .skill-text {
-  padding: 0.75rem 0;
-  font-size: 1.1rem;
-  color: var(--dark);
+  padding: var(--spacing-3) 0;
+  font-size: var(--font-size-base);
+  color: var(--color-text-primary);
   display: flex;
   align-items: center;
+  line-height: var(--line-height-base);
+}
+
+.skill-text:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+  border-radius: var(--border-radius-sm);
 }
 
 .skill-text::before {
   content: "⚡";
-  margin-right: 0.75rem;
-  font-size: 1.25rem;
-  color: var(--accent);
+  margin-right: var(--spacing-3);
+  font-size: var(--font-size-lg);
+  color: var(--color-accent);
 }
 
 /* Lottie animation container */
 .skills-animation {
   max-width: 100%;
   height: auto;
-}
-
-/* Tooltip styling */
-.tooltip-inner {
-  background-color: var(--primary);
-  font-family: 'Inter', sans-serif;
-  font-weight: 500;
-  padding: 0.5rem 1rem;
-  font-size: 0.875rem;
+  padding: var(--spacing-4);
+  will-change: opacity, transform;
 }
 
 /* Responsive adjustments */
-@media (max-width: 768px) {
+@media (max-width: var(--breakpoint-lg)) {
   .skills-grid {
-    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
-    gap: 1rem;
-  }
-  
-  .icon-shape {
-    width: 60px;
-    height: 60px;
-  }
-  
-  .skill-text {
-    font-size: 1rem;
+    gap: var(--spacing-3);
   }
 }
 
-/* Accessibility */
+@media (max-width: var(--breakpoint-md)) {
+  .skills-grid {
+    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+    gap: var(--spacing-2);
+  }
+  
+  .skill-text {
+    font-size: var(--font-size-sm);
+    padding: var(--spacing-2) 0;
+  }
+  
+  .skill-text::before {
+    font-size: var(--font-size-base);
+    margin-right: var(--spacing-2);
+  }
+  
+  .skills-animation {
+    padding: var(--spacing-2);
+  }
+}
+
+/* Accessibility focus styles */
 .skills-section a:focus,
 .skills-section button:focus,
 .skills-section [role="button"]:focus {
-  outline: 2px solid var(--primary);
+  outline: 2px solid var(--color-focus);
   outline-offset: 2px;
+  border-radius: var(--border-radius-sm);
 }
 
 /* Reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
-  .icon-shape, 
-  .icon-shape:hover {
-    transition: none;
-    transform: none;
-  }
-  
-  .skills-grid {
-    animation: none;
+  .skills-section *,
+  .skills-section *:hover {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
   }
 }
