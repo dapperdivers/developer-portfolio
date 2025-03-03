@@ -1,15 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { greetings, socialLinks } from "../portfolio";
 import {
-  UncontrolledCollapse,
   NavbarBrand,
   Navbar,
-  NavItem,
   NavLink,
-  Nav,
   Container,
-  Row,
-  Col,
 } from "reactstrap";
 import { FaGithub, FaLinkedin } from 'react-icons/fa';
 import './Navigation.css'

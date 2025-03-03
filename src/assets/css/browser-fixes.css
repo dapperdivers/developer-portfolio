@@ -1,0 +1,29 @@
+/* Firefox-specific fixes for Bootstrap autofill functionality */
+@-moz-document url-prefix() {
+  /* Override autofill styles in Firefox to prevent bootstrap-legacy-autofill-overlay.js from being needed */
+  input:-moz-autofill,
+  input:-moz-autofill:focus,
+  textarea:-moz-autofill,
+  textarea:-moz-autofill:focus,
+  select:-moz-autofill,
+  select:-moz-autofill:focus {
+    -moz-transition: background-color 5000s ease-in-out 0s !important;
+    transition: background-color 5000s ease-in-out 0s !important;
+    background-color: transparent !important;
+    -webkit-text-fill-color: inherit !important;
+    box-shadow: 0 0 0px 1000px transparent inset !important;
+    background-image: none !important;
+    color: inherit !important;
+  }
+
+  /* Additional fixes to prevent shadow DOM interactions */
+  input, textarea, select {
+    background-clip: padding-box !important;
+  }
+}
+
+/* General fixes for all browsers */
+.form-control:focus {
+  box-shadow: none !important; 
+  -webkit-box-shadow: none !important;
+}

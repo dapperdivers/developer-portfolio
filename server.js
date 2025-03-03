@@ -9,7 +9,7 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 3001;
-const ALLOWED_DOMAINS = (process.env.ALLOWED_DOMAINS || 'http://localhost:3001').split(',');
+const ALLOWED_DOMAINS = (process.env.ALLOWED_DOMAINS || 'http://localhost:3001,http://localhost:3000').split(',');
 
 // Trust first proxy for secure headers
 app.set('trust proxy', 1);
@@ -22,11 +22,11 @@ app.use(
   helmet.contentSecurityPolicy({
     directives: {
       defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", 'https://fonts.googleapis.com', 'https://code.iconify.design'],
-      styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
+      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", 'https://fonts.googleapis.com', 'https://code.iconify.design', 'https://cdn.jsdelivr.net'],
+      styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com', 'https://cdn.jsdelivr.net'],
       imgSrc: ["'self'", 'data:', 'https:', 'http:'],
       connectSrc: ["'self'", 'https://api.github.com', 'https:', 'http:'],
-      fontSrc: ["'self'", 'https://fonts.gstatic.com', 'https:'],
+      fontSrc: ["'self'", 'https://fonts.gstatic.com', 'https:', 'data:'],
       objectSrc: ["'self'"],  // Allow PDFs
       mediaSrc: ["'none'"],
       frameSrc: ["'none'"],
@@ -85,11 +85,15 @@ app.use(express.static(path.join(__dirname, 'build'), {
     res.set('X-Content-Type-Options', 'nosniff');
     res.set('X-Frame-Options', 'DENY');
     res.set('X-XSS-Protection', '1; mode=block');
-    res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
-    res.set('Pragma', 'no-cache');
-    res.set('Expires', '0');
+    res.set('Cache-Control', 'public, max-age=31536000');
   }
 }));
+
+// Log to console when serving static files to debug
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.path}`);
+  next();
+});
 
 // Health check endpoint with basic system info
 app.get('/healthz', (req, res) => {
@@ -104,9 +108,15 @@ app.get('/healthz', (req, res) => {
 app.get('/resume/:filename', (req, res) => {
   const filename = req.params.filename;
   const filePath = path.join(__dirname, 'files', filename);
+  console.log('Serving resume from:', filePath);
   res.setHeader('Content-Type', 'application/pdf');
   res.setHeader('Content-Disposition', 'inline; filename=' + filename);
-  res.sendFile(filePath);
+  res.sendFile(filePath, (err) => {
+    if (err) {
+      console.error('Error sending file:', err);
+      res.status(404).send('File not found');
+    }
+  });
 });
 
 // Serve contact VCF file
@@ -120,7 +130,14 @@ app.get('/contact/:filename', (req, res) => {
 
 // Serve React app
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+  const indexPath = path.join(__dirname, 'build', 'index.html');
+  console.log('Serving index.html from:', indexPath);
+  res.sendFile(indexPath, (err) => {
+    if (err) {
+      console.error('Error sending index.html:', err);
+      res.status(500).send('Error loading index.html');
+    }
+  });
 });
 
 // Error handling middleware
