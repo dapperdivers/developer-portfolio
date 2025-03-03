@@ -22,12 +22,12 @@ jobs:
         
       - name: Install ESLint and plugins
         run: |
-          npm install --save-dev eslint eslint-plugin-react eslint-plugin-security
+          npm install --save-dev eslint @eslint/js eslint-plugin-react eslint-plugin-security
           
       - name: Verify ESLint configuration
         run: |
           echo "ESLint configuration file contents:"
-          cat .eslintrc.json
+          cat eslint.config.js
           echo ""
           echo "ESLint version:"
           npx eslint --version

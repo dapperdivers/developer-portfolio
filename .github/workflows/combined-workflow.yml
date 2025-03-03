@@ -29,11 +29,7 @@ jobs:
   deploy-docs:
     name: Deploy Documentation
     needs: [test, lint]
-    if: |
-      success() && 
-      github.event_name == 'push' && 
-      github.ref == 'refs/heads/master' && 
-      (github.event_name == 'workflow_dispatch' || 
-       contains(toJSON(github.event.commits.*.modified), 'docs/') || 
-       contains(toJSON(github.event.commits.*.added), 'docs/'))
+    if: success() && github.event_name == 'push' && github.ref == 'refs/heads/master'
     uses: ./.github/workflows/deploy-docs.yml
+    with:
+      check_changes: true
