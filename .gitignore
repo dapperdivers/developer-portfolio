@@ -14,3 +14,4 @@ yarn-error.log*
 .npm/
 yarn.lock
 Mackley_Resume_2022.pdf
+.jest-cache/

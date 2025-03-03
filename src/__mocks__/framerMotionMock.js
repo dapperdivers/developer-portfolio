@@ -1,0 +1,56 @@
+// Mock for framer-motion
+import React from 'react';
+
+// Create proper React components for motion elements
+export const motion = {
+  div: ({children, ...props}) => (
+    <div data-testid="motion-div" {...props}>
+      {children}
+    </div>
+  ),
+  section: ({children, ...props}) => (
+    <section data-testid="motion-section" {...props}>
+      {children}
+    </section>
+  ),
+  button: ({children, ...props}) => (
+    <button data-testid="motion-button" {...props}>
+      {children}
+    </button>
+  ),
+  a: ({children, ...props}) => (
+    <a data-testid="motion-a" {...props}>
+      {children}
+    </a>
+  ),
+  p: ({children, ...props}) => (
+    <p data-testid="motion-p" {...props}>
+      {children}
+    </p>
+  ),
+  span: ({children, ...props}) => (
+    <span data-testid="motion-span" {...props}>
+      {children}
+    </span>
+  )
+};
+
+// AnimatePresence mock
+export const AnimatePresence = ({children}) => (
+  <div data-testid="animate-presence">
+    {children}
+  </div>
+);
+
+// Export any other Framer Motion utilities used in the app
+export const useAnimation = () => ({
+  start: jest.fn(),
+  stop: jest.fn()
+});
+
+export const useInView = () => [true, { ref: React.createRef() }];
+
+export const useScroll = () => ({
+  scrollY: { get: () => 0, onChange: jest.fn() },
+  scrollYProgress: { get: () => 0, onChange: jest.fn() }
+});

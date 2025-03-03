@@ -1,47 +1,68 @@
-// Import testing utilities
+// Import Jest DOM utilities 
 import '@testing-library/jest-dom';
+import { jest } from '@jest/globals';
 
-// Mock modules that might cause problems in the test environment
-// Mock Framer Motion
-jest.mock('framer-motion', () => ({
-  motion: {
-    div: ({ children, ...props }) => <div {...props}>{children}</div>,
-    section: ({ children, ...props }) => <section {...props}>{children}</section>,
-    button: ({ children, ...props }) => <button {...props}>{children}</button>,
-    a: ({ children, ...props }) => <a {...props}>{children}</a>,
-  },
-  AnimatePresence: ({ children }) => <>{children}</>,
-}));
+// Simple ESM-compatible setup file
+
+// Mock framer-motion
+jest.mock('framer-motion', () => {
+  return {
+    motion: {
+      div: function MockMotionDiv(props) { 
+        return { ...props, __mock: 'motion.div' };
+      },
+      section: function MockMotionSection(props) { 
+        return { ...props, __mock: 'motion.section' };
+      },
+      button: function MockMotionButton(props) { 
+        return { ...props, __mock: 'motion.button' };
+      },
+      a: function MockMotionA(props) { 
+        return { ...props, __mock: 'motion.a' };
+      },
+      p: function MockMotionP(props) { 
+        return { ...props, __mock: 'motion.p' };
+      }
+    },
+    AnimatePresence: function MockAnimatePresence(props) {
+      return { ...props, __mock: 'AnimatePresence' };
+    }
+  };
+});
 
 // Mock Iconify
-jest.mock('@iconify/react', () => ({
-  Icon: ({ icon, ...props }) => <span data-icon={icon} {...props} />,
-}));
-
-// Setup global mocks
-global.matchMedia = global.matchMedia || function () {
+jest.mock('@iconify/react', () => {
   return {
-    matches: false,
-    addListener: jest.fn(),
-    removeListener: jest.fn(),
+    Icon: function MockIcon(props) {
+      return { 
+        'data-testid': 'mock-icon',
+        ...props,
+        __mock: 'Icon'
+      };
+    }
   };
-};
+});
 
-// Suppress console errors during tests
-const originalConsoleError = console.error;
-console.error = (...args) => {
-  if (
-    args[0].includes('Warning: ReactDOM.render is no longer supported') ||
-    args[0].includes('Warning: The current testing environment') ||
-    args[0].includes('Warning: An update to')
-  ) {
-    return;
-  }
-  originalConsoleError(...args);
-};
+// Mock browsers APIs
+if (typeof window !== 'undefined') {
+  window.matchMedia = window.matchMedia || function() {
+    return {
+      matches: false,
+      addListener: () => {},
+      removeListener: () => {}
+    };
+  };
+  
+  window.IntersectionObserver = class MockIntersectionObserver {
+    constructor() {
+      this.disconnect = () => {};
+      this.observe = () => {};
+      this.unobserve = () => {};
+    }
+  };
+}
 
-// Clean up after each test
+// Clean up after tests
 afterEach(() => {
-  // Clean up any global messes
   jest.clearAllMocks();
 });
