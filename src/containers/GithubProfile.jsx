@@ -3,6 +3,7 @@ import Loading from '../components/Loading'
 import { openSource } from "../portfolio";
 import axios from 'axios';
 import GithubProfileCard from '../components/GithubProfileCard';
+import { motion } from "framer-motion";
 
 // Create axios instance with base configuration
 const githubApi = axios.create({
@@ -20,6 +21,7 @@ const GithubProfile = () => {
     const [prof, setProf] = useState({});
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [retryCount, setRetryCount] = useState(0);
 
     // Validate GitHub username
     const validateGithubUsername = (username) => {
@@ -39,6 +41,11 @@ const GithubProfile = () => {
                 obj[key] = typeof data[key] === 'string' ? data[key].trim() : data[key];
                 return obj;
             }, {});
+    };
+
+    // Handle retry action
+    const handleRetry = () => {
+        setRetryCount(prevCount => prevCount + 1);
     };
 
     useEffect(() => {
@@ -81,6 +88,19 @@ const GithubProfile = () => {
                 if (!axios.isCancel(err)) {
                     setError(err.response?.data?.message || 'Failed to fetch GitHub profile');
                     console.error('GitHub Profile Error:', err);
+                    
+                    // Use cached data as fallback if available
+                    try {
+                        const username = validateGithubUsername(openSource.githubUserName);
+                        const cachedData = localStorage.getItem(`github-profile-${username}`);
+                        if (cachedData) {
+                            const { data } = JSON.parse(cachedData);
+                            setProf(data);
+                            setError('Using cached data. Current GitHub data unavailable.');
+                        }
+                    } catch (cacheErr) {
+                        console.error('Cache fallback error:', cacheErr);
+                    }
                 }
             } finally {
                 setLoading(false);
@@ -93,19 +113,28 @@ const GithubProfile = () => {
             controller.abort();
             clearTimeout(timeoutId);
         };
-    }, []);
+    }, [retryCount]);
 
-    if (error) {
-        return <div className="text-center text-danger">Error: {error}</div>;
-    }
-
-    if (loading) {
-        return <Loading />;
-    }
     return ( 
-        <Suspense fallback={<Loading />}>
-           <GithubProfileCard prof={prof}/>
-        </Suspense>
+        <section id="contact" className="contact-section">
+            <Suspense fallback={<Loading />}>
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                >
+                    {loading ? (
+                        <Loading />
+                    ) : (
+                        <GithubProfileCard 
+                            prof={prof} 
+                            error={error} 
+                            onRetry={handleRetry}
+                        />
+                    )}
+                </motion.div>
+            </Suspense>
+        </section>
      );
 }
  

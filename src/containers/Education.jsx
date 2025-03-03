@@ -1,52 +1,50 @@
-import React from 'react';
-import { Icon } from '@iconify/react';
+import React, { memo } from 'react';
+import { Row, Col } from "reactstrap";
 import EducationCard from "../components/EducationCard";
-import { educationInfo } from "../portfolio";
-import {
-    Container,
-    Row,
-    Col
-} from "reactstrap";
+import Section from "../components/layout/Section";
+import useEducation from "../hooks/useEducation";
+import "../assets/css/education-section.css";
 
+/**
+ * Education section displaying a list of educational background items.
+ * 
+ * @component
+ * @returns {React.ReactElement} Education component
+ */
 const Education = () => {
-    return (
-        <section className="section pb-0 bg-gradient-info my-5">
-            <Container>
-                <div className="d-flex px-3">
-                    <div>
-                        <div className="icon icon-lg icon-shape bg-gradient-white shadow rounded-circle text-info">
-                        <Icon icon="simple-icons:graduationhat" className="text-info" style={{ fontSize: '2rem' }} />
-                        </div>
-                    </div>
-                    <div className="pl-4">
-                        <h4 className="display-3 text-white">Education</h4>
-                    </div>
-                </div>
-                <Row className="row-grid align-items-center">
-                    {
-                        educationInfo.map(info => {
-                            return  <Col className="order-lg-1" lg="6"  key={info.schoolName}><EducationCard education={info} /></Col>
-                        })
-                    }
-                </Row>
-            </Container>
-            <div className="separator separator-bottom separator-skew zindex-100">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                preserveAspectRatio="none"
-                version="1.1"
-                viewBox="0 0 2560 100"
-                x="0"
-                y="0"
-              >
-                <polygon
-                  className="fill-white"
-                  points="2560 0 2560 100 0 100"
-                />
-              </svg>
-            </div>
-          </section>
-     );
-}
+  const educationInfo = useEducation();
+  
+  // Animation config for framer-motion
+  const animation = {
+    initial: { opacity: 0, y: 20 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true, margin: "-50px" },
+    transition: { duration: 0.5 }
+  };
+  
+  return (
+    <Section
+      id="education"
+      title="Education"
+      icon="simple-icons:graduation-cap"
+      animation={animation}
+      className="education-section"
+      background="gradient"
+      separator
+    >
+      <Row className="education-timeline align-items-start">
+        {educationInfo.map((info, index) => (
+          <Col 
+            lg="6" 
+            key={info.schoolName}
+            className="education-card mb-4"
+          >
+            <EducationCard education={info} index={index} />
+          </Col>
+        ))}
+      </Row>
+    </Section>
+  );
+};
 
-export default Education;
+export default memo(Education);

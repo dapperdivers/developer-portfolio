@@ -1,38 +1,47 @@
-import React from "react";
-import { Icon } from '@iconify/react';
-import { feedbacks } from "../portfolio";
-import { Col, Container, Fade, Row } from "reactstrap";
+import React, { memo } from "react";
 import FeedbackCard from "../components/FeedbackCard";
+import Section from "../components/layout/Section";
+import useFeedback from "../hooks/useFeedback";
+import "../assets/css/feedbacks-section.css";
+
+/**
+ * Feedbacks section displaying testimonials and recommendations.
+ * 
+ * @component
+ * @returns {React.ReactElement} Feedbacks component
+ */
 const Feedbacks = () => {
-	return (
-		<section className="section section-lg">
-			<Container>
-				<Fade in={true} timeout={1000}>
-					<div className="d-flex p-4">
-						<div>
-							<div className="icon icon-lg icon-shape bg-gradient-white shadow rounded-circle text-info">
-								<Icon icon="simple-icons:trustpilot" className="text-info" style={{ fontSize: '2rem' }} />
-							</div>
-						</div>
-						<div className="pl-4">
-							<h4 className="display-3 text-info">
-								Personal Recommendations
-							</h4>
-						</div>
-					</div>
-					<Row className="row-grid align-items-center">
-						{feedbacks.map((data, i) => {
-							return (
-								<Col key={i} lg={6}>
-									<FeedbackCard data={data} />
-								</Col>
-							);
-						})}
-					</Row>
-				</Fade>
-			</Container>
-		</section>
-	);
+  const feedbacks = useFeedback();
+  
+  // Skip rendering if no feedbacks are available
+  if (!feedbacks || feedbacks.length === 0) {
+    return null;
+  }
+  
+  // Animation config for framer-motion
+  const animation = {
+    initial: { opacity: 0, y: 40 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true, margin: "-50px" },
+    transition: { duration: 0.5 }
+  };
+
+  return (
+    <Section
+      id="testimonials"
+      title="Personal Recommendations"
+      icon="simple-icons:trustpilot"
+      animation={animation}
+      className="feedbacks-section"
+    >
+      <div className="feedbacks-grid">
+        {feedbacks.map((data, i) => (
+          <FeedbackCard key={i} data={data} index={i} />
+        ))}
+      </div>
+    </Section>
+  );
 };
 
-export default Feedbacks;
+// Apply memoization for performance optimization
+export default memo(Feedbacks);

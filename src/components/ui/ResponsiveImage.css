@@ -1,0 +1,92 @@
+/* Responsive Image styles using design tokens */
+
+.responsive-image {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  transition: var(--transition-base);
+  backface-visibility: hidden;
+  position: relative;
+}
+
+/* Loading state */
+.responsive-image.loading {
+  filter: blur(5px);
+  opacity: 0.7;
+  transform: scale(0.98);
+  transition: var(--transition-base);
+}
+
+/* Loaded state */
+.responsive-image.loaded {
+  filter: blur(0);
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Error state */
+.responsive-image.error {
+  opacity: 0.5;
+}
+
+/* Accessibility focus outline */
+.responsive-image:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Fix for Safari lazy loading */
+@media not all and (min-resolution: 0.001dpcm) { 
+  @supports (-webkit-appearance:none) {
+    .responsive-image {
+      will-change: transform;
+    }
+  }
+}
+
+/* Aspect ratio container (use with data attributes) */
+[data-image-aspect-ratio] .responsive-image {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+[data-image-aspect-ratio="1:1"] {
+  aspect-ratio: 1/1;
+  position: relative;
+}
+
+[data-image-aspect-ratio="16:9"] {
+  aspect-ratio: 16/9;
+  position: relative;
+}
+
+[data-image-aspect-ratio="4:3"] {
+  aspect-ratio: 4/3;
+  position: relative;
+}
+
+/* Responsive scaling */
+@media (max-width: var(--breakpoint-md)) {
+  .responsive-image.scaled-on-mobile {
+    max-height: 50vh;
+  }
+}
+
+/* Animation support */
+.image-animation-fade-in {
+  animation: imageFadeIn 0.5s ease forwards;
+}
+
+@keyframes imageFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

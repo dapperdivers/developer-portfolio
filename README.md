@@ -1,58 +1,36 @@
-<h1 align="center">Welcome to developer-portfolio 👋</h1>
+<h1 align="center">Developer Portfolio</h1>
 
-## Software Developer Portfolio Template built with react.js bootstrap that helps you showcase your work and skills as a software developer.
+<p align="center">A modern, accessible, and performance-optimized portfolio template for developers.</p>
 
 <p align="center">
-  <kbd>
-    <img src="https://github.com/DapperDivers/developer-portfolio/blob/master/picture.PNG"></img>
-  </kbd>
+  <img src="https://github.com/DapperDivers/developer-portfolio/blob/master/picture.PNG" alt="Developer Portfolio Screenshot" />
 </p>
 
-Just Edit `src/portfolio.js` to get your personal portfolio. Feel free to use it as-is or customize it as much as you want.
+## 🌟 Features
 
-But if you want to **contribute** and make this much better for other developer have a look at [Issues](https://github.com/DapperDivers/developer-portfolio/issues).
+- **Modern React Architecture** - Built with React hooks, context, and performance optimizations
+- **Responsive Design** - Looks great on all devices from mobile to desktop
+- **Optimized Performance** - Lazy loading, code splitting, and memoization
+- **Accessibility First** - WCAG compliant with keyboard navigation support
+- **Customizable** - Easy to customize with design tokens and a central portfolio data file
+- **Component Library** - Reusable UI components with comprehensive documentation
+- **Testing** - Unit tests for critical components
 
-If you created something awesome and want to contribute then feel free to open an [pull request](https://github.com/DapperDivers/developer-portfolio/pulls).
+## 🚀 Quick Start
 
+These instructions will get you a copy of the project up and running on your local machine.
 
-## Table of Contents
-
--   [Sections](#sections)
--   [Getting Started](#getting-started)
--   [How to Use](#how-to-use)
--   [Linking portfolio to Github](#linking-portfolio-to-github)
--   [Change and Customize](#change-and-customize-every-section-according-to-your-need)
--   [Technologies Used](#technologies-used)
--   [Illustrations](#illustrations)
--   [For the Future](#for-the-future)
--   [Contributors](#project-maintainers)
-
-## Sections
-
-✔️ Summary and About me\
-✔️ Skills\
-✔️ Education\
-✔️ Work Experience\
-✔️ Projects\
-✔️ Github Profile
-
-## Getting Started
-
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+### Prerequisites
 
 You'll need [Git](https://git-scm.com) and [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) installed on your computer.
-<br>
-**For Windows** Install Visual C++ Build Environment: [Visual Studio Build Tools](https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=BuildTools)
 
 ```
-node@v10.16.0 or higher
-npm@6.9.0 or higher
+node@v14.0.0 or higher
+npm@6.14.0 or higher
 git@2.17.1 or higher
 ```
 
-## How To Use
-
-From your command line, clone and run developer-portolio:
+### Installation
 
 ```bash
 # Clone this repository
@@ -62,54 +40,221 @@ $ git clone https://github.com/DapperDivers/developer-portfolio.git
 $ cd developer-portfolio
 
 # Install dependencies
-$ yarn
+$ npm install
 
-#Start's development server
-$ yarn start
+# Start development server
+$ npm run dev
 ```
 
-## Linking Portfolio to Github
+## 📋 Sections
+
+- About Me & Summary
+- Skills & Proficiencies
+- Education History
+- Work Experience
+- Projects Showcase
+- Testimonials & Feedback
+- GitHub Profile & Contact
+
+## 🎨 Customization
+
+### Basic Customization
+
+Edit the `src/portfolio.js` file to update your personal information, skills, experience, projects, etc.
 
 ```javascript
-  //  portfolio.js
-  githubUserName: 'YOUR GITHUB USERNAME HERE',
+// src/portfolio.js
+const greeting = {
+  title: "Hello! I'm Derek Mackley",
+  subtitle: "A passionate Full Stack Developer with a focus on security",
+  // ...
+};
+
+// Update other sections similarly
 ```
 
-#### Using Emojis
+### Advanced Customization
 
-For adding emoji 😃 into the texts in `Portfolio.js`, use the `emoji()` function and pass the text you need as an argument. This would help in keeping emojis compatible across different browsers and platforms.
+#### Design Tokens
 
-## Technologies Used
+The project uses CSS variables for theming. Edit the design tokens in `src/assets/css/design-tokens.css`:
 
--   [React](https://reactjs.org/)
--   [axios](https://www.npmjs.com/package/axios)
--   [reactstrap](https://reactstrap.github.io/)
--   [react-reveal](https://www.react-reveal.com/)
--   [react-lottie](https://www.npmjs.com/package/react-lottie)
--   [react-easy-emoji](https://github.com/appfigures/react-easy-emoji)
--   [react-headroom](https://github.com/KyleAMathews/react-headroom)
--   [color-thief](https://github.com/lokesh/color-thief)
+```css
+:root {
+  /* Color tokens */
+  --color-primary: #0062cc;
+  --color-secondary: #6c757d;
+  
+  /* Typography tokens */
+  --font-family-base: 'Roboto', sans-serif;
+  --font-family-heading: 'Poppins', sans-serif;
+  
+  /* Spacing tokens */
+  --spacing-1: 0.25rem;
+  --spacing-2: 0.5rem;
+  /* ... */
+}
+```
 
-## Illustrations
+## 🧩 Component Examples
 
--   [Lottie File Source](https://lottiefiles.com)
+### Button Component
 
-## Author
+```jsx
+import { Button } from '../components/ui/Button';
 
-👤 **Derek Mackley**
+// Primary button
+<Button>Click Me</Button>
 
-* Website: https://www.derekmackley.com
-* Github: [@1Derek100](https://github.com/DapperDivers)
-* LinkedIn: [@1Derek100](https://www.linkedin.com/in/dmackley/)
+// Secondary button with icon
+<Button 
+  variant="secondary" 
+  icon="mdi:github"
+>
+  View on GitHub
+</Button>
 
-## Show your support
+// Link button
+<Button
+  variant="link"
+  href="https://example.com"
+  target="_blank"
+>
+  External Link
+</Button>
+```
+
+### Card Component
+
+```jsx
+import { Card } from '../components/ui/Card';
+
+<Card
+  title="Project Title"
+  subtitle="Project Subtitle"
+  hoverable
+  shadow
+  animation={{ 
+    initial: { opacity: 0 },
+    animate: { opacity: 1 },
+    transition: { duration: 0.5 }
+  }}
+>
+  <p>Card content goes here</p>
+  
+  {/* With footer */}
+  <div slot="footer">
+    <Button>View Project</Button>
+  </div>
+</Card>
+```
+
+### Section Component
+
+```jsx
+import { Section } from '../components/layout/Section';
+
+<Section
+  id="about"
+  title="About Me"
+  subtitle="Learn more about my background"
+  icon="mdi:account"
+  background="light"
+>
+  <p>Section content goes here</p>
+</Section>
+```
+
+### LazyImage Component
+
+```jsx
+import { LazyImage } from '../components/ui/LazyImage';
+
+<LazyImage
+  src="/path/to/image.jpg"
+  alt="Description of image"
+  aspectRatio="16:9"
+  lowResSrc="/path/to/thumbnail.jpg"
+/>
+```
+
+## 🧪 Testing
+
+```bash
+# Run all tests
+$ npm test
+
+# Run tests with coverage
+$ npm test -- --coverage
+```
+
+## 📱 Responsive Design
+
+The portfolio is fully responsive with the following breakpoints:
+
+- Mobile: < 576px
+- Tablet: 576px - 992px
+- Desktop: > 992px
+
+## ♿ Accessibility
+
+This project prioritizes accessibility with:
+
+- Semantic HTML
+- ARIA attributes
+- Keyboard navigation
+- Color contrast compliance
+- Screen reader support
+- Skip to content link
+
+## 🛠️ Technologies Used
+
+- [React](https://reactjs.org/)
+- [Vite](https://vitejs.dev/)
+- [Reactstrap](https://reactstrap.github.io/)
+- [Framer Motion](https://www.framer.com/motion/)
+- [React Icons](https://react-icons.github.io/react-icons/)
+- [Jest](https://jestjs.io/) & [Testing Library](https://testing-library.com/)
+- [ESLint](https://eslint.org/) & [Prettier](https://prettier.io/)
+
+## 📚 Project Structure
+
+```
+/
+├── public/                # Static assets
+├── src/
+│   ├── assets/            # CSS, images, fonts
+│   ├── components/        # Reusable components
+│   │   ├── ui/            # Base UI components
+│   │   └── layout/        # Layout components
+│   ├── containers/        # Page section containers
+│   ├── context/           # React context providers
+│   ├── hooks/             # Custom React hooks
+│   ├── utils/             # Utility functions
+│   └── portfolio.js       # Portfolio data
+├── tests/                 # Test configuration
+└── package.json           # Dependencies and scripts
+```
+
+## 👤 Author
+
+**Derek Mackley**
+
+- Website: [derekmackley.com](https://www.derekmackley.com)
+- GitHub: [@DapperDivers](https://github.com/DapperDivers)
+- LinkedIn: [dmackley](https://www.linkedin.com/in/dmackley/)
+
+## 🤝 Contributing
+
+Contributions, issues and feature requests are welcome!
+
+- Check the [issues page](https://github.com/DapperDivers/developer-portfolio/issues) for open issues
+- Fork the repository and submit a PR for new features or bug fixes
+
+## 📝 License
+
+This project is [MIT](LICENSE) licensed.
+
+## ⭐ Show your support
 
 Give a ⭐️ if this project helped you!
-
-
-
-- Read cvc
-validate regex
-mx records
-tegex before @
-domain records
