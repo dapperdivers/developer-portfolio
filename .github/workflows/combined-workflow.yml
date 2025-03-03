@@ -8,127 +8,32 @@ on:
   workflow_dispatch:
 
 jobs:
+  # Step 1: Run tests
   test:
     name: Test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 22
-          cache: 'npm'
-          
-      - name: Install dependencies
-        run: npm ci
-      
-      - name: Run tests
-        run: npm test
-        
+    uses: ./.github/workflows/test.yml
+  
+  # Step 2: Run linting
   lint:
     name: Lint
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 22
-          cache: 'npm'
-          
-      - name: Install dependencies
-        run: npm ci
-        
-      - name: Install ESLint and plugins
-        run: |
-          npm install --save-dev eslint eslint-plugin-react eslint-plugin-security
-          
-      - name: Verify ESLint configuration
-        run: |
-          echo "ESLint configuration file contents:"
-          cat .eslintrc.json
-          echo ""
-          echo "ESLint version:"
-          npx eslint --version
-          
-      - name: Run linting with npx
-        run: npx eslint src --ext .js,.jsx
-        
-  build-and-push-docker:
-    name: Build and Push Docker Image
-    runs-on: ubuntu-latest
+    uses: ./.github/workflows/lint.yml
+  
+  # Step 3: Build and push Docker image if on master branch
+  deploy-docker:
+    name: Deploy Docker Image
     needs: [test, lint]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-        
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-        
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v2
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-          
-      - name: Extract metadata for Docker
-        id: meta
-        uses: docker/metadata-action@v4
-        with:
-          images: ghcr.io/${{ github.repository }}
-          tags: |
-            type=sha,format=short
-            type=ref,event=branch
-            latest
-            
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-          
+    if: success() && github.event_name == 'push' && github.ref == 'refs/heads/master'
+    uses: ./.github/workflows/docker-build.yml
+  
+  # Step 4: Deploy documentation if the docs folder changed
   deploy-docs:
-    name: Deploy documentation
-    runs-on: ubuntu-latest
+    name: Deploy Documentation
     needs: [test, lint]
     if: |
+      success() && 
       github.event_name == 'push' && 
       github.ref == 'refs/heads/master' && 
       (github.event_name == 'workflow_dispatch' || 
        contains(toJSON(github.event.commits.*.modified), 'docs/') || 
        contains(toJSON(github.event.commits.*.added), 'docs/'))
-    steps:
-      - uses: actions/checkout@v3
-      
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 22
-          cache: 'npm'
-          
-      - name: Install dependencies
-        run: npm ci
-      
-      - name: Setup Docsify
-        run: npm install -g docsify-cli
-      
-      - name: Build documentation
-        run: |
-          mkdir -p build
-          cp -r docs/* build/
-          cp docs/index.md build/README.md || true
-          
-      - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          folder: build
-          branch: gh-pages
-          target-folder: docs
+    uses: ./.github/workflows/deploy-docs.yml

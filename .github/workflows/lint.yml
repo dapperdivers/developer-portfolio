@@ -1,0 +1,36 @@
+name: Lint
+
+on:
+  workflow_call:
+  workflow_dispatch:
+
+jobs:
+  lint:
+    name: Run Linting
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Install ESLint and plugins
+        run: |
+          npm install --save-dev eslint eslint-plugin-react eslint-plugin-security
+          
+      - name: Verify ESLint configuration
+        run: |
+          echo "ESLint configuration file contents:"
+          cat .eslintrc.json
+          echo ""
+          echo "ESLint version:"
+          npx eslint --version
+          
+      - name: Run linting with npx
+        run: npx eslint src --ext .js,.jsx
