@@ -15,7 +15,8 @@ const config = {
   testMatch: [
     "<rootDir>/src/__tests__/basic*.test.js?(x)",
     "<rootDir>/src/components/ui/__tests__/*.test.jsx",
-    "<rootDir>/src/components/layout/__tests__/*.test.jsx"
+    "<rootDir>/src/components/layout/__tests__/*.test.jsx",
+    "<rootDir>/src/utils/__tests__/*.test.js?(x)"
   ],
   
   // Automatically clear mock calls, instances, contexts and results before every test

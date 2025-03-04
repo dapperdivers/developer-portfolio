@@ -27,14 +27,12 @@ app.use(
         "'unsafe-inline'", // Eventually remove this for better security
         "'unsafe-eval'", // Eventually remove this for better security
         'https://fonts.googleapis.com', 
-        'https://code.iconify.design', 
-        'https://cdn.jsdelivr.net'
+        'https://code.iconify.design'
       ],
       styleSrc: [
         "'self'", 
         "'unsafe-inline'", 
-        'https://fonts.googleapis.com', 
-        'https://cdn.jsdelivr.net'
+        'https://fonts.googleapis.com'
       ],
       imgSrc: ["'self'", 'data:', 'https:', 'blob:'],
       connectSrc: [
