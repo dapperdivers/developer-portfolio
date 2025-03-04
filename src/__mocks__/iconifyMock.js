@@ -2,7 +2,7 @@
 import React from 'react';
 
 // Mock the Icon component
-export const Icon = ({ icon, className, style, onError, onLoad, ...props }) => {
+export const Icon = ({ icon, className, style, /* onError is unused but kept for API compatibility */ onLoad, ...props }) => {
   // Call onLoad immediately if provided
   if (typeof onLoad === 'function') {
     setTimeout(onLoad, 0);
