@@ -23,14 +23,14 @@ export const securityConfig = {
 export const applyCSP = () => {
   if (!securityConfig.enableCSP) return;
   
-  // Define CSP directives - remove jsdelivr reference
+  // Define CSP directives
   const cspDirectives = [
     "default-src 'self'",
-    "script-src 'self' 'unsafe-inline' https://api.github.com",
+    "script-src 'self' 'unsafe-inline' https://api.github.com https://code.iconify.design",
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "img-src 'self' data: https://avatars.githubusercontent.com https://*.githubusercontent.com",
     "font-src 'self' https://fonts.gstatic.com",
-    "connect-src 'self' https://api.github.com",
+    "connect-src 'self' https://api.github.com https://api.iconify.design https://cdn.jsdelivr.net",
     "frame-src 'none'",
     "object-src 'none'"
   ].join('; ');
@@ -72,7 +72,7 @@ export const applyXXSSProtection = () => {
   // Add CSP directive that helps with XSS protection
   const cspMeta = document.createElement('meta');
   cspMeta.httpEquiv = 'Content-Security-Policy';
-  cspMeta.content = "script-src 'self' 'unsafe-inline' https://api.github.com";
+  cspMeta.content = "script-src 'self' 'unsafe-inline' https://api.github.com https://code.iconify.design";
   document.head.appendChild(cspMeta);
   
   // Add HTML encoding helper to window object
