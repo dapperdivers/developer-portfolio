@@ -44,7 +44,7 @@ const Section = ({
   id,
   title,
   subtitle,
-  icon,
+  // icon is not used but kept in propTypes for future use
   className = '',
   container = true,
   fluid = false,

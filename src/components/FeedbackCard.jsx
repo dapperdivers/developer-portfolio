@@ -1,4 +1,4 @@
-import React, { memo, useState } from "react";
+import React, { memo } from "react";
 import PropTypes from 'prop-types';
 import { FaStar, FaQuoteLeft, FaQuoteRight } from 'react-icons/fa';
 import Card from "./ui/Card";

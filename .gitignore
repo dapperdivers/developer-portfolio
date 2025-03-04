@@ -46,3 +46,4 @@ dist/
 /design-assets
 /docs-draft
 .jest-cache/
+*storybook.log
