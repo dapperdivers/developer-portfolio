@@ -3,11 +3,15 @@ import React from 'react';
 
 // Filter out framer-motion specific props to avoid React DOM warnings
 const filterMotionProps = (props) => {
+  // These properties are destructured to filter them out, but aren't used
+  // This is intentional to remove Framer Motion props before passing to DOM elements
+  /* eslint-disable no-unused-vars */
   const {
     initial, animate, exit, transition, whileHover, whileTap, whileFocus, whileInView,
     variants, viewport, drag, dragConstraints, dragElastic, dragMomentum,
     onDragStart, onDrag, onDragEnd, layout, layoutId, ...filteredProps
   } = props;
+  /* eslint-enable no-unused-vars */
   return filteredProps;
 };
 

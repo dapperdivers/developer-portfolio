@@ -127,7 +127,7 @@
     console.log('Safari detected, applying browser fixes');
     
     // Fix for 100vh issue in Safari iOS
-    function fixSafariVh() {
+    const fixSafariVh = function() {
       document.documentElement.style.setProperty(
         '--safari-fixed-height', 
         window.innerHeight + 'px'

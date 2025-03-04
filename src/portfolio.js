@@ -1,4 +1,5 @@
-import emoji from "react-easy-emoji";
+// emoji is not used but may be used in future features
+// import emoji from "react-easy-emoji";
 
 // URL validation helper
 const validateImage = (imagePath) => {

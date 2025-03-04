@@ -2,12 +2,8 @@ import React, { memo, useState, useRef, useEffect } from 'react';
 import {
   NavbarBrand,
   Navbar,
-  NavLink,
-  Container,
-  Collapse,
-  NavbarToggler
+  Container
 } from "reactstrap";
-import { FaGithub, FaLinkedin } from 'react-icons/fa';
 import useNavigation from '../hooks/useNavigation';
 import './Navigation.css';
 
@@ -26,17 +22,12 @@ const Navigation = () => {
   // Refs for keyboard navigation
   const togglerRef = useRef(null);
   const navItemsRef = useRef(null);
-  const socialLinksRef = useRef([]);
   
   // Use custom hook for navigation behavior and data
   const { 
     isScrolled, 
     isVisible, 
-    greetings, 
-    socialLinks,
-    collapseClasses,
-    onExiting,
-    onExited
+    greetings
   } = useNavigation();
   
   // Handle keyboard navigation
@@ -64,28 +55,8 @@ const Navigation = () => {
     }
   }, [isOpen]);
   
-  // Handle focus trap in mobile menu
-  const handleTabKey = (e) => {
-    if (!isOpen || !navItemsRef.current) return;
-    
-    // Get all focusable elements
-    const focusableElements = navItemsRef.current.querySelectorAll(
-      'a, button, [tabindex="0"]'
-    );
-    const firstElement = focusableElements[0];
-    const lastElement = focusableElements[focusableElements.length - 1];
-    
-    // Handle tab and shift+tab to create a focus trap
-    if (e.key === 'Tab') {
-      if (e.shiftKey && document.activeElement === firstElement) {
-        e.preventDefault();
-        lastElement.focus();
-      } else if (!e.shiftKey && document.activeElement === lastElement) {
-        e.preventDefault();
-        firstElement.focus();
-      }
-    }
-  };
+  // Focus trap functionality removed as it's not currently used
+  // If needed in the future, re-implement the handleTabKey function here
 
   return (
     <header 

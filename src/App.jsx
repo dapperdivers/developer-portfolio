@@ -57,7 +57,7 @@ function App() {
   }, []);
 
   // Custom fallback UI for unhandled errors
-  const errorFallback = (error, errorInfo) => (
+  const errorFallback = () => (
     <div className="error-container" role="alert" style={{ 
       padding: '2rem', 
       margin: '2rem auto',
@@ -65,7 +65,7 @@ function App() {
       textAlign: 'center' 
     }}>
       <h1>Something went wrong</h1>
-      <p>We're sorry, but there was an error loading this page.</p>
+      <p>We&apos;re sorry, but there was an error loading this page.</p>
       <p>Try reloading the page or clearing your browser cache.</p>
       {/* Provide a button to reload */}
       <button 
