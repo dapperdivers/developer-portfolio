@@ -1,6 +1,6 @@
-import React, { memo } from "react";
+import React, { memo, useState } from "react";
 import PropTypes from 'prop-types';
-import { FaStar } from 'react-icons/fa';
+import { FaStar, FaQuoteLeft, FaQuoteRight } from 'react-icons/fa';
 import Card from "./ui/Card";
 import ResponsiveImage from "./ui/ResponsiveImage";
 import useIntersectionObserver from "../hooks/useIntersectionObserver";
@@ -64,9 +64,13 @@ const FeedbackCard = ({ data, index = 0 }) => {
           ))}
         </div>
         
-        <p className="quote-content" tabIndex="0">
-          {data.feedback}
-        </p>
+        <div className="quote-container">
+          <FaQuoteLeft className="quote-icon quote-icon-left" aria-hidden="true" />
+          <p className="quote-content" tabIndex="0">
+            {data.feedback}
+          </p>
+          <FaQuoteRight className="quote-icon quote-icon-right" aria-hidden="true" />
+        </div>
         
         <div className="author-container">
           <ResponsiveImage 

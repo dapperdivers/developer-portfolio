@@ -1,11 +1,10 @@
 # UI Bug Checklist
 
-- [ ] the animation is playing toggle should be hidden unless someone hovers over the lottie animation or clicks on it.
-- [ ] the background color of each section is different than the background of the site. this causes the ui to look weird
-- [ ] the lightning bolt icon is shown two times per skill
-- [ ] none of the icons are showing for skills like docker, kubernetes, ect.
-- [ ] The education card is not visually appealing the date cannot be read, and the title is too long.  additionall the icon to the left does not render
-- [ ] the personal recomendation card is too skinny.  depending on the number of recommendations it should be centered. 
-- [ ] set a max height for the cards like recommendations, job history ect.  
-- [ ] don't show the project picture if none is supplied.
-- [ ] the reach out to me sections icons are not loading
+- [ ] flip the download link and the social icons
+- [ ] increase the size of the lottie imagaes in the skils and proficincy sections
+- [ ] fix the background color in the skills, proficiency, and education sections, they should be the same as the experiece section
+- [ ] the skills icons are all blue.  use the default colors so they show with the proper brand colors
+- [ ] fix the icon in the education card.
+- [ ] make the recommendation card more user friendly. 
+- [ ] make the github profile section much smaller the image is huge.
+- [ ] make the github section touch the footer so there is no white bar

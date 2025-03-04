@@ -1,7 +1,7 @@
 import React, { memo } from "react";
 import PropTypes from 'prop-types';
 import { Badge } from "reactstrap";
-import { Icon } from "@iconify/react";
+import { FaGraduationCap } from 'react-icons/fa';
 import Card from "./ui/Card";
 import useIntersectionObserver from "../hooks/useIntersectionObserver";
 import './EducationCard.css';
@@ -40,7 +40,7 @@ const EducationCard = ({ education, index = 0 }) => {
   return (
     <div className="education-card" ref={ref}>
       <div className="education-icon">
-        <Icon icon="carbon:education" />
+        <FaGraduationCap />
       </div>
       <Card 
         className="education-card-inner"

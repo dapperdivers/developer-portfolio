@@ -46,7 +46,7 @@ const ProgressBar = ({ skill, index }) => {
 
 const Proficiency = () => {
     return ( 
-        <Container className="section section-lg proficiency-section">
+        <Container className="section section-lg proficiency-section bg-default">
            <motion.div
              initial={{ opacity: 0, y: 40 }}
              animate={{ opacity: 1, y: 0 }}
