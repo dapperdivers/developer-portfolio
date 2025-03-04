@@ -24,7 +24,8 @@ Our Storybook is organized according to atomic design principles:
 2. **Molecules**: Combinations of atoms (ExperienceCard, ProjectCard)
 3. **Organisms**: Complex UI components (Navigation, Skills section)
 4. **Templates**: Page-level components (Section)
-5. **Design System**: Documentation of design tokens and patterns
+5. **Pages**: Complete portfolio page with real content
+6. **Design System**: Documentation of design tokens and patterns
 
 ## Creating New Stories
 
@@ -34,10 +35,10 @@ We've provided an enhanced script to easily generate comprehensive story files w
 
 ```bash
 # Basic usage
-npm run generate-story -- --component=ComponentName --type=atom
+node scripts/generate-story.js --component=ComponentName --type=atom
 
 # Advanced usage with all options
-npm run generate-story -- --component=ComponentName --type=atom --interactions --context=portfolio --detailed
+node scripts/generate-story.js --component=ComponentName --type=atom --interactions --context=portfolio --detailed
 
 # Options:
 # --component: Name of the component (required)
@@ -48,11 +49,11 @@ npm run generate-story -- --component=ComponentName --type=atom --interactions -
 # --detailed: Add detailed documentation templates (optional flag)
 
 # Examples:
-npm run generate-story -- --component=Button --type=atom
-npm run generate-story -- --component=ProjectCard --type=molecule --interactions
-npm run generate-story -- --component=Navigation --type=organism --context=portfolio
-npm run generate-story -- --component=Skills --type=organism --interactions --context=portfolio --detailed
-npm run generate-story -- --component=CustomComponent --type=atom --path=src/custom/CustomComponent.jsx
+node scripts/generate-story.js --component=Button --type=atom
+node scripts/generate-story.js --component=ProjectCard --type=molecule --interactions
+node scripts/generate-story.js --component=Navigation --type=organism --context=portfolio
+node scripts/generate-story.js --component=Skills --type=organism --interactions --context=portfolio --detailed
+node scripts/generate-story.js --component=CustomComponent --type=atom --path=src/custom/CustomComponent.jsx
 ```
 
 #### Generated Features Based on Options
@@ -130,6 +131,122 @@ Storybook includes an accessibility addon:
 2. Review and fix any accessibility issues
 3. Test keyboard navigation and screen reader compatibility
 
+## Interaction Testing with Play Functions
+
+### What are Play Functions?
+
+Play functions in Storybook allow you to create automated interaction tests for your components. They simulate user actions (clicks, typing, etc.) and verify the component responds correctly.
+
+### Basic Play Function Structure
+
+```jsx
+MyStory.play = async ({ canvasElement, step }) => {
+  const canvas = within(canvasElement);
+  
+  // Test logic here
+};
+```
+
+### Step-by-Step Testing
+
+Use the `step` function to organize your tests into logical sections:
+
+```jsx
+MyStory.play = async ({ canvasElement, step }) => {
+  const canvas = within(canvasElement);
+  
+  await step('First step: Check initial state', async () => {
+    await expect(canvas.getByText('Initial')).toBeInTheDocument();
+  });
+  
+  await step('Second step: Interact with component', async () => {
+    await userEvent.click(canvas.getByRole('button'));
+  });
+  
+  await step('Third step: Verify changed state', async () => {
+    await expect(canvas.getByText('Changed')).toBeInTheDocument();
+  });
+};
+```
+
+### Common User Interactions
+
+```jsx
+// Click a button
+await userEvent.click(canvas.getByRole('button'));
+
+// Type in an input
+await userEvent.type(canvas.getByRole('textbox'), 'Hello');
+
+// Navigate with keyboard
+await userEvent.tab();
+await userEvent.keyboard('{Enter}');
+
+// Hover over element
+await userEvent.hover(canvas.getByRole('button'));
+```
+
+### Testing Assertions
+
+```jsx
+// Check element exists
+await expect(element).toBeInTheDocument();
+
+// Check element is visible
+await expect(element).toBeVisible();
+
+// Check text content
+await expect(element).toHaveTextContent('Text');
+
+// Check attribute
+await expect(element).toHaveAttribute('aria-expanded', 'true');
+
+// Check CSS property
+await expect(element).toHaveStyle({ display: 'flex' });
+
+// Check element has focus
+await expect(element).toHaveFocus();
+```
+
+### Best Practices for Play Functions
+
+1. **Always use `await` with async operations**
+2. **Use semantic queries** (getByRole, getByLabelText) instead of test IDs
+3. **Test from the user's perspective**, not implementation details
+4. **Organize steps logically** to make tests easier to understand
+5. **Test both positive and negative cases**
+6. **Check accessibility** as part of your tests
+
+## Working with Context in Stories
+
+Many components in the portfolio need access to the PortfolioContext. For these components, use the provided decorators:
+
+```jsx
+import { withPortfolioContext } from '../utils/decorators';
+
+export default {
+  decorators: [withPortfolioContext],
+  // ...
+};
+```
+
+For custom context data, create a specific decorator:
+
+```jsx
+const createContextWithCustomData = (customData) => {
+  return (Story) => (
+    <PortfolioContext.Provider value={{ ...mockPortfolioData, ...customData }}>
+      <Story />
+    </PortfolioContext.Provider>
+  );
+};
+
+export const CustomDataStory = Template.bind({});
+CustomDataStory.decorators = [
+  createContextWithCustomData({ projects: customProjects })
+];
+```
+
 ## Working with Design Tokens
 
 Our design tokens are documented in Storybook under "Design System/Design Tokens". When creating or editing components:
@@ -145,14 +262,19 @@ Our design tokens are documented in Storybook under "Design System/Design Tokens
 }
 ```
 
-## Testing Components
+## Responsive Testing
 
-Storybook provides several ways to test components:
+Test component responsiveness using the viewport addon and our custom decorators:
 
-1. **Visual testing**: Manually interact with components in different states
-2. **Accessibility testing**: Use the a11y addon to check for issues
-3. **Interaction testing**: Test component interactions in the "Interactions" panel
-4. **Console output**: Check browser console for warnings or errors
+```jsx
+import { withViewport } from '../utils/decorators';
+
+export const MobileView = Template.bind({});
+MobileView.decorators = [withViewport('mobile')];
+
+export const TabletView = Template.bind({});
+TabletView.decorators = [withViewport('tablet')];
+```
 
 ## Additional Features
 
@@ -167,3 +289,5 @@ Storybook provides several ways to test components:
 - [Storybook Documentation](https://storybook.js.org/docs/react/get-started/introduction)
 - [Atomic Design Methodology](https://bradfrost.com/blog/post/atomic-web-design/)
 - [Component-Driven Development](https://www.componentdriven.org/)
+- [Testing Library Documentation](https://testing-library.com/docs/)
+- [Storybook Interaction Testing](https://storybook.js.org/docs/react/essentials/interactions)
