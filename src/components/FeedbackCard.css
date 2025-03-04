@@ -32,15 +32,41 @@
   height: 18px;
 }
 
+.quote-container {
+  position: relative;
+  padding: var(--spacing-3);
+  margin-bottom: var(--spacing-4);
+  flex: 1;
+}
+
+.quote-icon {
+  color: var(--color-primary-light);
+  opacity: 0.6;
+  font-size: 1.2rem;
+}
+
+.quote-icon-left {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.quote-icon-right {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
 .quote-content {
   flex: 1;
   font-size: var(--font-size-base);
   line-height: var(--line-height-base);
   color: var(--color-text);
-  margin-bottom: var(--spacing-4);
   overflow-wrap: break-word;
   word-wrap: break-word;
   white-space: pre-line;
+  text-align: center;
+  font-style: italic;
 }
 
 .author-container {

@@ -29,7 +29,6 @@ const Education = () => {
       icon="simple-icons:graduation-cap"
       animation={animation}
       className="education-section"
-      background="primary"
       separator="true"
     >
       <Row className="education-timeline align-items-start">

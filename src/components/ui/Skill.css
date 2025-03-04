@@ -51,12 +51,10 @@
 .skill-icon-svg {
   width: 50%;
   height: 50%;
-  color: var(--color-primary);
   transition: var(--transition-base);
 }
 
 .skill-icon:hover .skill-icon-svg {
-  color: var(--color-primary-dark);
   transform: scale(1.1);
 }
 

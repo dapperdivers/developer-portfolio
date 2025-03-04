@@ -53,7 +53,6 @@ const Greetings = () => {
                         {greetings.description}
                       </p>
                       <div className="hero-action-container">
-                        <SocialLinks />
                         <Button
                           className="resume-download-btn"
                           variant="light"
@@ -66,6 +65,7 @@ const Greetings = () => {
                           </span>
                           Download Resume
                         </Button>
+                        <SocialLinks />
                       </div>
                     </Col>
                     <Col lg="6">

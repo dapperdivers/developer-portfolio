@@ -34,9 +34,9 @@ const DisplayLottie = ({
     
     // Define size constraints
     const sizeMap = useMemo(() => ({
-        small: { maxWidth: "15rem", maxHeight: "15rem" },
-        medium: { maxWidth: "25rem", maxHeight: "25rem" },
-        large: { maxWidth: "35rem", maxHeight: "35rem" }
+        small: { maxWidth: "25rem", maxHeight: "25rem" },
+        medium: { maxWidth: "45rem", maxHeight: "45rem" },
+        large: { maxWidth: "55rem", maxHeight: "55rem" }
     }), []);
     
     // Optimize animation data if needed
