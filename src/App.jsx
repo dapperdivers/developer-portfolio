@@ -7,7 +7,9 @@ import { applyBrowserFixes } from "./utils/accessibility.jsx";
 import { initImageOptimization } from "./utils/imageOptimizer";
 import { applySecurityEnhancements } from "./utils/security";
 import Loading from "./components/Loading";
+import ErrorBoundary from "./components/ErrorBoundary";
 import { PortfolioProvider } from "./context/PortfolioContext";
+import { HelmetProvider } from 'react-helmet-async';
 
 // Lazy load components for better performance
 const Greetings = lazy(() => import("./containers/Greetings"));
@@ -48,29 +50,99 @@ function App() {
     applySecurityEnhancements();
   }, []);
 
+  // Custom fallback UI for unhandled errors
+  const errorFallback = (error, errorInfo) => (
+    <div className="error-container" role="alert" style={{ 
+      padding: '2rem', 
+      margin: '2rem auto',
+      maxWidth: '800px',
+      textAlign: 'center' 
+    }}>
+      <h1>Something went wrong</h1>
+      <p>We're sorry, but there was an error loading this page.</p>
+      <p>Try reloading the page or clearing your browser cache.</p>
+      {/* Provide a button to reload */}
+      <button 
+        onClick={() => window.location.reload()} 
+        style={{
+          padding: '0.5rem 1rem',
+          background: '#3563E9',
+          color: 'white',
+          border: 'none',
+          borderRadius: '4px',
+          cursor: 'pointer',
+          marginTop: '1rem'
+        }}
+      >
+        Reload Page
+      </button>
+    </div>
+  );
+
   return (
-    <PortfolioProvider>
-      <div className="App">
-        <Head />
-        <SkipToContent mainId="main-content" />
-        <Navigation />
-        
-        <main id="main-content">
-          <Suspense fallback={<Loading />}>
-            <Greetings />
-            <Skills />
-            <Proficiency />
-            <Education />
-            <Experience />
-            <Feedbacks />
-            <Projects />
-            <GithubProfile id="contact" />
-          </Suspense>
-        </main>
-        
-        <Footer />
-      </div>
-    </PortfolioProvider>
+    <ErrorBoundary fallback={errorFallback}>
+      <HelmetProvider>
+        <PortfolioProvider>
+          <div className="App">
+            <Head />
+            <SkipToContent mainId="main-content" />
+            <Navigation />
+            
+            <main id="main-content">
+              <ErrorBoundary>
+                <Suspense fallback={<Loading />}>
+                  <Greetings />
+                </Suspense>
+              </ErrorBoundary>
+              
+              <ErrorBoundary>
+                <Suspense fallback={<Loading />}>
+                  <Skills />
+                </Suspense>
+              </ErrorBoundary>
+              
+              <ErrorBoundary>
+                <Suspense fallback={<Loading />}>
+                  <Proficiency />
+                </Suspense>
+              </ErrorBoundary>
+              
+              <ErrorBoundary>
+                <Suspense fallback={<Loading />}>
+                  <Education />
+                </Suspense>
+              </ErrorBoundary>
+              
+              <ErrorBoundary>
+                <Suspense fallback={<Loading />}>
+                  <Experience />
+                </Suspense>
+              </ErrorBoundary>
+              
+              <ErrorBoundary>
+                <Suspense fallback={<Loading />}>
+                  <Feedbacks />
+                </Suspense>
+              </ErrorBoundary>
+              
+              <ErrorBoundary>
+                <Suspense fallback={<Loading />}>
+                  <Projects />
+                </Suspense>
+              </ErrorBoundary>
+              
+              <ErrorBoundary>
+                <Suspense fallback={<Loading />}>
+                  <GithubProfile id="contact" />
+                </Suspense>
+              </ErrorBoundary>
+            </main>
+            
+            <Footer />
+          </div>
+        </PortfolioProvider>
+      </HelmetProvider>
+    </ErrorBoundary>
   );
 }
 

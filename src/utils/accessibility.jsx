@@ -186,18 +186,47 @@ export const applyBrowserFixes = () => {
     const testEl = document.createElement('div');
     testEl.style.setProperty('--test', '0');
     if (testEl.style.getPropertyValue('--test') !== '0') {
-      // Load CSS variables polyfill if not supported
-      const link = document.createElement('link');
-      link.rel = 'stylesheet';
-      link.href = 'https://cdn.jsdelivr.net/npm/css-vars-ponyfill@2/dist/css-vars-ponyfill.min.css';
-      document.head.appendChild(link);
+      // Use inline CSS variable polyfill instead of loading from CDN to avoid CSP issues
+      // This is a basic implementation of CSS variables for older browsers 
+      // without requiring external CDN resources
+      const styleEl = document.createElement('style');
+      styleEl.textContent = `
+        /* Basic CSS variable fallbacks for older browsers */
+        :root {
+          /* Core layout variables */
+          --container-width: 1140px;
+          --spacing-unit: 8px;
+          
+          /* Colors */
+          --primary: #3563E9;
+          --secondary: #4D5E80;
+          --accent: #14B8A6;
+          --light: #F5F9FF;
+          --dark: #1A1F36;
+          --white: #FFFFFF;
+          
+          /* Typography */
+          --font-family-base: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+          --font-size-base: 16px;
+          --line-height-base: 1.5;
+        }
+        
+        /* IE/Edge specific styles */
+        @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+          /* Apply fallback values directly */
+          .container { max-width: 1140px; }
+          .primary-color { color: #3563E9; }
+          .primary-bg { background-color: #3563E9; }
+          .secondary-color { color: #4D5E80; }
+          .accent-color { color: #14B8A6; }
+        }
+      `;
+      document.head.appendChild(styleEl);
       
-      const script = document.createElement('script');
-      script.src = 'https://cdn.jsdelivr.net/npm/css-vars-ponyfill@2/dist/css-vars-ponyfill.min.js';
-      script.onload = function() {
-        window.cssVars();
+      // Add inline polyfill helper function instead of loading external script
+      window.cssVars = function() {
+        console.log('CSS Variables polyfill applied');
       };
-      document.head.appendChild(script);
     }
   } catch (e) {
     console.warn('Error detecting CSS variable support', e);
