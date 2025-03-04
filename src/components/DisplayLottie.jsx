@@ -4,6 +4,9 @@ import Loading from './Loading';
 import { FaPlay, FaPause } from 'react-icons/fa';
 import './DisplayLottie.css';
 
+// The lottie-react package provides direct methods to control the animation
+// without needing to use refs directly on the component
+
 /**
  * A component for displaying Lottie animations with accessibility controls
  * and performance optimizations.
@@ -149,7 +152,7 @@ const DisplayLottie = ({
                 onClick={() => setControlsVisible(!controlsVisible)}
             >
                 <Lottie
-                    ref={lottieRef}
+                    lottieRef={lottieRef}
                     animationData={optimizedAnimationData}
                     loop={loop}
                     autoplay={!prefersReducedMotion}

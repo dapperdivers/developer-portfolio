@@ -7,7 +7,7 @@ import Skill from '../Skill';
 describe('Enhanced Skill Component Tests', () => {
   const mockSkill = {
     skillName: 'JavaScript',
-    fontAwesomeClassname: 'logos:javascript'
+    iconName: 'logos:javascript'
   };
 
   it('renders skill with proper structure', () => {

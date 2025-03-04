@@ -16,19 +16,19 @@ const mockSkillsData = {
     softwareSkills: [
       {
         skillName: 'HTML5',
-        fontAwesomeClassname: 'logos:html-5'
+        iconName: 'logos:html-5'
       },
       {
         skillName: 'CSS3',
-        fontAwesomeClassname: 'logos:css-3'
+        iconName: 'logos:css-3'
       },
       {
         skillName: 'JavaScript',
-        fontAwesomeClassname: 'logos:javascript'
+        iconName: 'logos:javascript'
       },
       {
         skillName: 'React',
-        fontAwesomeClassname: 'logos:react'
+        iconName: 'logos:react'
       }
     ]
   }

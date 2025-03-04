@@ -52,6 +52,76 @@
   width: 50%;
   height: 50%;
   transition: var(--transition-base);
+  /* Preserve original icon colors */
+  color: inherit;
+  fill: currentColor;
+}
+
+/* Override react-icons default color inheritance */
+.skill-icon svg {
+  color: unset;
+  fill: unset;
+}
+
+/* Brand colors for common icons */
+[aria-label="HTML5"] .skill-icon-svg {
+  color: #E34F26 !important;
+}
+
+[aria-label="CSS3"] .skill-icon-svg {
+  color: #1572B6 !important;
+}
+
+[aria-label="Sass"] .skill-icon-svg {
+  color: #CC6699 !important;
+}
+
+[aria-label="JavaScript"] .skill-icon-svg {
+  color: #F7DF1E !important;
+}
+
+[aria-label="React"] .skill-icon-svg {
+  color: #61DAFB !important;
+}
+
+[aria-label="TypeScript"] .skill-icon-svg {
+  color: #3178C6 !important;
+}
+
+[aria-label="Node.js"] .skill-icon-svg {
+  color: #339933 !important;
+}
+
+[aria-label="NPM"] .skill-icon-svg {
+  color: #CB3837 !important;
+}
+
+[aria-label="MySQL"] .skill-icon-svg {
+  color: #4479A1 !important;
+}
+
+[aria-label="AWS"] .skill-icon-svg {
+  color: #FF9900 !important;
+}
+
+[aria-label="Azure"] .skill-icon-svg {
+  color: #0078D4 !important;
+}
+
+[aria-label="Google Cloud"] .skill-icon-svg {
+  color: #4285F4 !important;
+}
+
+[aria-label="Python"] .skill-icon-svg {
+  color: #3776AB !important;
+}
+
+[aria-label="Git"] .skill-icon-svg {
+  color: #F05032 !important;
+}
+
+[aria-label="Docker"] .skill-icon-svg {
+  color: #2496ED !important;
 }
 
 .skill-icon:hover .skill-icon-svg {

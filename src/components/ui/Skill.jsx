@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
-import mapIconToComponent from '../../utils/iconMapping';
+import { Icon } from '@iconify/react';
 import './Skill.css';
 
 /**
@@ -11,7 +11,7 @@ import './Skill.css';
  * @param {Object} props - Component props
  * @param {Object} props.skill - Skill data object
  * @param {string} props.skill.skillName - Name of the skill
- * @param {string} props.skill.fontAwesomeClassname - Iconify icon name
+ * @param {string} props.skill.iconName - Iconify icon name
  * @param {number} [props.index=0] - Index for staggered animations
  * @param {string} [props.className=''] - Additional CSS classes
  * @param {string} [props.size='md'] - Size of the skill icon (sm, md, lg)
@@ -120,10 +120,13 @@ const Skill = ({
           aria-label={skill.skillName}
           role="img"
         >
-          {skill.fontAwesomeClassname && (() => {
-            const IconComponent = mapIconToComponent(skill.fontAwesomeClassname);
-            return IconComponent ? <IconComponent className="skill-icon-svg" /> : null;
-          })()}
+          {(skill.iconName || skill.fontAwesomeClassname) && (
+            <Icon 
+              icon={skill.iconName || skill.fontAwesomeClassname} 
+              className="skill-icon-svg" 
+              onError={(err) => console.warn(`Icon failed to load: ${skill.iconName || skill.fontAwesomeClassname}`, err)}
+            />
+          )}
           
           <motion.span 
             className="skill-tooltip"
@@ -146,10 +149,13 @@ const Skill = ({
         aria-label={skill.skillName}
         role="img"
       >
-        {skill.fontAwesomeClassname && (() => {
-          const IconComponent = mapIconToComponent(skill.fontAwesomeClassname);
-          return IconComponent ? <IconComponent className="skill-icon-svg" /> : null;
-        })()}
+        {(skill.iconName || skill.fontAwesomeClassname) && (
+          <Icon 
+            icon={skill.iconName || skill.fontAwesomeClassname} 
+            className="skill-icon-svg" 
+            onError={(err) => console.warn(`Icon failed to load: ${skill.iconName || skill.fontAwesomeClassname}`, err)}
+          />
+        )}
         <span className="skill-tooltip">
           {skill.skillName}
         </span>
@@ -161,7 +167,8 @@ const Skill = ({
 Skill.propTypes = {
   skill: PropTypes.shape({
     skillName: PropTypes.string.isRequired,
-    fontAwesomeClassname: PropTypes.string.isRequired
+    iconName: PropTypes.string,
+    fontAwesomeClassname: PropTypes.string // Kept for backward compatibility
   }).isRequired,
   index: PropTypes.number,
   className: PropTypes.string,
