@@ -3,6 +3,12 @@ import Head from "./components/Head";
 import Navigation from "./components/Navigation";
 import Footer from "./components/Footer";
 import SkipToContent from "./components/SkipToContent";
+
+// Import Iconify icon collections - this ensures icons are available offline
+import '@iconify-json/logos';
+import '@iconify-json/simple-icons';
+import '@iconify-json/vscode-icons';
+
 import { applyBrowserFixes } from "./utils/accessibility.jsx";
 import { initImageOptimization } from "./utils/imageOptimizer";
 import { applySecurityEnhancements } from "./utils/security";
