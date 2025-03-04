@@ -4,6 +4,7 @@ import Card from "./ui/Card";
 import Button from "./ui/Button";
 import ResponsiveImage from "./ui/ResponsiveImage";
 import useIntersectionObserver from "../hooks/useIntersectionObserver";
+import './ProjectsCard.css';
 
 /**
  * Project card component for displaying individual project information.
@@ -26,8 +27,8 @@ const ProjectsCard = ({ data, index = 0 }) => {
       rootMargin: "-50px 0px" 
     });
     
-    // Default image if none is provided
-    const projectImage = data.image || "https://picsum.photos/600/300?grayscale&blur=2";
+    // Only use the image if it's explicitly provided
+    const hasImage = !!data.image;
     
     // Extract tech stack from data or use defaults
     const techStack = data.stack || [];
@@ -51,10 +52,10 @@ const ProjectsCard = ({ data, index = 0 }) => {
           hoverable
           shadow
         >
-          {projectImage && (
+          {hasImage && (
             <div className="project-image-container">
               <ResponsiveImage 
-                src={projectImage} 
+                src={data.image} 
                 alt={`${data.name} project screenshot`}
                 className="project-image"
                 lazy={true}

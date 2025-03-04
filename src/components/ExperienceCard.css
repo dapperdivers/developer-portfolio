@@ -1,8 +1,8 @@
 /* ExperienceCard Component Styles */
 
 .experience-card {
-  flex: 1 1 350px;
-  max-width: 400px;
+  flex: 1 1 21.875rem;  /* 350px to rem */
+  max-width: 25rem;     /* 400px to rem */
   margin-bottom: var(--spacing-5);
   transition: transform var(--transition-standard);
 }
@@ -18,9 +18,24 @@
   flex-direction: column;
 }
 
-.experience-card .card:hover {
+.experience-card .card:hover,
+.experience-card .card:active {
   transform: translateY(-10px);
   box-shadow: var(--box-shadow-md);
+}
+
+/* Touch alternative for hover effect */
+@media (hover: none) {
+  .experience-card .card:hover {
+    transform: none;
+    box-shadow: var(--box-shadow-sm);
+  }
+  
+  .experience-card .card:active {
+    transform: translateY(-5px);
+    box-shadow: var(--box-shadow-md);
+    transition: all 0.1s ease-in-out;
+  }
 }
 
 .experience-card-header {
@@ -39,8 +54,8 @@
 }
 
 .company-logo {
-  width: 100px;
-  height: 100px;
+  width: 6.25rem;   /* 100px to rem */
+  height: 6.25rem;  /* 100px to rem */
   border-radius: var(--border-radius-circle);
   object-fit: contain;
   padding: var(--spacing-2);
@@ -50,8 +65,21 @@
   transition: transform var(--transition-standard);
 }
 
-.experience-card:hover .company-logo {
+.experience-card:hover .company-logo,
+.experience-card:active .company-logo {
   transform: scale(1.1);
+}
+
+/* Touch alternative for logo hover effect */
+@media (hover: none) {
+  .experience-card:hover .company-logo {
+    transform: none;
+  }
+  
+  .experience-card:active .company-logo {
+    transform: scale(1.05);
+    transition: transform 0.1s ease-in-out;
+  }
 }
 
 /* Company name and job title */
@@ -122,19 +150,19 @@
 /* Responsive adjustments */
 @media (max-width: 991.98px) {
   .experience-card {
-    flex: 1 1 300px;
+    flex: 1 1 18.75rem;  /* 300px to rem */
   }
   
   .company-logo {
-    width: 90px;
-    height: 90px;
+    width: 5.625rem;  /* 90px to rem */
+    height: 5.625rem; /* 90px to rem */
   }
 }
 
 @media (max-width: 767.98px) {
   .company-logo {
-    width: 80px;
-    height: 80px;
+    width: 5rem;  /* 80px to rem */
+    height: 5rem; /* 80px to rem */
   }
   
   .job-title {

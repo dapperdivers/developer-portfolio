@@ -16,6 +16,17 @@
   background-color: var(--color-primary-alpha-05);
 }
 
+/* Fallback for browsers that don't support backdrop-filter */
+@supports not ((backdrop-filter: blur(8px)) or (-webkit-backdrop-filter: blur(8px))) {
+  .header-global {
+    background-color: rgba(0, 98, 204, 0.9); /* More opaque fallback */
+  }
+  
+  .header-global.scrolled {
+    background-color: rgba(0, 98, 204, 0.95) !important; /* Even more opaque when scrolled */
+  }
+}
+
 .header-hidden {
   transform: translateY(-100%);
 }

@@ -52,11 +52,11 @@ const Greetings = () => {
                       <p className="lead text-white" tabIndex="0">
                         {greetings.description}
                       </p>
-                      <SocialLinks />
-                      <div className="btn-wrapper my-4">
+                      <div className="hero-action-container">
+                        <SocialLinks />
                         <Button
                           className="resume-download-btn"
-                          variant="success"
+                          variant="light"
                           size="lg"
                           href={greetings.resumeLink}
                           ariaLabel="Download my resume"

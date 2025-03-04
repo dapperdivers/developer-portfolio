@@ -31,20 +31,20 @@
   outline-offset: 2px;
 }
 
-/* Icon sizes */
+/* Icon sizes with minimum touch target size of 44px (WCAG guidelines) */
 .skill-icon-sm .skill-icon {
-  width: calc(var(--spacing-6) * 1.2);
-  height: calc(var(--spacing-6) * 1.2);
+  width: max(calc(var(--spacing-6) * 1.2), 44px);
+  height: max(calc(var(--spacing-6) * 1.2), 44px);
 }
 
 .skill-icon-md .skill-icon {
-  width: calc(var(--spacing-7) * 1.25);
-  height: calc(var(--spacing-7) * 1.25);
+  width: max(calc(var(--spacing-7) * 1.25), 44px);
+  height: max(calc(var(--spacing-7) * 1.25), 44px);
 }
 
 .skill-icon-lg .skill-icon {
-  width: calc(var(--spacing-8) * 1.25);
-  height: calc(var(--spacing-8) * 1.25);
+  width: max(calc(var(--spacing-8) * 1.25), 44px);
+  height: max(calc(var(--spacing-8) * 1.25), 44px);
 }
 
 /* SVG icon inside */
@@ -95,25 +95,52 @@
   transform: translateX(-50%) translateY(0);
 }
 
-/* Responsive styles */
+/* Responsive styles - maintain minimum 44px touch target */
 @media (max-width: var(--breakpoint-md)) {
   .skill-icon-sm .skill-icon {
-    width: calc(var(--spacing-6) * 1);
-    height: calc(var(--spacing-6) * 1);
+    width: max(calc(var(--spacing-6) * 1), 44px);
+    height: max(calc(var(--spacing-6) * 1), 44px);
   }
   
   .skill-icon-md .skill-icon {
-    width: calc(var(--spacing-7) * 1);
-    height: calc(var(--spacing-7) * 1);
+    width: max(calc(var(--spacing-7) * 1), 44px);
+    height: max(calc(var(--spacing-7) * 1), 44px);
   }
   
   .skill-icon-lg .skill-icon {
-    width: calc(var(--spacing-8) * 1);
-    height: calc(var(--spacing-8) * 1);
+    width: max(calc(var(--spacing-8) * 1), 44px);
+    height: max(calc(var(--spacing-8) * 1), 44px);
   }
   
   .skill-icon-wrapper {
     margin: var(--spacing-1);
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  /* Ensure touch targets are large enough on touch devices */
+  .skill-icon {
+    min-width: 44px;
+    min-height: 44px;
+    padding: 8px;
+  }
+  
+  /* Make tapping area larger than visible icon */
+  .skill-icon::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: -8px;
+    right: -8px;
+    bottom: -8px;
+    z-index: -1;
+  }
+  
+  /* Adjust tooltip for touch */
+  .skill-tooltip {
+    padding: var(--spacing-2) var(--spacing-3);
+    font-size: var(--font-size-base);
   }
 }
 

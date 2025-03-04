@@ -6,9 +6,6 @@
   border-radius: var(--border-radius-sm);
   width: 100%;
   height: 100%;
-  
-  /* Apply will-change to optimize animation performance */
-  will-change: opacity, transform;
 }
 
 /* Maintain aspect ratio if not explicitly set */

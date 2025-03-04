@@ -1,34 +1,44 @@
 import React from 'react';
-
-import {  Button } from "reactstrap";
-
+import { FaGithub, FaLinkedin } from 'react-icons/fa';
 import { socialLinks } from "../portfolio";
+import './SocialLinks.css';
 
+/**
+ * Social Links component for displaying social media links
+ * 
+ * @component
+ * @returns {React.ReactElement} SocialLinks component
+ */
 const SocialLinks = () => {
     return (
-        <div className="btn-wrapper text-lg">
-                <Button
-                  className="btn-icon-only rounded-circle ml-1"
-                  color="github"
-                  href={socialLinks.github}
-                  target="_blank"
+        <div className="social-links">
+            {socialLinks.github && (
+                <a
+                    className="social-link-button"
+                    href={socialLinks.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="GitHub Profile"
                 >
-                  <span className="btn-inner--icon">
-                    <i className="fa fa-github" />
-                  </span>
-                </Button>
-                <Button
-                  className="btn-icon-only rounded-circle ml-1"
-                  color="twitter"
-                  href={socialLinks.linkedin}
-                  target="_blank"
+                    <FaGithub className="social-icon" />
+                </a>
+            )}
+            
+            {socialLinks.linkedin && (
+                <a
+                    className="social-link-button"
+                    href={socialLinks.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="LinkedIn Profile"
                 >
-                  <span className="btn-inner--icon">
-                    <i className="fa fa-linkedin" />
-                  </span>
-                </Button>
+                    <FaLinkedin className="social-icon" />
+                </a>
+            )}
+            
+            {/* Additional social links can be added here */}
         </div>
-     );
-}
+    );
+};
 
 export default SocialLinks;

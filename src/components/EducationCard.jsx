@@ -1,8 +1,10 @@
 import React, { memo } from "react";
 import PropTypes from 'prop-types';
 import { Badge } from "reactstrap";
+import { Icon } from "@iconify/react";
 import Card from "./ui/Card";
 import useIntersectionObserver from "../hooks/useIntersectionObserver";
+import './EducationCard.css';
 
 /**
  * Education card component for displaying educational background.
@@ -37,6 +39,9 @@ const EducationCard = ({ education, index = 0 }) => {
   
   return (
     <div className="education-card" ref={ref}>
+      <div className="education-icon">
+        <Icon icon="carbon:education" />
+      </div>
       <Card 
         className="education-card-inner"
         animation={animation}

@@ -1,5 +1,4 @@
 import React from 'react';
-import { skipLinkStyles } from '../utils/accessibilityUtils';
 import './SkipToContent.css';
 
 /**
@@ -17,7 +16,7 @@ import './SkipToContent.css';
  */
 const SkipToContent = () => {
   return (
-    <a href="#main-content" className="skip-to-content" style={skipLinkStyles()}>
+    <a href="#main-content" className="skip-to-content">
       Skip to main content
     </a>
   );
