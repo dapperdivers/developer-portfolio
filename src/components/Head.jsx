@@ -1,5 +1,5 @@
 import React from 'react';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 
 const Head = ({ 
   title = "Derek Mackley | Full Stack Developer",
@@ -73,8 +73,7 @@ const Head = ({
       <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       <link rel="dns-prefetch" href="https://api.github.com" />
       
-      {/* Resource hints for performance */}
-      <link rel="preload" href="/favicon.png" as="image" />
+      {/* Resource hints for performance - remove preload for favicon as it's already loaded via link rel="icon" */}
       
       {/* Structured data for better SEO */}
       <script type="application/ld+json">
