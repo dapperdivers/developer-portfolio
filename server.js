@@ -39,7 +39,9 @@ app.use(
         "'self'", 
         'https://api.github.com', 
         'https://fonts.googleapis.com',
-        'https://fonts.gstatic.com'
+        'https://fonts.gstatic.com',
+        'https://api.iconify.design',
+        'https://cdn.jsdelivr.net'
       ],
       fontSrc: ["'self'", 'https://fonts.gstatic.com', 'data:'],
       objectSrc: ["'self'"],  // Allow PDFs

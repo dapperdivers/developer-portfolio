@@ -49,12 +49,14 @@
 
 /* SVG icon inside */
 .skill-icon-svg {
-  width: 50%;
-  height: 50%;
+  width: 70%; 
+  height: 70%;
   transition: var(--transition-base);
   /* Preserve original icon colors */
   color: inherit;
   fill: currentColor;
+  /* Ensure Iconify icons display properly */
+  display: inline-block;
 }
 
 /* Override react-icons default color inheritance */
