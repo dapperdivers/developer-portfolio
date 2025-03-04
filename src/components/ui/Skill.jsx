@@ -124,6 +124,9 @@ const Skill = ({
             <Icon 
               icon={skill.iconName || skill.fontAwesomeClassname} 
               className="skill-icon-svg" 
+              width="24"
+              height="24"
+              onLoad={() => console.log(`Icon loaded: ${skill.iconName || skill.fontAwesomeClassname}`)}
               onError={(err) => console.warn(`Icon failed to load: ${skill.iconName || skill.fontAwesomeClassname}`, err)}
             />
           )}
