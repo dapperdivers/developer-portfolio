@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
-import { Icon } from '@iconify/react';
+import { FaGraduationCap, FaBriefcase, FaCode, FaStar, FaHandshake } from 'react-icons/fa';
 import './Section.css';
 
 /**
@@ -64,10 +64,17 @@ const Section = ({
   // Container classes
   const containerClasses = `container${fluid ? '-fluid' : ''}`;
 
-  // Section header
+  // Section header with appropriate icon based on section title
   const sectionHeader = (title || subtitle) && (
     <div className="section-header">
-      {icon && <Icon icon={icon} className="section-icon" />}
+      {/* Map section titles to appropriate React icons */}
+      {title === "Education" && <FaGraduationCap className="section-icon" />}
+      {title === "Experience" && <FaBriefcase className="section-icon" />}
+      {title === "Projects" && <FaCode className="section-icon" />}
+      {title === "What I do" && <FaCode className="section-icon" />}
+      {title === "Feedbacks" && <FaStar className="section-icon" />}
+      {title === "Contact" && <FaHandshake className="section-icon" />}
+      
       {title && <h2 className="section-title">{title}</h2>}
       {subtitle && <div className="section-subtitle">{subtitle}</div>}
     </div>

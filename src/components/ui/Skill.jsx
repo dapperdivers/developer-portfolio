@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
-import { Icon } from '@iconify/react';
 import { motion } from 'framer-motion';
+import mapIconToComponent from '../../utils/iconMapping';
 import './Skill.css';
 
 /**
@@ -16,6 +16,7 @@ import './Skill.css';
  * @param {string} [props.className=''] - Additional CSS classes
  * @param {string} [props.size='md'] - Size of the skill icon (sm, md, lg)
  * @param {boolean} [props.animate=true] - Whether to animate the component
+ * @param {boolean} [props.reducedMotion=false] - Whether to use simplified animations for performance
  * @returns {React.ReactElement} Skill component
  */
 const Skill = ({ 
@@ -23,7 +24,8 @@ const Skill = ({
   index = 0, 
   className = '', 
   size = 'md', 
-  animate = true 
+  animate = true,
+  reducedMotion = false
 }) => {
   // Size classes
   const sizeMap = {
@@ -38,11 +40,32 @@ const Skill = ({
   const baseClasses = [
     'skill-icon-wrapper',
     sizeClass,
+    reducedMotion ? 'reduced-motion' : '',
     className
   ].filter(Boolean).join(' ');
   
-  // Animation variants
-  const skillVariants = {
+  // Animation variants - optimized for performance when needed
+  const skillVariants = reducedMotion ? {
+    // Simplified animations for low-end devices
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: 1,
+      transition: { 
+        delay: 0.05 * index,
+        duration: 0.2
+      }
+    },
+    hover: { 
+      scale: 1.05,
+      transition: { 
+        duration: 0.2
+      }
+    },
+    tap: { 
+      scale: 0.95 
+    }
+  } : {
+    // Full animations for capable devices
     hidden: { opacity: 0, y: 10 },
     visible: { 
       opacity: 1, 
@@ -64,7 +87,14 @@ const Skill = ({
     }
   };
   
-  const tooltipVariants = {
+  // Tooltip animations - also optimized for performance
+  const tooltipVariants = reducedMotion ? {
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: 1,
+      transition: { duration: 0.1 }
+    }
+  } : {
     hidden: { opacity: 0, y: 5, scale: 0.8 },
     visible: { 
       opacity: 1, 
@@ -90,10 +120,10 @@ const Skill = ({
           aria-label={skill.skillName}
           role="img"
         >
-          <Icon 
-            icon={skill.fontAwesomeClassname} 
-            className="skill-icon-svg"
-          />
+          {skill.fontAwesomeClassname && (() => {
+            const IconComponent = mapIconToComponent(skill.fontAwesomeClassname);
+            return IconComponent ? <IconComponent className="skill-icon-svg" /> : null;
+          })()}
           
           <motion.span 
             className="skill-tooltip"
@@ -116,10 +146,10 @@ const Skill = ({
         aria-label={skill.skillName}
         role="img"
       >
-        <Icon 
-          icon={skill.fontAwesomeClassname} 
-          className="skill-icon-svg"
-        />
+        {skill.fontAwesomeClassname && (() => {
+          const IconComponent = mapIconToComponent(skill.fontAwesomeClassname);
+          return IconComponent ? <IconComponent className="skill-icon-svg" /> : null;
+        })()}
         <span className="skill-tooltip">
           {skill.skillName}
         </span>
@@ -136,7 +166,8 @@ Skill.propTypes = {
   index: PropTypes.number,
   className: PropTypes.string,
   size: PropTypes.oneOf(['sm', 'md', 'lg']),
-  animate: PropTypes.bool
+  animate: PropTypes.bool,
+  reducedMotion: PropTypes.bool
 };
 
 // Apply memoization for performance

@@ -62,18 +62,10 @@ export const skillsSection = {
 	subTitle:
 		"FULL STACK DEVELOPER THAT TINKERS WITH ANYTHING I CAN GET MY HANDS ON",
 	skills: [
-		emoji(
-			"⚡ Develop extensible, scalable, and secure web-based applications with a strong focus on security best practices"
-		),
-		emoji(
-			"⚡ Implement robust security measures and conduct security audits to ensure application integrity"
-		),
-		emoji(
-			"⚡ Update and migrate legacy apps to modern frameworks using cutting-edge technology"
-		),
-		emoji(
-			"⚡ Learn and experiment with various technologies - from automation tools and security frameworks to hardware"
-		),
+		"Develop extensible, scalable, and secure web-based applications with a strong focus on security best practices",
+		"Implement robust security measures and conduct security audits to ensure application integrity",
+		"Update and migrate legacy apps to modern frameworks using cutting-edge technology",
+		"Learn and experiment with various technologies - from automation tools and security frameworks to hardware",
 	],
 
 	softwareSkills: [
