@@ -8,7 +8,7 @@ describe('Skill Component', () => {
   // Test data
   const mockSkill = {
     skillName: 'React',
-    fontAwesomeClassname: 'logos:react'
+    iconName: 'logos:react'
   };
 
   it('renders the skill component with correct props', () => {
