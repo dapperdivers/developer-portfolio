@@ -68,66 +68,73 @@ export const skillsSection = {
 		"Learn and experiment with various technologies - from automation tools and security frameworks to hardware",
 	],
 
+	// Skills section displays icons from Iconify - https://iconify.design/
+	// You can use any icon from Iconify by specifying the icon name
+	// For example:
+	// - Logos: 'logos:javascript' 
+	// - Simple Icons: 'simple-icons:react'
+	// - Material Design Icons: 'mdi:language-javascript'
+	// - Font Awesome: 'fa6-brands:react'
 	softwareSkills: [
 		{
-			skillName: "html-5",
-			fontAwesomeClassname: "simple-icons:html5",
+			skillName: "HTML5",
+			iconName: "vscode-icons:file-type-html",
 		},
 		{
-			skillName: "css3",
-			fontAwesomeClassname: "simple-icons:css3",
+			skillName: "CSS3",
+			iconName: "vscode-icons:file-type-css",
 		},
 		{
-			skillName: "sass",
-			fontAwesomeClassname: "simple-icons:sass",
+			skillName: "Sass",
+			iconName: "vscode-icons:file-type-sass",
 		},
 		{
 			skillName: "JavaScript",
-			fontAwesomeClassname: "simple-icons:javascript",
+			iconName: "logos:javascript",
 		},
 		{
 			skillName: "TypeScript",
-			fontAwesomeClassname: "simple-icons:typescript",
+			iconName: "logos:typescript-icon",
 		},
 		{
-			skillName: "reactjs",
-			fontAwesomeClassname: "simple-icons:react",
+			skillName: "React",
+			iconName: "logos:react",
 		},
 		{
-			skillName: "nodejs",
-			fontAwesomeClassname: "simple-icons:nodejs",
+			skillName: "Node.js",
+			iconName: "logos:nodejs-icon",
 		},
 		{
-			skillName: "npm",
-			fontAwesomeClassname: "simple-icons:npm",
+			skillName: "NPM",
+			iconName: "logos:npm-icon",
 		},
 		{
-			skillName: "sql-database",
-			fontAwesomeClassname: "simple-icons:mysql",
+			skillName: "MySQL",
+			iconName: "logos:mysql",
 		},
 		{
-			skillName: "aws",
-			fontAwesomeClassname: "simple-icons:amazonaws",
+			skillName: "AWS",
+			iconName: "logos:aws",
 		},
 		{
-			skillName: "azure",
-			fontAwesomeClassname: "simple-icons:microsoftazure",
+			skillName: "Azure",
+			iconName: "logos:microsoft-azure",
 		},
 		{
-			skillName: "gpc",
-			fontAwesomeClassname: "simple-icons:googlecloud",
+			skillName: "Google Cloud",
+			iconName: "logos:google-cloud",
 		},
 		{
-			skillName: "python",
-			fontAwesomeClassname: "simple-icons:python",
+			skillName: "Python",
+			iconName: "logos:python",
 		},
 		{
-			skillName: "git",
-			fontAwesomeClassname: "simple-icons:git",
+			skillName: "Git",
+			iconName: "logos:git-icon",
 		},
 		{
-			skillName: "docker",
-			fontAwesomeClassname: "simple-icons:docker",
+			skillName: "Docker",
+			iconName: "logos:docker-icon",
 		},
 	],
 };

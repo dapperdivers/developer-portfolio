@@ -23,10 +23,10 @@ export const securityConfig = {
 export const applyCSP = () => {
   if (!securityConfig.enableCSP) return;
   
-  // Define CSP directives
+  // Define CSP directives - remove jsdelivr reference
   const cspDirectives = [
     "default-src 'self'",
-    "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://api.github.com",
+    "script-src 'self' 'unsafe-inline' https://api.github.com",
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "img-src 'self' data: https://avatars.githubusercontent.com https://*.githubusercontent.com",
     "font-src 'self' https://fonts.gstatic.com",
@@ -56,42 +56,83 @@ export const applyReferrerPolicy = () => {
 };
 
 /**
- * Apply X-XSS-Protection header equivalent
- * Enables the browser's built-in XSS filter
+ * Apply XSS protection measures
+ * Note: While X-XSS-Protection as a meta tag is widely supported,
+ * it's better set server-side. We implement additional client-side measures.
  */
 export const applyXXSSProtection = () => {
   if (!securityConfig.enableXXSSProtection) return;
   
+  // The meta tag is still useful for some browsers but should be set server-side as a header
   const meta = document.createElement('meta');
   meta.httpEquiv = 'X-XSS-Protection';
   meta.content = '1; mode=block';
   document.head.appendChild(meta);
+  
+  // Add CSP directive that helps with XSS protection
+  const cspMeta = document.createElement('meta');
+  cspMeta.httpEquiv = 'Content-Security-Policy';
+  cspMeta.content = "script-src 'self' 'unsafe-inline' https://api.github.com";
+  document.head.appendChild(cspMeta);
+  
+  // Add HTML encoding helper to window object
+  window.encodeHTML = (str) => {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  };
 };
 
 /**
- * Apply frame protection (X-Frame-Options equivalent)
+ * Apply frame protection using CSP frame-ancestors
  * Prevents the page from being displayed in an iframe
+ * Note: X-Frame-Options can only be set server-side via HTTP headers,
+ * so we use CSP frame-ancestors directive instead for client-side protection
  */
 export const applyFrameProtection = () => {
   if (!securityConfig.enableFrameProtection) return;
   
+  // Use CSP frame-ancestors directive instead of X-Frame-Options
+  // This achieves the same effect but works with meta tags
   const meta = document.createElement('meta');
-  meta.httpEquiv = 'X-Frame-Options';
-  meta.content = 'DENY';
+  meta.httpEquiv = 'Content-Security-Policy';
+  meta.content = "frame-ancestors 'none'";
   document.head.appendChild(meta);
+  
+  // Also apply a JavaScript-based protection as a fallback
+  if (window !== window.top) {
+    try {
+      // If we're in a frame, try to break out
+      window.top.location.href = window.location.href;
+    } catch (e) {
+      // If we can't access the parent (different origin), we're likely being framed
+      console.warn('Attempted frame embedding detected');
+    }
+  }
 };
 
 /**
- * Apply Strict-Transport-Security header equivalent
- * Enforces the use of HTTPS
+ * Apply HTTPS enforcement
+ * Note: Strict-Transport-Security can only be set server-side via HTTP headers
+ * This function provides a client-side fallback to redirect HTTP to HTTPS
  */
 export const applyStrictTransportSecurity = () => {
   if (!securityConfig.enableStrictTransportSecurity) return;
   
-  const meta = document.createElement('meta');
-  meta.httpEquiv = 'Strict-Transport-Security';
-  meta.content = 'max-age=31536000; includeSubDomains';
-  document.head.appendChild(meta);
+  // Redirect to HTTPS if currently on HTTP
+  if (window.location.protocol === 'http:' && !window.location.hostname.includes('localhost')) {
+    const httpsUrl = 'https:' + window.location.href.substring(window.location.protocol.length);
+    window.location.replace(httpsUrl);
+  }
+  
+  // Add a comment in the HTML to remind developers this should be set server-side
+  const comment = document.createComment(
+    ' HSTS should be set server-side via Strict-Transport-Security header with value: max-age=31536000; includeSubDomains '
+  );
+  document.head.appendChild(comment);
 };
 
 /**
@@ -132,16 +173,27 @@ export const preventClickjacking = () => {
 
 /**
  * Apply all security enhancements
+ * Note: Many security headers are already set server-side in server.js
+ * This function focuses on client-side security enhancements
  */
 export const applySecurityEnhancements = () => {
-  // Apply security headers via meta tags
-  applyCSP();
-  applyReferrerPolicy();
-  applyXXSSProtection();
-  applyFrameProtection();
-  applyStrictTransportSecurity();
+  // Since we have server.js setting headers correctly,
+  // only use client-side CSP for development mode or as fallback
+  if (process.env.NODE_ENV === 'development' || !window.location.hostname.includes('localhost')) {
+    // Only apply CSP client-side in development or when not served by our server
+    applyCSP();
+  }
   
-  // Apply runtime protections
+  // Apply referrer policy (this works fine as a meta tag)
+  applyReferrerPolicy();
+  
+  // Skip client-side header emulation since they are properly set in server.js
+  // This prevents browser console warnings
+  // applyXXSSProtection();
+  // applyFrameProtection();
+  // applyStrictTransportSecurity();
+  
+  // Apply runtime protections (these are still valuable)
   preventClickjacking();
   
   // Add event listeners to sanitize form inputs
@@ -157,6 +209,15 @@ export const applySecurityEnhancements = () => {
   document.querySelectorAll('a[target="_blank"]').forEach(link => {
     link.setAttribute('rel', 'noopener noreferrer');
   });
+  
+  // Add comment explaining server-side headers
+  if (process.env.NODE_ENV === 'development') {
+    const comment = document.createComment(
+      ' Security headers (X-Frame-Options, Strict-Transport-Security, X-XSS-Protection) ' +
+      'are properly set server-side in server.js using Helmet middleware '
+    );
+    document.head.appendChild(comment);
+  }
 };
 
 export default {

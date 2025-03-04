@@ -193,14 +193,18 @@ export const initImageOptimization = () => {
     });
   }
   
-  // Preload hero images for faster initial render
+  // Preload critical images for faster initial render
   if (imageConfig.preloadHeroImages) {
-    // Add paths to critical hero images
+    // Only preload images that actually exist
     const criticalImages = [
-      '/src/assets/img/hero-background.jpg', 
-      '/src/assets/img/profile-image.jpg'
+      // No critical background images to preload at this time
+      // Add paths here when new hero images are added
     ];
-    preloadCriticalImages(criticalImages);
+    
+    // Only call preload if we have images to preload
+    if (criticalImages.length > 0) {
+      preloadCriticalImages(criticalImages);
+    }
   }
 };
 
