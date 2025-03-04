@@ -13,8 +13,8 @@ describe('Enhanced Skill Component Tests', () => {
   it('renders skill with proper structure', () => {
     render(<Skill skill={mockSkill} index={2} />);
     
-    // Icon should be present
-    const iconElement = screen.getByRole('img', { name: /logos:javascript/i });
+    // Icon should be present - using aria-label which contains the skill name
+    const iconElement = screen.getByRole('img', { name: 'JavaScript' });
     expect(iconElement).toBeInTheDocument();
     
     // Skill name should be present
@@ -48,8 +48,9 @@ describe('Enhanced Skill Component Tests', () => {
     render(<Skill skill={mockSkill} />);
     
     // Check for appropriate accessibility attributes
-    const iconElement = screen.getByTestId('mock-icon');
-    expect(iconElement).toHaveAttribute('aria-label', 'logos:javascript');
+    // The aria-label contains the skill name, not the icon class
+    const iconElement = screen.getByRole('img', { name: 'JavaScript' });
+    expect(iconElement).toHaveAttribute('aria-label', 'JavaScript');
   });
   
   it('applies custom className when provided', () => {

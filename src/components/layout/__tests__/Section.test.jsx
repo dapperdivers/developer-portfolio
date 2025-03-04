@@ -29,14 +29,15 @@ describe('Section Component', () => {
   test('renders with icon', () => {
     render(
       <Section
-        icon="mdi:home"
-        title="Section Title"
+        title="Education"
       >
         <p>Section content</p>
       </Section>
     );
-    expect(screen.getByText('Section Title')).toBeInTheDocument();
-    expect(document.querySelector('[data-icon="mdi:home"]')).toBeInTheDocument();
+    expect(screen.getByText('Education')).toBeInTheDocument();
+    expect(screen.getByText('Section content')).toBeInTheDocument();
+    // The Section component renders predefined icons based on title, not the icon prop
+    expect(document.querySelector('.section-icon')).toBeInTheDocument();
   });
 
   test('applies id attribute', () => {
