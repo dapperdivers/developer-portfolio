@@ -4,8 +4,10 @@ import webdev from '../assets/lottie/webdev.json';
 import { motion } from "framer-motion";
 import { Row, Col } from "reactstrap";
 import Skill from "../components/ui/Skill";
+import SkeletonCard from "../components/SkeletonCard";
 import Section from "../components/layout/Section";
 import useSkills from "../hooks/useSkills";
+import { usePortfolio } from "../context/PortfolioContext";
 import './Skills.css';
 
 /**
@@ -27,7 +29,37 @@ import './Skills.css';
  * );
  */
 const Skills = () => {
-  const { skillsSection } = useSkills();
+  // Get portfolio data
+  const portfolioData = usePortfolio();
+  
+  // Get loading delay from context or use default (demonstrates skeleton loading)
+  const loadingDelay = portfolioData?.settings?.loadingDelay || 0;
+  
+  // Get skills data with options and loading delay
+  const skillsData = useSkills({
+    addFallbacks: true,
+    delay: loadingDelay
+  });
+  
+  // Extract skillsSection or use empty default
+  const skillsSection = skillsData?.skillsSection || { 
+    softwareSkills: [],
+    skills: []
+  };
+  
+  // Loading and error states
+  const isLoading = !skillsData;
+  const hasError = skillsData && skillsSection.softwareSkills.length === 0;
+  
+  // Skip rendering if explicitly disabled in config
+  if (portfolioData?.skillsSection?.display === false) {
+    return null;
+  }
+  
+  // Determine number of skeleton cards to show
+  const skeletonCount = 12; // Reasonable default
+  
+  // Device capability detection
   const [isLowEndDevice, setIsLowEndDevice] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   
@@ -123,6 +155,61 @@ const Skills = () => {
     };
   }, [useSimplifiedAnimations]);
   
+  // Loading state
+  if (isLoading) {
+    return (
+      <Section
+        id="skills"
+        title="Skills"
+        icon="simple-icons:apachespark"
+        className={`skills-section ${useSimplifiedAnimations ? 'reduced-motion' : ''}`}
+      >
+        <Row className="align-items-center">
+          <Col lg="6">
+            <div className="skills-animation skeleton-animation">
+              <div className="skeleton-gradient" style={{ width: '300px', height: '300px', borderRadius: '8px' }}></div>
+            </div>
+          </Col>
+          
+          <Col lg="6">
+            <div className="skills-grid skills-grid-loading skeleton-staggered">
+              {Array.from({ length: skeletonCount }).map((_, i) => (
+                <SkeletonCard 
+                  key={i} 
+                  type="skill" 
+                  index={i} 
+                />
+              ))}
+            </div>
+            
+            <div className="skills-description skeleton-staggered">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <div key={i} className="skeleton-text-block" style={{ animationDelay: `${i * 0.15}s` }}></div>
+              ))}
+            </div>
+          </Col>
+        </Row>
+      </Section>
+    );
+  }
+  
+  // Error state
+  if (hasError) {
+    return (
+      <Section
+        id="skills"
+        title="Skills"
+        icon="simple-icons:apachespark"
+        className="skills-section"
+      >
+        <div className="skills-empty-state">
+          <p>No skills are currently available.</p>
+        </div>
+      </Section>
+    );
+  }
+
+  // Normal state
   return (
     <Section
       id="skills"

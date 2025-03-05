@@ -1,4 +1,5 @@
 /* Experience Section Styles */
+@import url('../assets/css/skeleton-loading.css');
 
 /* Section layout */
 .experience-section {
@@ -13,6 +14,67 @@
   flex-wrap: wrap;
   gap: var(--spacing-6);
   justify-content: center;
+}
+
+/* Experience grid loading */
+.experience-grid-loading {
+  opacity: 0.85;
+  position: relative;
+}
+
+/* Experience card skeleton styles */
+.experience-card-skeleton {
+  flex: 1 1 21.875rem;  /* 350px to rem */
+  max-width: 25rem;     /* 400px to rem */
+  height: 400px;
+  background-color: var(--color-background);
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+  box-shadow: var(--box-shadow-sm);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.skeleton-header {
+  height: 60px;
+  background: linear-gradient(90deg, var(--color-primary-dark) 0%, var(--color-primary) 50%, var(--color-primary-dark) 100%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 2s infinite;
+}
+
+.skeleton-image-circle {
+  width: 100px;
+  height: 100px;
+  margin: var(--spacing-4) auto;
+  border-radius: var(--border-radius-circle);
+  background: linear-gradient(90deg, var(--color-gray-100) 0%, var(--color-gray-200) 50%, var(--color-gray-100) 100%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
+}
+
+.skeleton-subtitle {
+  height: 18px;
+  width: 40%;
+  margin: 0 auto var(--spacing-3);
+  border-radius: var(--border-radius);
+  background: linear-gradient(90deg, var(--color-gray-100) 0%, var(--color-gray-200) 50%, var(--color-gray-100) 100%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
+}
+
+/* Empty state styles */
+.experience-empty-state {
+  padding: var(--spacing-6);
+  text-align: center;
+  background-color: var(--color-background);
+  border-radius: var(--border-radius-lg);
+  margin-top: var(--spacing-6);
+}
+
+.experience-empty-state p {
+  font-size: var(--font-size-lg);
+  color: var(--color-text-muted);
 }
 
 /* Responsive adjustments */

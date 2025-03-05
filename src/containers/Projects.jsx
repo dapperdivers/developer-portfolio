@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import ProjectsCard from "../components/ProjectsCard";
+import SkeletonCard from "../components/SkeletonCard";
 import Section from "../components/layout/Section";
 import useProjects from "../hooks/useProjects";
 import useMemoValues from "../hooks/useMemoValues";
@@ -23,9 +24,13 @@ const Projects = () => {
   const portfolioData = usePortfolio();
   const { topProjects } = useMemoValues(portfolioData);
   
-  // Get projects from the specialized hook with filter/sorting options
+  // Get loading delay from context or use default (demonstrates skeleton loading)
+  const loadingDelay = portfolioData?.settings?.loadingDelay || 0;
+  
+  // Get projects from the specialized hook with filter/sorting options and loading delay
   const projects = useProjects({
-    sortBy: 'recent'
+    sortBy: 'recent',
+    delay: loadingDelay
   });
   
   // Determine which projects to display (use topProjects if specifically requested)
@@ -37,6 +42,12 @@ const Projects = () => {
   
   // Error state flag
   const hasError = displayProjects && displayProjects.length === 0;
+  
+  // Determine number of skeleton cards to show based on viewport size
+  const skeletonCount = useMemo(() => {
+    // Could be dynamic based on viewport, for now static
+    return 3;
+  }, []);
   
   // Skip rendering the whole section if explicitly disabled in config
   if (portfolioData?.projectsSection?.display === false) {
@@ -70,17 +81,13 @@ const Projects = () => {
         icon="simple-icons:github"
         className="projects-section"
       >
-        <div className="projects-grid projects-grid-loading">
-          {Array.from({ length: 3 }).map((_, i) => (
-            <div key={i} className="project-card-skeleton" aria-hidden="true">
-              <div className="skeleton-image"></div>
-              <div className="skeleton-content">
-                <div className="skeleton-title"></div>
-                <div className="skeleton-description"></div>
-                <div className="skeleton-tags"></div>
-                <div className="skeleton-actions"></div>
-              </div>
-            </div>
+        <div className="projects-grid projects-grid-loading skeleton-staggered">
+          {Array.from({ length: skeletonCount }).map((_, i) => (
+            <SkeletonCard 
+              key={i} 
+              type="project" 
+              index={i} 
+            />
           ))}
         </div>
       </Section>

@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { usePortfolio } from '../context/PortfolioContext';
 
 /**
@@ -24,7 +24,9 @@ const isValidProject = (project) => {
  * @param {Object} options - Hook options
  * @param {string} [options.filter] - Optional filter string to search in project name/description
  * @param {string} [options.sortBy='default'] - Optional sort method ('default', 'name', 'recent')
- * @returns {Array} Array of validated and sorted project objects
+ * @param {number} [options.delay=0] - Optional delay in ms to simulate loading (for skeleton demo)
+ * @param {boolean} [options.cache=true] - Whether to cache the results
+ * @returns {Array|null} Array of validated and sorted project objects or null if loading
  * 
  * @example
  * import useProjects from '../hooks/useProjects';
@@ -33,11 +35,16 @@ const isValidProject = (project) => {
  *   // Get all projects sorted by default order
  *   const projects = useProjects();
  *   
- *   // Or get filtered and sorted projects
+ *   // Or get filtered and sorted projects with loading delay for skeleton demo
  *   const filteredProjects = useProjects({ 
  *     filter: 'react', 
- *     sortBy: 'recent' 
+ *     sortBy: 'recent',
+ *     delay: 1000 // Show skeleton for 1 second
  *   });
+ *   
+ *   if (!projects) {
+ *     return <LoadingSkeleton />;
+ *   }
  *   
  *   return (
  *     <div>
@@ -49,11 +56,27 @@ const isValidProject = (project) => {
  * };
  */
 const useProjects = (options = {}) => {
-  const { filter, sortBy = 'default' } = options;
+  const { filter, sortBy = 'default', delay = 0, cache = true } = options;
   const { projects } = usePortfolio();
+  const [loading, setLoading] = useState(delay > 0);
+  
+  // Effect for simulating loading time (for skeleton demo)
+  useEffect(() => {
+    let timer;
+    if (delay > 0) {
+      setLoading(true);
+      timer = setTimeout(() => {
+        setLoading(false);
+      }, delay);
+    }
+    
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, [delay]);
   
   // Return memoized projects array to prevent unnecessary re-renders
-  return useMemo(() => {
+  const processedProjects = useMemo(() => {
     // If projects is undefined or not an array, return empty array
     if (!projects || !Array.isArray(projects)) {
       console.warn('Projects data is missing or invalid');
@@ -93,6 +116,9 @@ const useProjects = (options = {}) => {
         return validProjects;
     }
   }, [projects, filter, sortBy]);
+  
+  // Return null during loading to trigger skeleton UI
+  return loading ? null : processedProjects;
 };
 
 export default useProjects;
