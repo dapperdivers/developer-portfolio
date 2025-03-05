@@ -78,7 +78,6 @@ import Section from '../../components/layout/Section';
 import Skill from '../../components/ui/Skill';
 import SkeletonCard from '../../components/SkeletonCard';
 import { usePortfolio } from '../../context/PortfolioContext';
-import { Row, Col } from 'reactstrap';
 
 // Mock DisplayLottie component
 jest.mock('../../components/DisplayLottie', () => {
@@ -142,15 +141,7 @@ jest.mock('../../context/PortfolioContext', () => ({
   }))
 }));
 
-// Mock reactstrap components
-jest.mock('reactstrap', () => ({
-  Row: jest.fn(({ children, className }) => (
-    <div data-testid="mock-row" className={className}>{children}</div>
-  )),
-  Col: jest.fn(({ children, lg }) => (
-    <div data-testid="mock-col" data-lg={lg}>{children}</div>
-  ))
-}));
+// No need to mock reactstrap components since we've migrated to Tailwind CSS
 
 describe('Skills Container', () => {
   beforeEach(() => {

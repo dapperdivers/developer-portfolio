@@ -1,10 +1,10 @@
 import React, { memo } from "react";
 import PropTypes from 'prop-types';
-import { Badge } from "reactstrap";
+
 import { FaGraduationCap } from 'react-icons/fa';
 import Card from "./ui/Card";
 import useIntersectionObserver from "../hooks/useIntersectionObserver";
-import '../assets/css/components/ui/education-card.css';
+
 
 /**
  * Education card component for displaying educational background.
@@ -53,13 +53,13 @@ const EducationCard = ({ education, index = 0 }) => {
           </h5>
           <h6 className="degree" tabIndex="0">{education.subHeader}</h6>
           
-          <Badge 
-            color="primary" 
-            className="duration-badge"
+          <span className="badge badge-primary duration-badge" 
+            
+           
             aria-label={`Duration: ${education.duration}`}
           >
             {education.duration}
-          </Badge>
+          </span>
           
           {education.desc && (
             <p className="description" tabIndex="0">{education.desc}</p>

@@ -1,27 +1,20 @@
 import React from 'react';
 import { FaMapMarkerAlt } from 'react-icons/fa';
-import {
-    Card,
-    Col,
-    Row,
-    Container,
-    Button
-} from "reactstrap";
 import { motion } from "framer-motion";
 import SocialLinks from "../components/SocialLinks";
-import "../assets/css/contact-section.css";
+import Button from "./ui/Button";
 
 const GithubProfileCard = ({ prof, error, onRetry }) => {
     // Check if profile data exists
     const hasProfile = prof && Object.keys(prof).length > 0;
     
     return (
-        <Card className="contact-card bg-gradient-accent shadow-lg border-0">
-            <Container>
+        <div className="contact-card bg-gradient-accent shadow-lg border-0">
+            <div className="container mx-auto px-4">
                 {!hasProfile || error ? (
                     // Fallback UI when GitHub API fails
                     <div className="github-fallback">
-                        <div className="fallback-image mx-auto d-flex align-items-center justify-content-center">
+                        <div className="fallback-image mx-auto flex items-center justify-center">
                             <FaMapMarkerAlt size={40} className="text-accent" />
                         </div>
                         <h3 className="fallback-title">GitHub Profile Unavailable</h3>
@@ -29,7 +22,11 @@ const GithubProfileCard = ({ prof, error, onRetry }) => {
                             {error || "Unable to load GitHub profile data. Please try again later."}
                         </p>
                         {onRetry && (
-                            <Button className="refresh-button" onClick={onRetry}>
+                            <Button 
+                                className="refresh-button" 
+                                onClick={onRetry}
+                                variant="primary"
+                            >
                                 Retry
                             </Button>
                         )}
@@ -41,8 +38,8 @@ const GithubProfileCard = ({ prof, error, onRetry }) => {
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.5 }}
                     >
-                        <Row className="align-items-center">
-                            <Col className="order-lg-2 text-center" lg="4">
+                        <div className="flex flex-wrap -mx-4 items-center">
+                            <div className="w-full px-4 lg:w-4/12 order-2 lg:order-2 text-center">
                                 <motion.div 
                                     className="profile-image-container"
                                     whileHover={{ scale: 1.05 }}
@@ -55,8 +52,8 @@ const GithubProfileCard = ({ prof, error, onRetry }) => {
                                         loading="lazy"
                                     />
                                 </motion.div>
-                            </Col>
-                            <Col lg="8" className="order-lg-1">
+                            </div>
+                            <div className="w-full px-4 lg:w-8/12 order-1 lg:order-1">
                                 <h2 className="profile-title">
                                     Reach Out to Me!
                                 </h2>
@@ -77,12 +74,12 @@ const GithubProfileCard = ({ prof, error, onRetry }) => {
                                 <div className="contact-social-links">
                                     <SocialLinks />
                                 </div>
-                            </Col>                    
-                        </Row>
+                            </div>                    
+                        </div>
                     </motion.div>
                 )}
-            </Container>
-        </Card>
+            </div>
+        </div>
      );
 }
  

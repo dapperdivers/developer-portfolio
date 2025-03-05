@@ -1,5 +1,5 @@
 import React from 'react';
-import './SkipToContent.css';
+
 
 /**
  * Skip to content link component for keyboard users.

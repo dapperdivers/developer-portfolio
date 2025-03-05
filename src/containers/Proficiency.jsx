@@ -1,16 +1,10 @@
 import React, { useRef } from 'react';
 import build from "../assets/lottie/build";
 import { SkillBars } from "../portfolio";
-import {
-    Container,
-    Row,
-    Progress,
-    Col
-} from "reactstrap";
 import { motion, useInView } from "framer-motion";
 
 import GreetingLottie from "../components/DisplayLottie";
-import "../assets/css/proficiency-section.css";
+import Progress from "../components/ui/Progress";
 
 const ProgressBar = ({ skill, index }) => {
     const ref = useRef(null);
@@ -32,12 +26,12 @@ const ProgressBar = ({ skill, index }) => {
                 <span>{skill.progressPercentage}%</span>
             </div>
             <Progress 
-                max="100" 
+                max={100} 
                 value={isInView ? skill.progressPercentage : 0} 
                 color="info"
                 aria-valuenow={skill.progressPercentage}
-                aria-valuemin="0"
-                aria-valuemax="100"
+                aria-valuemin={0}
+                aria-valuemax={100}
                 aria-label={`${skill.Stack} proficiency: ${skill.progressPercentage}%`}
             />
         </motion.div>
@@ -46,29 +40,29 @@ const ProgressBar = ({ skill, index }) => {
 
 const Proficiency = () => {
     return ( 
-        <Container className="section section-lg proficiency-section bg-default">
+        <div className="container mx-auto px-4 py-16 section proficiency-section">
            <motion.div
              initial={{ opacity: 0, y: 40 }}
              animate={{ opacity: 1, y: 0 }}
              transition={{ duration: 0.5 }}
            >
-            <Row className="align-items-center">
-                    <Col lg="6">
+            <div className="flex flex-wrap -mx-4 items-center">
+                    <div className="w-full px-4 lg:w-6/12">
                         <h1 className="h1" tabIndex="0">Proficiency</h1>
                         {
                             SkillBars.map((skill, index) => (
                                 <ProgressBar key={skill.Stack} skill={skill} index={index} />
                             ))
                         }
-                    </Col>
-                    <Col lg="6">
+                    </div>
+                    <div className="w-full px-4 lg:w-6/12">
                         <div className="proficiency-animation">
                             <GreetingLottie animationData={build}/>
                         </div>
-                    </Col>
-                </Row>
+                    </div>
+                </div>
            </motion.div>
-        </Container>
+        </div>
      );
 }
  

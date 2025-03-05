@@ -4,7 +4,7 @@ import { FaStar, FaQuoteLeft, FaQuoteRight } from 'react-icons/fa';
 import Card from "./ui/Card";
 import ResponsiveImage from "./ui/ResponsiveImage";
 import useIntersectionObserver from "../hooks/useIntersectionObserver";
-import '../assets/css/components/ui/feedback-card.css';
+
 
 /**
  * Feedback card component for displaying testimonials.

@@ -9,7 +9,7 @@ import GreetingLottie from "../components/DisplayLottie";
 import SocialLinks from "../components/SocialLinks";
 
 // Import hero section styles
-import "../assets/css/hero-section.css";
+
 
 const Greetings = () => {
   return ( 

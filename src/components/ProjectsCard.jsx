@@ -4,7 +4,7 @@ import Card from "./ui/Card";
 import Button from "./ui/Button";
 import ResponsiveImage from "./ui/ResponsiveImage";
 import useIntersectionObserver from "../hooks/useIntersectionObserver";
-import './ProjectsCard.css';
+
 
 /**
  * Project card component for displaying individual project information.

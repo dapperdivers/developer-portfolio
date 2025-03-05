@@ -5,7 +5,7 @@ import ResponsiveImage from "./ui/ResponsiveImage";
 import useIntersectionObserver from "../hooks/useIntersectionObserver";
 import useImageColor from "../hooks/useImageColor";
 import { useMemo } from 'react';
-import '../assets/css/components/ui/experience-card.css';
+
 
 /**
  * Experience card component for displaying job experience information.

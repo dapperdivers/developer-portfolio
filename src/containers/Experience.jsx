@@ -7,7 +7,7 @@ import { Icon } from '@iconify/react';
 import useExperience from "../hooks/useExperience";
 import useTimelineView from "../hooks/useTimelineView";
 import { usePortfolio } from "../context/PortfolioContext";
-import "../assets/css/experience-section.css";
+
 
 /**
  * Experience section component displaying work history.

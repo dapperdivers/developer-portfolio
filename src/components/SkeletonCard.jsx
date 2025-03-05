@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
-import '../assets/css/skeleton-loading.css';
+
 
 /**
  * SkeletonCard component for use as loading placeholders

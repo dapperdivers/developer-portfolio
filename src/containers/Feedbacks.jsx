@@ -2,7 +2,7 @@ import React, { memo } from "react";
 import FeedbackCard from "../components/FeedbackCard";
 import Section from "../components/layout/Section";
 import useFeedback from "../hooks/useFeedback";
-import "../assets/css/feedbacks-section.css";
+
 
 /**
  * Feedbacks section displaying testimonials and recommendations.

@@ -2,13 +2,13 @@ import React, { memo, useMemo, useState, useEffect } from 'react';
 import DisplayLottie from '../components/DisplayLottie';
 import webdev from '../assets/animations/lottie/development/dev-webdev.json';
 import { motion } from "framer-motion";
-import { Row, Col } from "reactstrap";
+
 import Skill from "../components/ui/Skill";
 import SkeletonCard from "../components/SkeletonCard";
 import Section from "../components/layout/Section";
 import useSkills from "../hooks/useSkills";
 import { usePortfolio } from "../context/PortfolioContext";
-import './Skills.css';
+import '../assets/css/tailwind.css';
 
 /**
  * Skills component that displays a grid of skills icons and descriptions.
@@ -164,14 +164,14 @@ const Skills = () => {
         icon="simple-icons:apachespark"
         className={`skills-section ${useSimplifiedAnimations ? 'reduced-motion' : ''}`}
       >
-        <Row className="align-items-center">
-          <Col lg="6">
+        <div className="flex flex-wrap -mx-4 items-center">
+          <div className="w-full px-4 lg:w-6/12">
             <div className="skills-animation skeleton-animation">
               <div className="skeleton-gradient" style={{ width: '300px', height: '300px', borderRadius: '8px' }}></div>
             </div>
-          </Col>
+          </div>
           
-          <Col lg="6">
+          <div className="w-full px-4 lg:w-6/12">
             <div className="skills-grid skills-grid-loading skeleton-staggered">
               {Array.from({ length: skeletonCount }).map((_, i) => (
                 <SkeletonCard 
@@ -187,8 +187,8 @@ const Skills = () => {
                 <div key={i} className="skeleton-text-block" style={{ animationDelay: `${i * 0.15}s` }}></div>
               ))}
             </div>
-          </Col>
-        </Row>
+          </div>
+        </div>
       </Section>
     );
   }
@@ -219,8 +219,8 @@ const Skills = () => {
       className={`skills-section ${useSimplifiedAnimations ? 'reduced-motion' : ''}`}
       aria-label="Developer skills and technologies"
     >
-      <Row className="align-items-center">
-        <Col lg="6">
+      <div className="flex flex-wrap -mx-4 items-center">
+        <div className="w-full px-4 lg:w-6/12">
           <div 
             className="skills-animation"
             aria-hidden="true" // Animation is decorative
@@ -232,9 +232,9 @@ const Skills = () => {
               shouldOptimize={true}
             />
           </div>
-        </Col>
+        </div>
         
-        <Col lg="6">
+        <div className="w-full px-4 lg:w-6/12">
           <div 
             className="skills-grid"
             aria-label={`${skillsSection.softwareSkills.length} technical skills`}
@@ -268,8 +268,8 @@ const Skills = () => {
               </motion.p>
             ))}
           </motion.div>
-        </Col>
-      </Row>
+        </div>
+      </div>
     </Section>
   );
 };

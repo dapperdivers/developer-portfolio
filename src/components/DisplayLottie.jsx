@@ -3,7 +3,7 @@ import Lottie from 'lottie-react';
 import Loading from './Loading';
 import { FaPlay, FaPause } from 'react-icons/fa';
 // CSS is now properly organized in the design system
-import '../assets/css/components/ui/display-lottie.css';
+
 
 // The lottie-react package provides direct methods to control the animation
 // without needing to use refs directly on the component
@@ -165,26 +165,26 @@ const DisplayLottie = ({
                 />
                 
                 {/* Accessibility controls */}
-                <div className="animation-controls" aria-live="polite">
+                <div className="absolute bottom-2 right-2 flex items-center bg-black/60 p-1 px-2 rounded opacity-0 transition-opacity duration-200 z-10" aria-live="polite">
                     <button 
                         onClick={togglePlay}
-                        className="animation-control-button"
+                        className="bg-primary text-white border-none rounded-full w-10 h-10 mr-2 flex items-center justify-center cursor-pointer transition-colors duration-200 hover:bg-primary-dark focus:outline focus:outline-2 focus:outline-white focus:outline-offset-2"
                         aria-label={isPlaying ? "Pause animation" : "Play animation"}
                         aria-pressed={isPlaying}
                     >
                         {isPlaying ? <FaPause /> : <FaPlay />}
-                        <span className="sr-only">
+                        <span className="absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0">
                             {isPlaying ? "Pause" : "Play"} animation
                         </span>
                     </button>
                     
-                    <div className="animation-status" aria-live="polite">
+                    <div className="text-sm text-white ml-1" aria-live="polite">
                         Animation is {isPlaying ? "playing" : "paused"}
                     </div>
                 </div>
                 
                 {/* Hidden text for screen readers to explain what the animation shows */}
-                <div className="sr-only">
+                <div className="absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0">
                     {ariaLabel}
                 </div>
             </div>

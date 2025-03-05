@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
 import { Icon } from '@iconify/react';
-import './Skill.css';
+import '../../assets/css/tailwind.css';
 
 /* 
  * NOTE: Fallback icon functionality has been moved to a comment for now.

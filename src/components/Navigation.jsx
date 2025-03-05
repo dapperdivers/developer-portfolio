@@ -1,11 +1,7 @@
 import React, { memo, useState, useRef, useEffect } from 'react';
-import {
-  NavbarBrand,
-  Navbar,
-  Container
-} from "reactstrap";
+
 import useNavigation from '../hooks/useNavigation';
-import '../assets/css/components/layout/navigation.css';
+
 
 /**
  * Navigation component for the site header.
@@ -63,23 +59,22 @@ const Navigation = () => {
       className={`header-global ${isScrolled ? 'scrolled' : ''} ${isVisible ? '' : 'header-hidden'}`}
       role="banner"
     >
-      <Navbar
-        className="navbar-main navbar-transparent navbar-light"
-        expand="lg"
-        id="navbar-main"
+      <nav 
+        className="navbar-main navbar-transparent navbar-light lg:flex"
         role="navigation"
+        id="navbar-main"
         aria-label="Main navigation"
       >
-        <Container className="d-flex align-items-center">
-          <NavbarBrand>
+        <div className="container mx-auto px-4 flex items-center">
+          <div className="navbar-brand">
             <h2 className="text-white" id="nav-title">{greetings.name}</h2>
-          </NavbarBrand>
+          </div>
           
           {/* Navigation links removed as requested */}
           
           {/* Social links removed to avoid duplication with hero section */}
-        </Container>
-      </Navbar>
+        </div>
+      </nav>
     </header>
   );
 };

@@ -208,16 +208,16 @@ describe('Enhanced Skills Container Tests', () => {
       </PortfolioProvider>
     );
     
-    // Check for two columns layout (reactstrap Row with two Cols)
-    const animationCol = screen.getByTestId('mock-lottie').closest('.col-lg-6');
-    const skillsCol = screen.getByLabelText(`${mockSkillsData.skillsSection.softwareSkills.length} technical skills`).closest('.col-lg-6');
+    // Check for two columns layout (using Tailwind classes)
+    const animationCol = screen.getByTestId('mock-lottie').closest('.lg\\:w-6\\/12');
+    const skillsCol = screen.getByLabelText(`${mockSkillsData.skillsSection.softwareSkills.length} technical skills`).closest('.lg\\:w-6\\/12');
     
     expect(animationCol).toBeInTheDocument();
     expect(skillsCol).toBeInTheDocument();
     
-    // Both should be children of the same row
+    // Both should be children of the same flex container
     expect(animationCol.parentElement).toBe(skillsCol.parentElement);
-    expect(animationCol.parentElement.classList.contains('row')).toBe(true);
+    expect(animationCol.parentElement.classList.contains('flex')).toBe(true);
   });
   
   it('has the motion elements with proper animation configuration', () => {
