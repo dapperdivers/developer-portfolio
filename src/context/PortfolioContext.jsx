@@ -27,20 +27,27 @@ const PortfolioContext = createContext();
  * @param {ReactNode} props.children - Child components that will have access to the portfolio context
  * @returns {ReactElement} Portfolio Provider component
  */
-export const PortfolioProvider = ({ children }) => {
+export const PortfolioProvider = ({ children, testValue = null }) => {
   // Use memoization to prevent unnecessary re-renders
-  const contextValue = useMemo(() => ({
-    greetings,
-    openSource,
-    contact,
-    socialLinks,
-    skillsSection,
-    skillBars: SkillBars,
-    educationInfo,
-    experience,
-    projects,
-    feedbacks
-  }), []);
+  const contextValue = useMemo(() => {
+    // Allow injecting test values for tests
+    if (testValue) {
+      return testValue;
+    }
+    
+    return {
+      greetings,
+      openSource,
+      contact,
+      socialLinks,
+      skillsSection,
+      skillBars: SkillBars,
+      educationInfo,
+      experience,
+      projects,
+      feedbacks
+    };
+  }, [testValue]);
 
   return (
     <PortfolioContext.Provider value={contextValue}>
@@ -50,7 +57,8 @@ export const PortfolioProvider = ({ children }) => {
 };
 
 PortfolioProvider.propTypes = {
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
+  testValue: PropTypes.object
 };
 
 /**

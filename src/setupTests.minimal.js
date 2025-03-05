@@ -1,48 +1,60 @@
 // Minimal setup for tests
 import '@testing-library/jest-dom';
-import { jest } from '@jest/globals';
-
-// Make jest available globally for all tests
-global.jest = jest;
 
 // Mock browser APIs
-global.matchMedia = global.matchMedia || function() {
-  return {
+Object.defineProperty(window, 'matchMedia', {
+  writable: true,
+  value: jest.fn().mockImplementation(query => ({
     matches: false,
-    addListener: () => {},
-    removeListener: () => {}
-  };
-};
+    media: query,
+    onchange: null,
+    addListener: jest.fn(),
+    removeListener: jest.fn(),
+    addEventListener: jest.fn(),
+    removeEventListener: jest.fn(),
+    dispatchEvent: jest.fn(),
+  })),
+});
 
 // Mock IntersectionObserver
-global.IntersectionObserver = class IntersectionObserver {
+class MockIntersectionObserver {
   constructor(callback) {
     this.callback = callback;
     this.entries = [];
   }
   
-  observe() {}
-  unobserve() {}
-  disconnect() {}
+  observe() {
+    // Mock implementation
+  }
+  
+  unobserve() {
+    // Mock implementation
+  }
+  
+  disconnect() {
+    // Mock implementation
+  }
   
   // Helper for tests
   simulateIntersection(isIntersecting) {
     this.entries = [{ isIntersecting }];
     this.callback(this.entries, this);
   }
-};
+}
+
+global.IntersectionObserver = MockIntersectionObserver;
 
 // Mock ResizeObserver
-global.ResizeObserver = class ResizeObserver {
+class MockResizeObserver {
   constructor() {}
   observe() {}
   unobserve() {}
   disconnect() {}
-};
+}
+
+global.ResizeObserver = MockResizeObserver;
 
 // Clean up after tests
 afterEach(() => {
-  if (typeof jest !== 'undefined') {
-    jest.clearAllMocks();
-  }
+  jest.clearAllMocks();
 });

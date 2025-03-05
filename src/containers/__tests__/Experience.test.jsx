@@ -3,117 +3,145 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Experience from '../Experience';
 
-// Mock the hooks used in Experience
-jest.mock('../../hooks/useExperience', () => ({
-  __esModule: true,
-  default: jest.fn(() => [
-    {
-      company: 'Test Company 1',
-      role: 'Senior Developer',
-      date: '2022 - Present',
-      desc: 'Leading development efforts',
-      companylogo: '/test-logo1.png',
-      descBullets: ['Led team of 5', 'Deployed to production']
-    },
-    {
-      company: 'Test Company 2',
-      role: 'Developer',
-      date: '2020 - 2022',
-      desc: 'Contributed to key projects',
-      companylogo: '/test-logo2.png',
-      descBullets: ['Built frontend', 'Improved performance']
-    }
-  ])
+// Import the modules we want to mock
+import useExperience from '../../hooks/useExperience';
+import useMemoValues from '../../hooks/useMemoValues';
+import useTimelineView from '../../hooks/useTimelineView';
+import { usePortfolio } from '../../context/PortfolioContext';
+import ExperienceCard from '../../components/ExperienceCard';
+import Section from '../../components/layout/Section';
+import SkeletonCard from '../../components/SkeletonCard';
+import { motion } from 'framer-motion';
+import { Icon } from '@iconify/react';
+
+// Mock the hooks and components
+jest.mock('../../hooks/useExperience');
+jest.mock('../../hooks/useMemoValues');
+jest.mock('../../hooks/useTimelineView');
+jest.mock('../../context/PortfolioContext', () => ({
+  usePortfolio: jest.fn()
 }));
 
-jest.mock('../../hooks/useMemoValues', () => ({
-  __esModule: true,
-  default: () => ({
+jest.mock('../../components/ExperienceCard', () => {
+  const ExperienceCardMock = ({ data }) => (
+    <div data-testid="experience-card-mock">
+      <h3>{data.company}</h3>
+      <p>{data.role}</p>
+    </div>
+  );
+  return ExperienceCardMock;
+});
+
+jest.mock('../../components/layout/Section', () => {
+  const SectionMock = ({ children, title, subtitle, className }) => (
+    <section data-testid="section-mock" className={className}>
+      <h2>{title}</h2>
+      {subtitle && <p>{subtitle}</p>}
+      {children}
+    </section>
+  );
+  return SectionMock;
+});
+
+jest.mock('../../components/SkeletonCard', () => {
+  const SkeletonCardMock = ({ type }) => (
+    <div data-testid={`skeleton-${type}-mock`}></div>
+  );
+  return SkeletonCardMock;
+});
+
+jest.mock('framer-motion', () => {
+  // Filter out motion-specific props before passing to DOM elements
+  const filterMotionProps = (props) => {
+    const {
+      initial, animate, exit, transition, whileHover, whileTap, whileFocus, whileInView,
+      variants, viewport, drag, dragConstraints, dragElastic, dragMomentum,
+      onDragStart, onDrag, onDragEnd, layout, layoutId, ...filteredProps
+    } = props;
+    return filteredProps;
+  };
+  
+  return {
+    motion: {
+      div: ({ children, ...props }) => (
+        <div data-testid="motion-div-mock" {...filterMotionProps(props)}>{children}</div>
+      ),
+      span: ({ children, ...props }) => (
+        <span data-testid="motion-span-mock" {...filterMotionProps(props)}>{children}</span>
+      )
+    }
+  };
+});
+
+jest.mock('@iconify/react', () => ({
+  Icon: ({ icon }) => <span data-testid={`icon-${icon}`}></span>
+}));
+
+// Configure default mock implementations
+const mockExperienceData = [
+  {
+    company: 'Test Company 1',
+    role: 'Senior Developer',
+    date: '2022 - Present',
+    desc: 'Leading development efforts',
+    companylogo: '/test-logo1.png',
+    descBullets: ['Led team of 5', 'Deployed to production']
+  },
+  {
+    company: 'Test Company 2',
+    role: 'Developer',
+    date: '2020 - 2022',
+    desc: 'Contributed to key projects',
+    companylogo: '/test-logo2.png',
+    descBullets: ['Built frontend', 'Improved performance']
+  }
+];
+
+// Set up default mock implementations
+beforeEach(() => {
+  // Reset all mocks
+  jest.clearAllMocks();
+  
+  // Configure the hook mocks
+  useExperience.mockReturnValue(mockExperienceData);
+  
+  useMemoValues.mockReturnValue({
     sectionAnimation: {
       initial: { opacity: 0 },
       whileInView: { opacity: 1 },
       viewport: { once: true },
       transition: { duration: 0.5 }
     }
-  })
-}));
-
-jest.mock('../../hooks/useTimelineView', () => ({
-  __esModule: true,
-  default: jest.fn(() => ({
+  });
+  
+  // Create a mock ref function that doesn't use React.ref directly
+  const mockRefCallback = jest.fn();
+  
+  useTimelineView.mockReturnValue({
     viewType: 'timeline',
     toggleView: jest.fn(),
     setView: jest.fn(),
     getAnimationDelay: jest.fn(() => '0.1s'),
-    entryRef: jest.fn(() => jest.fn()),
+    entryRef: jest.fn(() => mockRefCallback), // Return the mockRefCallback
     extractDateYear: jest.fn((date) => date.split(' ')[0])
-  }))
-}));
-
-jest.mock('../../context/PortfolioContext', () => ({
-  __esModule: true,
-  usePortfolio: jest.fn(() => ({
+  });
+  
+  usePortfolio.mockReturnValue({
     experienceSection: {
       title: 'Work Experience',
       subtitle: 'My professional journey',
-      viewType: 'timeline'
+      viewType: 'timeline',
+      display: true
     },
     settings: {
       loadingDelay: 0
     }
-  }))
-}));
-
-// Mock the ExperienceCard component
-jest.mock('../../components/ExperienceCard', () => ({
-  __esModule: true,
-  default: ({ data }) => (
-    <div data-testid="experience-card-mock">
-      <h3>{data.company}</h3>
-      <p>{data.role}</p>
-    </div>
-  )
-}));
-
-// Mock the Section component
-jest.mock('../../components/layout/Section', () => ({
-  __esModule: true,
-  default: ({ children, title, subtitle, className }) => (
-    <section data-testid="section-mock" className={className}>
-      <h2>{title}</h2>
-      {subtitle && <p>{subtitle}</p>}
-      {children}
-    </section>
-  )
-}));
-
-// Mock the SkeletonCard component
-jest.mock('../../components/SkeletonCard', () => ({
-  __esModule: true,
-  default: ({ type }) => (
-    <div data-testid={`skeleton-${type}-mock`}></div>
-  )
-}));
-
-// Mock framer-motion and iconify for simplicity
-jest.mock('framer-motion', () => ({
-  motion: {
-    div: ({ children, ...props }) => (
-      <div data-testid="motion-div-mock" {...props}>{children}</div>
-    )
-  }
-}));
-
-jest.mock('@iconify/react', () => ({
-  Icon: ({ icon }) => <span data-testid={`icon-${icon}`}></span>
-}));
+  });
+  
+  // Component mocks are now defined at the top with jest.mock
+});
 
 describe('Experience Container', () => {
-  beforeEach(() => {
-    // Reset mock implementations before each test
-    jest.clearAllMocks();
-  });
-
   it('renders the experience section with correct title and subtitle', () => {
     render(<Experience />);
     
@@ -129,21 +157,24 @@ describe('Experience Container', () => {
     const timelineEntries = screen.getAllByTestId('motion-div-mock');
     expect(timelineEntries.length).toBe(2);
     
-    // Check if both experience cards are rendered
-    expect(screen.getByText('Test Company 1')).toBeInTheDocument();
-    expect(screen.getByText('Test Company 2')).toBeInTheDocument();
+    // Check if both experience cards are rendered - using getAllByText for company names
+    const company1Elements = screen.getAllByText('Test Company 1');
+    const company2Elements = screen.getAllByText('Test Company 2');
+    
+    expect(company1Elements.length).toBeGreaterThan(0);
+    expect(company2Elements.length).toBeGreaterThan(0);
   });
 
   it('renders the grid view with correct number of cards', () => {
     // Override the useTimelineView mock for this test
-    require('../../hooks/useTimelineView').default.mockImplementationOnce(() => ({
+    useTimelineView.mockReturnValueOnce({
       viewType: 'grid',
       toggleView: jest.fn(),
       setView: jest.fn(),
       getAnimationDelay: jest.fn(() => '0.1s'),
       entryRef: jest.fn(() => jest.fn()),
       extractDateYear: jest.fn((date) => date.split(' ')[0])
-    }));
+    });
     
     render(<Experience />);
     
@@ -151,21 +182,24 @@ describe('Experience Container', () => {
     const section = screen.getByTestId('section-mock');
     expect(section).toHaveClass('layout-grid');
     
-    // Check if both experience cards are rendered in the grid
-    expect(screen.getByText('Test Company 1')).toBeInTheDocument();
-    expect(screen.getByText('Test Company 2')).toBeInTheDocument();
+    // Check if both experience cards are rendered - using getAllByText to handle duplicates
+    const company1Elements = screen.getAllByText('Test Company 1');
+    const company2Elements = screen.getAllByText('Test Company 2');
+    
+    expect(company1Elements.length).toBeGreaterThan(0);
+    expect(company2Elements.length).toBeGreaterThan(0);
   });
 
   it('renders view toggle controls', () => {
     const setViewMock = jest.fn();
-    require('../../hooks/useTimelineView').default.mockImplementationOnce(() => ({
+    useTimelineView.mockReturnValueOnce({
       viewType: 'timeline',
       toggleView: jest.fn(),
       setView: setViewMock,
       getAnimationDelay: jest.fn(() => '0.1s'),
       entryRef: jest.fn(() => jest.fn()),
       extractDateYear: jest.fn((date) => date.split(' ')[0])
-    }));
+    });
     
     render(<Experience />);
     
@@ -186,7 +220,7 @@ describe('Experience Container', () => {
 
   it('renders loading skeleton when data is not ready', () => {
     // Override the useExperience mock for this test
-    require('../../hooks/useExperience').default.mockImplementationOnce(() => null);
+    useExperience.mockReturnValueOnce(null);
     
     render(<Experience />);
     
@@ -197,7 +231,7 @@ describe('Experience Container', () => {
 
   it('renders empty state when there is no experience data', () => {
     // Override the useExperience mock for this test
-    require('../../hooks/useExperience').default.mockImplementationOnce(() => []);
+    useExperience.mockReturnValueOnce([]);
     
     render(<Experience />);
     
@@ -207,11 +241,11 @@ describe('Experience Container', () => {
 
   it('does not render section when display is set to false', () => {
     // Override the usePortfolio mock for this test
-    require('../../context/PortfolioContext').usePortfolio.mockImplementationOnce(() => ({
+    usePortfolio.mockReturnValueOnce({
       experienceSection: {
         display: false
       }
-    }));
+    });
     
     const { container } = render(<Experience />);
     

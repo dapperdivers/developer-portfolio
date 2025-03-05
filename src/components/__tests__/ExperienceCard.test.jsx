@@ -1,46 +1,53 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import ExperienceCard from '../ExperienceCard';
 
-// Mock the hooks used in ExperienceCard
-jest.mock('../../hooks/useIntersectionObserver', () => ({
-  __esModule: true,
-  default: () => [jest.fn(), true] // [ref, isInView]
-}));
+// Import modules to mock
+import useIntersectionObserver from '../../hooks/useIntersectionObserver';
+import useImageColor from '../../hooks/useImageColor';
+import useCallbackHandlers from '../../hooks/useCallbackHandlers';
+import Card from '../ui/Card';
+import ResponsiveImage from '../ui/ResponsiveImage';
 
-jest.mock('../../hooks/useImageColor', () => ({
-  __esModule: true,
-  default: () => ({
+// Mock the hooks and components
+jest.mock('../../hooks/useIntersectionObserver');
+jest.mock('../../hooks/useImageColor');
+jest.mock('../../hooks/useCallbackHandlers');
+jest.mock('../ui/Card');
+jest.mock('../ui/ResponsiveImage');
+
+// Create mock functions
+const mockGetColorFromImage = jest.fn();
+const mockResetToDefaultColor = jest.fn();
+
+// Set up default mock implementations
+beforeEach(() => {
+  // Reset all mocks
+  jest.clearAllMocks();
+  
+  // Set up mock implementations
+  useIntersectionObserver.mockReturnValue([jest.fn(), true]); // [ref, isInView]
+  
+  useImageColor.mockReturnValue({
     color: [0, 100, 200],
-    getColorFromImage: jest.fn(),
-    resetToDefaultColor: jest.fn(),
+    getColorFromImage: mockGetColorFromImage,
+    resetToDefaultColor: mockResetToDefaultColor,
     rgbToString: () => 'rgb(0, 100, 200)'
-  })
-}));
-
-jest.mock('../../hooks/useCallbackHandlers', () => ({
-  __esModule: true,
-  default: () => ({
+  });
+  
+  useCallbackHandlers.mockReturnValue({
     handleExternalLink: jest.fn()
-  })
-}));
-
-// Mock Card component to simplify testing
-jest.mock('../ui/Card', () => ({
-  __esModule: true,
-  default: ({ children, header }) => (
+  });
+  
+  Card.mockImplementation(({ children, header }) => (
     <div data-testid="card-mock">
       {header}
       <div>{children}</div>
     </div>
-  )
-}));
-
-// Mock ResponsiveImage component
-jest.mock('../ui/ResponsiveImage', () => ({
-  __esModule: true,
-  default: ({ src, alt, onLoad, onError }) => (
+  ));
+  
+  ResponsiveImage.mockImplementation(({ src, alt, onLoad, onError }) => (
     <img
       data-testid="responsive-image-mock"
       src={src}
@@ -48,8 +55,8 @@ jest.mock('../ui/ResponsiveImage', () => ({
       onLoad={onLoad}
       onError={onError}
     />
-  )
-}));
+  ));
+});
 
 describe('ExperienceCard Component', () => {
   const mockExperienceData = {
@@ -133,33 +140,33 @@ describe('ExperienceCard Component', () => {
   });
   
   it('handles image loading errors gracefully', () => {
-    const { getColorFromImage, resetToDefaultColor } = require('../../hooks/useImageColor').default();
-    
     render(<ExperienceCard data={mockExperienceData} index={0} />);
     
     const image = screen.getByTestId('responsive-image-mock');
     
-    // Simulate error event
-    image.dispatchEvent(new Event('error'));
+    // Get the onError handler directly and call it
+    const { onError } = ResponsiveImage.mock.calls[0][0];
+    onError();
     
     // Should call the error handler which resets to default color
-    expect(resetToDefaultColor).toHaveBeenCalled();
+    expect(mockResetToDefaultColor).toHaveBeenCalled();
   });
   
   it('extracts color from image on load', () => {
-    const { getColorFromImage } = require('../../hooks/useImageColor').default();
-    
     render(<ExperienceCard data={mockExperienceData} index={0} />);
     
-    const image = screen.getByTestId('responsive-image-mock');
+    // Get the onLoad handler directly
+    const { onLoad } = ResponsiveImage.mock.calls[0][0];
     
-    // Create a mock event with target property
-    const mockEvent = { target: image };
+    // Mock event object with target
+    const mockEvent = {
+      target: { src: '/test-logo.png' }
+    };
     
-    // Simulate load event
-    image.dispatchEvent(Object.assign(new Event('load'), mockEvent));
+    // Call the handler directly with the mock event
+    onLoad(mockEvent);
     
     // Should call the load handler which extracts color
-    expect(getColorFromImage).toHaveBeenCalled();
+    expect(mockGetColorFromImage).toHaveBeenCalled();
   });
 });

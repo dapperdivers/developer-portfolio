@@ -196,14 +196,10 @@ const Skill = ({
             />
           )}
           
-          <motion.span 
-            className="skill-tooltip"
-            variants={tooltipVariants}
-            initial="hidden"
-            whileHover="visible"
-          >
+          {/* Use parent hover state for controlling tooltip */}
+          <span className="skill-tooltip">
             {skill.skillName}
-          </motion.span>
+          </span>
         </div>
       </motion.div>
     );

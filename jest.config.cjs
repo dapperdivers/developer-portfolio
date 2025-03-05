@@ -3,7 +3,7 @@
  * https://jestjs.io/docs/configuration
  */
 
-export default {
+module.exports = {
   // The test environment that will be used for testing
   testEnvironment: "jsdom",
   
@@ -57,6 +57,13 @@ export default {
   transformIgnorePatterns: [
     "/node_modules/(?!(@iconify|framer-motion)/)"
   ],
+  
+  // Mock implementation for import.meta.url
+  globals: {
+    "import.meta": {
+      url: "file:///mock/url"
+    }
+  },
   
   // This allows importing ESM modules
   testEnvironmentOptions: {
