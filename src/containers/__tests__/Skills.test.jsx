@@ -1,171 +1,267 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
+import '@testing-library/jest-dom';
 import Skills from '../Skills';
-import { jest } from '@jest/globals';
 
-// Mock hooks data
-const mockSkillsData = {
-  skillsSection: {
-    title: 'Skills',
-    subTitle: 'My technical skills',
-    skills: [
-      'Developing highly interactive Front end / User Interfaces',
-      'Building responsive web applications with React',
-      'Creating application backend in Node and Express'
-    ],
-    softwareSkills: [
+// Mock required hooks and components
+jest.mock('../../hooks/useSkills', () => ({
+  __esModule: true,
+  default: jest.fn(() => ({
+    skillsSection: {
+      title: 'Skills & Expertise',
+      subTitle: 'What I bring to the table',
+      softwareSkills: [
+        {
+          skillName: 'React',
+          iconName: 'logos:react',
+          category: 'frontend'
+        },
+        {
+          skillName: 'Node.js',
+          iconName: 'logos:nodejs',
+          category: 'backend'
+        },
+        {
+          skillName: 'CSS3',
+          fontAwesomeClassname: 'fab fa-css3',
+          category: 'frontend'
+        }
+      ],
+      skills: [
+        'Building responsive web applications',
+        'Creating user-friendly interfaces',
+        'Developing RESTful APIs'
+      ]
+    },
+    skillBars: [
       {
-        skillName: 'HTML5',
-        iconName: 'logos:html-5'
+        Stack: 'Frontend',
+        progressPercentage: 80
       },
       {
-        skillName: 'CSS3',
-        iconName: 'logos:css-3'
-      },
-      {
-        skillName: 'JavaScript',
-        iconName: 'logos:javascript'
-      },
-      {
-        skillName: 'React',
-        iconName: 'logos:react'
+        Stack: 'Backend',
+        progressPercentage: 70
       }
     ]
-  }
-};
+  }))
+}));
 
-// Set up mocks before importing components
-jest.mock('../../hooks/useSkills', () => {
-  return {
-    __esModule: true,
-    default: () => mockSkillsData
-  };
-});
-
-// Mock DisplayLottie
-jest.mock('../../components/DisplayLottie', () => {
-  return {
-    __esModule: true,
-    default: function MockDisplayLottie() {
-      return <div data-testid="mocked-lottie">Lottie Animation</div>;
-    }
-  };
-});
-
-// Mock Section component
-jest.mock('../../components/layout/Section', () => {
-  return {
-    __esModule: true,
-    default: ({ id, title, subtitle, children, className, 'aria-label': ariaLabel }) => (
-      <section 
-        id={id} 
-        data-testid="mocked-section" 
-        className={className}
-        aria-label={ariaLabel}
-      >
-        <h2>{title}</h2>
-        {subtitle && <p>{subtitle}</p>}
-        <div data-testid="section-content">
-          {children}
-        </div>
-      </section>
-    )
-  };
-});
-
-// Mock Skill component
-jest.mock('../../components/ui/Skill', () => {
-  return {
-    __esModule: true,
-    default: ({ skill, index, size }) => (
-      <div 
-        data-testid={`skill-${index}`} 
-        data-skill-name={skill.skillName}
-        data-size={size}
-      >
-        {skill.skillName}
-      </div>
-    )
-  };
-});
-
-// Simple mocks for reactstrap components
-jest.mock('reactstrap', () => {
-  return {
-    Row: ({ children, className }) => (
-      <div data-testid="mock-row" className={className}>
+// Mock framer-motion
+jest.mock('framer-motion', () => ({
+  motion: {
+    div: ({ children, variants, initial, whileInView, viewport, ...props }) => (
+      <div data-testid="motion-div" {...props}>
         {children}
       </div>
     ),
-    Col: ({ children, lg }) => (
-      <div data-testid="mock-col" data-lg={lg}>
+    p: ({ children, variants, ...props }) => (
+      <p data-testid="motion-p" {...props}>
         {children}
-      </div>
+      </p>
     )
-  };
-});
+  }
+}));
+
+// Mock DisplayLottie component
+jest.mock('../../components/DisplayLottie', () => ({
+  __esModule: true,
+  default: ({ animationData, quality, size, shouldOptimize }) => (
+    <div 
+      data-testid="lottie-animation" 
+      data-quality={quality}
+      data-size={size}
+      data-optimize={shouldOptimize ? 'true' : 'false'}
+    >
+      Animation Mock
+    </div>
+  )
+}));
+
+// Mock Section component
+jest.mock('../../components/layout/Section', () => ({
+  __esModule: true,
+  default: ({ children, title, subtitle, animation, className, id }) => (
+    <section 
+      data-testid="section-mock" 
+      className={className}
+      id={id}
+    >
+      <h2>{title}</h2>
+      {subtitle && <p>{subtitle}</p>}
+      <div>{children}</div>
+    </section>
+  )
+}));
+
+// Mock Skill component
+jest.mock('../../components/ui/Skill', () => ({
+  __esModule: true,
+  default: ({ skill, index, size, reducedMotion }) => (
+    <div 
+      data-testid={`skill-${skill.skillName}`}
+      data-size={size}
+      data-reduced-motion={reducedMotion ? 'true' : 'false'}
+      data-index={index}
+    >
+      {skill.skillName}
+    </div>
+  )
+}));
+
+// Mock SkeletonCard component
+jest.mock('../../components/SkeletonCard', () => ({
+  __esModule: true,
+  default: ({ type }) => (
+    <div data-testid={`skeleton-${type}-mock`}></div>
+  )
+}));
+
+// Mock context
+jest.mock('../../context/PortfolioContext', () => ({
+  __esModule: true,
+  usePortfolio: jest.fn(() => ({
+    skillsSection: {
+      display: true
+    },
+    settings: {
+      loadingDelay: 0
+    }
+  }))
+}));
+
+// Mock reactstrap components
+jest.mock('reactstrap', () => ({
+  Row: ({ children, className }) => <div data-testid="mock-row" className={className}>{children}</div>,
+  Col: ({ children, lg }) => <div data-testid="mock-col" data-lg={lg}>{children}</div>
+}));
 
 describe('Skills Container', () => {
   beforeEach(() => {
-    // Clear all mocks before each test
     jest.clearAllMocks();
+    
+    // Reset window width for device detection tests
+    Object.defineProperty(window, 'innerWidth', {
+      writable: true,
+      configurable: true,
+      value: 1200
+    });
+    
+    // Mock matchMedia for reduced motion detection
+    window.matchMedia = jest.fn().mockImplementation((query) => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addEventListener: jest.fn(),
+      removeEventListener: jest.fn(),
+      dispatchEvent: jest.fn(),
+    }));
   });
-  
-  it('renders the Skills section with proper title and subtitle', () => {
+
+  it('renders the skills section with correct title and subtitle', () => {
     render(<Skills />);
     
-    // Check for section title and subtitle
-    expect(screen.getByText('Skills')).toBeInTheDocument();
-    expect(screen.getByText('My technical skills')).toBeInTheDocument();
+    // Check section title and subtitle
+    expect(screen.getByText('Skills & Expertise')).toBeInTheDocument();
+    expect(screen.getByText('What I bring to the table')).toBeInTheDocument();
   });
-  
-  it('renders the Lottie animation component', () => {
+
+  it('renders all skills with proper configuration', () => {
     render(<Skills />);
     
-    // Check if Lottie component is rendered
-    const lottieComponent = screen.getByTestId('mocked-lottie');
-    expect(lottieComponent).toBeInTheDocument();
+    // Should render all skills
+    expect(screen.getByTestId('skill-React')).toBeInTheDocument();
+    expect(screen.getByTestId('skill-Node.js')).toBeInTheDocument();
+    expect(screen.getByTestId('skill-CSS3')).toBeInTheDocument();
+    
+    // Check size prop
+    expect(screen.getByTestId('skill-React')).toHaveAttribute('data-size', 'lg');
   });
-  
-  it('renders all skills from the hook data', () => {
+
+  it('renders the Lottie animation with optimization based on device', () => {
     render(<Skills />);
     
-    // We should have 4 skill components based on our mock data
-    const skill1 = screen.getByText('HTML5');
-    const skill2 = screen.getByText('CSS3');
-    const skill3 = screen.getByText('JavaScript');
-    const skill4 = screen.getByText('React');
+    const lottieAnimation = screen.getByTestId('lottie-animation');
+    expect(lottieAnimation).toBeInTheDocument();
     
-    expect(skill1).toBeInTheDocument();
-    expect(skill2).toBeInTheDocument();
-    expect(skill3).toBeInTheDocument();
-    expect(skill4).toBeInTheDocument();
+    // Default (high-end device) should use high quality
+    expect(lottieAnimation).toHaveAttribute('data-quality', '1');
+    expect(lottieAnimation).toHaveAttribute('data-optimize', 'true');
   });
-  
-  it('renders skill descriptions', () => {
+
+  it('renders skills description points', () => {
     render(<Skills />);
     
-    // Check for all our skill description items
-    expect(screen.getByText('Developing highly interactive Front end / User Interfaces')).toBeInTheDocument();
-    expect(screen.getByText('Building responsive web applications with React')).toBeInTheDocument();
-    expect(screen.getByText('Creating application backend in Node and Express')).toBeInTheDocument();
+    // Check for skill description items
+    expect(screen.getByText('Building responsive web applications')).toBeInTheDocument();
+    expect(screen.getByText('Creating user-friendly interfaces')).toBeInTheDocument();
+    expect(screen.getByText('Developing RESTful APIs')).toBeInTheDocument();
   });
-  
-  it('passes correct props to Section component', () => {
+
+  it('applies reduced motion settings for low-end devices', () => {
+    // Simulate low-end device
+    Object.defineProperty(window.navigator, 'deviceMemory', {
+      value: 2, // 2GB RAM (low-end)
+      configurable: true
+    });
+    
     render(<Skills />);
     
-    // Check if section has the right props
-    const section = screen.getByTestId('mocked-section');
-    expect(section).toHaveAttribute('id', 'skills');
-    expect(section).toHaveClass('skills-section');
-    expect(section).toHaveAttribute('aria-label', 'Developer skills and technologies');
+    // Check that reduced motion is applied
+    const section = screen.getByTestId('section-mock');
+    expect(section).toHaveClass('reduced-motion');
+    
+    // Skills should have reduced motion
+    expect(screen.getByTestId('skill-React')).toHaveAttribute('data-reduced-motion', 'true');
+    
+    // Lottie animation should be optimized
+    const lottieAnimation = screen.getByTestId('lottie-animation');
+    expect(lottieAnimation).toHaveAttribute('data-quality', '0.7');
+    expect(lottieAnimation).toHaveAttribute('data-size', 'small');
   });
-  
-  it('passes correct props to Skill components', () => {
+
+  it('respects prefers-reduced-motion user setting', () => {
+    // Simulate prefers-reduced-motion
+    window.matchMedia = jest.fn().mockImplementation((query) => ({
+      matches: query === '(prefers-reduced-motion: reduce)',
+      media: query,
+      onchange: null,
+      addEventListener: jest.fn(),
+      removeEventListener: jest.fn(),
+      dispatchEvent: jest.fn(),
+    }));
+    
     render(<Skills />);
     
-    // Check size prop is passed correctly
-    const skillComponent = screen.getByTestId('skill-0');
-    expect(skillComponent).toHaveAttribute('data-size', 'lg');
+    // Check that reduced motion is applied
+    const section = screen.getByTestId('section-mock');
+    expect(section).toHaveClass('reduced-motion');
+    
+    // Skills should have reduced motion
+    expect(screen.getByTestId('skill-React')).toHaveAttribute('data-reduced-motion', 'true');
+  });
+  
+  it('renders loading skeleton when skills data is not ready', () => {
+    // Override the useSkills mock to return null
+    require('../../hooks/useSkills').default.mockImplementationOnce(() => null);
+    
+    render(<Skills />);
+    
+    // Should show skeleton loaders
+    const skeletonCards = screen.getAllByTestId('skeleton-skill-mock');
+    expect(skeletonCards.length).toBeGreaterThan(0);
+  });
+  
+  it('does not render when display is set to false', () => {
+    // Override the context mock
+    require('../../context/PortfolioContext').usePortfolio.mockImplementationOnce(() => ({
+      skillsSection: {
+        display: false
+      }
+    }));
+    
+    const { container } = render(<Skills />);
+    
+    // Should not render anything
+    expect(container.firstChild).toBeNull();
   });
 });

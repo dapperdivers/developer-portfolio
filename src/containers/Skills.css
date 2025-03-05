@@ -1,3 +1,6 @@
+/* Import skeleton loading styles */
+@import url('../assets/css/skeleton-loading.css');
+
 .skills-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
@@ -89,6 +92,73 @@
     will-change: transform;
     transform: translateZ(0);
     backface-visibility: hidden;
+}
+
+/* Skill card skeleton styles */
+.skill-card-skeleton {
+    width: 80px;
+    height: 80px;
+    border-radius: var(--border-radius-lg);
+    background-color: var(--color-background);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.skeleton-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--border-radius-circle);
+    background: linear-gradient(90deg, var(--color-gray-100) 0%, var(--color-gray-200) 50%, var(--color-gray-100) 100%);
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.5s infinite;
+}
+
+.skeleton-name {
+    width: 60px;
+    height: 12px;
+    margin-top: var(--spacing-2);
+    border-radius: var(--border-radius);
+    background: linear-gradient(90deg, var(--color-gray-100) 0%, var(--color-gray-200) 50%, var(--color-gray-100) 100%);
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.5s infinite;
+}
+
+/* Skills grid loading */
+.skills-grid-loading {
+    opacity: 0.85;
+    position: relative;
+}
+
+/* Skeleton text blocks for skills description */
+.skeleton-text-block {
+    height: 20px;
+    margin-bottom: var(--spacing-3);
+    border-radius: var(--border-radius);
+    background: linear-gradient(90deg, var(--color-gray-100) 0%, var(--color-gray-200) 50%, var(--color-gray-100) 100%);
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.5s infinite;
+}
+
+.skeleton-text-block:nth-child(1) { width: 90%; }
+.skeleton-text-block:nth-child(2) { width: 75%; }
+.skeleton-text-block:nth-child(3) { width: 85%; }
+.skeleton-text-block:nth-child(4) { width: 80%; }
+
+/* Empty state styles */
+.skills-empty-state {
+    padding: var(--spacing-6);
+    text-align: center;
+    background-color: var(--color-background);
+    border-radius: var(--border-radius-lg);
+    margin-top: var(--spacing-6);
+}
+
+.skills-empty-state p {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-muted);
 }
 
 /* Dark Mode Support */

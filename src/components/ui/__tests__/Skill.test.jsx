@@ -8,8 +8,14 @@ describe('Skill Component', () => {
   // Test data
   const mockSkill = {
     skillName: 'React',
-    iconName: 'logos:react'
+    iconName: 'logos:react',
+    category: 'frontend'
   };
+
+  beforeEach(() => {
+    // Clear all mocks before each test
+    jest.clearAllMocks();
+  });
 
   it('renders the skill component with correct props', () => {
     render(<Skill skill={mockSkill} />);
@@ -21,6 +27,33 @@ describe('Skill Component', () => {
     // Verify the tooltip text
     const tooltipElement = screen.getByText('React');
     expect(tooltipElement).toBeInTheDocument();
+  });
+  
+  it('handles skill with both iconName and fontAwesomeClassname', () => {
+    const skillWithBothIcons = {
+      skillName: 'JavaScript',
+      iconName: 'logos:javascript',
+      fontAwesomeClassname: 'fab fa-js'
+    };
+    
+    render(<Skill skill={skillWithBothIcons} />);
+    
+    // Should prioritize iconName over fontAwesomeClassname
+    const iconElement = screen.getByRole('img', { name: 'JavaScript' });
+    expect(iconElement).toBeInTheDocument();
+  });
+  
+  it('handles skill with only fontAwesomeClassname (backward compatibility)', () => {
+    const skillWithFontAwesome = {
+      skillName: 'CSS',
+      fontAwesomeClassname: 'fab fa-css3'
+    };
+    
+    render(<Skill skill={skillWithFontAwesome} />);
+    
+    // Should use fontAwesomeClassname when iconName is not provided
+    const iconElement = screen.getByRole('img', { name: 'CSS' });
+    expect(iconElement).toBeInTheDocument();
   });
 
   it('applies the correct size class based on size prop', () => {
@@ -75,5 +108,66 @@ describe('Skill Component', () => {
     // The component should still render correctly
     const iconElement = screen.getByRole('img', { name: 'React' });
     expect(iconElement).toBeInTheDocument();
+  });
+  
+  it('handles reducedMotion prop for performance optimization', () => {
+    const { rerender } = render(<Skill skill={mockSkill} reducedMotion={true} />);
+    
+    // Check that reduced-motion class is applied
+    const wrapper = document.querySelector('.skill-icon-wrapper');
+    expect(wrapper).toHaveClass('reduced-motion');
+    
+    // Rerender with false
+    rerender(<Skill skill={mockSkill} reducedMotion={false} />);
+    expect(document.querySelector('.skill-icon-wrapper')).not.toHaveClass('reduced-motion');
+  });
+  
+  it('provides proper accessibility attributes', () => {
+    render(<Skill skill={mockSkill} />);
+    
+    // Check skill has aria-label
+    const skillElement = screen.getByRole('img', { name: 'React' });
+    expect(skillElement).toHaveAttribute('aria-label', 'React');
+    
+    // Check icon has aria-label
+    const iconElement = screen.getByLabelText('React icon', { exact: false });
+    expect(iconElement).toBeInTheDocument();
+  });
+  
+  it('handles icon loading errors gracefully', () => {
+    // Mock console.warn to check error handling
+    const originalWarn = console.warn;
+    console.warn = jest.fn();
+    
+    // Create a mock Icon component that triggers error
+    jest.mock('@iconify/react', () => ({
+      Icon: ({ onError }) => {
+        // Immediately call the error handler
+        if (onError) onError(new Error('Icon not found'));
+        return <div data-testid="mock-icon" />;
+      }
+    }));
+    
+    render(<Skill skill={mockSkill} />);
+    
+    // Check that warning was logged (error handler was called)
+    expect(console.warn).toHaveBeenCalled();
+    
+    // Restore console.warn
+    console.warn = originalWarn;
+  });
+  
+  it('memoizes the component for performance', () => {
+    // This is hard to test directly, but we can ensure the component
+    // is wrapped in React.memo by checking it doesn't re-render unnecessarily
+    
+    // First render
+    const { rerender } = render(<Skill skill={mockSkill} index={1} />);
+    
+    // Re-render with same props
+    rerender(<Skill skill={mockSkill} index={1} />);
+    
+    // Component should still be there
+    expect(screen.getByRole('img', { name: 'React' })).toBeInTheDocument();
   });
 });

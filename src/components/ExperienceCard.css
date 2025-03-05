@@ -5,6 +5,11 @@
   max-width: 25rem;     /* 400px to rem */
   margin-bottom: var(--spacing-5);
   transition: transform var(--transition-standard);
+  /* Add hardware acceleration for better performance */
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
 }
 
 .experience-card .card {
@@ -63,6 +68,10 @@
   border: 1px solid var(--color-border);
   box-shadow: var(--box-shadow-sm);
   transition: transform var(--transition-standard);
+  /* Add hardware acceleration for better performance */
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .experience-card:hover .company-logo,
