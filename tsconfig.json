@@ -1,0 +1,38 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "jsx": "react-jsx",
+    "allowJs": true,
+    "checkJs": true,
+    "strict": false,
+    "noEmit": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@components/*": ["src/components/*"],
+      "@containers/*": ["src/containers/*"],
+      "@assets/*": ["src/assets/*"],
+      "@utils/*": ["src/utils/*"]
+    }
+  },
+  "include": ["src/**/*"],
+  "exclude": [
+    "node_modules", 
+    "build", 
+    "dist", 
+    "src/**/*.test.{js,jsx}", 
+    "src/**/*.stories.{js,jsx}", 
+    "src/setupTests.js", 
+    "src/setupJest.js",
+    "src/__mocks__/**/*",
+    "src/__tests__/**/*",
+    "src/components/**/*.test.{js,jsx}",
+    "src/containers/**/*.test.{js,jsx}",
+    "src/utils/**/*.test.{js,jsx}"
+  ]
+}

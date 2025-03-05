@@ -21,6 +21,7 @@ module.exports = {
   
   // Automatically clear mock calls, instances, contexts and results before every test
   clearMocks: true,
+  resetMocks: false,
   
   // Indicates whether the coverage information should be collected while executing the test
   collectCoverage: false,
@@ -55,7 +56,7 @@ module.exports = {
   
   // This allows transpiling of files in node_modules that use ES modules
   transformIgnorePatterns: [
-    "/node_modules/(?!(@iconify|framer-motion)/)"
+    "/node_modules/(?!(@iconify|framer-motion|axios|react-icons)/)"
   ],
   
   // Mock implementation for import.meta.url
@@ -70,6 +71,21 @@ module.exports = {
     customExportConditions: ["node", "node-addons"],
   },
   
+  // Improve ESM module mocking
+  extensionsToTreatAsEsm: ['.jsx', '.ts', '.tsx'],
+  
+  // Handle hoisting properly
+  injectGlobals: true,
+  
   // Cache for faster tests
-  cacheDirectory: "<rootDir>/.jest-cache"
+  cacheDirectory: "<rootDir>/.jest-cache",
+  
+  // Handle resolver for ESM modules
+  resolver: undefined,
+  
+  // Improved error handling
+  errorOnDeprecated: true,
+  
+  // Test timeout
+  testTimeout: 10000
 };

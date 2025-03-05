@@ -1,6 +1,21 @@
 # Memory Bank
 
-This directory contains Cline's Memory Bank - a comprehensive documentation system that maintains perfect context between development sessions. Cline reads these files at the start of each task to understand the project and continue work effectively.
+This directory contains the Memory Bank - a comprehensive documentation system that maintains context between development sessions and tracks the active state of the project. These files provide the necessary context to understand the project and continue work effectively.
+
+## Purpose
+
+The Memory Bank is a project-specific documentation system for tracking implementation progress, decisions, and context that is primarily useful **during active development**. Unlike the `/docs` directory, which contains final, polished documentation for users and developers, the Memory Bank is intended as a working area for development notes, progress tracking, and decision records.
+
+## Memory Bank vs Docs Directory
+
+| Memory Bank (`/memory-bank/`) | Docs Directory (`/docs/`) |
+|-------------------------------|--------------------------|
+| Implementation details | Usage guides |
+| Progress tracking | Component API reference |
+| Decision records | Best practices |
+| Technical context | Integration examples |
+| Work-in-progress notes | Final documentation |
+| Implementation plans | Architecture overview |
 
 ## Core Files
 
@@ -47,19 +62,36 @@ If needed, create additional files/folders within memory-bank/ to organize:
 - Testing strategies
 - Deployment procedures
 
+## Documentation Guidelines
+
+1. **Memory Bank Content**: Should be updated frequently during active development.
+2. **Avoid Duplication**: Content should not duplicate what's in the `/docs` directory.
+3. **Graduate Content**: When content becomes stable and useful as reference, move it to `/docs`.
+4. **Keep Updated**: Remove outdated content, especially after features are completed and properly documented in `/docs`.
+
+## Relationship to Docs
+
+The Memory Bank and `/docs` directory should work together:
+
+1. Memory Bank focuses on the "why" and "how" of implementation decisions.
+2. Docs focuses on the "what" and "how to use" of completed features.
+3. When implementation notes become valuable as reference documentation, they should be cleaned up and moved to `/docs`.
+
+This separation helps maintain clear documentation boundaries and ensures that each type of documentation serves its intended audience and purpose.
+
 ## Memory Bank Maintenance
 
-The Memory Bank is maintained through two workflows:
+The Memory Bank should be maintained through these workflows:
 
-### Plan Mode
+### Planning
 Used for project planning, strategy development, and approach consideration.
 
-### Act Mode
-Used for implementation, where Cline:
-1. Checks the Memory Bank for context
-2. Updates documentation as needed
-3. Updates .clinerules if new patterns emerge
-4. Executes the requested task
-5. Documents changes
+### Development
+During implementation:
+1. Check the Memory Bank for context before starting work
+2. Update documentation as features are completed
+3. Document new decisions and patterns
+4. Track progress
+5. Update technical details as they evolve
 
-Remember: Cline's effectiveness depends entirely on the accuracy of the Memory Bank, as it starts completely fresh after each memory reset.
+Remember: The effectiveness of future development depends on the accuracy and completeness of the Memory Bank's documentation.

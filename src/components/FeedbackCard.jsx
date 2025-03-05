@@ -5,7 +5,6 @@ import Card from "./ui/Card";
 import ResponsiveImage from "./ui/ResponsiveImage";
 import useIntersectionObserver from "../hooks/useIntersectionObserver";
 
-
 /**
  * Feedback card component for displaying testimonials.
  * 
@@ -47,42 +46,69 @@ const FeedbackCard = ({ data, index = 0 }) => {
   };
   
   return (
-    <div className="feedback-card" ref={ref}>
+    <div className="h-full transition-all duration-300" ref={ref} data-testid="feedback-card">
       <Card 
-        className="h-100"
+        className="h-full overflow-hidden hover:-translate-y-2 transition-all duration-300"
         animation={animation}
         shadow
       >
-        <div className="rating" aria-label={`${rating} out of 5 stars`}>
-          {[...Array(5)].map((_, i) => (
-            <FaStar 
-              key={i} 
-              className="star" 
-              color={i < rating ? 'currentColor' : '#e0e0e0'}
-              aria-hidden="true"
-            />
-          ))}
-        </div>
-        
-        <div className="quote-container">
-          <FaQuoteLeft className="quote-icon quote-icon-left" aria-hidden="true" />
-          <p className="quote-content" tabIndex="0">
-            {data.feedback}
-          </p>
-          <FaQuoteRight className="quote-icon quote-icon-right" aria-hidden="true" />
-        </div>
-        
-        <div className="author-container">
-          <ResponsiveImage 
-            src={avatar} 
-            alt={`${data.name}`} 
-            className="author-image"
-            lazy={true}
-          />
+        <div className="p-6 flex flex-col h-full">
+          {/* Rating stars */}
+          <div 
+            className="flex mb-4 text-amber-500" 
+            aria-label={`${rating} out of 5 stars`}
+          >
+            {[...Array(5)].map((_, i) => (
+              <FaStar 
+                key={i} 
+                className="star mr-1" 
+                color={i < rating ? 'currentColor' : '#e0e0e0'}
+                aria-hidden="true"
+              />
+            ))}
+          </div>
           
-          <div className="author-info">
-            <h5 className="author-name" tabIndex="0">{data.name}</h5>
-            <p className="author-role" tabIndex="0">{role}</p>
+          {/* Quote content */}
+          <div className="relative flex-grow mb-5">
+            <FaQuoteLeft 
+              className="text-gray-200 text-lg absolute top-0 left-0" 
+              aria-hidden="true" 
+            />
+            <p 
+              className="pl-7 pr-7 text-gray-600 italic text-sm leading-relaxed relative border-l-3 border-primary-300" 
+              tabIndex="0"
+            >
+              {data.feedback}
+            </p>
+            <FaQuoteRight 
+              className="text-gray-200 text-lg absolute bottom-0 right-0" 
+              aria-hidden="true" 
+            />
+          </div>
+          
+          {/* Author info */}
+          <div className="flex items-center mt-auto pt-4 border-t border-gray-100">
+            <ResponsiveImage 
+              src={avatar} 
+              alt={`${data.name}`} 
+              className="w-12 h-12 rounded-full border-2 border-primary-100 object-cover mr-3"
+              lazy={true}
+            />
+            
+            <div>
+              <h5 
+                className="font-bold text-primary-600 text-base mb-0.5" 
+                tabIndex="0"
+              >
+                {data.name}
+              </h5>
+              <p 
+                className="text-gray-500 text-xs" 
+                tabIndex="0"
+              >
+                {role}
+              </p>
+            </div>
           </div>
         </div>
       </Card>

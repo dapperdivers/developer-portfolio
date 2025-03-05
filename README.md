@@ -8,13 +8,16 @@
 
 ## 🌟 Features
 
-- **Modern React Architecture** - Built with React hooks, context, and performance optimizations
+- **Modern React Architecture** - Built with React hooks, context, and performance monitoring
 - **Responsive Design** - Looks great on all devices from mobile to desktop
-- **Optimized Performance** - Lazy loading, code splitting, and memoization
+- **Optimized Performance** - Lazy loading, code splitting, memoization, and FPS tracking
 - **Accessibility First** - WCAG compliant with keyboard navigation support
 - **Customizable** - Easy to customize with design tokens and a central portfolio data file
 - **Component Library** - Reusable UI components with comprehensive documentation
-- **Testing** - Unit tests for critical components
+- **Enhanced Type Checking** - PropTypes with TypeScript static analysis
+- **Environment Variable Management** - Secure API key handling
+- **Detailed Documentation** - Architecture guides, component patterns, and best practices
+- **Comprehensive Testing** - Unit tests with consistent patterns
 
 ## 🚀 Quick Start
 
@@ -22,11 +25,11 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-You'll need [Git](https://git-scm.com) and [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) installed on your computer.
+You'll need [Git](https://git-scm.com), [Node.js](https://nodejs.org/en/download/) and [Yarn](https://yarnpkg.com/) installed on your computer.
 
 ```
-node@v14.0.0 or higher
-npm@6.14.0 or higher
+node@v22.0.0 or higher
+yarn@1.22.0 or higher
 git@2.17.1 or higher
 ```
 
@@ -40,10 +43,10 @@ $ git clone https://github.com/DapperDivers/developer-portfolio.git
 $ cd developer-portfolio
 
 # Install dependencies
-$ npm install
+$ yarn
 
 # Start development server
-$ npm run dev
+$ yarn dev
 ```
 
 ## 📋 Sections
@@ -182,10 +185,19 @@ import { LazyImage } from '../components/ui/LazyImage';
 
 ```bash
 # Run all tests
-$ npm test
+$ yarn test
 
 # Run tests with coverage
-$ npm test -- --coverage
+$ yarn test:coverage
+
+# Run tests in watch mode
+$ yarn test:watch
+
+# Type checking
+$ yarn typecheck
+
+# Lint and type check
+$ yarn verify
 ```
 
 ## 📱 Responsive Design
@@ -207,32 +219,64 @@ This project prioritizes accessibility with:
 - Screen reader support
 - Skip to content link
 
+## 📖 Documentation
+
+The project includes comprehensive documentation in the `/docs` directory:
+
+- **Architecture Guides**: System architecture, project structure, performance optimization
+- **Component Guides**: Detailed information on component patterns and development workflows
+- **Testing Guides**: Best practices for component testing and TypeScript integration
+- **Usage Guides**: How to work with environment variables, type checking, and customization
+
+Key documents:
+- [System Architecture](docs/architecture/system-architecture.md) - Overall architecture and patterns
+- [Component Development Checklist](docs/component-development-checklist.md) - Guidelines for component creation
+- [Type Checking Guide](docs/guides/type-checking-guide.md) - TypeScript integration approach
+- [Environment Configuration](docs/guides/environment-config-guide.md) - Working with environment variables
+
 ## 🛠️ Technologies Used
 
-- [React](https://reactjs.org/)
-- [Vite](https://vitejs.dev/)
-- [Reactstrap](https://reactstrap.github.io/)
-- [Framer Motion](https://www.framer.com/motion/)
-- [React Icons](https://react-icons.github.io/react-icons/)
-- [Jest](https://jestjs.io/) & [Testing Library](https://testing-library.com/)
-- [ESLint](https://eslint.org/) & [Prettier](https://prettier.io/)
+- [React](https://reactjs.org/) - UI library
+- [Vite](https://vitejs.dev/) - Build tool
+- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework
+- [TypeScript](https://www.typescriptlang.org/) - Static type checking
+- [Framer Motion](https://www.framer.com/motion/) - Animation library
+- [Jest](https://jestjs.io/) & [Testing Library](https://testing-library.com/) - Testing
+- [Storybook](https://storybook.js.org/) - Component development environment
+- [ESLint](https://eslint.org/) & [Prettier](https://prettier.io/) - Code quality
+- [Iconify](https://iconify.design/) - Icon system
+- [Yarn](https://yarnpkg.com/) - Package manager
 
 ## 📚 Project Structure
 
 ```
 /
+├── docs/                  # Documentation
+│   ├── architecture/      # Architecture guides
+│   ├── guides/            # Usage guides
+│   ├── testing/           # Testing documentation
+│   └── components/        # Component documentation
 ├── public/                # Static assets
 ├── src/
 │   ├── assets/            # CSS, images, fonts
+│   │   ├── css/           # CSS files including Tailwind
+│   │   ├── lottie/        # Animation files
+│   │   └── images/        # Image assets
 │   ├── components/        # Reusable components
 │   │   ├── ui/            # Base UI components
 │   │   └── layout/        # Layout components
 │   ├── containers/        # Page section containers
 │   ├── context/           # React context providers
 │   ├── hooks/             # Custom React hooks
+│   ├── stories/           # Storybook stories
+│   ├── types/             # TypeScript type definitions
 │   ├── utils/             # Utility functions
 │   └── portfolio.js       # Portfolio data
-├── tests/                 # Test configuration
+├── scripts/               # Build and generator scripts
+├── memory-bank/           # Development progress tracking
+├── jest.config.cjs        # Jest configuration
+├── tsconfig.json          # TypeScript configuration
+├── tailwind.config.cjs    # Tailwind configuration
 └── package.json           # Dependencies and scripts
 ```
 
@@ -246,10 +290,29 @@ This project prioritizes accessibility with:
 
 ## 🤝 Contributing
 
-Contributions, issues and feature requests are welcome!
+Contributions, issues and feature requests are welcome! This project uses Yarn as the package manager and follows specific development practices:
 
-- Check the [issues page](https://github.com/DapperDivers/developer-portfolio/issues) for open issues
-- Fork the repository and submit a PR for new features or bug fixes
+1. **Getting Started**:
+   - Fork the repository
+   - Clone your fork: `git clone https://github.com/your-username/developer-portfolio.git`
+   - Install dependencies: `yarn`
+
+2. **Development Workflow**:
+   - Create a new branch: `git checkout -b feature/your-feature-name`
+   - Follow the [Component Development Checklist](docs/component-development-checklist.md)
+   - Run tests: `yarn test`
+   - Verify code quality: `yarn verify` (runs both lint and type checking)
+
+3. **Submitting Changes**:
+   - Commit your changes: `git commit -m "feat: add your feature description"`
+   - Push to your fork: `git push origin feature/your-feature-name`
+   - Submit a Pull Request
+
+4. **Code Standards**:
+   - Follow existing code style and patterns
+   - Include tests for new features
+   - Update documentation as needed
+   - Ensure all tests pass and type checking succeeds
 
 ## 📝 License
 

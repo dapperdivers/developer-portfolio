@@ -1,10 +1,8 @@
 import React, { memo } from "react";
 import PropTypes from 'prop-types';
-
 import { FaGraduationCap } from 'react-icons/fa';
 import Card from "./ui/Card";
 import useIntersectionObserver from "../hooks/useIntersectionObserver";
-
 
 /**
  * Education card component for displaying educational background.
@@ -38,37 +36,64 @@ const EducationCard = ({ education, index = 0 }) => {
   };
   
   return (
-    <div className="education-card" ref={ref}>
-      <div className="education-icon">
-        <FaGraduationCap />
+    <div className="relative mb-8 transition-all duration-300" ref={ref} data-testid="education-card">
+      {/* Timeline dot */}
+      <div className="absolute left-[-28px] top-6 w-4 h-4 rounded-full bg-white border-2 border-primary-400 z-10 shadow-md hidden md:block"></div>
+      
+      {/* Graduation cap icon - visible only on larger screens */}
+      <div className="hidden md:flex w-10 h-10 items-center justify-center rounded-full bg-gradient-to-r from-white to-gray-100 shadow-md mb-4">
+        <FaGraduationCap className="text-primary-500 text-lg" />
       </div>
+      
       <Card 
-        className="education-card-inner"
+        className="overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
         animation={animation}
         shadow
       >
-        <div className="education-content">
-          <h5 className="school-name" tabIndex="0">
+        <div className="p-6">
+          <h5 
+            className="text-primary-600 font-bold text-xl mb-2" 
+            tabIndex="0"
+          >
             {education.schoolName}
           </h5>
-          <h6 className="degree" tabIndex="0">{education.subHeader}</h6>
           
-          <span className="badge badge-primary duration-badge" 
-            
-           
+          <h6 
+            className="font-semibold text-gray-800 mb-3" 
+            tabIndex="0"
+          >
+            {education.subHeader}
+          </h6>
+          
+          <span 
+            className="bg-primary-50 text-primary-600 font-semibold px-3 py-1 rounded-full text-xs tracking-wide mb-4 inline-block"
             aria-label={`Duration: ${education.duration}`}
           >
             {education.duration}
           </span>
           
           {education.desc && (
-            <p className="description" tabIndex="0">{education.desc}</p>
+            <p 
+              className="text-gray-600 text-sm leading-relaxed mt-3" 
+              tabIndex="0"
+            >
+              {education.desc}
+            </p>
           )}
           
           {education.descBullets && education.descBullets.length > 0 && (
-            <ul aria-label="Additional information">
+            <ul 
+              className="pl-5 mt-3 space-y-2" 
+              aria-label="Additional information"
+            >
               {education.descBullets.map((desc, i) => (
-                <li key={i} tabIndex="0">{desc}</li>
+                <li 
+                  key={i} 
+                  className="text-gray-600 text-sm list-disc" 
+                  tabIndex="0"
+                >
+                  {desc}
+                </li>
               ))}
             </ul>
           )}

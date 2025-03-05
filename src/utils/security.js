@@ -2,6 +2,7 @@
  * Security enhancements for the portfolio website
  * Implements security best practices for client-side web applications
  */
+import envConfig from './envConfig';
 
 /**
  * Configuration for security features
@@ -179,7 +180,7 @@ export const preventClickjacking = () => {
 export const applySecurityEnhancements = () => {
   // Since we have server.js setting headers correctly,
   // only use client-side CSP for development mode or as fallback
-  if (process.env.NODE_ENV === 'development' || !window.location.hostname.includes('localhost')) {
+  if (envConfig.isDevelopment || !window.location.hostname.includes('localhost')) {
     // Only apply CSP client-side in development or when not served by our server
     applyCSP();
   }
@@ -211,7 +212,7 @@ export const applySecurityEnhancements = () => {
   });
   
   // Add comment explaining server-side headers
-  if (process.env.NODE_ENV === 'development') {
+  if (envConfig.isDevelopment) {
     const comment = document.createComment(
       ' Security headers (X-Frame-Options, Strict-Transport-Security, X-XSS-Protection) ' +
       'are properly set server-side in server.js using Helmet middleware '

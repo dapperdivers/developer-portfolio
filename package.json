@@ -7,6 +7,7 @@
   "engines": {
     "node": ">=22.0.0"
   },
+  "packageManager": "yarn@1.22.22",
   "repository": "https://github.com/DapperDivers/developer-portfolio.git",
   "author": "Derek Mackley",
   "license": "MIT",
@@ -19,6 +20,7 @@
     "axios": "^1.6.7",
     "classnames": "^2.5.1",
     "colorthief": "^2.4.0",
+    "dotenv": "^16.4.5",
     "esbuild": "^0.25.0",
     "express": "^4.18.2",
     "express-rate-limit": "^7.5.0",
@@ -46,11 +48,15 @@
     "serve": "node server.js",
     "preview": "vite preview",
     "lint": "eslint src --ext .js,.jsx",
+    "typecheck": "tsc --noEmit",
+    "verify": "yarn lint && yarn typecheck",
     "format": "prettier --write \"src/**/*.{js,jsx,css}\"",
+    "clean": "rm -rf node_modules .cache dist build",
+    "reinstall": "yarn clean && yarn",
     "optimize:images": "node scripts/optimize-images.js",
     "optimize:svgs": "node scripts/optimize-svgs.js",
-    "optimize:all": "npm run optimize:images && npm run optimize:svgs",
-    "optimize": "npm run optimize:all",
+    "optimize:all": "yarn optimize:images && yarn optimize:svgs",
+    "optimize": "yarn optimize:all",
     "generate:metadata": "node scripts/generate-asset-metadata.js",
     "test": "cross-env NODE_ENV=test node --no-warnings node_modules/jest/bin/jest.js --config=jest.config.cjs",
     "test:watch": "cross-env NODE_ENV=test node --no-warnings node_modules/jest/bin/jest.js --config=jest.config.cjs --watch",
@@ -126,6 +132,7 @@
     "typescript": "^5.7.3",
     "vite": "^6.1.0",
     "vite-plugin-pwa": "^0.21.1",
-    "vitest": "^3.0.7"
+    "vitest": "^3.0.7",
+    "yarn": "^1.22.22"
   }
 }

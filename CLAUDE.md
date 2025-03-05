@@ -1,18 +1,23 @@
 # Developer Portfolio Project Guide
 
+> **Note**: This project uses Yarn as the package manager. Please use Yarn commands rather than npm commands.
+
 ## Build & Development Commands
-- Start development server: `npm run dev`
-- Build for production: `npm run build`
-- Run production server: `npm run serve`
-- Format code: `npm run format`
-- Lint code: `npm run lint`
+- Start development server: `yarn dev`
+- Build for production: `yarn build`
+- Run production server: `yarn serve`
+- Format code: `yarn format`
+- Lint code: `yarn lint`
+- Type checking: `yarn typecheck`
+- Verify (lint + typecheck): `yarn verify`
+- Clean and reinstall: `yarn reinstall`
 
 ## Testing Commands
-- Run all tests: `npm test`
-- Run tests in watch mode: `npm run test:watch`
-- Run tests with coverage: `npm run test:coverage`
-- Run a single test file: `npm test -- --testMatch="**/path/to/test.test.jsx"`
-- Run tests by name pattern: `npm test -- -t="test description"`
+- Run all tests: `yarn test`
+- Run tests in watch mode: `yarn test:watch`
+- Run tests with coverage: `yarn test:coverage`
+- Run a single test file: `yarn test --testMatch="**/path/to/test.test.jsx"`
+- Run tests by name pattern: `yarn test -t="test description"`
 
 ## Code Style Guidelines
 - **Components**: Functional components with arrow function syntax

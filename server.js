@@ -7,6 +7,10 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Load configuration
+import dotenv from 'dotenv';
+dotenv.config();
+
 const app = express();
 const PORT = process.env.PORT || 3001;
 const ALLOWED_DOMAINS = (process.env.ALLOWED_DOMAINS || 'http://localhost:3001,http://localhost:3000').split(',');

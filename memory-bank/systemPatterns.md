@@ -1,5 +1,7 @@
 # System Patterns
 
+> **Note**: This documentation has been consolidated into the new [System Architecture Guide](/docs/architecture/system-architecture.md). Please refer to that document for the most up-to-date and comprehensive architecture documentation.
+
 ## System Architecture
 The Developer Portfolio is built with a modern React architecture focusing on component reusability, state management via context, and performance optimization.
 
