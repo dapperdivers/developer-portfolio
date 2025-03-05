@@ -1,201 +1,132 @@
-/* Button styles using design tokens */
+/* Button styles using Tailwind CSS */
 
+/* Base button */
 .btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-family-base);
-  font-weight: var(--font-weight-medium);
-  line-height: 1.5;
-  text-align: center;
-  text-decoration: none;
-  white-space: nowrap;
-  vertical-align: middle;
-  cursor: pointer;
-  user-select: none;
-  padding: var(--button-padding-y) var(--button-padding-x);
-  border: var(--border-width-thin) solid transparent;
-  border-radius: var(--border-radius);
-  transition: var(--transition-base);
-  position: relative;
-  overflow: hidden;
+  @apply inline-flex items-center justify-center font-medium leading-normal text-center no-underline whitespace-nowrap align-middle cursor-pointer select-none relative overflow-hidden px-button-x py-button-y border border-solid border-transparent rounded transition-all duration-200 ease-in-out;
 }
 
 /* Button variants */
 .btn-primary {
-  background-color: var(--color-primary);
-  color: var(--color-white);
-  border-color: var(--color-primary);
+  @apply bg-primary text-white border-primary;
 }
 
 .btn-primary:hover, .btn-primary:focus {
-  background-color: var(--color-primary-dark);
-  border-color: var(--color-primary-dark);
-  box-shadow: var(--box-shadow-sm);
+  @apply bg-primary-dark border-primary-dark shadow-sm;
 }
 
 .btn-secondary {
-  background-color: var(--color-secondary);
-  color: var(--color-white);
-  border-color: var(--color-secondary);
+  @apply bg-secondary text-white border-secondary;
 }
 
 .btn-secondary:hover, .btn-secondary:focus {
-  background-color: var(--color-secondary-dark);
-  border-color: var(--color-secondary-dark);
-  box-shadow: var(--box-shadow-sm);
+  @apply bg-secondary-dark border-secondary-dark shadow-sm;
 }
 
 .btn-success {
-  background-color: var(--color-success);
-  color: var(--color-white);
-  border-color: var(--color-success);
+  @apply bg-success text-white border-success;
 }
 
 .btn-success:hover, .btn-success:focus {
-  background-color: color-mix(in srgb, var(--color-success) 85%, black);
-  border-color: color-mix(in srgb, var(--color-success) 85%, black);
+  @apply bg-success/90 border-success/90;
 }
 
 .btn-danger {
-  background-color: var(--color-danger);
-  color: var(--color-white);
-  border-color: var(--color-danger);
+  @apply bg-danger text-white border-danger;
 }
 
 .btn-danger:hover, .btn-danger:focus {
-  background-color: color-mix(in srgb, var(--color-danger) 85%, black);
-  border-color: color-mix(in srgb, var(--color-danger) 85%, black);
+  @apply bg-danger/90 border-danger/90;
 }
 
 .btn-warning {
-  background-color: var(--color-warning);
-  color: var(--color-gray-900);
-  border-color: var(--color-warning);
+  @apply bg-warning text-gray-900 border-warning;
 }
 
 .btn-warning:hover, .btn-warning:focus {
-  background-color: color-mix(in srgb, var(--color-warning) 85%, black);
-  border-color: color-mix(in srgb, var(--color-warning) 85%, black);
+  @apply bg-warning/90 border-warning/90;
 }
 
 .btn-info {
-  background-color: var(--color-info);
-  color: var(--color-white);
-  border-color: var(--color-info);
+  @apply bg-info text-white border-info;
 }
 
 .btn-info:hover, .btn-info:focus {
-  background-color: color-mix(in srgb, var(--color-info) 85%, black);
-  border-color: color-mix(in srgb, var(--color-info) 85%, black);
+  @apply bg-info/90 border-info/90;
 }
 
 .btn-light {
-  background-color: var(--color-gray-100);
-  color: var(--color-gray-900);
-  border-color: var(--color-gray-200);
+  @apply bg-gray-100 text-gray-900 border-gray-200;
 }
 
 .btn-light:hover, .btn-light:focus {
-  background-color: var(--color-gray-200);
-  border-color: var(--color-gray-300);
+  @apply bg-gray-200 border-gray-300;
 }
 
 .btn-dark {
-  background-color: var(--color-gray-800);
-  color: var(--color-white);
-  border-color: var(--color-gray-800);
+  @apply bg-gray-800 text-white border-gray-800;
 }
 
 .btn-dark:hover, .btn-dark:focus {
-  background-color: var(--color-gray-900);
-  border-color: var(--color-gray-900);
+  @apply bg-gray-900 border-gray-900;
 }
 
 .btn-link {
-  background-color: transparent;
-  color: var(--color-link);
-  border-color: transparent;
-  text-decoration: none;
-  padding-left: 0;
-  padding-right: 0;
+  @apply bg-transparent text-link border-transparent px-0;
 }
 
 .btn-link:hover, .btn-link:focus {
-  color: var(--color-link-hover);
-  text-decoration: underline;
-  box-shadow: none;
+  @apply text-link-hover underline shadow-none;
 }
 
 /* Button sizes */
 .btn-sm {
-  padding: calc(var(--button-padding-y) * 0.75) calc(var(--button-padding-x) * 0.75);
-  font-size: var(--font-size-sm);
-  border-radius: var(--border-radius-sm);
+  @apply px-3 py-1.5 text-sm rounded-sm;
 }
 
 .btn-lg {
-  padding: calc(var(--button-padding-y) * 1.25) calc(var(--button-padding-x) * 1.25);
-  font-size: var(--font-size-lg);
-  border-radius: var(--border-radius-lg);
+  @apply px-5 py-2.5 text-lg rounded-lg;
 }
 
 /* Icon button */
 .btn-icon {
-  padding: var(--spacing-2);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: calc(var(--font-size-base) * 2.5);
-  height: calc(var(--font-size-base) * 2.5);
-  border-radius: var(--border-radius-circle);
+  @apply p-2 inline-flex items-center justify-center w-10 h-10 rounded-full;
 }
 
 .btn-icon.btn-sm {
-  width: calc(var(--font-size-base) * 2);
-  height: calc(var(--font-size-base) * 2);
+  @apply w-8 h-8;
 }
 
 .btn-icon.btn-lg {
-  width: calc(var(--font-size-base) * 3);
-  height: calc(var(--font-size-base) * 3);
+  @apply w-12 h-12;
 }
 
 /* Icon positioning */
 .btn-icon-left {
-  margin-right: var(--spacing-2);
-  display: inline-flex;
-  align-items: center;
+  @apply mr-2 inline-flex items-center;
 }
 
 .btn-icon-right {
-  margin-left: var(--spacing-2);
-  display: inline-flex;
-  align-items: center;
+  @apply ml-2 inline-flex items-center;
 }
 
 /* Disabled state */
 .btn.disabled,
 .btn:disabled,
 a.btn[aria-disabled="true"] {
-  opacity: 0.65;
-  pointer-events: none;
-  box-shadow: none;
+  @apply opacity-65 pointer-events-none shadow-none;
 }
 
 /* Focus styles */
 .btn:focus {
-  outline: 0;
-  box-shadow: var(--box-shadow-focus);
+  @apply outline-none ring-2 ring-primary/50;
 }
 
 /* Active state */
 .btn:active {
-  transform: translateY(1px);
+  @apply translate-y-[1px];
 }
 
 /* Accessibility: Focus visible */
 .btn:focus-visible {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
+  @apply outline outline-2 outline-primary outline-offset-2;
 }

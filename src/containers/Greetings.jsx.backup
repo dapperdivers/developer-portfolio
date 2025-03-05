@@ -25,10 +25,10 @@ const Greetings = () => {
         exit={{ opacity: 0, y: -20 }}
       >
         <main role="main">
-          <div className="relative">
+          <div className="position-relative">
             <section 
               id="greetings"
-              className="relative py-20 overflow-hidden pb-64 hero-section"
+              className="section section-lg section-shaped pb-250 hero-section"
               aria-label="Introduction"
             >
               <div className="shape shape-style-1 bg-gradient-info">
@@ -42,10 +42,10 @@ const Greetings = () => {
                 <span />
                 <span />
               </div>
-              <div className="container mx-auto px-4 py-12 flex">
-                <div className="w-full px-0">
-                  <div className="flex flex-wrap -mx-4 ">
-                    <div className="w-full px-4 lg:w-6/12 ">
+              <Container className="py-lg-md d-flex">
+                <div className="col px-0">
+                  <Row>
+                    <Col lg="6">
                       <h1 className="display-3 text-white" tabIndex="0">
                         {greetings.title}
                       </h1>
@@ -67,15 +67,15 @@ const Greetings = () => {
                         </Button>
                         <SocialLinks />
                       </div>
-                    </div>
-                    <div className="w-full px-4 lg:w-6/12 ">
+                    </Col>
+                    <Col lg="6">
                       <div className="lottie-container">
                         <GreetingLottie animationData={code}/>
                       </div>
-                    </div>
-                  </div>
+                    </Col>
+                  </Row>
                 </div>
-              </div>
+              </Container>
               {/* SVG separator */}
               <div className="separator separator-bottom separator-skew">
                 <svg

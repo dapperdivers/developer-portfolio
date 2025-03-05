@@ -16,6 +16,11 @@ const config = {
     "name": "@storybook/react-vite",
     "options": {}
   },
+  "staticDirs": [
+    "../src/assets/images",
+    "../src/assets/animations",
+    "../src/assets/fonts"
+  ],
   "docs": {
     "autodocs": true
   },

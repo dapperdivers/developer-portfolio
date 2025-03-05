@@ -1,13 +1,25 @@
 /** @type { import('@storybook/react').Preview } */
 import { fn } from '@storybook/test';
 import React from 'react';
+import theme from './theme';
 
-// CSS imports
-import '../src/assets/css/design-tokens.css';
-import '../src/assets/css/custom-bootstrap.css';
-import '../src/assets/css/typography.css';
-import '../src/assets/css/component-styles.css';
+// Import CSS with new structured paths
+import '../src/assets/css/design-system/index.css'; // Design system tokens and base styles
+import '../src/assets/css/utilities/index.css'; // Utility classes
+import '../src/assets/css/components/index.css'; // Component styles
 
+// Import design system tokens CSS
+import '../src/assets/css/design-system/tokens/colors.css';
+import '../src/assets/css/design-system/tokens/typography.css';
+import '../src/assets/css/design-system/tokens/spacing.css';
+import '../src/assets/css/design-system/tokens/borders.css';
+import '../src/assets/css/design-system/tokens/shadows.css';
+import '../src/assets/css/design-system/tokens/transitions.css';
+import '../src/assets/css/design-system/tokens/breakpoints.css';
+import '../src/assets/css/design-system/tokens/z-index.css';
+
+// Import base CSS styles
+import '../src/assets/css/design-system/base.css';
 const preview = {
   argTypes: {
     onClick: { action: 'clicked', defaultValue: fn() },
@@ -18,6 +30,9 @@ const preview = {
   },
   parameters: {
     actions: {},
+    docs: {
+      theme: theme, // Apply our custom theme
+    },
     controls: {
       matchers: {
         color: /(background|color)$/i,

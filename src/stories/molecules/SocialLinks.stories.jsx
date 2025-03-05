@@ -3,7 +3,7 @@ import { FaGithub, FaLinkedin, FaTwitter, FaMedium, FaDev, FaStackOverflow, FaYo
 import { within, userEvent, expect } from '@storybook/test';
 
 // Import the CSS for styling
-import '../../components/SocialLinks.css';
+import '../../assets/css/components/ui/social-links.css';
 
 // Create a modified version of SocialLinks component for Storybook
 // This allows us to pass socialLinks as a prop instead of importing from portfolio.js

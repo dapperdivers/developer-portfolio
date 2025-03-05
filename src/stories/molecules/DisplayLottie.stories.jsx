@@ -2,10 +2,10 @@ import React from 'react';
 import DisplayLottie from '../../components/DisplayLottie';
 import { within, userEvent, expect } from '@storybook/test';
 
-// Import lottie animation files from assets
-import codingAnimation from '../../assets/lottie/coding.json';
-import webdevAnimation from '../../assets/lottie/webdev.json';
-import buildAnimation from '../../assets/lottie/build.json';
+// Import lottie animation files from the structured animations directory
+import codingAnimation from '../../assets/animations/lottie/development/dev-coding.json';
+import webdevAnimation from '../../assets/animations/lottie/development/dev-webdev.json';
+import buildAnimation from '../../assets/animations/lottie/development/dev-building.json';
 
 export default {
   title: 'Molecules/DisplayLottie',
@@ -222,7 +222,7 @@ SinglePlayAnimation.parameters = {
  * 
  * ```jsx
  * import DisplayLottie from '../components/DisplayLottie';
- * import animationData from '../assets/lottie/coding.json';
+ * import animationData from '../assets/animations/lottie/development/dev-coding.json';
  * 
  * function HeroSection() {
  *   return (
