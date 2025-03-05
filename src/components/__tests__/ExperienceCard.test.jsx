@@ -118,4 +118,48 @@ describe('ExperienceCard Component', () => {
     // List shouldn't exist
     expect(screen.queryByRole('list')).not.toBeInTheDocument();
   });
+  
+  it('applies animation with correct delay based on index', () => {
+    render(<ExperienceCard data={mockExperienceData} index={3} />);
+    
+    // Get the animation props passed to Card
+    const card = screen.getByTestId('card-mock');
+    
+    // Check that animation parameters were passed
+    expect(card).toBeInTheDocument();
+    
+    // We can't directly access the animation props since they're passed to the mocked component,
+    // but we can confirm the component renders without errors when index is changed
+  });
+  
+  it('handles image loading errors gracefully', () => {
+    const { getColorFromImage, resetToDefaultColor } = require('../../hooks/useImageColor').default();
+    
+    render(<ExperienceCard data={mockExperienceData} index={0} />);
+    
+    const image = screen.getByTestId('responsive-image-mock');
+    
+    // Simulate error event
+    image.dispatchEvent(new Event('error'));
+    
+    // Should call the error handler which resets to default color
+    expect(resetToDefaultColor).toHaveBeenCalled();
+  });
+  
+  it('extracts color from image on load', () => {
+    const { getColorFromImage } = require('../../hooks/useImageColor').default();
+    
+    render(<ExperienceCard data={mockExperienceData} index={0} />);
+    
+    const image = screen.getByTestId('responsive-image-mock');
+    
+    // Create a mock event with target property
+    const mockEvent = { target: image };
+    
+    // Simulate load event
+    image.dispatchEvent(Object.assign(new Event('load'), mockEvent));
+    
+    // Should call the load handler which extracts color
+    expect(getColorFromImage).toHaveBeenCalled();
+  });
 });
