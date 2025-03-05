@@ -1,9 +1,12 @@
-import React, { memo, useMemo } from 'react';
+import React, { memo, useMemo, useCallback } from 'react';
 import ExperienceCard from "../components/ExperienceCard";
 import SkeletonCard from "../components/SkeletonCard";
 import Section from "../components/layout/Section";
+import { motion } from "framer-motion";
+import { Icon } from '@iconify/react';
 import useExperience from "../hooks/useExperience";
 import useMemoValues from "../hooks/useMemoValues";
+import useTimelineView from "../hooks/useTimelineView";
 import { usePortfolio } from "../context/PortfolioContext";
 import "../assets/css/experience-section.css";
 
@@ -40,6 +43,31 @@ const Experience = () => {
   // Determine section title and subtitle from context if available
   const sectionTitle = portfolioData?.experienceSection?.title || "Experience";
   const sectionSubtitle = portfolioData?.experienceSection?.subtitle;
+  
+  // Get preferred view type from context or default to 'timeline'
+  const preferredViewType = portfolioData?.experienceSection?.viewType || 'timeline';
+  
+  // Use timeline view hook for managing view state and animations
+  const { 
+    viewType, 
+    toggleView, 
+    setView, 
+    getAnimationDelay, 
+    entryRef,
+    extractDateYear 
+  } = useTimelineView({
+    defaultView: preferredViewType,
+    animationDelayIncrement: 150,
+    enableIntersectionObserver: true
+  });
+  
+  // Set the appropriate layout class based on view type
+  const layoutClass = useMemo(() => `layout-${viewType}`, [viewType]);
+  
+  // Handler for view toggle button clicks
+  const handleViewToggle = useCallback((view) => {
+    setView(view);
+  }, [setView]);
   
   // Determine number of skeleton cards to show
   const skeletonCount = useMemo(() => {
@@ -111,6 +139,30 @@ const Experience = () => {
     );
   }
 
+  // Render view controls for normal state
+  const renderViewControls = () => (
+    <div className="view-controls">
+      <button 
+        type="button"
+        className={`view-toggle ${viewType === 'timeline' ? 'active' : ''}`}
+        onClick={() => handleViewToggle('timeline')}
+        aria-pressed={viewType === 'timeline'}
+      >
+        <Icon icon="mdi:timeline-outline" className="view-icon" aria-hidden="true" />
+        <span>Timeline</span>
+      </button>
+      <button 
+        type="button"
+        className={`view-toggle ${viewType === 'grid' ? 'active' : ''}`}
+        onClick={() => handleViewToggle('grid')}
+        aria-pressed={viewType === 'grid'}
+      >
+        <Icon icon="mdi:grid" className="view-icon" aria-hidden="true" />
+        <span>Grid</span>
+      </button>
+    </div>
+  );
+  
   return (
     <Section
       id="experience"
@@ -118,19 +170,56 @@ const Experience = () => {
       subtitle={sectionSubtitle}
       icon="simple-icons:briefcase"
       animation={animation}
-      className="experience-section"
+      className={`experience-section ${layoutClass}`}
       aria-label="Work experience history"
     >
+      {/* View toggle controls */}
+      {renderViewControls()}
+      
+      {/* Grid layout (default for small screens) */}
       <div 
         className="experience-grid" 
-        aria-label={`${experience.length} work experiences`}
+        aria-label={`${experience.length} work experiences in grid layout`}
       >
         {experience.map((data, i) => (
           <ExperienceCard 
-            key={`experience-${data.company}-${i}`} 
+            key={`experience-grid-${data.company}-${i}`} 
             data={data} 
             index={i} 
           />
+        ))}
+      </div>
+      
+      {/* Timeline layout (default for large screens) */}
+      <div 
+        className="experience-timeline timeline-animate-in" 
+        aria-label={`${experience.length} work experiences in timeline layout`}
+      >
+        {experience.map((data, i) => (
+          <motion.div 
+            key={`experience-timeline-${data.company}-${i}`}
+            className="timeline-entry"
+            ref={entryRef(i)}
+            style={{ 
+              transitionDelay: getAnimationDelay(i)
+            }}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px 0px" }}
+            transition={{ 
+              duration: 0.5, 
+              delay: 0.1 * i, 
+              ease: "easeOut" 
+            }}
+          >
+            <div className="timeline-date" aria-label={`Work period: ${data.date}`}>
+              {extractDateYear(data.date)}
+            </div>
+            <ExperienceCard 
+              data={data} 
+              index={i} 
+            />
+          </motion.div>
         ))}
       </div>
     </Section>
