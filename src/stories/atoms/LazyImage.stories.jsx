@@ -1,5 +1,5 @@
 import React from 'react';
-import LazyImage from '../../components/ui/LazyImage';
+import LazyImage from '@atoms/LazyImage';
 import { within, userEvent, expect } from '@storybook/test';
 
 export default {

@@ -67,7 +67,7 @@ PortfolioProvider.propTypes = {
  * @returns {Object} Portfolio data object containing all sections
  * 
  * @example
- * import { usePortfolio } from '../context/PortfolioContext';
+ * import { usePortfolio } from '@context/PortfolioContext';
  * 
  * const MyComponent = () => {
  *   const { projects } = usePortfolio();

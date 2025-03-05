@@ -1,7 +1,7 @@
 import React from 'react';
 import Skills from '../../containers/Skills';
 import { within, userEvent, expect } from '@storybook/test';
-import { withPortfolioContext } from '../utils/decorators';
+import { withPortfolioContext } from '@utils/decorators';
 
 export default {
   title: 'Organisms/Skills',
@@ -73,7 +73,7 @@ ReducedMotion.parameters = {
  * 
  * ```jsx
  * import Skills from '../containers/Skills';
- * import { PortfolioProvider } from '../context/PortfolioContext';
+ * import { PortfolioProvider } from '@context/PortfolioContext';
  * 
  * function App() {
  *   return (
@@ -164,4 +164,4 @@ ManySkills.decorators = [
   }
 ];
 
-import PortfolioContext from '../../context/PortfolioContext';
+import PortfolioContext from '@context/PortfolioContext';

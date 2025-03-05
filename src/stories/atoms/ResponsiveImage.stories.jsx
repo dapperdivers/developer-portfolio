@@ -1,5 +1,5 @@
 import React from 'react';
-import ResponsiveImage from '../../components/ui/ResponsiveImage';
+import ResponsiveImage from '@atoms/ResponsiveImage';
 import { within, userEvent, expect } from '@storybook/test';
 
 export default {
@@ -148,7 +148,7 @@ export const EagerLoading = {
  * ## Component Usage
  * 
  * ```jsx
- * import ResponsiveImage from '../components/ui/ResponsiveImage';
+ * import ResponsiveImage from '@atoms/ResponsiveImage';
  * 
  * function MyComponent() {
  *   return (

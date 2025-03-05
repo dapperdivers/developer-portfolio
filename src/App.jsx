@@ -1,36 +1,36 @@
 import React, { useEffect, Suspense, lazy } from 'react';
-import Head from "./components/Head";
-import Navigation from "./components/Navigation";
-import Footer from "./components/Footer";
-import SkipToContent from "./components/SkipToContent";
+import Head from "@atoms/Head";
+import Navigation from "@molecules/Navigation";
+import Footer from "@molecules/Footer";
+import SkipToContent from "@atoms/SkipToContent";
 
 // Import Iconify icon collections - this ensures icons are available offline
 import '@iconify-json/logos';
 import '@iconify-json/simple-icons';
 import '@iconify-json/vscode-icons';
 
-import { applyBrowserFixes } from "./utils/accessibility.jsx";
-import { initImageOptimization } from "./utils/imageOptimizer";
-import { applySecurityEnhancements } from "./utils/security";
-import Loading from "./components/Loading";
-import ErrorBoundary from "./components/ErrorBoundary";
-import { PortfolioProvider } from "./context/PortfolioContext";
+import { applyBrowserFixes } from "@utils/accessibility.jsx";
+import { initImageOptimization } from "@utils/imageOptimizer";
+import { applySecurityEnhancements } from "@utils/security";
+import Loading from "@atoms/Loading";
+import ErrorBoundary from "@molecules/ErrorBoundary";
+import { PortfolioProvider } from "@context/PortfolioContext";
 import { HelmetProvider } from 'react-helmet-async';
 
 // Lazy load components for better performance
-const Greetings = lazy(() => import("./containers/Greetings"));
-const Skills = lazy(() => import("./containers/Skills"));
-const Proficiency = lazy(() => import("./containers/Proficiency"));
-const Education = lazy(() => import("./containers/Education"));
-const Experience = lazy(() => import("./containers/Experience"));
-const Projects = lazy(() => import("./containers/Projects"));
-const GithubProfile = lazy(() => import("./containers/GithubProfile"));
-const Feedbacks = lazy(() => import("./containers/Feedbacks"));
+const Greetings = lazy(() => import("@organisms/Greetings"));
+const Skills = lazy(() => import("@organisms/Skills"));
+const Proficiency = lazy(() => import("@organisms/Proficiency"));
+const Education = lazy(() => import("@organisms/Education"));
+const Experience = lazy(() => import("@organisms/Experience"));
+const Projects = lazy(() => import("@organisms/Projects"));
+const GithubProfile = lazy(() => import("@organisms/GithubProfile"));
+const Feedbacks = lazy(() => import("@organisms/Feedbacks"));
 
 // Import CSS - Using Tailwind CSS for styled components
-import "./assets/css/design-system/index.css"; // Design system variables
-import "./assets/css/tailwind.css"; // Tailwind styles with component customizations
-import "./assets/css/browser-fixes.css"; // Browser compatibility fixes
+import "@assets/css/design-system/index.css"; // Design system variables
+import "@assets/css/tailwind.css"; // Tailwind styles with component customizations
+import "@assets/css/browser-fixes.css"; // Browser compatibility fixes
 
 function App() {
   // Apply enhancements on mount

@@ -18,7 +18,7 @@
  * @returns {Object} ARIA attributes object that can be spread onto an element
  * 
  * @example
- * import { getAriaAttributes } from '../utils/accessibilityUtils';
+ * import { getAriaAttributes } from '@utils/accessibilityUtils';
  * 
  * function MyButton({ isDisabled, controls }) {
  *   const ariaAttrs = getAriaAttributes({ isDisabled, controls });
@@ -69,7 +69,7 @@ export function getAriaAttributes({
  * @returns {string} Unique ID for ARIA relationships
  * 
  * @example
- * import { createAriaId } from '../utils/accessibilityUtils';
+ * import { createAriaId } from '@utils/accessibilityUtils';
  * 
  * function MyComponent({ items }) {
  *   return (
@@ -99,7 +99,7 @@ export function createAriaId(prefix, suffix) {
  * @returns {Object} Object with event handlers
  * 
  * @example
- * import { getKeyboardHandlers } from '../utils/accessibilityUtils';
+ * import { getKeyboardHandlers } from '@utils/accessibilityUtils';
  * 
  * function CustomButton({ onClick, children }) {
  *   const keyboardHandlers = getKeyboardHandlers(onClick);
@@ -135,7 +135,7 @@ export function getKeyboardHandlers(onAction) {
  * @returns {Object} Object with style properties for screen reader only text
  * 
  * @example
- * import { srOnlyStyle } from '../utils/accessibilityUtils';
+ * import { srOnlyStyle } from '@utils/accessibilityUtils';
  * 
  * function IconButton({ icon, label }) {
  *   return (
@@ -169,7 +169,7 @@ export function srOnlyStyle() {
  * @returns {Object} Skip link styles object
  * 
  * @example
- * import { skipLinkStyles } from '../utils/accessibilityUtils';
+ * import { skipLinkStyles } from '@utils/accessibilityUtils';
  * 
  * function App() {
  *   return (

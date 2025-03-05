@@ -1,5 +1,5 @@
 import React from 'react';
-import Skill from '../../components/ui/Skill';
+import Skill from '@atoms/Skill';
 
 export default {
   title: 'Atoms/Skill',

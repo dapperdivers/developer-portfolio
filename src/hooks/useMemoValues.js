@@ -9,8 +9,8 @@ import { useMemo } from 'react';
  * @returns {Object} Object containing memoized computed values
  * 
  * @example
- * import { useMemoValues } from '../hooks/useMemoValues';
- * import { usePortfolio } from '../context/PortfolioContext';
+ * import { useMemoValues } from '@hooks/useMemoValues';
+ * import { usePortfolio } from '@context/PortfolioContext';
  * 
  * const Component = () => {
  *   const portfolioData = usePortfolio();

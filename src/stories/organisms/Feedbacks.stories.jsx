@@ -1,9 +1,9 @@
 import React from 'react';
 import Feedbacks from '../../containers/Feedbacks';
 import { within, expect } from '@storybook/test';
-import PortfolioContext from '../../context/PortfolioContext';
-import { mockPortfolioData } from '../utils/mockData';
-import { withPortfolioContext, withViewport } from '../utils/decorators';
+import PortfolioContext from '@context/PortfolioContext';
+import { mockPortfolioData } from '@utils/mockData';
+import { withPortfolioContext, withViewport } from '@utils/decorators';
 
 // Helper function to create context with specific feedback data
 const createContextWithFeedbacks = (feedbackData) => {
@@ -124,7 +124,7 @@ EmptyState.parameters = {
  * 
  * ```jsx
  * import Feedbacks from '../containers/Feedbacks';
- * import PortfolioContext from '../context/PortfolioContext';
+ * import PortfolioContext from '@context/PortfolioContext';
  * 
  * function App() {
  *   const portfolioData = {

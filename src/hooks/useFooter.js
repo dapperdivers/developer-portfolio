@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { usePortfolio } from '../context/PortfolioContext';
+import { usePortfolio } from '@context/PortfolioContext';
 
 /**
  * Custom hook to provide footer functionality and data.
@@ -12,7 +12,7 @@ import { usePortfolio } from '../context/PortfolioContext';
  * @returns {Object} returns.socialLinks - Social links data from portfolio
  * 
  * @example
- * import { useFooter } from '../hooks/useFooter';
+ * import { useFooter } from '@hooks/useFooter';
  * 
  * const FooterComponent = () => {
  *   const { currentYear, scrollToTop, greetings } = useFooter();

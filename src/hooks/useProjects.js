@@ -1,5 +1,5 @@
 import { useMemo, useState, useEffect } from 'react';
-import { usePortfolio } from '../context/PortfolioContext';
+import { usePortfolio } from '@context/PortfolioContext';
 
 /**
  * Validates a project object to ensure it has all required properties
@@ -28,7 +28,7 @@ const isValidProject = (project) => {
  * @returns {Array|null} Array of validated and sorted project objects or null if loading
  * 
  * @example
- * import useProjects from '../hooks/useProjects';
+ * import useProjects from '@hooks/useProjects';
  * 
  * const ProjectsList = () => {
  *   // Get all projects sorted by default order

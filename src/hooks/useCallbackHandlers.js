@@ -12,7 +12,7 @@ import { useCallback } from 'react';
  * @returns {Function} returns.handleDownload - Handler for download buttons
  * 
  * @example
- * import { useCallbackHandlers } from '../hooks/useCallbackHandlers';
+ * import { useCallbackHandlers } from '@hooks/useCallbackHandlers';
  * 
  * const Component = () => {
  *   const { handleExternalLink, handleDownload } = useCallbackHandlers();

@@ -1,4 +1,4 @@
-import { usePortfolio } from '../context/PortfolioContext';
+import { usePortfolio } from '@context/PortfolioContext';
 
 /**
  * Custom hook to access feedback data from the portfolio context.
@@ -7,7 +7,7 @@ import { usePortfolio } from '../context/PortfolioContext';
  * @returns {Array} Array of feedback objects
  * 
  * @example
- * import { useFeedback } from '../hooks/useFeedback';
+ * import { useFeedback } from '@hooks/useFeedback';
  * 
  * const FeedbackList = () => {
  *   const feedbacks = useFeedback();

@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { usePortfolio } from '../context/PortfolioContext';
+import { usePortfolio } from '@context/PortfolioContext';
 
 /**
  * Validates a skill object to ensure it has all required properties
@@ -90,7 +90,7 @@ const addFallbackIcons = (skills) => {
  * @returns {Object|null} Object containing skillsSection and skillBars data or null if loading
  * 
  * @example
- * import useSkills from '../hooks/useSkills';
+ * import useSkills from '@hooks/useSkills';
  * 
  * const SkillsDisplay = () => {
  *   // Get all skills

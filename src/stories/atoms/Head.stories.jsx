@@ -1,6 +1,6 @@
 import React from 'react';
 import Head from '../../components/Head';
-import { mockStructuredData } from '../utils/mockData';
+import { mockStructuredData } from '@utils/mockData';
 import { HelmetProvider } from 'react-helmet-async';
 
 // We need to wrap the Head component in HelmetProvider

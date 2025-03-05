@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { usePortfolio } from '../context/PortfolioContext';
+import { usePortfolio } from '@context/PortfolioContext';
 
 /**
  * Custom hook to handle navigation behavior and data.
@@ -13,7 +13,7 @@ import { usePortfolio } from '../context/PortfolioContext';
  * @returns {Object} returns.socialLinks - Social links data from the portfolio
  * 
  * @example
- * import { useNavigation } from '../hooks/useNavigation';
+ * import { useNavigation } from '@hooks/useNavigation';
  * 
  * const NavComponent = () => {
  *   const { isScrolled, isVisible, greetings, socialLinks } = useNavigation();

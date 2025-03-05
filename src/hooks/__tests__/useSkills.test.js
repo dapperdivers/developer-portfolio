@@ -1,6 +1,6 @@
 import { renderHook, act } from '@testing-library/react';
 import useSkills from '../useSkills';
-import { usePortfolio } from '../../context/PortfolioContext';
+import { usePortfolio } from '@context/PortfolioContext';
 
 // Mock the context
 jest.mock('../../context/PortfolioContext', () => ({

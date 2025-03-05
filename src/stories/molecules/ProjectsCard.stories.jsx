@@ -1,7 +1,7 @@
 import React from 'react';
 import ProjectsCard from '../../components/ProjectsCard';
 import { within, userEvent, expect } from '@storybook/test';
-import { withPortfolioContext } from '../utils/decorators';
+import { withPortfolioContext } from '@utils/decorators';
 
 export default {
   title: 'Molecules/ProjectsCard',

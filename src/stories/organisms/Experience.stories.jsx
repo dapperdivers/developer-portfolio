@@ -1,7 +1,7 @@
 import React from 'react';
 import Experience from '../../containers/Experience';
 import { within, userEvent, expect } from '@storybook/test';
-import PortfolioContext from '../../context/PortfolioContext';
+import PortfolioContext from '@context/PortfolioContext';
 
 // Mock experience data for the stories
 const mockExperienceData = [
@@ -180,7 +180,7 @@ ResponsiveView.parameters = {
  * 
  * ```jsx
  * import Experience from '../containers/Experience';
- * import { PortfolioProvider } from '../context/PortfolioContext';
+ * import { PortfolioProvider } from '@context/PortfolioContext';
  * 
  * function App() {
  *   return (

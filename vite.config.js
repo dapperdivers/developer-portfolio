@@ -125,9 +125,14 @@ export default defineConfig({
     alias: {
       '@': path.resolve(__dirname, 'src'),
       '@components': path.resolve(__dirname, 'src/components'),
-      '@containers': path.resolve(__dirname, 'src/containers'),
+      '@atoms': path.resolve(__dirname, 'src/components/atoms'),
+      '@molecules': path.resolve(__dirname, 'src/components/molecules'),
+      '@organisms': path.resolve(__dirname, 'src/components/organisms'),
+      '@layout': path.resolve(__dirname, 'src/components/layout'),
       '@assets': path.resolve(__dirname, 'src/assets'),
       '@utils': path.resolve(__dirname, 'src/utils'),
+      '@hooks': path.resolve(__dirname, 'src/hooks'),
+      '@context': path.resolve(__dirname, 'src/context'),
     }
   },
   css: {

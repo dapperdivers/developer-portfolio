@@ -1,12 +1,12 @@
 import React from 'react';
 import Greetings from '../../containers/Greetings';
 import { within, userEvent, expect } from '@storybook/test';
-import PortfolioContext from '../../context/PortfolioContext';
-import { mockPortfolioData } from '../utils/mockData';
-import { withPortfolioContext, withViewport } from '../utils/decorators';
-import code from '../../assets/animations/coding.json';
-import webdev from '../../assets/animations/webdev.json';
-import build from '../../assets/animations/build.json';
+import PortfolioContext from '@context/PortfolioContext';
+import { mockPortfolioData } from '@utils/mockData';
+import { withPortfolioContext, withViewport } from '@utils/decorators';
+import code from '@assets/animations/coding.json';
+import webdev from '@assets/animations/webdev.json';
+import build from '@assets/animations/build.json';
 
 // Helper function to create context with custom greeting data
 const createContextWithGreetings = (greetingsData) => {

@@ -13,7 +13,7 @@ import ColorThief from "colorthief";
  * @returns {Function} returns.rgbToString - Utility to convert RGB array to CSS color string
  * 
  * @example
- * import { useImageColor } from '../hooks/useImageColor';
+ * import { useImageColor } from '@hooks/useImageColor';
  * 
  * const Component = () => {
  *   const { color, getColorFromImage, rgbToString } = useImageColor([50, 100, 200]);

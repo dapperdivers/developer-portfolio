@@ -1,9 +1,9 @@
 import React from 'react';
 import Projects from '../../containers/Projects';
 import { within, expect } from '@storybook/test';
-import PortfolioContext from '../../context/PortfolioContext';
-import { mockPortfolioData } from '../utils/mockData';
-import { withPortfolioContext, withViewport } from '../utils/decorators';
+import PortfolioContext from '@context/PortfolioContext';
+import { mockPortfolioData } from '@utils/mockData';
+import { withPortfolioContext, withViewport } from '@utils/decorators';
 
 // Helper function to create context with custom projects data
 const createContextWithProjects = (projectsData) => {
@@ -162,7 +162,7 @@ MixedDataCompleteness.decorators = [
  * 
  * ```jsx
  * import Projects from '../containers/Projects';
- * import PortfolioContext from '../context/PortfolioContext';
+ * import PortfolioContext from '@context/PortfolioContext';
  * 
  * function App() {
  *   const portfolioData = {

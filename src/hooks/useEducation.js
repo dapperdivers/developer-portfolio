@@ -1,4 +1,4 @@
-import { usePortfolio } from '../context/PortfolioContext';
+import { usePortfolio } from '@context/PortfolioContext';
 
 /**
  * Custom hook to access education data from the portfolio context.
@@ -7,7 +7,7 @@ import { usePortfolio } from '../context/PortfolioContext';
  * @returns {Array} Array of education objects
  * 
  * @example
- * import { useEducation } from '../hooks/useEducation';
+ * import { useEducation } from '@hooks/useEducation';
  * 
  * const EducationList = () => {
  *   const education = useEducation();

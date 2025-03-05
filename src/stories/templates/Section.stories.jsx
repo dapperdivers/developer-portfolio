@@ -1,7 +1,7 @@
 import React from 'react';
-import Section from '../../components/layout/Section';
-import Button from '../../components/ui/Button';
-import Card from '../../components/ui/Card';
+import Section from '@layout/Section';
+import Button from '@atoms/Button';
+import Card from '@atoms/Card';
 
 export default {
   title: 'Templates/Section',

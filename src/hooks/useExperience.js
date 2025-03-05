@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { usePortfolio } from '../context/PortfolioContext';
+import { usePortfolio } from '@context/PortfolioContext';
 
 /**
  * Validates an experience object to ensure it has all required properties
@@ -31,7 +31,7 @@ const isValidExperience = (experienceItem) => {
  * @returns {Array|null} Array of validated and sorted experience objects or null if loading
  * 
  * @example
- * import useExperience from '../hooks/useExperience';
+ * import useExperience from '@hooks/useExperience';
  * 
  * const ExperienceList = () => {
  *   // Get all experiences sorted by most recent
