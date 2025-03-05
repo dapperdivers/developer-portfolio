@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React, { memo, useMemo } from "react";
 import PropTypes from 'prop-types';
 import Card from "./ui/Card";
 import Button from "./ui/Button";
@@ -33,16 +33,20 @@ const ProjectsCard = ({ data, index = 0 }) => {
     // Extract tech stack from data or use defaults
     const techStack = data.stack || [];
     
-    // Animation for the card
-    const animation = {
+    // Memoize animation configuration to prevent unnecessary re-renders
+    const animation = useMemo(() => ({
       initial: { opacity: 0, y: 30 },
       animate: isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 },
       transition: { 
         duration: 0.5, 
         delay: 0.1 * (index % 3), 
-        ease: "easeOut" 
+        ease: "easeOut",
+        // Optimize performance by using hardware acceleration
+        type: "tween",
+        // Use only transforms for better performance
+        translateY: true
       }
-    };
+    }), [isInView, index]);
   
     return (
       <div className="project-card" ref={ref}>
@@ -59,6 +63,9 @@ const ProjectsCard = ({ data, index = 0 }) => {
                 alt={`${data.name} project screenshot`}
                 className="project-image"
                 lazy={true}
+                width={800}
+                height={450}
+                sizes="(max-width: 768px) 100vw, 400px"
               />
               <div className="project-image-overlay"></div>
             </div>
@@ -76,7 +83,7 @@ const ProjectsCard = ({ data, index = 0 }) => {
               </div>
             )}
             
-            <div className="project-links mt-auto">
+            <div className="project-links">
               {data.github && (
                 <Button
                   className="project-button github-button"
@@ -85,6 +92,8 @@ const ProjectsCard = ({ data, index = 0 }) => {
                   size="sm"
                   icon="simple-icons:github"
                   ariaLabel={`View ${data.name} source code on GitHub`}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   Code
                 </Button>
@@ -97,6 +106,8 @@ const ProjectsCard = ({ data, index = 0 }) => {
                   size="sm"
                   icon="fa:external-link"
                   ariaLabel={`View ${data.name} live demo`}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   Demo
                 </Button>

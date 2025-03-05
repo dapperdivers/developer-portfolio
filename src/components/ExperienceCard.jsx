@@ -38,7 +38,11 @@ const ExperienceCard = ({ data, index = 0 }) => {
       transition: { 
         duration: 0.5, 
         delay: 0.1 * (index % 3), 
-        ease: "easeOut" 
+        ease: "easeOut",
+        // Optimize performance by using hardware acceleration
+        type: "tween",
+        // Use only transforms for better performance
+        translateY: true
       }
     }), [isInView, index]);
     

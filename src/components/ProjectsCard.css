@@ -3,6 +3,11 @@
 .project-card {
   margin-bottom: var(--spacing-5);
   height: 100%;
+  will-change: transform, opacity;
+  /* Add hardware acceleration for better performance */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
 }
 
 .project-card .card {
@@ -12,6 +17,15 @@
   border-radius: var(--border-radius-lg);
   overflow: hidden;
   max-height: 450px;
+  box-shadow: var(--box-shadow-sm);
+  transition: var(--transition-base);
+  background-color: var(--color-background);
+  border: var(--border-width-thin) solid var(--color-border);
+}
+
+.project-card .card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--box-shadow);
 }
 
 .project-image-container {
@@ -25,7 +39,11 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform var(--transition-base);
+  transition: transform var(--transition-slow);
+  will-change: transform;
+  /* Add hardware acceleration for better performance */
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .project-image-overlay {
@@ -58,6 +76,19 @@
   font-weight: var(--font-weight-bold);
   color: var(--color-text);
   margin-bottom: var(--spacing-2);
+  position: relative;
+  padding-bottom: var(--spacing-2);
+}
+
+.project-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 50px;
+  height: 3px;
+  background-color: var(--color-accent);
+  border-radius: 3px;
 }
 
 .project-description {
@@ -83,6 +114,13 @@
   border-radius: var(--border-radius-pill);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
+  transition: var(--transition-base);
+}
+
+.tech-tag:hover, .tech-tag:focus {
+  background-color: var(--color-primary-light);
+  color: var(--color-white);
+  transform: translateY(-2px);
 }
 
 .project-links {
@@ -97,10 +135,25 @@
   align-items: center;
   justify-content: center;
   gap: var(--spacing-1);
+  transition: var(--transition-base);
+}
+
+.github-button {
+  background-color: var(--color-gray-800);
+  color: var(--color-white);
+}
+
+.demo-button {
+  background-color: var(--color-accent);
+  color: var(--color-white);
+}
+
+.project-button:hover, .project-button:focus {
+  transform: translateY(-2px);
 }
 
 /* Responsive styles */
-@media (max-width: var(--breakpoint-md)) {
+@media (max-width: 768px) {
   .project-image-container {
     height: 150px;
   }
@@ -115,5 +168,27 @@
   
   .project-description {
     font-size: var(--font-size-sm);
+  }
+  
+  .tech-stack {
+    gap: var(--spacing-1);
+  }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .project-card .card,
+  .project-image,
+  .project-image-overlay,
+  .tech-tag,
+  .project-button {
+    transition: none;
+  }
+  
+  .project-card .card:hover,
+  .project-card .card:hover .project-image,
+  .tech-tag:hover,
+  .project-button:hover {
+    transform: none;
   }
 }
