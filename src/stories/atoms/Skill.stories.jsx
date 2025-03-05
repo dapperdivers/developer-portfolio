@@ -55,56 +55,63 @@ const exampleSkills = [
 const Template = (args) => <Skill {...args} />;
 
 // Default skill
-export const Default = Template.bind({});
-Default.args = {
+export const Default = {
+  args: {
   skill: exampleSkills[0],
   size: 'md',
   animate: true,
   reducedMotion: false,
   index: 0,
+}
 };
 
 // React skill
-export const ReactSkill = Template.bind({});
-ReactSkill.args = {
+export const ReactSkill = {
+  args: {
   skill: exampleSkills[1],
   size: 'md',
   animate: true,
+}
 };
 
 // Small size skill
-export const SmallSize = Template.bind({});
-SmallSize.args = {
+export const SmallSize = {
+  args: {
   skill: exampleSkills[2],
   size: 'sm',
+}
 };
 
 // Medium size skill
-export const MediumSize = Template.bind({});
-MediumSize.args = {
+export const MediumSize = {
+  args: {
   skill: exampleSkills[3],
   size: 'md',
+}
 };
 
 // Large size skill
-export const LargeSize = Template.bind({});
-LargeSize.args = {
+export const LargeSize = {
+  args: {
   skill: exampleSkills[4],
   size: 'lg',
+}
 };
 
 // Non-animated skill
-export const NoAnimation = Template.bind({});
-NoAnimation.args = {
+export const NoAnimation = {
+  args: {
   skill: exampleSkills[5],
   animate: false,
+}
 };
 
 // Reduced motion skill
-export const ReducedMotion = Template.bind({});
-ReducedMotion.args = {
+export const ReducedMotion = {
+  args: {
   skill: exampleSkills[6],
   reducedMotion: true,
+}
 };
 
 // Multiple sizes side by side

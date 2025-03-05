@@ -1,8 +1,7 @@
 import React from 'react';
 import GithubProfile from '../../containers/GithubProfile';
-import { within, userEvent } from '@storybook/testing-library';
-import { expect } from '@storybook/jest';
-import { PortfolioContext } from '../../context/PortfolioContext';
+import { within, userEvent, expect } from '@storybook/test';
+import PortfolioContext from '../../context/PortfolioContext';
 import { mockPortfolioData, mockGithubProfile } from '../utils/mockData';
 import { withPortfolioContext } from '../utils/decorators';
 import axios from 'axios';

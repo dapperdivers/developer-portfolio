@@ -1,7 +1,6 @@
 import React from 'react';
 import { FaGithub, FaLinkedin, FaTwitter, FaMedium, FaDev, FaStackOverflow, FaYoutube, FaInstagram } from 'react-icons/fa';
-import { within, userEvent } from '@storybook/testing-library';
-import { expect } from '@storybook/jest';
+import { within, userEvent, expect } from '@storybook/test';
 
 // Import the CSS for styling
 import '../../components/SocialLinks.css';
@@ -173,10 +172,11 @@ const Template = (args) => (
 );
 
 // Default story - Standard GitHub and LinkedIn links
-export const Default = Template.bind({});
-Default.args = {
+export const Default = {
+  args: {
   links: sampleLinks.default,
   variant: 'default'
+}
 };
 Default.play = async ({ canvasElement, step }) => {
   const canvas = within(canvasElement);
@@ -208,10 +208,11 @@ Default.play = async ({ canvasElement, step }) => {
 };
 
 // All social platforms example
-export const AllPlatforms = Template.bind({});
-AllPlatforms.args = {
+export const AllPlatforms = {
+  args: {
   links: sampleLinks.complete,
   variant: 'default'
+}
 };
 AllPlatforms.parameters = {
   docs: {
@@ -222,10 +223,11 @@ AllPlatforms.parameters = {
 };
 
 // Single platform example
-export const SinglePlatform = Template.bind({});
-SinglePlatform.args = {
+export const SinglePlatform = {
+  args: {
   links: sampleLinks.minimal,
   variant: 'default'
+}
 };
 SinglePlatform.parameters = {
   docs: {
@@ -236,10 +238,11 @@ SinglePlatform.parameters = {
 };
 
 // Dark theme variation
-export const DarkTheme = Template.bind({});
-DarkTheme.args = {
+export const DarkTheme = {
+  args: {
   links: sampleLinks.default,
   variant: 'dark'
+}
 };
 DarkTheme.parameters = {
   docs: {
@@ -326,10 +329,11 @@ WrappingBehavior.parameters = {
  */
 
 // Mobile view for responsive testing
-export const MobileView = Template.bind({});
-MobileView.args = {
+export const MobileView = {
+  args: {
   links: sampleLinks.complete,
   variant: 'default'
+}
 };
 MobileView.parameters = {
   viewport: {

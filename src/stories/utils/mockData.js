@@ -7,117 +7,112 @@
 
 // Mock data for PortfolioContext
 export const mockPortfolioData = {
-  greeting: {
-    title: "Hi there, I'm Derek Mackley",
-    subtitle: "A passionate Full Stack Developer",
-    description: "I design and develop web applications with modern JavaScript frameworks and build scalable backend services.",
+  greetings: {
+    name: "Derek Mackley",
+    title: "Hi There, I'm Derek",
+    description: "A passionate Full Stack Web Developer and Security Expert with extensive experience building secure web applications and APIs.",
     resumeLink: "https://example.com/resume.pdf"
   },
-  socialLinks: [
-    {
-      name: "github",
-      url: "https://github.com/username",
-      icon: "github"
-    },
-    {
-      name: "linkedin",
-      url: "https://linkedin.com/in/username",
-      icon: "linkedin"
-    },
-    {
-      name: "twitter",
-      url: "https://twitter.com/username",
-      icon: "twitter"
-    }
-  ],
+  openSource: {
+    githubUserName: "DapperDivers",
+  },
+  contact: {},
+  socialLinks: {
+    github: "https://github.com/DapperDivers",
+    linkedin: "https://www.linkedin.com/in/dmackley/",
+  },
   skillsSection: {
-    title: "Skills",
-    subTitle: "My technical expertise",
+    title: "What I do",
+    subTitle: "FULL STACK DEVELOPER THAT TINKERS WITH ANYTHING I CAN GET MY HANDS ON",
     skills: [
-      { skillName: "JavaScript", iconName: "logos:javascript" },
-      { skillName: "React", iconName: "logos:react" },
-      { skillName: "Node.js", iconName: "logos:nodejs" },
-      { skillName: "TypeScript", iconName: "logos:typescript-icon" },
-      { skillName: "Git", iconName: "logos:git-icon" },
-      { skillName: "Python", iconName: "logos:python" }
+      "Develop extensible, scalable, and secure web-based applications with a strong focus on security best practices",
+      "Implement robust security measures and conduct security audits to ensure application integrity",
+      "Update and migrate legacy apps to modern frameworks using cutting-edge technology",
+    ],
+    softwareSkills: [
+      {
+        skillName: "JavaScript",
+        iconName: "logos:javascript"
+      },
+      {
+        skillName: "React",
+        iconName: "logos:react"
+      },
+      {
+        skillName: "Node.js",
+        iconName: "logos:nodejs-icon"
+      },
+      {
+        skillName: "TypeScript", 
+        iconName: "logos:typescript-icon"
+      },
+      {
+        skillName: "Git",
+        iconName: "logos:git-icon"
+      },
+      {
+        skillName: "Python",
+        iconName: "logos:python"
+      }
     ]
   },
+  skillBars: [
+    {
+      Stack: "Software Architecture",
+      progressPercentage: "75",
+    },
+    {
+      Stack: "API layer and below",
+      progressPercentage: "90",
+    },
+    {
+      Stack: "Frontend/Design",
+      progressPercentage: "50",
+    },
+  ],
   educationInfo: [
     {
-      schoolName: "University of Technology",
-      subHeader: "Bachelor of Science in Computer Science",
-      duration: "2015 - 2019",
-      desc: "Graduated with honors",
-      descBullets: [
-        "Specialized in Software Engineering",
-        "Completed thesis on scalable web applications"
-      ]
-    },
-    {
-      schoolName: "Coding Academy",
-      subHeader: "Advanced Web Development Certification",
-      duration: "2019 - 2020",
-      desc: "Intensive full-stack development program",
-      descBullets: [
-        "Developed production-ready applications",
-        "Focused on modern JavaScript frameworks"
-      ]
-    },
-    {
-      schoolName: "Online University",
-      subHeader: "Cloud Computing Specialization",
-      duration: "2021",
-      desc: "Professional certification in cloud architecture",
+      schoolName: "Georgia State University",
+      subHeader: "Bachelor of Business Administration in Computer Information Systems",
+      duration: "January 2015",
+      desc: "Minor in Information Security",
       descBullets: []
     }
   ],
   experience: [
     {
-      role: "Senior Frontend Developer",
-      company: "Tech Innovations Inc.",
+      role: "Software Engineering Manager",
+      company: "Traction Tools",
       companylogo: "https://via.placeholder.com/150",
-      date: "Jan 2022 – Present",
-      desc: "Led the development of responsive web applications using React and modern JavaScript frameworks.",
-      descBullets: [
-        "Implemented atomic design system across multiple projects",
-        "Reduced bundle size by 40% through code splitting",
-        "Mentored junior developers on React best practices"
-      ]
+      date: "February 2021 – Present",
+      desc: "Working as the Software Engineering Manager for a direct-to-consumer site that provides tooling for businesses running EOS."
     },
     {
-      role: "Frontend Developer",
-      company: "Digital Solutions",
+      role: "Senior Software Engineer",
+      company: "Ubicquia",
       companylogo: "https://via.placeholder.com/150",
-      date: "Mar 2020 – Dec 2021",
-      desc: "Designed and developed user interfaces for client web applications.",
-      descBullets: [
-        "Created reusable component libraries",
-        "Optimized application performance",
-        "Collaborated with UX designers"
-      ]
-    }
-  ],
-  feedbacks: [
-    {
-      name: "John Smith",
-      feedback: "Derek is an exceptional developer who consistently delivers high-quality code and innovative solutions.",
-      title: "CTO at TechCorp"
+      date: "May 2018 – June 2020",
+      desc: "Created an enterprise solution to manage cellular connected units on light poles with Laravel API and Angular frontend."
     }
   ],
   projects: [
     {
-      name: "Project Alpha",
-      desc: "A full-stack web application with React and Node.js",
-      link: "https://example.com/project-alpha",
-      github: "https://github.com/username/project-alpha",
-      tags: ["React", "Node.js", "MongoDB"]
+      name: "Homelab & Security Testing Environment",
+      desc: "This site is hosted from my home lab, serving as both a hosting environment and a security testing playground."
     },
     {
-      name: "Project Beta",
-      desc: "Mobile-first responsive website with modern UI/UX",
-      link: "https://example.com/project-beta",
-      github: "https://github.com/username/project-beta",
-      tags: ["React", "CSS3", "Firebase"]
+      name: "Tinkering with RFID",
+      desc: "Playing with RFID tags and am in the process of \"removing keys\" from my life."
+    },
+    {
+      name: "3D Printing",
+      desc: "Operating 4 printers and finding great joy in customizing them for optimal performance."
+    }
+  ],
+  feedbacks: [
+    {
+      name: "Scott Latsa",
+      feedback: "Derek Mackley was an invaluable asset to the team. He was a dependable developer that always accomplished the task assigned even in the midst of changing business requirements.",
     }
   ]
 };

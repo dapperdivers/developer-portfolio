@@ -1,9 +1,8 @@
 import React from 'react';
 import Navigation from '../../components/Navigation';
-import { within, userEvent } from '@storybook/testing-library';
-import { expect } from '@storybook/jest';
+import { within, userEvent, expect } from '@storybook/test';
 import { withPortfolioContext } from '../utils/decorators';
-import { PortfolioContext } from '../../context/PortfolioContext';
+import PortfolioContext from '../../context/PortfolioContext';
 
 export default {
   title: 'Molecules/Navigation',

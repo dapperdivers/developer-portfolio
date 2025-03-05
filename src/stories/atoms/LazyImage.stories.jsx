@@ -1,7 +1,6 @@
 import React from 'react';
 import LazyImage from '../../components/ui/LazyImage';
-import { within, userEvent } from '@storybook/testing-library';
-import { expect } from '@storybook/jest';
+import { within, userEvent, expect } from '@storybook/test';
 
 export default {
   title: 'Atoms/LazyImage',
@@ -65,10 +64,11 @@ export default {
 const Template = (args) => <div style={{ maxWidth: '500px' }}><LazyImage {...args} /></div>;
 
 // Default story
-export const Default = Template.bind({});
-Default.args = {
+export const Default = {
+  args: {
   src: 'https://source.unsplash.com/featured/800x600/?nature',
   alt: 'Nature landscape from Unsplash',
+}
 };
 Default.play = async ({ canvasElement, step }) => {
   const canvas = within(canvasElement);
@@ -79,19 +79,21 @@ Default.play = async ({ canvasElement, step }) => {
 };
 
 // With aspect ratio
-export const WithAspectRatio = Template.bind({});
-WithAspectRatio.args = {
+export const WithAspectRatio = {
+  args: {
   src: 'https://source.unsplash.com/featured/800x450/?landscape',
   alt: 'Landscape with 16:9 aspect ratio',
   aspectRatio: '16:9',
+}
 };
 
 // With low-res placeholder
-export const WithPlaceholder = Template.bind({});
-WithPlaceholder.args = {
+export const WithPlaceholder = {
+  args: {
   src: 'https://source.unsplash.com/featured/800x600/?mountains',
   alt: 'Mountain landscape',
   lowResSrc: 'https://source.unsplash.com/featured/80x60/?mountains',
+}
 };
 
 /**
@@ -137,18 +139,20 @@ WithPlaceholder.args = {
  * 
  * The following stories demonstrate edge cases and special scenarios.
  */
-export const ErrorState = Template.bind({});
-ErrorState.args = {
+export const ErrorState = {
+  args: {
   src: 'https://non-existent-image-url.jpg',
   alt: 'This image will fail to load',
+}
 };
 
 // Responsive behavior example
-export const Responsive = Template.bind({});
-Responsive.args = {
+export const Responsive = {
+  args: {
   src: 'https://source.unsplash.com/featured/600x400/?technology',
   alt: 'Technology image',
   aspectRatio: '3:2',
+}
 };
 Responsive.parameters = {
   viewport: {

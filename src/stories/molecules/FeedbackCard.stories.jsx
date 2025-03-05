@@ -1,7 +1,6 @@
 import React from 'react';
 import FeedbackCard from '../../components/FeedbackCard';
-import { within, userEvent } from '@storybook/testing-library';
-import { expect } from '@storybook/jest';
+import { within, userEvent, expect } from '@storybook/test';
 
 // Sample feedback data for stories
 const mockFeedbackData = {
@@ -75,10 +74,11 @@ const Template = (args) => (
 );
 
 // Basic story with default feedback
-export const Default = Template.bind({});
-Default.args = {
+export const Default = {
+  args: {
   data: mockFeedbackData.default,
   index: 0
+}
 };
 Default.play = async ({ canvasElement, step }) => {
   const canvas = within(canvasElement);
@@ -117,10 +117,11 @@ Default.play = async ({ canvasElement, step }) => {
 };
 
 // Story with custom avatar image
-export const WithAvatar = Template.bind({});
-WithAvatar.args = {
+export const WithAvatar = {
+  args: {
   data: mockFeedbackData.withImage,
   index: 1
+}
 };
 WithAvatar.parameters = {
   docs: {
@@ -131,10 +132,11 @@ WithAvatar.parameters = {
 };
 
 // Story with very long feedback content
-export const LongContent = Template.bind({});
-LongContent.args = {
+export const LongContent = {
+  args: {
   data: mockFeedbackData.longContent,
   index: 2
+}
 };
 LongContent.parameters = {
   docs: {
@@ -145,10 +147,11 @@ LongContent.parameters = {
 };
 
 // Story with a low rating
-export const PartialRating = Template.bind({});
-PartialRating.args = {
+export const PartialRating = {
+  args: {
   data: mockFeedbackData.lowRating,
   index: 3
+}
 };
 PartialRating.parameters = {
   docs: {
@@ -174,10 +177,11 @@ PartialRating.play = async ({ canvasElement, step }) => {
 };
 
 // Story showcasing animation capabilities
-export const AnimatedEntry = Template.bind({});
-AnimatedEntry.args = {
+export const AnimatedEntry = {
+  args: {
   data: mockFeedbackData.default,
   index: 0
+}
 };
 AnimatedEntry.parameters = {
   docs: {
@@ -248,10 +252,11 @@ AnimatedEntry.parameters = {
  */
 
 // Mobile view for responsive testing
-export const MobileView = Template.bind({});
-MobileView.args = {
+export const MobileView = {
+  args: {
   data: mockFeedbackData.default,
   index: 0
+}
 };
 MobileView.parameters = {
   viewport: {

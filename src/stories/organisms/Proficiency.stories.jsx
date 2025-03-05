@@ -1,8 +1,7 @@
 import React from 'react';
 import Proficiency from '../../containers/Proficiency';
-import { within } from '@storybook/testing-library';
-import { expect } from '@storybook/jest';
-import { PortfolioContext } from '../../context/PortfolioContext';
+import { within, expect } from '@storybook/test';
+import PortfolioContext from '../../context/PortfolioContext';
 import { mockPortfolioData } from '../utils/mockData';
 import { withPortfolioContext, withViewport } from '../utils/decorators';
 import build from '../../assets/lottie/build';

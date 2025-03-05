@@ -1,7 +1,6 @@
 import React from 'react';
 import ResponsiveImage from '../../components/ui/ResponsiveImage';
-import { within, userEvent } from '@storybook/testing-library';
-import { expect } from '@storybook/jest';
+import { within, userEvent, expect } from '@storybook/test';
 
 export default {
   title: 'Atoms/ResponsiveImage',
@@ -95,11 +94,12 @@ const Template = (args) => (
 );
 
 // Default story - Basic responsive image
-export const Default = Template.bind({});
-Default.args = {
+export const Default = {
+  args: {
   src: 'https://source.unsplash.com/featured/600x400/?nature',
   alt: 'Nature landscape',
   objectFit: 'cover'
+}
 };
 Default.play = async ({ canvasElement, step }) => {
   const canvas = within(canvasElement);
@@ -112,17 +112,18 @@ Default.play = async ({ canvasElement, step }) => {
 };
 
 // With Placeholder - Using a low-res placeholder
-export const WithPlaceholder = Template.bind({});
-WithPlaceholder.args = {
+export const WithPlaceholder = {
+  args: {
   src: 'https://source.unsplash.com/featured/600x400/?mountains',
   alt: 'Mountain landscape',
   placeholderSrc: 'https://source.unsplash.com/featured/60x40/?mountains', // Low-res version
   objectFit: 'cover'
+}
 };
 
 // With Animation - Demonstrates animation capabilities
-export const WithAnimation = Template.bind({});
-WithAnimation.args = {
+export const WithAnimation = {
+  args: {
   src: 'https://source.unsplash.com/featured/600x400/?ocean',
   alt: 'Ocean view',
   animation: {
@@ -130,15 +131,17 @@ WithAnimation.args = {
     animate: { opacity: 1, scale: 1 },
     transition: { duration: 0.5 }
   }
+}
 };
 
 // Eager Loading - Non-lazy loaded image
-export const EagerLoading = Template.bind({});
-EagerLoading.args = {
+export const EagerLoading = {
+  args: {
   src: 'https://source.unsplash.com/featured/600x400/?city',
   alt: 'City skyline',
   lazy: false,
   objectFit: 'cover'
+}
 };
 
 /**
@@ -194,15 +197,16 @@ EagerLoading.args = {
  */
 
 // Error State - Image that fails to load
-export const ErrorState = Template.bind({});
-ErrorState.args = {
+export const ErrorState = {
+  args: {
   src: 'https://non-existent-image-url.jpg',
   alt: 'This image will fail to load'
+}
 };
 
 // With SrcSet - Responsive images with different sizes
-export const WithSrcSet = Template.bind({});
-WithSrcSet.args = {
+export const WithSrcSet = {
+  args: {
   src: 'https://source.unsplash.com/featured/800x600/?landscape',
   alt: 'Responsive landscape image',
   srcSet: `
@@ -211,14 +215,16 @@ WithSrcSet.args = {
     https://source.unsplash.com/featured/1200x900/?landscape 1200w
   `,
   sizes: '(max-width: 600px) 400px, (max-width: 1200px) 800px, 1200px'
+}
 };
 
 // Responsive behavior example
-export const ResponsiveViewport = Template.bind({});
-ResponsiveViewport.args = {
+export const ResponsiveViewport = {
+  args: {
   src: 'https://source.unsplash.com/featured/600x400/?technology',
   alt: 'Technology image',
   objectFit: 'contain'
+}
 };
 ResponsiveViewport.parameters = {
   viewport: {

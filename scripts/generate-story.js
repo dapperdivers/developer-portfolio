@@ -112,7 +112,7 @@ let imports = `import React from 'react';\nimport ${componentName} from '${relat
 
 // Add interaction testing imports if needed
 if (args.interactions) {
-  imports += `import { within, userEvent } from '@storybook/testing-library';\nimport { expect } from '@storybook/jest';\n`;
+  imports += `import { within, userEvent, expect } from '@storybook/test';\n`;
 }
 
 // Add context imports if needed
@@ -180,13 +180,11 @@ storyConfig += `
 
 // Generate template and stories
 let stories = `
-// Template for the component
-const Template = (args) => <${componentName} {...args} />;
-
 // Default story
-export const Default = Template.bind({});
-Default.args = {
-  // Add default props here
+export const Default = {
+  args: {
+    // Add default props here
+  }
 };`;
 
 // Add interaction tests if needed
@@ -216,9 +214,10 @@ if (atomicType === 'atom') {
   stories += `
 
 // Variant example
-export const Variant = Template.bind({});
-Variant.args = {
-  // Add variant-specific props
+export const Variant = {
+  args: {
+    // Add variant-specific props
+  }
 };`;
 
   if (args.interactions) {
@@ -264,9 +263,10 @@ if (args.detailed) {
  * 
  * The following stories demonstrate edge cases and special scenarios.
  */
-export const EdgeCase = Template.bind({});
-EdgeCase.args = {
-  // Edge case props
+export const EdgeCase = {
+  args: {
+    // Edge case props
+  }
 };`;
 }
 
@@ -275,14 +275,15 @@ if (atomicType === 'atom' || atomicType === 'molecule') {
   stories += `
 
 // Responsive behavior example
-export const Responsive = Template.bind({});
-Responsive.args = {
-  // Props for demonstrating responsive behavior
-};
-Responsive.parameters = {
-  viewport: {
-    defaultViewport: 'mobile1',
+export const Responsive = {
+  args: {
+    // Props for demonstrating responsive behavior
   },
+  parameters: {
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
+  }
 };`;
 }
 

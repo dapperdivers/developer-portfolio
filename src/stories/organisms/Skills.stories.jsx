@@ -1,7 +1,6 @@
 import React from 'react';
 import Skills from '../../containers/Skills';
-import { within, userEvent } from '@storybook/testing-library';
-import { expect } from '@storybook/jest';
+import { within, userEvent, expect } from '@storybook/test';
 import { withPortfolioContext } from '../utils/decorators';
 
 export default {
@@ -165,4 +164,4 @@ ManySkills.decorators = [
   }
 ];
 
-import { PortfolioContext } from '../../context/PortfolioContext';
+import PortfolioContext from '../../context/PortfolioContext';

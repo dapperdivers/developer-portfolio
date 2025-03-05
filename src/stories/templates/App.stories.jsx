@@ -1,8 +1,7 @@
 import React from 'react';
 import App from '../../App';
-import { within } from '@storybook/testing-library';
-import { expect } from '@storybook/jest';
-import { PortfolioContext } from '../../context/PortfolioContext';
+import { within, expect } from '@storybook/test';
+import PortfolioContext from '../../context/PortfolioContext';
 import { mockPortfolioData } from '../utils/mockData';
 import { withPortfolioContext, withViewport } from '../utils/decorators';
 

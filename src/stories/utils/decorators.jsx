@@ -6,7 +6,7 @@
  */
 
 import React from 'react';
-import { PortfolioContext } from '../../context/PortfolioContext';
+import PortfolioContext from '../../context/PortfolioContext';
 import { mockPortfolioData } from './mockData';
 
 /**

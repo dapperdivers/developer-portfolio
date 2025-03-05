@@ -1,8 +1,7 @@
 import React from 'react';
 import Education from '../../containers/Education';
-import { within } from '@storybook/testing-library';
-import { expect } from '@storybook/jest';
-import { PortfolioContext } from '../../context/PortfolioContext';
+import { within, expect } from '@storybook/test';
+import PortfolioContext from '../../context/PortfolioContext';
 import { mockPortfolioData } from '../utils/mockData';
 import { withPortfolioContext, withViewport } from '../utils/decorators';
 
@@ -99,7 +98,7 @@ EmptyState.play = async ({ canvasElement, step }) => {
  * 
  * ```jsx
  * import Education from 'containers/Education';
- * import { PortfolioContext } from 'context/PortfolioContext';
+ * import PortfolioContext from 'context/PortfolioContext';
  * 
  * function App() {
  *   const portfolioData = {

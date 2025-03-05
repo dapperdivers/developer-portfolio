@@ -83,8 +83,9 @@ ${args.imageUrl ? `<meta name="twitter:image" content="${args.imageUrl}" />` : "
 };
 
 // Default story with default values
-export const Default = Template.bind({});
-Default.args = {};
+export const Default = {
+  args: {}
+};
 Default.parameters = {
   docs: {
     description: {
@@ -94,11 +95,12 @@ Default.parameters = {
 };
 
 // Story with custom title and description
-export const CustomMetadata = Template.bind({});
-CustomMetadata.args = {
+export const CustomMetadata = {
+  args: {
   title: "Derek Mackley | Portfolio Projects",
   description: "View my latest web development projects and case studies",
   canonicalUrl: "https://example.com/projects"
+}
 };
 CustomMetadata.parameters = {
   docs: {
@@ -112,13 +114,14 @@ CustomMetadata.parameters = {
  * Social sharing metadata is critical for proper rendering when links 
  * are shared on platforms like Twitter, Facebook, LinkedIn, etc.
  */
-export const SocialSharing = Template.bind({});
-SocialSharing.args = {
+export const SocialSharing = {
+  args: {
   title: "Derek Mackley | Project Case Study",
   description: "How I built a high-performance React application",
   imageUrl: "https://example.com/project-preview.jpg",
   imageAlt: "Screenshot of project dashboard",
   canonicalUrl: "https://example.com/case-study"
+}
 };
 
 // Documentation for component usage - this is used internally in the story development
@@ -162,11 +165,12 @@ The component accepts structured data for schema.org markup, which helps search 
 `;
 
 // Demonstration of structured data for rich search results
-export const StructuredData = Template.bind({});
-StructuredData.args = {
+export const StructuredData = {
+  args: {
   title: "Derek Mackley | About Me",
   description: "Learn about my background, skills and experience",
   structuredData: mockStructuredData.person
+}
 };
 StructuredData.parameters = {
   docs: {
@@ -177,18 +181,20 @@ StructuredData.parameters = {
 };
 
 // Article page example with article schema
-export const ArticlePage = Template.bind({});
-ArticlePage.args = {
+export const ArticlePage = {
+  args: {
   title: "How to Build a Developer Portfolio | Derek Mackley",
   description: "A comprehensive guide to creating an effective developer portfolio website",
   imageUrl: "https://example.com/article-featured-image.jpg",
   structuredData: mockStructuredData.article
+}
 };
 
 // Product page example
-export const ProductPage = Template.bind({});
-ProductPage.args = {
+export const ProductPage = {
+  args: {
   title: "Portfolio Template | Derek Mackley",
   description: "A customizable portfolio template for developers",
   structuredData: mockStructuredData.product
+}
 };

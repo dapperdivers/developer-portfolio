@@ -1,7 +1,6 @@
 import React from 'react';
 import GithubProfileCard from '../../components/GithubProfileCard';
-import { within, userEvent } from '@storybook/testing-library';
-import { expect } from '@storybook/jest';
+import { within, userEvent, expect } from '@storybook/test';
 import { mockGithubProfile } from '../utils/mockData';
 import { withPortfolioContext } from '../utils/decorators';
 
@@ -46,9 +45,10 @@ export default {
 const Template = (args) => <GithubProfileCard {...args} />;
 
 // Default story with profile data
-export const WithProfile = Template.bind({});
-WithProfile.args = {
+export const WithProfile = {
+  args: {
   prof: mockGithubProfile
+}
 };
 WithProfile.play = async ({ canvasElement, step }) => {
   const canvas = within(canvasElement);
@@ -66,9 +66,10 @@ WithProfile.play = async ({ canvasElement, step }) => {
  * This occurs when the GitHub API request is still pending or
  * when no profile data is available.
  */
-export const Loading = Template.bind({});
-Loading.args = {
+export const Loading = {
+  args: {
   prof: null
+}
 };
 Loading.play = async ({ canvasElement, step }) => {
   const canvas = within(canvasElement);
@@ -83,11 +84,12 @@ Loading.play = async ({ canvasElement, step }) => {
  * The error state displays when there's an issue fetching profile data.
  * It provides a retry button for the user to attempt to fetch the data again.
  */
-export const Error = Template.bind({});
-Error.args = {
+export const Error = {
+  args: {
   prof: null,
   error: 'Failed to fetch GitHub profile. Rate limit exceeded.',
   onRetry: () => console.log('Retry clicked')
+}
 };
 Error.play = async ({ canvasElement, step }) => {
   const canvas = within(canvasElement);
@@ -151,19 +153,21 @@ Error.play = async ({ canvasElement, step }) => {
  */
 
 // Profile with minimal data
-export const MinimalProfile = Template.bind({});
-MinimalProfile.args = {
+export const MinimalProfile = {
+  args: {
   prof: {
     avatar_url: "https://via.placeholder.com/150",
     name: "Minimal Profile"
     // No bio or location
   }
+}
 };
 
 // Responsive behavior example - mobile view
-export const Mobile = Template.bind({});
-Mobile.args = {
+export const Mobile = {
+  args: {
   prof: mockGithubProfile
+}
 };
 Mobile.parameters = {
   viewport: {

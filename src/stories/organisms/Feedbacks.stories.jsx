@@ -1,8 +1,7 @@
 import React from 'react';
 import Feedbacks from '../../containers/Feedbacks';
-import { within } from '@storybook/testing-library';
-import { expect } from '@storybook/jest';
-import { PortfolioContext } from '../../context/PortfolioContext';
+import { within, expect } from '@storybook/test';
+import PortfolioContext from '../../context/PortfolioContext';
 import { mockPortfolioData } from '../utils/mockData';
 import { withPortfolioContext, withViewport } from '../utils/decorators';
 
@@ -125,7 +124,7 @@ EmptyState.parameters = {
  * 
  * ```jsx
  * import Feedbacks from '../containers/Feedbacks';
- * import { PortfolioContext } from '../context/PortfolioContext';
+ * import PortfolioContext from '../context/PortfolioContext';
  * 
  * function App() {
  *   const portfolioData = {

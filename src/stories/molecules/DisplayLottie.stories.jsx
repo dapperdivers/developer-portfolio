@@ -1,7 +1,6 @@
 import React from 'react';
 import DisplayLottie from '../../components/DisplayLottie';
-import { within, userEvent } from '@storybook/testing-library';
-import { expect } from '@storybook/jest';
+import { within, userEvent, expect } from '@storybook/test';
 
 // Import lottie animation files from assets
 import codingAnimation from '../../assets/lottie/coding.json';
@@ -72,14 +71,15 @@ const Template = (args) => (
 );
 
 // Default story - Coding animation with standard settings
-export const CodingAnimation = Template.bind({});
-CodingAnimation.args = {
+export const CodingAnimation = {
+  args: {
   animationData: codingAnimation,
   ariaLabel: "Animation showing a developer coding on a computer",
   loop: true,
   size: "medium",
   quality: 1,
   shouldOptimize: true
+}
 };
 CodingAnimation.play = async ({ canvasElement, step }) => {
   const canvas = within(canvasElement);
@@ -123,14 +123,15 @@ CodingAnimation.play = async ({ canvasElement, step }) => {
 };
 
 // Web development animation with different settings
-export const WebDevAnimation = Template.bind({});
-WebDevAnimation.args = {
+export const WebDevAnimation = {
+  args: {
   animationData: webdevAnimation,
   ariaLabel: "Animation illustrating web development tools and technologies",
   loop: true,
   size: "medium",
   quality: 1,
   shouldOptimize: true
+}
 };
 WebDevAnimation.parameters = {
   docs: {
@@ -141,14 +142,15 @@ WebDevAnimation.parameters = {
 };
 
 // Build animation in a smaller size
-export const SmallAnimation = Template.bind({});
-SmallAnimation.args = {
+export const SmallAnimation = {
+  args: {
   animationData: buildAnimation,
   ariaLabel: "Animation showing the build process",
   loop: true,
   size: "small",
   quality: 1,
   shouldOptimize: true
+}
 };
 SmallAnimation.parameters = {
   docs: {
@@ -159,14 +161,15 @@ SmallAnimation.parameters = {
 };
 
 // Animation with reduced quality for performance testing
-export const LowQualityAnimation = Template.bind({});
-LowQualityAnimation.args = {
+export const LowQualityAnimation = {
+  args: {
   animationData: codingAnimation,
   ariaLabel: "Low quality animation for performance testing",
   loop: true,
   size: "medium",
   quality: 0.5,
   shouldOptimize: true
+}
 };
 LowQualityAnimation.parameters = {
   docs: {
@@ -177,14 +180,15 @@ LowQualityAnimation.parameters = {
 };
 
 // Animation in a large size
-export const LargeAnimation = Template.bind({});
-LargeAnimation.args = {
+export const LargeAnimation = {
+  args: {
   animationData: webdevAnimation,
   ariaLabel: "Large animation of web development",
   loop: true,
   size: "large",
   quality: 1,
   shouldOptimize: true
+}
 };
 LargeAnimation.parameters = {
   docs: {
@@ -195,14 +199,15 @@ LargeAnimation.parameters = {
 };
 
 // Non-looping animation
-export const SinglePlayAnimation = Template.bind({});
-SinglePlayAnimation.args = {
+export const SinglePlayAnimation = {
+  args: {
   animationData: buildAnimation,
   ariaLabel: "One-time animation of build process",
   loop: false,
   size: "medium",
   quality: 1,
   shouldOptimize: true
+}
 };
 SinglePlayAnimation.parameters = {
   docs: {
@@ -275,13 +280,14 @@ SinglePlayAnimation.parameters = {
  */
 
 // Mobile view for responsive testing
-export const MobileView = Template.bind({});
-MobileView.args = {
+export const MobileView = {
+  args: {
   animationData: codingAnimation,
   ariaLabel: "Animation showing a developer coding on a computer",
   size: "small",
   quality: 0.7,
   shouldOptimize: true
+}
 };
 MobileView.parameters = {
   viewport: {

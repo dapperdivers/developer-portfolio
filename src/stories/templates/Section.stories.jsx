@@ -57,41 +57,45 @@ const Template = (args) => (
 );
 
 // Default section
-export const Default = Template.bind({});
-Default.args = {
+export const Default = {
+  args: {
   title: 'Section Title',
   subtitle: 'This is a subtitle that provides additional context',
   id: 'sample-section',
   background: 'light',
   container: true,
   fluid: false,
+}
 };
 
 // Education section
-export const EducationSection = Template.bind({});
-EducationSection.args = {
+export const EducationSection = {
+  args: {
   title: 'Education',
   subtitle: 'My educational background',
   id: 'education',
   background: 'light',
+}
 };
 
 // Experience section
-export const ExperienceSection = Template.bind({});
-ExperienceSection.args = {
+export const ExperienceSection = {
+  args: {
   title: 'Experience',
   subtitle: 'My professional journey',
   id: 'experience',
   background: 'gray',
+}
 };
 
 // Projects section
-export const ProjectsSection = Template.bind({});
-ProjectsSection.args = {
+export const ProjectsSection = {
+  args: {
   title: 'Projects',
   subtitle: 'Some of my recent work',
   id: 'projects',
   background: 'light',
+}
 };
 
 // Section with cards
@@ -125,12 +129,13 @@ export const SectionWithCards = (args) => (
 );
 
 // Section with dark background
-export const DarkSection = Template.bind({});
-DarkSection.args = {
+export const DarkSection = {
+  args: {
   title: 'Contact',
   subtitle: 'Get in touch with me',
   id: 'contact',
   background: 'dark',
+}
 };
 
 // Section with animation
@@ -153,12 +158,13 @@ export const AnimatedSection = (args) => (
 );
 
 // Fluid section
-export const FluidSection = Template.bind({});
-FluidSection.args = {
+export const FluidSection = {
+  args: {
   title: 'Full Width Section',
   subtitle: 'This section uses a fluid container',
   id: 'fluid',
   background: 'primary',
   container: true,
   fluid: true,
+}
 };

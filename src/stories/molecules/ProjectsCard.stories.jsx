@@ -1,7 +1,6 @@
 import React from 'react';
 import ProjectsCard from '../../components/ProjectsCard';
-import { within, userEvent } from '@storybook/testing-library';
-import { expect } from '@storybook/jest';
+import { within, userEvent, expect } from '@storybook/test';
 import { withPortfolioContext } from '../utils/decorators';
 
 export default {
@@ -72,10 +71,11 @@ const exampleProjects = [
 const Template = (args) => <div style={{ width: '350px' }}><ProjectsCard {...args} /></div>;
 
 // Default story - Complete project with image and links
-export const WithFullDetails = Template.bind({});
-WithFullDetails.args = {
+export const WithFullDetails = {
+  args: {
   data: exampleProjects[0],
   index: 0,
+}
 };
 WithFullDetails.play = async ({ canvasElement, step }) => {
   const canvas = within(canvasElement);
@@ -100,15 +100,16 @@ WithFullDetails.play = async ({ canvasElement, step }) => {
 };
 
 // Project without image
-export const WithoutImage = Template.bind({});
-WithoutImage.args = {
+export const WithoutImage = {
+  args: {
   data: exampleProjects[2],
   index: 2,
+}
 };
 
 // Project with long text
-export const WithLongText = Template.bind({});
-WithLongText.args = {
+export const WithLongText = {
+  args: {
   data: {
     name: "Project with Very Long Title That Should Wrap to Multiple Lines",
     desc: "This is a project with an extremely long description that should be truncated or handled gracefully by the component. The description explains all the features and technologies used in great detail.",
@@ -118,6 +119,7 @@ WithLongText.args = {
     stack: ["React", "GraphQL", "Node.js", "PostgreSQL", "Redis", "WebSockets", "AWS", "Docker", "Kubernetes"]
   },
   index: 3,
+}
 };
 
 /**
@@ -166,20 +168,22 @@ WithLongText.args = {
  * 
  * The following stories demonstrate edge cases and special scenarios.
  */
-export const MissingRequiredProps = Template.bind({});
-MissingRequiredProps.args = {
+export const MissingRequiredProps = {
+  args: {
   data: {
     // Missing required name and desc
     github: "https://github.com/username/project",
     stack: ["JavaScript"]
   },
+}
 };
 
 // Responsive behavior example
-export const Responsive = Template.bind({});
-Responsive.args = {
+export const Responsive = {
+  args: {
   data: exampleProjects[1],
   index: 1,
+}
 };
 Responsive.parameters = {
   viewport: {

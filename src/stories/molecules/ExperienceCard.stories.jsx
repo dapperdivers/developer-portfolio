@@ -72,24 +72,27 @@ const Template = (args) => (
 );
 
 // Default experience card
-export const Default = Template.bind({});
-Default.args = {
+export const Default = {
+  args: {
   data: exampleExperiences[0],
   index: 0,
+}
 };
 
 // Second experience example
-export const SecondExperience = Template.bind({});
-SecondExperience.args = {
+export const SecondExperience = {
+  args: {
   data: exampleExperiences[1],
   index: 1,
+}
 };
 
 // Third experience example
-export const ThirdExperience = Template.bind({});
-ThirdExperience.args = {
+export const ThirdExperience = {
+  args: {
   data: exampleExperiences[2],
   index: 2,
+}
 };
 
 // Multiple experience cards
@@ -111,11 +114,12 @@ export const MultipleCards = () => (
 );
 
 // Experience card without bullet points
-export const WithoutBullets = Template.bind({});
-WithoutBullets.args = {
+export const WithoutBullets = {
+  args: {
   data: {
     ...exampleExperiences[0],
     descBullets: []
   },
   index: 0,
+}
 };

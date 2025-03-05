@@ -1,7 +1,6 @@
 import React from 'react';
 import EducationCard from '../../components/EducationCard';
-import { within, userEvent } from '@storybook/testing-library';
-import { expect } from '@storybook/jest';
+import { within, userEvent, expect } from '@storybook/test';
 
 // Sample education data for stories
 const mockEducationData = {
@@ -84,10 +83,11 @@ const Template = (args) => (
 );
 
 // Complete example with all fields
-export const Complete = Template.bind({});
-Complete.args = {
+export const Complete = {
+  args: {
   education: mockEducationData.complete,
   index: 0
+}
 };
 Complete.play = async ({ canvasElement, step }) => {
   const canvas = within(canvasElement);
@@ -125,10 +125,11 @@ Complete.play = async ({ canvasElement, step }) => {
 };
 
 // Minimal example with only required fields
-export const Minimal = Template.bind({});
-Minimal.args = {
+export const Minimal = {
+  args: {
   education: mockEducationData.minimal,
   index: 1
+}
 };
 Minimal.parameters = {
   docs: {
@@ -139,10 +140,11 @@ Minimal.parameters = {
 };
 
 // Example with long text to test text wrapping and truncation
-export const LongTextHandling = Template.bind({});
-LongTextHandling.args = {
+export const LongTextHandling = {
+  args: {
   education: mockEducationData.longNames,
   index: 2
+}
 };
 LongTextHandling.parameters = {
   docs: {
@@ -153,10 +155,11 @@ LongTextHandling.parameters = {
 };
 
 // Example of an online certificate/nanodegree
-export const OnlineCertificate = Template.bind({});
-OnlineCertificate.args = {
+export const OnlineCertificate = {
+  args: {
   education: mockEducationData.certificate,
   index: 3
+}
 };
 OnlineCertificate.parameters = {
   docs: {
@@ -258,10 +261,11 @@ AnimationSequence.parameters = {
  */
 
 // Mobile view for responsive testing
-export const MobileView = Template.bind({});
-MobileView.args = {
+export const MobileView = {
+  args: {
   education: mockEducationData.complete,
   index: 0
+}
 };
 MobileView.parameters = {
   viewport: {
