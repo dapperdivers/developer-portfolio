@@ -27,21 +27,10 @@ const Projects = lazy(() => import("./containers/Projects"));
 const GithubProfile = lazy(() => import("./containers/GithubProfile"));
 const Feedbacks = lazy(() => import("./containers/Feedbacks"));
 
-// Import CSS - Modern optimized styles with proper ordering
-import "./assets/css/design-tokens.css"; // Design system variables
-import "./assets/css/custom-bootstrap.css";
-import "./assets/css/typography.css";
-import "./assets/css/component-styles.css";
-import "./assets/css/hero-section.css";
-import "./assets/css/skills-section.css";
-import "./assets/css/proficiency-section.css";
-import "./assets/css/education-section.css";
-import "./assets/css/experience-section.css";
-import "./assets/css/projects-section.css";
-import "./assets/css/feedbacks-section.css";
-import "./assets/css/contact-section.css";
-import "./assets/css/footer.css";
-import "./assets/css/browser-fixes.css";
+// Import CSS - Using Tailwind CSS for styled components
+import "./assets/css/design-system/index.css"; // Design system variables
+import "./assets/css/tailwind.css"; // Tailwind styles with component customizations
+import "./assets/css/browser-fixes.css"; // Browser compatibility fixes
 
 function App() {
   // Apply enhancements on mount

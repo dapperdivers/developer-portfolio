@@ -3,9 +3,9 @@
  * This file contains CSS fixes for specific browser issues
  */
 
-/* Firefox-specific fixes for form autofill */
+/* Firefox-specific fixes for Bootstrap autofill functionality */
 @-moz-document url-prefix() {
-  /* Override autofill styles in Firefox for better compatibility */
+  /* Override autofill styles in Firefox to prevent bootstrap-legacy-autofill-overlay.js from being needed */
   input:-moz-autofill,
   input:-moz-autofill:focus,
   textarea:-moz-autofill,

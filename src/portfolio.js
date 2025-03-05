@@ -184,7 +184,7 @@ export const experience = [
 		company: "Starr Companies",
 		companylogo: StarrLogo,
 		date: "March 2016 – May 2018",
-		desc: "Worked on a Document Management/ Reporting web portal. Myself and one other developer rewrote the site in MVC 5 from webforms, moved from an on-prem virtual machine to an azure web service, moved our most resource intensive page to Angular JS, and at the time I left were in the process of updating the front-end to use modern technologies, like Saas, Twitter Bootstrap, NodeJS, etc. In addition, began moving the service layer from .NET4.6.1 to a .NET Core Web API",
+		desc: "Worked on a Document Management/ Reporting web portal. Myself and one other developer rewrote the site in MVC 5 from webforms, moved from an on-prem virtual machine to an azure web service, moved our most resource intensive page to Angular JS, and at the time I left were in the process of updating the front-end to use modern technologies, like Sass, CSS frameworks, NodeJS, etc. In addition, began moving the service layer from .NET4.6.1 to a .NET Core Web API",
 	}
 
 ];
