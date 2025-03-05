@@ -1,9 +1,9 @@
 import React, { memo } from 'react';
-import { Row, Col } from "reactstrap";
+
 import EducationCard from "../components/EducationCard";
 import Section from "../components/layout/Section";
 import useEducation from "../hooks/useEducation";
-import "../assets/css/education-section.css";
+import "../assets/css/tailwind.css";
 
 /**
  * Education section displaying a list of educational background items.
@@ -31,17 +31,13 @@ const Education = () => {
       className="education-section"
       separator="true"
     >
-      <Row className="education-timeline align-items-start">
+      <div className="flex flex-wrap -mx-4 education-timeline align-items-start">
         {educationInfo.map((info, index) => (
-          <Col 
-            lg="6" 
-            key={info.schoolName}
-            className="education-card mb-4"
-          >
+          <div key={`education-${index}`} className="w-full px-4 lg:w-6/12 education-card mb-4">
             <EducationCard education={info} index={index} />
-          </Col>
+          </div>
         ))}
-      </Row>
+      </div>
     </Section>
   );
 };
