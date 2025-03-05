@@ -92,34 +92,34 @@ Complete.args = {
 Complete.play = async ({ canvasElement, step }) => {
   const canvas = within(canvasElement);
   
-  await step('Initial render check', () => {
+  await step('Initial render check', async () => {
     // Check that all information is displayed
-    expect(canvas.getByText('Stanford University')).toBeInTheDocument();
-    expect(canvas.getByText('Master of Computer Science')).toBeInTheDocument();
-    expect(canvas.getByText('2018 - 2020')).toBeInTheDocument();
+    await expect(canvas.getByText('Stanford University')).toBeInTheDocument();
+    await expect(canvas.getByText('Master of Computer Science')).toBeInTheDocument();
+    await expect(canvas.getByText('2018 - 2020')).toBeInTheDocument();
     
     // Check that description text is displayed
-    expect(canvas.getByText(/Specialized in Artificial Intelligence/)).toBeInTheDocument();
+    await expect(canvas.getByText(/Specialized in Artificial Intelligence/)).toBeInTheDocument();
     
     // Check that bullet points are displayed
-    expect(canvas.getByText('Thesis on Deep Learning applications in healthcare')).toBeInTheDocument();
+    await expect(canvas.getByText('Thesis on Deep Learning applications in healthcare')).toBeInTheDocument();
   });
   
   await step('Keyboard navigation test', async () => {
     // Tab to focusable elements in the component
     await userEvent.tab(); // Focus school name
-    expect(canvas.getByText('Stanford University')).toHaveFocus();
+    await expect(canvas.getByText('Stanford University')).toHaveFocus();
     
     await userEvent.tab(); // Focus degree
-    expect(canvas.getByText('Master of Computer Science')).toHaveFocus();
+    await expect(canvas.getByText('Master of Computer Science')).toHaveFocus();
     
     await userEvent.tab(); // Focus description
-    expect(canvas.getByText(/Specialized in Artificial Intelligence/)).toHaveFocus();
+    await expect(canvas.getByText(/Specialized in Artificial Intelligence/)).toHaveFocus();
     
     // Tab through bullet points
     for (let i = 0; i < mockEducationData.complete.descBullets.length; i++) {
       await userEvent.tab();
-      expect(canvas.getByText(mockEducationData.complete.descBullets[i])).toHaveFocus();
+      await expect(canvas.getByText(mockEducationData.complete.descBullets[i])).toHaveFocus();
     }
   });
 };

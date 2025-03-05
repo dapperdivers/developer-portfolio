@@ -1,4 +1,4 @@
-import { Meta } from '@storybook/blocks';
+// We need to import blocks for Storybook docspage
 
 const meta = {
   title: 'Introduction/Getting Started',
@@ -141,5 +141,4 @@ Start with the basic atoms, then explore how they combine into more complex comp
 export default meta;
 
 export const Introduction = {
-  name: 'Introduction',
 };

@@ -60,17 +60,17 @@ export const Default = WithLayoutTemplate.bind({});
 Default.play = async ({ canvasElement, step }) => {
   const canvas = within(canvasElement);
   
-  await step('Initial render check', () => {
+  await step('Initial render check', async () => {
     // Skip link is in the document but not visible initially
     const skipLink = canvas.getByText('Skip to main content');
-    expect(skipLink).toBeInTheDocument();
+    await expect(skipLink).toBeInTheDocument();
   });
   
   await step('Keyboard navigation test', async () => {
     // First Tab press should focus the skip link
     await userEvent.tab();
     const skipLink = canvas.getByText('Skip to main content');
-    expect(skipLink).toHaveFocus();
+    await expect(skipLink).toHaveFocus();
   });
 };
 
@@ -89,44 +89,47 @@ Focused.play = async ({ canvasElement }) => {
   // Tab to focus the skip link
   await userEvent.tab();
   const skipLink = canvas.getByText('Skip to main content');
-  expect(skipLink).toHaveFocus();
+  await expect(skipLink).toHaveFocus();
 };
 
-/**
- * ## Component Usage
- * 
- * ```jsx
- * import SkipToContent from '../components/SkipToContent';
- * 
- * function App() {
- *   return (
- *     <>
- *       <SkipToContent />
- *       <header>...</header>
- *       <main id="main-content">
- *         {/* Your main content here */}
- *       </main>
- *     </>
- *   );
- * }
- * ```
- * 
- * ## Accessibility
- * 
- * This component follows these accessibility best practices:
- * - Positioned at the beginning of the page for keyboard users
- * - Visually hidden until focused via keyboard
- * - Provides direct navigation to main content
- * - Uses high contrast colors when visible
- * - Maintains visibility in high contrast modes
- * - Uses proper focus styles
- * 
- * ## Implementation Details
- * 
- * The skip link uses CSS to hide visually but remain accessible to screen readers.
- * When focused, it appears at the top of the viewport, allowing users to skip
- * navigation elements and go directly to the main content area.
- */
+// Documentation for component usage - this is used internally in the story development
+// eslint-disable-next-line no-unused-vars
+const componentDocumentation = `
+## Component Usage
+
+\`\`\`jsx
+import SkipToContent from '../components/SkipToContent';
+
+function App() {
+  return (
+    <>
+      <SkipToContent />
+      <header>...</header>
+      <main id="main-content">
+        {/* Your main content here */}
+      </main>
+    </>
+  );
+}
+\`\`\`
+
+## Accessibility
+
+This component follows these accessibility best practices:
+- Positioned at the beginning of the page for keyboard users
+- Visually hidden until focused via keyboard
+- Provides direct navigation to main content
+- Uses high contrast colors when visible
+- Maintains visibility in high contrast modes
+- Uses proper focus styles
+
+## Implementation Details
+
+The skip link uses CSS to hide visually but remain accessible to screen readers.
+When focused, it appears at the top of the viewport, allowing users to skip
+navigation elements and go directly to the main content area.
+`;
+
 export const KeyboardNavigation = WithLayoutTemplate.bind({});
 KeyboardNavigation.parameters = {
   docs: {

@@ -23,7 +23,6 @@ Design tokens are the visual design atoms of the design system—specifically, t
 export default meta;
 
 export const Colors = {
-  name: 'Colors',
   render: () => (
     <>
       <h2>Color System</h2>
@@ -107,16 +106,15 @@ export const Colors = {
 };
 
 export const Typography = {
-  name: 'Typography',
   render: () => (
     <>
       <h2>Typography</h2>
       
       <h3>Font Families</h3>
       <ul>
-        <li><strong>Base Font</strong>: <code>-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif</code></li>
+        <li><strong>Base Font</strong>: <code>-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, sans-serif</code></li>
         <li><strong>Heading Font</strong>: Same as base font</li>
-        <li><strong>Monospace Font</strong>: <code>SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace</code></li>
+        <li><strong>Monospace Font</strong>: <code>SFMono-Regular, Menlo, Monaco, Consolas, &quot;Liberation Mono&quot;, &quot;Courier New&quot;, monospace</code></li>
       </ul>
       
       <h3>Font Sizes</h3>
@@ -160,7 +158,6 @@ export const Typography = {
 };
 
 export const Spacing = {
-  name: 'Spacing',
   render: () => (
     <>
       <h2>Spacing</h2>
@@ -193,7 +190,6 @@ export const Spacing = {
 };
 
 export const Borders = {
-  name: 'Borders',
   render: () => (
     <>
       <h2>Borders</h2>
@@ -267,7 +263,6 @@ export const Borders = {
 };
 
 export const OtherTokens = {
-  name: 'Other Tokens',
   render: () => (
     <>
       <h2>Shadows</h2>

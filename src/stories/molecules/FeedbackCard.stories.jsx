@@ -83,36 +83,36 @@ Default.args = {
 Default.play = async ({ canvasElement, step }) => {
   const canvas = within(canvasElement);
   
-  await step('Initial render check', () => {
+  await step('Initial render check', async () => {
     // Verify the feedback text is displayed
-    expect(canvas.getByText(mockFeedbackData.default.feedback)).toBeInTheDocument();
+    await expect(canvas.getByText(mockFeedbackData.default.feedback)).toBeInTheDocument();
     
     // Verify the name is displayed
-    expect(canvas.getByText(mockFeedbackData.default.name)).toBeInTheDocument();
+    await expect(canvas.getByText(mockFeedbackData.default.name)).toBeInTheDocument();
     
     // Verify the role/designation is displayed
-    expect(canvas.getByText(mockFeedbackData.default.designation)).toBeInTheDocument();
+    await expect(canvas.getByText(mockFeedbackData.default.designation)).toBeInTheDocument();
     
     // Verify 5 stars are displayed (filled or unfilled)
     const stars = canvas.getAllByText('', { selector: '.star' });
-    expect(stars.length).toBe(5);
+    await expect(stars.length).toBe(5);
   });
   
   await step('Keyboard navigation test', async () => {
     // Tab to the quote content
     await userEvent.tab();
     const quoteContent = canvas.getByText(mockFeedbackData.default.feedback);
-    expect(quoteContent).toHaveFocus();
+    await expect(quoteContent).toHaveFocus();
     
     // Tab to the author name
     await userEvent.tab();
     const authorName = canvas.getByText(mockFeedbackData.default.name);
-    expect(authorName).toHaveFocus();
+    await expect(authorName).toHaveFocus();
     
     // Tab to the author role
     await userEvent.tab();
     const authorRole = canvas.getByText(mockFeedbackData.default.designation);
-    expect(authorRole).toHaveFocus();
+    await expect(authorRole).toHaveFocus();
   });
 };
 
@@ -160,16 +160,16 @@ PartialRating.parameters = {
 PartialRating.play = async ({ canvasElement, step }) => {
   const canvas = within(canvasElement);
   
-  await step('Rating verification', () => {
+  await step('Rating verification', async () => {
     // Get all star elements
     const stars = canvas.getAllByText('', { selector: '.star' });
-    expect(stars.length).toBe(5);
+    await expect(stars.length).toBe(5);
     
     // Check that exactly 3 stars are colored (the filled ones)
     const coloredStars = stars.filter(star => 
       window.getComputedStyle(star).color !== 'rgb(224, 224, 224)' // #e0e0e0
     );
-    expect(coloredStars.length).toBe(3);
+    await expect(coloredStars.length).toBe(3);
   });
 };
 

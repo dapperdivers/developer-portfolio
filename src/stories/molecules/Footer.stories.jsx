@@ -128,50 +128,52 @@ MinimalData.parameters = {
   }
 };
 
-/**
- * ## Component Usage
- * 
- * ```jsx
- * import Footer from '../components/Footer';
- * 
- * function App() {
- *   return (
- *     <>
- *       <main>
- *         {/* Main content */}
- *       </main>
- *       <Footer />
- *     </>
- *   );
- * }
- * ```
- * 
- * ## Context Dependencies
- * 
- * This component relies on the PortfolioContext and specifically uses:
- * - `greetings.name` for displaying the developer name
- * - `socialLinks` object for social media profiles
- * 
- * The component also uses the useFooter hook which provides:
- * - `currentYear` - Current year for copyright
- * - `scrollToTop` - Function to smoothly scroll to top of page
- * 
- * ## Accessibility Features
- * 
- * - Uses semantic `<footer>` element with role="contentinfo"
- * - Proper heading structure with h4 and h5 headings
- * - Link text is descriptive and clear
- * - Interactive elements have appropriate focus states
- * - Back to top button has an aria-label
- * - Icons used for decoration have aria-hidden="true"
- * 
- * ## Implementation Details
- * 
- * - Uses Reactstrap's Container, Row, and Col for responsive layout
- * - Social links are provided by the SocialLinks component
- * - Back to top button uses smooth scrolling behavior
- * - Current year is dynamically calculated for copyright notices
- */
+// Documentation for component usage - this is used internally in the story development
+// eslint-disable-next-line no-unused-vars
+const componentDocumentation = `
+## Component Usage
+
+\`\`\`jsx
+import Footer from '../components/Footer';
+
+function App() {
+  return (
+    <>
+      <main>
+        {/* Main content */}
+      </main>
+      <Footer />
+    </>
+  );
+}
+\`\`\`
+
+## Context Dependencies
+
+This component relies on the PortfolioContext and specifically uses:
+- \`greetings.name\` for displaying the developer name
+- \`socialLinks\` object for social media profiles
+
+The component also uses the useFooter hook which provides:
+- \`currentYear\` - Current year for copyright
+- \`scrollToTop\` - Function to smoothly scroll to top of page
+
+## Accessibility Features
+
+- Uses semantic \`<footer>\` element with role="contentinfo"
+- Proper heading structure with h4 and h5 headings
+- Link text is descriptive and clear
+- Interactive elements have appropriate focus states
+- Back to top button has an aria-label
+- Icons used for decoration have aria-hidden="true"
+
+## Implementation Details
+
+- Uses Reactstrap's Container, Row, and Col for responsive layout
+- Social links are provided by the SocialLinks component
+- Back to top button uses smooth scrolling behavior
+- Current year is dynamically calculated for copyright notices
+`;
 
 // Mobile viewport display
 export const MobileView = () => <Footer />;

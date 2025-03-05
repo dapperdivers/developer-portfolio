@@ -168,9 +168,22 @@ export default defineConfig({
     assetsInlineLimit: 4096, // 4kb
     cssCodeSplit: true,
     minify: 'terser',
+    // Disable warning for eval() in lottie-web
+    esbuildOptions: {
+      legalComments: 'none',
+      target: ['es2020'],
+      supported: { 'top-level-await': true },
+    },
     rollupOptions: {
       input: {
         main: path.resolve(__dirname, 'index.html')
+      },
+      onwarn(warning, warn) {
+        // Ignore eval warnings from lottie-web
+        if (warning.code === 'EVAL' && warning.id && warning.id.includes('lottie-web')) {
+          return;
+        }
+        warn(warning);
       },
       output: {
         // Better chunk naming strategy
@@ -198,12 +211,11 @@ export default defineConfig({
             if (id.includes('lottie')) {
               return 'vendor-lottie';
             }
-            if (id.includes('@iconify')) {
-              return 'vendor-icons';
-            }
+            // We've removed the vendor-icons chunk as it was generating an empty chunk
             if (id.includes('bootstrap') || id.includes('reactstrap')) {
               return 'vendor-bootstrap';
             }
+            // Include @iconify in vendor-other instead of a separate chunk
             return 'vendor-other';
           }
           // Component bundles - app code

@@ -66,15 +66,15 @@ const Template = (args) => {
       <Head {...args} />
       <div className="head-preview">
         <h3>Head Component Preview</h3>
-        <p className="note">Note: This component modifies the document head and doesn't render visible UI.</p>
+        <p className="note">Note: This component modifies the document head and does not render visible UI.</p>
         <h4>The following metadata would be set:</h4>
         <pre>
           {`
 <title>${args.title || "Derek Mackley | Full Stack Developer"}</title>
 <meta name="description" content="${args.description || "Derek Mackley - Full Stack Developer and Security Expert..."}" />
-${args.canonicalUrl ? `<link rel="canonical" href="${args.canonicalUrl}" />` : ''}
-${args.imageUrl ? `<meta property="og:image" content="${args.imageUrl}" />` : ''}
-${args.imageUrl ? `<meta name="twitter:image" content="${args.imageUrl}" />` : ''}
+${args.canonicalUrl ? `<link rel="canonical" href="${args.canonicalUrl}" />` : ""}
+${args.imageUrl ? `<meta property="og:image" content="${args.imageUrl}" />` : ""}
+${args.imageUrl ? `<meta name="twitter:image" content="${args.imageUrl}" />` : ""}
           `}
         </pre>
       </div>
@@ -121,43 +121,45 @@ SocialSharing.args = {
   canonicalUrl: "https://example.com/case-study"
 };
 
-/**
- * ## Component Usage
- * 
- * ```jsx
- * import Head from 'components/Head';
- * import { HelmetProvider } from 'react-helmet-async';
- * 
- * function App() {
- *   return (
- *     <HelmetProvider>
- *       <Head 
- *         title="Custom Page Title" 
- *         description="Custom page description for SEO"
- *       />
- *       <main>
- *         {/* Main content */}
- *       </main>
- *     </HelmetProvider>
- *   );
- * }
- * ```
- * 
- * ## Properties
- * 
- * | Name | Type | Default | Description |
- * |------|------|---------|-------------|
- * | title | string | "Derek Mackley \| Full Stack Developer" | Page title that appears in browser tab |
- * | description | string | "Derek Mackley - Full Stack Developer..." | Meta description for SEO |
- * | imageUrl | string | "" | URL for social sharing preview images |
- * | imageAlt | string | "Derek Mackley - Full Stack Developer" | Alt text for social preview images |
- * | canonicalUrl | string | "" | Canonical URL for SEO purposes |
- * | structuredData | object | null | Schema.org structured data for rich results |
- * 
- * ## Structured Data
- * 
- * The component accepts structured data for schema.org markup, which helps search engines understand the page content.
- */
+// Documentation for component usage - this is used internally in the story development
+// eslint-disable-next-line no-unused-vars
+const componentDocumentation = `
+## Component Usage
+
+\`\`\`jsx
+import Head from 'components/Head';
+import { HelmetProvider } from 'react-helmet-async';
+
+function App() {
+  return (
+    <HelmetProvider>
+      <Head 
+        title="Custom Page Title" 
+        description="Custom page description for SEO"
+      />
+      <main>
+        {/* Main content */}
+      </main>
+    </HelmetProvider>
+  );
+}
+\`\`\`
+
+## Properties
+
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| title | string | "Derek Mackley | Full Stack Developer" | Page title that appears in browser tab |
+| description | string | "Derek Mackley - Full Stack Developer..." | Meta description for SEO |
+| imageUrl | string | "" | URL for social sharing preview images |
+| imageAlt | string | "Derek Mackley - Full Stack Developer" | Alt text for social preview images |
+| canonicalUrl | string | "" | Canonical URL for SEO purposes |
+| structuredData | object | null | Schema.org structured data for rich results |
+
+## Structured Data
+
+The component accepts structured data for schema.org markup, which helps search engines understand the page content.
+`;
 
 // Demonstration of structured data for rich search results
 export const StructuredData = Template.bind({});

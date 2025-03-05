@@ -35,16 +35,16 @@ export const Default = Template.bind({});
 Default.play = async ({ canvasElement, step }) => {
   const canvas = within(canvasElement);
   
-  await step('Accessibility verification', () => {
+  await step('Accessibility verification', async () => {
     // Check that the loading element has the correct ARIA attributes
     const loadingElement = canvas.getByRole('status');
-    expect(loadingElement).toBeInTheDocument();
-    expect(loadingElement).toHaveAttribute('aria-busy', 'true');
-    expect(loadingElement).toHaveAttribute('aria-live', 'polite');
+    await expect(loadingElement).toBeInTheDocument();
+    await expect(loadingElement).toHaveAttribute('aria-busy', 'true');
+    await expect(loadingElement).toHaveAttribute('aria-live', 'polite');
     
     // Check that there's a visually hidden message for screen readers
     const hiddenText = canvas.getByText('Content is loading...');
-    expect(hiddenText).toBeInTheDocument();
+    await expect(hiddenText).toBeInTheDocument();
   });
 };
 
