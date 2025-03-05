@@ -35,5 +35,13 @@
     "security/detect-object-injection": "off",
     "react/display-name": "off",
     "react/no-unknown-property": "warn"
-  }
+  },
+  "overrides": [
+    {
+      "files": ["**/__tests__/**", "**/*.test.{js,jsx}", "**/*.stories.{js,jsx}", "**/__mocks__/**"],
+      "rules": {
+        "no-unused-vars": "off"
+      }
+    }
+  ]
 }

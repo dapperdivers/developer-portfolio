@@ -5,7 +5,6 @@ import Section from "../components/layout/Section";
 import { motion } from "framer-motion";
 import { Icon } from '@iconify/react';
 import useExperience from "../hooks/useExperience";
-import useMemoValues from "../hooks/useMemoValues";
 import useTimelineView from "../hooks/useTimelineView";
 import { usePortfolio } from "../context/PortfolioContext";
 import "../assets/css/experience-section.css";
@@ -50,7 +49,6 @@ const Experience = () => {
   // Use timeline view hook for managing view state and animations
   const { 
     viewType, 
-    toggleView, 
     setView, 
     getAnimationDelay, 
     entryRef,

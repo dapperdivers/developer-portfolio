@@ -25,7 +25,6 @@ const isValidProject = (project) => {
  * @param {string} [options.filter] - Optional filter string to search in project name/description
  * @param {string} [options.sortBy='default'] - Optional sort method ('default', 'name', 'recent')
  * @param {number} [options.delay=0] - Optional delay in ms to simulate loading (for skeleton demo)
- * @param {boolean} [options.cache=true] - Whether to cache the results
  * @returns {Array|null} Array of validated and sorted project objects or null if loading
  * 
  * @example
@@ -56,7 +55,7 @@ const isValidProject = (project) => {
  * };
  */
 const useProjects = (options = {}) => {
-  const { filter, sortBy = 'default', delay = 0, cache = true } = options;
+  const { filter, sortBy = 'default', delay = 0 } = options;
   const { projects } = usePortfolio();
   const [loading, setLoading] = useState(delay > 0);
   

@@ -7,7 +7,7 @@
 
 import React from 'react';
 import { PortfolioContext } from '../../context/PortfolioContext';
-import { mockPortfolioData, mockThemeData } from './mockData';
+import { mockPortfolioData } from './mockData';
 
 /**
  * Provides PortfolioContext to stories

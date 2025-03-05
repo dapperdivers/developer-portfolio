@@ -139,7 +139,8 @@ const Skill = ({
   };
   
   // Tooltip animations - also optimized for performance
-  const tooltipVariants = reducedMotion ? {
+  // Defined but currently unused - keeping for future implementation
+  /* const tooltipVariants = reducedMotion ? {
     hidden: { opacity: 0 },
     visible: { 
       opacity: 1,
@@ -153,7 +154,7 @@ const Skill = ({
       scale: 1,
       transition: { delay: 0.1, duration: 0.2 }
     }
-  };
+  }; */
   
   // Render with animation
   if (animate) {
