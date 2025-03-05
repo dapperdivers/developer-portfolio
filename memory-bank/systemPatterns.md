@@ -816,3 +816,37 @@ Mixing CSS modules, styled-components, and global CSS creates confusion. Pick on
 
 #### Challenge: Maintaining Consistency As Teams Grow
 **Solution**: Automate as much as possible with linting, testing, and documentation.
+
+## Navigation Component Patterns
+
+Navigation components in this project should follow these patterns:
+
+### Accessibility Requirements
+- Include proper ARIA attributes (aria-label, aria-expanded, aria-controls)
+- Support keyboard navigation (focus management, escape key handlers)
+- Use semantic HTML (role="navigation", role="banner")
+- Ensure all interactive elements are accessible
+
+### Section Navigation
+- Implement smooth scrolling using scrollIntoView({ behavior: 'smooth' })
+- Update URL with section IDs using window.history.pushState
+- Set focus on target sections with proper focus management
+- Provide visual indicators for active sections
+
+### Mobile Experience
+- Provide proper focus management for mobile menus
+- Add escape key handlers for closing menus
+- Ensure all mobile controls are accessible with touch-friendly targets
+- Implement proper focus trapping in modal menus
+
+### Active Section Tracking
+- Use IntersectionObserver to detect active sections
+- Highlight active links with visual indicators
+- Add aria-current="page" to indicate active items
+
+### Performance Considerations
+- Apply React.memo for expensive components
+- Use useCallback for frequently re-created handlers
+- Implement useRef for DOM references
+
+A detailed implementation example is available in the `feature/navigation-enhanced` branch and documented in `NAVIGATION-ENHANCEMENT.md`.
