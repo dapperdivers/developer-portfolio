@@ -1,7 +1,7 @@
 import React, { useState, useRef, memo } from 'react';
 import PropTypes from 'prop-types';
 import useIntersectionObserver from '../../hooks/useIntersectionObserver';
-import './LazyImage.css';
+import '../../assets/css/tailwind.css';
 
 /**
  * Lazy-loaded image component that only loads images when they enter the viewport.

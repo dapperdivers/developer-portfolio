@@ -1,10 +1,10 @@
 import React, { memo } from 'react';
-import { Container, Row, Col } from 'reactstrap';
+
 import { FaHeart, FaChevronUp } from 'react-icons/fa';
 import Button from './ui/Button';
 import SocialLinks from './SocialLinks';
 import useFooter from '../hooks/useFooter';
-import '../assets/css/footer.css';
+import '../assets/css/tailwind.css';
 
 /**
  * Footer component with contact information, quick links, and copyright.
@@ -17,18 +17,18 @@ const Footer = () => {
   
   return (
     <footer className="footer" role="contentinfo">
-      <Container>
-        <Row className="align-items-center justify-content-between">
-          <Col lg={5} className="mb-4 mb-lg-0">
+      <div className="container mx-auto px-4">
+        <div className="flex flex-wrap -mx-4 items-center justify-between">
+          <div className="w-full px-4 lg:w-5/12 mb-4 lg:mb-0">
             <h4 className="footer-title">{greetings.name}</h4>
             <p className="footer-description">
               Full Stack Developer and Security Expert with extensive experience building 
               secure web applications and APIs.
             </p>
             <SocialLinks />
-          </Col>
+          </div>
           
-          <Col lg={3} md={6} className="mb-4 mb-md-0">
+          <div className="w-full px-4 lg:w-3/12 md:w-6/12 mb-4 md:mb-0">
             <h5 className="footer-heading">Quick Links</h5>
             <ul className="footer-links">
               <li>
@@ -52,9 +52,9 @@ const Footer = () => {
                 </a>
               </li>
             </ul>
-          </Col>
+          </div>
           
-          <Col lg={3} md={6}>
+          <div className="w-full px-4 lg:w-3/12 md:w-6/12">
             <h5 className="footer-heading">Contact</h5>
             <ul className="footer-links">
               <li>
@@ -74,23 +74,23 @@ const Footer = () => {
                 </a>
               </li>
             </ul>
-          </Col>
-        </Row>
+          </div>
+        </div>
         
         <hr className="footer-divider" />
         
-        <Row className="align-items-center">
-          <Col md={6} className="text-center text-md-start mb-3 mb-md-0">
+        <div className="flex flex-wrap -mx-4 items-center">
+          <div className="w-full px-4 md:w-6/12 text-center md:text-left mb-3 md:mb-0">
             <p className="footer-copyright">
               © {currentYear} {greetings.name}. All rights reserved.
             </p>
-          </Col>
-          <Col md={6} className="text-center text-md-end">
+          </div>
+          <div className="w-full px-4 md:w-6/12 text-center md:text-right">
             <p className="footer-credit">
               Made with <FaHeart className="footer-icon" aria-hidden="true" /> using React
             </p>
-          </Col>
-        </Row>
+          </div>
+        </div>
         
         <Button 
           onClick={scrollToTop} 
@@ -99,7 +99,7 @@ const Footer = () => {
         >
           <FaChevronUp aria-hidden="true" />
         </Button>
-      </Container>
+      </div>
     </footer>
   );
 };

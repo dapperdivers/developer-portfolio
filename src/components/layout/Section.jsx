@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
 import { FaGraduationCap, FaBriefcase, FaCode, FaStar, FaHandshake } from 'react-icons/fa';
-import './Section.css';
+import '../../assets/css/tailwind.css';
 
 /**
  * Section component for layout structuring and consistent section styling.

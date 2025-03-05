@@ -1,0 +1,132 @@
+/* Button styles using Tailwind CSS */
+
+/* Base button */
+.btn {
+  @apply inline-flex items-center justify-center font-medium leading-normal text-center no-underline whitespace-nowrap align-middle cursor-pointer select-none relative overflow-hidden px-button-x py-button-y border border-solid border-transparent rounded transition-all duration-200 ease-in-out;
+}
+
+/* Button variants */
+.btn-primary {
+  @apply bg-primary text-white border-primary;
+}
+
+.btn-primary:hover, .btn-primary:focus {
+  @apply bg-primary-dark border-primary-dark shadow-sm;
+}
+
+.btn-secondary {
+  @apply bg-secondary text-white border-secondary;
+}
+
+.btn-secondary:hover, .btn-secondary:focus {
+  @apply bg-secondary-dark border-secondary-dark shadow-sm;
+}
+
+.btn-success {
+  @apply bg-success text-white border-success;
+}
+
+.btn-success:hover, .btn-success:focus {
+  @apply bg-success/90 border-success/90;
+}
+
+.btn-danger {
+  @apply bg-danger text-white border-danger;
+}
+
+.btn-danger:hover, .btn-danger:focus {
+  @apply bg-danger/90 border-danger/90;
+}
+
+.btn-warning {
+  @apply bg-warning text-gray-900 border-warning;
+}
+
+.btn-warning:hover, .btn-warning:focus {
+  @apply bg-warning/90 border-warning/90;
+}
+
+.btn-info {
+  @apply bg-info text-white border-info;
+}
+
+.btn-info:hover, .btn-info:focus {
+  @apply bg-info/90 border-info/90;
+}
+
+.btn-light {
+  @apply bg-gray-100 text-gray-900 border-gray-200;
+}
+
+.btn-light:hover, .btn-light:focus {
+  @apply bg-gray-200 border-gray-300;
+}
+
+.btn-dark {
+  @apply bg-gray-800 text-white border-gray-800;
+}
+
+.btn-dark:hover, .btn-dark:focus {
+  @apply bg-gray-900 border-gray-900;
+}
+
+.btn-link {
+  @apply bg-transparent text-link border-transparent px-0;
+}
+
+.btn-link:hover, .btn-link:focus {
+  @apply text-link-hover underline shadow-none;
+}
+
+/* Button sizes */
+.btn-sm {
+  @apply px-3 py-1.5 text-sm rounded-sm;
+}
+
+.btn-lg {
+  @apply px-5 py-2.5 text-lg rounded-lg;
+}
+
+/* Icon button */
+.btn-icon {
+  @apply p-2 inline-flex items-center justify-center w-10 h-10 rounded-full;
+}
+
+.btn-icon.btn-sm {
+  @apply w-8 h-8;
+}
+
+.btn-icon.btn-lg {
+  @apply w-12 h-12;
+}
+
+/* Icon positioning */
+.btn-icon-left {
+  @apply mr-2 inline-flex items-center;
+}
+
+.btn-icon-right {
+  @apply ml-2 inline-flex items-center;
+}
+
+/* Disabled state */
+.btn.disabled,
+.btn:disabled,
+a.btn[aria-disabled="true"] {
+  @apply opacity-65 pointer-events-none shadow-none;
+}
+
+/* Focus styles */
+.btn:focus {
+  @apply outline-none ring-2 ring-primary/50;
+}
+
+/* Active state */
+.btn:active {
+  @apply translate-y-[1px];
+}
+
+/* Accessibility: Focus visible */
+.btn:focus-visible {
+  @apply outline outline-2 outline-primary outline-offset-2;
+}

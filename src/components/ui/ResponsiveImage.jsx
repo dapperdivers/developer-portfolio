@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
 import useIntersectionObserver from '../../hooks/useIntersectionObserver';
-import './ResponsiveImage.css';
+import '../../assets/css/tailwind.css';
 
 /**
  * ResponsiveImage component for optimized image loading with lazy loading,
