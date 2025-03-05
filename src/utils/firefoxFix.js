@@ -11,7 +11,7 @@
     // Add global error handler to catch and suppress bootstrap-legacy-autofill errors
     window.addEventListener('error', function(event) {
       if (
-        (event.filename && event.filename.includes('bootstrap-legacy-autofill')) ||
+        (event.filename && event.filename.includes('legacy-autofill')) ||
         (event.message && event.message.includes('this is undefined') && 
          event.error && event.error.stack && event.error.stack.includes('checkPageContainsShadowDom'))
       ) {
@@ -21,19 +21,19 @@
       }
     }, true);
 
-    // Override any global bootstrap methods that might be causing issues
-    if (window.bootstrap) {
-      if (window.bootstrap.autofill) {
-        // Either completely disable it
-        window.bootstrap.autofill = null;
-        
-        // Or replace with safe stub functions if needed
-        window.bootstrap.autofill = {
-          checkPageContainsShadowDom: function() { return false; },
-          flagPageDetailsUpdateIsRequired: function() { return; }
-        };
-      }
-    }
+    // This code previously dealt with bootstrap methods
+    // Since we've migrated away from Bootstrap, we just add handlers
+    // for any potential autofill functionality that might be present
+    window.addEventListener('DOMContentLoaded', () => {
+      // Handle any autofill-related issues that might appear
+      document.querySelectorAll('input').forEach(input => {
+        input.addEventListener('animationstart', (e) => {
+          if (e.animationName === 'autofill') {
+            // Handle autofill event if needed
+          }
+        });
+      });
+    });
     
     // Add CSS fix to handle Firefox autofill styling directly
     document.addEventListener('DOMContentLoaded', function() {

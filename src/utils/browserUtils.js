@@ -12,7 +12,7 @@ export const isFirefox = () => {
 };
 
 /**
- * Applies Firefox-specific fixes for Bootstrap
+ * Applies Firefox-specific fixes for form elements and autofill
  */
 export const applyFirefoxFixes = () => {
   if (!isFirefox()) return;
@@ -29,78 +29,37 @@ export const applyFirefoxFixes = () => {
 };
 
 /**
- * Immediately apply fixes for the Firefox autofill overlay and shadow DOM issues
+ * Immediately apply fixes for the Firefox autofill and form styling issues
  */
 function applyFixImmediately() {
-  // 1. Patch the specific shadow DOM method that's causing the error
-  patchShadowDomDetection();
-  
-  // 2. Add CSS to disable problematic Bootstrap overlay in Firefox
+  // 1. Add CSS fixes for Firefox form elements
   addFirefoxStyles();
   
-  // 3. Override problematic methods in the global scope
+  // 2. Override any problematic methods
   overrideProblematicMethods();
 }
 
-/**
- * Patches the shadow DOM detection method that's causing the "this is undefined" error
- */
-function patchShadowDomDetection() {
-  // Target window object and all frames
-  [window, ...Array.from(document.querySelectorAll('iframe')).map(f => f.contentWindow)]
-    .filter(Boolean)
-    .forEach(win => {
-      try {
-        // Find and patch any bootstrap-legacy-autofill-overlay objects
-        if (win.bootstrap && win.bootstrap.autofill) {
-          // Safely patch the checkPageContainsShadowDom method
-          const originalPrototype = Object.getPrototypeOf(win.bootstrap.autofill);
-          if (originalPrototype && originalPrototype.checkPageContainsShadowDom) {
-            originalPrototype.checkPageContainsShadowDom = function() {
-              // Safe implementation that won't throw when 'this' is undefined
-              if (!this || !this.domQueryService) return;
-              
-              try {
-                this.domQueryService.checkPageContainsShadowDom();
-                if (this.domQueryService.pageContainsShadowDomElements()) {
-                  if (typeof this.flagPageDetailsUpdateIsRequired === 'function') {
-                    this.flagPageDetailsUpdateIsRequired();
-                  }
-                }
-              } catch (e) {
-                console.log('Safe error handling for shadow DOM detection:', e);
-              }
-            };
-          }
-        }
-      } catch (e) {
-        // Ignore errors from cross-origin frames
-      }
-    });
-}
+// This function is no longer needed since we've migrated away from Bootstrap
+// It's been removed to clean up the codebase
 
 /**
  * Adds Firefox-specific CSS fixes
  */
 function addFirefoxStyles() {
   // Check if we've already added the styles
-  if (document.getElementById('firefox-bootstrap-fixes')) return;
+  if (document.getElementById('firefox-form-fixes')) return;
   
   const style = document.createElement('style');
-  style.id = 'firefox-bootstrap-fixes';
+  style.id = 'firefox-form-fixes';
   style.textContent = `
-    /* Firefox-specific fix for Bootstrap autofill overlay */
+    /* Firefox-specific fix for form autofill */
     @-moz-document url-prefix() {
-      .form-control:-moz-autofill,
-      .form-control:-moz-autofill:focus {
-        transition: background-color 0s ease-in-out 5000s !important;
-        background-color: transparent !important;
-      }
-      
       input:-moz-autofill,
       textarea:-moz-autofill,
       select:-moz-autofill {
         box-shadow: 0 0 0 30px transparent inset !important;
+        transition: background-color 0s ease-in-out 5000s !important;
+        background-color: transparent !important;
       }
     }
   `;
@@ -111,17 +70,18 @@ function addFirefoxStyles() {
  * Overrides problematic methods in the global scope
  */
 function overrideProblematicMethods() {
-  // Create a safety wrapper for any bootstrap methods
+  // Create a safety wrapper for autofill and form related errors
   window.addEventListener('error', function(event) {
-    // Catch any "this is undefined" errors from bootstrap files
+    // Catch any "this is undefined" errors from autofill-related scripts
     if (
-      event.filename && 
-      event.filename.includes('bootstrap') && 
       event.message && 
-      event.message.includes('this is undefined')
+      event.message.includes('this is undefined') &&
+      event.error && 
+      event.error.stack && 
+      (event.error.stack.includes('autofill') || event.error.stack.includes('form'))
     ) {
       event.preventDefault();
-      console.warn('Prevented bootstrap error:', event.message);
+      console.warn('Prevented form-related error:', event.message);
       return true;
     }
   }, true);
