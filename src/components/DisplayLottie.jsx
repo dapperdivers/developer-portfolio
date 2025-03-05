@@ -2,7 +2,8 @@ import React, { Suspense, useState, useRef, useEffect, useMemo } from 'react';
 import Lottie from 'lottie-react';
 import Loading from './Loading';
 import { FaPlay, FaPause } from 'react-icons/fa';
-import './DisplayLottie.css';
+// CSS is now properly organized in the design system
+import '../assets/css/components/ui/display-lottie.css';
 
 // The lottie-react package provides direct methods to control the animation
 // without needing to use refs directly on the component

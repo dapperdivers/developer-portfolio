@@ -1,0 +1,8 @@
+:root {
+  /* Transitions */
+  --transition-base: all 0.2s ease-in-out;
+  --transition-slow: all 0.3s ease-in-out;
+  --transition-fast: all 0.1s ease-in-out;
+  --transition-fade: opacity 0.15s linear;
+  --transition-transform: transform 0.2s ease-in-out;
+}

@@ -5,7 +5,7 @@ import {
   Container
 } from "reactstrap";
 import useNavigation from '../hooks/useNavigation';
-import './Navigation.css';
+import '../assets/css/components/layout/navigation.css';
 
 /**
  * Navigation component for the site header.

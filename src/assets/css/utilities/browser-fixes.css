@@ -1,0 +1,166 @@
+/**
+ * Cross-browser compatibility fixes
+ * This file contains CSS fixes for specific browser issues
+ */
+
+/* Firefox-specific fixes for Bootstrap autofill functionality */
+@-moz-document url-prefix() {
+  /* Override autofill styles in Firefox to prevent bootstrap-legacy-autofill-overlay.js from being needed */
+  input:-moz-autofill,
+  input:-moz-autofill:focus,
+  textarea:-moz-autofill,
+  textarea:-moz-autofill:focus,
+  select:-moz-autofill,
+  select:-moz-autofill:focus {
+    -moz-transition: background-color 5000s ease-in-out 0s !important;
+    transition: background-color 5000s ease-in-out 0s !important;
+    background-color: transparent !important;
+    -webkit-text-fill-color: inherit !important;
+    box-shadow: 0 0 0px 1000px transparent inset !important;
+    background-image: none !important;
+    color: inherit !important;
+  }
+
+  /* Additional fixes to prevent shadow DOM interactions */
+  input, textarea, select {
+    background-clip: padding-box !important;
+  }
+}
+
+/* Safari-specific fixes */
+@supports (-webkit-touch-callout: none) {
+  /* Fix for flexbox gap property */
+  .safari-gap-fix {
+    display: flex;
+    gap: 0;
+  }
+  
+  .safari-gap-fix > * + * {
+    margin-left: var(--spacing-4);
+  }
+  
+  /* Fix for sticky position behavior */
+  .sticky-element {
+    position: -webkit-sticky;
+    position: sticky;
+  }
+  
+  /* Fix for border-radius overflow clipping */
+  .border-radius-overflow-fix {
+    -webkit-mask-image: -webkit-radial-gradient(white, black);
+    overflow: hidden;
+  }
+  
+  /* Fix for image rendering on retina displays */
+  img {
+    -webkit-backface-visibility: hidden;
+    image-rendering: -webkit-optimize-contrast;
+  }
+  
+  /* Fix for CSS variables in calc() */
+  :root {
+    --safari-fixed-height: 100vh;
+  }
+  
+  /* Fix for 100vh issue on iOS Safari */
+  .full-height {
+    height: var(--safari-fixed-height);
+  }
+  
+  /* Better scrolling experience */
+  .scrollable-content {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Edge and modern IE fixes */
+@supports (-ms-ime-align:auto) {
+  /* Fix for Grid layout issues */
+  .grid-container {
+    display: -ms-grid;
+    display: grid;
+  }
+  
+  /* Fix for CSS variables in Edge */
+  :root {
+    --edge-fixed-color: #0062cc;
+  }
+  
+  .edge-color-fix {
+    color: var(--edge-fixed-color, #0062cc);
+  }
+  
+  /* Fix for object-fit in Edge */
+  .object-fit-cover {
+    font-family: 'object-fit: cover;';
+  }
+  
+  /* Fix for flexbox in Edge */
+  .flex-container {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+  }
+  
+  /* Fix for position:sticky support */
+  .sticky-element {
+    position: -ms-sticky;
+    position: sticky;
+  }
+  
+  /* Fix for CSS Grid auto-placement */
+  .grid-auto-fix {
+    grid-auto-columns: 1fr;
+    -ms-grid-columns: 1fr;
+  }
+}
+
+/* General fixes for all browsers */
+.form-control:focus {
+  box-shadow: none !important; 
+  -webkit-box-shadow: none !important;
+}
+
+/* Fix for backdrop-filter fallback */
+@supports not (backdrop-filter: blur(10px)) {
+  .backdrop-filter-blur {
+    background-color: rgba(0, 0, 0, 0.8) !important;
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) {
+  /* Make touch targets larger */
+  button, 
+  .button, 
+  a,
+  input[type="button"],
+  input[type="submit"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Provide alternative for hover interactions */
+  .hover-effect {
+    transition: none !important;
+  }
+  
+  .hover-effect:active {
+    transform: scale(0.98);
+  }
+}
+
+/* Media query for high-contrast mode support */
+@media (forced-colors: active) {
+  /* Ensure visibility in high-contrast mode */
+  .high-contrast-visible {
+    forced-color-adjust: none;
+    border: 1px solid transparent;
+  }
+  
+  /* Ensure buttons remain visible */
+  button, 
+  .button {
+    border: 1px solid ButtonText;
+  }
+}

@@ -1,0 +1,19 @@
+/**
+ * Design System Index
+ * 
+ * This file imports all design system token files and serves as the main entry point
+ * for the design system. Import this file in your main CSS to include all design tokens.
+ */
+
+/* Import all token files */
+@import './tokens/colors.css';
+@import './tokens/typography.css';
+@import './tokens/spacing.css';
+@import './tokens/borders.css';
+@import './tokens/shadows.css';
+@import './tokens/transitions.css';
+@import './tokens/breakpoints.css';
+@import './tokens/z-index.css';
+
+/* Import base styles */
+@import './base.css';

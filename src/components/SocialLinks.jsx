@@ -1,7 +1,7 @@
 import React from 'react';
 import { FaGithub, FaLinkedin } from 'react-icons/fa';
 import { socialLinks } from "../portfolio";
-import './SocialLinks.css';
+import '../assets/css/components/ui/social-links.css';
 
 /**
  * Social Links component for displaying social media links

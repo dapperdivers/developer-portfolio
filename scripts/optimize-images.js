@@ -2,7 +2,7 @@
 
 /**
  * Image optimization script for the portfolio project
- * This script processes images in the src/assets/img directory and creates optimized versions
+ * This script processes images in the src/assets/images directory and creates optimized versions
  * 
  * Features:
  * - Converts images to WebP format for better compression
@@ -14,20 +14,29 @@
  * node scripts/optimize-images.js [--quality=80] [--formats=webp,jpg,avif]
  */
 
-const fs = require('fs').promises;
-const path = require('path');
-const sharp = require('sharp');
-const glob = require('glob');
-const chalk = require('chalk');
+import { promises as fs } from 'fs';
+import path from 'path';
+import sharp from 'sharp';
+import * as globModule from 'glob';
+import chalk from 'chalk';
+import { fileURLToPath } from 'url';
+
+// Use the glob function from the module
+const glob = globModule.glob;
+
+// Get __dirname equivalent in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Configuration
 const config = {
-  sourceDir: 'src/assets/img',
-  outputDir: 'src/assets/img/optimized',
+  sourceDir: 'src/assets/images',
+  outputDir: 'src/assets/images',
   quality: 80, // Default quality
   formats: ['webp', 'jpg'], // Default formats
   sizes: [320, 640, 960, 1280], // Responsive sizes
-  skipExisting: true
+  skipExisting: true,
+  generateMetadata: true
 };
 
 // Process CLI arguments
@@ -64,6 +73,27 @@ function findImages() {
       resolve(files);
     });
   });
+}
+
+// Generate metadata file for an image
+async function generateMetadata(imagePath, imageInfo) {
+  const metadataPath = `${imagePath}.meta.json`;
+  
+  const metadata = {
+    dimensions: {
+      width: imageInfo.width,
+      height: imageInfo.height
+    },
+    format: imageInfo.format,
+    size: imageInfo.size,
+    optimized: true,
+    quality: config.quality,
+    timestamp: new Date().toISOString(),
+    originalPath: imagePath
+  };
+  
+  await fs.writeFile(metadataPath, JSON.stringify(metadata, null, 2));
+  console.log(chalk.green(`  ✓ Created metadata file: ${path.basename(metadataPath)}`));
 }
 
 // Process a single image
@@ -113,9 +143,18 @@ async function processImage(imagePath) {
       }
       
       const promise = resizedImage.toFile(outputFilePath)
-        .then(info => {
+        .then(async (info) => {
           const compressionRatio = Math.round((1 - (info.size / metadata.size)) * 100);
           console.log(chalk.green(`  ✓ Created ${outputFilename} (${width}px, saved ${compressionRatio}%)`));
+          
+          if (config.generateMetadata) {
+            await generateMetadata(outputFilePath, {
+              ...info,
+              originalWidth: metadata.width,
+              originalHeight: metadata.height,
+              compressionRatio
+            });
+          }
         })
         .catch(err => {
           console.error(chalk.red(`  ✗ Error creating ${outputFilename}: ${err.message}`));

@@ -4,7 +4,7 @@ import { Badge } from "reactstrap";
 import { FaGraduationCap } from 'react-icons/fa';
 import Card from "./ui/Card";
 import useIntersectionObserver from "../hooks/useIntersectionObserver";
-import './EducationCard.css';
+import '../assets/css/components/ui/education-card.css';
 
 /**
  * Education card component for displaying educational background.

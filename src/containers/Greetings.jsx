@@ -1,6 +1,7 @@
 import React from "react";
 import { greetings } from "../portfolio";
-import code from '../assets/lottie/coding.json';
+// Updated animation import with correct path structure
+import code from '../assets/animations/lottie/development/dev-coding.json';
 import { motion, AnimatePresence } from "framer-motion";
 import { Container, Row, Col } from "reactstrap";
 import { FaDownload } from 'react-icons/fa';

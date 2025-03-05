@@ -1,0 +1,136 @@
+/**
+ * Base Styles
+ * 
+ * This file contains reset styles and base element styling.
+ * It establishes foundational styles for HTML elements.
+ */
+
+/* Box sizing rules */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Remove default margin and padding */
+html,
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ol,
+ul,
+li,
+figure,
+figcaption,
+blockquote,
+dl,
+dd {
+  margin: 0;
+  padding: 0;
+}
+
+/* Set core body defaults */
+body {
+  min-height: 100vh;
+  scroll-behavior: smooth;
+  text-rendering: optimizeSpeed;
+  line-height: var(--line-height-base);
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+  background-color: var(--color-background);
+}
+
+/* Make images responsive by default */
+img,
+picture {
+  max-width: 100%;
+  display: block;
+}
+
+/* Inherit fonts for inputs and buttons */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/* Base typography */
+h1 {
+  font-size: var(--font-size-h1);
+  line-height: var(--line-height-tight);
+  margin-bottom: var(--spacing-5);
+}
+
+h2 {
+  font-size: var(--font-size-h2);
+  line-height: var(--line-height-tight);
+  margin-bottom: var(--spacing-4);
+}
+
+h3 {
+  font-size: var(--font-size-h3);
+  line-height: var(--line-height-tight);
+  margin-bottom: var(--spacing-3);
+}
+
+h4 {
+  font-size: var(--font-size-h4);
+  line-height: var(--line-height-tight);
+  margin-bottom: var(--spacing-3);
+}
+
+h5 {
+  font-size: var(--font-size-h5);
+  line-height: var(--line-height-tight);
+  margin-bottom: var(--spacing-2);
+}
+
+h6 {
+  font-size: var(--font-size-h6);
+  line-height: var(--line-height-tight);
+  margin-bottom: var(--spacing-2);
+}
+
+p {
+  margin-bottom: var(--spacing-4);
+}
+
+a {
+  color: var(--color-link);
+  text-decoration: none;
+  transition: var(--transition-base);
+}
+
+a:hover {
+  color: var(--color-link-hover);
+}
+
+/* Lists */
+ul,
+ol {
+  margin-bottom: var(--spacing-4);
+  padding-left: var(--spacing-5);
+}
+
+/* Focus styles */
+:focus-visible {
+  outline: none;
+  box-shadow: var(--box-shadow-focus);
+}
+
+/* Remove animations for people who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
