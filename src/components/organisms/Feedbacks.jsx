@@ -1,7 +1,7 @@
 import React, { memo } from "react";
 import PropTypes from 'prop-types';
-import FeedbackCard from "../molecules/FeedbackCard";
-import Section from "../layout/Section";
+import FeedbackCard from "@molecules/FeedbackCard";
+import Section from "@layout/Section";
 import useFeedback from "@hooks/useFeedback";
 
 /**

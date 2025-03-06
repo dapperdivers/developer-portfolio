@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
-import EducationCard from "../molecules/EducationCard";
-import Section from "../layout/Section";
+import EducationCard from "@molecules/EducationCard";
+import Section from "@layout/Section";
 import useEducation from "@hooks/useEducation";
 
 /**

@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FaMapMarkerAlt } from 'react-icons/fa';
 import { motion } from "framer-motion";
-import SocialLinks from "./SocialLinks";
-import Button from "../atoms/Button";
+import SocialLinks from "@molecules/SocialLinks";
+import Button from "@atoms/Button";
 
 /**
  * GitHub profile card component for displaying user information from GitHub API.

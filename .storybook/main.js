@@ -3,16 +3,11 @@ import path from 'path';
 /** @type { import('@storybook/react-vite').StorybookConfig } */
 const config = {
   stories: [
-    '../src/stories/docs/**/*.mdx',
-    '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'
+    '../src/**/*.stories.@(js|jsx)'
   ],
   addons: [
     '@storybook/addon-links',
-    '@storybook/addon-essentials',
-    '@storybook/addon-onboarding',
-    '@storybook/addon-a11y',
-    '@chromatic-com/storybook',
-    '@storybook/experimental-addon-test'
+    '@storybook/addon-essentials'
   ],
   framework: {
     name: '@storybook/react-vite',
@@ -29,8 +24,7 @@ const config = {
     '../src/assets/css'
   ],
   docs: {
-    autodocs: true,
-    defaultName: 'Documentation'
+    autodocs: true
   },
   viteFinal: async (config) => {
     // Add path aliases
@@ -48,95 +42,6 @@ const config = {
       '@context': path.resolve(__dirname, '../src/context'),
       '@stories-utils': path.resolve(__dirname, '../src/stories/utils'),
     };
-    
-    // Add specific configurations for Storybook build
-    if (config.build) {
-      // Handle the eval warnings
-      if (!config.build.rollupOptions) {
-        config.build.rollupOptions = {};
-      }
-      
-      // Add onwarn handler to Rollup options
-      config.build.rollupOptions.onwarn = (warning, warn) => {
-        // Ignore eval warnings from third-party libraries
-        if (warning.code === 'EVAL' && 
-            (warning.id?.includes('node_modules/@storybook') || 
-             warning.id?.includes('lottie-web'))) {
-          return;
-        }
-        warn(warning);
-      };
-      
-      // Add manual chunks for better code splitting
-      config.build.rollupOptions.output = {
-        ...config.build.rollupOptions.output,
-        manualChunks: (id) => {
-          // React and related packages
-          if (id.includes('node_modules/react') || 
-              id.includes('node_modules/react-dom') ||
-              id.includes('node_modules/react-helmet-async') ||
-              id.includes('node_modules/react-router-dom') ||
-              id.includes('node_modules/react-icons')) {
-            return 'react-vendor';
-          }
-          
-          // UI component dependencies
-          if (id.includes('node_modules/framer-motion') ||
-              id.includes('node_modules/@iconify/react') ||
-              id.includes('node_modules/lottie-react')) {
-            return 'ui-vendor';
-          }
-          
-          // Utility libraries
-          if (id.includes('node_modules/moment') ||
-              id.includes('node_modules/axios') ||
-              id.includes('node_modules/classnames')) {
-            return 'utils-vendor';
-          }
-          
-          // Storybook addons
-          if (id.includes('node_modules/@storybook/addon')) {
-            return 'storybook-addons';
-          }
-          
-          // Storybook blocks
-          if (id.includes('node_modules/@storybook/blocks')) {
-            return 'storybook-blocks';
-          }
-          
-          // Storybook core
-          if (id.includes('node_modules/@storybook/react') ||
-              id.includes('node_modules/@storybook/test')) {
-            return 'storybook-core';
-          }
-          
-          // Other node_modules in fewer chunks
-          if (id.includes('node_modules')) {
-            // Get package name from path
-            const packageMatch = id.match(/node_modules\/(@[^/]+\/[^/]+|[^/]+)/);
-            if (packageMatch) {
-              const packageName = packageMatch[1];
-              // Group by first letter to avoid too many chunks
-              const firstChar = packageName.charAt(0).toLowerCase();
-              return `vendor-${firstChar}`;
-            }
-          }
-        }
-      };
-      
-      // Increase the chunk size warning limit
-      config.build.chunkSizeWarningLimit = 2000;
-      
-      // Add esbuild options
-      if (!config.build.esbuildOptions) {
-        config.build.esbuildOptions = {};
-      }
-      
-      config.build.esbuildOptions.logOverride = {
-        'unsupported-js-syntax': 'silent',
-        'eval-in-js': 'silent'
-      };
-    }
     
     return config;
   }

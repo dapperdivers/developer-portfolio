@@ -11,7 +11,7 @@ import {
   experience,
   projects,
   feedbacks
-} from '../portfolio';
+} from '@/portfolio';
 
 /**
  * Context for portfolio data management

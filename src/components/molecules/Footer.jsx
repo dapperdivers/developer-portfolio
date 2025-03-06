@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { FaHeart, FaChevronUp } from 'react-icons/fa';
 import Button from '@atoms/Button';
-import SocialLinks from './SocialLinks';
+import SocialLinks from '@molecules/SocialLinks';
 import useFooter from '@hooks/useFooter';
 
 /**

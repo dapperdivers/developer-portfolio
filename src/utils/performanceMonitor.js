@@ -9,7 +9,7 @@ const hasPerformanceAPI = typeof performance !== 'undefined' &&
                          typeof performance.measure === 'function';
 
 // Import environment configuration
-import envConfig from './envConfig';
+import envConfig from '@utils/envConfig';
 
 // Check if we're in development mode
 const isDev = envConfig.isDevelopment;

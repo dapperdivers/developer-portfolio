@@ -14,9 +14,9 @@ const validateImage = (imagePath) => {
     }
 };
 
-import TractionToolsLogo_raw from "./assets/images/logos/company/logo-tt.svg";
-import UbiquiaLogo_raw from "./assets/images/logos/company/logo-ubiquia.png";
-import StarrLogo_raw from "./assets/images/logos/company/logo-starr.png";
+import TractionToolsLogo_raw from "@assets/images/logos/company/logo-tt.svg";
+import UbiquiaLogo_raw from "@assets/images/logos/company/logo-ubiquia.png";
+import StarrLogo_raw from "@assets/images/logos/company/logo-starr.png";
 
 const TractionToolsLogo = validateImage(TractionToolsLogo_raw);
 const UbiquiaLogo = validateImage(UbiquiaLogo_raw);

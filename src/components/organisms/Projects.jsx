@@ -1,10 +1,10 @@
 import React, { useMemo } from 'react';
-import ProjectsCard from "../molecules/ProjectsCard";
-import SkeletonCard from "../atoms/SkeletonCard";
-import Section from "../layout/Section";
-import useProjects from "../../hooks/useProjects";
-import useMemoValues from "../../hooks/useMemoValues";
-import { usePortfolio } from "../../context/PortfolioContext";
+import ProjectsCard from "@molecules/ProjectsCard";
+import SkeletonCard from "@atoms/SkeletonCard";
+import Section from "@layout/Section";
+import useProjects from "@hooks/useProjects";
+import useMemoValues from "@hooks/useMemoValues";
+import { usePortfolio } from "@context/PortfolioContext";
 
 
 /**

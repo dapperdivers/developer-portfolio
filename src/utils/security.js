@@ -2,7 +2,7 @@
  * Security enhancements for the portfolio website
  * Implements security best practices for client-side web applications
  */
-import envConfig from './envConfig';
+import envConfig from '@utils/envConfig';
 
 /**
  * Configuration for security features

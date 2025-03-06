@@ -1,6 +1,6 @@
 import { renderHook, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import useTimelineView from '../useTimelineView';
+import useTimelineView from '@hooks/useTimelineView';
 
 // Mock IntersectionObserver
 class MockIntersectionObserver {

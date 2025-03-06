@@ -1,7 +1,7 @@
 import React, { memo, useMemo, useCallback } from 'react';
-import ExperienceCard from "../molecules/ExperienceCard";
-import SkeletonCard from "../atoms/SkeletonCard";
-import Section from "../layout/Section";
+import ExperienceCard from "@molecules/ExperienceCard";
+import SkeletonCard from "@atoms/SkeletonCard";
+import Section from "@layout/Section";
 import { motion } from "framer-motion";
 import { Icon } from '@iconify/react';
 import useExperience from "@hooks/useExperience";
@@ -18,7 +18,7 @@ import { usePortfolio } from "@context/PortfolioContext";
  * 
  * @example
  * // Usage in App.jsx or another container
- * import Experience from './containers/Experience';
+ * import Experience from '@organisms/containers/Experience';
  * 
  * const App = () => (
  *   <main>

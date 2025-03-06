@@ -4,14 +4,28 @@ This directory contains Storybook stories organized according to the Atomic Desi
 
 ## Directory Structure
 
-- `atoms/` - Stories for basic UI components (Button, Card, Input)
-- `molecules/` - Stories for composite components made of atoms (Cards, Form groups)
-- `organisms/` - Stories for full sections of the page
-- `templates/` - Stories for layout components and page templates
+**Important**: Stories have been moved to live alongside their components!
+
+- **Old Structure** (deprecated):
+  - `atoms/` - Stories for basic UI components 
+  - `molecules/` - Stories for composite components
+  - `organisms/` - Stories for full sections
+  - `templates/` - Stories for layout components
+
+- **New Structure**:
+  Stories are now co-located with their components:
+  ```
+  src/components/[type]/[ComponentName]/
+  ├── [ComponentName].jsx
+  ├── [ComponentName].css
+  ├── [ComponentName].stories.jsx  // Stories are here now!
+  ├── [ComponentName].test.jsx
+  └── index.js
+  ```
+
 - `design-system/` - Stories for design tokens and visual design elements
 - `utils/` - Helper utilities for Storybook
 - `assets/` - Static assets used in Storybook
-- `legacy/` - Legacy stories for reference
 
 ## Best Practices
 

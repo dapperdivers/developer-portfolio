@@ -1,11 +1,11 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import PropTypes from 'prop-types';
 import Loading from '@atoms/Loading'
-import { openSource } from "../../portfolio";
+import { openSource } from "@/portfolio";
 import axios from 'axios';
 import GithubProfileCard from '@molecules/GithubProfileCard';
 import { motion } from "framer-motion";
-import Section from "../layout/Section";
+import Section from "@layout/Section";
 import envConfig from '@utils/envConfig';
 
 // Create axios instance with base configuration

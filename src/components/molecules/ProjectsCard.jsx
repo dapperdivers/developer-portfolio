@@ -1,9 +1,9 @@
 import React, { memo, useMemo } from "react";
 import PropTypes from 'prop-types';
-import Card from "../atoms/Card";
-import Button from "../atoms/Button";
-import ResponsiveImage from "../atoms/ResponsiveImage";
-import useIntersectionObserver from "../../hooks/useIntersectionObserver";
+import Card from "@atoms/Card";
+import Button from "@atoms/Button";
+import ResponsiveImage from "@atoms/ResponsiveImage";
+import useIntersectionObserver from "@hooks/useIntersectionObserver";
 
 
 /**

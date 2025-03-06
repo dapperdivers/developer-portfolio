@@ -3,12 +3,12 @@ import DisplayLottie from '@molecules/DisplayLottie';
 import webdev from '@assets/animations/lottie/development/dev-webdev.json';
 import { motion } from "framer-motion";
 
-import Skill from "../atoms/Skill";
-import SkeletonCard from "../atoms/SkeletonCard";
-import Section from "../layout/Section";
-import useSkills from "../../hooks/useSkills";
-import { usePortfolio } from "../../context/PortfolioContext";
-import '../../assets/css/tailwind.css';
+import Skill from "@atoms/Skill";
+import SkeletonCard from "@atoms/SkeletonCard";
+import Section from "@layout/Section";
+import useSkills from "@hooks/useSkills";
+import { usePortfolio } from "@context/PortfolioContext";
+import '@assets/css/tailwind.css';
 
 /**
  * Skills component that displays a grid of skills icons and descriptions.
@@ -20,7 +20,7 @@ import '../../assets/css/tailwind.css';
  * 
  * @example
  * // Usage in App.jsx
- * import Skills from './containers/Skills';
+ * import Skills from '@organisms/containers/Skills';
  * 
  * const App = () => (
  *   <main>

@@ -13,26 +13,138 @@
     "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"],
-      "@components/*": ["src/components/*"],
-      "@atoms/*": ["src/components/atoms/*"],
-      "@molecules/*": ["src/components/molecules/*"],
-      "@organisms/*": ["src/components/organisms/*"],
-      "@layout/*": ["src/components/layout/*"],
-      "@assets/*": ["src/assets/*"],
-      "@utils/*": ["src/utils/*"],
-      "@hooks/*": ["src/hooks/*"],
-      "@context/*": ["src/context/*"]
+      "@/*": [
+        "src/*"
+      ],
+      "@components/*": [
+        "src/components/*"
+      ],
+      "@atoms/*": [
+        "src/components/atoms/*"
+      ],
+      "@molecules/*": [
+        "src/components/molecules/*"
+      ],
+      "@organisms/*": [
+        "src/components/organisms/*"
+      ],
+      "@layout/*": [
+        "src/components/layout/*"
+      ],
+      "@assets/*": [
+        "src/assets/*"
+      ],
+      "@utils/*": [
+        "src/utils/*"
+      ],
+      "@hooks/*": [
+        "src/hooks/*"
+      ],
+      "@context/*": [
+        "src/context/*"
+      ],
+      "@stories-utils/*": [
+        "src/stories/utils/*"
+      ],
+      "@atoms/Button/*": [
+        "src/components/atoms/Button/*"
+      ],
+      "@atoms/Card/*": [
+        "src/components/atoms/Card/*"
+      ],
+      "@atoms/Head/*": [
+        "src/components/atoms/Head/*"
+      ],
+      "@atoms/LazyImage/*": [
+        "src/components/atoms/LazyImage/*"
+      ],
+      "@atoms/Loading/*": [
+        "src/components/atoms/Loading/*"
+      ],
+      "@atoms/Progress/*": [
+        "src/components/atoms/Progress/*"
+      ],
+      "@atoms/ResponsiveImage/*": [
+        "src/components/atoms/ResponsiveImage/*"
+      ],
+      "@atoms/SkeletonCard/*": [
+        "src/components/atoms/SkeletonCard/*"
+      ],
+      "@atoms/Skill/*": [
+        "src/components/atoms/Skill/*"
+      ],
+      "@atoms/SkipToContent/*": [
+        "src/components/atoms/SkipToContent/*"
+      ],
+      "@molecules/DisplayLottie/*": [
+        "src/components/molecules/DisplayLottie/*"
+      ],
+      "@molecules/EducationCard/*": [
+        "src/components/molecules/EducationCard/*"
+      ],
+      "@molecules/ErrorBoundary/*": [
+        "src/components/molecules/ErrorBoundary/*"
+      ],
+      "@molecules/ExperienceCard/*": [
+        "src/components/molecules/ExperienceCard/*"
+      ],
+      "@molecules/FeedbackCard/*": [
+        "src/components/molecules/FeedbackCard/*"
+      ],
+      "@molecules/Footer/*": [
+        "src/components/molecules/Footer/*"
+      ],
+      "@molecules/GithubProfileCard/*": [
+        "src/components/molecules/GithubProfileCard/*"
+      ],
+      "@molecules/Navigation/*": [
+        "src/components/molecules/Navigation/*"
+      ],
+      "@molecules/ProjectsCard/*": [
+        "src/components/molecules/ProjectsCard/*"
+      ],
+      "@molecules/SocialLinks/*": [
+        "src/components/molecules/SocialLinks/*"
+      ],
+      "@organisms/Education/*": [
+        "src/components/organisms/Education/*"
+      ],
+      "@organisms/Experience/*": [
+        "src/components/organisms/Experience/*"
+      ],
+      "@organisms/Feedbacks/*": [
+        "src/components/organisms/Feedbacks/*"
+      ],
+      "@organisms/GithubProfile/*": [
+        "src/components/organisms/GithubProfile/*"
+      ],
+      "@organisms/Greetings/*": [
+        "src/components/organisms/Greetings/*"
+      ],
+      "@organisms/Proficiency/*": [
+        "src/components/organisms/Proficiency/*"
+      ],
+      "@organisms/Projects/*": [
+        "src/components/organisms/Projects/*"
+      ],
+      "@organisms/Skills/*": [
+        "src/components/organisms/Skills/*"
+      ],
+      "@layout/Section/*": [
+        "src/components/layout/Section/*"
+      ]
     }
   },
-  "include": ["src/**/*"],
+  "include": [
+    "src/**/*"
+  ],
   "exclude": [
-    "node_modules", 
-    "build", 
-    "dist", 
-    "src/**/*.test.{js,jsx}", 
-    "src/**/*.stories.{js,jsx}", 
-    "src/setupTests.js", 
+    "node_modules",
+    "build",
+    "dist",
+    "src/**/*.test.{js,jsx}",
+    "src/**/*.stories.{js,jsx}",
+    "src/setupTests.js",
     "src/setupJest.js",
     "src/__mocks__/**/*",
     "src/__tests__/**/*",

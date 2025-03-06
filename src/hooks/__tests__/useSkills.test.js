@@ -1,5 +1,5 @@
 import { renderHook, act } from '@testing-library/react';
-import useSkills from '../useSkills';
+import useSkills from '@hooks/useSkills';
 import { usePortfolio } from '@context/PortfolioContext';
 
 // Mock the context
