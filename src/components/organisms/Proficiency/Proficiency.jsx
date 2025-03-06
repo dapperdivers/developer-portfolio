@@ -1,10 +1,10 @@
 import React, { useRef } from 'react';
-import build from "@assets/lottie/build.json";
 import { SkillBars } from "@/portfolio";
 import { motion, useInView } from "framer-motion";
 
 import DisplayLottie from '@molecules/DisplayLottie';
 import Progress from '@atoms/Progress';
+import codingAnimation from '@assets/animations/lottie/dev-coding.json';
 
 const ProgressBar = ({ skill, index }) => {
     const ref = useRef(null);
@@ -27,7 +27,7 @@ const ProgressBar = ({ skill, index }) => {
             </div>
             <Progress 
                 max={100} 
-                value={isInView ? skill.progressPercentage : 0} 
+                value={isInView ? parseInt(skill.progressPercentage, 10) : 0} 
                 color="info"
                 aria-valuenow={skill.progressPercentage}
                 aria-valuemin={0}
@@ -57,7 +57,7 @@ const Proficiency = () => {
                     </div>
                     <div className="w-full px-4 lg:w-6/12">
                         <div className="proficiency-animation">
-                            <DisplayLottie animationData={build}/>
+                            <DisplayLottie animationData={codingAnimation} />
                         </div>
                     </div>
                 </div>

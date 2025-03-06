@@ -1,6 +1,6 @@
 import React, { memo, useMemo, useState, useEffect } from 'react';
 import DisplayLottie from '@molecules/DisplayLottie';
-import webdev from '@assets/animations/lottie/development/dev-webdev.json';
+import webdev from '@assets/animations/lottie/dev-webdev.json';
 import { motion } from "framer-motion";
 
 import Skill from '@atoms/Skill';

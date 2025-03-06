@@ -1,28 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { greetings } from "@/portfolio";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaDownload } from 'react-icons/fa';
 import Button from '@atoms/Button';
 import DisplayLottie from '@molecules/DisplayLottie';
 import SocialLinks from '@molecules/SocialLinks';
+import codingAnimation from '@assets/animations/lottie/dev-coding.json';
 
 // Import hero section styles
 
-
 const Greetings = () => {
-  const [animationData, setAnimationData] = useState(null);
-
-  useEffect(() => {
-    // Dynamically fetch the Lottie animation data
-    fetch('/lottie/coding.json')
-      .then(response => response.json())
-      .then(data => {
-        setAnimationData(data);
-      })
-      .catch(error => {
-        console.error('Error loading animation:', error);
-      });
-  }, []);
   return ( 
     <AnimatePresence>
       <motion.div
@@ -81,7 +68,7 @@ const Greetings = () => {
                     </div>
                     <div className="w-full px-4 lg:w-6/12 ">
                       <div className="lottie-container">
-                        {animationData && <DisplayLottie animationData={animationData}/>}
+                        <DisplayLottie animationData={codingAnimation}/>
                       </div>
                     </div>
                   </div>
