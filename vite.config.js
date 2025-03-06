@@ -4,6 +4,58 @@ import path from 'path';
 import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: ['./src/setupVitest.js'],
+    include: [
+      'src/__tests__/basic*.test.js?(x)',
+      'src/components/**/__tests__/*.test.jsx',
+      'src/components/**/*.test.jsx',
+      'src/containers/**/__tests__/*.test.jsx',
+      'src/hooks/**/__tests__/*.test.js?(x)',
+      'src/utils/**/__tests__/*.test.js?(x)'
+    ],
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'json', 'html'],
+      reportsDirectory: './coverage'
+    },
+    mockReset: false,
+    clearMocks: true,
+    testTimeout: 10000,
+    alias: {
+      // Mock implementations for common dependencies
+      'framer-motion': path.resolve(__dirname, 'src/__mocks__/framerMotionMock.jsx'),
+      '@iconify/react': path.resolve(__dirname, 'src/__mocks__/iconifyMock.jsx'),
+      'lottie-react': path.resolve(__dirname, 'src/__mocks__/lottieMock.jsx'),
+      
+      // Testing paths for components
+      '@molecules/ui/Card': path.resolve(__dirname, 'src/components/atoms/Card'),
+      '@molecules/ui/ResponsiveImage': path.resolve(__dirname, 'src/components/atoms/ResponsiveImage'),
+      '@molecules/ui/Button': path.resolve(__dirname, 'src/components/atoms/Button'),
+      '@molecules/SkeletonCard': path.resolve(__dirname, 'src/components/atoms/SkeletonCard'),
+      '@molecules/__tests__/GithubProfileCard': path.resolve(__dirname, 'src/components/molecules/GithubProfileCard'),
+      '@molecules/SocialLinks': path.resolve(__dirname, 'src/components/molecules/SocialLinks'),
+      
+      // Hooks for tests
+      '@hooks/useIntersectionObserver': path.resolve(__dirname, 'src/hooks/useIntersectionObserver'),
+      '@hooks/useImageColor': path.resolve(__dirname, 'src/hooks/useImageColor'),
+      '@hooks/useCallbackHandlers': path.resolve(__dirname, 'src/hooks/useCallbackHandlers'),
+      '@hooks/useExperience': path.resolve(__dirname, 'src/hooks/useExperience'),
+      '@hooks/useProjects': path.resolve(__dirname, 'src/hooks/useProjects'),
+      '@hooks/useFeedback': path.resolve(__dirname, 'src/hooks/useFeedback'),
+      '@hooks/useNavigation': path.resolve(__dirname, 'src/hooks/useNavigation'),
+      '@hooks/useMemoValues': path.resolve(__dirname, 'src/hooks/useMemoValues'),
+      
+      // Add test paths for organisms
+      '@organisms/Greetings': path.resolve(__dirname, 'src/components/organisms/Greetings'),
+      '@organisms/Projects': path.resolve(__dirname, 'src/components/organisms/Projects'),
+      
+      // Add context
+      '@context/PortfolioContext': path.resolve(__dirname, 'src/context/PortfolioContext'),
+    }
+  },
   plugins: [
     react({
       // Enable React Fast Refresh

@@ -1,12 +1,20 @@
 import { renderHook, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
+import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 import useTimelineView from '@hooks/useTimelineView';
 
 // Mock IntersectionObserver
 class MockIntersectionObserver {
-  constructor(callback) {
+  constructor(callback, options = {}) {
     this.callback = callback;
     this.elements = new Set();
+    
+    // Required properties from IntersectionObserver interface
+    this.root = options.root || null;
+    this.rootMargin = options.rootMargin || '0px';
+    this.thresholds = options.threshold ? 
+      Array.isArray(options.threshold) ? options.threshold : [options.threshold] : 
+      [0];
   }
 
   observe(element) {
@@ -19,6 +27,11 @@ class MockIntersectionObserver {
 
   disconnect() {
     this.elements.clear();
+  }
+  
+  // Required by IntersectionObserver interface
+  takeRecords() {
+    return [];
   }
 
   // Simulate entries becoming visible
@@ -37,13 +50,13 @@ class MockIntersectionObserver {
 }
 
 // Mock window.matchMedia
-window.matchMedia = jest.fn().mockImplementation((query) => ({
+window.matchMedia = vi.fn().mockImplementation((query) => ({
   matches: false,
   media: query,
   onchange: null,
-  addEventListener: jest.fn(),
-  removeEventListener: jest.fn(),
-  dispatchEvent: jest.fn(),
+  addEventListener: vi.fn(),
+  removeEventListener: vi.fn(),
+  dispatchEvent: vi.fn(),
 }));
 
 // Replace global IntersectionObserver with mock
@@ -59,15 +72,15 @@ Object.defineProperty(window, 'innerWidth', {
 
 describe('useTimelineView Hook', () => {
   beforeEach(() => {
-    jest.useFakeTimers();
+    vi.useFakeTimers();
     windowWidth = 1200;
     window.innerWidth = windowWidth;
   });
 
   afterEach(() => {
-    jest.runOnlyPendingTimers();
-    jest.useRealTimers();
-    jest.clearAllMocks();
+    vi.runOnlyPendingTimers();
+    vi.useRealTimers();
+    vi.clearAllMocks();
   });
 
   it('initializes with default timeline view', () => {
@@ -152,7 +165,7 @@ describe('useTimelineView Hook', () => {
     
     // Give time for the resize handler to run
     act(() => {
-      jest.runAllTimers();
+      vi.runAllTimers();
     });
     
     // Should automatically switch to grid layout

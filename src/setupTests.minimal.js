@@ -1,5 +1,6 @@
 // Minimal setup for tests
 import '@testing-library/jest-dom';
+import { vi } from 'vitest';
 
 // Set up testing environment for ESM compatibility
 // This fixes issues with modules that use import.meta and dynamic imports
@@ -18,20 +19,26 @@ if (typeof URL === 'undefined') {
       return this.href;
     }
   };
+  
+  // Add static methods
+  global.URL.createObjectURL = vi.fn(blob => `mock-url:${blob}`);
+  global.URL.revokeObjectURL = vi.fn();
+  global.URL.canParse = vi.fn(() => true);
+  global.URL.parse = vi.fn(url => new URL(url));
 }
 
 // Mock browser APIs
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
-  value: jest.fn().mockImplementation(query => ({
+  value: vi.fn().mockImplementation(query => ({
     matches: false,
     media: query,
     onchange: null,
-    addListener: jest.fn(),
-    removeListener: jest.fn(),
-    addEventListener: jest.fn(),
-    removeEventListener: jest.fn(),
-    dispatchEvent: jest.fn(),
+    addListener: vi.fn(),
+    removeListener: vi.fn(),
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    dispatchEvent: vi.fn(),
   })),
 });
 
@@ -39,11 +46,11 @@ Object.defineProperty(window, 'matchMedia', {
 const mockLocalStorage = (() => {
   let store = {};
   return {
-    getItem: jest.fn(key => store[key] || null),
-    setItem: jest.fn((key, value) => { store[key] = value; }),
-    clear: jest.fn(() => { store = {}; }),
-    removeItem: jest.fn(key => { delete store[key]; }),
-    key: jest.fn(idx => Object.keys(store)[idx]),
+    getItem: vi.fn(key => store[key] || null),
+    setItem: vi.fn((key, value) => { store[key] = value; }),
+    clear: vi.fn(() => { store = {}; }),
+    removeItem: vi.fn(key => { delete store[key]; }),
+    key: vi.fn(idx => Object.keys(store)[idx]),
     get length() { return Object.keys(store).length; }
   };
 })();
@@ -61,10 +68,17 @@ Object.defineProperty(window, 'sessionStorage', {
 
 // Mock IntersectionObserver
 class MockIntersectionObserver {
-  constructor(callback) {
+  constructor(callback, options = {}) {
     this.callback = callback;
     this.entries = [];
     this.targetElements = new Set();
+    
+    // Add required properties to match IntersectionObserver interface
+    this.root = options.root || null;
+    this.rootMargin = options.rootMargin || '0px';
+    this.thresholds = options.threshold ? 
+      Array.isArray(options.threshold) ? options.threshold : [options.threshold] : 
+      [0];
   }
   
   observe(element) {
@@ -77,6 +91,10 @@ class MockIntersectionObserver {
   
   disconnect() {
     this.targetElements.clear();
+  }
+  
+  takeRecords() {
+    return [];
   }
   
   // Helper for tests
@@ -149,34 +167,77 @@ if (!window.requestAnimationFrame) {
 
 // Fix createObjectURL for tests
 if (!URL.createObjectURL) {
-  URL.createObjectURL = jest.fn().mockImplementation(object => {
+  URL.createObjectURL = vi.fn().mockImplementation(object => {
     return `mock-url-${Math.random().toString(36).substr(2, 9)}`;
   });
   
-  URL.revokeObjectURL = jest.fn();
+  URL.revokeObjectURL = vi.fn();
 }
 
 // Clean up after tests
 afterEach(() => {
-  jest.clearAllMocks();
+  vi.clearAllMocks();
   document.body.innerHTML = '';
   mockLocalStorage.clear();
 });
 
 // Handle fetch mock
-global.fetch = jest.fn();
+global.fetch = vi.fn();
 
 // Fix for document.createRange for tests with Popper.js
+const origCreateRange = document.createRange;
 document.createRange = () => {
-  const range = new Range();
+  if (origCreateRange) {
+    try {
+      return origCreateRange.call(document);
+    } catch (e) {
+      // Fallback to mock if original throws
+    }
+  }
   
-  range.getBoundingClientRect = jest.fn();
-  range.getClientRects = () => {
-    return {
-      item: () => null,
-      length: 0
-    };
+  // Create a complete mock Range
+  const mockRange = {
+    // Basic Range methods
+    setStart: vi.fn(),
+    setEnd: vi.fn(),
+    collapse: vi.fn(),
+    selectNode: vi.fn(),
+    selectNodeContents: vi.fn(),
+    cloneContents: vi.fn(() => document.createDocumentFragment()),
+    deleteContents: vi.fn(),
+    extractContents: vi.fn(() => document.createDocumentFragment()),
+    insertNode: vi.fn(),
+    surroundContents: vi.fn(),
+    compareBoundaryPoints: vi.fn(() => 0),
+    cloneRange: vi.fn(function() { return this; }),
+    detach: vi.fn(),
+    
+    // Range properties
+    startContainer: document.body,
+    startOffset: 0,
+    endContainer: document.body,
+    endOffset: 0,
+    collapsed: true,
+    commonAncestorContainer: document.body,
+    
+    // For Popper
+    getBoundingClientRect: vi.fn(() => ({
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      width: 0,
+      height: 0,
+      x: 0,
+      y: 0,
+      toJSON: () => {}
+    })),
+    getClientRects: vi.fn(() => ({
+      item: vi.fn(() => null),
+      length: 0,
+      [Symbol.iterator]: function*() {}
+    }))
   };
   
-  return range;
+  return mockRange;
 };

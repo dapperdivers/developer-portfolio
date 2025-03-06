@@ -3,51 +3,45 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import ExperienceCard from '@molecules/ExperienceCard';
 
-// Import modules to mock
-import useIntersectionObserver from '@hooks/useIntersectionObserver';
-import useImageColor from '@hooks/useImageColor';
-import useCallbackHandlers from '@hooks/useCallbackHandlers';
-import Card from '@molecules/ui/Card';
-import ResponsiveImage from '@molecules/ui/ResponsiveImage';
-
-// Mock the hooks and components
-jest.mock('../../hooks/useIntersectionObserver');
-jest.mock('../../hooks/useImageColor');
-jest.mock('../../hooks/useCallbackHandlers');
-jest.mock('../ui/Card');
-jest.mock('../ui/ResponsiveImage');
+import { vi } from 'vitest';
 
 // Create mock functions
-const mockGetColorFromImage = jest.fn();
-const mockResetToDefaultColor = jest.fn();
+const mockGetColorFromImage = vi.fn();
+const mockResetToDefaultColor = vi.fn();
+const mockHandleExternalLink = vi.fn();
 
-// Set up default mock implementations
-beforeEach(() => {
-  // Reset all mocks
-  jest.clearAllMocks();
-  
-  // Set up mock implementations
-  useIntersectionObserver.mockReturnValue([jest.fn(), true]); // [ref, isInView]
-  
-  useImageColor.mockReturnValue({
+// Mock the hooks directly with vi
+vi.mock('@hooks/useIntersectionObserver', () => ({
+  default: () => [vi.fn(), true] // [ref, isInView]
+}));
+
+vi.mock('@hooks/useImageColor', () => ({
+  default: () => ({
     color: [0, 100, 200],
     getColorFromImage: mockGetColorFromImage,
     resetToDefaultColor: mockResetToDefaultColor,
     rgbToString: () => 'rgb(0, 100, 200)'
-  });
-  
-  useCallbackHandlers.mockReturnValue({
-    handleExternalLink: jest.fn()
-  });
-  
-  Card.mockImplementation(({ children, header }) => (
+  })
+}));
+
+vi.mock('@hooks/useCallbackHandlers', () => ({
+  default: () => ({
+    handleExternalLink: mockHandleExternalLink
+  })
+}));
+
+// Mock the components
+vi.mock('@atoms/Card', () => ({
+  default: ({ children, header }) => (
     <div data-testid="card-mock">
       {header}
       <div>{children}</div>
     </div>
-  ));
-  
-  ResponsiveImage.mockImplementation(({ src, alt, onLoad, onError }) => (
+  )
+}));
+
+vi.mock('@atoms/ResponsiveImage', () => ({
+  default: ({ src, alt, onLoad, onError }) => (
     <img
       data-testid="responsive-image-mock"
       src={src}
@@ -55,7 +49,12 @@ beforeEach(() => {
       onLoad={onLoad}
       onError={onError}
     />
-  ));
+  )
+}));
+
+// Reset mocks between tests
+beforeEach(() => {
+  vi.clearAllMocks();
 });
 
 describe('ExperienceCard Component', () => {
@@ -144,9 +143,8 @@ describe('ExperienceCard Component', () => {
     
     const image = screen.getByTestId('responsive-image-mock');
     
-    // Get the onError handler directly and call it
-    const { onError } = ResponsiveImage.mock.calls[0][0];
-    onError();
+    // Directly call the onError handler on the image instead
+    fireEvent.error(image);
     
     // Should call the error handler which resets to default color
     expect(mockResetToDefaultColor).toHaveBeenCalled();
@@ -155,16 +153,12 @@ describe('ExperienceCard Component', () => {
   it('extracts color from image on load', () => {
     render(<ExperienceCard data={mockExperienceData} index={0} />);
     
-    // Get the onLoad handler directly
-    const { onLoad } = ResponsiveImage.mock.calls[0][0];
+    const image = screen.getByTestId('responsive-image-mock');
     
-    // Mock event object with target
-    const mockEvent = {
+    // Directly trigger a load event on the image
+    fireEvent.load(image, {
       target: { src: '/test-logo.png' }
-    };
-    
-    // Call the handler directly with the mock event
-    onLoad(mockEvent);
+    });
     
     // Should call the load handler which extracts color
     expect(mockGetColorFromImage).toHaveBeenCalled();

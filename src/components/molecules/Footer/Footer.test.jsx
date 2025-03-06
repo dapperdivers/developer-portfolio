@@ -2,25 +2,25 @@ import React from 'react';
 import { render, screen, fireEvent, within } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Footer from '@molecules/Footer';
-import * as useFooterHook from '@hooks/useFooter';
+import { vi } from 'vitest';
+
+// Create mock function for useFooter hook
+const mockUseFooter = vi.fn();
 
 // Mock the useFooter hook
-jest.mock('../../hooks/useFooter', () => ({
-  __esModule: true,
-  default: jest.fn()
+vi.mock('@hooks/useFooter', () => ({
+  default: () => mockUseFooter()
 }));
 
 // Mock the SocialLinks component
-jest.mock('../SocialLinks', () => {
-  return function MockSocialLinks() {
-    return <div data-testid="social-links">Social Links</div>;
-  };
-});
+vi.mock('@molecules/SocialLinks', () => ({
+  default: () => <div data-testid="social-links">Social Links</div>
+}));
 
 describe('Footer Component', () => {
   const mockFooterData = {
     currentYear: 2025,
-    scrollToTop: jest.fn(),
+    scrollToTop: vi.fn(),
     greetings: {
       name: 'Derek Mackley'
     },
@@ -32,8 +32,8 @@ describe('Footer Component', () => {
 
   beforeEach(() => {
     // Reset mocks before each test
-    jest.clearAllMocks();
-    useFooterHook.default.mockReturnValue(mockFooterData);
+    vi.clearAllMocks();
+    mockUseFooter.mockReturnValue(mockFooterData);
   });
 
   it('renders correctly with all required data', () => {

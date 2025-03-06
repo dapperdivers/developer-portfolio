@@ -28,7 +28,7 @@ Always use the following pattern to mock modules:
 
 ```javascript
 // CORRECT - Properly mocking an ES Module
-jest.mock('module-name', () => ({
+vi.mock('module-name', () => ({
   __esModule: true,
   default: jest.fn(),
   namedExport1: jest.fn(),
@@ -36,7 +36,7 @@ jest.mock('module-name', () => ({
 }));
 
 // WRONG - Will cause issues with ESM
-jest.mock('module-name', () => {
+vi.mock('module-name', () => {
   return {
     default: () => 'mocked value'
   };
@@ -48,13 +48,13 @@ jest.mock('module-name', () => {
 ```javascript
 // WRONG - References external variable
 const myVar = 'test';
-jest.mock('module-name', () => ({
+vi.mock('module-name', () => ({
   __esModule: true,
   default: () => myVar // This will cause errors
 }));
 
 // CORRECT - Self-contained mock
-jest.mock('module-name', () => ({
+vi.mock('module-name', () => ({
   __esModule: true,
   default: () => 'test' // Direct value, no external reference
 }));
@@ -69,7 +69,7 @@ import { createAxiosMock } from '../__mocks__/mockImplementation';
 
 // In your test file
 const mockAxios = createAxiosMock();
-jest.mock('axios', () => mockAxios);
+vi.mock('axios', () => mockAxios);
 ```
 
 ### Mocking Components with Children
@@ -78,7 +78,7 @@ When mocking components that render children:
 
 ```javascript
 // CORRECT - Pass down children
-jest.mock('../MyComponent', () => {
+vi.mock('../MyComponent', () => {
   return function MockComponent({ children, ...props }) {
     return <div data-testid="mock-component">{children}</div>;
   };
@@ -112,7 +112,7 @@ it('shows data after loading', async () => {
 
 ## Troubleshooting Common Errors
 
-### "The module factory of jest.mock() is not allowed to reference any out-of-scope variables"
+### "The module factory of vi.mock() is not allowed to reference any out-of-scope variables"
 
 **Solution**: Make your mock self-contained without referencing variables outside the mock function.
 

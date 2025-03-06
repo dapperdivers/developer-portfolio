@@ -2,12 +2,14 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Navigation from '@molecules/Navigation';
-import * as useNavigationHook from '@hooks/useNavigation';
+import { vi } from 'vitest';
+
+// Mock functions
+const mockUseNavigation = vi.fn();
 
 // Mock useNavigation hook
-jest.mock('../../hooks/useNavigation', () => ({
-  __esModule: true,
-  default: jest.fn()
+vi.mock('@hooks/useNavigation', () => ({
+  default: () => mockUseNavigation()
 }));
 
 describe('Navigation Component', () => {
@@ -25,7 +27,8 @@ describe('Navigation Component', () => {
 
   beforeEach(() => {
     // Reset mock before each test
-    useNavigationHook.default.mockReturnValue(mockNavigationData);
+    vi.clearAllMocks();
+    mockUseNavigation.mockReturnValue(mockNavigationData);
   });
 
   it('renders correctly with default props', () => {
@@ -40,7 +43,7 @@ describe('Navigation Component', () => {
   });
 
   it('applies scrolled class when isScrolled is true', () => {
-    useNavigationHook.default.mockReturnValue({
+    mockUseNavigation.mockReturnValue({
       ...mockNavigationData,
       isScrolled: true
     });
@@ -54,7 +57,7 @@ describe('Navigation Component', () => {
   });
 
   it('hides when isVisible is false', () => {
-    useNavigationHook.default.mockReturnValue({
+    mockUseNavigation.mockReturnValue({
       ...mockNavigationData,
       isVisible: false
     });

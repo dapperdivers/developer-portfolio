@@ -7,7 +7,7 @@ import { withPortfolioContext } from '@stories-utils/decorators';
 import axios from 'axios';
 
 // Mock axios for GitHub API calls
-jest.mock('axios', () => ({
+vi.mock('axios', () => ({
   create: jest.fn(() => ({
     get: jest.fn()
   })),

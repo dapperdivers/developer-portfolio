@@ -1,10 +1,11 @@
 import { renderHook, act } from '@testing-library/react';
+import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 import useSkills from '@hooks/useSkills';
 import { usePortfolio } from '@context/PortfolioContext';
 
-// Mock the context
-jest.mock('../../context/PortfolioContext', () => ({
-  usePortfolio: jest.fn()
+// Mock the usePortfolio hook
+vi.mock('@context/PortfolioContext', () => ({
+  usePortfolio: vi.fn()
 }));
 
 // Default mock data
@@ -38,16 +39,16 @@ const defaultMockData = {
 
 describe('useSkills Hook', () => {
   beforeEach(() => {
-    jest.useFakeTimers();
-    jest.clearAllMocks();
+    vi.useFakeTimers();
+    vi.clearAllMocks();
     
     // Set default mock implementation for usePortfolio
     usePortfolio.mockReturnValue(defaultMockData);
   });
 
   afterEach(() => {
-    jest.runOnlyPendingTimers();
-    jest.useRealTimers();
+    vi.runOnlyPendingTimers();
+    vi.useRealTimers();
   });
 
   it('returns skills data from the context', () => {
@@ -149,7 +150,7 @@ describe('useSkills Hook', () => {
     
     // After delay, should return data
     act(() => {
-      jest.advanceTimersByTime(1000);
+      vi.advanceTimersByTime(1000);
     });
     
     expect(result.current).not.toBeNull();

@@ -67,15 +67,17 @@ export const AnimatePresence = ({children}) => (
   </div>
 );
 
+import { vi } from 'vitest';
+
 // Export any other Framer Motion utilities used in the app
 export const useAnimation = () => ({
-  start: jest.fn(),
-  stop: jest.fn()
+  start: vi.fn(),
+  stop: vi.fn()
 });
 
 export const useInView = () => [true, { ref: React.createRef() }];
 
 export const useScroll = () => ({
-  scrollY: { get: () => 0, onChange: jest.fn() },
-  scrollYProgress: { get: () => 0, onChange: jest.fn() }
+  scrollY: { get: () => 0, onChange: vi.fn() },
+  scrollYProgress: { get: () => 0, onChange: vi.fn() }
 });

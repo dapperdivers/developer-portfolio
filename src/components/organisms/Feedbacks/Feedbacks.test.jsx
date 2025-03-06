@@ -2,11 +2,14 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Feedbacks from '@organisms/Feedbacks';
-import * as useFeedbackHook from '@hooks/useFeedback';
+import { vi } from 'vitest';
+
+// Mock functions
+const mockUseFeedback = vi.fn();
 
 // Mock the Section component
-jest.mock('../../components/layout/Section', () => {
-  return function MockSection(props) {
+vi.mock('@layout/Section', () => ({
+  default: (props) => {
     const { children, title, id, ...rest } = props;
     return (
       <div data-testid="feedbacks-section" id={id} {...rest}>
@@ -14,26 +17,23 @@ jest.mock('../../components/layout/Section', () => {
         <div data-testid="section-content">{children}</div>
       </div>
     );
-  };
-});
+  }
+}));
 
 // Mock the FeedbackCard component
-jest.mock('../../components/FeedbackCard', () => {
-  return function MockFeedbackCard({ data, index }) {
-    return (
-      <div data-testid={`feedback-card-${index}`}>
-        <h3>{data.name}</h3>
-        <p>{data.feedback}</p>
-        <span>{data.designation || 'Client'}</span>
-      </div>
-    );
-  };
-});
+vi.mock('@molecules/FeedbackCard', () => ({
+  default: ({ data, index }) => (
+    <div data-testid={`feedback-card-${index}`}>
+      <h3>{data.name}</h3>
+      <p>{data.feedback}</p>
+      <span>{data.designation || 'Client'}</span>
+    </div>
+  )
+}));
 
 // Mock useFeedback hook
-jest.mock('../../hooks/useFeedback', () => ({
-  __esModule: true,
-  default: jest.fn()
+vi.mock('@hooks/useFeedback', () => ({
+  default: () => mockUseFeedback()
 }));
 
 describe('Feedbacks Container Component', () => {
@@ -52,12 +52,12 @@ describe('Feedbacks Container Component', () => {
 
   beforeEach(() => {
     // Reset mock before each test
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('renders correctly with feedbacks data', () => {
     // Mock the hook to return feedbacks data
-    useFeedbackHook.default.mockReturnValue(mockFeedbacksData);
+    mockUseFeedback.mockReturnValue(mockFeedbacksData);
     
     render(<Feedbacks />);
     
@@ -78,7 +78,7 @@ describe('Feedbacks Container Component', () => {
 
   it('renders nothing when no feedbacks are available', () => {
     // Mock the hook to return empty array
-    useFeedbackHook.default.mockReturnValue([]);
+    mockUseFeedback.mockReturnValue([]);
     
     const { container } = render(<Feedbacks />);
     
@@ -88,7 +88,7 @@ describe('Feedbacks Container Component', () => {
 
   it('renders nothing when feedbacks is null', () => {
     // Mock the hook to return null
-    useFeedbackHook.default.mockReturnValue(null);
+    mockUseFeedback.mockReturnValue(null);
     
     const { container } = render(<Feedbacks />);
     

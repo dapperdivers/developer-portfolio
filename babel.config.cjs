@@ -9,11 +9,11 @@ module.exports = {
   plugins: [],
   env: {
     test: {
-      // Settings for test environment to ensure Jest compatibility
+      // Settings for test environment to ensure Vitest compatibility
       presets: [
         ['@babel/preset-env', {
           targets: { node: 'current' },
-          modules: 'commonjs' // Force CommonJS for tests since Jest works better with it
+          modules: false // Preserve ES modules for Vitest
         }],
         ['@babel/preset-react', { runtime: 'automatic' }]
       ],

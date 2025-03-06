@@ -123,7 +123,7 @@ const useSkills = (options = {}) => {
   const [loading, setLoading] = useState(delay > 0);
   
   // Get raw data
-  const { skillsSection, skillBars } = portfolioData;
+  const { skillsSection, skillBars } = portfolioData || {};
   
   // Effect for simulating loading time (for skeleton demo)
   useEffect(() => {

@@ -2,29 +2,27 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import FeedbackCard from '@molecules/FeedbackCard';
+import { vi } from 'vitest';
 
 // Mock the Card component
-jest.mock('../ui/Card', () => {
-  return function MockCard({ children, animation, className }) {
-    return (
-      <div data-testid="mocked-card" className={className} data-animation={JSON.stringify(animation)}>
-        {children}
-      </div>
-    );
-  };
-});
+vi.mock('@atoms/Card', () => ({
+  default: ({ children, animation, className }) => (
+    <div data-testid="mocked-card" className={className} data-animation={JSON.stringify(animation)}>
+      {children}
+    </div>
+  )
+}));
 
 // Mock the ResponsiveImage component
-jest.mock('../ui/ResponsiveImage', () => {
-  return function MockResponsiveImage({ src, alt, className }) {
-    return <img src={src} alt={alt} className={className} data-testid="responsive-image" />;
-  };
-});
+vi.mock('@atoms/ResponsiveImage', () => ({
+  default: ({ src, alt, className }) => (
+    <img src={src} alt={alt} className={className} data-testid="responsive-image" />
+  )
+}));
 
 // Mock useIntersectionObserver hook
-jest.mock('../../hooks/useIntersectionObserver', () => ({
-  __esModule: true,
-  default: jest.fn(() => [null, true])
+vi.mock('@hooks/useIntersectionObserver', () => ({
+  default: () => [null, true]
 }));
 
 describe('FeedbackCard Component', () => {

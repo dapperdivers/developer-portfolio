@@ -2,11 +2,14 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Education from '@organisms/Education';
-import * as useEducationHook from '@hooks/useEducation';
+import { vi } from 'vitest';
+
+// Create mock function
+const mockUseEducation = vi.fn();
 
 // Mock the Section component
-jest.mock('../../components/layout/Section', () => {
-  return function MockSection(props) {
+vi.mock('@layout/Section', () => ({
+  default: (props) => {
     const { children, title, id, ...rest } = props;
     return (
       <div data-testid="education-section" id={id} {...rest}>
@@ -14,26 +17,23 @@ jest.mock('../../components/layout/Section', () => {
         <div data-testid="section-content">{children}</div>
       </div>
     );
-  };
-});
+  }
+}));
 
 // Mock the EducationCard component
-jest.mock('../../components/EducationCard', () => {
-  return function MockEducationCard({ education, index }) {
-    return (
-      <div data-testid={`education-card-${index}`}>
-        <h3>{education.schoolName}</h3>
-        <p>{education.subHeader}</p>
-        <span>{education.duration}</span>
-      </div>
-    );
-  };
-});
+vi.mock('@molecules/EducationCard', () => ({
+  default: ({ education, index }) => (
+    <div data-testid={`education-card-${index}`}>
+      <h3>{education.schoolName}</h3>
+      <p>{education.subHeader}</p>
+      <span>{education.duration}</span>
+    </div>
+  )
+}));
 
 // Mock useEducation hook
-jest.mock('../../hooks/useEducation', () => ({
-  __esModule: true,
-  default: jest.fn()
+vi.mock('@hooks/useEducation', () => ({
+  default: () => mockUseEducation()
 }));
 
 describe('Education Container Component', () => {
@@ -54,12 +54,12 @@ describe('Education Container Component', () => {
 
   beforeEach(() => {
     // Reset mock before each test
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('renders correctly with education data', () => {
     // Mock the hook to return education data
-    useEducationHook.default.mockReturnValue(mockEducationData);
+    mockUseEducation.mockReturnValue(mockEducationData);
     
     render(<Education />);
     
@@ -80,7 +80,7 @@ describe('Education Container Component', () => {
 
   it('renders empty state when no education data is available', () => {
     // Mock the hook to return empty array
-    useEducationHook.default.mockReturnValue([]);
+    mockUseEducation.mockReturnValue([]);
     
     render(<Education />);
     
@@ -98,7 +98,7 @@ describe('Education Container Component', () => {
   });
 
   it('passes animation props to the Section component', () => {
-    useEducationHook.default.mockReturnValue(mockEducationData);
+    mockUseEducation.mockReturnValue(mockEducationData);
     
     render(<Education />);
     

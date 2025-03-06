@@ -2,10 +2,10 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import ProjectsCard from '@molecules/ProjectsCard';
+import { vi } from 'vitest';
 
 // Mock the Card component
-jest.mock('../ui/Card', () => ({
-  __esModule: true,
+vi.mock('@atoms/Card', () => ({
   default: ({ children, className, animation, hoverable, shadow }) => (
     <div 
       data-testid="card-mock" 
@@ -20,8 +20,7 @@ jest.mock('../ui/Card', () => ({
 }));
 
 // Mock the Button component
-jest.mock('../ui/Button', () => ({
-  __esModule: true,
+vi.mock('@atoms/Button', () => ({
   default: ({ children, className, href, variant, size, icon, ariaLabel, target, rel, onClick }) => (
     <button
       data-testid={`button-${variant}`}
@@ -37,8 +36,7 @@ jest.mock('../ui/Button', () => ({
 }));
 
 // Mock the ResponsiveImage component
-jest.mock('../ui/ResponsiveImage', () => ({
-  __esModule: true,
+vi.mock('@atoms/ResponsiveImage', () => ({
   default: ({ src, alt, className, lazy, width, height, sizes }) => (
     <img
       data-testid="responsive-image-mock"
@@ -54,9 +52,8 @@ jest.mock('../ui/ResponsiveImage', () => ({
 }));
 
 // Mock the useIntersectionObserver hook
-jest.mock('../../hooks/useIntersectionObserver', () => ({
-  __esModule: true,
-  default: () => [jest.fn(), true] // [ref, isInView]
+vi.mock('@hooks/useIntersectionObserver', () => ({
+  default: () => [vi.fn(), true] // [ref, isInView]
 }));
 
 describe('ProjectsCard Integration Tests', () => {

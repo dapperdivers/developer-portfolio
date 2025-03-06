@@ -4,7 +4,7 @@
  */
 
 // Mock portfolio.js completely to avoid the import.meta issue
-jest.mock('../src/portfolio', () => {
+vi.mock('../src/portfolio', () => {
   return {
     greetings: {
       name: "John Doe",

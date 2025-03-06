@@ -1,38 +1,33 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import GithubProfileCard from '@molecules/__tests__/GithubProfileCard';
+import GithubProfileCard from './GithubProfileCard';
+import { vi } from 'vitest';
 
 // Mock the SocialLinks component
-jest.mock('./SocialLinks', () => {
-  return function MockSocialLinks() {
-    return <div data-testid="social-links">Social Links</div>;
-  };
-});
+vi.mock('@molecules/SocialLinks', () => ({
+  default: () => <div data-testid="social-links">Social Links</div>
+}));
 
 // Mock the Button component
-jest.mock('./ui/Button', () => {
-  return function MockButton({ children, onClick, className }) {
-    return (
-      <button 
-        onClick={onClick} 
-        className={className}
-        data-testid="mock-button"
-      >
-        {children}
-      </button>
-    );
-  };
-});
+vi.mock('@atoms/Button', () => ({
+  default: ({ children, onClick, className }) => (
+    <button 
+      onClick={onClick} 
+      className={className}
+      data-testid="mock-button"
+    >
+      {children}
+    </button>
+  )
+}));
 
 // Mock framer-motion to avoid animation issues in tests
-jest.mock('framer-motion', () => {
-  return {
-    motion: {
-      div: ({ children, ...props }) => <div {...props}>{children}</div>
-    }
-  };
-});
+vi.mock('framer-motion', () => ({
+  motion: {
+    div: ({ children, ...props }) => <div {...props}>{children}</div>
+  }
+}));
 
 describe('GithubProfileCard Component', () => {
   const mockProfile = {

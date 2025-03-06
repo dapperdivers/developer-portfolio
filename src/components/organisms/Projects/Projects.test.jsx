@@ -2,25 +2,29 @@ import React from 'react';
 import { render, screen, waitFor, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Projects from '@organisms/Projects';
+import { vi } from 'vitest';
 
-// Import hooks and components to mock
-import useProjects from '@hooks/useProjects';
-import useMemoValues from '@hooks/useMemoValues';
-import { usePortfolio } from '@context/PortfolioContext';
-import ProjectsCard from '@molecules/ProjectsCard';
-import Section from '@layout/Section';
-import SkeletonCard from '@molecules/SkeletonCard';
+// Create mock functions
+const mockUseProjects = vi.fn();
+const mockUseMemoValues = vi.fn();
+const mockUsePortfolio = vi.fn();
 
 // Mock hooks and components
-jest.mock('../../hooks/useProjects');
-jest.mock('../../hooks/useMemoValues');
-jest.mock('../../context/PortfolioContext', () => ({
-  usePortfolio: jest.fn()
+vi.mock('@hooks/useProjects', () => ({
+  default: () => mockUseProjects()
+}));
+
+vi.mock('@hooks/useMemoValues', () => ({
+  default: () => mockUseMemoValues()
+}));
+
+vi.mock('@context/PortfolioContext', () => ({
+  usePortfolio: () => mockUsePortfolio()
 }));
 
 // Mock components with explicit implementations
-jest.mock('../../components/ProjectsCard', () => {
-  const ProjectsCardMock = ({ data }) => (
+vi.mock('@molecules/ProjectsCard', () => ({
+  default: ({ data }) => (
     <div data-testid="project-card-mock" className="project-card">
       <h3>{data.name}</h3>
       <p>{data.desc}</p>
@@ -32,27 +36,24 @@ jest.mock('../../components/ProjectsCard', () => {
         </div>
       )}
     </div>
-  );
-  return ProjectsCardMock;
-});
+  )
+}));
 
-jest.mock('../../components/layout/Section', () => {
-  const SectionMock = ({ children, title, subtitle, id, className }) => (
+vi.mock('@layout/Section', () => ({
+  default: ({ children, title, subtitle, id, className }) => (
     <section data-testid="section-mock" id={id} className={className}>
       <h2>{title}</h2>
       {subtitle && <p>{subtitle}</p>}
       <div>{children}</div>
     </section>
-  );
-  return SectionMock;
-});
+  )
+}));
 
-jest.mock('../../components/SkeletonCard', () => {
-  const SkeletonCardMock = ({ type }) => (
+vi.mock('@molecules/SkeletonCard', () => ({
+  default: ({ type }) => (
     <div data-testid={`skeleton-${type}-mock`}></div>
-  );
-  return SkeletonCardMock;
-});
+  )
+}));
 
 // Mock data
 const mockProjects = [
@@ -85,16 +86,16 @@ const mockTopProjects = [
 
 // Set up mock implementations
 beforeEach(() => {
-  jest.clearAllMocks();
+  vi.clearAllMocks();
   
   // Set default mock implementations
-  useProjects.mockReturnValue(mockProjects);
+  mockUseProjects.mockReturnValue(mockProjects);
   
-  useMemoValues.mockReturnValue({
+  mockUseMemoValues.mockReturnValue({
     topProjects: mockTopProjects
   });
   
-  usePortfolio.mockReturnValue({
+  mockUsePortfolio.mockReturnValue({
     projectsSection: {
       title: 'My Projects',
       subtitle: 'Things I\'ve built',
@@ -134,7 +135,7 @@ describe('Projects Container Integration Tests', () => {
 
   it('displays top projects when showTopProjectsOnly is true', () => {
     // Override the usePortfolio mock for this test
-    usePortfolio.mockReturnValueOnce({
+    mockUsePortfolio.mockReturnValueOnce({
       projectsSection: {
         title: 'My Projects',
         subtitle: 'Things I\'ve built',
@@ -161,12 +162,12 @@ describe('Projects Container Integration Tests', () => {
 
   it('displays loading skeleton when projects are loading', async () => {
     // Override the useProjects mock to simulate loading
-    useProjects.mockReturnValueOnce(null);
+    mockUseProjects.mockReturnValueOnce(null);
     
     render(<Projects />);
     
     // Should show skeleton loaders
-    const skeletonCards = screen.getAllByTestId('skeleton-project-mock');
+    const skeletonCards = screen.getAllByTestId('skeleton-project');
     expect(skeletonCards).toHaveLength(3); // Default is 3 skeleton cards
     
     // Check section title still shows
@@ -175,7 +176,7 @@ describe('Projects Container Integration Tests', () => {
 
   it('displays empty state when no projects are available', () => {
     // Override the useProjects mock to return empty array
-    useProjects.mockReturnValueOnce([]);
+    mockUseProjects.mockReturnValueOnce([]);
     
     render(<Projects />);
     
@@ -185,7 +186,7 @@ describe('Projects Container Integration Tests', () => {
 
   it('does not render section when display is set to false', () => {
     // Override the usePortfolio mock for this test
-    usePortfolio.mockReturnValueOnce({
+    mockUsePortfolio.mockReturnValueOnce({
       projectsSection: {
         display: false
       }
@@ -199,10 +200,10 @@ describe('Projects Container Integration Tests', () => {
 
   it('simulates loading delay and renders final content', async () => {
     // Use fake timers
-    jest.useFakeTimers();
+    vi.useFakeTimers();
     
     // Mock a loading delay
-    usePortfolio.mockReturnValueOnce({
+    mockUsePortfolio.mockReturnValueOnce({
       projectsSection: {
         title: 'My Projects',
         subtitle: 'Things I\'ve built',
@@ -214,19 +215,19 @@ describe('Projects Container Integration Tests', () => {
     });
     
     // Start with null (loading)
-    useProjects.mockReturnValueOnce(null);
+    mockUseProjects.mockReturnValueOnce(null);
     
     // After a timeout, we'll check for the skeleton
     render(<Projects />);
     
     // Initially showing skeleton
-    expect(screen.getAllByTestId('skeleton-project-mock')).toHaveLength(3);
+    expect(screen.getAllByTestId('skeleton-project')).toHaveLength(3);
     
     // We won't be able to fully test the transition from loading to loaded state
     // in this test environment, so we'll just verify the skeleton renders
     
     // Cleanup
-    jest.useRealTimers();
+    vi.useRealTimers();
   });
 
   // Test for correct animation configuration

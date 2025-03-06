@@ -2,78 +2,79 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Experience from '@organisms/Experience';
+import { vi } from 'vitest';
 
-// Import the modules we want to mock
-import useExperience from '@hooks/useExperience';
-import useMemoValues from '@hooks/useMemoValues';
-import useTimelineView from '@hooks/useTimelineView';
-import { usePortfolio } from '@context/PortfolioContext';
-import ExperienceCard from '@molecules/ExperienceCard';
-import Section from '@layout/Section';
-import SkeletonCard from '@molecules/SkeletonCard';
-import { motion } from 'framer-motion';
-import { Icon } from '@iconify/react';
+// Create mock functions
+const mockUseExperience = vi.fn();
+const mockUseMemoValues = vi.fn();
+const mockUseTimelineView = vi.fn();
+const mockUsePortfolio = vi.fn();
+const mockRefCallback = vi.fn();
 
 // Mock the hooks and components
-jest.mock('../../hooks/useExperience');
-jest.mock('../../hooks/useMemoValues');
-jest.mock('../../hooks/useTimelineView');
-jest.mock('../../context/PortfolioContext', () => ({
-  usePortfolio: jest.fn()
+vi.mock('@hooks/useExperience', () => ({
+  default: () => mockUseExperience()
 }));
 
-jest.mock('../../components/ExperienceCard', () => {
-  const ExperienceCardMock = ({ data }) => (
+vi.mock('@hooks/useMemoValues', () => ({
+  default: () => mockUseMemoValues()
+}));
+
+vi.mock('@hooks/useTimelineView', () => ({
+  default: () => mockUseTimelineView()
+}));
+
+vi.mock('@context/PortfolioContext', () => ({
+  usePortfolio: () => mockUsePortfolio()
+}));
+
+vi.mock('@molecules/ExperienceCard', () => ({
+  default: ({ data }) => (
     <div data-testid="experience-card-mock">
       <h3>{data.company}</h3>
       <p>{data.role}</p>
     </div>
-  );
-  return ExperienceCardMock;
-});
+  )
+}));
 
-jest.mock('../../components/layout/Section', () => {
-  const SectionMock = ({ children, title, subtitle, className }) => (
+vi.mock('@layout/Section', () => ({
+  default: ({ children, title, subtitle, className }) => (
     <section data-testid="section-mock" className={className}>
       <h2>{title}</h2>
       {subtitle && <p>{subtitle}</p>}
       {children}
     </section>
-  );
-  return SectionMock;
-});
+  )
+}));
 
-jest.mock('../../components/SkeletonCard', () => {
-  const SkeletonCardMock = ({ type }) => (
+vi.mock('@molecules/SkeletonCard', () => ({
+  default: ({ type }) => (
     <div data-testid={`skeleton-${type}-mock`}></div>
-  );
-  return SkeletonCardMock;
-});
+  )
+}));
 
-jest.mock('framer-motion', () => {
-  // Filter out motion-specific props before passing to DOM elements
-  const filterMotionProps = (props) => {
-    const {
-      initial, animate, exit, transition, whileHover, whileTap, whileFocus, whileInView,
-      variants, viewport, drag, dragConstraints, dragElastic, dragMomentum,
-      onDragStart, onDrag, onDragEnd, layout, layoutId, ...filteredProps
-    } = props;
-    return filteredProps;
-  };
-  
-  return {
-    motion: {
-      div: ({ children, ...props }) => (
-        <div data-testid="motion-div-mock" {...filterMotionProps(props)}>{children}</div>
-      ),
-      span: ({ children, ...props }) => (
-        <span data-testid="motion-span-mock" {...filterMotionProps(props)}>{children}</span>
-      )
-    }
-  };
-});
+// Filter out motion-specific props before passing to DOM elements
+const filterMotionProps = (props) => {
+  const {
+    initial, animate, exit, transition, whileHover, whileTap, whileFocus, whileInView,
+    variants, viewport, drag, dragConstraints, dragElastic, dragMomentum,
+    onDragStart, onDrag, onDragEnd, layout, layoutId, ...filteredProps
+  } = props;
+  return filteredProps;
+};
 
-jest.mock('@iconify/react', () => ({
+vi.mock('framer-motion', () => ({
+  motion: {
+    div: ({ children, ...props }) => (
+      <div data-testid="motion-div-mock" {...filterMotionProps(props)}>{children}</div>
+    ),
+    span: ({ children, ...props }) => (
+      <span data-testid="motion-span-mock" {...filterMotionProps(props)}>{children}</span>
+    )
+  }
+}));
+
+vi.mock('@iconify/react', () => ({
   Icon: ({ icon }) => <span data-testid={`icon-${icon}`}></span>
 }));
 
@@ -100,12 +101,12 @@ const mockExperienceData = [
 // Set up default mock implementations
 beforeEach(() => {
   // Reset all mocks
-  jest.clearAllMocks();
+  vi.clearAllMocks();
   
   // Configure the hook mocks
-  useExperience.mockReturnValue(mockExperienceData);
+  mockUseExperience.mockReturnValue(mockExperienceData);
   
-  useMemoValues.mockReturnValue({
+  mockUseMemoValues.mockReturnValue({
     sectionAnimation: {
       initial: { opacity: 0 },
       whileInView: { opacity: 1 },
@@ -114,19 +115,16 @@ beforeEach(() => {
     }
   });
   
-  // Create a mock ref function that doesn't use React.ref directly
-  const mockRefCallback = jest.fn();
-  
-  useTimelineView.mockReturnValue({
+  mockUseTimelineView.mockReturnValue({
     viewType: 'timeline',
-    toggleView: jest.fn(),
-    setView: jest.fn(),
-    getAnimationDelay: jest.fn(() => '0.1s'),
-    entryRef: jest.fn(() => mockRefCallback), // Return the mockRefCallback
-    extractDateYear: jest.fn((date) => date.split(' ')[0])
+    toggleView: vi.fn(),
+    setView: vi.fn(),
+    getAnimationDelay: vi.fn(() => '0.1s'),
+    entryRef: vi.fn(() => mockRefCallback), // Return the mockRefCallback
+    extractDateYear: vi.fn((date) => date.split(' ')[0])
   });
   
-  usePortfolio.mockReturnValue({
+  mockUsePortfolio.mockReturnValue({
     experienceSection: {
       title: 'Work Experience',
       subtitle: 'My professional journey',
@@ -137,8 +135,6 @@ beforeEach(() => {
       loadingDelay: 0
     }
   });
-  
-  // Component mocks are now defined at the top with jest.mock
 });
 
 describe('Experience Container', () => {
@@ -167,13 +163,13 @@ describe('Experience Container', () => {
 
   it('renders the grid view with correct number of cards', () => {
     // Override the useTimelineView mock for this test
-    useTimelineView.mockReturnValueOnce({
+    mockUseTimelineView.mockReturnValueOnce({
       viewType: 'grid',
-      toggleView: jest.fn(),
-      setView: jest.fn(),
-      getAnimationDelay: jest.fn(() => '0.1s'),
-      entryRef: jest.fn(() => jest.fn()),
-      extractDateYear: jest.fn((date) => date.split(' ')[0])
+      toggleView: vi.fn(),
+      setView: vi.fn(),
+      getAnimationDelay: vi.fn(() => '0.1s'),
+      entryRef: vi.fn(() => vi.fn()),
+      extractDateYear: vi.fn((date) => date.split(' ')[0])
     });
     
     render(<Experience />);
@@ -191,14 +187,14 @@ describe('Experience Container', () => {
   });
 
   it('renders view toggle controls', () => {
-    const setViewMock = jest.fn();
-    useTimelineView.mockReturnValueOnce({
+    const setViewMock = vi.fn();
+    mockUseTimelineView.mockReturnValueOnce({
       viewType: 'timeline',
-      toggleView: jest.fn(),
+      toggleView: vi.fn(),
       setView: setViewMock,
-      getAnimationDelay: jest.fn(() => '0.1s'),
-      entryRef: jest.fn(() => jest.fn()),
-      extractDateYear: jest.fn((date) => date.split(' ')[0])
+      getAnimationDelay: vi.fn(() => '0.1s'),
+      entryRef: vi.fn(() => vi.fn()),
+      extractDateYear: vi.fn((date) => date.split(' ')[0])
     });
     
     render(<Experience />);
@@ -220,18 +216,18 @@ describe('Experience Container', () => {
 
   it('renders loading skeleton when data is not ready', () => {
     // Override the useExperience mock for this test
-    useExperience.mockReturnValueOnce(null);
+    mockUseExperience.mockReturnValueOnce(null);
     
     render(<Experience />);
     
     // Should render skeleton cards
-    const skeletonCards = screen.getAllByTestId('skeleton-experience-mock');
+    const skeletonCards = screen.getAllByTestId('skeleton-experience');
     expect(skeletonCards.length).toBe(3); // Default skeleton count is 3
   });
 
   it('renders empty state when there is no experience data', () => {
     // Override the useExperience mock for this test
-    useExperience.mockReturnValueOnce([]);
+    mockUseExperience.mockReturnValueOnce([]);
     
     render(<Experience />);
     
@@ -241,7 +237,7 @@ describe('Experience Container', () => {
 
   it('does not render section when display is set to false', () => {
     // Override the usePortfolio mock for this test
-    usePortfolio.mockReturnValueOnce({
+    mockUsePortfolio.mockReturnValueOnce({
       experienceSection: {
         display: false
       }

@@ -1,5 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import Skill from '@atoms/Skill';
 
 // Mock the Icon component from @iconify/react (already set up in setupTests.minimal.js)
@@ -14,7 +15,7 @@ describe('Skill Component', () => {
 
   beforeEach(() => {
     // Clear all mocks before each test
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('renders the skill component with correct props', () => {

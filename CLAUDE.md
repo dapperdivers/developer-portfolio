@@ -16,8 +16,9 @@
 - Run all tests: `yarn test`
 - Run tests in watch mode: `yarn test:watch`
 - Run tests with coverage: `yarn test:coverage`
-- Run a single test file: `yarn test --testMatch="**/path/to/test.test.jsx"`
+- Run a single test file: `yarn test 'src/path/to/test.test.jsx'`
 - Run tests by name pattern: `yarn test -t="test description"`
+- Run tests with UI: `yarn test:ui`
 
 ## Code Style Guidelines
 - **Components**: Functional components with arrow function syntax

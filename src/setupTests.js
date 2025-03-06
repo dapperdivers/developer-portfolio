@@ -5,7 +5,7 @@ import { jest } from '@jest/globals';
 // Simple ESM-compatible setup file
 
 // Mock framer-motion
-jest.mock('framer-motion', () => {
+vi.mock('framer-motion', () => {
   return {
     motion: {
       div: function MockMotionDiv(props) { 
@@ -31,7 +31,7 @@ jest.mock('framer-motion', () => {
 });
 
 // Mock Iconify
-jest.mock('@iconify/react', () => {
+vi.mock('@iconify/react', () => {
   return {
     Icon: function MockIcon(props) {
       return { 

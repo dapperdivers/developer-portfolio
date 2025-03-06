@@ -2,15 +2,14 @@ import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Skills from '@organisms/Skills';
+import { vi } from 'vitest';
 
-// Import the modules to mock
-import useSkills from '@hooks/useSkills';
+// Create mock functions
+const mockUseSkills = vi.fn();
+const mockUsePortfolio = vi.fn();
 
-// Mock required hooks and components with jest.mock
-jest.mock('../../hooks/useSkills');
-
-// Set up the mock implementation
-useSkills.mockImplementation(() => ({
+// Define default mock data
+const mockSkillsData = {
   skillsSection: {
     title: 'Skills & Expertise',
     subTitle: 'What I bring to the table',
@@ -47,41 +46,43 @@ useSkills.mockImplementation(() => ({
       progressPercentage: 70
     }
   ]
-}));
+};
 
-// Import framer-motion for mocking
-import { motion, AnimatePresence, useAnimation, useInView, useScroll } from 'framer-motion';
-
-// Mock framer-motion
-jest.mock('framer-motion', () => {
-  const actualModule = jest.requireActual('framer-motion');
-  return {
-    ...actualModule,
-    motion: {
-      div: ({ children, variants, initial, whileInView, viewport, ...props }) => (
-        <div data-testid="motion-div" {...props}>
-          {children}
-        </div>
-      ),
-      p: ({ children, variants, ...props }) => (
-        <p data-testid="motion-p" {...props}>
-          {children}
-        </p>
-      )
-    }
-  };
+// Set default return values
+mockUseSkills.mockReturnValue(mockSkillsData);
+mockUsePortfolio.mockReturnValue({
+  skillsSection: {
+    display: true
+  },
+  settings: {
+    loadingDelay: 0
+  }
 });
 
-// Import components to mock
-import DisplayLottie from '@molecules/DisplayLottie';
-import Section from '@layout/Section';
-import Skill from '@atoms/Skill';
-import SkeletonCard from '@molecules/SkeletonCard';
-import { usePortfolio } from '@context/PortfolioContext';
+// Mock the hooks
+vi.mock('@hooks/useSkills', () => ({
+  default: () => mockUseSkills()
+}));
+
+// Mock framer-motion
+vi.mock('framer-motion', () => ({
+  motion: {
+    div: ({ children, variants, initial, whileInView, viewport, ...props }) => (
+      <div data-testid="motion-div" {...props}>
+        {children}
+      </div>
+    ),
+    p: ({ children, variants, ...props }) => (
+      <p data-testid="motion-p" {...props}>
+        {children}
+      </p>
+    )
+  }
+}));
 
 // Mock DisplayLottie component
-jest.mock('../../components/DisplayLottie', () => {
-  return jest.fn(({ animationData, quality, size, shouldOptimize }) => (
+vi.mock('@molecules/DisplayLottie', () => ({
+  default: ({ animationData, quality, size, shouldOptimize }) => (
     <div 
       data-testid="lottie-animation" 
       data-quality={quality}
@@ -90,12 +91,12 @@ jest.mock('../../components/DisplayLottie', () => {
     >
       Animation Mock
     </div>
-  ));
-});
+  )
+}));
 
 // Mock Section component
-jest.mock('../../components/layout/Section', () => {
-  return jest.fn(({ children, title, subtitle, animation, className, id }) => (
+vi.mock('@layout/Section', () => ({
+  default: ({ children, title, subtitle, animation, className, id }) => (
     <section 
       data-testid="section-mock" 
       className={className}
@@ -105,12 +106,12 @@ jest.mock('../../components/layout/Section', () => {
       {subtitle && <p>{subtitle}</p>}
       <div>{children}</div>
     </section>
-  ));
-});
+  )
+}));
 
 // Mock Skill component
-jest.mock('../../components/ui/Skill', () => {
-  return jest.fn(({ skill, index, size, reducedMotion }) => (
+vi.mock('@atoms/Skill', () => ({
+  default: ({ skill, index, size, reducedMotion }) => (
     <div 
       data-testid={`skill-${skill.skillName}`}
       data-size={size}
@@ -119,33 +120,24 @@ jest.mock('../../components/ui/Skill', () => {
     >
       {skill.skillName}
     </div>
-  ));
-});
-
-// Mock SkeletonCard component
-jest.mock('../../components/SkeletonCard', () => {
-  return jest.fn(({ type }) => (
-    <div data-testid={`skeleton-${type}-mock`}></div>
-  ));
-});
-
-// Mock context
-jest.mock('../../context/PortfolioContext', () => ({
-  usePortfolio: jest.fn(() => ({
-    skillsSection: {
-      display: true
-    },
-    settings: {
-      loadingDelay: 0
-    }
-  }))
+  )
 }));
 
-// No need to mock reactstrap components since we've migrated to Tailwind CSS
+// Mock SkeletonCard component
+vi.mock('@molecules/SkeletonCard', () => ({
+  default: ({ type }) => (
+    <div data-testid={`skeleton-${type}-mock`}></div>
+  )
+}));
+
+// Mock context
+vi.mock('@context/PortfolioContext', () => ({
+  usePortfolio: () => mockUsePortfolio()
+}));
 
 describe('Skills Container', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     
     // Reset window width for device detection tests
     Object.defineProperty(window, 'innerWidth', {
@@ -155,13 +147,13 @@ describe('Skills Container', () => {
     });
     
     // Mock matchMedia for reduced motion detection
-    window.matchMedia = jest.fn().mockImplementation((query) => ({
+    window.matchMedia = vi.fn().mockImplementation((query) => ({
       matches: false,
       media: query,
       onchange: null,
-      addEventListener: jest.fn(),
-      removeEventListener: jest.fn(),
-      dispatchEvent: jest.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
     }));
   });
 
@@ -249,13 +241,8 @@ describe('Skills Container', () => {
   });
   
   it('renders loading skeleton when skills data is not ready', () => {
-    // Override the useSkills mock to return null
-    useSkills.mockImplementationOnce(() => null);
-
-    // Override SkeletonCard mock for this specific test
-    SkeletonCard.mockImplementationOnce(({ type }) => (
-      <div data-testid={`skeleton-${type}-mock`}>Skeleton mock</div>
-    ));
+    // Override the useSkills mock to return null for this test
+    mockUseSkills.mockReturnValueOnce(null);
     
     // Use container query since screen query might fail if the component implementation changed
     const { container } = render(<Skills />);
@@ -266,12 +253,12 @@ describe('Skills Container', () => {
   });
   
   it('does not render when display is set to false', () => {
-    // Override the context mock
-    usePortfolio.mockImplementationOnce(() => ({
+    // Override the usePortfolio mock for this test
+    mockUsePortfolio.mockReturnValueOnce({
       skillsSection: {
         display: false
       }
-    }));
+    });
     
     const { container } = render(<Skills />);
     
