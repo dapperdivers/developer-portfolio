@@ -52,7 +52,7 @@
     "test": "cross-env NODE_ENV=test vitest run",
     "test:watch": "cross-env NODE_ENV=test vitest",
     "test:coverage": "cross-env NODE_ENV=test vitest run --coverage",
-    "storybook": "storybook dev -p 9090",
+    "storybook": "storybook dev -p 7000",
     "build-storybook": "storybook build",
     "generate-story": "node scripts/generate-story.js",
     "generate-component": "node scripts/generate-component.js"

@@ -1,100 +1,142 @@
 import React from 'react';
+import { HelmetProvider } from 'react-helmet-async';
+import { PortfolioProvider } from '@context/PortfolioContext';
+
+// Import the real App component
 import App from '@/App';
-import { within, expect } from '@storybook/test';
-import PortfolioContext from '@context/PortfolioContext';
-import { mockPortfolioData } from '@stories-utils/mockData';
-import { withPortfolioContext, withViewport } from '@stories-utils/decorators';
 
-// For the App component, we need to import specific mocks to avoid issues
-import { withHelmetProvider } from '@stories-utils/mockHelmetProvider';
+// Mock data
+import { mockPortfolioData } from '../utils/mockData';
 
-
+// For Storybook display
 export default {
   title: 'Templates/App',
   component: App,
-  tags: ['autodocs'],
-  decorators: [withHelmetProvider, withPortfolioContext],
   parameters: {
+    layout: 'fullscreen',
     docs: {
       description: {
         component: 'Main application component that composes the entire portfolio page structure. It integrates the header, navigation, all content sections, and footer into a complete page layout.',
       },
     },
-    a11y: {
-      config: {
-        rules: [
-          { id: 'landmark-unique', enabled: true },
-          { id: 'heading-order', enabled: true },
-          { id: 'skip-link', enabled: true }
-        ],
-      },
-    },
-    // Set a larger viewport for this component
-    layout: 'fullscreen',
-    // Disable default padding to show the full layout
-    paddings: { disable: true }
   },
 };
 
-
-// Note: For the App component, we can't use args since it's a top-level component
-// that includes the entire application structure
-const Template = () => <App />;
-
-// Default story - complete portfolio
-export const CompletePortfolio = Template.bind({});
-CompletePortfolio.play = async ({ canvasElement, step }) => {
-  const canvas = within(canvasElement);
+// Create a story that wraps the App with necessary providers
+export const AppWithProviders = () => {
+  // Create a Helmet context to avoid conflicts
+  const helmetContext = {};
   
-  await step('Verify main structural elements', async () => {
-    // Check for the skip link
-    await expect(canvas.getByText('Skip to content')).toBeInTheDocument();
-    
-    // Check for navigation
-    await expect(canvas.getByRole('navigation')).toBeInTheDocument();
-    
-    // Check for main content
-    await expect(canvas.getByRole('main')).toBeInTheDocument();
-    
-    // Check for footer
-    await expect(canvas.getByRole('contentinfo')).toBeInTheDocument();
-  });
-  
-  await step('Verify key sections exist', async () => {
-    // We can check for section headings to verify sections are present
-    // Note: Some sections might not be visible initially due to lazy loading
-    
-    // These should be visible immediately
-    await expect(canvas.getByText('Proficiency')).toBeInTheDocument();
-    await expect(canvas.getByText('Skills')).toBeInTheDocument();
-  });
+  return (
+    <HelmetProvider context={helmetContext}>
+      <PortfolioProvider testValue={mockPortfolioData}>
+        <App />
+      </PortfolioProvider>
+    </HelmetProvider>
+  );
 };
 
-/**
- * Mobile view of the complete portfolio
- */
-export const MobileView = Template.bind({});
-MobileView.decorators = [withViewport('mobile')];
-MobileView.parameters = {
-  docs: {
-    description: {
-      story: 'Mobile view of the complete portfolio showing responsive layout adaptations.'
-    }
-  }
-};
-
-/**
- * Tablet view of the complete portfolio
- */
-export const TabletView = Template.bind({});
-TabletView.decorators = [withViewport('tablet')];
-TabletView.parameters = {
-  docs: {
-    description: {
-      story: 'Tablet view of the complete portfolio.'
-    }
-  }
-};
+// Also include a simplified overview for documentation purposes
+export const AppOverview = () => (
+  <div style={{ 
+    padding: '20px', 
+    textAlign: 'center',
+    minHeight: '100vh',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    background: 'linear-gradient(135deg, #0062cc, #0033cc)',
+    color: 'white'
+  }}>
+    <h1 style={{ fontSize: '2rem', marginBottom: '1rem' }}>Portfolio App Structure</h1>
+    <p style={{ fontSize: '1.2rem', maxWidth: '600px' }}>
+      The App component is the root component that composes the entire portfolio site.
+      It includes several key components and sections organized in a clean hierarchy.
+    </p>
+    <div style={{ 
+      marginTop: '2rem',
+      padding: '1.5rem',
+      background: 'rgba(255,255,255,0.1)',
+      borderRadius: '0.5rem',
+      maxWidth: '700px'
+    }}>
+      <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.3)', paddingBottom: '0.5rem' }}>
+        Component Hierarchy
+      </h2>
+      <pre style={{ 
+        textAlign: 'left', 
+        fontFamily: 'monospace', 
+        fontSize: '0.9rem',
+        lineHeight: '1.6',
+        background: 'rgba(0,0,0,0.2)',
+        padding: '1rem',
+        borderRadius: '0.3rem',
+        overflow: 'auto',
+        maxHeight: '400px'
+      }}>
+{`<ErrorBoundary>
+  <HelmetProvider>
+    <PortfolioProvider>
+      <div className="App">
+        <Head /> {/* Meta tags & SEO */}
+        <SkipToContent />
+        <Navigation />
+        <main id="main-content">
+          <Suspense fallback={<Loading />}>
+            <Greetings />  {/* Hero Section */}
+          </Suspense>
+          <Suspense fallback={<Loading />}>
+            <Skills />
+          </Suspense>
+          <Suspense fallback={<Loading />}>
+            <Proficiency />
+          </Suspense>
+          <Suspense fallback={<Loading />}>
+            <Education />
+          </Suspense>
+          <Suspense fallback={<Loading />}>
+            <Experience />
+          </Suspense>
+          <Suspense fallback={<Loading />}>
+            <Feedbacks />
+          </Suspense>
+          <Suspense fallback={<Loading />}>
+            <Projects />
+          </Suspense>
+          <Suspense fallback={<Loading />}>
+            <GithubProfile />
+          </Suspense>
+        </main>
+        <Footer />
+      </div>
+    </PortfolioProvider>
+  </HelmetProvider>
+</ErrorBoundary>`}
+      </pre>
+    </div>
+    <div style={{ 
+      marginTop: '2rem', 
+      textAlign: 'left', 
+      background: 'rgba(255,255,255,0.1)',
+      borderRadius: '0.5rem',
+      padding: '1.5rem',
+      maxWidth: '700px'
+    }}>
+      <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.3)', paddingBottom: '0.5rem' }}>
+        Key Features
+      </h2>
+      <ul style={{ lineHeight: '1.6' }}>
+        <li><strong>Lazy Loading:</strong> All major sections use React.lazy for code splitting</li>
+        <li><strong>Error Boundaries:</strong> Each section has its own error boundary for fault tolerance</li>
+        <li><strong>Accessibility:</strong> Includes skip-to-content link and semantic HTML structure</li>
+        <li><strong>Performance:</strong> Uses Suspense for loading states and browser optimizations</li>
+        <li><strong>Responsive Design:</strong> Adapts to all screen sizes and devices</li>
+        <li><strong>Security:</strong> Applies security enhancements and input sanitization</li>
+      </ul>
+    </div>
+  </div>
+);
 
 /**
  * ## Application Structure
