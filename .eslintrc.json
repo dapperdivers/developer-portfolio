@@ -8,6 +8,7 @@
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
+    "plugin:storybook/recommended",
     "plugin:storybook/recommended"
   ],
   "parserOptions": {
@@ -38,13 +39,21 @@
   },
   "overrides": [
     {
-      "files": ["**/__tests__/**", "**/*.test.{js,jsx}", "**/*.stories.{js,jsx}", "**/__mocks__/**"],
+      "files": [
+        "**/__tests__/**",
+        "**/*.test.{js,jsx}",
+        "**/*.stories.{js,jsx}",
+        "**/__mocks__/**"
+      ],
       "rules": {
         "no-unused-vars": "off"
       }
     },
     {
-      "files": ["node_modules/**", "**/node_modules/**"],
+      "files": [
+        "node_modules/**",
+        "**/node_modules/**"
+      ],
       "rules": {
         "no-eval": "off",
         "security/detect-eval-with-expression": "off"

@@ -1,32 +1,32 @@
+import type { StorybookConfig } from '@storybook/react-vite';
 import path from 'path';
 
-/** @type { import('@storybook/react-vite').StorybookConfig } */
-const config = {
-  stories: [
-    '../src/**/*.stories.@(js|jsx)'
+const config: StorybookConfig = {
+  "stories": [
+    "./examples/*.stories.jsx",
+    "./templates/*.stories.jsx",
+    "../src/components/**/*.stories.jsx"
   ],
-  addons: [
-    '@storybook/addon-links',
-    '@storybook/addon-essentials'
+  "addons": [
+    "@storybook/addon-links",
+    "@storybook/addon-essentials"
   ],
-  framework: {
-    name: '@storybook/react-vite',
-    options: {
-      builder: {
-        viteConfigPath: 'vite.config.js',
+  "framework": {
+    "name": "@storybook/react-vite",
+    "options": {
+      "builder": {
+        "viteConfigPath": 'vite.config.js',
       }
     }
   },
-  staticDirs: [
-    '../src/assets/images',
-    '../src/assets/animations',
-    '../src/assets/fonts',
-    '../src/assets/css'
+  "staticDirs": [
+    "../src/assets/images",
+    "../src/assets/animations",
+    "../src/assets/fonts",
+    "../src/assets/css",
+    "./assets"
   ],
-  docs: {
-    autodocs: true
-  },
-  viteFinal: async (config) => {
+  "viteFinal": async (config) => {
     // Add path aliases
     config.resolve.alias = {
       ...config.resolve.alias,
@@ -40,11 +40,10 @@ const config = {
       '@utils': path.resolve(__dirname, '../src/utils'),
       '@hooks': path.resolve(__dirname, '../src/hooks'),
       '@context': path.resolve(__dirname, '../src/context'),
-      '@stories-utils': path.resolve(__dirname, '../src/stories/utils'),
+      '@stories-utils': path.resolve(__dirname, './utils'),
     };
     
     return config;
   }
 };
-
 export default config;
