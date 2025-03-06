@@ -1,5 +1,5 @@
 import React from 'react';
-import SkipToContent from '../../components/SkipToContent';
+import SkipToContent from '@atoms/SkipToContent';
 import { within, userEvent, expect } from '@storybook/test';
 
 export default {

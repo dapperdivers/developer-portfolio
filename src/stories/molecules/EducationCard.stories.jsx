@@ -1,5 +1,5 @@
 import React from 'react';
-import EducationCard from '../../components/EducationCard';
+import EducationCard from '@molecules/EducationCard';
 import { within, userEvent, expect } from '@storybook/test';
 
 // Sample education data for stories
@@ -198,7 +198,7 @@ AnimationSequence.parameters = {
  * ## Component Usage
  * 
  * ```jsx
- * import EducationCard from '../components/EducationCard';
+ * import EducationCard from '@molecules/EducationCard';
  * 
  * function Education() {
  *   const educationData = [

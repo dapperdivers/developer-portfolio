@@ -1,5 +1,5 @@
 import React from 'react';
-import Experience from '../../containers/Experience';
+import Experience from '@organisms/Experience';
 import { within, userEvent, expect } from '@storybook/test';
 import PortfolioContext from '@context/PortfolioContext';
 

@@ -1,12 +1,12 @@
 import React from 'react';
-import App from '../../App';
+import App from '@/App';
 import { within, expect } from '@storybook/test';
 import PortfolioContext from '@context/PortfolioContext';
-import { mockPortfolioData } from '@utils/mockData';
-import { withPortfolioContext, withViewport } from '@utils/decorators';
+import { mockPortfolioData } from '@stories-utils/mockData';
+import { withPortfolioContext, withViewport } from '@stories-utils/decorators';
 
 // For the App component, we need to import specific mocks to avoid issues
-import { withHelmetProvider } from '@utils/mockHelmetProvider';
+import { withHelmetProvider } from '@stories-utils/mockHelmetProvider';
 
 
 export default {

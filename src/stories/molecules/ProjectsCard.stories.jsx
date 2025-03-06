@@ -1,7 +1,7 @@
 import React from 'react';
-import ProjectsCard from '../../components/ProjectsCard';
+import ProjectsCard from '@molecules/ProjectsCard';
 import { within, userEvent, expect } from '@storybook/test';
-import { withPortfolioContext } from '@utils/decorators';
+import { withPortfolioContext } from '@stories-utils/decorators';
 
 export default {
   title: 'Molecules/ProjectsCard',
@@ -126,7 +126,7 @@ export const WithLongText = {
  * ## Component Usage
  * 
  * ```jsx
- * import ProjectsCard from '../../components/ProjectsCard';
+ * import ProjectsCard from '@molecules/ProjectsCard';
  * 
  * function MyComponent() {
  *   // Project data object with required properties

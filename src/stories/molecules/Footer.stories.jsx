@@ -1,5 +1,5 @@
 import React from 'react';
-import Footer from '../../components/Footer';
+import Footer from '@molecules/Footer';
 import { within, userEvent, expect } from '@storybook/test';
 import PortfolioContext from '@context/PortfolioContext';
 
@@ -133,7 +133,7 @@ const componentDocumentation = `
 ## Component Usage
 
 \`\`\`jsx
-import Footer from '../components/Footer';
+import Footer from '@molecules/Footer';
 
 function App() {
   return (

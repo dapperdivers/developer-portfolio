@@ -1,9 +1,9 @@
 import React from 'react';
-import Proficiency from '../../containers/Proficiency';
+import Proficiency from '@organisms/Proficiency';
 import { within, expect } from '@storybook/test';
 import PortfolioContext from '@context/PortfolioContext';
-import { mockPortfolioData } from '@utils/mockData';
-import { withPortfolioContext, withViewport } from '@utils/decorators';
+import { mockPortfolioData } from '@stories-utils/mockData';
+import { withPortfolioContext, withViewport } from '@stories-utils/decorators';
 import build from '@assets/animations/build';
 
 // Helper function to create context with custom skill bars

@@ -1,5 +1,5 @@
 import React from 'react';
-import FeedbackCard from '../../components/FeedbackCard';
+import FeedbackCard from '@molecules/FeedbackCard';
 import { within, userEvent, expect } from '@storybook/test';
 
 // Sample feedback data for stories
@@ -196,7 +196,7 @@ AnimatedEntry.parameters = {
  * ## Component Usage
  * 
  * ```jsx
- * import FeedbackCard from '../components/FeedbackCard';
+ * import FeedbackCard from '@molecules/FeedbackCard';
  * 
  * function TestimonialSection() {
  *   const feedbacks = [

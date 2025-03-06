@@ -1,0 +1,92 @@
+<!-- This file is injected into the Storybook iframe head, helping with CSS variables and styles -->
+<style>
+  /* Ensure CSS variables are properly loaded in Storybook */
+  :root {
+    /* Colors - Primary */
+    --color-primary: #0062cc;
+    --color-primary-light: #4d8fe6;
+    --color-primary-dark: #0050a6;
+    --color-secondary: #6c757d;
+    --color-secondary-light: #8c959d;
+    --color-secondary-dark: #555c64;
+    --color-accent: #fd7e14;
+    
+    /* Colors - Semantic */
+    --color-success: #28a745;
+    --color-info: #17a2b8;
+    --color-warning: #ffc107;
+    --color-danger: #dc3545;
+    
+    /* Colors - Neutrals */
+    --color-white: #ffffff;
+    --color-gray-100: #f8f9fa;
+    --color-gray-200: #e9ecef;
+    --color-gray-300: #dee2e6;
+    --color-gray-400: #ced4da;
+    --color-gray-500: #adb5bd;
+    --color-gray-600: #6c757d;
+    --color-gray-700: #495057;
+    --color-gray-800: #343a40;
+    --color-gray-900: #212529;
+    --color-black: #000000;
+    
+    /* Colors - Semantic Usage */
+    --color-text: var(--color-gray-900);
+    --color-text-muted: var(--color-gray-600);
+    --color-link: var(--color-primary);
+    --color-link-hover: var(--color-primary-dark);
+    --color-border: var(--color-gray-300);
+    --color-background: var(--color-white);
+    --color-background-alt: var(--color-gray-100);
+    --color-background-muted: var(--color-gray-200);
+  }
+
+  /* This helps ensure the ColorPalette component can read CSS variables */
+  #storybook-root .sb-story,
+  #storybook-preview-iframe {
+    --color-primary: #0062cc;
+    --color-primary-light: #4d8fe6;
+    --color-primary-dark: #0050a6;
+    --color-secondary: #6c757d;
+    --color-secondary-light: #8c959d;
+    --color-secondary-dark: #555c64;
+    --color-accent: #fd7e14;
+    --color-success: #28a745;
+    --color-info: #17a2b8;
+    --color-warning: #ffc107;
+    --color-danger: #dc3545;
+    --color-white: #ffffff;
+    --color-gray-100: #f8f9fa;
+    --color-gray-200: #e9ecef;
+    --color-gray-300: #dee2e6;
+    --color-gray-400: #ced4da;
+    --color-gray-500: #adb5bd;
+    --color-gray-600: #6c757d;
+    --color-gray-700: #495057;
+    --color-gray-800: #343a40;
+    --color-gray-900: #212529;
+    --color-black: #000000;
+  }
+</style>
+
+<!-- Add any scripts needed for Storybook -->
+<script>
+  // This script helps ensure CSS variables are properly loaded
+  window.addEventListener('DOMContentLoaded', () => {
+    // Function to detect if CSS variables are working
+    const checkCssVars = () => {
+      const testEl = document.createElement('div');
+      document.body.appendChild(testEl);
+      testEl.style.color = 'var(--color-primary)';
+      const compStyle = window.getComputedStyle(testEl);
+      const hasVars = compStyle.color !== '' && compStyle.color !== 'var(--color-primary)';
+      document.body.removeChild(testEl);
+      return hasVars;
+    };
+
+    // If CSS variables aren't working, we'll log a warning
+    if (!checkCssVars()) {
+      console.warn('CSS variables not properly loaded in Storybook');
+    }
+  });
+</script>

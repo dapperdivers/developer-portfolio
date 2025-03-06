@@ -1,7 +1,7 @@
 import React from 'react';
-import Navigation from '../../components/Navigation';
+import Navigation from '@molecules/Navigation';
 import { within, userEvent, expect } from '@storybook/test';
-import { withPortfolioContext } from '@utils/decorators';
+import { withPortfolioContext } from '@stories-utils/decorators';
 import PortfolioContext from '@context/PortfolioContext';
 
 export default {
@@ -175,7 +175,7 @@ Documentation.parameters = {
 ## Component Usage
 
 \`\`\`jsx
-import Navigation from '../components/Navigation';
+import Navigation from '@molecules/Navigation';
 import { PortfolioProvider } from '@context/PortfolioContext';
 
 function App() {

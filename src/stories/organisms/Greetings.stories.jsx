@@ -1,9 +1,9 @@
 import React from 'react';
-import Greetings from '../../containers/Greetings';
+import Greetings from '@organisms/Greetings';
 import { within, userEvent, expect } from '@storybook/test';
 import PortfolioContext from '@context/PortfolioContext';
-import { mockPortfolioData } from '@utils/mockData';
-import { withPortfolioContext, withViewport } from '@utils/decorators';
+import { mockPortfolioData } from '@stories-utils/mockData';
+import { withPortfolioContext, withViewport } from '@stories-utils/decorators';
 import code from '@assets/animations/coding.json';
 import webdev from '@assets/animations/webdev.json';
 import build from '@assets/animations/build.json';

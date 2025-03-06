@@ -1,5 +1,5 @@
 import React from 'react';
-import ExperienceCard from '../../components/ExperienceCard';
+import ExperienceCard from '@molecules/ExperienceCard';
 
 export default {
   title: 'Molecules/ExperienceCard',

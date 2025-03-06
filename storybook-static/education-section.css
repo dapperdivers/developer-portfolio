@@ -1,0 +1,186 @@
+/* Education Section Styles */
+
+.education-section {
+  padding: var(--section-padding-y) 0;
+  position: relative;
+}
+
+/* Section title and icon */
+.education-title-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--spacing-6);
+}
+
+.education-icon {
+  width: calc(var(--spacing-6) * 1.25);
+  height: calc(var(--spacing-6) * 1.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--border-radius-circle);
+  background: linear-gradient(to right, var(--color-white), var(--color-background-alt));
+  box-shadow: var(--box-shadow);
+  margin-right: var(--spacing-4);
+}
+
+.education-title {
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-white);
+  margin-bottom: 0;
+}
+
+/* Timeline styling */
+.education-timeline {
+  position: relative;
+  padding-left: 2rem;
+}
+
+.education-timeline::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
+  border-radius: 3px;
+}
+
+/* Timeline items */
+.education-card {
+  position: relative;
+  margin-bottom: 2rem;
+  transition: all 0.3s ease;
+}
+
+.education-card::before {
+  content: "";
+  position: absolute;
+  left: -2.25rem;
+  top: 1.5rem;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: var(--white);
+  border: 3px solid var(--accent);
+  z-index: 1;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
+}
+
+/* Card styling */
+.education-card .card {
+  border: none;
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  background-color: var(--white);
+}
+
+.education-card .card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+.education-card .card-body {
+  padding: 1.75rem;
+}
+
+/* School name and details */
+.education-card .school-name {
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.education-card .degree {
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: var(--dark);
+}
+
+.education-card .duration-badge {
+  background-color: rgba(0, 110, 230, 0.1);
+  color: var(--primary);
+  font-weight: 600;
+  padding: 0.5rem 0.75rem;
+  border-radius: 30px;
+  font-size: 0.75rem;
+  letter-spacing: 0.03em;
+  margin-bottom: 1rem;
+  display: inline-block;
+}
+
+.education-card .description {
+  color: var(--secondary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.education-card ul {
+  padding-left: 1.25rem;
+  margin-top: 0.75rem;
+}
+
+.education-card li {
+  color: var(--secondary);
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+/* Separator styling */
+.education-separator {
+  position: relative;
+  margin-top: -1px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 991.98px) {
+  .education-title {
+    font-size: 2rem;
+  }
+  
+  .education-timeline {
+    padding-left: 1.5rem;
+  }
+  
+  .education-card::before {
+    left: -1.75rem;
+    width: 12px;
+    height: 12px;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .education-section {
+    padding: 4rem 0;
+  }
+  
+  .education-title-container {
+    margin-bottom: 2rem;
+  }
+  
+  .education-icon {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .education-title {
+    font-size: 1.75rem;
+  }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .education-card, 
+  .education-card .card {
+    transition: none;
+  }
+  
+  .education-card .card:hover {
+    transform: none;
+  }
+}

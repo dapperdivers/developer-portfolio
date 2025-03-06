@@ -1,5 +1,5 @@
 import React from 'react';
-import DisplayLottie from '../../components/DisplayLottie';
+import DisplayLottie from '@molecules/DisplayLottie';
 import { within, userEvent, expect } from '@storybook/test';
 
 // Import lottie animation files from the structured animations directory
@@ -221,7 +221,7 @@ SinglePlayAnimation.parameters = {
  * ## Component Usage
  * 
  * ```jsx
- * import DisplayLottie from '../components/DisplayLottie';
+ * import DisplayLottie from '@molecules/DisplayLottie';
  * import animationData from '@assets/animations/lottie/development/dev-coding.json';
  * 
  * function HeroSection() {

@@ -1,14 +1,17 @@
-/** @type { import('@storybook/react').Preview } */
 import { fn } from '@storybook/test';
 import React from 'react';
-import theme from './theme';
+import { PortfolioProvider } from '@context/PortfolioContext';
+import { HelmetProvider } from 'react-helmet-async';
 
-// Import CSS with new structured paths
-import '../src/assets/css/design-system/index.css'; // Design system tokens and base styles
-import '../src/assets/css/utilities/index.css'; // Utility classes
-import '../src/assets/css/components/index.css'; // Component styles
+// Import polished mock to fix issues
+import polishedMock from './fixes/polished-fix';
 
-// Import design system tokens CSS
+// Handle polished mock globally
+if (typeof window !== 'undefined') {
+  window.polished = polishedMock;
+}
+
+// Import all styles using relative paths to ensure they load
 import '../src/assets/css/design-system/tokens/colors.css';
 import '../src/assets/css/design-system/tokens/typography.css';
 import '../src/assets/css/design-system/tokens/spacing.css';
@@ -17,9 +20,15 @@ import '../src/assets/css/design-system/tokens/shadows.css';
 import '../src/assets/css/design-system/tokens/transitions.css';
 import '../src/assets/css/design-system/tokens/breakpoints.css';
 import '../src/assets/css/design-system/tokens/z-index.css';
-
-// Import base CSS styles
 import '../src/assets/css/design-system/base.css';
+import '../src/assets/css/design-system/index.css';
+import '../src/assets/css/utilities/index.css';
+import '../src/assets/css/components/index.css';
+import '../src/assets/css/tailwind.css';
+
+// Import Storybook-specific styles
+import './styles.css';
+
 const preview = {
   argTypes: {
     onClick: { action: 'clicked', defaultValue: fn() },
@@ -29,10 +38,6 @@ const preview = {
     onSubmit: { action: 'submitted', defaultValue: fn() }
   },
   parameters: {
-    actions: {},
-    docs: {
-      theme: theme, // Apply our custom theme
-    },
     controls: {
       matchers: {
         color: /(background|color)$/i,
@@ -59,9 +64,13 @@ const preview = {
   },
   decorators: [
     (Story) => (
-      <div style={{ padding: '1rem' }}>
-        <Story />
-      </div>
+      <HelmetProvider>
+        <PortfolioProvider>
+          <div className="storybook-wrapper" style={{ padding: '1rem' }}>
+            <Story />
+          </div>
+        </PortfolioProvider>
+      </HelmetProvider>
     )
   ]
 };

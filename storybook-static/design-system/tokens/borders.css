@@ -1,0 +1,14 @@
+:root {
+  /* Border Widths */
+  --border-width-thin: 1px;
+  --border-width-medium: 2px;
+  --border-width-thick: 4px;
+  
+  /* Border Radius */
+  --border-radius-sm: 0.2rem;
+  --border-radius: 0.25rem;
+  --border-radius-lg: 0.5rem;
+  --border-radius-xl: 1rem;
+  --border-radius-pill: 50rem;
+  --border-radius-circle: 50%;
+}

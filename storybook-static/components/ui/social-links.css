@@ -1,0 +1,68 @@
+/**
+ * Social Links Component Styles
+ * 
+ * Styling for the SocialLinks component that displays social media links
+ * as accessible, interactive icons with hover and focus states.
+ */
+
+.social-links {
+  display: flex;
+  gap: var(--spacing-3);
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.social-link-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50px;
+  background-color: rgba(255, 255, 255, 0.95);
+  color: var(--color-primary);
+  border: none;
+  transition: var(--transition-base);
+  text-decoration: none;
+  box-shadow: var(--shadow-sm);
+}
+
+.social-link-button:hover, 
+.social-link-button:focus {
+  background-color: var(--color-white);
+  color: var(--color-primary-dark);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+.social-link-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--color-focus-ring);
+}
+
+.social-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+/* Hero section specific styling */
+.hero-action-container .social-links {
+  margin-bottom: 0;
+}
+
+/* Responsive styles */
+@media (max-width: var(--breakpoint-md)) {
+  .social-links {
+    gap: var(--spacing-2);
+  }
+  
+  .social-link-button {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+  
+  .social-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+}

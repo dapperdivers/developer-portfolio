@@ -1,6 +1,6 @@
 import React from 'react';
-import Head from '../../components/Head';
-import { mockStructuredData } from '@utils/mockData';
+import Head from '@atoms/Head';
+import { mockStructuredData } from '@stories-utils/mockData';
 import { HelmetProvider } from 'react-helmet-async';
 
 // We need to wrap the Head component in HelmetProvider
@@ -130,7 +130,7 @@ const componentDocumentation = `
 ## Component Usage
 
 \`\`\`jsx
-import Head from 'components/Head';
+import Head from '@atoms/Head';
 import { HelmetProvider } from 'react-helmet-async';
 
 function App() {

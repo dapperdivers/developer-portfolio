@@ -32,19 +32,19 @@ export const Colors = {
           title="Primary Colors" 
           subtitle="Main brand colors"
           colors={{ 
-            'Primary': 'var(--color-primary)',
-            'Primary Light': 'var(--color-primary-light)',
-            'Primary Dark': 'var(--color-primary-dark)',
+            'Primary': '#0062cc', // Explicit value for Storybook
+            'Primary Light': '#4d8fe6', // Explicit value for Storybook
+            'Primary Dark': '#0050a6', // Explicit value for Storybook
           }} 
         />
         <ColorItem 
           title="Secondary Colors" 
           subtitle="Supporting colors"
           colors={{ 
-            'Secondary': 'var(--color-secondary)',
-            'Secondary Light': 'var(--color-secondary-light)',
-            'Secondary Dark': 'var(--color-secondary-dark)',
-            'Accent': 'var(--color-accent)',
+            'Secondary': '#6c757d', // Explicit value for Storybook
+            'Secondary Light': '#8c959d', // Explicit value for Storybook
+            'Secondary Dark': '#555c64', // Explicit value for Storybook
+            'Accent': '#fd7e14', // Explicit value for Storybook
           }} 
         />
       </ColorPalette>
@@ -55,10 +55,10 @@ export const Colors = {
           title="Semantic Colors" 
           subtitle="Colors with specific meanings"
           colors={{ 
-            'Success': 'var(--color-success)',
-            'Info': 'var(--color-info)',
-            'Warning': 'var(--color-warning)',
-            'Danger': 'var(--color-danger)',
+            'Success': '#28a745', // Explicit value for Storybook
+            'Info': '#17a2b8', // Explicit value for Storybook
+            'Warning': '#ffc107', // Explicit value for Storybook
+            'Danger': '#dc3545', // Explicit value for Storybook
           }} 
         />
       </ColorPalette>
@@ -69,17 +69,17 @@ export const Colors = {
           title="Gray Scale" 
           subtitle="Neutral colors for text, backgrounds, and borders"
           colors={{ 
-            'White': 'var(--color-white)',
-            'Gray 100': 'var(--color-gray-100)',
-            'Gray 200': 'var(--color-gray-200)',
-            'Gray 300': 'var(--color-gray-300)',
-            'Gray 400': 'var(--color-gray-400)',
-            'Gray 500': 'var(--color-gray-500)',
-            'Gray 600': 'var(--color-gray-600)',
-            'Gray 700': 'var(--color-gray-700)',
-            'Gray 800': 'var(--color-gray-800)',
-            'Gray 900': 'var(--color-gray-900)',
-            'Black': 'var(--color-black)',
+            'White': '#ffffff', // Explicit value for Storybook
+            'Gray 100': '#f8f9fa', // Explicit value for Storybook
+            'Gray 200': '#e9ecef', // Explicit value for Storybook
+            'Gray 300': '#dee2e6', // Explicit value for Storybook
+            'Gray 400': '#ced4da', // Explicit value for Storybook
+            'Gray 500': '#adb5bd', // Explicit value for Storybook
+            'Gray 600': '#6c757d', // Explicit value for Storybook
+            'Gray 700': '#495057', // Explicit value for Storybook
+            'Gray 800': '#343a40', // Explicit value for Storybook
+            'Gray 900': '#212529', // Explicit value for Storybook
+            'Black': '#000000', // Explicit value for Storybook
           }} 
         />
       </ColorPalette>
@@ -90,14 +90,14 @@ export const Colors = {
           title="Semantic Usage" 
           subtitle="Contextual color usage"
           colors={{ 
-            'Text': 'var(--color-text)',
-            'Text Muted': 'var(--color-text-muted)',
-            'Link': 'var(--color-link)',
-            'Link Hover': 'var(--color-link-hover)',
-            'Border': 'var(--color-border)',
-            'Background': 'var(--color-background)',
-            'Background Alt': 'var(--color-background-alt)',
-            'Background Muted': 'var(--color-background-muted)',
+            'Text': '#212529', // Explicit value for Storybook
+            'Text Muted': '#6c757d', // Explicit value for Storybook
+            'Link': '#0062cc', // Explicit value for Storybook
+            'Link Hover': '#0050a6', // Explicit value for Storybook
+            'Border': '#dee2e6', // Explicit value for Storybook
+            'Background': '#ffffff', // Explicit value for Storybook
+            'Background Alt': '#f8f9fa', // Explicit value for Storybook
+            'Background Muted': '#e9ecef', // Explicit value for Storybook
           }} 
         />
       </ColorPalette>

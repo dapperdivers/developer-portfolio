@@ -284,7 +284,7 @@ WrappingBehavior.parameters = {
  * ## Component Usage
  * 
  * ```jsx
- * import SocialLinks from '../components/SocialLinks';
+ * import SocialLinks from '@molecules/SocialLinks';
  * 
  * function Footer() {
  *   return (

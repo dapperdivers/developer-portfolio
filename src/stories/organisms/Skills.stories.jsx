@@ -1,7 +1,7 @@
 import React from 'react';
-import Skills from '../../containers/Skills';
+import Skills from '@organisms/Skills';
 import { within, userEvent, expect } from '@storybook/test';
-import { withPortfolioContext } from '@utils/decorators';
+import { withPortfolioContext } from '@stories-utils/decorators';
 
 export default {
   title: 'Organisms/Skills',

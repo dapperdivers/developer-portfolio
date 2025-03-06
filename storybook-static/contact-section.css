@@ -1,0 +1,223 @@
+/* Contact Section Styles */
+
+.contact-section {
+  padding-top: 2rem;
+  padding-bottom: 0;
+  position: relative;
+  background-color: transparent;
+  margin-bottom: 0;
+}
+
+/* Card styling */
+.contact-card {
+  border: none;
+  border-radius: 1rem 1rem 0 0;
+  overflow: hidden;
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.contact-card-inner {
+  padding: 3rem 2rem;
+}
+
+/* Profile image */
+.profile-image-container {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.profile-image {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid white;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.profile-image-container::after {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  border-radius: 50%;
+  border: 2px dashed rgba(255, 255, 255, 0.5);
+  z-index: -1;
+  animation: rotate 15s linear infinite;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Profile content */
+.profile-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: white;
+}
+
+.profile-subtitle {
+  font-size: 1.25rem;
+  font-weight: 400;
+  margin-bottom: 1.5rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.profile-bio {
+  font-size: 1rem;
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Location badge */
+.location-badge {
+  display: inline-flex;
+  align-items: center;
+  background-color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1.5rem;
+}
+
+.location-icon {
+  color: var(--accent);
+  margin-right: 0.5rem;
+  font-size: 1.25rem;
+}
+
+.location-text {
+  font-weight: 500;
+  color: var(--secondary);
+}
+
+/* Social links in contact section */
+.contact-social-links {
+  margin-top: 1.5rem;
+}
+
+.contact-social-links a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+  margin-right: 1rem;
+  transition: all 0.3s ease;
+}
+
+.contact-social-links a:hover {
+  transform: translateY(-3px);
+  background-color: white;
+  color: var(--accent);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Fallback styling */
+.github-fallback {
+  text-align: center;
+  background-color: var(--primary-100);
+  padding: 2rem;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+}
+
+.fallback-image {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+  background-color: var(--light);
+  padding: 1rem;
+}
+
+.fallback-title {
+  color: var(--primary);
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.fallback-message {
+  color: var(--secondary);
+  margin-bottom: 1.5rem;
+}
+
+.refresh-button {
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  padding: 0.5rem 1.5rem;
+  border-radius: 2rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.refresh-button:hover {
+  background-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 991.98px) {
+  .contact-card-inner {
+    padding: 2rem 1.5rem;
+  }
+  
+  .profile-title {
+    font-size: 2rem;
+  }
+  
+  .profile-image {
+    width: 150px;
+    height: 150px;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .contact-section {
+    padding-top: 3rem;
+  }
+  
+  .contact-card-inner {
+    padding: 1.5rem 1rem;
+    text-align: center;
+  }
+  
+  .profile-title {
+    font-size: 1.75rem;
+  }
+  
+  .profile-subtitle,
+  .profile-bio {
+    text-align: center;
+  }
+  
+  .contact-social-links {
+    justify-content: center;
+    display: flex;
+  }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .profile-image-container::after {
+    animation: none;
+  }
+  
+  .contact-social-links a:hover {
+    transform: none;
+  }
+}

@@ -1,9 +1,9 @@
 import React from 'react';
-import Feedbacks from '../../containers/Feedbacks';
+import Feedbacks from '@organisms/Feedbacks';
 import { within, expect } from '@storybook/test';
 import PortfolioContext from '@context/PortfolioContext';
-import { mockPortfolioData } from '@utils/mockData';
-import { withPortfolioContext, withViewport } from '@utils/decorators';
+import { mockPortfolioData } from '@stories-utils/mockData';
+import { withPortfolioContext, withViewport } from '@stories-utils/decorators';
 
 // Helper function to create context with specific feedback data
 const createContextWithFeedbacks = (feedbackData) => {

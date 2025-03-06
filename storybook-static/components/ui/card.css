@@ -1,0 +1,134 @@
+/**
+ * Card Component
+ * 
+ * Styles for the Card component following atomic design principles.
+ * Uses design tokens for consistent styling across the application.
+ */
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: var(--color-background);
+  background-clip: border-box;
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+  transition: var(--transition-base);
+}
+
+/* Card with border */
+.card-bordered {
+  border: var(--border-width-thin) solid var(--color-border);
+}
+
+/* Card with shadow */
+.card-shadow {
+  box-shadow: var(--box-shadow);
+}
+
+/* Hoverable card */
+.card-hoverable:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--box-shadow-lg);
+}
+
+/* Card header */
+.card-header {
+  padding: var(--card-padding);
+  margin-bottom: 0;
+  background-color: var(--color-background);
+  border-bottom: var(--border-width-thin) solid var(--color-border);
+}
+
+/* Card body */
+.card-body {
+  flex: 1 1 auto;
+  padding: var(--card-padding);
+}
+
+/* Card footer */
+.card-footer {
+  padding: var(--card-padding);
+  background-color: var(--color-background);
+  border-top: var(--border-width-thin) solid var(--color-border);
+}
+
+/* Card title */
+.card-title {
+  margin-top: 0;
+  margin-bottom: var(--spacing-2);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+  line-height: var(--line-height-tight);
+}
+
+/* Card subtitle */
+.card-subtitle {
+  margin-top: calc(-1 * var(--spacing-1));
+  margin-bottom: var(--spacing-2);
+  font-size: var(--font-size-base);
+  color: var(--color-text-muted);
+}
+
+/* Media in cards */
+.card img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+/* Card link styling */
+.card a {
+  color: var(--color-link);
+  text-decoration: none;
+}
+
+.card a:hover {
+  color: var(--color-link-hover);
+  text-decoration: underline;
+}
+
+/* Dark mode card (optional) */
+.dark-mode .card {
+  background-color: var(--color-gray-800);
+  color: var(--color-gray-200);
+}
+
+.dark-mode .card-header,
+.dark-mode .card-footer {
+  background-color: var(--color-gray-800);
+  border-color: var(--color-gray-700);
+}
+
+.dark-mode .card-bordered {
+  border-color: var(--color-gray-700);
+}
+
+.dark-mode .card-title {
+  color: var(--color-white);
+}
+
+.dark-mode .card-subtitle {
+  color: var(--color-gray-400);
+}
+
+/* Card animations */
+@keyframes cardFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Accessibility: Focus outline */
+.card:focus-within {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
