@@ -1,7 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { greetings } from "@/portfolio";
-// Updated animation import with correct path structure
-import code from '@assets/animations/lottie/development/dev-coding.json';
 import { motion, AnimatePresence } from "framer-motion";
 import { FaDownload } from 'react-icons/fa';
 import Button from '@atoms/Button';
@@ -12,6 +10,19 @@ import SocialLinks from '@molecules/SocialLinks';
 
 
 const Greetings = () => {
+  const [animationData, setAnimationData] = useState(null);
+
+  useEffect(() => {
+    // Dynamically fetch the Lottie animation data
+    fetch('/lottie/coding.json')
+      .then(response => response.json())
+      .then(data => {
+        setAnimationData(data);
+      })
+      .catch(error => {
+        console.error('Error loading animation:', error);
+      });
+  }, []);
   return ( 
     <AnimatePresence>
       <motion.div
@@ -70,7 +81,7 @@ const Greetings = () => {
                     </div>
                     <div className="w-full px-4 lg:w-6/12 ">
                       <div className="lottie-container">
-                        <GreetingLottie animationData={code}/>
+                        {animationData && <DisplayLottie animationData={animationData}/>}
                       </div>
                     </div>
                   </div>

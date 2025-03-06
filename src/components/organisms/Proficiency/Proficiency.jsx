@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import build from "@assets/lottie/build";
+import build from "@assets/lottie/build.json";
 import { SkillBars } from "@/portfolio";
 import { motion, useInView } from "framer-motion";
 
@@ -57,7 +57,7 @@ const Proficiency = () => {
                     </div>
                     <div className="w-full px-4 lg:w-6/12">
                         <div className="proficiency-animation">
-                            <GreetingLottie animationData={build}/>
+                            <DisplayLottie animationData={build}/>
                         </div>
                     </div>
                 </div>

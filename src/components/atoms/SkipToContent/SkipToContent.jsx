@@ -28,8 +28,6 @@ SkipToContent.propTypes = {
   mainId: PropTypes.string
 };
 
-SkipToContent.defaultProps = {
-  mainId: 'main-content'
-};
+// Note: defaultProps is deprecated, we're using default parameters instead
 
 export default SkipToContent;

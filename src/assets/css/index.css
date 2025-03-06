@@ -2,26 +2,22 @@
  * Main CSS Entry Point
  * 
  * This file serves as the main entry point for all CSS in the application.
- * It imports the design system, utilities, vendor libraries, and component styles.
+ * It first imports Tailwind, then all component and legacy styles.
  */
 
-/* Design System - Import first as it defines variables used by other styles */
-@import './design-system/index.css';
+/* Import Tailwind CSS (which already imports design tokens) */
+@import './tailwind.css';
 
-/* Utilities */
-@import './utilities/index.css';
-
-/* Component Styles */
+/* Import component styles not handled by Tailwind */
 @import './components/index.css';
 
-/* Vendor Libraries */
-@import './vendor/argon/argon-design-system-react.min.css';
+/* Import utility styles */
+@import './utilities/index.css';
 
-/* Legacy Section Styles - To be gradually migrated to component-specific CSS */
-/* These will be phased out as components are migrated to follow atomic design patterns */
+/* Legacy Section Styles - To be gradually migrated to Tailwind classes */
+/* These will be phased out as components are migrated to Tailwind */
 @import './component-styles.css';
 @import './contact-section.css';
-@import './custom-bootstrap.css';
 @import './education-section.css';
 @import './experience-section.css';
 @import './feedbacks-section.css';
@@ -34,10 +30,14 @@
 @import './typography.css';
 
 /**
- * Migration Note:
+ * Migration Path:
  * 
- * As components are refactored following the atomic design pattern:
- * 1. Create component-specific CSS in the /css/components/ directory
- * 2. Add import to the appropriate components index file
- * 3. Remove the corresponding import from the legacy section above once fully migrated
+ * 1. For each legacy CSS file:
+ *    - Convert styles to Tailwind utility classes in component JSX
+ *    - For component-specific styles, add them to @layer components in tailwind.css
+ *    - For complex components, create a dedicated CSS file in components/ui/ or components/layout/
+ * 
+ * 2. Once a section is fully migrated:
+ *    - Remove its import from the legacy section above
+ *    - Document the migration in activeContext.md
  */

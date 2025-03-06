@@ -1,7 +1,24 @@
-/* Import design system tokens - we'll keep using our design tokens as CSS variables */
+/**
+ * Tailwind CSS Entry Point
+ * 
+ * This file is the primary entry point for Tailwind CSS.
+ * It imports design tokens, sets up Tailwind layers, and defines component extensions.
+ */
+
+/**
+ * Design System Tokens
+ * 
+ * We import design tokens before Tailwind layers so they're available for the theme extension
+ * in tailwind.config.cjs. These CSS variables are the single source of truth for our design system.
+ */
 @import './design-system/index.css';
 
-/* Tailwind CSS v3 Base Layers */
+/**
+ * Tailwind Layers
+ * 
+ * These directives inject Tailwind's base styles, components, and utilities.
+ * They must be in this specific order.
+ */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

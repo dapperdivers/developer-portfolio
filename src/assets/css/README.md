@@ -1,54 +1,122 @@
-# CSS Assets Organization
+# CSS Architecture
 
-This directory contains all CSS assets organized by purpose and abstraction level, following atomic design principles.
+This document outlines the CSS architecture for the Developer Portfolio project, explaining how the styling system is organized and how to extend it.
 
 ## Directory Structure
 
 ```
-css/
-├── design-system/       # Design system implementation
-│   ├── tokens/          # Design tokens (colors, spacing, typography)
-│   ├── base.css         # Base styles and resets
-│   └── index.css        # Imports all design system files
-├── components/          # Component-specific styles
-├── utilities/           # Utility styles and helpers
-└── vendor/              # Third-party CSS
+src/assets/css/
+├── index.css                # Main CSS entry point
+├── tailwind.css             # Tailwind configuration and component extensions
+├── README.md                # This documentation file
+├── browser-fixes.css        # Browser-specific fixes and polyfills
+├── design-system/           # Design system architecture
+│   ├── index.css            # Imports all design tokens
+│   ├── base.css             # Reset and base element styling
+│   └── tokens/              # Design tokens organized by category
+│       ├── colors.css       # Color palette and semantic colors
+│       ├── typography.css   # Font families, sizes, weights, etc.
+│       ├── spacing.css      # Spacing scale and semantic spacing
+│       ├── borders.css      # Border widths, radii, etc.
+│       ├── shadows.css      # Box shadows for different elevations
+│       ├── transitions.css  # Transition properties
+│       ├── breakpoints.css  # Responsive breakpoints
+│       └── z-index.css      # Z-index scale
+├── components/              # Component-specific styles
+│   ├── index.css            # Imports all component styles
+│   ├── ui/                  # UI component styles
+│   └── layout/              # Layout component styles
+├── utilities/               # Utility classes
+│   ├── index.css            # Imports all utilities
+│   └── animations.css       # Animation utilities
+└── [legacy section files]   # Legacy CSS files being gradually migrated
 ```
 
-## Naming Conventions
+## Import Hierarchy
 
-- CSS files for components should match the component name using kebab-case
-  - Example: `button.css` for `Button.jsx`
-- Design token files should represent a clear category
-  - Example: `colors.css`, `typography.css`
-- Utility files should describe their purpose
-  - Example: `animations.css`, `browser-fixes.css`
+The import hierarchy is designed to ensure that styles are loaded in the correct order:
 
-## CSS Organization Guidelines
+1. **Design Tokens**: CSS variables that define the design system foundations
+2. **Tailwind**: Tailwind CSS base, components, and utilities with design token integration
+3. **Component Styles**: Specific styles for components not handled by Tailwind
+4. **Utilities**: Additional utility classes that extend Tailwind
+5. **Legacy Styles**: Old section-specific CSS files being gradually migrated
 
-### Design System Tokens
+## Design System
 
-- Design tokens are implemented using CSS custom properties (variables)
-- Each token category has its own file for better maintainability
-- All tokens are defined on the `:root` selector for global access
-- Token naming follows the pattern: `--category-subcategory-variant`
-  - Example: `--color-primary-500`, `--spacing-4`
+Our design system is implemented through CSS variables (custom properties) that are organized into separate token files by category. This provides a single source of truth for all design values used throughout the application.
 
-### Component Styles
+### Using Design Tokens
 
-- Component-specific CSS should be modular and isolated
-- Styles should utilize design tokens for consistency
-- Class naming follows component name + element approach
-  - Example: `.button`, `.button__icon`
+Design tokens should be used via Tailwind classes when possible:
 
-### Utilities
+```jsx
+// Preferred: Using Tailwind classes
+<button className="bg-primary text-white px-4 py-2 rounded">Button</button>
 
-- Utility CSS provides helper classes for common styling needs
-- Browser-specific fixes are isolated in their own file
-- Animation and transition utilities are standardized
+// When needed: Direct CSS variable usage
+<div style={{ backgroundColor: 'var(--color-primary)' }}>Custom element</div>
+```
 
-### Vendor Files
+### Extending the Design System
 
-- Third-party CSS is isolated in the vendor directory
-- Minimized versions are preferred for production
-- Keep original source files for reference when available
+To add new design tokens:
+
+1. Identify the appropriate token category file
+2. Add the new token following the existing naming conventions
+3. If needed, update the Tailwind config to make the token available as a Tailwind class
+
+## Tailwind Extensions
+
+We extend Tailwind in two ways:
+
+1. **Theme Extension**: In `tailwind.config.cjs`, we extend Tailwind's theme using our design tokens
+2. **Custom Components**: In `tailwind.css`, we define custom component classes using `@layer components`
+
+## Migration Path
+
+We are gradually migrating from legacy CSS files to Tailwind:
+
+1. For each legacy CSS file:
+   - Convert styles to Tailwind utility classes in component JSX
+   - For component-specific styles, add them to `@layer components` in `tailwind.css`
+   - For complex components, create a dedicated CSS file in `components/ui/` or `components/layout/`
+
+2. Once a section is fully migrated:
+   - Remove its import from the legacy section in `index.css`
+   - Document the migration in `activeContext.md`
+
+## Best Practices
+
+1. **Use Tailwind First**: Prefer Tailwind utility classes for styling
+2. **Component Encapsulation**: Keep component-specific styles with their components
+3. **Design Token Consistency**: Always use design tokens for values like colors, spacing, etc.
+4. **Documentation**: Document complex styles and custom components
+5. **Performance**: Be mindful of CSS specificity and performance
+
+## Common Patterns
+
+### Responsive Design
+
+Use Tailwind's responsive prefixes:
+
+```jsx
+<div className="w-full md:w-1/2 lg:w-1/3">Responsive width</div>
+```
+
+### Dark Mode Support
+
+Use Tailwind's dark mode utilities when adding dark mode support:
+
+```jsx
+<div className="bg-white text-gray-900 dark:bg-gray-800 dark:text-white">
+  Works in light and dark mode
+</div>
+```
+
+### Animation
+
+Use Tailwind's animation utilities or define custom animations in the utilities directory:
+
+```jsx
+<div className="animate-fadeIn">Fades in</div>

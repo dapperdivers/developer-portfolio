@@ -27,11 +27,13 @@ This section documents currently functioning features and components.
 - ✅ Custom hooks for optimized callbacks and memoized values
 
 ### Design System
-- ✅ Comprehensive design tokens in design-tokens.css file
+- ✅ Comprehensive design tokens in organized token files (colors, typography, spacing, etc.)
+- ✅ CSS architecture documented in src/assets/css/README.md
+- ✅ Clean import hierarchy with single source of truth for design values
 - ✅ Color system with primary, secondary, semantic, and neutral colors
 - ✅ Typography system with consistent font families, sizes, and weights
 - ✅ Spacing system with standardized scales
-- ✅ Component-specific styling using design tokens
+- ✅ Component-specific styling using design tokens and Tailwind utilities
 
 ### Performance Optimizations
 - ✅ useIntersectionObserver hook for scroll-based optimizations

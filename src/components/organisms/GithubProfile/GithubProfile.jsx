@@ -175,8 +175,6 @@ GithubProfile.propTypes = {
     id: PropTypes.string
 };
 
-GithubProfile.defaultProps = {
-    id: 'contact'
-};
+// Note: defaultProps is deprecated, using parameter default value instead (line 36)
  
 export default GithubProfile;

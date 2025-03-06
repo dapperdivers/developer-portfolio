@@ -59,7 +59,14 @@ Our implementation approach is guided by these key principles:
 
 Our current priorities are:
 
-1. **Component Structure Reorganization**:
+1. **CSS Architecture Improvements**:
+   - ✅ Consolidate design tokens into a single source of truth
+   - ✅ Streamline CSS import chain for better maintainability
+   - ✅ Establish clear migration path from legacy CSS to Tailwind
+   - ✅ Document CSS architecture in src/assets/css/README.md
+   - ✅ Address duplication between design tokens and Tailwind config
+
+2. **Component Structure Reorganization**:
    - ✅ Create reorganization plan for component file structure
    - Implement feature-based organization with component co-location
    - Co-locate component JSX, CSS, stories, and tests in component directories
