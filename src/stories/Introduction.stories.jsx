@@ -63,7 +63,8 @@ The component library includes these key features:
 ### Basic Usage
 
 \`\`\`jsx
-import { Button, Card } from '../components/ui';
+import Button from '@atoms/Button';
+import Card from '@atoms/Card';
 
 function MyComponent() {
   return (

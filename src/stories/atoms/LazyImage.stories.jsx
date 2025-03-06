@@ -100,7 +100,7 @@ export const WithPlaceholder = {
  * ## Component Usage
  * 
  * ```jsx
- * import { LazyImage } from 'components/ui';
+ * import LazyImage from '@atoms/LazyImage';
  * 
  * function MyComponent() {
  *   return (

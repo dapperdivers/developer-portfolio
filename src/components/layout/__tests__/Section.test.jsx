@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import Section from '../Section';
+import Section from '@layout/Section';
 
 describe('Section Component', () => {
   test('renders children content', () => {

@@ -97,7 +97,7 @@ const componentDocumentation = `
 ## Component Usage
 
 \`\`\`jsx
-import SkipToContent from '../components/SkipToContent';
+import SkipToContent from '@molecules/SkipToContent';
 
 function App() {
   return (

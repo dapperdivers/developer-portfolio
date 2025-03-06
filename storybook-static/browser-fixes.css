@@ -25,6 +25,23 @@
   input, textarea, select {
     background-clip: padding-box !important;
   }
+  
+  /* Animation for detecting autofill events in JavaScript */
+  @keyframes autofill {
+    from {
+      /* This property doesn't matter, but needs to change for the animation to trigger */
+      background-color: transparent;
+    }
+    to {
+      background-color: transparent;
+    }
+  }
+  
+  /* This will trigger the animation when Firefox autofills a field */
+  input:-moz-autofill {
+    animation-name: autofill;
+    animation-duration: 0.001s;
+  }
 }
 
 /* Safari-specific fixes */

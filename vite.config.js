@@ -152,19 +152,31 @@ export default defineConfig({
     assetsInlineLimit: 4096, // 4kb
     cssCodeSplit: true,
     minify: 'terser',
-    // Disable warning for eval() in lottie-web
+    // Configure esbuild
     esbuildOptions: {
       legalComments: 'none',
       target: ['es2020'],
       supported: { 'top-level-await': true },
+      // Allow eval() in third-party libraries
+      define: {
+        'globalThis.process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+      },
+      // Suppress specific warnings
+      logOverride: {
+        'unsupported-js-syntax': 'silent',
+        'eval-in-js': 'silent'
+      }
     },
     rollupOptions: {
       input: {
         main: path.resolve(__dirname, 'index.html')
       },
       onwarn(warning, warn) {
-        // Ignore eval warnings from lottie-web
-        if (warning.code === 'EVAL' && warning.id && warning.id.includes('lottie-web')) {
+        // Ignore eval warnings from third-party libraries
+        if (warning.code === 'EVAL' && warning.id && 
+            (warning.id.includes('lottie-web') || 
+             warning.id.includes('@storybook/core') ||
+             warning.id.includes('node_modules/storybook'))) {
           return;
         }
         warn(warning);

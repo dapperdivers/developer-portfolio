@@ -52,6 +52,35 @@ const config = {
       '@stories-utils': path.resolve(__dirname, '../src/stories/utils'),
     };
     
+    // Add specific configurations for Storybook build
+    if (config.build) {
+      // Handle the eval warnings
+      if (!config.build.rollupOptions) {
+        config.build.rollupOptions = {};
+      }
+      
+      // Add onwarn handler to Rollup options
+      config.build.rollupOptions.onwarn = (warning, warn) => {
+        // Ignore eval warnings from third-party libraries
+        if (warning.code === 'EVAL' && 
+            (warning.id?.includes('node_modules/@storybook') || 
+             warning.id?.includes('lottie-web'))) {
+          return;
+        }
+        warn(warning);
+      };
+      
+      // Add esbuild options
+      if (!config.build.esbuildOptions) {
+        config.build.esbuildOptions = {};
+      }
+      
+      config.build.esbuildOptions.logOverride = {
+        'unsupported-js-syntax': 'silent',
+        'eval-in-js': 'silent'
+      };
+    }
+    
     return config;
   }
 };

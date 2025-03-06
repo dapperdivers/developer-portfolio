@@ -42,6 +42,20 @@
       "rules": {
         "no-unused-vars": "off"
       }
+    },
+    {
+      "files": ["node_modules/**", "**/node_modules/**"],
+      "rules": {
+        "no-eval": "off",
+        "security/detect-eval-with-expression": "off"
+      }
     }
+  ],
+  "ignorePatterns": [
+    "node_modules/**",
+    "build/**",
+    "storybook-static/**",
+    "**/lottie-web/**",
+    "**/@storybook/core/**"
   ]
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import FeedbackCard from '../FeedbackCard';
+import FeedbackCard from '@molecules/FeedbackCard';
 
 // Mock the Card component
 jest.mock('../ui/Card', () => {

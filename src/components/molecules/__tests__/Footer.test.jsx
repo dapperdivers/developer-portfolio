@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent, within } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import Footer from '../Footer';
+import Footer from '@molecules/Footer';
 import * as useFooterHook from '@hooks/useFooter';
 
 // Mock the useFooter hook

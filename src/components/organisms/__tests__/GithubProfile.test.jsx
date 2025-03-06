@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, waitFor, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import GithubProfile from '../GithubProfile';
+import GithubProfile from '@organisms/GithubProfile';
 import axios from 'axios';
 
 // Mock dependencies

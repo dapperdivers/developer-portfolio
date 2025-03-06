@@ -1,10 +1,10 @@
 import React, { useRef } from 'react';
-import build from "../../assets/lottie/build";
-import { SkillBars } from "../../portfolio";
+import build from "@assets/lottie/build";
+import { SkillBars } from "@/portfolio";
 import { motion, useInView } from "framer-motion";
 
-import GreetingLottie from "../molecules/DisplayLottie";
-import Progress from "../atoms/Progress";
+import GreetingLottie from "@molecules/DisplayLottie";
+import Progress from "@atoms/Progress";
 
 const ProgressBar = ({ skill, index }) => {
     const ref = useRef(null);

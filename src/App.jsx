@@ -9,7 +9,7 @@ import '@iconify-json/logos';
 import '@iconify-json/simple-icons';
 import '@iconify-json/vscode-icons';
 
-import { applyBrowserFixes } from "@utils/accessibility.jsx";
+import { applyRuntimeFixes } from "@utils/browserFixes";
 import { initImageOptimization } from "@utils/imageOptimizer";
 import { applySecurityEnhancements } from "@utils/security";
 import Loading from "@atoms/Loading";
@@ -30,13 +30,13 @@ const Feedbacks = lazy(() => import("@organisms/Feedbacks"));
 // Import CSS - Using Tailwind CSS for styled components
 import "@assets/css/design-system/index.css"; // Design system variables
 import "@assets/css/tailwind.css"; // Tailwind styles with component customizations
-import "@assets/css/browser-fixes.css"; // Browser compatibility fixes
+// Note: browser-fixes.css is imported through utilities/index.css
 
 function App() {
   // Apply enhancements on mount
   useEffect(() => {
-    // Apply cross-browser compatibility fixes
-    applyBrowserFixes();
+    // Apply any runtime browser compatibility fixes
+    applyRuntimeFixes();
     
     // Initialize image optimization
     initImageOptimization();

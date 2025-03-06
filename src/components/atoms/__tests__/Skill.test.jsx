@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import Skill from '../Skill';
+import Skill from '@atoms/Skill';
 
 // Mock the Icon component from @iconify/react (already set up in setupTests.minimal.js)
 

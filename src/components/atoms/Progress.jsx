@@ -6,8 +6,8 @@ import PropTypes from 'prop-types';
  * 
  * @component
  * @param {Object} props - Component props
- * @param {number} [props.value=0] - Current progress value
- * @param {number} [props.max=100] - Maximum progress value
+ * @param {number|string} [props.value=0] - Current progress value (can be a number or string that can be parsed to a number)
+ * @param {number|string} [props.max=100] - Maximum progress value (can be a number or string that can be parsed to a number)
  * @param {string} [props.color="primary"] - Progress bar color variant
  * @param {string} [props.className=""] - Additional CSS classes
  * @param {string} [props.barClassName=""] - Additional CSS classes for the bar itself
@@ -23,8 +23,10 @@ const Progress = ({
   style = {},
   ...rest
 }) => {
-  // Calculate width as percentage
-  const percent = Math.round((value / max) * 100);
+  // Convert string values to numbers if needed and calculate width as percentage
+  const numericValue = typeof value === 'string' ? parseFloat(value) : value;
+  const numericMax = typeof max === 'string' ? parseFloat(max) : max;
+  const percent = Math.round((numericValue / numericMax) * 100);
   
   // Construct class names
   const baseClassName = "tailwind-progress";
@@ -50,8 +52,8 @@ const Progress = ({
 };
 
 Progress.propTypes = {
-  value: PropTypes.number,
-  max: PropTypes.number,
+  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  max: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   color: PropTypes.oneOf(['primary', 'info', 'success', 'warning', 'danger']),
   className: PropTypes.string,
   barClassName: PropTypes.string,

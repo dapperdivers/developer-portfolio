@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import Feedbacks from '../Feedbacks';
+import Feedbacks from '@organisms/Feedbacks';
 import * as useFeedbackHook from '@hooks/useFeedback';
 
 // Mock the Section component

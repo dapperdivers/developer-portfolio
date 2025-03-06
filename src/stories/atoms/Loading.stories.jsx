@@ -144,7 +144,7 @@ FullPageLoading.parameters = {
  * ## Component Usage
  * 
  * ```jsx
- * import Loading from '../components/Loading';
+ * import Loading from '@molecules/Loading';
  * 
  * // Basic usage
  * function BasicExample() {

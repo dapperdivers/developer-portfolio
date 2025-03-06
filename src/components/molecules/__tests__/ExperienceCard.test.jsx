@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import ExperienceCard from '../ExperienceCard';
+import ExperienceCard from '@molecules/ExperienceCard';
 
 // Import modules to mock
 import useIntersectionObserver from '@hooks/useIntersectionObserver';

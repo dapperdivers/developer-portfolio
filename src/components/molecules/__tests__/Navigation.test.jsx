@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import Navigation from '../Navigation';
+import Navigation from '@molecules/Navigation';
 import * as useNavigationHook from '@hooks/useNavigation';
 
 // Mock useNavigation hook

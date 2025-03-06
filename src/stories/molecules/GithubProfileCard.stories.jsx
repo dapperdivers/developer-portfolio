@@ -110,7 +110,7 @@ Error.play = async ({ canvasElement, step }) => {
  * ## Component Usage
  * 
  * ```jsx
- * import GithubProfileCard from 'components/GithubProfileCard';
+ * import GithubProfileCard from '@molecules/GithubProfileCard';
  * 
  * function MyComponent() {
  *   const [profile, setProfile] = useState(null);

@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import Skills from '../Skills';
+import Skills from '@organisms/Skills';
 
 // Import the modules to mock
 import useSkills from '@hooks/useSkills';
@@ -73,10 +73,10 @@ jest.mock('framer-motion', () => {
 });
 
 // Import components to mock
-import DisplayLottie from '../../components/DisplayLottie';
-import Section from '../../components/layout/Section';
-import Skill from '../../components/ui/Skill';
-import SkeletonCard from '../../components/SkeletonCard';
+import DisplayLottie from '@molecules/DisplayLottie';
+import Section from '@layout/Section';
+import Skill from '@atoms/Skill';
+import SkeletonCard from '@molecules/SkeletonCard';
 import { usePortfolio } from '@context/PortfolioContext';
 
 // Mock DisplayLottie component

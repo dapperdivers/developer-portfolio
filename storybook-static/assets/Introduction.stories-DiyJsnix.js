@@ -49,7 +49,8 @@ The component library includes these key features:
 ### Basic Usage
 
 \`\`\`jsx
-import { Button, Card } from '../components/ui';
+import Button from '@atoms/Button';
+import Card from '@atoms/Card';
 
 function MyComponent() {
   return (
@@ -118,4 +119,4 @@ Explore the component library by navigating through the sidebar. Each component 
 - Usage guidelines
 
 Start with the basic atoms, then explore how they combine into more complex components.
-        `}}}},e={};var t,o,n;e.parameters={...e.parameters,docs:{...(t=e.parameters)==null?void 0:t.docs,source:{originalSource:"{}",...(n=(o=e.parameters)==null?void 0:o.docs)==null?void 0:n.source}}};const s=["Introduction"];export{e as Introduction,s as __namedExportsOrder,i as default};
+        `}}}},e={};var t,o,n;e.parameters={...e.parameters,docs:{...(t=e.parameters)==null?void 0:t.docs,source:{originalSource:"{}",...(n=(o=e.parameters)==null?void 0:o.docs)==null?void 0:n.source}}};const a=["Introduction"];export{e as Introduction,a as __namedExportsOrder,i as default};

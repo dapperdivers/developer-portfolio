@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import Skills from '../Skills';
+import Skills from '@organisms/Skills';
 import useSkills from '@hooks/useSkills';
 import { PortfolioProvider } from '@context/PortfolioContext';
 

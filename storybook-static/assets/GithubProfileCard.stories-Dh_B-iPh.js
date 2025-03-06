@@ -26,7 +26,7 @@ It provides a retry button for the user to attempt to fetch the data again.`,...
 }`,...(I=(B=i.parameters)==null?void 0:B.docs)==null?void 0:I.source},description:{story:`## Component Usage
 
 \`\`\`jsx
-import GithubProfileCard from 'components/GithubProfileCard';
+import GithubProfileCard from '@molecules/GithubProfileCard';
 
 function MyComponent() {
   const [profile, setProfile] = useState(null);

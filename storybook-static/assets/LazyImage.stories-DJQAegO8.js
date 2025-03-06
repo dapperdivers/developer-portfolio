@@ -16,13 +16,13 @@ Includes loading skeleton, blur-up effect, and proper accessibility attributes.
     src: 'https://source.unsplash.com/featured/800x600/?nature',
     alt: 'Nature landscape from Unsplash'
   }
-}`,...(S=(L=r.parameters)==null?void 0:L.docs)==null?void 0:S.source}}};var I,A,z;c.parameters={...c.parameters,docs:{...(I=c.parameters)==null?void 0:I.docs,source:{originalSource:`{
+}`,...(S=(L=r.parameters)==null?void 0:L.docs)==null?void 0:S.source}}};var I,z,A;c.parameters={...c.parameters,docs:{...(I=c.parameters)==null?void 0:I.docs,source:{originalSource:`{
   args: {
     src: 'https://source.unsplash.com/featured/800x450/?landscape',
     alt: 'Landscape with 16:9 aspect ratio',
     aspectRatio: '16:9'
   }
-}`,...(z=(A=c.parameters)==null?void 0:A.docs)==null?void 0:z.source}}};var v,q,E;l.parameters={...l.parameters,docs:{...(v=l.parameters)==null?void 0:v.docs,source:{originalSource:`{
+}`,...(A=(z=c.parameters)==null?void 0:z.docs)==null?void 0:A.source}}};var v,q,E;l.parameters={...l.parameters,docs:{...(v=l.parameters)==null?void 0:v.docs,source:{originalSource:`{
   args: {
     src: 'https://source.unsplash.com/featured/800x600/?mountains',
     alt: 'Mountain landscape',
@@ -36,7 +36,7 @@ Includes loading skeleton, blur-up effect, and proper accessibility attributes.
 }`,...(C=(j=o.parameters)==null?void 0:j.docs)==null?void 0:C.source},description:{story:`## Component Usage
 
 \`\`\`jsx
-import { LazyImage } from 'components/ui';
+import LazyImage from '@atoms/LazyImage';
 
 function MyComponent() {
   return (

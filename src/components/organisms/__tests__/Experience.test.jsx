@@ -1,16 +1,16 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import Experience from '../Experience';
+import Experience from '@organisms/Experience';
 
 // Import the modules we want to mock
 import useExperience from '@hooks/useExperience';
 import useMemoValues from '@hooks/useMemoValues';
 import useTimelineView from '@hooks/useTimelineView';
 import { usePortfolio } from '@context/PortfolioContext';
-import ExperienceCard from '../../components/ExperienceCard';
-import Section from '../../components/layout/Section';
-import SkeletonCard from '../../components/SkeletonCard';
+import ExperienceCard from '@molecules/ExperienceCard';
+import Section from '@layout/Section';
+import SkeletonCard from '@molecules/SkeletonCard';
 import { motion } from 'framer-motion';
 import { Icon } from '@iconify/react';
 

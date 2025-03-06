@@ -1,15 +1,15 @@
 import React from 'react';
 import { render, screen, waitFor, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import Projects from '../Projects';
+import Projects from '@organisms/Projects';
 
 // Import hooks and components to mock
 import useProjects from '@hooks/useProjects';
 import useMemoValues from '@hooks/useMemoValues';
 import { usePortfolio } from '@context/PortfolioContext';
-import ProjectsCard from '../../components/ProjectsCard';
-import Section from '../../components/layout/Section';
-import SkeletonCard from '../../components/SkeletonCard';
+import ProjectsCard from '@molecules/ProjectsCard';
+import Section from '@layout/Section';
+import SkeletonCard from '@molecules/SkeletonCard';
 
 // Mock hooks and components
 jest.mock('../../hooks/useProjects');

@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import ProjectsCard from '../ProjectsCard';
+import ProjectsCard from '@molecules/ProjectsCard';
 
 // Mock the Card component
 jest.mock('../ui/Card', () => ({
