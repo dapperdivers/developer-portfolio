@@ -3,6 +3,7 @@
  * 
  * Styles for the Card component following atomic design principles.
  * Uses design tokens for consistent styling across the application.
+ * Updated with security-themed variants.
  */
 
 .card {
@@ -13,9 +14,16 @@
   word-wrap: break-word;
   background-color: var(--color-background);
   background-clip: border-box;
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--border-radius);
   overflow: hidden;
   transition: var(--transition-base);
+}
+
+/* Security-themed Card */
+.card-security {
+  background-color: var(--color-navy);
+  color: var(--color-offwhite);
+  border-left: 3px solid var(--color-cyan);
 }
 
 /* Card with border */
@@ -23,15 +31,32 @@
   border: var(--border-width-thin) solid var(--color-border);
 }
 
+/* Security-themed bordered card */
+.card-security.card-bordered {
+  border: var(--border-width-thin) solid var(--color-cyan);
+}
+
 /* Card with shadow */
 .card-shadow {
   box-shadow: var(--box-shadow);
+}
+
+/* Security-themed shadow card */
+.card-security.card-shadow {
+  box-shadow: 0 4px 14px rgba(var(--color-navy-rgb), 0.5), 0 0 0 1px rgba(var(--color-cyan-rgb), 0.1);
 }
 
 /* Hoverable card */
 .card-hoverable:hover {
   transform: translateY(-5px);
   box-shadow: var(--box-shadow-lg);
+}
+
+/* Security-themed hoverable card */
+.card-security.card-hoverable:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px rgba(var(--color-navy-rgb), 0.6), 0 0 0 1px rgba(var(--color-cyan-rgb), 0.2);
+  border-left-color: var(--color-primary);
 }
 
 /* Card header */
@@ -42,10 +67,23 @@
   border-bottom: var(--border-width-thin) solid var(--color-border);
 }
 
+/* Security-themed card header */
+.card-security .card-header {
+  background-color: rgba(var(--color-navy-rgb), 0.8);
+  border-bottom: var(--border-width-thin) solid rgba(var(--color-cyan-rgb), 0.3);
+  font-family: var(--font-family-jetbrains);
+  letter-spacing: var(--letter-spacing-technical);
+}
+
 /* Card body */
 .card-body {
   flex: 1 1 auto;
   padding: var(--card-padding);
+}
+
+/* Security-themed card body */
+.card-security .card-body {
+  background-color: var(--color-navy);
 }
 
 /* Card footer */
@@ -53,6 +91,12 @@
   padding: var(--card-padding);
   background-color: var(--color-background);
   border-top: var(--border-width-thin) solid var(--color-border);
+}
+
+/* Security-themed card footer */
+.card-security .card-footer {
+  background-color: rgba(var(--color-navy-rgb), 0.9);
+  border-top: var(--border-width-thin) solid rgba(var(--color-cyan-rgb), 0.3);
 }
 
 /* Card title */
@@ -65,12 +109,25 @@
   line-height: var(--line-height-tight);
 }
 
+/* Security-themed card title */
+.card-security .card-title {
+  color: var(--color-cyan);
+  font-family: var(--font-family-jetbrains);
+  letter-spacing: var(--letter-spacing-technical);
+}
+
 /* Card subtitle */
 .card-subtitle {
   margin-top: calc(-1 * var(--spacing-1));
   margin-bottom: var(--spacing-2);
   font-size: var(--font-size-base);
   color: var(--color-text-muted);
+}
+
+/* Security-themed card subtitle */
+.card-security .card-subtitle {
+  color: var(--color-offwhite);
+  opacity: 0.8;
 }
 
 /* Media in cards */
@@ -89,6 +146,46 @@
 .card a:hover {
   color: var(--color-link-hover);
   text-decoration: underline;
+}
+
+/* Security-themed card links */
+.card-security a {
+  color: var(--color-cyan);
+  text-decoration: none;
+}
+
+.card-security a:hover {
+  color: color-mix(in srgb, var(--color-cyan) 85%, white);
+  text-decoration: underline;
+}
+
+/* Terminal-style security card */
+.card-terminal {
+  background-color: var(--color-navy);
+  color: var(--color-offwhite);
+  font-family: var(--font-family-jetbrains);
+  letter-spacing: var(--letter-spacing-technical);
+  border: 1px solid var(--color-cyan);
+  border-radius: 4px;
+}
+
+.card-terminal .card-header {
+  background-color: var(--color-cyan);
+  color: var(--color-navy);
+  border-bottom: none;
+  padding: 0.5rem var(--card-padding);
+  font-weight: var(--font-weight-bold);
+}
+
+.card-terminal .card-body {
+  background-color: var(--color-navy);
+  padding: var(--card-padding);
+}
+
+.card-terminal .card-footer {
+  background-color: rgba(var(--color-navy-rgb), 0.9);
+  border-top: 1px solid rgba(var(--color-cyan-rgb), 0.3);
+  font-family: var(--font-family-jetbrains);
 }
 
 /* Dark mode card (optional) */
@@ -130,5 +227,11 @@
 /* Accessibility: Focus outline */
 .card:focus-within {
   outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Security-themed focus outline */
+.card-security:focus-within {
+  outline: 2px solid var(--color-cyan);
   outline-offset: 2px;
 }

@@ -2,16 +2,19 @@ import React, { useState, useRef, memo } from 'react';
 import PropTypes from 'prop-types';
 import useIntersectionObserver from '@hooks/useIntersectionObserver';
 import '@assets/css/tailwind.css';
+import './LazyImage.css';
 
 /**
  * Lazy-loaded image component that only loads images when they enter the viewport.
  * Includes loading skeleton, blur-up effect, and proper accessibility attributes.
+ * Updated with security-themed variants.
  * 
  * @component
  * @param {Object} props - Component props
  * @param {string} props.src - Source URL of the image
  * @param {string} props.alt - Alt text for the image (required for accessibility)
  * @param {string} [props.className] - Additional CSS classes to apply
+ * @param {string} [props.variant=''] - Visual variant ('', 'security', 'terminal')
  * @param {string} [props.lowResSrc] - Low resolution version of image to show while loading
  * @param {Object} [props.imgProps] - Additional props to pass to img element
  * @param {string} [props.aspectRatio] - Aspect ratio to maintain (e.g., '16:9', '4:3', '1:1')
@@ -23,6 +26,7 @@ const LazyImage = ({
   src,
   alt,
   className = '',
+  variant = '',
   lowResSrc,
   imgProps = {},
   aspectRatio,
@@ -57,10 +61,17 @@ const LazyImage = ({
     if (onError) onError(e);
   };
   
+  // Construct container classes
+  const containerClasses = [
+    'lazy-image-container',
+    variant ? `lazy-image-${variant}` : '',
+    className
+  ].filter(Boolean).join(' ');
+    
   return (
     <div 
       ref={ref}
-      className={`lazy-image-container ${className}`}
+      className={containerClasses}
       style={aspectRatio ? aspectRatioStyle : {}}
       role="img"
       aria-label={hasError ? `Failed to load image: ${alt}` : ""}
@@ -111,6 +122,7 @@ LazyImage.propTypes = {
   src: PropTypes.string.isRequired,
   alt: PropTypes.string.isRequired,
   className: PropTypes.string,
+  variant: PropTypes.oneOf(['', 'security', 'terminal']),
   lowResSrc: PropTypes.string,
   imgProps: PropTypes.object,
   aspectRatio: PropTypes.string,

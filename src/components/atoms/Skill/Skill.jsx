@@ -57,26 +57,32 @@ import '@assets/css/tailwind.css';
 
 /**
  * Skill component for displaying individual skills with icons and tooltips.
+ * Updated with security-themed variant.
  * 
  * @component
  * @param {Object} props - Component props
  * @param {Object} props.skill - Skill data object
  * @param {string} props.skill.skillName - Name of the skill
  * @param {string} props.skill.iconName - Iconify icon name
+ * @param {number} [props.skill.level] - Skill proficiency level (1-5)
  * @param {number} [props.index=0] - Index for staggered animations
  * @param {string} [props.className=''] - Additional CSS classes
  * @param {string} [props.size='md'] - Size of the skill icon (sm, md, lg)
+ * @param {string} [props.variant=''] - Visual variant ('', 'security')
  * @param {boolean} [props.animate=true] - Whether to animate the component
  * @param {boolean} [props.reducedMotion=false] - Whether to use simplified animations for performance
+ * @param {boolean} [props.showLevel=false] - Whether to show the proficiency level indicator
  * @returns {React.ReactElement} Skill component
  */
 const Skill = ({ 
   skill, 
-  index = 0, 
+  index = 0,
   className = '', 
   size = 'md', 
+  variant = '',
   animate = true,
-  reducedMotion = false
+  reducedMotion = false,
+  showLevel = false
 }) => {
   // Size classes
   const sizeMap = {
@@ -91,6 +97,7 @@ const Skill = ({
   const baseClasses = [
     'skill-icon-wrapper',
     sizeClass,
+    variant ? `skill-${variant}` : '',
     reducedMotion ? 'reduced-motion' : '',
     className
   ].filter(Boolean).join(' ');
@@ -172,15 +179,15 @@ const Skill = ({
           aria-label={skill.skillName}
           role="img"
         >
-          {(skill.iconName || skill.fontAwesomeClassname) && (
+          {skill.iconName && (
             <Icon 
-              icon={skill.iconName || skill.fontAwesomeClassname} 
+              icon={skill.iconName} 
               className="skill-icon-svg" 
               width="24"
               height="24"
-              onLoad={() => console.log(`Icon loaded: ${skill.iconName || skill.fontAwesomeClassname}`)}
+              onLoad={() => console.log(`Icon loaded: ${skill.iconName}`)}
               onError={(err) => {
-                console.warn(`Icon failed to load: ${skill.iconName || skill.fontAwesomeClassname}`, err);
+                console.warn(`Icon failed to load: ${skill.iconName}`, err);
                 // Log error only - fallback handling should happen at the parent component
                 // We can't actually change the icon here after render
               }}
@@ -197,10 +204,12 @@ const Skill = ({
             />
           )}
           
-          {/* Use parent hover state for controlling tooltip */}
-          <span className="skill-tooltip">
-            {skill.skillName}
-          </span>
+          {/* Show level indicator if requested and level is provided */}
+          {showLevel && skill.level && (
+            <div className={`skill-level level-${skill.level}`}>
+              {skill.level}
+            </div>
+          )}
         </div>
       </motion.div>
     );
@@ -214,14 +223,14 @@ const Skill = ({
         aria-label={skill.skillName}
         role="img"
       >
-        {(skill.iconName || skill.fontAwesomeClassname) && (
+        {skill.iconName && (
           <Icon 
-            icon={skill.iconName || skill.fontAwesomeClassname} 
+            icon={skill.iconName} 
             className="skill-icon-svg"
             width="24"
             height="24" 
             onError={(err) => {
-              console.warn(`Icon failed to load: ${skill.iconName || skill.fontAwesomeClassname}`, err);
+              console.warn(`Icon failed to load: ${skill.iconName}`, err);
               // Log error only - fallback handling should happen at the parent component
               // We can't actually change the icon here after render
             }}
@@ -237,9 +246,13 @@ const Skill = ({
             }}
           />
         )}
-        <span className="skill-tooltip">
-          {skill.skillName}
-        </span>
+          
+          {/* Show level indicator if requested and level is provided */}
+          {showLevel && skill.level && (
+            <div className={`skill-level level-${skill.level}`}>
+              {skill.level}
+            </div>
+          )}
       </div>
     </div>
   );
@@ -249,7 +262,7 @@ Skill.propTypes = {
   skill: PropTypes.shape({
     skillName: PropTypes.string.isRequired,
     iconName: PropTypes.string,
-    fontAwesomeClassname: PropTypes.string, // Kept for backward compatibility
+    description: PropTypes.string,
     category: PropTypes.string, // Added for better fallback icon selection
     level: PropTypes.oneOfType([
       PropTypes.number,
@@ -259,8 +272,10 @@ Skill.propTypes = {
   index: PropTypes.number,
   className: PropTypes.string,
   size: PropTypes.oneOf(['sm', 'md', 'lg']),
+  variant: PropTypes.oneOf(['', 'security']),
   animate: PropTypes.bool,
-  reducedMotion: PropTypes.bool
+  reducedMotion: PropTypes.bool,
+  showLevel: PropTypes.bool
 };
 
 // Apply memoization for performance

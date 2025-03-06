@@ -7,7 +7,7 @@ import useFooter from '@hooks/useFooter';
 import './Footer.css';
 
 /**
- * Footer component with contact information, quick links, and copyright.
+ * Footer component with essential information and links in a concise format.
  * 
  * @component
  * @returns {React.ReactElement} Footer component
@@ -17,100 +17,62 @@ const Footer = () => {
   
   return (
     <footer 
-      className="bg-gray-900 text-gray-300 py-12" 
+      className="bg-gray-900 text-gray-300 py-6" 
       role="contentinfo"
       data-testid="footer"
     >
       <div className="container mx-auto px-4">
-        <div className="flex flex-wrap -mx-4 items-center justify-between">
-          <div className="w-full px-4 lg:w-5/12 mb-8 lg:mb-0">
-            <h4 className="font-heading font-bold text-2xl mb-4 text-white">
-              {greetings.name}
-            </h4>
-            <p className="text-gray-400 mb-6 text-sm md:text-base">
-              Full Stack Developer and Security Expert with extensive experience building 
-              secure web applications and APIs.
-            </p>
-            <SocialLinks />
-          </div>
-          
-          <div className="w-full px-4 lg:w-3/12 md:w-6/12 mb-8 md:mb-0">
-            <h5 className="font-semibold text-lg tracking-wide mb-4 text-primary-400">
-              Quick Links
-            </h5>
-            <ul className="space-y-2">
-              <li>
-                <a 
-                  href="#main-content" 
-                  className="text-gray-400 hover:text-white transition-colors duration-200 hover:translate-x-1 inline-block"
-                >
-                  Home
-                </a>
-              </li>
-              <li>
-                <a 
-                  href="#experience" 
-                  className="text-gray-400 hover:text-white transition-colors duration-200 hover:translate-x-1 inline-block"
-                >
-                  Experience
-                </a>
-              </li>
-              <li>
-                <a 
-                  href="#projects" 
-                  className="text-gray-400 hover:text-white transition-colors duration-200 hover:translate-x-1 inline-block"
-                >
-                  Projects
-                </a>
-              </li>
-              <li>
-                <a 
-                  href="#contact" 
-                  className="text-gray-400 hover:text-white transition-colors duration-200 hover:translate-x-1 inline-block"
-                >
-                  Contact
-                </a>
-              </li>
-            </ul>
-          </div>
-          
-          <div className="w-full px-4 lg:w-3/12 md:w-6/12">
-            <h5 className="font-semibold text-lg tracking-wide mb-4 text-primary-400">
-              Contact
-            </h5>
-            <ul className="space-y-2">
-              <li>
-                <a 
-                  href="mailto:contact@derekmackley.com" 
-                  className="text-gray-400 hover:text-white transition-colors duration-200 hover:translate-x-1 inline-block"
-                >
-                  contact@derekmackley.com
-                </a>
-              </li>
-              <li>
-                <a 
-                  href="/files/Derek_Mackley_Resume_2025.pdf" 
-                  className="text-gray-400 hover:text-white transition-colors duration-200 hover:translate-x-1 inline-block"
-                >
-                  Download Resume
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-        
-        <hr className="border-gray-800 my-8 opacity-30" />
-        
-        <div className="flex flex-wrap -mx-4 items-center">
-          <div className="w-full px-4 md:w-6/12 text-center md:text-left mb-4 md:mb-0">
-            <p className="text-sm">
-              © {currentYear} {greetings.name}. All rights reserved.
-            </p>
-          </div>
-          <div className="w-full px-4 md:w-6/12 text-center md:text-right">
-            <p className="text-sm">
+        <div className="flex flex-wrap items-center justify-between">
+          {/* Copyright and Made with */}
+          <div className="w-full md:w-auto mb-3 md:mb-0 text-center md:text-left">
+            <span className="text-sm md:mr-6">
+              © {currentYear} {greetings.name}
+            </span>
+            <span className="text-sm hidden md:inline-block">
               Made with <FaHeart className="text-primary-400 inline-block mx-1 animate-pulse" aria-hidden="true" /> using React
-            </p>
+            </span>
+          </div>
+          
+          {/* Essential Links */}
+          <div className="w-full md:w-auto mb-3 md:mb-0 text-center md:text-right">
+            <a 
+              href="#main-content" 
+              className="text-gray-400 hover:text-white transition-colors duration-200 text-sm mx-2"
+            >
+              Home
+            </a>
+            <a 
+              href="#experience" 
+              className="text-gray-400 hover:text-white transition-colors duration-200 text-sm mx-2"
+            >
+              Experience
+            </a>
+            <a 
+              href="#projects" 
+              className="text-gray-400 hover:text-white transition-colors duration-200 text-sm mx-2"
+            >
+              Projects
+            </a>
+            <a 
+              href="#contact" 
+              className="text-gray-400 hover:text-white transition-colors duration-200 text-sm mx-2"
+            >
+              Contact
+            </a>
+            <a 
+              href="/files/Derek_Mackley_Resume_2025.pdf" 
+              className="text-gray-400 hover:text-white transition-colors duration-200 text-sm mx-2"
+            >
+              Resume
+            </a>
+          </div>
+          
+          {/* Social Links */}
+          <div className="w-full md:w-auto text-center md:text-right">
+            <SocialLinks className="justify-center md:justify-end" />
+            <span className="text-sm md:hidden block mt-3">
+              Made with <FaHeart className="text-primary-400 inline-block mx-1 animate-pulse" aria-hidden="true" /> using React
+            </span>
           </div>
         </div>
         

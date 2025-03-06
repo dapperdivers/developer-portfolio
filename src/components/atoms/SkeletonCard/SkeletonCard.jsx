@@ -1,21 +1,34 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
+import './SkeletonCard.css';
 
 
 /**
  * SkeletonCard component for use as loading placeholders
+ * Updated with security-themed variants.
  * 
  * @component
  * @param {Object} props - Component props
  * @param {string} [props.type='project'] - Type of skeleton ('project', 'experience', 'skill')
+ * @param {string} [props.variant=''] - Visual variant ('', 'security', 'terminal')
  * @param {number} [props.index=0] - Index for staggered animations
  * @param {string} [props.className=''] - Additional CSS class names
  * @param {Object} [props.style={}] - Additional inline styles
  * @returns {React.ReactElement} SkeletonCard component
  */
-const SkeletonCard = ({ type = 'project', index = 0, className = '', style = {} }) => {
+const SkeletonCard = ({ 
+  type = 'project', 
+  variant = '', 
+  index = 0, 
+  className = '', 
+  style = {} 
+}) => {
   const baseClass = `${type}-card-skeleton`;
-  const combinedClassName = `${baseClass} ${className}`.trim();
+  const combinedClassName = [
+    baseClass,
+    variant, // Will add 'security' or 'terminal' class if provided
+    className
+  ].filter(Boolean).join(' ');
   
   // Calculate animation delay based on index (staggered effect)
   const animationDelay = `${index * 0.15}s`;
@@ -95,6 +108,7 @@ const SkeletonCard = ({ type = 'project', index = 0, className = '', style = {} 
 
 SkeletonCard.propTypes = {
   type: PropTypes.oneOf(['project', 'experience', 'skill', 'default']),
+  variant: PropTypes.oneOf(['', 'security', 'terminal']),
   index: PropTypes.number,
   className: PropTypes.string,
   style: PropTypes.object

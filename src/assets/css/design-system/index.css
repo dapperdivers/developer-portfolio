@@ -3,6 +3,9 @@
  * 
  * This file imports all design system token files and serves as the main entry point
  * for the design system. Import this file in your main CSS to include all design tokens.
+ * 
+ * The design system now features a security-focused theme incorporated directly
+ * into the main token files rather than as separate imports.
  */
 
 /* Import all token files */
@@ -14,6 +17,8 @@
 @import './tokens/transitions.css';
 @import './tokens/breakpoints.css';
 @import './tokens/z-index.css';
+
+/* All design tokens are now in the main token files */
 
 /* Import base styles */
 @import './base.css';

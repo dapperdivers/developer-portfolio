@@ -3,13 +3,14 @@
  * 
  * Styles for the Button component following atomic design principles.
  * Uses design tokens for consistent styling across the application.
+ * Updated to align with security-themed design.
  */
 
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--font-family-base);
+  font-family: var(--font-family-jetbrains);
   font-weight: var(--font-weight-medium);
   line-height: 1.5;
   text-align: center;
@@ -24,31 +25,32 @@
   transition: var(--transition-base);
   position: relative;
   overflow: hidden;
+  letter-spacing: var(--letter-spacing-technical);
 }
 
 /* Button variants */
 .btn-primary {
   background-color: var(--color-primary);
-  color: var(--color-white);
+  color: var(--color-navy);
   border-color: var(--color-primary);
 }
 
 .btn-primary:hover, .btn-primary:focus {
   background-color: var(--color-primary-dark);
   border-color: var(--color-primary-dark);
-  box-shadow: var(--box-shadow-sm);
+  box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.2);
 }
 
 .btn-secondary {
-  background-color: var(--color-secondary);
-  color: var(--color-white);
-  border-color: var(--color-secondary);
+  background-color: var(--color-navy);
+  color: var(--color-cyan);
+  border-color: var(--color-cyan);
 }
 
 .btn-secondary:hover, .btn-secondary:focus {
-  background-color: var(--color-secondary-dark);
-  border-color: var(--color-secondary-dark);
-  box-shadow: var(--box-shadow-sm);
+  background-color: var(--color-gray-800);
+  border-color: var(--color-cyan);
+  box-shadow: 0 0 0 3px rgba(var(--color-cyan-rgb), 0.2);
 }
 
 .btn-success {
@@ -60,6 +62,7 @@
 .btn-success:hover, .btn-success:focus {
   background-color: color-mix(in srgb, var(--color-success) 85%, black);
   border-color: color-mix(in srgb, var(--color-success) 85%, black);
+  box-shadow: 0 0 0 3px rgba(var(--color-success-rgb), 0.2);
 }
 
 .btn-danger {
@@ -71,6 +74,7 @@
 .btn-danger:hover, .btn-danger:focus {
   background-color: color-mix(in srgb, var(--color-danger) 85%, black);
   border-color: color-mix(in srgb, var(--color-danger) 85%, black);
+  box-shadow: 0 0 0 3px rgba(var(--color-danger-rgb), 0.2);
 }
 
 .btn-warning {
@@ -82,6 +86,7 @@
 .btn-warning:hover, .btn-warning:focus {
   background-color: color-mix(in srgb, var(--color-warning) 85%, black);
   border-color: color-mix(in srgb, var(--color-warning) 85%, black);
+  box-shadow: 0 0 0 3px rgba(var(--color-warning-rgb), 0.2);
 }
 
 .btn-info {
@@ -93,6 +98,56 @@
 .btn-info:hover, .btn-info:focus {
   background-color: color-mix(in srgb, var(--color-info) 85%, black);
   border-color: color-mix(in srgb, var(--color-info) 85%, black);
+  box-shadow: 0 0 0 3px rgba(var(--color-info-rgb), 0.2);
+}
+
+/* Critical, High, Medium, Low variants for security theme */
+.btn-critical {
+  background-color: var(--color-level-critical);
+  color: var(--color-white);
+  border-color: var(--color-level-critical);
+}
+
+.btn-critical:hover, .btn-critical:focus {
+  background-color: color-mix(in srgb, var(--color-level-critical) 85%, black);
+  border-color: color-mix(in srgb, var(--color-level-critical) 85%, black);
+  box-shadow: 0 0 0 3px rgba(var(--color-level-critical-rgb), 0.2);
+}
+
+.btn-high {
+  background-color: var(--color-level-high);
+  color: var(--color-white);
+  border-color: var(--color-level-high);
+}
+
+.btn-high:hover, .btn-high:focus {
+  background-color: color-mix(in srgb, var(--color-level-high) 85%, black);
+  border-color: color-mix(in srgb, var(--color-level-high) 85%, black);
+  box-shadow: 0 0 0 3px rgba(var(--color-level-high-rgb), 0.2);
+}
+
+.btn-medium {
+  background-color: var(--color-level-medium);
+  color: var(--color-gray-900);
+  border-color: var(--color-level-medium);
+}
+
+.btn-medium:hover, .btn-medium:focus {
+  background-color: color-mix(in srgb, var(--color-level-medium) 85%, black);
+  border-color: color-mix(in srgb, var(--color-level-medium) 85%, black);
+  box-shadow: 0 0 0 3px rgba(var(--color-level-medium-rgb), 0.2);
+}
+
+.btn-low {
+  background-color: var(--color-level-low);
+  color: var(--color-white);
+  border-color: var(--color-level-low);
+}
+
+.btn-low:hover, .btn-low:focus {
+  background-color: color-mix(in srgb, var(--color-level-low) 85%, black);
+  border-color: color-mix(in srgb, var(--color-level-low) 85%, black);
+  box-shadow: 0 0 0 3px rgba(var(--color-level-low-rgb), 0.2);
 }
 
 .btn-light {
@@ -104,22 +159,24 @@
 .btn-light:hover, .btn-light:focus {
   background-color: var(--color-gray-200);
   border-color: var(--color-gray-300);
+  box-shadow: 0 0 0 3px rgba(var(--color-gray-300-rgb, 200, 200, 200), 0.2);
 }
 
 .btn-dark {
-  background-color: var(--color-gray-800);
-  color: var(--color-white);
+  background-color: var(--color-navy);
+  color: var(--color-offwhite);
   border-color: var(--color-gray-800);
 }
 
 .btn-dark:hover, .btn-dark:focus {
   background-color: var(--color-gray-900);
   border-color: var(--color-gray-900);
+  box-shadow: 0 0 0 3px rgba(var(--color-navy-rgb), 0.2);
 }
 
 .btn-link {
   background-color: transparent;
-  color: var(--color-link);
+  color: var(--color-cyan);
   border-color: transparent;
   text-decoration: none;
   padding-left: 0;
@@ -127,7 +184,7 @@
 }
 
 .btn-link:hover, .btn-link:focus {
-  color: var(--color-link-hover);
+  color: var(--color-primary-dark);
   text-decoration: underline;
   box-shadow: none;
 }

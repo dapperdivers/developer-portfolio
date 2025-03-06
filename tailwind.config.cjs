@@ -37,6 +37,18 @@ module.exports = {
     
     // Add other common utilities
     'relative', 'absolute', 'overflow-hidden', 'transition-all', 'duration-200', 'shadow-sm',
+    
+    // Add theme utilities
+    'bg-theme-navy', 'bg-theme-cyan', 'text-theme-offwhite',
+    'border-theme-cyan', 'text-theme-red',
+    'bg-level-critical', 'bg-level-high', 'bg-level-medium', 
+    'bg-level-low', 'bg-level-info',
+    'text-level-critical', 'text-level-high', 'text-level-medium',
+    'text-level-low', 'text-level-info',
+    'font-jetbrains', 'font-inter', 'font-fira', 'font-ibm',
+    
+    // Add animation classes
+    'animate-fadeIn', 'animate-smoothScroll', 'animate-slideUp',
   ],
   theme: {
     extend: {
@@ -72,6 +84,20 @@ module.exports = {
         info: 'var(--color-info)',
         warning: 'var(--color-warning)',
         danger: 'var(--color-danger)',
+        // Security Theme Colors
+        theme: {
+          navy: 'var(--color-navy)',
+          cyan: 'var(--color-cyan)',
+          red: 'var(--color-bright-red)',
+          offwhite: 'var(--color-offwhite)',
+        },
+        level: {
+          critical: 'var(--color-level-critical)',
+          high: 'var(--color-level-high)',
+          medium: 'var(--color-level-medium)',
+          low: 'var(--color-level-low)',
+          info: 'var(--color-level-info)',
+        },
         gray: {
           100: 'var(--color-gray-100)',
           200: 'var(--color-gray-200)',
@@ -101,6 +127,11 @@ module.exports = {
         heading: 'var(--font-family-heading)',
         mono: 'var(--font-family-monospace)',
         sans: 'var(--font-family-base)',
+        // Specialized Typography
+        'jetbrains': 'var(--font-family-jetbrains)',
+        'inter': 'var(--font-family-inter)',
+        'fira': 'var(--font-family-fira-code)',
+        'ibm': 'var(--font-family-ibm-plex)',
       },
       fontSize: {
         'xs': 'var(--font-size-sm)',
@@ -219,16 +250,37 @@ module.exports = {
         },
         spin: {
           'to': { transform: 'rotate(360deg)' }
+        },
+        smoothScroll: {
+          '0%': { transform: 'translateY(20px)', opacity: 0 },
+          '100%': { transform: 'translateY(0)', opacity: 1 }
+        },
+        slideUp: {
+          '0%': { transform: 'translateY(20px)', opacity: 0 },
+          '100%': { transform: 'translateY(0)', opacity: 1 }
         }
       },
       animation: {
         fadeIn: 'fadeIn 0.3s ease-in forwards',
-        spin: 'spin 1s linear infinite'
+        spin: 'spin 1s linear infinite',
+        smoothScroll: 'smoothScroll 0.5s ease-out forwards',
+        slideUp: 'slideUp 0.5s ease-out forwards'
       }
     },
   },
   plugins: [
-    function({ addComponents, addUtilities }) {
+    function({ addBase, addComponents, addUtilities }) {
+      // Add base styles
+      addBase({
+        'body': {
+          backgroundColor: 'var(--color-background)', // Using design system variable
+          color: 'var(--color-text)', // Using design system variable
+          scrollBehavior: 'smooth'
+        },
+        'html': {
+          scrollBehavior: 'smooth'
+        }
+      });
       // Add custom components
       addComponents({
         '.p-card': {
@@ -244,6 +296,7 @@ module.exports = {
 
       // Add base utilities for older Tailwind patterns
       addUtilities({
+        // Padding utilities
         '.px-1': { 'padding-left': '0.25rem', 'padding-right': '0.25rem' },
         '.px-2': { 'padding-left': '0.5rem', 'padding-right': '0.5rem' },
         '.px-3': { 'padding-left': '0.75rem', 'padding-right': '0.75rem' },
@@ -301,6 +354,62 @@ module.exports = {
         '.border-warning\\/90': { 'border-color': 'rgba(var(--color-warning-rgb), 0.9)' },
         '.bg-info\\/90': { 'background-color': 'rgba(var(--color-info-rgb), 0.9)' },
         '.border-info\\/90': { 'border-color': 'rgba(var(--color-info-rgb), 0.9)' },
+        
+        // Theme opacity variants
+        '.bg-theme-navy\\/80': { 'background-color': 'rgba(var(--color-navy-rgb), 0.8)' },
+        '.bg-theme-navy\\/90': { 'background-color': 'rgba(var(--color-navy-rgb), 0.9)' },
+        '.bg-theme-cyan\\/20': { 'background-color': 'rgba(var(--color-cyan-rgb), 0.2)' },
+        '.bg-theme-cyan\\/50': { 'background-color': 'rgba(var(--color-cyan-rgb), 0.5)' },
+        '.text-theme-cyan\\/80': { 'color': 'rgba(var(--color-cyan-rgb), 0.8)' },
+        '.border-theme-cyan\\/30': { 'border-color': 'rgba(var(--color-cyan-rgb), 0.3)' },
+        '.border-theme-cyan\\/50': { 'border-color': 'rgba(var(--color-cyan-rgb), 0.5)' },
+        
+        // Level badge utilities
+        '.badge-critical': { 
+          'background-color': 'var(--color-level-critical)',
+          'color': 'white',
+          'padding': '0.125rem 0.5rem',
+          'border-radius': '0.25rem',
+          'font-family': 'var(--font-family-jetbrains)',
+          'font-size': '0.75rem',
+          'font-weight': 'var(--font-weight-medium)'
+        },
+        '.badge-high': { 
+          'background-color': 'var(--color-level-high)',
+          'color': 'white',
+          'padding': '0.125rem 0.5rem',
+          'border-radius': '0.25rem',
+          'font-family': 'var(--font-family-jetbrains)',
+          'font-size': '0.75rem',
+          'font-weight': 'var(--font-weight-medium)'
+        },
+        '.badge-medium': { 
+          'background-color': 'var(--color-level-medium)',
+          'color': 'black',
+          'padding': '0.125rem 0.5rem',
+          'border-radius': '0.25rem',
+          'font-family': 'var(--font-family-jetbrains)',
+          'font-size': '0.75rem',
+          'font-weight': 'var(--font-weight-medium)'
+        },
+        '.badge-low': { 
+          'background-color': 'var(--color-level-low)',
+          'color': 'white',
+          'padding': '0.125rem 0.5rem',
+          'border-radius': '0.25rem',
+          'font-family': 'var(--font-family-jetbrains)',
+          'font-size': '0.75rem',
+          'font-weight': 'var(--font-weight-medium)'
+        },
+        '.badge-info': { 
+          'background-color': 'var(--color-level-info)',
+          'color': 'white',
+          'padding': '0.125rem 0.5rem',
+          'border-radius': '0.25rem',
+          'font-family': 'var(--font-family-jetbrains)',
+          'font-size': '0.75rem',
+          'font-weight': 'var(--font-weight-medium)'
+        },
       });
     }
   ],

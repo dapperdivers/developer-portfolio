@@ -69,10 +69,12 @@ const Navigation = () => {
         <div className="container mx-auto px-4 flex items-center justify-between">
           <div className="flex items-center">
             <h2 
-              className="text-xl font-bold text-white hover:text-primary-300 transition-colors" 
+              className="text-xl font-bold text-cyan-400 cyber-text-animation" 
               id="nav-title"
+              data-content={greetings.name}
             >
               {greetings.name}
+              <span className="cursor"></span>
             </h2>
           </div>
           

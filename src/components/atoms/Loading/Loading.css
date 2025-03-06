@@ -4,8 +4,10 @@
  * Styling for the loading spinner component with accessibility
  * considerations and performance optimizations. Includes animations
  * and fallbacks for older browsers.
+ * Updated with security-themed variants.
  */
 
+/* Container styles */
 .loading-container {
     display: flex;
     justify-content: center;
@@ -16,10 +18,25 @@
     animation: fadeIn 0.3s ease-in forwards;
 }
 
+/* Security-themed container */
+.loading-security {
+    background-color: rgba(var(--color-navy-rgb), 0.05);
+    border-radius: 4px;
+}
+
+/* Terminal-themed container */
+.loading-terminal {
+    background-color: rgba(var(--color-navy-rgb), 0.1);
+    border: 1px dashed rgba(var(--color-cyan-rgb), 0.3);
+    border-radius: 2px;
+    font-family: var(--font-family-jetbrains);
+}
+
+/* Spinner type - standard */
 .loading-spinner {
     width: 50px;
     height: 50px;
-    border: 3px solid var(--color-primary-alpha-20);
+    border: 3px solid rgba(var(--color-primary-rgb), 0.2);
     border-radius: var(--border-radius-circle);
     border-top-color: var(--color-primary);
     animation: spin 1s ease-in-out infinite;
@@ -31,6 +48,139 @@
     perspective: 1000px;
 }
 
+/* Security-themed spinner */
+.loading-security .loading-spinner {
+    border: 3px solid rgba(var(--color-cyan-rgb), 0.1);
+    border-top-color: var(--color-cyan);
+    box-shadow: 0 0 10px rgba(var(--color-cyan-rgb), 0.2);
+}
+
+/* Terminal-themed spinner */
+.loading-terminal .loading-spinner {
+    border: 2px dashed rgba(var(--color-cyan-rgb), 0.3);
+    border-top: 2px solid var(--color-cyan);
+    width: 40px;
+    height: 40px;
+}
+
+/* Pulse type */
+.loading-pulse {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: var(--color-primary);
+    animation: pulse 1.5s ease-in-out infinite;
+    /* Optimize performance */
+    will-change: transform, opacity;
+    transform: translateZ(0);
+}
+
+/* Security-themed pulse */
+.loading-security .loading-pulse {
+    background-color: var(--color-cyan);
+    box-shadow: 0 0 15px rgba(var(--color-cyan-rgb), 0.5);
+}
+
+/* Terminal-themed pulse */
+.loading-terminal .loading-pulse {
+    background-color: var(--color-cyan);
+    border-radius: 2px;
+    width: 30px;
+    height: 30px;
+    animation: pulse-terminal 1.2s ease-in-out infinite;
+}
+
+/* Dots type */
+.loading-dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+.loading-dots::before,
+.loading-dots::after {
+    content: '';
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: var(--color-primary);
+    animation: dots 1.4s ease-in-out infinite;
+}
+
+.loading-dots::before {
+    animation-delay: -0.32s;
+}
+
+.loading-dots::after {
+    animation-delay: -0.16s;
+}
+
+.loading-dots {
+    position: relative;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: var(--color-primary);
+    animation: dots 1.4s ease-in-out infinite;
+}
+
+/* Security-themed dots */
+.loading-security .loading-dots::before,
+.loading-security .loading-dots::after,
+.loading-security .loading-dots {
+    background-color: var(--color-cyan);
+    box-shadow: 0 0 5px rgba(var(--color-cyan-rgb), 0.7);
+}
+
+/* Terminal-themed dots */
+.loading-terminal .loading-dots::before,
+.loading-terminal .loading-dots::after,
+.loading-terminal .loading-dots {
+    background-color: var(--color-cyan);
+    border-radius: 1px;
+    width: 8px;
+    height: 8px;
+}
+
+/* Size variants */
+.loading-sm .loading-spinner {
+    width: 30px;
+    height: 30px;
+    border-width: 2px;
+}
+
+.loading-lg .loading-spinner {
+    width: 70px;
+    height: 70px;
+    border-width: 4px;
+}
+
+.loading-sm .loading-pulse {
+    width: 30px;
+    height: 30px;
+}
+
+.loading-lg .loading-pulse {
+    width: 70px;
+    height: 70px;
+}
+
+.loading-sm .loading-dots,
+.loading-sm .loading-dots::before,
+.loading-sm .loading-dots::after {
+    width: 8px;
+    height: 8px;
+}
+
+.loading-lg .loading-dots,
+.loading-lg .loading-dots::before,
+.loading-lg .loading-dots::after {
+    width: 16px;
+    height: 16px;
+}
+
+/* Animations */
 @keyframes spin {
     to {
         transform: rotate(360deg);
@@ -52,6 +202,47 @@
     }
 }
 
+@keyframes pulse {
+    0% {
+        transform: scale(0.8);
+        opacity: 0.5;
+    }
+    50% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(0.8);
+        opacity: 0.5;
+    }
+}
+
+@keyframes pulse-terminal {
+    0% {
+        transform: scale(0.8);
+        opacity: 0.5;
+    }
+    50% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(0.8);
+        opacity: 0.5;
+    }
+}
+
+@keyframes dots {
+    0%, 80%, 100% {
+        transform: scale(0);
+        opacity: 0.5;
+    }
+    40% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
 /* Accessibility class for screen readers */
 .visually-hidden {
     position: absolute;
@@ -67,7 +258,11 @@
 
 /* Reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
-    .loading-spinner {
+    .loading-spinner,
+    .loading-pulse,
+    .loading-dots,
+    .loading-dots::before,
+    .loading-dots::after {
         animation-duration: 1.5s;
     }
     

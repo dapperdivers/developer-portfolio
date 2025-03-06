@@ -1,102 +1,49 @@
 import React from "react";
 import { greetings } from "@/portfolio";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { FaDownload } from 'react-icons/fa';
 import Button from '@atoms/Button';
-import DisplayLottie from '@molecules/DisplayLottie';
 import SocialLinks from '@molecules/SocialLinks';
-import codingAnimation from '@assets/animations/lottie/dev-coding.json';
-
-// Import hero section styles
 
 const Greetings = () => {
-  return ( 
-    <AnimatePresence>
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ 
-          duration: 0.8,
-          ease: "easeOut",
-          staggerChildren: 0.1
-        }}
-        exit={{ opacity: 0, y: -20 }}
-      >
-        <main role="main">
-          <div className="relative">
-            <section 
-              id="greetings"
-              className="relative py-20 overflow-hidden pb-64 hero-section"
-              aria-label="Introduction"
+  return (
+    <section className="py-16 bg-gray-900 text-white">
+      <div className="container mx-auto px-4">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="text-center"
+        >
+          <h1 className="text-4xl font-bold mb-4 text-cyan-400">
+            {greetings.title}
+          </h1>
+          
+          <p className="text-lg mb-6 max-w-2xl mx-auto text-gray-300">
+            {greetings.description}
+          </p>
+          
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-6 mb-6">
+            <Button
+              variant="light"
+              size="lg"
+              href={greetings.resumeLink}
+              ariaLabel="Download Resume"
+              type="button"
+              className="bg-cyan-500 hover:bg-cyan-600 text-white font-semibold shadow-lg px-6 py-3 transition-colors duration-300"
             >
-              <div className="shape shape-style-1 bg-gradient-info">
-                <span />
-                <span />
-                <span />
-                <span />
-                <span />
-                <span />
-                <span />
-                <span />
-                <span />
-              </div>
-              <div className="container mx-auto px-4 py-12 flex">
-                <div className="w-full px-0">
-                  <div className="flex flex-wrap -mx-4 ">
-                    <div className="w-full px-4 lg:w-6/12 ">
-                      <h1 className="display-3 text-white" tabIndex="0">
-                        {greetings.title}
-                      </h1>
-                      <p className="lead text-white" tabIndex="0">
-                        {greetings.description}
-                      </p>
-                      <div className="hero-action-container">
-                        <Button
-                          className="resume-download-btn"
-                          variant="light"
-                          size="lg"
-                          href={greetings.resumeLink}
-                          ariaLabel="Download my resume"
-                        >
-                          <span className="btn-icon-left">
-                            <FaDownload aria-hidden="true" />
-                          </span>
-                          Download Resume
-                        </Button>
-                        <SocialLinks />
-                      </div>
-                    </div>
-                    <div className="w-full px-4 lg:w-6/12 ">
-                      <div className="lottie-container">
-                        <DisplayLottie animationData={codingAnimation}/>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              {/* SVG separator */}
-              <div className="separator separator-bottom separator-skew">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  preserveAspectRatio="none"
-                  version="1.1"
-                  viewBox="0 0 2560 100"
-                  x="0"
-                  y="0"
-                >
-                  <polygon
-                    className="fill-white"
-                    points="2560 0 2560 100 0 100"
-                  />
-                </svg>
-              </div>
-            </section>
-            {/* 1st Hero Variation */}
+              <FaDownload className="mr-2 text-xl" />
+              Download Resume
+            </Button>
+            
+            <div className="social-links-wrapper p-2">
+              <SocialLinks />
+            </div>
           </div>
-        </main>
-      </motion.div>
-    </AnimatePresence>
-   );
+        </motion.div>
+      </div>
+    </section>
+  );
 }
  
 export default Greetings;

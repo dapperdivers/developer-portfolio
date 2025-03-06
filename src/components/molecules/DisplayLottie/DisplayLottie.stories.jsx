@@ -3,9 +3,9 @@ import DisplayLottie from './DisplayLottie';
 import { within, userEvent, expect } from '@storybook/test';
 
 // Import lottie animation files from the structured animations directory
-import codingAnimation from '@assets/animations/lottie/development/dev-coding.json';
-import webdevAnimation from '@assets/animations/lottie/development/dev-webdev.json';
-import buildAnimation from '@assets/animations/lottie/development/dev-building.json';
+import codingAnimation from '@assets/animations/lottie/dev-coding.json';
+import webdevAnimation from '@assets/animations/lottie/dev-webdev.json';
+import buildAnimation from '@assets/animations/lottie/dev-building.json';
 
 export default {
   title: 'Molecules/DisplayLottie',
@@ -222,7 +222,7 @@ SinglePlayAnimation.parameters = {
  * 
  * ```jsx
  * import DisplayLottie from './DisplayLottie';
- * import animationData from '@assets/animations/lottie/development/dev-coding.json';
+ * import animationData from '@assets/animations/lottie/dev-coding.json';
  * 
  * function HeroSection() {
  *   return (

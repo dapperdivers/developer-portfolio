@@ -170,7 +170,22 @@ export default defineConfig({
     headers: {
       'X-Content-Type-Options': 'nosniff',
       'X-Frame-Options': 'DENY',
-      'X-XSS-Protection': '1; mode=block'
+      'X-XSS-Protection': '1; mode=block',
+      'Access-Control-Allow-Origin': '*'
+    },
+    proxy: {
+      // Proxy OSM tile requests
+      '/osm-tiles': {
+        target: 'https://tile.openstreetmap.org',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/osm-tiles/, '')
+      },
+      // Proxy Nominatim API requests
+      '/nominatim': {
+        target: 'https://nominatim.openstreetmap.org',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/nominatim/, '')
+      }
     }
   },
   resolve: {

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
-import { FaGraduationCap, FaBriefcase, FaCode, FaStar, FaHandshake } from 'react-icons/fa';
+import { FaGraduationCap, FaBriefcase, FaCode, FaStar, FaHandshake, FaShieldAlt } from 'react-icons/fa';
 import '@assets/css/tailwind.css';
 import './Section.css';
 
@@ -10,7 +10,7 @@ import './Section.css';
  *
  * @component
  * @param {Object} props - The component props
- * @param {ReactNode} props.children - The section content
+ * @param {React.ReactNode} props.children - The section content
  * @param {string} [props.id] - The section ID for navigation
  * @param {string} [props.title] - The section title
  * @param {string} [props.subtitle] - The section subtitle
@@ -22,30 +22,14 @@ import './Section.css';
  * @param {Object} [props.animation] - Animation properties for Framer Motion
  * @param {string} [props.ariaLabel] - Aria label for accessibility
  * @param {string} [props.role='region'] - ARIA role for the section
- * @returns {ReactElement} The Section component
- *
- * @example
- * <Section 
- *   id="about"
- *   title="About Me"
- *   subtitle="Learn more about my experience"
- *   icon="mdi:account"
- *   background="light"
- *   animation={{ 
- *     initial: { opacity: 0 },
- *     whileInView: { opacity: 1 },
- *     viewport: { once: true }
- *   }}
- * >
- *   <p>Content goes here</p>
- * </Section>
+ * @returns {React.ReactElement} The Section component
  */
 const Section = ({
   children,
   id,
   title,
   subtitle,
-  // icon is not used but kept in propTypes for future use
+  icon,
   className = '',
   container = true,
   fluid = false,
@@ -56,9 +40,10 @@ const Section = ({
   ...rest
 }) => {
   // Base classes
+  const defaultBg = 'bg-gray-900 text-white';
   const sectionClasses = [
     'section',
-    background ? `bg-${background}` : '',
+    background ? `bg-${background}` : defaultBg,
     className
   ].filter(Boolean).join(' ');
 
@@ -72,12 +57,13 @@ const Section = ({
       {title === "Education" && <FaGraduationCap className="section-icon" />}
       {title === "Experience" && <FaBriefcase className="section-icon" />}
       {title === "Projects" && <FaCode className="section-icon" />}
-      {title === "What I do" && <FaCode className="section-icon" />}
+      {title === "Skills" && <FaCode className="section-icon" />}
       {title === "Feedbacks" && <FaStar className="section-icon" />}
       {title === "Contact" && <FaHandshake className="section-icon" />}
+      {title === "Security" && <FaShieldAlt className="section-icon" />}
       
-      {title && <h2 className="section-title">{title}</h2>}
-      {subtitle && <div className="section-subtitle">{subtitle}</div>}
+      {title && <h2 className="section-title text-2xl md:text-3xl font-bold mb-2">{title}</h2>}
+      {subtitle && <div className="section-subtitle text-gray-100">{subtitle}</div>}
     </div>
   );
 

@@ -8,23 +8,25 @@ import './Card.css';
  *
  * @component
  * @param {Object} props - The component props
- * @param {ReactNode} [props.children] - The card content
- * @param {ReactNode} [props.header] - The card header content
- * @param {ReactNode} [props.footer] - The card footer content
- * @param {ReactNode} [props.title] - The card title
- * @param {ReactNode} [props.subtitle] - The card subtitle
+ * @param {React.ReactNode} [props.children] - The card content
+ * @param {React.ReactNode} [props.header] - The card header content
+ * @param {React.ReactNode} [props.footer] - The card footer content
+ * @param {React.ReactNode} [props.title] - The card title
+ * @param {React.ReactNode} [props.subtitle] - The card subtitle
  * @param {string} [props.className] - Additional CSS classes
  * @param {boolean} [props.hoverable=false] - Whether the card has hover effects
  * @param {boolean} [props.bordered=true] - Whether the card has a border
  * @param {boolean} [props.shadow=false] - Whether the card has a shadow
+ * @param {string} [props.variant=''] - Card variant ('', 'security', 'terminal')
  * @param {Object} [props.animation] - Animation properties for Framer Motion
  * @param {string} [props.ariaLabel] - Aria label for accessibility
- * @returns {ReactElement} The Card component
+ * @returns {React.ReactElement} The Card component
  *
  * @example
  * <Card
  *   header={<h3>Card Title</h3>}
  *   footer={<Button>Learn More</Button>}
+ *   variant="security"
  *   hoverable
  *   shadow
  * >
@@ -41,6 +43,7 @@ const Card = ({
   hoverable = false,
   bordered = true,
   shadow = false,
+  variant = '',
   animation,
   ariaLabel,
   ...rest
@@ -48,6 +51,7 @@ const Card = ({
   // Base classes
   const baseClasses = [
     'card',
+    variant ? `card-${variant}` : '',
     hoverable ? 'card-hoverable' : '',
     bordered ? 'card-bordered' : '',
     shadow ? 'card-shadow' : '',
@@ -117,6 +121,7 @@ Card.propTypes = {
   hoverable: PropTypes.bool,
   bordered: PropTypes.bool,
   shadow: PropTypes.bool,
+  variant: PropTypes.oneOf(['', 'security', 'terminal']),
   animation: PropTypes.object,
   ariaLabel: PropTypes.string
 };

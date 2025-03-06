@@ -2,7 +2,7 @@
 
 .feedbacks-section {
   padding: var(--section-padding-y) 0;
-  background-color: var(--color-background);
+  background-color: var(--color-background-alt);
   position: relative;
 }
 

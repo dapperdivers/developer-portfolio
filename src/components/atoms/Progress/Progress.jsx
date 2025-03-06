@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 /**
- * Custom Progress component to replace reactstrap's Progress
+ * Custom Progress component with security-themed variants
  * 
  * @component
  * @param {Object} props - Component props
@@ -12,6 +12,10 @@ import PropTypes from 'prop-types';
  * @param {string} [props.className=""] - Additional CSS classes
  * @param {string} [props.barClassName=""] - Additional CSS classes for the bar itself
  * @param {Object} [props.style={}] - Additional inline styles
+ * @param {string} [props.variant=""] - Progress bar variant ("security" or "terminal")
+ * @param {boolean} [props.striped=false] - Whether to apply striped styling
+ * @param {boolean} [props.animated=false] - Whether to animate the progress bar
+ * @param {string} [props.size=""] - Progress bar size ("thin" or "thick")
  * @returns {React.ReactElement} Progress component
  */
 const Progress = ({
@@ -21,6 +25,10 @@ const Progress = ({
   className = "",
   barClassName = "",
   style = {},
+  variant = "",
+  striped = false,
+  animated = false,
+  size = "",
   ...rest
 }) => {
   // Convert string values to numbers if needed and calculate width as percentage
@@ -33,20 +41,38 @@ const Progress = ({
   const barBaseClassName = "tailwind-progress-bar";
   const colorClassName = `tailwind-progress-${color}`;
   
-  const combinedClassName = `${baseClassName} ${className}`.trim();
-  const combinedBarClassName = `${barBaseClassName} ${colorClassName} ${barClassName}`.trim();
+  const combinedClassName = [
+    baseClassName,
+    variant ? `tailwind-progress-${variant}` : '',
+    size ? `tailwind-progress-${size}` : '',
+    className
+  ].filter(Boolean).join(' ');
+  
+  const combinedBarClassName = [
+    barBaseClassName,
+    colorClassName,
+    striped ? 'tailwind-progress-striped' : '',
+    animated ? 'tailwind-progress-animated' : '',
+    barClassName
+  ].filter(Boolean).join(' ');
   
   return (
     <div 
       className={combinedClassName} 
       style={style}
       role="progressbar"
+      aria-valuenow={numericValue}
+      aria-valuemin={0} 
+      aria-valuemax={numericMax}
       {...rest}
     >
       <div 
         className={combinedBarClassName} 
         style={{ width: `${percent}%` }}
       />
+      <span className="tailwind-progress-label">
+        {percent}% complete
+      </span>
     </div>
   );
 };
@@ -54,10 +80,14 @@ const Progress = ({
 Progress.propTypes = {
   value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   max: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  color: PropTypes.oneOf(['primary', 'info', 'success', 'warning', 'danger']),
+  color: PropTypes.oneOf(['primary', 'info', 'success', 'warning', 'danger', 'critical', 'high', 'medium', 'low']),
   className: PropTypes.string,
   barClassName: PropTypes.string,
-  style: PropTypes.object
+  style: PropTypes.object,
+  variant: PropTypes.oneOf(['', 'security', 'terminal']),
+  striped: PropTypes.bool,
+  animated: PropTypes.bool,
+  size: PropTypes.oneOf(['', 'thin', 'thick'])
 };
 
 export default Progress;

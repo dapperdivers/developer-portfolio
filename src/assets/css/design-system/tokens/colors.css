@@ -1,18 +1,31 @@
 :root {
   /* Colors - Primary */
-  --color-primary: #0062cc;
-  --color-primary-light: #4d8fe6;
-  --color-primary-dark: #0050a6;
+  --color-primary: #64ffda; /* Updated to security cyan as primary brand color */
+  --color-primary-light: #a5ffed;
+  --color-primary-dark: #42d7b5;
   --color-secondary: #6c757d;
   --color-secondary-light: #8c959d;
   --color-secondary-dark: #555c64;
-  --color-accent: #fd7e14;
+  --color-accent: #ff4d4d; /* Updated to security red as accent */
+  
+  /* Security Theme Colors */
+  --color-navy: #0a192f;
+  --color-cyan: #64ffda;
+  --color-bright-red: #ff4d4d;
+  --color-offwhite: #e6f1ff;
   
   /* Colors - Semantic */
-  --color-success: #28a745;
-  --color-info: #17a2b8;
-  --color-warning: #ffc107;
-  --color-danger: #dc3545;
+  --color-success: #34c759; /* Aligned with severity-low for consistency */
+  --color-info: #5ac8fa; /* Aligned with severity-info for consistency */
+  --color-warning: #ffcc00; /* Aligned with severity-medium for consistency */
+  --color-danger: #ff2d55; /* Aligned with severity-critical for consistency */
+  
+  /* Severity Level Colors */
+  --color-level-critical: #ff2d55;
+  --color-level-high: #ff9500;
+  --color-level-medium: #ffcc00;
+  --color-level-low: #34c759;
+  --color-level-info: #5ac8fa;
   
   /* Colors - Neutrals */
   --color-white: #ffffff;
@@ -28,12 +41,29 @@
   --color-black: #000000;
   
   /* Colors - Semantic Usage */
-  --color-text: var(--color-gray-900);
-  --color-text-muted: var(--color-gray-600);
+  --color-text: var(--color-white);
+  --color-text-muted: var(--color-gray-400);
   --color-link: var(--color-primary);
   --color-link-hover: var(--color-primary-dark);
-  --color-border: var(--color-gray-300);
-  --color-background: var(--color-white);
-  --color-background-alt: var(--color-gray-100);
-  --color-background-muted: var(--color-gray-200);
+  --color-border: var(--color-gray-700);
+  --color-background: var(--color-navy); /* Using security theme navy color for background */
+  --color-background-alt: var(--color-gray-900); /* Dark alt background */
+  --color-background-muted: var(--color-gray-800); /* Dark muted background */
+  
+  /* RGB Values for Opacity Variants */
+  --color-primary-rgb: 100, 255, 218; /* Updated to match new primary */
+  --color-secondary-rgb: 108, 117, 125;
+  --color-success-rgb: 52, 199, 89; /* Updated to match severity-low */
+  --color-info-rgb: 90, 200, 250; /* Updated to match severity-info */
+  --color-warning-rgb: 255, 204, 0; /* Updated to match severity-medium */
+  --color-danger-rgb: 255, 45, 85; /* Updated to match severity-critical */
+  --color-navy-rgb: 10, 25, 47;
+  --color-cyan-rgb: 100, 255, 218;
+  --color-bright-red-rgb: 255, 77, 77;
+  --color-offwhite-rgb: 230, 241, 255;
+  --color-level-critical-rgb: 255, 45, 85;
+  --color-level-high-rgb: 255, 149, 0;
+  --color-level-medium-rgb: 255, 204, 0;
+  --color-level-low-rgb: 52, 199, 89;
+  --color-level-info-rgb: 90, 200, 250;
 }

@@ -2,20 +2,14 @@
  * Main CSS Entry Point
  * 
  * This file serves as the main entry point for all CSS in the application.
- * It first imports Tailwind, then all component and legacy styles.
+ * It imports all styles in the correct order.
  */
 
-/* Import Tailwind CSS (which already imports design tokens) */
+/* Import all CSS files */
 @import './tailwind.css';
-
-/* Import component styles not handled by Tailwind */
+@import './global.css';
 @import './components/index.css';
-
-/* Import utility styles */
 @import './utilities/index.css';
-
-/* Legacy Section Styles - To be gradually migrated to Tailwind classes */
-/* These will be phased out as components are migrated to Tailwind */
 @import './component-styles.css';
 @import './contact-section.css';
 @import './education-section.css';

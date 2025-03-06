@@ -1,0 +1,124 @@
+/**
+ * ResponsiveImage Component
+ * 
+ * Styles for the responsive image component with security-themed variants.
+ */
+
+/* Base styles */
+.responsive-image {
+  width: 100%;
+  height: auto;
+  transition: opacity 0.3s ease, filter 0.3s ease;
+}
+
+/* Loading state */
+.responsive-image.loading {
+  opacity: 0.7;
+  filter: blur(5px);
+}
+
+/* Loaded state */
+.responsive-image.loaded {
+  opacity: 1;
+  filter: blur(0);
+}
+
+/* Error state */
+.responsive-image.error {
+  opacity: 0.5;
+}
+
+/* Security variants */
+.responsive-image-security {
+  border: 1px solid rgba(var(--color-cyan-rgb), 0.3);
+  background-color: rgba(var(--color-navy-rgb), 0.1);
+}
+
+.responsive-image-security.loading {
+  opacity: 0.5;
+  filter: blur(8px) brightness(0.7);
+  background: linear-gradient(
+    45deg,
+    rgba(var(--color-navy-rgb), 0.3) 25%,
+    rgba(var(--color-cyan-rgb), 0.1) 50%,
+    rgba(var(--color-navy-rgb), 0.3) 75%
+  );
+  background-size: 200% 200%;
+  animation: security-shimmer 1.5s ease infinite;
+}
+
+.responsive-image-security.loaded {
+  box-shadow: 0 0 15px rgba(var(--color-cyan-rgb), 0.2);
+}
+
+.responsive-image-security.error {
+  border-color: var(--color-level-critical);
+  opacity: 0.7;
+  filter: grayscale(1) brightness(0.7);
+}
+
+/* Terminal variants */
+.responsive-image-terminal {
+  border: 2px solid var(--color-cyan);
+  padding: 2px;
+  background-color: var(--color-navy);
+}
+
+.responsive-image-terminal.loading {
+  border: 2px dashed var(--color-cyan);
+  opacity: 0.4;
+  background: linear-gradient(
+    90deg,
+    var(--color-navy) 0%,
+    rgba(var(--color-cyan-rgb), 0.2) 50%,
+    var(--color-navy) 100%
+  );
+  background-size: 200% 100%;
+  animation: terminal-pulse 2s ease infinite;
+}
+
+.responsive-image-terminal.loaded {
+  filter: brightness(0.9) contrast(1.1);
+}
+
+.responsive-image-terminal.error {
+  border-color: var(--color-level-critical);
+  border-style: dashed;
+  filter: grayscale(0.8) brightness(0.5);
+}
+
+/* Animation for security loading shimmer */
+@keyframes security-shimmer {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}
+
+/* Animation for terminal loading pulse */
+@keyframes terminal-pulse {
+  0% {
+    background-position: -100% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .responsive-image {
+    transition: none;
+  }
+  
+  .responsive-image-security.loading,
+  .responsive-image-terminal.loading {
+    animation: none;
+    opacity: 0.6;
+  }
+}

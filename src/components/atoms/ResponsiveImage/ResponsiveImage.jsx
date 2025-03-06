@@ -3,16 +3,19 @@ import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
 import useIntersectionObserver from '@hooks/useIntersectionObserver';
 import '@assets/css/tailwind.css';
+import './ResponsiveImage.css';
 
 /**
  * ResponsiveImage component for optimized image loading with lazy loading,
  * placeholder support, and animation capabilities.
+ * Updated with security-themed variants.
  *
  * @component
  * @param {Object} props - Component props
  * @param {string} props.src - Source URL of the image
  * @param {string} [props.alt=''] - Alt text for the image
  * @param {string} [props.className=''] - Additional CSS classes
+ * @param {string} [props.variant=''] - Visual variant ('', 'security', 'terminal')
  * @param {string} [props.placeholderSrc] - Low-quality placeholder image to show while loading
  * @param {boolean} [props.lazy=true] - Whether to lazy load the image
  * @param {string} [props.objectFit='cover'] - CSS object-fit property
@@ -22,7 +25,7 @@ import '@assets/css/tailwind.css';
  * @param {Function} [props.onError] - Callback when image fails to load
  * @param {string} [props.sizes] - Sizes attribute for responsive images
  * @param {string} [props.srcSet] - SrcSet attribute for responsive images
- * @returns {ReactElement} ResponsiveImage component
+ * @returns {React.ReactElement} ResponsiveImage component
  * 
  * @example
  * <ResponsiveImage
@@ -41,6 +44,7 @@ const ResponsiveImage = ({
   src,
   alt = '',
   className = '',
+  variant = '',
   placeholderSrc,
   lazy = true,
   objectFit = 'cover',
@@ -62,6 +66,7 @@ const ResponsiveImage = ({
     'responsive-image',
     isLoaded ? 'loaded' : 'loading',
     isError ? 'error' : '',
+    variant ? `responsive-image-${variant}` : '',
     className
   ].filter(Boolean).join(' ');
   
@@ -130,6 +135,7 @@ ResponsiveImage.propTypes = {
   src: PropTypes.string.isRequired,
   alt: PropTypes.string,
   className: PropTypes.string,
+  variant: PropTypes.oneOf(['', 'security', 'terminal']),
   placeholderSrc: PropTypes.string,
   lazy: PropTypes.bool,
   objectFit: PropTypes.oneOf(['contain', 'cover', 'fill', 'none', 'scale-down']),

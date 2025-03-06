@@ -1,14 +1,13 @@
 import React, { memo, useMemo, useState, useEffect } from 'react';
-import DisplayLottie from '@molecules/DisplayLottie';
-import webdev from '@assets/animations/lottie/dev-webdev.json';
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
-import Skill from '@atoms/Skill';
+import SkillCard, { SkillCardExpanded } from '@molecules/SkillCard';
 import SkeletonCard from '@atoms/SkeletonCard';
 import Section from '@layout/Section';
 import useSkills from "@hooks/useSkills";
 import { usePortfolio } from "@context/PortfolioContext";
 import '@assets/css/tailwind.css';
+import './Skills.css';
 
 /**
  * Skills component that displays a grid of skills icons and descriptions.
@@ -17,16 +16,6 @@ import '@assets/css/tailwind.css';
  * 
  * @component
  * @returns {React.ReactElement} Skills component
- * 
- * @example
- * // Usage in App.jsx
- * import Skills from '@organisms/containers/Skills';
- * 
- * const App = () => (
- *   <main>
- *     <Skills />
- *   </main>
- * );
  */
 const Skills = () => {
   // Get portfolio data
@@ -46,6 +35,9 @@ const Skills = () => {
     softwareSkills: [],
     skills: []
   };
+  
+  // State for expanded skill card
+  const [expandedSkill, setExpandedSkill] = useState(null);
   
   // Loading and error states
   const isLoading = !skillsData;
@@ -76,21 +68,20 @@ const Skills = () => {
     // Device performance detection
     const checkDevicePerformance = () => {
       // Check device memory (available in Chrome)
-      if ('deviceMemory' in navigator) {
+      if ('deviceMemory' in navigator && typeof navigator.deviceMemory === 'number') {
         setIsLowEndDevice(navigator.deviceMemory < 4);
         return;
       }
       
       // Check hardware concurrency (CPU cores)
-      if ('hardwareConcurrency' in navigator) {
+      if ('hardwareConcurrency' in navigator && typeof navigator.hardwareConcurrency === 'number') {
         setIsLowEndDevice(navigator.hardwareConcurrency < 4);
         return;
       }
       
       // Fallback: use user agent for basic mobile detection
-      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-        navigator.userAgent
-      );
+      const userAgent = navigator.userAgent || '';
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
       setIsLowEndDevice(isMobile);
     };
     
@@ -135,12 +126,15 @@ const Skills = () => {
   
   // Function to generate staggered animations for skill text items - optimized version
   const getSkillTextVariants = useMemo(() => (index) => {
+    // Convert index to number for calculations
+    const numIndex = typeof index === 'string' ? parseInt(index, 10) || 0 : index || 0;
+    
     if (useSimplifiedAnimations) {
       return {
         hidden: { opacity: 0 },
         visible: {
           opacity: 1,
-          transition: { delay: 0.3 + (index * 0.05) }
+          transition: { delay: 0.3 + (numIndex * 0.05) }
         }
       };
     }
@@ -150,10 +144,78 @@ const Skills = () => {
       visible: {
         opacity: 1,
         x: 0,
-        transition: { delay: 0.7 + (index * 0.1) }
+        transition: { delay: 0.7 + (numIndex * 0.1) }
       }
     };
   }, [useSimplifiedAnimations]);
+  
+  // Group skills by security domain
+  const groupedSkills = useMemo(() => {
+    const grouped = {};
+    
+    // First, collect all skills with security domains
+    skillsSection.softwareSkills.forEach(skill => {
+      if (skill.securityDomain) {
+        if (!grouped[skill.securityDomain]) {
+          grouped[skill.securityDomain] = [];
+        }
+        grouped[skill.securityDomain].push(skill);
+      }
+    });
+    
+    // Create an "Other Development Skills" domain for skills without a securityDomain
+    const otherSkills = skillsSection.softwareSkills.filter(skill => !skill.securityDomain);
+    if (otherSkills.length > 0) {
+      grouped["Development Skills"] = otherSkills;
+    }
+    
+    return grouped;
+  }, [skillsSection.softwareSkills]);
+  
+  // Modal animations
+  const modalVariants = {
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: { 
+      opacity: 1, 
+      scale: 1,
+      transition: { type: "spring", damping: 25, stiffness: 500 }
+    },
+    exit: {
+      opacity: 0,
+      scale: 0.8,
+      transition: { duration: 0.2 }
+    }
+  };
+  
+  // Background overlay animations
+  const overlayVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { duration: 0.2 } },
+    exit: { opacity: 0, transition: { duration: 0.2 } }
+  };
+  
+  // Handle skill card click
+  const handleSkillClick = (skill) => {
+    setExpandedSkill(skill);
+  };
+  
+  // Close expanded skill card
+  const closeExpandedSkill = () => {
+    setExpandedSkill(null);
+  };
+  
+  // Prevent background scrolling when modal is open
+  useEffect(() => {
+    if (expandedSkill) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [expandedSkill]);
   
   // Loading state
   if (isLoading) {
@@ -162,7 +224,7 @@ const Skills = () => {
         id="skills"
         title="Skills"
         icon="simple-icons:apachespark"
-        className={`skills-section ${useSimplifiedAnimations ? 'reduced-motion' : ''}`}
+        className={`skills-section bg-gray-900 text-white ${useSimplifiedAnimations ? 'reduced-motion' : ''}`}
       >
         <div className="flex flex-wrap -mx-4 items-center">
           <div className="w-full px-4 lg:w-6/12">
@@ -200,7 +262,7 @@ const Skills = () => {
         id="skills"
         title="Skills"
         icon="simple-icons:apachespark"
-        className="skills-section"
+        className="skills-section bg-gray-900 text-white"
       >
         <div className="skills-empty-state">
           <p>No skills are currently available.</p>
@@ -209,49 +271,29 @@ const Skills = () => {
     );
   }
 
-  // Normal state
+  // Normal state with standard view
   return (
     <Section
       id="skills"
       title={skillsSection.title}
       subtitle={skillsSection.subTitle}
       animation={sectionAnimation}
-      className={`skills-section ${useSimplifiedAnimations ? 'reduced-motion' : ''}`}
+      className="skills-section bg-gray-900 text-white"
       aria-label="Developer skills and technologies"
     >
-      <div className="flex flex-wrap -mx-4 items-center">
-        <div className="w-full px-4 lg:w-6/12">
-          <div 
-            className="skills-animation"
-            aria-hidden="true" // Animation is decorative
-          >
-            <DisplayLottie 
-              animationData={webdev} 
-              quality={useSimplifiedAnimations ? 0.7 : 1}
-              size={useSimplifiedAnimations ? "small" : "medium"}
-              shouldOptimize={true}
-            />
+      <div className="skills-content-wrapper">
+        {/* Terminal Section - Core Capabilities */}
+        <div className="terminal-container">
+          <div className="terminal-header">
+            <span className="terminal-title">Core Capabilities</span>
+            <div className="terminal-buttons">
+              <span className="terminal-button"></span>
+              <span className="terminal-button"></span>
+              <span className="terminal-button"></span>
+            </div>
           </div>
-        </div>
-        
-        <div className="w-full px-4 lg:w-6/12">
-          <div 
-            className="skills-grid"
-            aria-label={`${skillsSection.softwareSkills.length} technical skills`}
-          >
-            {skillsSection.softwareSkills.map((skill, index) => (
-              <Skill 
-                key={`skill-${skill.skillName}`} 
-                skill={skill}
-                index={index}
-                size="lg"
-                reducedMotion={useSimplifiedAnimations}
-              />
-            ))}
-          </div>
-          
           <motion.div 
-            className="skills-description"
+            className="terminal-content"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
@@ -260,16 +302,63 @@ const Skills = () => {
             {skillsSection.skills.map((skill, index) => (
               <motion.p 
                 key={`skill-desc-${index}`} 
-                className="skill-text" 
-                tabIndex="0"
-                variants={getSkillTextVariants(index)}
+                className="terminal-line" 
+                tabIndex={0}
+                variants={getSkillTextVariants(+index)}
               >
-                {skill}
+                <span className="terminal-prompt">$&gt;</span> {skill}
               </motion.p>
             ))}
           </motion.div>
         </div>
+        
+        {/* Skills Grid Section */}
+        <div className="skills-container">
+          <h3 className="skills-category-title">Technical Skills</h3>
+          
+          {/* Render skills grouped by domain */}
+          {Object.keys(groupedSkills).map(domain => (
+            <div key={domain}>
+              <h4 className="domain-header">{domain}</h4>
+              <div 
+                className="skills-grid standard-grid"
+                aria-label={`${groupedSkills[domain].length} skills in ${domain}`}
+              >
+                {groupedSkills[domain].map((skill, index) => (
+                  <SkillCard
+                    key={`skill-card-${skill.skillName}`}
+                    skill={skill}
+                    index={+index}
+                    reducedMotion={useSimplifiedAnimations}
+                    onClick={handleSkillClick}
+                  />
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
+      
+      {/* Expanded Skill Modal */}
+      <AnimatePresence>
+        {expandedSkill && (
+          <>
+            <motion.div 
+              className="modal-backdrop"
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              variants={overlayVariants}
+              onClick={closeExpandedSkill}
+            />
+            <SkillCardExpanded
+              skill={expandedSkill}
+              onClose={closeExpandedSkill}
+              animationVariants={modalVariants}
+            />
+          </>
+        )}
+      </AnimatePresence>
     </Section>
   );
 };

@@ -4,7 +4,7 @@ import { within, expect } from '@storybook/test';
 import PortfolioContext from '@context/PortfolioContext';
 import { mockPortfolioData } from '@stories-utils/mockData';
 import { withPortfolioContext, withViewport } from '@stories-utils/decorators';
-import build from '@assets/animations/build';
+import build from '@assets/animations/lottie/dev-building.json';
 
 // Helper function to create context with custom skill bars
 const createContextWithSkillBars = (skillBars) => {

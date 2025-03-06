@@ -142,9 +142,8 @@ const GithubProfile = ({ id = 'contact' }) => {
         <Section
             id={id}
             title="Contact Me"
-            icon="mdi:contact-mail"
             animation={animation}
-            className="py-16"
+            className="github-profile-section"
             data-testid="github-profile-section"
         >
             <Suspense fallback={<div className="py-20 text-center"><Loading /></div>}>
@@ -174,7 +173,5 @@ const GithubProfile = ({ id = 'contact' }) => {
 GithubProfile.propTypes = {
     id: PropTypes.string
 };
-
-// Note: defaultProps is deprecated, using parameter default value instead (line 36)
  
 export default GithubProfile;

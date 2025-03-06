@@ -4,7 +4,7 @@
 .experience-section {
   padding: var(--section-padding-y) 0;
   position: relative;
-  background-color: var(--color-background);
+  background-color: var(--color-background-alt);
 }
 
 /* Timeline layout - two display options */

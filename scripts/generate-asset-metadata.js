@@ -29,7 +29,7 @@ const ASSET_DIRS = [
     generator: generateSocialIconMetadata
   },
   {
-    path: 'src/assets/animations/lottie/development',
+    path: 'src/assets/lotte/lottie/development',
     type: 'lottie-animation',
     generator: generateLottieMetadata
   }

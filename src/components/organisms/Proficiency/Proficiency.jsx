@@ -4,6 +4,7 @@ import { motion, useInView } from "framer-motion";
 
 import DisplayLottie from '@molecules/DisplayLottie';
 import Progress from '@atoms/Progress';
+import Section from '@layout/Section';
 import codingAnimation from '@assets/animations/lottie/dev-coding.json';
 
 const ProgressBar = ({ skill, index }) => {
@@ -20,15 +21,17 @@ const ProgressBar = ({ skill, index }) => {
             transition={{ duration: 0.5, delay: index * 0.1 }}
         >
             <div className="progress-label">
-                <span>{skill.Stack}</span>
+                <span className="text-cyan-400 font-semibold">{skill.Stack}</span>
             </div>
             <div className="progress-percentage">
-                <span>{skill.progressPercentage}%</span>
+                <span className="text-gray-300">{skill.progressPercentage}%</span>
             </div>
             <Progress 
                 max={100} 
                 value={isInView ? parseInt(skill.progressPercentage, 10) : 0} 
-                color="info"
+                color="primary"
+                variant="security"
+                animated={true}
                 aria-valuenow={skill.progressPercentage}
                 aria-valuemin={0}
                 aria-valuemax={100}
@@ -39,30 +42,35 @@ const ProgressBar = ({ skill, index }) => {
 };
 
 const Proficiency = () => {
+    const animation = {
+        initial: { opacity: 0, y: 40 },
+        whileInView: { opacity: 1, y: 0 },
+        viewport: { once: true },
+        transition: { duration: 0.5 }
+    };
+
     return ( 
-        <div className="container mx-auto px-4 py-16 section proficiency-section">
-           <motion.div
-             initial={{ opacity: 0, y: 40 }}
-             animate={{ opacity: 1, y: 0 }}
-             transition={{ duration: 0.5 }}
-           >
+        <Section
+            id="proficiency"
+            title="Proficiency"
+            className="proficiency-section"
+            animation={animation}
+        >
             <div className="flex flex-wrap -mx-4 items-center">
-                    <div className="w-full px-4 lg:w-6/12">
-                        <h1 className="h1" tabIndex="0">Proficiency</h1>
-                        {
-                            SkillBars.map((skill, index) => (
-                                <ProgressBar key={skill.Stack} skill={skill} index={index} />
-                            ))
-                        }
-                    </div>
-                    <div className="w-full px-4 lg:w-6/12">
-                        <div className="proficiency-animation">
-                            <DisplayLottie animationData={codingAnimation} />
-                        </div>
+                <div className="w-full px-4 lg:w-6/12">
+                    <div className="space-y-4">
+                        {SkillBars.map((skill, index) => (
+                            <ProgressBar key={skill.Stack} skill={skill} index={index} />
+                        ))}
                     </div>
                 </div>
-           </motion.div>
-        </div>
+                <div className="w-full px-4 lg:w-6/12">
+                    <div className="proficiency-animation">
+                        <DisplayLottie animationData={codingAnimation} />
+                    </div>
+                </div>
+            </div>
+        </Section>
      );
 }
  

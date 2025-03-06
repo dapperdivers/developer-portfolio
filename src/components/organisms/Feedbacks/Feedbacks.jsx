@@ -29,10 +29,9 @@ const Feedbacks = () => {
   return (
     <Section
       id="testimonials"
-      title="Personal Recommendations"
-      icon="simple-icons:trustpilot"
+      title="Feedbacks"
       animation={animation}
-      className="py-16"
+      className="feedbacks-section"
       data-testid="feedbacks-section"
     >
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

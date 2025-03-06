@@ -1,8 +1,14 @@
 :root {
   /* Typography - Font Families */
-  --font-family-base: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-family-heading: var(--font-family-base);
+  --font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-family-heading: 'JetBrains Mono', var(--font-family-monospace);
   --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  
+  /* Specialized Font Families */
+  --font-family-jetbrains: 'JetBrains Mono', var(--font-family-monospace);
+  --font-family-inter: 'Inter', var(--font-family-base);
+  --font-family-fira-code: 'Fira Code', var(--font-family-monospace);
+  --font-family-ibm-plex: 'IBM Plex Mono', var(--font-family-monospace);
   
   /* Typography - Font Sizes */
   --font-size-base: 1rem;
@@ -20,10 +26,18 @@
   --font-weight-light: 300;
   --font-weight-normal: 400;
   --font-weight-medium: 500;
+  --font-weight-semibold: 600;
   --font-weight-bold: 700;
   
   /* Typography - Line Heights */
-  --line-height-tight: 1.2;
-  --line-height-base: 1.5;
+  --line-height-tight: 1.1; /* Tighter line height for security headings */
+  --line-height-code: 1.4;
+  --line-height-base: 1.6; /* Slightly looser for better readability of technical content */
   --line-height-loose: 1.8;
+  
+  /* Typography - Letter Spacing */
+  --letter-spacing-tight: -0.025em;
+  --letter-spacing-normal: 0em;
+  --letter-spacing-wide: 0.025em;
+  --letter-spacing-technical: 0.05em; /* Used for technical/terminal text */
 }

@@ -15,16 +15,6 @@ import { usePortfolio } from "@context/PortfolioContext";
  * 
  * @component
  * @returns {React.ReactElement} Experience section component
- * 
- * @example
- * // Usage in App.jsx or another container
- * import Experience from '@organisms/containers/Experience';
- * 
- * const App = () => (
- *   <main>
- *     <Experience />
- *   </main>
- * );
  */
 const Experience = () => {
   // Get portfolio data
@@ -104,7 +94,6 @@ const Experience = () => {
         id="experience"
         title={sectionTitle}
         subtitle={sectionSubtitle}
-        icon="simple-icons:briefcase"
         className="experience-section"
       >
         <div className="experience-grid experience-grid-loading skeleton-staggered">
@@ -127,11 +116,10 @@ const Experience = () => {
         id="experience"
         title={sectionTitle}
         subtitle={sectionSubtitle}
-        icon="simple-icons:briefcase"
         className="experience-section"
       >
         <div className="experience-empty-state">
-          <p>No work experience is currently available.</p>
+          <p className="text-gray-300">No work experience is currently available.</p>
         </div>
       </Section>
     );
@@ -139,23 +127,23 @@ const Experience = () => {
 
   // Render view controls for normal state
   const renderViewControls = () => (
-    <div className="view-controls">
+    <div className="view-controls flex justify-end mb-6">
       <button 
         type="button"
-        className={`view-toggle ${viewType === 'timeline' ? 'active' : ''}`}
+        className={`view-toggle mr-4 ${viewType === 'timeline' ? 'active text-cyan-400' : 'text-gray-500'}`}
         onClick={() => handleViewToggle('timeline')}
         aria-pressed={viewType === 'timeline'}
       >
-        <Icon icon="mdi:timeline-outline" className="view-icon" aria-hidden="true" />
+        <Icon icon="mdi:timeline-outline" className="view-icon mr-1" aria-hidden="true" />
         <span>Timeline</span>
       </button>
       <button 
         type="button"
-        className={`view-toggle ${viewType === 'grid' ? 'active' : ''}`}
+        className={`view-toggle ${viewType === 'grid' ? 'active text-cyan-400' : 'text-gray-500'}`}
         onClick={() => handleViewToggle('grid')}
         aria-pressed={viewType === 'grid'}
       >
-        <Icon icon="mdi:grid" className="view-icon" aria-hidden="true" />
+        <Icon icon="mdi:grid" className="view-icon mr-1" aria-hidden="true" />
         <span>Grid</span>
       </button>
     </div>
@@ -166,7 +154,6 @@ const Experience = () => {
       id="experience"
       title={sectionTitle}
       subtitle={sectionSubtitle}
-      icon="simple-icons:briefcase"
       animation={animation}
       className={`experience-section ${layoutClass}`}
       aria-label="Work experience history"
@@ -210,7 +197,7 @@ const Experience = () => {
               ease: "easeOut" 
             }}
           >
-            <div className="timeline-date" aria-label={`Work period: ${data.date}`}>
+            <div className="timeline-date text-cyan-400 font-semibold" aria-label={`Work period: ${data.date}`}>
               {extractDateYear(data.date)}
             </div>
             <ExperienceCard 

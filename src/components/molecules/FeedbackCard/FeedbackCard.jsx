@@ -49,21 +49,21 @@ const FeedbackCard = ({ data, index = 0 }) => {
   return (
     <div className="h-full transition-all duration-300" ref={ref} data-testid="feedback-card">
       <Card 
-        className="h-full overflow-hidden hover:-translate-y-2 transition-all duration-300"
+        className="h-full overflow-hidden hover:-translate-y-2 transition-all duration-300 bg-theme-navy"
         animation={animation}
         shadow
       >
-        <div className="p-6 flex flex-col h-full">
+        <div className="p-6 flex flex-col h-full bg-theme-navy">
           {/* Rating stars */}
           <div 
-            className="flex mb-4 text-amber-500" 
+            className="flex mb-4 text-primary" 
             aria-label={`${rating} out of 5 stars`}
           >
             {[...Array(5)].map((_, i) => (
               <FaStar 
                 key={i} 
-                className="star mr-1" 
-                color={i < rating ? 'currentColor' : '#e0e0e0'}
+                className="star mr-1 text-sm" 
+                color={i < rating ? '#64ffda' : '#343a40'}
                 aria-hidden="true"
               />
             ))}
@@ -72,40 +72,40 @@ const FeedbackCard = ({ data, index = 0 }) => {
           {/* Quote content */}
           <div className="relative flex-grow mb-5">
             <FaQuoteLeft 
-              className="text-gray-200 text-lg absolute top-0 left-0" 
+              className="text-text-muted text-lg absolute top-0 left-0" 
               aria-hidden="true" 
             />
             <p 
-              className="pl-7 pr-7 text-gray-600 italic text-sm leading-relaxed relative border-l-3 border-primary-300" 
-              tabIndex="0"
+              className="pl-7 pr-7 text-text italic text-sm leading-relaxed relative border-l border-primary" 
+              tabIndex={0}
             >
               {data.feedback}
             </p>
             <FaQuoteRight 
-              className="text-gray-200 text-lg absolute bottom-0 right-0" 
+              className="text-text-muted text-lg absolute bottom-0 right-0" 
               aria-hidden="true" 
             />
           </div>
           
           {/* Author info */}
-          <div className="flex items-center mt-auto pt-4 border-t border-gray-100">
+          <div className="flex items-center mt-auto pt-4 border-t border-border">
             <ResponsiveImage 
               src={avatar} 
               alt={`${data.name}`} 
-              className="w-12 h-12 rounded-full border-2 border-primary-100 object-cover mr-3"
+              className="w-4 h-4 rounded-full border border-primary object-cover mr-2"
               lazy={true}
             />
             
             <div>
               <h5 
-                className="font-bold text-primary-600 text-base mb-0.5" 
-                tabIndex="0"
+                className="font-bold text-primary text-base mb-0.5" 
+                tabIndex={0}
               >
                 {data.name}
               </h5>
               <p 
-                className="text-gray-500 text-xs" 
-                tabIndex="0"
+                className="text-text-muted text-xs" 
+                tabIndex={0}
               >
                 {role}
               </p>

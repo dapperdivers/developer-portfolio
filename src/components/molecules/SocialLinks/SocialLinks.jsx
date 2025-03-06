@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { FaGithub, FaLinkedin } from 'react-icons/fa';
 import { socialLinks } from "@/portfolio";
 import './SocialLinks.css';
@@ -8,14 +9,16 @@ import './SocialLinks.css';
  * Social Links component for displaying social media links
  * 
  * @component
+ * @param {Object} props - Component props
+ * @param {string} props.className - Additional CSS classes
  * @returns {React.ReactElement} SocialLinks component
  */
-const SocialLinks = () => {
+const SocialLinks = ({ className = '' }) => {
     return (
-        <div className="flex items-center flex-wrap gap-3">
+        <div className={`flex items-center flex-wrap gap-3 ${className}`}>
             {socialLinks.github && (
                 <a
-                    className="flex items-center justify-center w-11 h-11 rounded-full bg-white/95 text-primary border-none transition-all duration-200 ease-in-out no-underline shadow-sm hover:bg-white hover:text-primary-dark hover:translate-y-[-3px] hover:shadow-md focus:outline-none focus:shadow focus:ring-2 focus:ring-primary/50"
+                    className="social-link"
                     href={socialLinks.github}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -27,7 +30,7 @@ const SocialLinks = () => {
             
             {socialLinks.linkedin && (
                 <a
-                    className="flex items-center justify-center w-11 h-11 rounded-full bg-white/95 text-primary border-none transition-all duration-200 ease-in-out no-underline shadow-sm hover:bg-white hover:text-primary-dark hover:translate-y-[-3px] hover:shadow-md focus:outline-none focus:shadow focus:ring-2 focus:ring-primary/50"
+                    className="social-link"
                     href={socialLinks.linkedin}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -40,6 +43,11 @@ const SocialLinks = () => {
             {/* Additional social links can be added here */}
         </div>
     );
+};
+
+SocialLinks.propTypes = {
+    /** Additional CSS classes */
+    className: PropTypes.string
 };
 
 export default SocialLinks;

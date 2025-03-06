@@ -78,7 +78,6 @@ const Projects = () => {
         id="projects"
         title={sectionTitle}
         subtitle={sectionSubtitle}
-        icon="simple-icons:github"
         className="projects-section"
       >
         <div className="projects-grid projects-grid-loading skeleton-staggered">
@@ -101,11 +100,10 @@ const Projects = () => {
         id="projects"
         title={sectionTitle}
         subtitle={sectionSubtitle}
-        icon="simple-icons:github"
         className="projects-section"
       >
         <div className="projects-empty-state">
-          <p>No projects are currently available.</p>
+          <p className="text-gray-300">No projects are currently available.</p>
         </div>
       </Section>
     );
@@ -116,7 +114,6 @@ const Projects = () => {
       id="projects"
       title={sectionTitle}
       subtitle={sectionSubtitle}
-      icon="simple-icons:github"
       animation={animation}
       className="projects-section"
     >

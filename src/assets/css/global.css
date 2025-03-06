@@ -1,0 +1,16 @@
+/**
+ * Global Styles
+ * 
+ * This file contains additional global styles that apply to the entire application.
+ * Base HTML and body styles are now applied through Tailwind's addBase in tailwind.config.cjs
+ */
+
+/* Animation smoothing */
+.section {
+  scroll-margin-top: 2rem;
+}
+
+/* Smooth transition between sections */
+[class*="-section"] {
+  transition: transform 0.5s ease-out, opacity 0.5s ease-out;
+}
