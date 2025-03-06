@@ -384,17 +384,8 @@ export const OtherTokens = {
       <pre>
         {`
 import React from 'react';
-import styled from 'styled-components';
 
-const StyledComponent = styled.div\`
-  color: var(--color-text);
-  font-family: var(--font-family-base);
-  font-size: var(--font-size-base);
-  margin-bottom: var(--spacing-4);
-  /* ... and so on */
-\`;
-
-// Or with inline styles
+// With inline styles
 function MyComponent() {
   return (
     <div style={{ 

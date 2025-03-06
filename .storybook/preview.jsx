@@ -3,14 +3,6 @@ import React from 'react';
 import { PortfolioProvider } from '@context/PortfolioContext';
 import { HelmetProvider } from 'react-helmet-async';
 
-// Import polished mock to fix issues
-import polishedMock from './fixes/polished-fix';
-
-// Handle polished mock globally
-if (typeof window !== 'undefined') {
-  window.polished = polishedMock;
-}
-
 // Import all styles using relative paths to ensure they load
 import '../src/assets/css/design-system/tokens/colors.css';
 import '../src/assets/css/design-system/tokens/typography.css';

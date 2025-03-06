@@ -47,3 +47,4 @@ dist/
 /docs-draft
 .jest-cache/
 *storybook.log
+storybook-static/

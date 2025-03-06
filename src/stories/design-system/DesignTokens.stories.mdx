@@ -343,17 +343,8 @@ Our spacing system is based on a 0.25rem (4px) scale.
 
 ```jsx
 import React from 'react';
-import styled from 'styled-components';
 
-const StyledComponent = styled.div`
-  color: var(--color-text);
-  font-family: var(--font-family-base);
-  font-size: var(--font-size-base);
-  margin-bottom: var(--spacing-4);
-  /* ... and so on */
-`;
-
-// Or with inline styles (converting to pixels where needed)
+// With inline styles
 function MyComponent() {
   return (
     <div style={{ 
