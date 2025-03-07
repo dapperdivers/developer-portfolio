@@ -15,14 +15,14 @@ ENV REACT_APP_NODE_ENV=${NODE_ENV}
 ENV GENERATE_SOURCEMAP=false
 
 # Install dependencies first (better layer caching)
-COPY package*.json ./
-RUN npm ci --include=dev
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile
 
 # Copy source code
 COPY . .
 
 # Build the application
-RUN npm run build
+RUN yarn build
 
 # Stage 2: Production
 FROM node:22-slim
@@ -48,11 +48,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # Copy necessary files from builder
 COPY --from=builder /app/build ./build
-COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/package.json ./
+COPY --from=builder /app/yarn.lock ./
 COPY --from=builder /app/files ./files
 
 # Install production dependencies
-RUN npm ci --omit=dev
+RUN yarn install --production --frozen-lockfile
 
 # Add healthcheck
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
