@@ -16,7 +16,7 @@ ENV GENERATE_SOURCEMAP=false
 
 # Install dependencies first (better layer caching)
 COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile --production=false
+RUN yarn install --frozen-lockfile --production=false --network-timeout 600000
 
 # Copy source code
 COPY . .
@@ -24,36 +24,48 @@ COPY . .
 # Build the application
 RUN yarn build
 
-# Stage 2: Production
-FROM node:22-slim
+# Clean up node_modules to start fresh
+RUN rm -rf node_modules
+
+# Stage 2: Dependencies
+FROM node:22-alpine AS deps
+
+WORKDIR /app
+
+# Copy package files
+COPY --from=builder /app/package.json /app/yarn.lock ./
+
+# Install only production dependencies
+RUN yarn install --production --frozen-lockfile --network-timeout 600000 \
+    && yarn cache clean
+
+# Stage 3: Production
+FROM node:22-alpine AS production
 
 # Set runtime environment variables with defaults
 ARG PORT=3001
 ARG ALLOWED_DOMAINS=http://localhost:3001
 ENV PORT=${PORT}
 ENV ALLOWED_DOMAINS=${ALLOWED_DOMAINS}
-# Set Node.js memory limit
 ENV NODE_OPTIONS="--max-old-space-size=512"
+ENV NODE_ENV=production
 
 # Create non-root user
-RUN groupadd -r nodeapp && useradd -r -g nodeapp nodeapp
+RUN addgroup -S nodeapp && adduser -S -G nodeapp nodeapp
 
 WORKDIR /app
 
-# Install required packages with security best practices
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    curl \
-    && rm -rf /var/lib/apt/lists/* \
-    && chown -R nodeapp:nodeapp /app
+# Install only curl for healthcheck
+RUN apk --no-cache add curl
 
-# Copy necessary files from builder
+# Copy built assets and production dependencies
 COPY --from=builder /app/build ./build
-COPY --from=builder /app/package.json ./
-COPY --from=builder /app/yarn.lock ./
 COPY --from=builder /app/files ./files
+COPY --from=deps /app/node_modules ./node_modules
+COPY --from=builder /app/server.js ./server.js
 
-# Install production dependencies
-RUN yarn install --production --frozen-lockfile
+# Change ownership
+RUN chown -R nodeapp:nodeapp /app
 
 # Add healthcheck
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
@@ -64,9 +76,6 @@ EXPOSE ${PORT}/tcp
 
 # Switch to non-root user
 USER nodeapp
-
-# Copy server file and ensure correct ownership
-COPY --chown=nodeapp:nodeapp server.js .
 
 # Start secure express server
 CMD ["node", "server.js"]
