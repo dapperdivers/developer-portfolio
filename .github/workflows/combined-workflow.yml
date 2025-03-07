@@ -7,6 +7,10 @@ on:
     branches: [ master ]
   workflow_dispatch:
 
+# Default permissions for all jobs
+permissions:
+  contents: read
+
 jobs:
   # Step 1: Run tests
   test:

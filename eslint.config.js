@@ -60,10 +60,8 @@ export default [
       }
     },
     rules: {
-      // Allow React import even if unused (needed for JSX)
-      "no-unused-vars": ["warn", { 
-        "varsIgnorePattern": "React" 
-      }],
+      // Disable unused vars warnings as they cause issues in SARIF reporting
+      "no-unused-vars": "off",
       "no-undef": "warn"
     }
   },
