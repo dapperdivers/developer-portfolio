@@ -6,6 +6,14 @@
  */
 
 import { resolve } from 'path';
+import { fileURLToPath } from 'url';
+import path from 'path';
+import fs from 'fs';
+
+// Get project root directory correctly in ESM context
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const projectRoot = path.resolve(__dirname, '../..');
 
 /**
  * Define entry points for the build
@@ -13,7 +21,8 @@ import { resolve } from 'path';
  * @param {string} options.rootDir - Root directory of the project
  * @returns {Object} Entry points for Rollup
  */
-export function createEntryPoints({ rootDir = process.cwd() } = {}) {
+export function createEntryPoints({ rootDir = projectRoot } = {}) {
+  console.log('Creating entry points with rootDir:', rootDir);
   return {
     input: {
       main: resolve(rootDir, 'index.html'),
@@ -36,9 +45,9 @@ export function createChunkStrategy() {
           return 'vendor-react';
         }
         
-        // Animation libraries grouped together
-        if (id.includes('framer-motion') || id.includes('lottie')) {
-          return 'vendor-animation';
+        // Animation libraries need direct React access - put them in the React vendor chunk
+        if (id.includes('framer-motion') || id.includes('lottie') || id.includes('motion-')) {
+          return 'vendor-react'; // Bundle ALL animation with React to prevent context issues
         }
         
         // UI component libraries
@@ -58,30 +67,28 @@ export function createChunkStrategy() {
       // Context is critically important and should be bundled with core React
       // to prevent tree-shaking from breaking context functionality
       if (id.includes('/src/context/')) {
+        // Both the PortfolioContext and AnimationContext should be bundled with React core
         return 'vendor-react';
       }
       
-      // Application code in fewer, more logical chunks
+      // Animation-related code should also preserve React context functionality
+      if (id.includes('framer-motion') || id.includes('lottie')) {
+        if (id.includes('context') || id.includes('provider')) {
+          // Bundle any animation context/provider with React core
+          return 'vendor-react';
+        }
+      }
+      
+      // Bundle ALL application components with React vendor bundle for maximum compatibility 
+      // This is less optimal for performance but prevents all possible initialization issues
       if (id.includes('/src/components/')) {
-        // Split components by atomic design pattern
-        if (id.includes('/atoms/')) {
-          return 'app-atoms';
-        }
-        if (id.includes('/molecules/')) {
-          return 'app-molecules';
-        }
-        if (id.includes('/organisms/')) {
-          return 'app-organisms';
-        }
-        if (id.includes('/layout/')) {
-          return 'app-layout';
-        }
-        return 'app-components';
+        return 'vendor-react';
       }
       
       // Hooks layer
       if (id.includes('/src/hooks/')) {
-        return 'app-hooks';
+        // Also bundle hooks with React to prevent initialization issues
+        return 'vendor-react';
       }
       
       // Utilities and other non-critical code
@@ -124,7 +131,7 @@ export function createOutputNaming() {
  * @param {string} options.rootDir - Root directory of the project
  * @returns {Object} Rollup options with code splitting configuration
  */
-export function getCodeSplittingConfig({ rootDir = process.cwd() } = {}) {
+export function getCodeSplittingConfig({ rootDir = projectRoot } = {}) {
   return {
     rollupOptions: {
       ...createEntryPoints({ rootDir }),
