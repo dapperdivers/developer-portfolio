@@ -30,10 +30,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+          cache: 'yarn'
+
       - name: Install ESLint
         run: |
-          yarn add eslint@8.10.0
-          yarn add @microsoft/eslint-formatter-sarif@3.1.0
+          yarn add eslint@8.10.0 --ignore-engines
+          yarn add @microsoft/eslint-formatter-sarif@3.1.0 --ignore-engines
 
       - name: Run ESLint
         env:

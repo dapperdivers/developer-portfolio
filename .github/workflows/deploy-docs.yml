@@ -63,7 +63,7 @@ jobs:
           cache: 'yarn'
           
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --frozen-lockfile --ignore-engines
       
       - name: Setup Docsify
         run: yarn global add docsify-cli
