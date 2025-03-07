@@ -39,20 +39,14 @@ export function createChunkStrategy() {
     manualChunks: (id) => {
       // Vendor chunks - dependencies
       if (id.includes('node_modules')) {
-        // React core - always include all React functionality
+        // React and related core packages
         if (id.includes('react') || id.includes('react-dom') || id.includes('scheduler')) {
           return 'vendor-react';
         }
         
-        // Animation libraries need direct React access - put them in the React vendor chunk
-        // Be very aggressive in capturing ALL animation-related code
-        if (id.includes('framer-motion') || 
-            id.includes('lottie') || 
-            id.includes('motion-') || 
-            id.includes('animation') ||
-            id.includes('/motion/') ||
-            id.includes('animate')) {
-          return 'vendor-react'; // Bundle ALL animation with React to prevent context issues
+        // Animation libraries
+        if (id.includes('framer-motion') || id.includes('lottie')) {
+          return 'vendor-animation';
         }
         
         // UI component libraries
@@ -69,42 +63,35 @@ export function createChunkStrategy() {
         return 'vendor-other';
       }
       
-      // Context is critically important and should be bundled with core React
-      // to prevent tree-shaking from breaking context functionality
+      // Application code - separate by feature area
+      
+      // Context provider files
       if (id.includes('/src/context/')) {
-        // Both the PortfolioContext and AnimationContext should be bundled with React core
-        return 'vendor-react';
+        return 'feature-context';
       }
       
-      // Animation-related code should also preserve React context functionality
-      if (id.includes('/framer-motion/') || id.includes('/lottie/')) {
-        if (id.includes('context') || id.includes('provider')) {
-          // Bundle any animation context/provider with React core
-          return 'vendor-react';
-        }
-      }
-      
-      // Bundle ALL application components with React vendor bundle for maximum compatibility 
-      // This is less optimal for performance but prevents all possible initialization issues
+      // Component files - split by component type
       if (id.includes('/src/components/')) {
-        return 'vendor-react';
+        if (id.includes('/atoms/')) {
+          return 'components-atoms';
+        } else if (id.includes('/molecules/')) {
+          return 'components-molecules';
+        } else if (id.includes('/organisms/')) {
+          return 'components-organisms';
+        } else if (id.includes('/layout/')) {
+          return 'components-layout';
+        }
+        return 'components-other';
       }
       
       // Hooks layer
       if (id.includes('/src/hooks/')) {
-        // Also bundle hooks with React to prevent initialization issues
-        return 'vendor-react';
+        return 'feature-hooks';
       }
       
-      // Utilities should be bundled with React to ensure context utils work
-      if (id.includes('/src/utils/') && 
-         (id.includes('context') || id.includes('animation'))) {
-        return 'vendor-react';
-      }
-      
-      // Other utilities
+      // Utilities
       if (id.includes('/src/utils/')) {
-        return 'app-utils';
+        return 'feature-utils';
       }
     }
   };

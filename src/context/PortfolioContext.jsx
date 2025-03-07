@@ -2,11 +2,11 @@
  * Portfolio Context - central data store for portfolio data
  * 
  * This file creates a React Context to provide portfolio data to all components
- * Using contextUtils helpers to ensure safety in production builds
+ * Using the decoupled factory pattern for better maintainability
  */
 
-import React from 'react';
-import { createTypedContext, createContextHook } from '@utils/contextUtils';
+import React, { useMemo } from 'react';
+import { createTypedContext } from '@utils/contextUtils';
 
 import PropTypes from 'prop-types';
 import {
@@ -23,22 +23,42 @@ import {
 } from '@/portfolio';
 
 /**
- * Context for portfolio data management
- * @type {React.Context}
+ * Default portfolio data structure
  */
-const PortfolioContext = createTypedContext();
+const defaultPortfolioData = {
+  greetings: {},
+  openSource: {},
+  contact: {},
+  socialLinks: {},
+  skillsSection: {},
+  skillBars: [],
+  educationInfo: [],
+  experience: [],
+  projects: [],
+  feedbacks: []
+};
+
+/**
+ * Create the context using the factory pattern
+ */
+const { 
+  context: PortfolioContext, 
+  useTypedContext: usePortfolio,
+  Provider: PortfolioContextProvider
+} = createTypedContext(defaultPortfolioData, 'usePortfolio');
 
 /**
  * Provider component for portfolio data
  * 
  * @component
  * @param {Object} props - Component props
- * @param {ReactNode} props.children - Child components that will have access to the portfolio context
- * @returns {ReactElement} Portfolio Provider component
+ * @param {React.ReactNode} props.children - Child components that will have access to the portfolio context
+ * @param {Object} props.testValue - Optional test value for testing
+ * @returns {React.ReactElement} Portfolio Provider component
  */
 export const PortfolioProvider = ({ children, testValue = null }) => {
   // Use memoization to prevent unnecessary re-renders
-  const contextValue = React.useMemo(() => {
+  const contextValue = useMemo(() => {
     // Allow injecting test values for tests
     if (testValue) {
       return testValue;
@@ -59,9 +79,9 @@ export const PortfolioProvider = ({ children, testValue = null }) => {
   }, [testValue]);
 
   return (
-    <PortfolioContext.Provider value={contextValue}>
+    <PortfolioContextProvider value={contextValue}>
       {children}
-    </PortfolioContext.Provider>
+    </PortfolioContextProvider>
   );
 };
 
@@ -69,13 +89,6 @@ PortfolioProvider.propTypes = {
   children: PropTypes.node.isRequired,
   testValue: PropTypes.object
 };
-
-/**
- * Hook to access portfolio data
- * 
- * @returns {Object} Portfolio data object containing all sections
- */
-export const usePortfolio = createContextHook(PortfolioContext, 'usePortfolio');
 
 /**
  * Section-specific hooks for more targeted data access
@@ -116,4 +129,6 @@ export const useSocialLinks = () => {
   return socialLinks;
 };
 
+// Export the context, hook, and individual hooks
+export { PortfolioContext, usePortfolio };
 export default PortfolioContext;

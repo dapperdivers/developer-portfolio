@@ -1,5 +1,5 @@
-import React, { ReactNode, useState, useCallback, useEffect, useMemo } from 'react';
-import { createTypedContext, createContextHook } from '@utils/contextUtils';
+import React, { ReactNode, useState, useCallback, useEffect, useMemo, Dispatch, SetStateAction } from 'react';
+import { createTypedContext } from '@utils/contextUtils';
 
 // Animation Context Types
 export interface AnimationState {
@@ -8,7 +8,7 @@ export interface AnimationState {
 
 export interface AnimationContextType {
   inView: boolean;
-  setInView: React.Dispatch<React.SetStateAction<boolean>>;
+  setInView: Dispatch<SetStateAction<boolean>>;
   animationEnabled: boolean;
   entryAnimations: AnimationState;
   registerEntryAnimation: (id: string, initialState?: string) => void;
@@ -19,10 +19,9 @@ export interface AnimationContextType {
 }
 
 /**
- * Animation Context for coordinating animations across components
- * Using contextUtils helpers to ensure safety in production builds
+ * Default values for the animation context
  */
-const AnimationContext = createTypedContext<AnimationContextType>({
+const defaultAnimationContext: AnimationContextType = {
   inView: false,
   setInView: () => {},
   animationEnabled: true,
@@ -32,7 +31,17 @@ const AnimationContext = createTypedContext<AnimationContextType>({
   playEntryAnimation: () => {},
   resetEntryAnimations: () => {},
   getAnimationDelay: () => String(),
-});
+};
+
+/**
+ * Animation Context for coordinating animations across components
+ * Using the decoupled factory pattern
+ */
+const { 
+  context: AnimationContext, 
+  useTypedContext: useAnimation,
+  Provider: AnimationContextProvider
+} = createTypedContext<AnimationContextType>(defaultAnimationContext, 'useAnimation');
 
 export interface AnimationProviderProps {
   children: ReactNode;
@@ -43,9 +52,9 @@ export interface AnimationProviderProps {
  * 
  * @component
  * @param {AnimationProviderProps} props - Component props
- * @returns {React.ReactElement} Provider component
+ * @returns {JSX.Element} Provider component
  */
-export const AnimationProvider: React.FC<AnimationProviderProps> = ({ children }) => {
+export const AnimationProvider = ({ children }: AnimationProviderProps): JSX.Element => {
   // Animation settings
   const [inView, setInView] = useState<boolean>(false);
   const [animationEnabled, setAnimationEnabled] = useState<boolean>(true);
@@ -148,17 +157,11 @@ export const AnimationProvider: React.FC<AnimationProviderProps> = ({ children }
   ]);
 
   return (
-    <AnimationContext.Provider value={contextValue}>
+    <AnimationContextProvider value={contextValue}>
       {children}
-    </AnimationContext.Provider>
+    </AnimationContextProvider>
   );
 };
 
-/**
- * Custom hook to use animation context with safety checks
- * 
- * @returns {AnimationContextType} Animation context
- */
-export const useAnimation = createContextHook(AnimationContext, 'useAnimation');
-
-export default AnimationContext;
+// Export the context and hook
+export { AnimationContext, useAnimation };

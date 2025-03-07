@@ -191,21 +191,13 @@ export function getEnvConfig() {
     env: env.raw,
     define: {
       ...env.stringified,
-      // Ensure React is not tree-shaken in production
-      'process.env.NODE_ENV': JSON.stringify(mode),
-      // Ensure React features used in context are preserved
-      '__REACT_FEATURES__': JSON.stringify(true),
-      // Explicitly preserve context features
-      'React.createContext': 'React.createContext',
-      'React.useContext': 'React.useContext'
+      // Standard environment definition
+      'process.env.NODE_ENV': JSON.stringify(mode)
     },
+    // Common optimizations for all environments
     optimizeDeps: {
-      include: ['react', 'react-dom', 'framer-motion', 'scheduler'],
-      // Force preservation of React methods
-      esbuildOptions: {
-        keepNames: true,
-        treeShaking: false
-      }
+      // Always include these core dependencies to ensure they're properly processed
+      include: ['react', 'react-dom', 'framer-motion', 'scheduler']
     }
   };
 }

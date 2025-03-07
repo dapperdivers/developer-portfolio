@@ -1,73 +1,51 @@
 /**
- * PropTypes and React-is Compatibility Fix
+ * React PropTypes Compatibility Module
  * 
- * This file ensures that React-is and prop-types related functionality 
- * works correctly in production builds by ensuring React types are defined
- * before they're accessed by react-is.
+ * This module provides necessary symbol definitions for prop-types library
+ * in a clean, decoupled manner.
  */
 
-// Ensure React is available
 import React from 'react';
 
-// Make sure window.React is defined
-if (typeof window !== 'undefined') {
-  window.React = window.React || React;
+// Export symbols that might be used by prop-types and react-is
+export const ReactSymbols = {
+  asyncMode: Symbol.for('react.async_mode'),
+  concurrentMode: Symbol.for('react.concurrent_mode'),
+  contextConsumer: Symbol.for('react.context.consumer'),
+  contextProvider: Symbol.for('react.context.provider'),
+  element: Symbol.for('react.element'),
+  forwardRef: Symbol.for('react.forward_ref'),
+  fragment: Symbol.for('react.fragment'),
+  lazy: Symbol.for('react.lazy'),
+  memo: Symbol.for('react.memo'),
+  portal: Symbol.for('react.portal'),
+  profiler: Symbol.for('react.profiler'),
+  strictMode: Symbol.for('react.strict_mode'),
+  suspense: Symbol.for('react.suspense')
+};
+
+/**
+ * Check if a component type is a specific React type
+ * @param {any} type - Component type to check
+ * @param {Symbol} expectedType - Expected React type
+ * @returns {boolean} True if the types match
+ */
+export function isReactTypeOf(type, expectedType) {
+  return type === expectedType || 
+    (type && type.$$typeof === expectedType);
 }
 
-// Define React types that might be used by react-is
-if (typeof React !== 'undefined' && React !== null) {
-  // Ensure React has an object type
-  if (typeof React !== 'object') {
-    console.warn('React is not an object type, creating backup');
-    window.React = window.React || {};
-    React = window.React;
-  }
-  
-  // Create a safe function to define React symbols
-  const defineReactSymbol = (name, fallbacks) => {
-    try {
-      if (React[name] === undefined) {
-        for (const fallback of fallbacks) {
-          if (fallback !== undefined) {
-            React[name] = fallback;
-            return;
-          }
-        }
-        
-        // If no fallbacks work, use Symbol.for
-        if (typeof Symbol !== 'undefined' && Symbol.for) {
-          React[name] = Symbol.for(`react.${name.toLowerCase()}`);
-        }
-      }
-    } catch (e) {
-      console.warn(`Error defining React.${name}`, e);
-    }
-  };
-  
-  // Define all React symbols safely
-  defineReactSymbol('AsyncMode', [React.AsyncMode, React.unstable_AsyncMode, Symbol.for('react.async_mode')]);
-  defineReactSymbol('ConcurrentMode', [React.ConcurrentMode, React.unstable_ConcurrentMode, Symbol.for('react.concurrent_mode')]);
-  defineReactSymbol('ContextConsumer', [React.ContextConsumer, Symbol.for('react.context.consumer')]);
-  defineReactSymbol('ContextProvider', [React.ContextProvider, Symbol.for('react.context.provider')]);
-  defineReactSymbol('Element', [React.Element, Symbol.for('react.element')]);
-  defineReactSymbol('ForwardRef', [React.ForwardRef, Symbol.for('react.forward_ref')]);
-  defineReactSymbol('Fragment', [React.Fragment, Symbol.for('react.fragment')]);
-  defineReactSymbol('Lazy', [React.Lazy, Symbol.for('react.lazy')]);
-  defineReactSymbol('Memo', [React.Memo, Symbol.for('react.memo')]);
-  defineReactSymbol('Portal', [React.Portal, Symbol.for('react.portal')]);
-  defineReactSymbol('Profiler', [React.Profiler, Symbol.for('react.profiler')]);
-  defineReactSymbol('StrictMode', [React.StrictMode, Symbol.for('react.strict_mode')]);
-  defineReactSymbol('Suspense', [React.Suspense, Symbol.for('react.suspense')]);
-  
-  // Also ensure symbols that react-is might be expecting
-  if (!Symbol.for) {
-    const symbolMap = {};
-    Symbol.for = (key) => {
-      if (!symbolMap[key]) symbolMap[key] = Symbol(key);
-      return symbolMap[key];
-    };
-  }
-}
+// Create a small helper to get the correct ReactIs behavior
+export const ReactTypeUtils = {
+  isFragment: (element) => isReactTypeOf(element?.type, ReactSymbols.fragment),
+  isPortal: (element) => isReactTypeOf(element?.type, ReactSymbols.portal),
+  isMemo: (element) => isReactTypeOf(element?.type, ReactSymbols.memo),
+  isForwardRef: (element) => isReactTypeOf(element?.type, ReactSymbols.forwardRef),
+  isContext: (element) => (
+    isReactTypeOf(element?.type, ReactSymbols.contextProvider) || 
+    isReactTypeOf(element?.type, ReactSymbols.contextConsumer)
+  )
+};
 
-// Log success
-console.log('PropTypes compatibility fix applied');
+// Log initialization
+console.log('React PropTypes compatibility module initialized');
