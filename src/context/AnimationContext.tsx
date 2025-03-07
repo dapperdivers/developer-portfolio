@@ -54,7 +54,7 @@ export interface AnimationProviderProps {
  * @param {AnimationProviderProps} props - Component props
  * @returns {JSX.Element} Provider component
  */
-export const AnimationProvider = ({ children }: AnimationProviderProps): JSX.Element => {
+export const AnimationProvider = ({ children }: AnimationProviderProps): React.ReactElement => {
   // Animation settings
   const [inView, setInView] = useState<boolean>(false);
   const [animationEnabled, setAnimationEnabled] = useState<boolean>(true);

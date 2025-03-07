@@ -42,7 +42,6 @@ const styles = {
     color: '#333'
   },
   button: {
-    border: 'none',
     background: 'none',
     cursor: 'pointer',
     color: '#666',
