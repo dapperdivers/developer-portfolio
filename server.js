@@ -28,8 +28,8 @@ app.use(
       defaultSrc: ["'self'"],
       scriptSrc: [
         "'self'", 
-        "'unsafe-inline'", // Eventually remove this for better security
-        "'unsafe-eval'", // Eventually remove this for better security
+        "'unsafe-inline'",
+        "'unsafe-eval'",
         'https://fonts.googleapis.com', 
         'https://code.iconify.design'
       ],
@@ -49,13 +49,8 @@ app.use(
       ],
       fontSrc: ["'self'", 'https://fonts.gstatic.com', 'data:'],
       objectSrc: ["'self'"],  // Allow PDFs
-      mediaSrc: ["'none'"],
-      frameSrc: ["'none'"],
       formAction: ["'self'"],
       manifestSrc: ["'self'"],
-      upgradeInsecureRequests: [],
-      workerSrc: ["'self'", 'blob:'], // For service workers and Wasm
-      childSrc: ["'self'", 'blob:'],
     },
   })
 );
@@ -111,12 +106,6 @@ app.use(express.static(path.join(__dirname, 'build'), {
     res.set('Cache-Control', 'public, max-age=31536000');
   }
 }));
-
-// Log to console when serving static files to debug
-app.use((req, res, next) => {
-  console.log(`${req.method} ${req.path}`);
-  next();
-});
 
 // Health check endpoint with basic system info
 app.get('/healthz', (req, res) => {
