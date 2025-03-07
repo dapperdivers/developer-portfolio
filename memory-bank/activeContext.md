@@ -140,7 +140,7 @@ Our current priorities are:
 - ✅ Skeleton loading states implementation
 - ✅ Integration tests for Projects section
 
-### Experience Section (✅ 100% Complete)
+### Experience Section (🔄 Code Review Updates Needed)
 - ✅ ExperienceCard Storybook component implemented
 - ✅ ExperienceCard.jsx with complete Tailwind refactoring
 - ✅ ExperienceCard animation performance optimizations
@@ -150,6 +150,11 @@ Our current priorities are:
 - ✅ Empty state UI implementation
 - ✅ Timeline display implementation with view toggle
 - ✅ Unit tests for Experience components
+- ❌ **Atomic Design Issues Identified**:
+  - ❌ Proper component composition and boundaries needed
+  - ❌ Created refactoring checklist at `memory-bank/experience-timeline-refactoring-checklist.md`
+  - ❌ TypeScript interface improvements needed
+  - ❌ CSS structure needs refining to properly use design system
 
 ### Skills Section (✅ 100% Complete)
 - ✅ Skill.jsx component Storybook implementation
@@ -186,8 +191,24 @@ Our current priorities are:
 4. ~~**Documentation Duplication**: Consolidate documentation and remove duplication between memory-bank and docs~~ ✅ COMPLETED
 5. ~~**Type Checking**: Consider adding TypeScript or improving PropTypes validation~~ ✅ COMPLETED
 6. **Component Organization**: Move component files (JSX, CSS, stories, tests) into component-specific directories
+7. **Atomic Design Implementation**: Fix issues with Experience Timeline components that violate atomic design principles
 
 ## Recent Initiatives
+
+### Experience Timeline Refactoring
+- [x] Identified atomic design violations in Experience Timeline components
+- [x] Created comprehensive refactoring checklist at `memory-bank/experience-timeline-refactoring-checklist.md`
+- [ ] Plan to create missing atom components (TimelineNode, ConsoleHeader, DateBubble, CodeSnippet)
+- [ ] Address prop drilling and component boundary issues
+- [ ] Fix TypeScript interfaces and improve type safety
+- [ ] Restructure CSS to properly use design system variables
+- Key issues identified:
+  - Component composition issues (not leveraging existing atomic components)
+  - Direct DOM manipulation instead of composition
+  - Animation logic duplicated across components
+  - Props not properly propagated between components
+  - CSS rules overriding atomic component styles
+  - TypeScript errors throughout the component hierarchy
 
 ### Security Portfolio Redesign
 - [x] Created comprehensive design plan at `memory-bank/security-portfolio-design-plan.md`

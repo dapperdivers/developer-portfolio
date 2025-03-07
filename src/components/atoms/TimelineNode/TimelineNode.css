@@ -1,0 +1,124 @@
+/**
+ * TimelineNode Component Styles
+ * Styling for the TimelineNode component with variants and animations
+ */
+
+:root {
+  /* Size variants - using design system tokens */
+  --timeline-node-size-sm: 10px;
+  --timeline-node-size-md: 14px;
+  --timeline-node-size-lg: 18px;
+  
+  /* Animation properties */
+  --timeline-node-pulse-scale: 1.2;
+  --timeline-node-pulse-duration: 2s;
+}
+
+/* Base styles */
+.timeline-node {
+  position: relative;
+  display: inline-block;
+  border-radius: 50%; /* Circle shape */
+  box-shadow: 0 0 10px rgba(var(--color-primary-rgb), 0.3);
+  transition: all var(--transition-standard);
+  will-change: transform, opacity, box-shadow;
+  z-index: 1;
+}
+
+/* Size variants */
+.timeline-node-sm {
+  width: var(--timeline-node-size-sm);
+  height: var(--timeline-node-size-sm);
+}
+
+.timeline-node-md {
+  width: var(--timeline-node-size-md);
+  height: var(--timeline-node-size-md);
+}
+
+.timeline-node-lg {
+  width: var(--timeline-node-size-lg);
+  height: var(--timeline-node-size-lg);
+}
+
+/* Variant styles */
+.timeline-node {
+  background-color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+}
+
+.timeline-node-security {
+  background-color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+}
+
+.timeline-node-terminal {
+  background-color: var(--color-info);
+  border: 2px solid var(--color-info);
+}
+
+/* Active state */
+.timeline-node-active {
+  box-shadow: 0 0 15px rgba(var(--color-primary-rgb), 0.5);
+}
+
+.timeline-node-security.timeline-node-active {
+  box-shadow: 0 0 15px rgba(var(--color-primary-rgb), 0.5);
+}
+
+.timeline-node-terminal.timeline-node-active {
+  box-shadow: 0 0 15px rgba(var(--color-info-rgb), 0.5);
+}
+
+/* Animation */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+    box-shadow: 0 0 5px rgba(var(--color-primary-rgb), 0.3);
+  }
+  50% {
+    transform: scale(var(--timeline-node-pulse-scale));
+    opacity: 0.8;
+    box-shadow: 0 0 10px rgba(var(--color-primary-rgb), 0.6);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+    box-shadow: 0 0 5px rgba(var(--color-primary-rgb), 0.3);
+  }
+}
+
+.timeline-node-animated {
+  animation: pulse var(--timeline-node-pulse-duration) infinite ease-in-out;
+}
+
+/* Clickable nodes for interactive timelines */
+.timeline-node-clickable {
+  cursor: pointer;
+}
+
+.timeline-node-clickable:hover {
+  box-shadow: 0 0 15px rgba(var(--color-primary-rgb), 0.7);
+  transform: scale(1.1);
+}
+
+.timeline-node-clickable:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .timeline-node-animated {
+    animation: none;
+  }
+  
+  .timeline-node {
+    transition: none;
+  }
+  
+  .timeline-node-clickable:hover {
+    transform: scale(1);
+  }
+}

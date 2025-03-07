@@ -1,0 +1,199 @@
+/**
+ * ConsoleHeader Component Styles
+ * Styling for the ConsoleHeader component with terminal aesthetics
+ */
+
+/* Base styles */
+.console-header {
+  width: 100%;
+  border-radius: var(--border-radius-md);
+  overflow: hidden;
+  margin-bottom: var(--spacing-5);
+}
+
+/* Terminal header/title bar */
+.console-header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-2) var(--spacing-4);
+  background-color: var(--color-dark);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.console-title {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  font-family: var(--font-family-base);
+  text-align: center;
+  flex-grow: 1;
+  margin-right: var(--spacing-4);
+  user-select: none;
+}
+
+.console-content {
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-3) var(--spacing-4);
+  font-family: var(--font-family-jetbrains);
+  line-height: var(--line-height-code);
+  letter-spacing: var(--letter-spacing-technical);
+  background-color: var(--color-navy);
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* Prompt styles */
+.console-prompt {
+  color: var(--color-level-low);
+  margin-right: var(--spacing-2);
+  font-weight: var(--font-weight-medium);
+  user-select: none;
+}
+
+/* Command styles */
+.console-command {
+  color: var(--color-text);
+  font-weight: var(--font-weight-normal);
+}
+
+/* Blinking cursor */
+.console-cursor {
+  display: inline-block;
+  width: 8px;
+  height: 16px;
+  background-color: var(--color-info);
+  animation: blink 1s infinite;
+  vertical-align: middle;
+  margin-left: var(--spacing-1);
+}
+
+/* Cursor blink animation */
+@keyframes blink {
+  0%, 49% {
+    opacity: 1;
+  }
+  50%, 100% {
+    opacity: 0;
+  }
+}
+
+/* Visual variants */
+.console-header-security .console-header-top {
+  background-color: var(--color-navy-dark, #0c1e2f);
+  border-color: var(--color-primary);
+}
+
+.console-header-security .console-title {
+  color: var(--color-primary);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.5px;
+}
+
+.console-header-security .console-content {
+  background-color: var(--color-navy, #162b3d);
+  border-color: var(--color-primary);
+  box-shadow: inset 0 0 10px rgba(var(--color-primary-rgb), 0.1);
+}
+
+.console-header-security .console-prompt {
+  color: var(--color-primary);
+  text-shadow: 0 0 5px rgba(var(--color-primary-rgb), 0.5);
+}
+
+.console-header-security .console-command {
+  color: var(--color-text);
+  text-shadow: 0 0 2px rgba(var(--color-text-rgb), 0.3);
+}
+
+.console-header-security .console-cursor {
+  background-color: var(--color-primary);
+  box-shadow: 0 0 8px var(--color-primary);
+}
+
+.console-header-terminal .console-header-top {
+  background-color: var(--color-dark, #1e1e1e);
+  border-color: var(--color-info);
+}
+
+.console-header-terminal .console-title {
+  color: var(--color-text);
+}
+
+.console-header-terminal .console-content {
+  background-color: var(--color-black, #000);
+  border-color: var(--color-info);
+}
+
+.console-header-terminal .console-prompt {
+  color: var(--color-info);
+}
+
+.console-header-terminal .console-cursor {
+  background-color: var(--color-info);
+}
+
+/* Window control dots (macOS style) */
+.terminal-controls {
+  margin-right: var(--spacing-3);
+  display: flex;
+  align-items: center;
+}
+
+.terminal-circle {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 6px;
+}
+
+.terminal-circle.red {
+  background-color: var(--color-danger);
+}
+
+.terminal-circle.yellow {
+  background-color: var(--color-warning);
+}
+
+.terminal-circle.green {
+  background-color: var(--color-success);
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .console-content {
+    padding: var(--spacing-2) var(--spacing-3);
+    font-size: var(--font-size-sm);
+  }
+  
+  .console-cursor {
+    height: 14px;
+    width: 7px;
+  }
+  
+  .terminal-circle {
+    width: 10px;
+    height: 10px;
+    margin-right: 4px;
+  }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .console-cursor {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+/* Screen reader only class */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}

@@ -1,0 +1,228 @@
+/**
+ * DateBubble Component Styles
+ * Styling for the DateBubble component with security level variants
+ */
+
+:root {
+  /* Size variants - using design system tokens */
+  --date-bubble-size-sm: 40px;
+  --date-bubble-size-md: 50px;
+  --date-bubble-size-lg: 60px;
+  
+  /* Custom colors for timeline entries from TimelineEntry component */
+  --color-entry1: #64ffda; /* Teal - Primary */
+  --color-entry2: #ff9d00; /* Orange */
+  --color-entry3: #ff5e78; /* Pink */
+  --color-entry4: #a78bfa; /* Purple */
+  --color-entry5: #2dd4bf; /* Turquoise */
+}
+
+/* Base styles */
+.date-bubble {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--border-radius-full);
+  background-color: rgba(10, 25, 47, 0.9); /* Darker, more opaque background */
+  color: var(--color-text);
+  font-family: var(--font-family-jetbrains);
+  font-weight: var(--font-weight-bold); /* Bolder text */
+  box-shadow: var(--shadow-md); /* Stronger shadow */
+  transition: all var(--transition-standard);
+  user-select: none;
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+  border: 2px solid; /* Thicker border */
+  text-shadow: 0 0 3px currentColor; /* Text glow for better visibility */
+}
+
+/* Size variants */
+.date-bubble-sm {
+  min-width: var(--date-bubble-size-sm);
+  height: var(--date-bubble-size-sm);
+  font-size: var(--font-size-xs);
+  padding: 0 var(--spacing-2);
+}
+
+.date-bubble-md {
+  min-width: var(--date-bubble-size-md);
+  height: var(--date-bubble-size-md);
+  font-size: var(--font-size-sm);
+  padding: 0 var(--spacing-3);
+}
+
+.date-bubble-lg {
+  min-width: var(--date-bubble-size-lg);
+  height: var(--date-bubble-size-lg);
+  font-size: var(--font-size-base);
+  padding: 0 var(--spacing-4);
+}
+
+/* Visual variants */
+.date-bubble-security {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 10px rgba(var(--color-primary-rgb), 0.2);
+}
+
+.date-bubble-terminal {
+  border-color: var(--color-info);
+  box-shadow: 0 0 10px rgba(var(--color-info-rgb), 0.2);
+}
+
+/* Security level variations */
+.date-bubble-level-low {
+  background-color: rgba(var(--color-level-low-rgb), 0.2); /* More contrast */
+  color: var(--color-level-low);
+  border-color: var(--color-level-low);
+}
+
+.date-bubble-level-medium {
+  background-color: rgba(var(--color-level-medium-rgb), 0.2); /* More contrast */
+  color: var(--color-level-medium);
+  border-color: var(--color-level-medium);
+}
+
+.date-bubble-level-high {
+  background-color: rgba(var(--color-level-high-rgb), 0.2); /* More contrast */
+  color: var(--color-level-high);
+  border-color: var(--color-level-high);
+}
+
+.date-bubble-level-critical {
+  background-color: rgba(var(--color-danger-rgb), 0.2); /* More contrast */
+  color: var(--color-danger);
+  border-color: var(--color-danger);
+}
+
+/* Timeline-specific entry-indexed styles */
+.timeline-entry:nth-child(5n+1) .date-bubble {
+  border-color: var(--color-entry1);
+  box-shadow: 0 0 12px var(--color-entry1); /* Stronger glow */
+  color: var(--color-entry1);
+}
+
+.timeline-entry:nth-child(5n+2) .date-bubble {
+  border-color: var(--color-entry2);
+  box-shadow: 0 0 12px var(--color-entry2); /* Stronger glow */
+  color: var(--color-entry2);
+}
+
+.timeline-entry:nth-child(5n+3) .date-bubble {
+  border-color: var(--color-entry3);
+  box-shadow: 0 0 12px var(--color-entry3); /* Stronger glow */
+  color: var(--color-entry3);
+}
+
+.timeline-entry:nth-child(5n+4) .date-bubble {
+  border-color: var(--color-entry4);
+  box-shadow: 0 0 12px var(--color-entry4); /* Stronger glow */
+  color: var(--color-entry4);
+}
+
+.timeline-entry:nth-child(5n+5) .date-bubble {
+  border-color: var(--color-entry5);
+  box-shadow: 0 0 12px var(--color-entry5); /* Stronger glow */
+  color: var(--color-entry5);
+}
+
+/* Enhanced scaling effect for timeline entries */
+.timeline-entry .date-bubble {
+  transform: scale(1.1);
+  transition: transform 0.3s ease;
+}
+
+.timeline-entry:hover .date-bubble {
+  transform: scale(1.2);
+}
+
+/* Clickable state */
+.date-bubble-clickable {
+  cursor: pointer;
+}
+
+.date-bubble-clickable:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.date-bubble-clickable:active {
+  transform: translateY(0);
+}
+
+/* Inner text container */
+.date-bubble-text {
+  text-align: center;
+  font-weight: var(--font-weight-bold); /* Bolder text */
+  letter-spacing: var(--letter-spacing-technical);
+}
+
+/* Decorative glow effect */
+.date-bubble::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0) 70%); /* Stronger gradient */
+  opacity: 0.4; /* Always visible, not just on hover */
+  transition: opacity var(--transition-standard);
+  pointer-events: none;
+}
+
+.date-bubble:hover::before {
+  opacity: 0.7; /* Even stronger on hover */
+}
+
+/* Focus styles for keyboard navigation */
+.date-bubble:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.date-bubble-security:focus-visible {
+  outline-color: var(--color-primary);
+}
+
+.date-bubble-terminal:focus-visible {
+  outline-color: var(--color-info);
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .date-bubble-sm {
+    min-width: calc(var(--date-bubble-size-sm) * 0.9);
+    height: calc(var(--date-bubble-size-sm) * 0.9);
+    font-size: calc(var(--font-size-xs) * 0.9);
+  }
+  
+  .date-bubble-md {
+    min-width: calc(var(--date-bubble-size-md) * 0.9);
+    height: calc(var(--date-bubble-size-md) * 0.9);
+    font-size: calc(var(--font-size-sm) * 0.9);
+  }
+  
+  .date-bubble-lg {
+    min-width: calc(var(--date-bubble-size-lg) * 0.9);
+    height: calc(var(--date-bubble-size-lg) * 0.9);
+    font-size: calc(var(--font-size-base) * 0.9);
+  }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .date-bubble {
+    transition: none;
+  }
+  
+  .date-bubble-clickable:hover {
+    transform: none;
+  }
+  
+  .timeline-entry:hover .date-bubble,
+  .timeline-entry .date-bubble {
+    transform: none;
+    transition: none;
+  }
+}

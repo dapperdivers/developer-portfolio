@@ -29,7 +29,7 @@ const Feedbacks = () => {
   return (
     <Section
       id="testimonials"
-      title="Feedbacks"
+      title="Personal Feedback"
       animation={animation}
       className="feedbacks-section"
       data-testid="feedbacks-section"

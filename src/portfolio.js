@@ -35,13 +35,15 @@ const validateImage = (imagePath) => {
     }
 };
 
-import TractionToolsLogo_raw from "@assets/images/logos/company/logo-tt.svg";
-import UbiquiaLogo_raw from "@assets/images/logos/company/logo-ubiquia.png";
-import StarrLogo_raw from "@assets/images/logos/company/logo-starr.png";
+import TractionToolsLogo_raw from "./assets/images/logos/company/logo-tt.svg";
+import UbiquiaLogo_raw from "./assets/images/logos/company/logo-ubiquia.png";
+import StarrLogo_raw from "./assets/images/logos/company/logo-starr.png";
+import MedicompLogo_raw from "./assets/images/logos/company/logo-medicomp.png";
 
 const TractionToolsLogo = validateImage(TractionToolsLogo_raw);
 const UbiquiaLogo = validateImage(UbiquiaLogo_raw);
 const StarrLogo = validateImage(StarrLogo_raw);
+const MedicompLogo = validateImage(MedicompLogo_raw);
 
 const validateUrl = (url) => {
     try {
@@ -337,27 +339,145 @@ export const educationInfo = [
 
 export const experience = [
 	{
+		role: "Staff Product Security Engineer",
+		company: "Mastery Logistics Systems",
+		companylogo: null,
+		date: "July 2023 – Present",
+		desc: "Leading the technical direction of a newly formed product security team, creating and implementing comprehensive vulnerability management programs for the organization.",
+		descBullets: [
+			"Developed organization-wide vulnerability aggregation system combining open-source and commercial security tools",
+			"Built Power BI dashboards for security metrics and vulnerability visualization to improve visibility of security posture",
+			"Created security automation with GitHub Actions to check PRs for secrets, vulnerable packages, and outdated base images",
+			"Developed custom tool to associate Kubernetes resources to GitHub repos for accurate vulnerability tracking",
+			"Led active security enumeration in test environments to demonstrate real risk of critical vulnerabilities"
+		]
+	},
+	{
+		role: "Senior Software Engineering Manager",
+		company: "Mastery Logistics Systems",
+		companylogo: null,
+		date: "May 2022 – July 2023",
+		desc: "Led international engineering teams delivering critical integrations with enterprise logistics systems, focusing on secure communication protocols and data protection.",
+		descBullets: [
+			"Managed up to 9 engineering teams working on secure integrations with ITS, Slack, Teams and other platforms",
+			"Defined and enforced secure software development lifecycle practices for international development region",
+			"Coordinated technical communications between engineering teams and non-technical stakeholders",
+			"Provided hands-on technical leadership for complex issue resolution and deployment challenges",
+			"Implemented secure data protection mechanisms for logistics information flowing between integrated systems"
+		]
+	},
+	{
 		role: "Software Engineering Manager",
 		company: "Traction Tools",
 		companylogo: TractionToolsLogo,
-		date: "February 2021 – Present",
-		desc: "Working as the Software Engineering Manager for a direct-to-consumer site that provides tooling for businesses running EOS. I lead the software, QA, and project management teams, overseeing sprint management, code reviews, tech stack, and the direction of the product from an engineering standpoint. Thus far I've instituted Azure Devops, automated deployments, unit testing, integration testing, selenium tests and a two-week sprint/release cadence to the organization. I'm currently leading the effort to modernize the tech stack, by methodically migrating the website from .NET 4.6.1 MVC Razor and AngularJS, to a microservices architecture with a react front end. This involves moving from AWS virtual machines to an ECS cluster, as well as migrating the current project to .NET Core while ensuring no downtime and adding new features. Basically, rebuilding the car piece by piece while in a drag race. "
+		date: "February 2021 – May 2022",
+		desc: "Led engineering initiatives for a SaaS platform providing tooling for businesses running EOS. Implemented comprehensive security improvements while managing the modernization of the application architecture.",
+		descBullets: [
+			"Established secure CI/CD pipelines with integrated security testing gates using Azure DevOps",
+			"Designed and implemented secure microservices architecture, migrating from monolithic .NET 4.6.1 application",
+			"Led containerization efforts with Docker and Kubernetes while ensuring robust security controls",
+			"Implemented infrastructure-as-code using Terraform with embedded security controls",
+			"Migrated from AWS virtual machines to containerized workloads with enhanced security posture"
+		]
 	},
 	{
-		role: "Senior Software Engineer / Development Lead",
+		role: "Senior Software Engineer",
+		company: "Satcom Direct",
+		companylogo: null, // No logo available for this company
+		date: "July 2020 – February 2021",
+		desc: "Developed secure aviation communication software with emphasis on high availability and reliability for mission-critical systems where security failures could have significant safety implications.",
+		descBullets: [
+			"Designed secure microservices architecture for real-time plane communications systems",
+			"Implemented comprehensive testing strategies for high-risk applications where failures could impact aviation safety",
+			"Secured Azure Functions and API endpoints with robust authentication and authorization controls",
+			"Created secure integration patterns between Angular frontend and .NET backend services",
+			"Established security patterns for high-availability systems with zero tolerance for downtime"
+		]
+	},
+	{
+		role: "Senior Software Engineer",
 		company: "Ubicquia",
 		companylogo: UbiquiaLogo,
-		date: "May 2018 – June 2020",
-		desc: "This role involved creating an enterprise solution to manage cellular connected units on light poles. While in this role, I wrote and managed a php Laravel API, with an Angular front end, as well as wrote automation frameworks, MQTT broker connections, python API's, virtualized environments, and a whole host of supporting software. While in this role I learned to manage and configure Linux environments, and wrote ansible scripts to migrate and re-architect the business from Azure to the Google Cloud Platform. The last one saving the company 500K annually. This role involved a very small team with big tasks, and short deadlines. This taught me how to move quickly, focus on what is truly important, and to write extensible software with manageable tech debt.",
+		date: "February 2019 – June 2020",
+		desc: "Led development of enterprise IoT platform for managing cellular-connected smart city devices with emphasis on secure device communication and cloud infrastructure.",
+		descBullets: [
+			"Developed secure PHP Laravel API and Angular frontend with comprehensive authentication system", 
+			"Created automation frameworks, MQTT broker connections, and Python APIs for secure device management",
+			"Orchestrated secure cloud migration from Azure to GCP, resulting in $500K annual cost savings",
+			"Configured Linux environments and wrote Ansible scripts for automated, secure deployments",
+			"Managed small, high-performing team delivering critical features under tight deadlines"
+		]
 	},
 	{
-		role: "Software Engineer",
+		role: "Senior Software Developer",
+		company: "Medicomp",
+		companylogo: MedicompLogo,
+		date: "May 2018 – February 2019",
+		desc: "Led development team for healthcare applications handling sensitive patient data, with focus on modernizing legacy systems while ensuring HIPAA compliance and data protection.",
+		descBullets: [
+			"Improved direct-to-consumer healthcare reporting website for nationwide doctor access", 
+			"Implemented security best practices while maintaining compatibility with legacy WebForms and jQuery systems",
+			"Led team of four developers, prioritizing work and ensuring quality across healthcare applications",
+			"Enhanced security for Azure-hosted healthcare data analytics platform handling sensitive ECG patient data",
+			"Applied modern development practices to legacy applications to improve maintainability and security"
+		]
+	},
+	{
+		role: "Application Developer",
 		company: "Starr Companies",
 		companylogo: StarrLogo,
-		date: "March 2016 – May 2018",
-		desc: "Worked on a Document Management/ Reporting web portal. Myself and one other developer rewrote the site in MVC 5 from webforms, moved from an on-prem virtual machine to an azure web service, moved our most resource intensive page to Angular JS, and at the time I left were in the process of updating the front-end to use modern technologies, like Sass, CSS frameworks, NodeJS, etc. In addition, began moving the service layer from .NET4.6.1 to a .NET Core Web API",
+		date: "August 2017 - May 2018",
+		desc: "Developed secure document management and reporting web portal for insurance applications, focusing on modernization and cloud migration strategies.",
+		descBullets: [
+			"Led rewrite of document management portal from WebForms to ASP.NET MVC 5",
+			"Implemented secure cloud migration from on-premises infrastructure to Azure",
+			"Migrated resource-intensive pages to Angular for improved performance and security",
+			"Started modernizing frontend with Sass, CSS frameworks, and Node.js",
+			"Began migration of service layer from .NET 4.6.1 to .NET Core Web API"
+		]
+	},
+	{
+		role: "Global Associate/IT Associate",
+		company: "Starr Companies",
+		companylogo: StarrLogo,
+		date: "March 2016 – August 2017",
+		desc: "Participated in Global Associates program while working as a developer, gaining comprehensive knowledge of Property and Casualty insurance industry from interactions with industry leaders.",
+		descBullets: [
+			"Created multiple proof-of-concept applications for insurance business cases",
+			"Developed cross-selling utility allowing underwriters to identify multi-line business opportunities",
+			"Continued development work on document management system throughout the program",
+			"Expanded system's user base from 30 to over 250 underwriters across multiple departments",
+			"Gained valuable industry context while delivering technical solutions to business problems"
+		]
+	},
+	{
+		role: "Equipment Management Technician",
+		company: "Astreya",
+		companylogo: null,
+		date: "November 2015 – March 2016",
+		desc: "Managed Google's asset inventory system for the Atlanta area and parts of the Southeast region.",
+		descBullets: [
+			"Maintained accurate inventory of technical assets for Google's regional offices",
+			"Imaged and deployed hardware according to security standards and specifications",
+			"Ensured conferencing offices were operational and running smoothly",
+			"Provided technical support for Google employees and conference facilities",
+			"Implemented efficient tracking procedures for hardware assets"
+		]
+	},
+	{
+		role: "PADI Divemaster",
+		company: "Sunshine Divers",
+		companylogo: null,
+		date: "March 2015 – August 2015",
+		desc: "Applied management and organizational skills to operate a dive training facility in Koh Tao, Thailand.",
+		descBullets: [
+			"Coordinated and assisted with dive courses for international clients",
+			"Sold dive packages and explained technical diving concepts to customers",
+			"Managed customer expectations in a tourism-focused environment",
+			"Ensured safe diving practices in accordance with insurance regulations",
+			"Applied problem-solving skills in challenging underwater environments"
+		]
 	}
-
 ];
 
 export const projects = [

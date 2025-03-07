@@ -1,10 +1,10 @@
 /**
- * ExperienceCard Component
+ * TimelineEntry Component
  * 
  * This index file ensures the component can be properly imported
  * from both TypeScript and JavaScript files.
  */
 
-import ExperienceCard from './ExperienceCard';
+import TimelineEntry from './TimelineEntry';
 
-export default ExperienceCard;
+export default TimelineEntry;

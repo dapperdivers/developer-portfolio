@@ -2,9 +2,11 @@ import React, { memo, useMemo } from "react";
 import PropTypes from 'prop-types';
 import SkeletonCard from '@atoms/SkeletonCard';
 import Section from '@layout/Section';
+import ConsoleHeader from '@atoms/ConsoleHeader/ConsoleHeader';
 import useExperience from "@hooks/useExperience";
 import { usePortfolio } from "@context/PortfolioContext";
 import ExperienceTimeline from './ExperienceTimeline';
+import { experience as experienceData } from '../../../portfolio';
 import './Experience.css';
 
 /**
@@ -20,22 +22,20 @@ const Experience = () => {
   // Get loading delay from context or use default
   const loadingDelay = portfolioData?.settings?.loadingDelay || 0;
   
-  // Get experience data with options
-  const experience = useExperience({
-    sortBy: 'recent',
-    delay: loadingDelay
-  });
+  // Use the directly imported experience data from portfolio.js
+  // Fallback to context data only if needed
+  const experience = experienceData || portfolioData?.experience || [];
   
   // Determine section title and subtitle from context if available
-  const sectionTitle = portfolioData?.experienceSection?.title || "Experience";
-  const sectionSubtitle = portfolioData?.experienceSection?.subtitle;
+  const sectionTitle = portfolioData?.experienceSection?.title || "Professional Experience";
+  const sectionSubtitle = portfolioData?.experienceSection?.subtitle || "My career journey and professional highlights";
   
   // Determine number of skeleton cards to show
   const skeletonCount = useMemo(() => 3, []);
   
   // Loading and error state flags
-  const isLoading = !experience;
-  const hasError = experience && experience.length === 0;
+  const isLoading = !experience || experience.length === 0;
+  const hasError = false; // We'll always use portfolio.js data as fallback
   
   // Skip rendering the whole section if explicitly disabled in config
   if (portfolioData?.experienceSection?.display === false) {
@@ -111,9 +111,16 @@ const Experience = () => {
       aria-label="Work experience history"
       data-testid="experience-section"
     >
+      <ConsoleHeader
+        prompt="root@security-portfolio:~#"
+        command="analyze --depth=full --secure --format=timeline professional_experience.json"
+        variant="security"
+        className="timeline-header"
+      />
       <ExperienceTimeline 
         experience={experience} 
         extractDateYear={extractDateYear}
+        variant="security"
       />
     </Section>
   );

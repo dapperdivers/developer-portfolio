@@ -1401,14 +1401,6 @@
     @apply justify-end;
   }
 
-  /* Connector dots */
-  .timeline-entry::before {
-    @apply content-[''] absolute w-5 h-5 top-[50px] left-1/2 z-10 rounded-full;
-    background-color: var(--color-accent);
-    transform: translateX(-50%);
-    box-shadow: 0 0 0 4px var(--color-background), 0 0 0 8px var(--color-accent-light);
-  }
-
   /* Experience grid loading */
   .experience-grid-loading {
     @apply opacity-85 relative;

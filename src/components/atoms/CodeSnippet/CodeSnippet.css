@@ -1,0 +1,154 @@
+/**
+ * CodeSnippet Component Styles
+ * Styling for the CodeSnippet component with syntax highlighting
+ */
+
+/* Base styles */
+.code-snippet {
+  font-family: var(--font-family-jetbrains);
+  border-radius: var(--border-radius-md);
+  overflow: hidden;
+  margin: 0;
+  position: relative;
+  box-shadow: var(--shadow-sm);
+  width: 100%;
+  max-width: 100%;
+  border: 1px solid var(--color-border);
+}
+
+.code-snippet pre {
+  margin: 0;
+  padding: var(--spacing-4);
+  overflow: auto;
+  max-height: 400px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  word-wrap: break-word;
+  line-height: var(--line-height-code);
+}
+
+.code-snippet code {
+  font-size: var(--font-size-sm);
+  font-family: var(--font-family-jetbrains);
+  letter-spacing: var(--letter-spacing-technical);
+  tab-size: 2;
+}
+
+/* Theme variations */
+.code-snippet-dark {
+  background-color: var(--color-navy);
+  color: var(--color-text);
+}
+
+.code-snippet-light {
+  background-color: var(--color-background-alt);
+  color: var(--color-text-dark);
+}
+
+/* Visual variants */
+.code-snippet-security {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 10px rgba(var(--color-primary-rgb), 0.1);
+}
+
+.code-snippet-terminal {
+  border-color: var(--color-info);
+  box-shadow: 0 0 10px rgba(var(--color-info-rgb), 0.1);
+}
+
+/* Syntax highlighting tokens */
+.code-snippet .token-keyword {
+  color: var(--color-primary);
+  font-weight: var(--font-weight-medium);
+}
+
+.code-snippet-terminal .token-keyword {
+  color: var(--color-info);
+}
+
+.code-snippet .token-string {
+  color: var(--color-success);
+}
+
+.code-snippet .token-comment {
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+.code-snippet .token-function {
+  color: var(--color-warning);
+}
+
+.code-snippet .token-operator {
+  color: var(--color-primary);
+}
+
+.code-snippet .token-number {
+  color: var(--color-danger);
+}
+
+.code-snippet-terminal .token-operator {
+  color: var(--color-info);
+}
+
+/* Decorative code snippets used as background elements */
+.code-snippet[aria-hidden="true"] {
+  opacity: 0.4;
+  max-width: 200px;
+  overflow: hidden;
+}
+
+.code-snippet[aria-hidden="true"] pre {
+  overflow: hidden;
+  max-height: none;
+  padding: var(--spacing-2);
+}
+
+.code-snippet[aria-hidden="true"] code {
+  font-size: var(--font-size-xs);
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .code-snippet pre {
+    padding: var(--spacing-3);
+    max-height: 300px;
+  }
+  
+  .code-snippet code {
+    font-size: var(--font-size-xs);
+  }
+}
+
+/* Accessibility and focus styles */
+.code-snippet:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.code-snippet-terminal:focus-visible {
+  outline-color: var(--color-info);
+}
+
+/* Screen reader only class */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .code-snippet {
+    transition: none;
+  }
+}

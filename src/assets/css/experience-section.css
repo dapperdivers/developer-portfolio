@@ -56,20 +56,6 @@
   justify-content: flex-end;
 }
 
-/* Connector dots */
-.timeline-entry::before {
-  content: '';
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  background-color: var(--color-accent);
-  border-radius: 50%;
-  top: 50px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1;
-  box-shadow: 0 0 0 4px var(--color-background), 0 0 0 8px var(--color-accent-light);
-}
 
 /* Experience grid loading */
 .experience-grid-loading {

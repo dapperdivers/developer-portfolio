@@ -1,0 +1,485 @@
+/**
+ * TerminalControls Component Styles
+ * Styling for terminal window headers, content, and commands
+ */
+
+/* Base variables */
+:root {
+  --terminal-background: var(--color-navy, #0a192f);
+  --terminal-text: var(--color-text, #e6f1ff);
+  --terminal-prompt: var(--color-primary, #64ffda);
+  --terminal-border: rgba(var(--color-primary-rgb, 100, 255, 218), 0.3);
+  --terminal-glow: rgba(var(--color-primary-rgb, 100, 255, 218), 0.15);
+  --terminal-header: rgba(var(--color-background-alt-rgb, 20, 40, 70), 0.8);
+  --terminal-font: var(--font-family-jetbrains, 'JetBrains Mono', monospace);
+}
+
+/* Terminal window controls */
+.terminal-controls {
+  display: flex;
+  align-items: center;
+  margin-right: var(--spacing-3);
+  user-select: none;
+}
+
+.terminal-circle {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 6px;
+  position: relative;
+  cursor: default;
+  border: none;
+  padding: 0;
+  flex-shrink: 0;
+  transition: all var(--transition-standard);
+}
+
+/* Terminal window styling */
+.timeline-card {
+  border-radius: var(--border-radius-md);
+  overflow: visible;
+  width: 100%;
+  border: 1px solid var(--terminal-border);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4), /* Stronger shadow */
+              0 0 12px var(--terminal-glow);
+  background-color: var(--terminal-background);
+  backdrop-filter: blur(4px);
+  position: relative;
+  margin-bottom: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+/* Add hover effects */
+.timeline-card-container:hover .timeline-card {
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.6), /* Stronger shadow on hover */
+              0 0 15px var(--terminal-glow);
+}
+
+/* Terminal header */
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  background-color: var(--terminal-header);
+  border-bottom: 1px solid var(--terminal-border);
+  border-top-left-radius: var(--border-radius-md);
+  border-top-right-radius: var(--border-radius-md);
+  position: relative;
+  z-index: 2;
+}
+
+/* Terminal title - Simple, high-contrast style for easy readability */
+.terminal-title {
+  font-family: var(--terminal-font);
+  font-size: var(--font-size-sm);
+  color: #FFFFFF; /* Pure white for best readability */
+  text-align: center;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-left: var(--spacing-4);
+  position: relative;
+  z-index: 5;
+  font-weight: 600; /* Semi-bold for clarity */
+  letter-spacing: 0.3px; /* Slight letter spacing for better readability */
+  
+  /* Simple, subtle outline for contrast against any background */
+  text-shadow: 
+    0 0 1px rgba(0, 0, 0, 0.9),
+    0 1px 2px rgba(0, 0, 0, 0.8);
+  
+  /* Very slight background for better contrast */
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+/* Terminal footer */
+.terminal-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-2) var(--spacing-3);
+  border-top: 1px solid var(--terminal-border);
+  font-family: var(--terminal-font);
+  font-size: var(--font-size-xs);
+  color: var(--terminal-prompt);
+  background-color: rgba(0, 0, 0, 0.2); /* Slightly darker for contrast */
+  position: relative;
+  z-index: 2;
+}
+
+/* Terminal screen effect */
+.timeline-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(var(--color-background-alt-rgb, 20, 40, 70), 0.05),
+    rgba(var(--color-background-alt-rgb, 20, 40, 70), 0.05) 2px,
+    transparent 2px,
+    transparent 4px
+  );
+  pointer-events: none;
+  opacity: 0.3;
+  z-index: 1;
+  border-radius: var(--border-radius-md);
+}
+
+/* Connection status indicators */
+.connection-status {
+  display: flex;
+  align-items: center;
+}
+
+.status-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: var(--spacing-2);
+  box-shadow: 0 0 5px currentColor;
+}
+
+.session-id {
+  font-family: var(--terminal-font);
+  letter-spacing: 1px;
+}
+
+/* Command prompt and response styles */
+.command-prompt {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: var(--spacing-2);
+  line-height: 1.6;
+  font-family: var(--terminal-font);
+}
+
+.command-prompt-symbol {
+  color: var(--terminal-prompt);
+  margin-right: var(--spacing-2);
+  font-weight: bold;
+  text-shadow: 0 0 4px var(--terminal-prompt); /* Add glow effect */
+}
+
+.command-text {
+  color: var(--terminal-prompt);
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-shadow: 0 0 4px var(--terminal-prompt); /* Add glow effect */
+}
+
+/* Command typing animation */
+.command-text.typing {
+  border-right: 2px solid var(--terminal-prompt);
+  animation: blinkCursor 1s infinite step-end;
+  width: fit-content;
+}
+
+@keyframes blinkCursor {
+  from, to { border-color: transparent; }
+  50% { border-color: var(--terminal-prompt); }
+}
+
+/* Command response */
+.command-response {
+  margin-left: var(--spacing-4);
+  margin-bottom: var(--spacing-2);
+  color: #ffffff; /* Brighter text for readability */
+  font-size: var(--font-size-sm);
+  font-family: var(--terminal-font);
+  line-height: 1.6;
+  background-color: rgba(0, 20, 40, 0.3); /* Slightly darker bg for contrast */
+  padding: 0.5rem;
+  border-radius: 4px;
+  border-left: 2px solid rgba(var(--color-primary-rgb), 0.4);
+  font-weight: 500; /* Slightly bolder for better readability */
+  text-shadow: 0 0 1px rgba(255, 255, 255, 0.2); /* Subtle text shadow for contrast */
+}
+
+/* Important command highlights */
+.command-response > div {
+  position: relative;
+  padding-left: 1rem;
+}
+
+.command-response > div:before {
+  content: '>';
+  position: absolute;
+  left: 0;
+  color: var(--terminal-prompt);
+  opacity: 0.8;
+}
+
+/* Expand/collapse hint message */
+.expand-collapse-hint {
+  text-align: center;
+  font-size: var(--font-size-xs);
+  opacity: 0.8;
+  margin-top: 0.25rem;
+  font-style: italic;
+  color: var(--terminal-prompt);
+}
+
+/* Compact view adjustments */
+.timeline-card-container.compact .terminal-footer {
+  padding: 0.25rem 0.5rem;
+  font-size: 9px;
+}
+
+/* MacOS variant */
+.terminal-controls-macos .terminal-circle-close {
+  background-color: var(--color-danger);
+}
+
+.terminal-controls-macos .terminal-circle-minimize {
+  background-color: var(--color-warning);
+}
+
+.terminal-controls-macos .terminal-circle-maximize {
+  background-color: var(--color-success);
+}
+
+/* Windows variant */
+.terminal-controls-windows {
+  margin-left: auto;
+  order: 2;
+}
+
+.terminal-controls-windows .terminal-circle {
+  width: 14px;
+  height: 14px;
+  border-radius: 0;
+}
+
+.terminal-controls-windows .terminal-circle-close {
+  background-color: transparent;
+  position: relative;
+}
+
+.terminal-controls-windows .terminal-circle-close::before,
+.terminal-controls-windows .terminal-circle-close::after {
+  content: '';
+  position: absolute;
+  width: 10px;
+  height: 1px;
+  background-color: var(--color-danger);
+  top: 50%;
+  left: 50%;
+}
+
+.terminal-controls-windows .terminal-circle-close::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.terminal-controls-windows .terminal-circle-close::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.terminal-controls-windows .terminal-circle-minimize {
+  background-color: transparent;
+  position: relative;
+}
+
+.terminal-controls-windows .terminal-circle-minimize::before {
+  content: '';
+  position: absolute;
+  width: 8px;
+  height: 1px;
+  background-color: var(--color-text);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.terminal-controls-windows .terminal-circle-maximize {
+  background-color: transparent;
+  position: relative;
+  border: 1px solid var(--color-text);
+  transform: scale(0.7);
+}
+
+/* Linux variant */
+.terminal-controls-linux .terminal-circle {
+  width: 14px;
+  height: 14px;
+  border: 1px solid var(--color-border);
+}
+
+.terminal-controls-linux .terminal-circle-close {
+  background-color: var(--color-navy);
+  position: relative;
+}
+
+.terminal-controls-linux .terminal-circle-close::before,
+.terminal-controls-linux .terminal-circle-close::after {
+  content: '';
+  position: absolute;
+  width: 8px;
+  height: 1px;
+  background-color: var(--color-danger);
+  top: 50%;
+  left: 50%;
+}
+
+.terminal-controls-linux .terminal-circle-close::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.terminal-controls-linux .terminal-circle-close::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.terminal-controls-interactive .terminal-circle {
+  cursor: pointer;
+}
+
+.terminal-controls-interactive .terminal-circle:hover {
+  filter: brightness(1.2);
+}
+
+/* Color variations for timeline entries */
+.timeline-entry:nth-child(5n+1) .command-prompt-symbol,
+.timeline-entry:nth-child(5n+1) .command-text,
+.timeline-entry:nth-child(5n+1) .expand-collapse-hint {
+  color: var(--color-entry1);
+  text-shadow: 0 0 4px var(--color-entry1);
+}
+
+.timeline-entry:nth-child(5n+2) .command-prompt-symbol,
+.timeline-entry:nth-child(5n+2) .command-text,
+.timeline-entry:nth-child(5n+2) .expand-collapse-hint {
+  color: var(--color-entry2);
+  text-shadow: 0 0 4px var(--color-entry2);
+}
+
+.timeline-entry:nth-child(5n+3) .command-prompt-symbol,
+.timeline-entry:nth-child(5n+3) .command-text,
+.timeline-entry:nth-child(5n+3) .expand-collapse-hint {
+  color: var(--color-entry3);
+  text-shadow: 0 0 4px var(--color-entry3);
+}
+
+.timeline-entry:nth-child(5n+4) .command-prompt-symbol,
+.timeline-entry:nth-child(5n+4) .command-text,
+.timeline-entry:nth-child(5n+4) .expand-collapse-hint {
+  color: var(--color-entry4);
+  text-shadow: 0 0 4px var(--color-entry4);
+}
+
+.timeline-entry:nth-child(5n+5) .command-prompt-symbol,
+.timeline-entry:nth-child(5n+5) .command-text,
+.timeline-entry:nth-child(5n+5) .expand-collapse-hint {
+  color: var(--color-entry5);
+  text-shadow: 0 0 4px var(--color-entry5);
+}
+
+/* Simple header color variations with borders only */
+.timeline-entry:nth-child(5n+1) .card-header {
+  border-bottom-color: var(--color-entry1);
+}
+
+.timeline-entry:nth-child(5n+2) .card-header {
+  border-bottom-color: var(--color-entry2);
+}
+
+.timeline-entry:nth-child(5n+3) .card-header {
+  border-bottom-color: var(--color-entry3);
+}
+
+.timeline-entry:nth-child(5n+4) .card-header {
+  border-bottom-color: var(--color-entry4);
+}
+
+.timeline-entry:nth-child(5n+5) .card-header {
+  border-bottom-color: var(--color-entry5);
+}
+
+/* Footer color variations */
+.timeline-entry:nth-child(5n+1) .terminal-footer {
+  border-top-color: var(--color-entry1);
+  color: var(--color-entry1);
+}
+
+.timeline-entry:nth-child(5n+2) .terminal-footer {
+  border-top-color: var(--color-entry2);
+  color: var(--color-entry2);
+}
+
+.timeline-entry:nth-child(5n+3) .terminal-footer {
+  border-top-color: var(--color-entry3);
+  color: var(--color-entry3);
+}
+
+.timeline-entry:nth-child(5n+4) .terminal-footer {
+  border-top-color: var(--color-entry4);
+  color: var(--color-entry4);
+}
+
+.timeline-entry:nth-child(5n+5) .terminal-footer {
+  border-top-color: var(--color-entry5);
+  color: var(--color-entry5);
+}
+
+/* Button label for screen readers */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .terminal-controls {
+    margin-right: var(--spacing-2);
+  }
+  
+  .terminal-circle {
+    width: 10px;
+    height: 10px;
+    margin-right: 4px;
+  }
+  
+  .terminal-controls-windows .terminal-circle,
+  .terminal-controls-linux .terminal-circle {
+    width: 12px;
+    height: 12px;
+  }
+  
+  .command-prompt, .command-response {
+    font-size: 12px;
+  }
+  
+  .terminal-footer {
+    font-size: 9px;
+  }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .terminal-circle {
+    transition: none;
+  }
+  
+  .terminal-controls-interactive .terminal-circle:active {
+    transform: none;
+  }
+  
+  .command-text.typing {
+    animation: none;
+    border-right: none;
+  }
+}

@@ -1,0 +1,232 @@
+/**
+ * SecurityBadge Component Styles
+ * Styling for the SecurityBadge component with variants
+ */
+
+/* Base styles */
+.security-badge {
+  position: absolute;
+  top: -14px; /* Adjusted positioning */
+  right: -10px; /* Adjusted positioning */
+  background-color: rgba(10, 25, 47, 0.95); /* Slightly more opaque for better visibility */
+  font-size: var(--font-size-xs);
+  padding: var(--spacing-1) var(--spacing-2);
+  border-radius: var(--border-radius-sm);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7), /* Stronger shadow for better visibility */
+              0 0 16px rgba(var(--color-primary-rgb), 0.6); /* Enhanced glow */
+  z-index: 20; /* Even higher z-index to ensure it's on top */
+  font-family: var(--font-family-jetbrains);
+  transition: all var(--transition-standard);
+  will-change: transform, opacity;
+  border: 1.5px solid; /* Thicker border */
+  background-clip: padding-box; /* Ensures the background doesn't bleed through the border */
+}
+
+/* Icon styles */
+.security-badge-icon {
+  width: 16px; /* Slightly larger icons */
+  height: 16px;
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+/* Text styles */
+.security-badge-text {
+  display: flex;
+  flex-direction: column; /* Stack status and ID vertically */
+  align-items: center; /* Center contents */
+  white-space: nowrap;
+  font-weight: var(--font-weight-bold);
+  text-shadow: 0 0 4px currentColor; /* Text glow effect */
+  line-height: 1.1; /* Tighter line spacing */
+}
+
+.security-badge-status {
+  letter-spacing: 0.5px; /* Better readability */
+  font-size: 0.7rem;
+}
+
+/* Security ID display */
+.security-badge-id {
+  font-size: 0.6rem;
+  opacity: 0.9; /* More visible */
+  letter-spacing: var(--letter-spacing-technical);
+  margin-top: 2px; /* Small space between status and ID */
+}
+
+/* Variant styles - each with distinct colors and effects */
+.security-badge-security {
+  color: var(--color-entry1, #64ffda);
+  border-color: var(--color-entry1, #64ffda);
+}
+
+.security-badge-terminal {
+  color: var(--color-info, #58a6ff);
+  border-color: var(--color-info, #58a6ff);
+}
+
+/* Status styles - enhanced visuals */
+.security-badge-scanning .security-badge-icon {
+  animation: securityBadgePulse 1.5s infinite ease-in-out;
+}
+
+.security-badge-verified {
+  font-weight: var(--font-weight-bold);
+}
+
+.security-badge-verified .security-badge-icon {
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 5px currentColor); /* Enhanced glow effect */
+}
+
+/* Color variations for verified badges - make these more vibrant/visible */
+.security-badge-verified.security-badge-security {
+  background-color: rgba(0, 0, 0, 0.7); /* Darker background for contrast */
+}
+
+.security-badge-verified.security-badge-security .security-badge-icon {
+  filter: drop-shadow(0 0 8px var(--color-entry1, #64ffda));
+}
+
+.security-badge-verified.security-badge-terminal {
+  background-color: rgba(0, 0, 0, 0.7); /* Darker background for contrast */
+}
+
+.security-badge-verified.security-badge-terminal .security-badge-icon {
+  filter: drop-shadow(0 0 8px var(--color-info, #58a6ff));
+}
+
+/* Color variations based on timeline entry position */
+.timeline-entry:nth-child(5n+1) .security-badge {
+  color: var(--color-entry1);
+  border-color: var(--color-entry1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5), 0 0 16px rgba(var(--color-entry1-rgb, 100, 255, 218), 0.4);
+}
+
+.timeline-entry:nth-child(5n+2) .security-badge {
+  color: var(--color-entry2);
+  border-color: var(--color-entry2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5), 0 0 16px rgba(var(--color-entry2-rgb, 255, 157, 0), 0.4);
+}
+
+.timeline-entry:nth-child(5n+3) .security-badge {
+  color: var(--color-entry3);
+  border-color: var(--color-entry3);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5), 0 0 16px rgba(var(--color-entry3-rgb, 255, 94, 120), 0.4);
+}
+
+.timeline-entry:nth-child(5n+4) .security-badge {
+  color: var(--color-entry4);
+  border-color: var(--color-entry4);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5), 0 0 16px rgba(var(--color-entry4-rgb, 167, 139, 250), 0.4);
+}
+
+.timeline-entry:nth-child(5n+5) .security-badge {
+  color: var(--color-entry5);
+  border-color: var(--color-entry5);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5), 0 0 16px rgba(var(--color-entry5-rgb, 45, 212, 191), 0.4);
+}
+
+/* Animation for scanning state - more visible pulsing */
+@keyframes securityBadgePulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+    filter: brightness(0.9);
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 1;
+    filter: brightness(1.4);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+    filter: brightness(0.9);
+  }
+}
+
+/* Loading icon animation */
+.security-badge-loading-icon {
+  animation: securityBadgeRotate 1.5s infinite linear;
+}
+
+@keyframes securityBadgeRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Hover effect */
+.security-badge:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6), 
+              0 0 20px rgba(var(--color-primary-rgb), 0.6);
+  filter: brightness(1.2);
+}
+
+/* Focus styles */
+.security-badge:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Verification badge - make this stand out more */
+.security-badge-verified::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 255, 255, 0.15) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  border-radius: var(--border-radius-sm);
+  opacity: 0.7;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .security-badge {
+    top: -10px;
+    right: -10px;
+    font-size: 8px;
+    padding: var(--spacing-1);
+  }
+  
+  .security-badge-icon {
+    width: 12px;
+    height: 12px;
+  }
+  
+  .security-badge-id {
+    font-size: 0.5rem;
+  }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .security-badge,
+  .security-badge-icon {
+    transition: none;
+  }
+  
+  .security-badge-scanning .security-badge-icon,
+  .security-badge-loading-icon {
+    animation: none;
+  }
+  
+  .security-badge:hover {
+    transform: none;
+  }
+  
+  .security-badge-verified .security-badge-icon {
+    transform: none;
+  }
+}
