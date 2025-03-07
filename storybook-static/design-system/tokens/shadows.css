@@ -1,7 +1,0 @@
-:root {
-  /* Shadows */
-  --box-shadow-sm: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-  --box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-  --box-shadow-lg: 0 1rem 3rem rgba(0, 0, 0, 0.175);
-  --box-shadow-focus: 0 0 0 0.25rem rgba(0, 98, 204, 0.25);
-}

@@ -46,5 +46,7 @@ dist/
 /design-assets
 /docs-draft
 .jest-cache/
+
+# Storybook
 *storybook.log
-storybook-static/
+/storybook-static
