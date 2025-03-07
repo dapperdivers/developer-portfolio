@@ -101,10 +101,11 @@
 }
 
 .cert-label {
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-sm);
   color: var(--color-text-muted);
-  margin-top: 2px;
+  margin-top: 4px;
   text-align: center;
+  letter-spacing: 0.02em;
 }
 
 /* Main content container with improved spacing */
@@ -254,11 +255,11 @@
   }
   
   .education-content {
-    padding: var(--spacing-3);
+    padding: var(--spacing-4);
   }
   
   .education-details-panel {
-    padding: var(--spacing-3) var(--spacing-2);
+    padding: var(--spacing-3);
     gap: var(--spacing-3);
   }
   
@@ -267,7 +268,7 @@
   }
   
   .integrated-certifications-panel {
-    padding: var(--spacing-3) var(--spacing-2);
+    padding: var(--spacing-3);
   }
   
   .certifications-list {
@@ -275,7 +276,7 @@
   }
   
   .certifications-indicator {
-    padding: var(--spacing-1);
+    padding: var(--spacing-2);
   }
   
   .cert-count {
@@ -283,7 +284,8 @@
   }
   
   .cert-label {
-    font-size: var(--font-size-xxs);
+    font-size: var(--font-size-xs);
+    letter-spacing: 0.01em;
   }
 }
 

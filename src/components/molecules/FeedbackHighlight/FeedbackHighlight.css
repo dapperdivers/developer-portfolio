@@ -30,38 +30,52 @@
 
 .highlight-text {
   position: relative;
-  font-size: var(--font-size-lg);
+  font-size: var(--font-size-xl);
   font-weight: var(--font-weight-bold);
   color: var(--color-primary);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  line-height: 1.5;
+  text-shadow: 0 0 10px rgba(var(--color-primary-rgb), 0.3);
+  line-height: 1.6;
   margin: 0;
   z-index: 1;
+  letter-spacing: 0.01em;
+  padding: var(--spacing-1);
 }
 
 .highlight-decoration {
   position: absolute;
   bottom: 0;
   right: 0;
-  width: 80px;
-  height: 80px;
-  background-color: rgba(100, 255, 218, 0.05);
+  width: 100px;
+  height: 100px;
+  background-color: rgba(var(--color-primary-rgb), 0.08);
   border-top-left-radius: 100%;
   z-index: 0;
+}
+
+/* Add subtle animation */
+@keyframes pulseHighlight {
+  0%, 100% { opacity: 0.05; }
+  50% { opacity: 0.1; }
+}
+
+.highlight-decoration {
+  animation: pulseHighlight 4s infinite ease-in-out;
 }
 
 /* Responsive styles */
 @media (max-width: 768px) {
   .highlight-container {
-    padding: var(--spacing-3);
+    padding: var(--spacing-4) var(--spacing-3);
+    border-left-width: 3px;
   }
   
   .highlight-text {
-    font-size: var(--font-size-base);
+    font-size: var(--font-size-lg);
+    line-height: 1.5;
   }
   
   .highlight-decoration {
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
   }
 }

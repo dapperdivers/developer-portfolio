@@ -4,28 +4,45 @@
 
 .feedback-quote {
   position: relative;
-  padding: var(--spacing-2);
-  margin-bottom: var(--spacing-4);
+  padding: var(--spacing-4) var(--spacing-3);
+  margin-bottom: var(--spacing-5);
 }
 
 .quote-icon {
-  color: var(--color-text-muted);
-  opacity: 0.7;
-  font-size: 1.2rem;
+  color: var(--color-primary);
+  opacity: 0.8;
+  font-size: 1.5rem;
+  margin-bottom: var(--spacing-2);
 }
 
 .quote-content {
-  font-size: var(--font-size-sm);
-  line-height: var(--line-height-base);
+  font-size: var(--font-size-base);
+  line-height: 1.8;
   color: var(--color-text);
   overflow-wrap: break-word;
   word-wrap: break-word;
   font-style: italic;
+  letter-spacing: 0.01em;
+  text-shadow: 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+/* Add paragraph spacing within quotes */
+.quote-content p {
+  margin-bottom: var(--spacing-3);
+}
+
+.quote-content p:last-child {
+  margin-bottom: 0;
 }
 
 /* Responsive styles */
 @media (max-width: 768px) {
   .quote-content {
-    font-size: var(--font-size-xs);
+    font-size: var(--font-size-sm);
+    line-height: 1.7;
+  }
+  
+  .feedback-quote {
+    padding: var(--spacing-3) var(--spacing-2);
   }
 }

@@ -40,6 +40,9 @@
   letter-spacing: var(--letter-spacing-technical);
   background-color: var(--color-navy);
   border-bottom: 1px solid var(--color-border);
+  white-space: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 
 /* Prompt styles */

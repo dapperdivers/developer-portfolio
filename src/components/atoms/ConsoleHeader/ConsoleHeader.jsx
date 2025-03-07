@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Card from '@atoms/Card';
 import TerminalControls from '@atoms/TerminalControls/TerminalControls';
@@ -30,6 +30,28 @@ const ConsoleHeader = ({
   ariaDescription,
   ...rest
 }) => {
+  // State to track if on mobile
+  const [isMobile, setIsMobile] = useState(false);
+  
+  // Set up mobile detection
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    // Initial check
+    checkMobile();
+    
+    // Listen for resize events
+    window.addEventListener('resize', checkMobile);
+    
+    // Cleanup
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+  
+  // Use shorter prompt on mobile
+  const displayPrompt = isMobile ? 'user:~$' : prompt;
+  
   // Build additional class names
   const classes = [
     'console-header',
@@ -62,7 +84,7 @@ const ConsoleHeader = ({
         <span 
           className="console-prompt"
           aria-hidden="true" // Hide from screen readers as the full command is provided via aria-label
-        >{prompt}</span>
+        >{displayPrompt}</span>
         <span 
           className="console-command"
           aria-hidden="true" // Hide from screen readers as the full command is provided via aria-label

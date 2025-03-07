@@ -237,11 +237,14 @@
 }
 
 .compact-summary {
-  font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-semibold);
   color: #ffffff; /* Brighter text for key info */
-  line-height: 1.5;
-  font-size: 0.95rem;
-  text-shadow: 0 0 2px rgba(255, 255, 255, 0.3); /* Subtle glow for key text */
+  line-height: 1.7;
+  font-size: 1.05rem;
+  text-shadow: 0 0 3px rgba(255, 255, 255, 0.4); /* Enhanced glow for key text */
+  letter-spacing: 0.01em;
+  padding: 0.25rem 0;
+  margin-bottom: 0.5rem;
 }
 
 /* Tech stack badges in compact view */
@@ -289,8 +292,10 @@
 .description-bullet-item {
   position: relative;
   padding-left: 1.5rem;
-  margin-bottom: 0.75rem; /* Increased spacing */
-  line-height: 1.5;
+  margin-bottom: 1rem; /* Increased spacing between bullets */
+  line-height: 1.7;
+  font-size: 1rem; /* Increased font size for bullets */
+  color: rgba(255, 255, 255, 0.95); /* Improved contrast */
 }
 
 .description-bullet-item::before {
@@ -298,13 +303,18 @@
   position: absolute;
   left: 0;
   font-weight: bold;
+  font-size: 1.1rem; /* Slightly larger bullet indicator */
   color: var(--terminal-prompt, var(--color-primary)); /* Using terminal color variables */
+  text-shadow: 0 0 6px currentColor; /* Enhanced glow effect */
 }
 
 /* Improve the description text */
 .description-text {
-  line-height: 1.6;
-  color: rgba(255, 255, 255, 0.9); /* Slightly brighter for better readability */
+  line-height: 1.8;
+  font-size: 1.05rem; /* Increased font size for main description */
+  margin-bottom: 1.25rem; /* Add space after description */
+  color: rgba(255, 255, 255, 0.95); /* Improved contrast for better readability */
+  letter-spacing: 0.015em; /* Subtle letter spacing for readability */
 }
 
 /* Enhance expand/collapse hint */
@@ -441,10 +451,32 @@
   }
   
   .timeline-card-container.compact {
-    max-height: 240px; /* Even higher on mobile for better readability */
+    max-height: 280px; /* Increased height for better readability on mobile */
   }
   
   .compact-summary {
-    font-size: 0.9rem;
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+  
+  .description-text {
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+  
+  .description-bullet-item {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 0.875rem;
+  }
+  
+  /* Improve terminal content padding on mobile */
+  .terminal-content {
+    padding: 1rem 0.75rem;
+  }
+  
+  /* Enhanced command prompt text to stand out on mobile */
+  .command-text {
+    font-weight: 500;
   }
 }

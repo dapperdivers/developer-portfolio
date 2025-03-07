@@ -67,8 +67,11 @@ const sanitizeText = (text) => {
     // Alternative approach for server-side rendering where DOM might not be available
     const recursiveSanitize = (str) => {
         const originalStr = str;
-        // Replace HTML tags recursively until no more changes
-        const sanitized = str.replace(/<[^>]*>/g, '');
+        // Replace HTML tags and potential HTML tag fragments recursively
+        // First eliminate < followed by any character that might start a tag
+        const sanitized = str.replace(/<[a-zA-Z!\/]/g, '')
+                            // Then remove any remaining > characters that could be part of tags
+                            .replace(/>/g, '');
         // If sanitization made changes, run again to catch nested tags
         return sanitized !== originalStr ? recursiveSanitize(sanitized) : sanitized.trim();
     };
