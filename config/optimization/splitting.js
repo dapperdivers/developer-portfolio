@@ -26,7 +26,6 @@ export function createEntryPoints({ rootDir = projectRoot } = {}) {
   return {
     input: {
       main: resolve(rootDir, 'index.html'),
-      test: resolve(rootDir, 'test.html')
     }
   };
 }

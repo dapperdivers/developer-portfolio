@@ -91,7 +91,6 @@ if (typeof window !== 'undefined') {
 
 We've created several tools to test and verify the fix:
 
-1. **Context Test HTML**: A standalone HTML file (`context-test.html`) that tests the React Context API functionality directly.
 
 2. **Production Build Verification**: The `verify-production.js` script tests the production build process and verifies that the site loads correctly.
 
@@ -111,7 +110,6 @@ We've created several tools to test and verify the fix:
 
 3. Test the context functionality by opening the context test HTML:
    ```
-   open context-test.html
    ```
 
 ## Best Practices to Prevent Future Issues

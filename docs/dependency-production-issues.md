@@ -67,7 +67,6 @@ We created a set of testing tools:
 
 1. `fix-react-context.js` - Automatically applies necessary fixes
 2. `verify-production.js` - Tests the production build for issues
-3. `context-test.html` - Directly tests React context functionality
 
 ## Lessons Learned
 

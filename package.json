@@ -41,6 +41,7 @@
   },
   "scripts": {
     "cleanup:repo": "node scripts/cleanup-repo.js",
+    "restore:context": "node scripts/restore-context-files.js",
     "dev": "vite",
     "build": "vite build",
     "build:analyze": "ANALYZE=true vite build",
