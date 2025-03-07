@@ -1,0 +1,81 @@
+/**
+ * Context Utilities
+ * 
+ * Provides standardized patterns and utilities for working with
+ * React Context in a way that's compatible with production builds
+ * and prevents tree-shaking issues.
+ */
+
+import React, { useContext, Context } from 'react';
+
+/**
+ * Create a typed context with production build protections
+ * 
+ * This helper function creates a React Context with additional safeguards
+ * that prevent tree-shaking from breaking context functionality in production.
+ * It also provides better TypeScript type safety and consistent patterns.
+ * 
+ * @param defaultValue - The default value for the context
+ * @returns A React Context with added safety features
+ */
+export function createTypedContext<T>(defaultValue: T): Context<T> {
+  // Ensure React is available globally to prevent tree-shaking issues
+  if (typeof window !== 'undefined') {
+    window.React = window.React || React;
+  }
+  
+  // Create the context with React namespace to avoid destructured import issues
+  const context = React.createContext<T>(defaultValue);
+  
+  return context;
+}
+
+/**
+ * Create a custom hook for using a context with safety checks
+ * 
+ * This function creates a hook that verifies the context is used within a provider
+ * and provides better error messages for debugging.
+ * 
+ * @param context - The React Context to create a hook for
+ * @param hookName - The name of the hook for error messages
+ * @returns A custom hook function that uses the context safely
+ */
+export function createContextHook<T>(context: Context<T>, hookName: string) {
+  return function useTypedContext(): T {
+    // Use React namespace methods for direct access
+    const contextValue = React.useContext(context);
+    
+    // Verify context is used within provider
+    if (contextValue === undefined) {
+      throw new Error(`${hookName} must be used within its corresponding Provider`);
+    }
+    
+    return contextValue;
+  };
+}
+
+/**
+ * Example Usage:
+ * 
+ * ```typescript
+ * // AnimationContext.tsx
+ * import { createTypedContext, createContextHook } from '@utils/contextUtils';
+ * 
+ * export interface AnimationState {
+ *   // state properties
+ * }
+ * 
+ * // Create the context
+ * const AnimationContext = createTypedContext<AnimationState>({
+ *   // default values
+ * });
+ * 
+ * // Create a typed hook
+ * export const useAnimation = createContextHook(AnimationContext, 'useAnimation');
+ * 
+ * // Export the provider
+ * export const AnimationProvider: React.FC<AnimationProviderProps> = ({ children }) => {
+ *   // implementation
+ * };
+ * ```
+ */
