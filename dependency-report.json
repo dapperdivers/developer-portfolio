@@ -1,0 +1,5956 @@
+{
+  "summary": {
+    "components": {
+      "total": 153,
+      "usingReactApis": 27,
+      "percentage": 18
+    },
+    "hooks": {
+      "total": 17,
+      "usingReactApis": 0,
+      "percentage": 0
+    },
+    "imports": {
+      "destructuredReactPercentage": 28
+    }
+  },
+  "components": {
+    "src/components/atoms/Button/Button.jsx": {
+      "file": "Button.jsx",
+      "path": "src/components/atoms/Button/Button.jsx",
+      "dependencies": [
+        "react",
+        "prop-types",
+        "@iconify/react"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/atoms/Button/Button.stories.jsx": {
+      "file": "Button.stories.jsx",
+      "path": "src/components/atoms/Button/Button.stories.jsx",
+      "dependencies": [
+        "react",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/Button/Button.jsx"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/atoms/Button/Button.test.jsx": {
+      "file": "Button.test.jsx",
+      "path": "src/components/atoms/Button/Button.test.jsx",
+      "dependencies": [
+        "react",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/Button/index.js",
+        "@testing-library/react"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/atoms/Button/index.js": {
+      "file": "index.js",
+      "path": "src/components/atoms/Button/index.js",
+      "dependencies": [
+        "/home/derek/projects/developer-portfolio/src/components/atoms/Button/Button.jsx"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/atoms/Card/Card.jsx": {
+      "file": "Card.jsx",
+      "path": "src/components/atoms/Card/Card.jsx",
+      "dependencies": [
+        "react",
+        "prop-types",
+        "framer-motion"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/atoms/Card/Card.stories.jsx": {
+      "file": "Card.stories.jsx",
+      "path": "src/components/atoms/Card/Card.stories.jsx",
+      "dependencies": [
+        "react",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/Card/Card.jsx",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/Button/index.js"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/atoms/Card/Card.test.jsx": {
+      "file": "Card.test.jsx",
+      "path": "src/components/atoms/Card/Card.test.jsx",
+      "dependencies": [
+        "react",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/Card/index.js",
+        "@testing-library/react"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/atoms/Card/index.js": {
+      "file": "index.js",
+      "path": "src/components/atoms/Card/index.js",
+      "dependencies": [
+        "/home/derek/projects/developer-portfolio/src/components/atoms/Card/Card.jsx"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/atoms/CodeSnippet/CodeSnippet.jsx": {
+      "file": "CodeSnippet.jsx",
+      "path": "src/components/atoms/CodeSnippet/CodeSnippet.jsx",
+      "dependencies": [
+        "prop-types"
+      ],
+      "usesReactApis": true,
+      "reactApis": [
+        "memo("
+      ]
+    },
+    "src/components/atoms/ConsoleHeader/ConsoleHeader.jsx": {
+      "file": "ConsoleHeader.jsx",
+      "path": "src/components/atoms/ConsoleHeader/ConsoleHeader.jsx",
+      "dependencies": [
+        "prop-types",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/Card/index.js",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/TerminalControls/TerminalControls.jsx"
+      ],
+      "usesReactApis": true,
+      "reactApis": [
+        "memo("
+      ]
+    },
+    "src/components/atoms/DateBubble/DateBubble.jsx": {
+      "file": "DateBubble.jsx",
+      "path": "src/components/atoms/DateBubble/DateBubble.jsx",
+      "dependencies": [
+        "prop-types",
+        "framer-motion"
+      ],
+      "usesReactApis": true,
+      "reactApis": [
+        "memo("
+      ]
+    },
+    "src/components/atoms/DateChip/DateChip.jsx": {
+      "file": "DateChip.jsx",
+      "path": "src/components/atoms/DateChip/DateChip.jsx",
+      "dependencies": [
+        "react",
+        "prop-types"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/atoms/DateChip/index.js": {
+      "file": "index.js",
+      "path": "src/components/atoms/DateChip/index.js",
+      "dependencies": [],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/atoms/DegreeInfo/DegreeInfo.jsx": {
+      "file": "DegreeInfo.jsx",
+      "path": "src/components/atoms/DegreeInfo/DegreeInfo.jsx",
+      "dependencies": [
+        "react",
+        "prop-types"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/atoms/DegreeInfo/index.js": {
+      "file": "index.js",
+      "path": "src/components/atoms/DegreeInfo/index.js",
+      "dependencies": [],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/atoms/EducationIcon/EducationIcon.jsx": {
+      "file": "EducationIcon.jsx",
+      "path": "src/components/atoms/EducationIcon/EducationIcon.jsx",
+      "dependencies": [
+        "react",
+        "prop-types",
+        "react-icons/fa"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/atoms/EducationIcon/index.js": {
+      "file": "index.js",
+      "path": "src/components/atoms/EducationIcon/index.js",
+      "dependencies": [],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/atoms/FieldsOfStudy/FieldsOfStudy.jsx": {
+      "file": "FieldsOfStudy.jsx",
+      "path": "src/components/atoms/FieldsOfStudy/FieldsOfStudy.jsx",
+      "dependencies": [
+        "react",
+        "prop-types"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/atoms/FieldsOfStudy/index.js": {
+      "file": "index.js",
+      "path": "src/components/atoms/FieldsOfStudy/index.js",
+      "dependencies": [],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/atoms/Head/Head.jsx": {
+      "file": "Head.jsx",
+      "path": "src/components/atoms/Head/Head.jsx",
+      "dependencies": [
+        "react",
+        "react-helmet-async"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/atoms/Head/Head.stories.jsx": {
+      "file": "Head.stories.jsx",
+      "path": "src/components/atoms/Head/Head.stories.jsx",
+      "dependencies": [
+        "react",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/Head/Head.jsx",
+        "@stories-utils/mockData",
+        "react-helmet-async"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/atoms/Head/index.js": {
+      "file": "index.js",
+      "path": "src/components/atoms/Head/index.js",
+      "dependencies": [
+        "/home/derek/projects/developer-portfolio/src/components/atoms/Head/Head.jsx"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/atoms/LazyImage/LazyImage.jsx": {
+      "file": "LazyImage.jsx",
+      "path": "src/components/atoms/LazyImage/LazyImage.jsx",
+      "dependencies": [
+        "prop-types",
+        "/home/derek/projects/developer-portfolio/src/hooks/useIntersectionObserver.js"
+      ],
+      "usesReactApis": true,
+      "reactApis": [
+        "memo("
+      ]
+    },
+    "src/components/atoms/LazyImage/LazyImage.stories.jsx": {
+      "file": "LazyImage.stories.jsx",
+      "path": "src/components/atoms/LazyImage/LazyImage.stories.jsx",
+      "dependencies": [
+        "react",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/LazyImage/LazyImage.jsx",
+        "@storybook/test"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/atoms/LazyImage/index.js": {
+      "file": "index.js",
+      "path": "src/components/atoms/LazyImage/index.js",
+      "dependencies": [
+        "/home/derek/projects/developer-portfolio/src/components/atoms/LazyImage/LazyImage.jsx"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/atoms/Loading/Loading.jsx": {
+      "file": "Loading.jsx",
+      "path": "src/components/atoms/Loading/Loading.jsx",
+      "dependencies": [
+        "react",
+        "prop-types"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/atoms/Loading/Loading.stories.jsx": {
+      "file": "Loading.stories.jsx",
+      "path": "src/components/atoms/Loading/Loading.stories.jsx",
+      "dependencies": [
+        "react",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/Loading/Loading.jsx",
+        "@molecules/Loading",
+        "@storybook/test"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/atoms/Loading/index.js": {
+      "file": "index.js",
+      "path": "src/components/atoms/Loading/index.js",
+      "dependencies": [
+        "/home/derek/projects/developer-portfolio/src/components/atoms/Loading/Loading.jsx"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/atoms/Progress/Progress.jsx": {
+      "file": "Progress.jsx",
+      "path": "src/components/atoms/Progress/Progress.jsx",
+      "dependencies": [
+        "react",
+        "prop-types"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/atoms/Progress/index.js": {
+      "file": "index.js",
+      "path": "src/components/atoms/Progress/index.js",
+      "dependencies": [
+        "/home/derek/projects/developer-portfolio/src/components/atoms/Progress/Progress.jsx"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/atoms/RatingStars/RatingStars.jsx": {
+      "file": "RatingStars.jsx",
+      "path": "src/components/atoms/RatingStars/RatingStars.jsx",
+      "dependencies": [
+        "react",
+        "prop-types",
+        "react-icons/fa"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/atoms/RatingStars/index.js": {
+      "file": "index.js",
+      "path": "src/components/atoms/RatingStars/index.js",
+      "dependencies": [],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/atoms/ResponsiveImage/ResponsiveImage.jsx": {
+      "file": "ResponsiveImage.jsx",
+      "path": "src/components/atoms/ResponsiveImage/ResponsiveImage.jsx",
+      "dependencies": [
+        "prop-types",
+        "/home/derek/projects/developer-portfolio/src/hooks/useIntersectionObserver.js",
+        "framer-motion"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/atoms/ResponsiveImage/ResponsiveImage.stories.jsx": {
+      "file": "ResponsiveImage.stories.jsx",
+      "path": "src/components/atoms/ResponsiveImage/ResponsiveImage.stories.jsx",
+      "dependencies": [
+        "react",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/ResponsiveImage/ResponsiveImage.jsx",
+        "@storybook/test"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/atoms/ResponsiveImage/index.js": {
+      "file": "index.js",
+      "path": "src/components/atoms/ResponsiveImage/index.js",
+      "dependencies": [
+        "/home/derek/projects/developer-portfolio/src/components/atoms/ResponsiveImage/ResponsiveImage.jsx"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/atoms/SchoolHeader/SchoolHeader.jsx": {
+      "file": "SchoolHeader.jsx",
+      "path": "src/components/atoms/SchoolHeader/SchoolHeader.jsx",
+      "dependencies": [
+        "react",
+        "prop-types"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/atoms/SchoolHeader/index.js": {
+      "file": "index.js",
+      "path": "src/components/atoms/SchoolHeader/index.js",
+      "dependencies": [],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/atoms/SecurityBadge/SecurityBadge.stories.jsx": {
+      "file": "SecurityBadge.stories.jsx",
+      "path": "src/components/atoms/SecurityBadge/SecurityBadge.stories.jsx",
+      "dependencies": [
+        "react",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/SecurityBadge/SecurityBadge.tsx"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/atoms/SecurityBadge/SecurityBadge.tsx": {
+      "file": "SecurityBadge.tsx",
+      "path": "src/components/atoms/SecurityBadge/SecurityBadge.tsx",
+      "dependencies": [
+        "framer-motion"
+      ],
+      "usesReactApis": true,
+      "reactApis": [
+        "memo("
+      ]
+    },
+    "src/components/atoms/SecurityBadge/index.js": {
+      "file": "index.js",
+      "path": "src/components/atoms/SecurityBadge/index.js",
+      "dependencies": [
+        "/home/derek/projects/developer-portfolio/src/components/atoms/SecurityBadge/SecurityBadge.tsx"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/atoms/SkeletonCard/SkeletonCard.jsx": {
+      "file": "SkeletonCard.jsx",
+      "path": "src/components/atoms/SkeletonCard/SkeletonCard.jsx",
+      "dependencies": [
+        "prop-types"
+      ],
+      "usesReactApis": true,
+      "reactApis": [
+        "memo("
+      ]
+    },
+    "src/components/atoms/SkeletonCard/index.js": {
+      "file": "index.js",
+      "path": "src/components/atoms/SkeletonCard/index.js",
+      "dependencies": [
+        "/home/derek/projects/developer-portfolio/src/components/atoms/SkeletonCard/SkeletonCard.jsx"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/atoms/Skill/Skill.jsx": {
+      "file": "Skill.jsx",
+      "path": "src/components/atoms/Skill/Skill.jsx",
+      "dependencies": [
+        "prop-types",
+        "framer-motion",
+        "@iconify/react"
+      ],
+      "usesReactApis": true,
+      "reactApis": [
+        "memo("
+      ]
+    },
+    "src/components/atoms/Skill/Skill.stories.jsx": {
+      "file": "Skill.stories.jsx",
+      "path": "src/components/atoms/Skill/Skill.stories.jsx",
+      "dependencies": [
+        "react",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/Skill/Skill.jsx"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/atoms/Skill/Skill.test.jsx": {
+      "file": "Skill.test.jsx",
+      "path": "src/components/atoms/Skill/Skill.test.jsx",
+      "dependencies": [
+        "react",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/Skill/index.js",
+        "@testing-library/react",
+        "vitest"
+      ],
+      "usesReactApis": true,
+      "reactApis": [
+        "React.memo"
+      ]
+    },
+    "src/components/atoms/Skill/index.js": {
+      "file": "index.js",
+      "path": "src/components/atoms/Skill/index.js",
+      "dependencies": [
+        "/home/derek/projects/developer-portfolio/src/components/atoms/Skill/Skill.jsx"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/atoms/SkipToContent/SkipToContent.jsx": {
+      "file": "SkipToContent.jsx",
+      "path": "src/components/atoms/SkipToContent/SkipToContent.jsx",
+      "dependencies": [
+        "react",
+        "prop-types"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/atoms/SkipToContent/SkipToContent.stories.jsx": {
+      "file": "SkipToContent.stories.jsx",
+      "path": "src/components/atoms/SkipToContent/SkipToContent.stories.jsx",
+      "dependencies": [
+        "react",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/SkipToContent/SkipToContent.jsx",
+        "@molecules/SkipToContent",
+        "@storybook/test"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/atoms/SkipToContent/index.js": {
+      "file": "index.js",
+      "path": "src/components/atoms/SkipToContent/index.js",
+      "dependencies": [
+        "/home/derek/projects/developer-portfolio/src/components/atoms/SkipToContent/SkipToContent.jsx"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/atoms/TechBadge/TechBadge.stories.jsx": {
+      "file": "TechBadge.stories.jsx",
+      "path": "src/components/atoms/TechBadge/TechBadge.stories.jsx",
+      "dependencies": [
+        "react",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/TechBadge/TechBadge.tsx"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/atoms/TechBadge/TechBadge.tsx": {
+      "file": "TechBadge.tsx",
+      "path": "src/components/atoms/TechBadge/TechBadge.tsx",
+      "dependencies": [
+        "framer-motion"
+      ],
+      "usesReactApis": true,
+      "reactApis": [
+        "memo("
+      ]
+    },
+    "src/components/atoms/TechBadge/index.js": {
+      "file": "index.js",
+      "path": "src/components/atoms/TechBadge/index.js",
+      "dependencies": [
+        "/home/derek/projects/developer-portfolio/src/components/atoms/TechBadge/TechBadge.tsx"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/atoms/TerminalControls/TerminalControls.jsx": {
+      "file": "TerminalControls.jsx",
+      "path": "src/components/atoms/TerminalControls/TerminalControls.jsx",
+      "dependencies": [
+        "prop-types"
+      ],
+      "usesReactApis": true,
+      "reactApis": [
+        "memo("
+      ]
+    },
+    "src/components/atoms/TerminalControls/TerminalControls.stories.jsx": {
+      "file": "TerminalControls.stories.jsx",
+      "path": "src/components/atoms/TerminalControls/TerminalControls.stories.jsx",
+      "dependencies": [
+        "react",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/TerminalControls/TerminalControls.jsx"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/atoms/TimelineNode/TimelineNode.jsx": {
+      "file": "TimelineNode.jsx",
+      "path": "src/components/atoms/TimelineNode/TimelineNode.jsx",
+      "dependencies": [
+        "prop-types"
+      ],
+      "usesReactApis": true,
+      "reactApis": [
+        "memo("
+      ]
+    },
+    "src/components/layout/Section/Section.jsx": {
+      "file": "Section.jsx",
+      "path": "src/components/layout/Section/Section.jsx",
+      "dependencies": [
+        "react",
+        "prop-types",
+        "framer-motion",
+        "react-icons/fa"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/layout/Section/Section.stories.jsx": {
+      "file": "Section.stories.jsx",
+      "path": "src/components/layout/Section/Section.stories.jsx",
+      "dependencies": [
+        "react",
+        "/home/derek/projects/developer-portfolio/src/components/layout/Section/Section.jsx",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/Button/index.js",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/Card/index.js"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/layout/Section/Section.test.jsx": {
+      "file": "Section.test.jsx",
+      "path": "src/components/layout/Section/Section.test.jsx",
+      "dependencies": [
+        "react",
+        "/home/derek/projects/developer-portfolio/src/components/layout/Section/index.js",
+        "@testing-library/react"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/layout/Section/index.js": {
+      "file": "index.js",
+      "path": "src/components/layout/Section/index.js",
+      "dependencies": [
+        "/home/derek/projects/developer-portfolio/src/components/layout/Section/Section.jsx"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/molecules/AcademicDetails/AcademicDetails.jsx": {
+      "file": "AcademicDetails.jsx",
+      "path": "src/components/molecules/AcademicDetails/AcademicDetails.jsx",
+      "dependencies": [
+        "react",
+        "prop-types",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/SchoolHeader/index.js",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/DegreeInfo/index.js",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/FieldsOfStudy/index.js",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/DateChip/index.js"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/molecules/AcademicDetails/index.js": {
+      "file": "index.js",
+      "path": "src/components/molecules/AcademicDetails/index.js",
+      "dependencies": [],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/molecules/CertificationBadge/CertificationBadge.jsx": {
+      "file": "CertificationBadge.jsx",
+      "path": "src/components/molecules/CertificationBadge/CertificationBadge.jsx",
+      "dependencies": [
+        "react",
+        "prop-types",
+        "react-icons/fa"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/molecules/CertificationBadge/index.js": {
+      "file": "index.js",
+      "path": "src/components/molecules/CertificationBadge/index.js",
+      "dependencies": [],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/molecules/CertificationList/CertificationList.jsx": {
+      "file": "CertificationList.jsx",
+      "path": "src/components/molecules/CertificationList/CertificationList.jsx",
+      "dependencies": [
+        "react",
+        "prop-types",
+        "/home/derek/projects/developer-portfolio/src/components/molecules/CertificationBadge/index.js"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/molecules/CertificationList/index.js": {
+      "file": "index.js",
+      "path": "src/components/molecules/CertificationList/index.js",
+      "dependencies": [],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/molecules/CollegeInfo/CollegeInfo.jsx": {
+      "file": "CollegeInfo.jsx",
+      "path": "src/components/molecules/CollegeInfo/CollegeInfo.jsx",
+      "dependencies": [
+        "react",
+        "prop-types",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/DateChip/index.js"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/molecules/CollegeInfo/index.js": {
+      "file": "index.js",
+      "path": "src/components/molecules/CollegeInfo/index.js",
+      "dependencies": [],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/molecules/DisplayLottie/DisplayLottie.jsx": {
+      "file": "DisplayLottie.jsx",
+      "path": "src/components/molecules/DisplayLottie/DisplayLottie.jsx",
+      "dependencies": [
+        "lottie-react",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/Loading/index.js",
+        "react-icons/fa"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/molecules/DisplayLottie/DisplayLottie.stories.jsx": {
+      "file": "DisplayLottie.stories.jsx",
+      "path": "src/components/molecules/DisplayLottie/DisplayLottie.stories.jsx",
+      "dependencies": [
+        "react",
+        "/home/derek/projects/developer-portfolio/src/components/molecules/DisplayLottie/DisplayLottie.jsx",
+        "/home/derek/projects/developer-portfolio/src/assets/animations/lottie/dev-coding.json",
+        "/home/derek/projects/developer-portfolio/src/assets/animations/lottie/dev-webdev.json",
+        "/home/derek/projects/developer-portfolio/src/assets/animations/lottie/dev-building.json",
+        "@storybook/test"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/molecules/DisplayLottie/index.js": {
+      "file": "index.js",
+      "path": "src/components/molecules/DisplayLottie/index.js",
+      "dependencies": [
+        "/home/derek/projects/developer-portfolio/src/components/molecules/DisplayLottie/DisplayLottie.jsx"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/molecules/EducationCard/EducationCard.jsx": {
+      "file": "EducationCard.jsx",
+      "path": "src/components/molecules/EducationCard/EducationCard.jsx",
+      "dependencies": [
+        "prop-types",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/Card/index.js",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/EducationIcon/index.js",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/SchoolHeader/index.js",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/DegreeInfo/index.js",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/FieldsOfStudy/index.js",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/DateChip/index.js",
+        "/home/derek/projects/developer-portfolio/src/components/molecules/CertificationBadge/index.js"
+      ],
+      "usesReactApis": true,
+      "reactApis": [
+        "memo("
+      ]
+    },
+    "src/components/molecules/EducationCard/EducationCard.stories.jsx": {
+      "file": "EducationCard.stories.jsx",
+      "path": "src/components/molecules/EducationCard/EducationCard.stories.jsx",
+      "dependencies": [
+        "react",
+        "/home/derek/projects/developer-portfolio/src/components/molecules/EducationCard/EducationCard.jsx",
+        "@storybook/test"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/molecules/EducationCard/EducationCard.test.jsx": {
+      "file": "EducationCard.test.jsx",
+      "path": "src/components/molecules/EducationCard/EducationCard.test.jsx",
+      "dependencies": [
+        "react",
+        "/home/derek/projects/developer-portfolio/src/components/molecules/EducationCard/index.js",
+        "@testing-library/react",
+        "vitest"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/molecules/EducationCard/index.js": {
+      "file": "index.js",
+      "path": "src/components/molecules/EducationCard/index.js",
+      "dependencies": [
+        "/home/derek/projects/developer-portfolio/src/components/molecules/EducationCard/EducationCard.jsx"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/molecules/EducationDetails/EducationDetails.jsx": {
+      "file": "EducationDetails.jsx",
+      "path": "src/components/molecules/EducationDetails/EducationDetails.jsx",
+      "dependencies": [
+        "react",
+        "prop-types",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/DateChip/index.js",
+        "/home/derek/projects/developer-portfolio/src/components/molecules/CertificationBadge/index.js"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/molecules/EducationDetails/index.js": {
+      "file": "index.js",
+      "path": "src/components/molecules/EducationDetails/index.js",
+      "dependencies": [],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/molecules/ErrorBoundary/ErrorBoundary.jsx": {
+      "file": "ErrorBoundary.jsx",
+      "path": "src/components/molecules/ErrorBoundary/ErrorBoundary.jsx",
+      "dependencies": [
+        "prop-types"
+      ],
+      "usesReactApis": true,
+      "reactApis": [
+        "extends Component"
+      ]
+    },
+    "src/components/molecules/ErrorBoundary/index.js": {
+      "file": "index.js",
+      "path": "src/components/molecules/ErrorBoundary/index.js",
+      "dependencies": [
+        "/home/derek/projects/developer-portfolio/src/components/molecules/ErrorBoundary/ErrorBoundary.jsx"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/molecules/ExperienceCard/ExperienceCard.stories.jsx": {
+      "file": "ExperienceCard.stories.jsx",
+      "path": "src/components/molecules/ExperienceCard/ExperienceCard.stories.jsx",
+      "dependencies": [
+        "react",
+        "/home/derek/projects/developer-portfolio/src/components/molecules/ExperienceCard/ExperienceCard.tsx"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/molecules/ExperienceCard/ExperienceCard.test.jsx": {
+      "file": "ExperienceCard.test.jsx",
+      "path": "src/components/molecules/ExperienceCard/ExperienceCard.test.jsx",
+      "dependencies": [
+        "react",
+        "/home/derek/projects/developer-portfolio/src/components/molecules/ExperienceCard/index.js",
+        "@testing-library/react",
+        "vitest"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/molecules/ExperienceCard/ExperienceCard.tsx": {
+      "file": "ExperienceCard.tsx",
+      "path": "src/components/molecules/ExperienceCard/ExperienceCard.tsx",
+      "dependencies": [
+        "framer-motion",
+        "/home/derek/projects/developer-portfolio/src/context/AnimationContext.tsx"
+      ],
+      "usesReactApis": true,
+      "reactApis": [
+        "memo("
+      ]
+    },
+    "src/components/molecules/ExperienceCard/index.js": {
+      "file": "index.js",
+      "path": "src/components/molecules/ExperienceCard/index.js",
+      "dependencies": [
+        "/home/derek/projects/developer-portfolio/src/components/molecules/ExperienceCard/ExperienceCard.tsx"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/molecules/FeedbackAuthor/FeedbackAuthor.jsx": {
+      "file": "FeedbackAuthor.jsx",
+      "path": "src/components/molecules/FeedbackAuthor/FeedbackAuthor.jsx",
+      "dependencies": [
+        "react",
+        "prop-types",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/ResponsiveImage/index.js"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/molecules/FeedbackAuthor/index.js": {
+      "file": "index.js",
+      "path": "src/components/molecules/FeedbackAuthor/index.js",
+      "dependencies": [],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/molecules/FeedbackCard/FeedbackCard.jsx": {
+      "file": "FeedbackCard.jsx",
+      "path": "src/components/molecules/FeedbackCard/FeedbackCard.jsx",
+      "dependencies": [
+        "prop-types",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/Card/index.js",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/RatingStars/index.js",
+        "/home/derek/projects/developer-portfolio/src/components/molecules/FeedbackQuote/index.js",
+        "/home/derek/projects/developer-portfolio/src/components/molecules/FeedbackAuthor/index.js",
+        "/home/derek/projects/developer-portfolio/src/components/molecules/FeedbackHighlight/index.js",
+        "/home/derek/projects/developer-portfolio/src/hooks/useIntersectionObserver.js"
+      ],
+      "usesReactApis": true,
+      "reactApis": [
+        "memo("
+      ]
+    },
+    "src/components/molecules/FeedbackCard/FeedbackCard.stories.jsx": {
+      "file": "FeedbackCard.stories.jsx",
+      "path": "src/components/molecules/FeedbackCard/FeedbackCard.stories.jsx",
+      "dependencies": [
+        "react",
+        "/home/derek/projects/developer-portfolio/src/components/molecules/FeedbackCard/FeedbackCard.jsx",
+        "@storybook/test"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/molecules/FeedbackCard/FeedbackCard.test.jsx": {
+      "file": "FeedbackCard.test.jsx",
+      "path": "src/components/molecules/FeedbackCard/FeedbackCard.test.jsx",
+      "dependencies": [
+        "react",
+        "/home/derek/projects/developer-portfolio/src/components/molecules/FeedbackCard/index.js",
+        "@testing-library/react",
+        "vitest"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/molecules/FeedbackCard/index.js": {
+      "file": "index.js",
+      "path": "src/components/molecules/FeedbackCard/index.js",
+      "dependencies": [
+        "/home/derek/projects/developer-portfolio/src/components/molecules/FeedbackCard/FeedbackCard.jsx"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/molecules/FeedbackHighlight/FeedbackHighlight.jsx": {
+      "file": "FeedbackHighlight.jsx",
+      "path": "src/components/molecules/FeedbackHighlight/FeedbackHighlight.jsx",
+      "dependencies": [
+        "react",
+        "prop-types"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/molecules/FeedbackHighlight/index.js": {
+      "file": "index.js",
+      "path": "src/components/molecules/FeedbackHighlight/index.js",
+      "dependencies": [],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/molecules/FeedbackQuote/FeedbackQuote.jsx": {
+      "file": "FeedbackQuote.jsx",
+      "path": "src/components/molecules/FeedbackQuote/FeedbackQuote.jsx",
+      "dependencies": [
+        "react",
+        "prop-types",
+        "react-icons/fa"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/molecules/FeedbackQuote/index.js": {
+      "file": "index.js",
+      "path": "src/components/molecules/FeedbackQuote/index.js",
+      "dependencies": [],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/molecules/Footer/Footer.jsx": {
+      "file": "Footer.jsx",
+      "path": "src/components/molecules/Footer/Footer.jsx",
+      "dependencies": [
+        "prop-types",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/Button/index.js",
+        "/home/derek/projects/developer-portfolio/src/components/molecules/SocialLinks/index.js",
+        "/home/derek/projects/developer-portfolio/src/hooks/useFooter.js",
+        "react-icons/fa"
+      ],
+      "usesReactApis": true,
+      "reactApis": [
+        "memo("
+      ]
+    },
+    "src/components/molecules/Footer/Footer.stories.jsx": {
+      "file": "Footer.stories.jsx",
+      "path": "src/components/molecules/Footer/Footer.stories.jsx",
+      "dependencies": [
+        "react",
+        "/home/derek/projects/developer-portfolio/src/components/molecules/Footer/Footer.jsx",
+        "/home/derek/projects/developer-portfolio/src/context/PortfolioContext.jsx",
+        "@storybook/test"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/molecules/Footer/Footer.test.jsx": {
+      "file": "Footer.test.jsx",
+      "path": "src/components/molecules/Footer/Footer.test.jsx",
+      "dependencies": [
+        "react",
+        "/home/derek/projects/developer-portfolio/src/components/molecules/Footer/index.js",
+        "@testing-library/react",
+        "vitest"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/molecules/Footer/index.js": {
+      "file": "index.js",
+      "path": "src/components/molecules/Footer/index.js",
+      "dependencies": [
+        "/home/derek/projects/developer-portfolio/src/components/molecules/Footer/Footer.jsx"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/molecules/GithubProfileCard/GithubProfileCard.jsx": {
+      "file": "GithubProfileCard.jsx",
+      "path": "src/components/molecules/GithubProfileCard/GithubProfileCard.jsx",
+      "dependencies": [
+        "react",
+        "prop-types",
+        "/home/derek/projects/developer-portfolio/src/components/molecules/SocialLinks/index.js",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/Button/index.js",
+        "/home/derek/projects/developer-portfolio/src/components/molecules/MapComponent/index.js",
+        "react-icons/fa",
+        "framer-motion",
+        "/home/derek/projects/developer-portfolio/src/portfolio.js"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/molecules/GithubProfileCard/GithubProfileCard.stories.jsx": {
+      "file": "GithubProfileCard.stories.jsx",
+      "path": "src/components/molecules/GithubProfileCard/GithubProfileCard.stories.jsx",
+      "dependencies": [
+        "react",
+        "/home/derek/projects/developer-portfolio/src/components/molecules/GithubProfileCard/GithubProfileCard.jsx",
+        "@storybook/test",
+        "@stories-utils/mockData",
+        "@stories-utils/decorators"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/molecules/GithubProfileCard/GithubProfileCard.test.jsx": {
+      "file": "GithubProfileCard.test.jsx",
+      "path": "src/components/molecules/GithubProfileCard/GithubProfileCard.test.jsx",
+      "dependencies": [
+        "react",
+        "/home/derek/projects/developer-portfolio/src/components/molecules/GithubProfileCard/GithubProfileCard.jsx",
+        "@testing-library/react",
+        "vitest"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/molecules/GithubProfileCard/index.js": {
+      "file": "index.js",
+      "path": "src/components/molecules/GithubProfileCard/index.js",
+      "dependencies": [
+        "/home/derek/projects/developer-portfolio/src/components/molecules/GithubProfileCard/GithubProfileCard.jsx"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/molecules/MapComponent/MapComponent.jsx": {
+      "file": "MapComponent.jsx",
+      "path": "src/components/molecules/MapComponent/MapComponent.jsx",
+      "dependencies": [
+        "prop-types",
+        "leaflet",
+        "framer-motion",
+        "/home/derek/projects/developer-portfolio/src/utils/geocodingUtils.js"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/molecules/MapComponent/index.js": {
+      "file": "index.js",
+      "path": "src/components/molecules/MapComponent/index.js",
+      "dependencies": [],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/molecules/Navigation/Navigation.jsx": {
+      "file": "Navigation.jsx",
+      "path": "src/components/molecules/Navigation/Navigation.jsx",
+      "dependencies": [
+        "/home/derek/projects/developer-portfolio/src/hooks/useNavigation.js",
+        "prop-types"
+      ],
+      "usesReactApis": true,
+      "reactApis": [
+        "memo("
+      ]
+    },
+    "src/components/molecules/Navigation/Navigation.stories.jsx": {
+      "file": "Navigation.stories.jsx",
+      "path": "src/components/molecules/Navigation/Navigation.stories.jsx",
+      "dependencies": [
+        "react",
+        "/home/derek/projects/developer-portfolio/src/components/molecules/Navigation/Navigation.jsx",
+        "/home/derek/projects/developer-portfolio/src/context/PortfolioContext.jsx",
+        "@storybook/test",
+        "@stories-utils/decorators"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/molecules/Navigation/Navigation.test.jsx": {
+      "file": "Navigation.test.jsx",
+      "path": "src/components/molecules/Navigation/Navigation.test.jsx",
+      "dependencies": [
+        "react",
+        "/home/derek/projects/developer-portfolio/src/components/molecules/Navigation/index.js",
+        "@testing-library/react",
+        "vitest"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/molecules/Navigation/index.js": {
+      "file": "index.js",
+      "path": "src/components/molecules/Navigation/index.js",
+      "dependencies": [
+        "/home/derek/projects/developer-portfolio/src/components/molecules/Navigation/Navigation.jsx"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/molecules/ProjectsCard/ProjectsCard.jsx": {
+      "file": "ProjectsCard.jsx",
+      "path": "src/components/molecules/ProjectsCard/ProjectsCard.jsx",
+      "dependencies": [
+        "prop-types",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/Card/index.js",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/Button/index.js",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/ResponsiveImage/index.js",
+        "/home/derek/projects/developer-portfolio/src/hooks/useIntersectionObserver.js"
+      ],
+      "usesReactApis": true,
+      "reactApis": [
+        "memo("
+      ]
+    },
+    "src/components/molecules/ProjectsCard/ProjectsCard.stories.jsx": {
+      "file": "ProjectsCard.stories.jsx",
+      "path": "src/components/molecules/ProjectsCard/ProjectsCard.stories.jsx",
+      "dependencies": [
+        "react",
+        "/home/derek/projects/developer-portfolio/src/components/molecules/ProjectsCard/ProjectsCard.jsx",
+        "@storybook/test",
+        "@stories-utils/decorators"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/molecules/ProjectsCard/ProjectsCard.test.jsx": {
+      "file": "ProjectsCard.test.jsx",
+      "path": "src/components/molecules/ProjectsCard/ProjectsCard.test.jsx",
+      "dependencies": [
+        "react",
+        "/home/derek/projects/developer-portfolio/src/components/molecules/ProjectsCard/index.js",
+        "@testing-library/react",
+        "vitest"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/molecules/ProjectsCard/index.js": {
+      "file": "index.js",
+      "path": "src/components/molecules/ProjectsCard/index.js",
+      "dependencies": [
+        "/home/derek/projects/developer-portfolio/src/components/molecules/ProjectsCard/ProjectsCard.jsx"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/molecules/SkillCard/SkillCard.jsx": {
+      "file": "SkillCard.jsx",
+      "path": "src/components/molecules/SkillCard/SkillCard.jsx",
+      "dependencies": [
+        "prop-types",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/Skill/index.js",
+        "framer-motion"
+      ],
+      "usesReactApis": true,
+      "reactApis": [
+        "memo("
+      ]
+    },
+    "src/components/molecules/SkillCard/SkillCardExpanded.jsx": {
+      "file": "SkillCardExpanded.jsx",
+      "path": "src/components/molecules/SkillCard/SkillCardExpanded.jsx",
+      "dependencies": [
+        "prop-types",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/Skill/index.js",
+        "framer-motion",
+        "@iconify/react"
+      ],
+      "usesReactApis": true,
+      "reactApis": [
+        "memo("
+      ]
+    },
+    "src/components/molecules/SkillCard/index.js": {
+      "file": "index.js",
+      "path": "src/components/molecules/SkillCard/index.js",
+      "dependencies": [],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/molecules/SocialLinks/SocialLinks.jsx": {
+      "file": "SocialLinks.jsx",
+      "path": "src/components/molecules/SocialLinks/SocialLinks.jsx",
+      "dependencies": [
+        "react",
+        "prop-types",
+        "react-icons/fa",
+        "/home/derek/projects/developer-portfolio/src/portfolio.js"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/molecules/SocialLinks/SocialLinks.stories.jsx": {
+      "file": "SocialLinks.stories.jsx",
+      "path": "src/components/molecules/SocialLinks/SocialLinks.stories.jsx",
+      "dependencies": [
+        "react",
+        "/home/derek/projects/developer-portfolio/src/components/molecules/SocialLinks/SocialLinks.jsx",
+        "react-icons/fa",
+        "@storybook/test"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/molecules/SocialLinks/index.js": {
+      "file": "index.js",
+      "path": "src/components/molecules/SocialLinks/index.js",
+      "dependencies": [
+        "/home/derek/projects/developer-portfolio/src/components/molecules/SocialLinks/SocialLinks.jsx"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/molecules/TimelineEntry/TimelineEntry.stories.jsx": {
+      "file": "TimelineEntry.stories.jsx",
+      "path": "src/components/molecules/TimelineEntry/TimelineEntry.stories.jsx",
+      "dependencies": [
+        "react",
+        "/home/derek/projects/developer-portfolio/src/components/molecules/TimelineEntry/TimelineEntry.tsx",
+        "/home/derek/projects/developer-portfolio/src/context/AnimationContext.tsx"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/molecules/TimelineEntry/TimelineEntry.test.jsx": {
+      "file": "TimelineEntry.test.jsx",
+      "path": "src/components/molecules/TimelineEntry/TimelineEntry.test.jsx",
+      "dependencies": [
+        "react",
+        "/home/derek/projects/developer-portfolio/src/components/molecules/TimelineEntry/TimelineEntry.tsx",
+        "@testing-library/react",
+        "/home/derek/projects/developer-portfolio/src/context/AnimationContext.tsx"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/molecules/TimelineEntry/TimelineEntry.tsx": {
+      "file": "TimelineEntry.tsx",
+      "path": "src/components/molecules/TimelineEntry/TimelineEntry.tsx",
+      "dependencies": [
+        "/home/derek/projects/developer-portfolio/src/components/molecules/ExperienceCard/ExperienceCard.tsx",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/Card/index.js",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/TimelineNode/TimelineNode.jsx",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/DateBubble/DateBubble.jsx",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/CodeSnippet/CodeSnippet.jsx",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/SecurityBadge/SecurityBadge.tsx",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/TerminalControls/TerminalControls.jsx",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/TechBadge/TechBadge.tsx",
+        "/home/derek/projects/developer-portfolio/src/hooks/useTimelineAnimation.ts",
+        "framer-motion"
+      ],
+      "usesReactApis": true,
+      "reactApis": [
+        "memo("
+      ]
+    },
+    "src/components/molecules/TimelineEntry/index.js": {
+      "file": "index.js",
+      "path": "src/components/molecules/TimelineEntry/index.js",
+      "dependencies": [
+        "/home/derek/projects/developer-portfolio/src/components/molecules/TimelineEntry/TimelineEntry.tsx"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/molecules/__mocks__/Navigation.jsx": {
+      "file": "Navigation.jsx",
+      "path": "src/components/molecules/__mocks__/Navigation.jsx",
+      "dependencies": [
+        "react"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/organisms/Education/Education.jsx": {
+      "file": "Education.jsx",
+      "path": "src/components/organisms/Education/Education.jsx",
+      "dependencies": [
+        "prop-types",
+        "/home/derek/projects/developer-portfolio/src/components/molecules/EducationCard/index.js",
+        "/home/derek/projects/developer-portfolio/src/components/layout/Section/index.js",
+        "/home/derek/projects/developer-portfolio/src/hooks/useEducation.js"
+      ],
+      "usesReactApis": true,
+      "reactApis": [
+        "memo("
+      ]
+    },
+    "src/components/organisms/Education/Education.stories.jsx": {
+      "file": "Education.stories.jsx",
+      "path": "src/components/organisms/Education/Education.stories.jsx",
+      "dependencies": [
+        "react",
+        "/home/derek/projects/developer-portfolio/src/components/organisms/Education/Education.jsx",
+        "/home/derek/projects/developer-portfolio/src/context/PortfolioContext.jsx",
+        "containers/Education",
+        "context/PortfolioContext",
+        "@storybook/test",
+        "@stories-utils/mockData",
+        "@stories-utils/decorators"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/organisms/Education/Education.test.jsx": {
+      "file": "Education.test.jsx",
+      "path": "src/components/organisms/Education/Education.test.jsx",
+      "dependencies": [
+        "react",
+        "/home/derek/projects/developer-portfolio/src/components/organisms/Education/index.js",
+        "@testing-library/react",
+        "vitest"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/organisms/Education/index.js": {
+      "file": "index.js",
+      "path": "src/components/organisms/Education/index.js",
+      "dependencies": [
+        "/home/derek/projects/developer-portfolio/src/components/organisms/Education/Education.jsx"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/organisms/Experience/Experience.jsx": {
+      "file": "Experience.jsx",
+      "path": "src/components/organisms/Experience/Experience.jsx",
+      "dependencies": [
+        "prop-types",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/SkeletonCard/index.js",
+        "/home/derek/projects/developer-portfolio/src/components/layout/Section/index.js",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/ConsoleHeader/ConsoleHeader.jsx",
+        "/home/derek/projects/developer-portfolio/src/hooks/useExperience.js",
+        "/home/derek/projects/developer-portfolio/src/components/organisms/Experience/ExperienceTimeline.tsx",
+        "/home/derek/projects/developer-portfolio/src/context/PortfolioContext.jsx",
+        "/home/derek/projects/developer-portfolio/src/portfolio.js"
+      ],
+      "usesReactApis": true,
+      "reactApis": [
+        "memo("
+      ]
+    },
+    "src/components/organisms/Experience/Experience.stories.jsx": {
+      "file": "Experience.stories.jsx",
+      "path": "src/components/organisms/Experience/Experience.stories.jsx",
+      "dependencies": [
+        "react",
+        "/home/derek/projects/developer-portfolio/src/components/organisms/Experience/Experience.jsx",
+        "/home/derek/projects/developer-portfolio/src/context/PortfolioContext.jsx",
+        "@/stories/containers/Experience",
+        "@storybook/test"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/organisms/Experience/Experience.test.jsx": {
+      "file": "Experience.test.jsx",
+      "path": "src/components/organisms/Experience/Experience.test.jsx",
+      "dependencies": [
+        "react",
+        "/home/derek/projects/developer-portfolio/src/components/organisms/Experience/index.js",
+        "@testing-library/react",
+        "vitest"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/organisms/Experience/ExperienceTimeline.test.jsx": {
+      "file": "ExperienceTimeline.test.jsx",
+      "path": "src/components/organisms/Experience/ExperienceTimeline.test.jsx",
+      "dependencies": [
+        "react",
+        "/home/derek/projects/developer-portfolio/src/components/organisms/Experience/ExperienceTimeline.tsx",
+        "@testing-library/react"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/organisms/Experience/ExperienceTimeline.tsx": {
+      "file": "ExperienceTimeline.tsx",
+      "path": "src/components/organisms/Experience/ExperienceTimeline.tsx",
+      "dependencies": [
+        "/home/derek/projects/developer-portfolio/src/components/molecules/TimelineEntry/TimelineEntry.tsx",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/ConsoleHeader/ConsoleHeader.jsx",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/TimelineNode/TimelineNode.jsx",
+        "framer-motion",
+        "/home/derek/projects/developer-portfolio/src/context/AnimationContext.tsx"
+      ],
+      "usesReactApis": true,
+      "reactApis": [
+        "memo("
+      ]
+    },
+    "src/components/organisms/Experience/index.js": {
+      "file": "index.js",
+      "path": "src/components/organisms/Experience/index.js",
+      "dependencies": [
+        "/home/derek/projects/developer-portfolio/src/components/organisms/Experience/Experience.jsx"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/organisms/Feedbacks/Feedbacks.jsx": {
+      "file": "Feedbacks.jsx",
+      "path": "src/components/organisms/Feedbacks/Feedbacks.jsx",
+      "dependencies": [
+        "prop-types",
+        "/home/derek/projects/developer-portfolio/src/components/molecules/FeedbackCard/index.js",
+        "/home/derek/projects/developer-portfolio/src/components/layout/Section/index.js",
+        "/home/derek/projects/developer-portfolio/src/hooks/useFeedback.js"
+      ],
+      "usesReactApis": true,
+      "reactApis": [
+        "memo("
+      ]
+    },
+    "src/components/organisms/Feedbacks/Feedbacks.stories.jsx": {
+      "file": "Feedbacks.stories.jsx",
+      "path": "src/components/organisms/Feedbacks/Feedbacks.stories.jsx",
+      "dependencies": [
+        "react",
+        "/home/derek/projects/developer-portfolio/src/components/organisms/Feedbacks/Feedbacks.jsx",
+        "/home/derek/projects/developer-portfolio/src/context/PortfolioContext.jsx",
+        "@/stories/containers/Feedbacks",
+        "@storybook/test",
+        "@stories-utils/mockData",
+        "@stories-utils/decorators"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/organisms/Feedbacks/Feedbacks.test.jsx": {
+      "file": "Feedbacks.test.jsx",
+      "path": "src/components/organisms/Feedbacks/Feedbacks.test.jsx",
+      "dependencies": [
+        "react",
+        "/home/derek/projects/developer-portfolio/src/components/organisms/Feedbacks/index.js",
+        "@testing-library/react",
+        "vitest"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/organisms/Feedbacks/index.js": {
+      "file": "index.js",
+      "path": "src/components/organisms/Feedbacks/index.js",
+      "dependencies": [
+        "/home/derek/projects/developer-portfolio/src/components/organisms/Feedbacks/Feedbacks.jsx"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/organisms/GithubProfile/GithubProfile.jsx": {
+      "file": "GithubProfile.jsx",
+      "path": "src/components/organisms/GithubProfile/GithubProfile.jsx",
+      "dependencies": [
+        "prop-types",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/Loading/index.js",
+        "axios",
+        "/home/derek/projects/developer-portfolio/src/components/molecules/GithubProfileCard/index.js",
+        "/home/derek/projects/developer-portfolio/src/components/layout/Section/index.js",
+        "/home/derek/projects/developer-portfolio/src/utils/envConfig.js",
+        "/home/derek/projects/developer-portfolio/src/portfolio.js",
+        "framer-motion"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/organisms/GithubProfile/GithubProfile.stories.jsx": {
+      "file": "GithubProfile.stories.jsx",
+      "path": "src/components/organisms/GithubProfile/GithubProfile.stories.jsx",
+      "dependencies": [
+        "react",
+        "/home/derek/projects/developer-portfolio/src/components/organisms/GithubProfile/GithubProfile.jsx",
+        "/home/derek/projects/developer-portfolio/src/context/PortfolioContext.jsx",
+        "axios",
+        "@/stories/containers/GithubProfile",
+        "@storybook/test",
+        "@stories-utils/mockData",
+        "@stories-utils/decorators"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/organisms/GithubProfile/GithubProfile.test.jsx": {
+      "file": "GithubProfile.test.jsx",
+      "path": "src/components/organisms/GithubProfile/GithubProfile.test.jsx",
+      "dependencies": [
+        "react",
+        "/home/derek/projects/developer-portfolio/src/components/organisms/GithubProfile/index.js",
+        "axios",
+        "@testing-library/react",
+        "vitest"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/organisms/GithubProfile/index.js": {
+      "file": "index.js",
+      "path": "src/components/organisms/GithubProfile/index.js",
+      "dependencies": [
+        "/home/derek/projects/developer-portfolio/src/components/organisms/GithubProfile/GithubProfile.jsx"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/organisms/Greetings/Greetings.jsx": {
+      "file": "Greetings.jsx",
+      "path": "src/components/organisms/Greetings/Greetings.jsx",
+      "dependencies": [
+        "react",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/Button/index.js",
+        "/home/derek/projects/developer-portfolio/src/components/molecules/SocialLinks/index.js",
+        "/home/derek/projects/developer-portfolio/src/portfolio.js",
+        "framer-motion",
+        "react-icons/fa"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/organisms/Greetings/Greetings.stories.jsx": {
+      "file": "Greetings.stories.jsx",
+      "path": "src/components/organisms/Greetings/Greetings.stories.jsx",
+      "dependencies": [
+        "react",
+        "/home/derek/projects/developer-portfolio/src/components/organisms/Greetings/Greetings.jsx",
+        "/home/derek/projects/developer-portfolio/src/context/PortfolioContext.jsx",
+        "/home/derek/projects/developer-portfolio/src/assets/animations/lottie/dev-coding.json",
+        "/home/derek/projects/developer-portfolio/src/assets/animations/lottie/dev-webdev.json",
+        "/home/derek/projects/developer-portfolio/src/assets/animations/lottie/dev-building.json",
+        "@/stories/containers/Greetings",
+        "@storybook/test",
+        "@stories-utils/mockData",
+        "@stories-utils/decorators"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/organisms/Greetings/index.js": {
+      "file": "index.js",
+      "path": "src/components/organisms/Greetings/index.js",
+      "dependencies": [
+        "/home/derek/projects/developer-portfolio/src/components/organisms/Greetings/Greetings.jsx"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/organisms/Proficiency/Proficiency.jsx": {
+      "file": "Proficiency.jsx",
+      "path": "src/components/organisms/Proficiency/Proficiency.jsx",
+      "dependencies": [
+        "/home/derek/projects/developer-portfolio/src/components/molecules/DisplayLottie/index.js",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/Progress/index.js",
+        "/home/derek/projects/developer-portfolio/src/components/layout/Section/index.js",
+        "/home/derek/projects/developer-portfolio/src/assets/animations/lottie/dev-coding.json",
+        "/home/derek/projects/developer-portfolio/src/portfolio.js",
+        "framer-motion"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/organisms/Proficiency/Proficiency.stories.jsx": {
+      "file": "Proficiency.stories.jsx",
+      "path": "src/components/organisms/Proficiency/Proficiency.stories.jsx",
+      "dependencies": [
+        "react",
+        "/home/derek/projects/developer-portfolio/src/components/organisms/Proficiency/Proficiency.jsx",
+        "/home/derek/projects/developer-portfolio/src/context/PortfolioContext.jsx",
+        "/home/derek/projects/developer-portfolio/src/assets/animations/lottie/dev-building.json",
+        "@/stories/containers/Proficiency",
+        "@storybook/test",
+        "@stories-utils/mockData",
+        "@stories-utils/decorators"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/organisms/Proficiency/index.js": {
+      "file": "index.js",
+      "path": "src/components/organisms/Proficiency/index.js",
+      "dependencies": [
+        "/home/derek/projects/developer-portfolio/src/components/organisms/Proficiency/Proficiency.jsx"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/organisms/Projects/Projects.jsx": {
+      "file": "Projects.jsx",
+      "path": "src/components/organisms/Projects/Projects.jsx",
+      "dependencies": [
+        "/home/derek/projects/developer-portfolio/src/components/molecules/ProjectsCard/index.js",
+        "/home/derek/projects/developer-portfolio/src/components/atoms/SkeletonCard/index.js",
+        "/home/derek/projects/developer-portfolio/src/components/layout/Section/index.js",
+        "/home/derek/projects/developer-portfolio/src/hooks/useProjects.js",
+        "/home/derek/projects/developer-portfolio/src/hooks/useMemoValues.js",
+        "/home/derek/projects/developer-portfolio/src/context/PortfolioContext.jsx"
+      ],
+      "usesReactApis": true,
+      "reactApis": [
+        "React.memo",
+        "memo("
+      ]
+    },
+    "src/components/organisms/Projects/Projects.stories.jsx": {
+      "file": "Projects.stories.jsx",
+      "path": "src/components/organisms/Projects/Projects.stories.jsx",
+      "dependencies": [
+        "react",
+        "/home/derek/projects/developer-portfolio/src/components/organisms/Projects/Projects.jsx",
+        "/home/derek/projects/developer-portfolio/src/context/PortfolioContext.jsx",
+        "@/stories/containers/Projects",
+        "@storybook/test",
+        "@stories-utils/mockData",
+        "@stories-utils/decorators"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/organisms/Projects/Projects.test.jsx": {
+      "file": "Projects.test.jsx",
+      "path": "src/components/organisms/Projects/Projects.test.jsx",
+      "dependencies": [
+        "react",
+        "/home/derek/projects/developer-portfolio/src/components/organisms/Projects/index.js",
+        "@testing-library/react",
+        "vitest"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/organisms/Projects/index.js": {
+      "file": "index.js",
+      "path": "src/components/organisms/Projects/index.js",
+      "dependencies": [
+        "/home/derek/projects/developer-portfolio/src/components/organisms/Projects/Projects.jsx"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/organisms/Skills/Skills.jsx": {
+      "file": "Skills.jsx",
+      "path": "src/components/organisms/Skills/Skills.jsx",
+      "dependencies": [
+        "/home/derek/projects/developer-portfolio/src/components/atoms/SkeletonCard/index.js",
+        "/home/derek/projects/developer-portfolio/src/components/layout/Section/index.js",
+        "/home/derek/projects/developer-portfolio/src/hooks/useSkills.js",
+        "framer-motion",
+        "/home/derek/projects/developer-portfolio/src/context/PortfolioContext.jsx"
+      ],
+      "usesReactApis": true,
+      "reactApis": [
+        "memo("
+      ]
+    },
+    "src/components/organisms/Skills/Skills.stories.jsx": {
+      "file": "Skills.stories.jsx",
+      "path": "src/components/organisms/Skills/Skills.stories.jsx",
+      "dependencies": [
+        "react",
+        "/home/derek/projects/developer-portfolio/src/components/organisms/Skills/Skills.jsx",
+        "@/stories/containers/Skills",
+        "/home/derek/projects/developer-portfolio/src/context/PortfolioContext.jsx",
+        "@storybook/test",
+        "@stories-utils/decorators"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/organisms/Skills/Skills.test.jsx": {
+      "file": "Skills.test.jsx",
+      "path": "src/components/organisms/Skills/Skills.test.jsx",
+      "dependencies": [
+        "react",
+        "/home/derek/projects/developer-portfolio/src/components/organisms/Skills/index.js",
+        "@testing-library/react",
+        "vitest"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/components/organisms/Skills/index.js": {
+      "file": "index.js",
+      "path": "src/components/organisms/Skills/index.js",
+      "dependencies": [],
+      "usesReactApis": false,
+      "reactApis": []
+    }
+  },
+  "hooks": {
+    "src/hooks/__mocks__/useExperience.js": {
+      "file": "useExperience.js",
+      "path": "src/hooks/__mocks__/useExperience.js",
+      "dependencies": [],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/hooks/__mocks__/useProjects.js": {
+      "file": "useProjects.js",
+      "path": "src/hooks/__mocks__/useProjects.js",
+      "dependencies": [],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/hooks/__tests__/useSkills.test.js": {
+      "file": "useSkills.test.js",
+      "path": "src/hooks/__tests__/useSkills.test.js",
+      "dependencies": [
+        "/home/derek/projects/developer-portfolio/src/hooks/useSkills.js",
+        "@testing-library/react",
+        "vitest",
+        "/home/derek/projects/developer-portfolio/src/context/PortfolioContext.jsx"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/hooks/__tests__/useTimelineView.test.js": {
+      "file": "useTimelineView.test.js",
+      "path": "src/hooks/__tests__/useTimelineView.test.js",
+      "dependencies": [
+        "/home/derek/projects/developer-portfolio/src/hooks/useTimelineView.js",
+        "@testing-library/react",
+        "vitest"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/hooks/useCallbackHandlers.js": {
+      "file": "useCallbackHandlers.js",
+      "path": "src/hooks/useCallbackHandlers.js",
+      "dependencies": [
+        "react",
+        "/home/derek/projects/developer-portfolio/src/hooks/useCallbackHandlers.js"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/hooks/useEducation.js": {
+      "file": "useEducation.js",
+      "path": "src/hooks/useEducation.js",
+      "dependencies": [
+        "/home/derek/projects/developer-portfolio/src/context/PortfolioContext.jsx",
+        "/home/derek/projects/developer-portfolio/src/hooks/useEducation.js"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/hooks/useExperience.js": {
+      "file": "useExperience.js",
+      "path": "src/hooks/useExperience.js",
+      "dependencies": [
+        "/home/derek/projects/developer-portfolio/src/hooks/useExperience.js",
+        "react",
+        "/home/derek/projects/developer-portfolio/src/context/PortfolioContext.jsx"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/hooks/useFeedback.js": {
+      "file": "useFeedback.js",
+      "path": "src/hooks/useFeedback.js",
+      "dependencies": [
+        "/home/derek/projects/developer-portfolio/src/context/PortfolioContext.jsx",
+        "/home/derek/projects/developer-portfolio/src/hooks/useFeedback.js"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/hooks/useFooter.js": {
+      "file": "useFooter.js",
+      "path": "src/hooks/useFooter.js",
+      "dependencies": [
+        "react",
+        "/home/derek/projects/developer-portfolio/src/context/PortfolioContext.jsx",
+        "/home/derek/projects/developer-portfolio/src/hooks/useFooter.js"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/hooks/useImageColor.js": {
+      "file": "useImageColor.js",
+      "path": "src/hooks/useImageColor.js",
+      "dependencies": [
+        "colorthief",
+        "react",
+        "/home/derek/projects/developer-portfolio/src/hooks/useImageColor.js"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/hooks/useIntersectionObserver.js": {
+      "file": "useIntersectionObserver.js",
+      "path": "src/hooks/useIntersectionObserver.js",
+      "dependencies": [
+        "react"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/hooks/useMemoValues.js": {
+      "file": "useMemoValues.js",
+      "path": "src/hooks/useMemoValues.js",
+      "dependencies": [
+        "react",
+        "/home/derek/projects/developer-portfolio/src/hooks/useMemoValues.js",
+        "/home/derek/projects/developer-portfolio/src/context/PortfolioContext.jsx"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/hooks/useNavigation.js": {
+      "file": "useNavigation.js",
+      "path": "src/hooks/useNavigation.js",
+      "dependencies": [
+        "react",
+        "/home/derek/projects/developer-portfolio/src/context/PortfolioContext.jsx",
+        "/home/derek/projects/developer-portfolio/src/hooks/useNavigation.js"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/hooks/useProjects.js": {
+      "file": "useProjects.js",
+      "path": "src/hooks/useProjects.js",
+      "dependencies": [
+        "/home/derek/projects/developer-portfolio/src/hooks/useProjects.js",
+        "react",
+        "/home/derek/projects/developer-portfolio/src/context/PortfolioContext.jsx"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/hooks/useSkills.js": {
+      "file": "useSkills.js",
+      "path": "src/hooks/useSkills.js",
+      "dependencies": [
+        "/home/derek/projects/developer-portfolio/src/hooks/useSkills.js",
+        "react",
+        "/home/derek/projects/developer-portfolio/src/context/PortfolioContext.jsx"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/hooks/useTimelineAnimation.ts": {
+      "file": "useTimelineAnimation.ts",
+      "path": "src/hooks/useTimelineAnimation.ts",
+      "dependencies": [
+        "react",
+        "framer-motion",
+        "/home/derek/projects/developer-portfolio/src/context/AnimationContext.tsx"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    },
+    "src/hooks/useTimelineView.js": {
+      "file": "useTimelineView.js",
+      "path": "src/hooks/useTimelineView.js",
+      "dependencies": [
+        "react"
+      ],
+      "usesReactApis": false,
+      "reactApis": []
+    }
+  },
+  "reactApiUsage": {
+    "/home/derek/projects/developer-portfolio/src/components/atoms/CodeSnippet/CodeSnippet.jsx": [
+      "memo("
+    ],
+    "/home/derek/projects/developer-portfolio/src/components/atoms/ConsoleHeader/ConsoleHeader.jsx": [
+      "memo("
+    ],
+    "/home/derek/projects/developer-portfolio/src/components/atoms/DateBubble/DateBubble.jsx": [
+      "memo("
+    ],
+    "/home/derek/projects/developer-portfolio/src/components/atoms/LazyImage/LazyImage.jsx": [
+      "memo("
+    ],
+    "/home/derek/projects/developer-portfolio/src/components/atoms/SecurityBadge/SecurityBadge.tsx": [
+      "memo("
+    ],
+    "/home/derek/projects/developer-portfolio/src/components/atoms/SkeletonCard/SkeletonCard.jsx": [
+      "memo("
+    ],
+    "/home/derek/projects/developer-portfolio/src/components/atoms/Skill/Skill.jsx": [
+      "memo("
+    ],
+    "/home/derek/projects/developer-portfolio/src/components/atoms/Skill/Skill.test.jsx": [
+      "React.memo"
+    ],
+    "/home/derek/projects/developer-portfolio/src/components/atoms/TechBadge/TechBadge.tsx": [
+      "memo("
+    ],
+    "/home/derek/projects/developer-portfolio/src/components/atoms/TerminalControls/TerminalControls.jsx": [
+      "memo("
+    ],
+    "/home/derek/projects/developer-portfolio/src/components/atoms/TimelineNode/TimelineNode.jsx": [
+      "memo("
+    ],
+    "/home/derek/projects/developer-portfolio/src/components/molecules/EducationCard/EducationCard.jsx": [
+      "memo("
+    ],
+    "/home/derek/projects/developer-portfolio/src/components/molecules/ErrorBoundary/ErrorBoundary.jsx": [
+      "extends Component"
+    ],
+    "/home/derek/projects/developer-portfolio/src/components/molecules/ExperienceCard/ExperienceCard.tsx": [
+      "memo("
+    ],
+    "/home/derek/projects/developer-portfolio/src/components/molecules/FeedbackCard/FeedbackCard.jsx": [
+      "memo("
+    ],
+    "/home/derek/projects/developer-portfolio/src/components/molecules/Footer/Footer.jsx": [
+      "memo("
+    ],
+    "/home/derek/projects/developer-portfolio/src/components/molecules/Navigation/Navigation.jsx": [
+      "memo("
+    ],
+    "/home/derek/projects/developer-portfolio/src/components/molecules/ProjectsCard/ProjectsCard.jsx": [
+      "memo("
+    ],
+    "/home/derek/projects/developer-portfolio/src/components/molecules/SkillCard/SkillCard.jsx": [
+      "memo("
+    ],
+    "/home/derek/projects/developer-portfolio/src/components/molecules/SkillCard/SkillCardExpanded.jsx": [
+      "memo("
+    ],
+    "/home/derek/projects/developer-portfolio/src/components/molecules/TimelineEntry/TimelineEntry.tsx": [
+      "memo("
+    ],
+    "/home/derek/projects/developer-portfolio/src/components/organisms/Education/Education.jsx": [
+      "memo("
+    ],
+    "/home/derek/projects/developer-portfolio/src/components/organisms/Experience/Experience.jsx": [
+      "memo("
+    ],
+    "/home/derek/projects/developer-portfolio/src/components/organisms/Experience/ExperienceTimeline.tsx": [
+      "memo("
+    ],
+    "/home/derek/projects/developer-portfolio/src/components/organisms/Feedbacks/Feedbacks.jsx": [
+      "memo("
+    ],
+    "/home/derek/projects/developer-portfolio/src/components/organisms/Projects/Projects.jsx": [
+      "React.memo",
+      "memo("
+    ],
+    "/home/derek/projects/developer-portfolio/src/components/organisms/Skills/Skills.jsx": [
+      "memo("
+    ],
+    "/home/derek/projects/developer-portfolio/src/context/AnimationContext.tsx": [
+      "React.createContext",
+      "useContext(",
+      "React.useContext"
+    ],
+    "/home/derek/projects/developer-portfolio/src/context/PortfolioContext.jsx": [
+      "React.createContext",
+      "createContext(",
+      "useContext(",
+      "React.useContext"
+    ],
+    "/home/derek/projects/developer-portfolio/src/context/__mocks__/PortfolioContext.jsx": [
+      "createContext(",
+      "useContext("
+    ],
+    "/home/derek/projects/developer-portfolio/src/utils/accessibility.jsx": [
+      "React.forwardRef",
+      "forwardRef("
+    ],
+    "/home/derek/projects/developer-portfolio/src/utils/contextUtils.ts": [
+      "React.createContext",
+      "useContext(",
+      "React.useContext"
+    ],
+    "/home/derek/projects/developer-portfolio/src/utils/performanceMonitor.js": [
+      "React.Component"
+    ]
+  },
+  "importPatterns": {
+    "/home/derek/projects/developer-portfolio/src/components/atoms/Button/Button.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "PropTypes",
+          "from": "prop-types"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "Icon",
+          "from": "@iconify/react"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/atoms/Button/Button.stories.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "Button",
+          "from": "./Button"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/atoms/Button/Button.test.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "Button",
+          "from": "@atoms/Button"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "render",
+          "from": "@testing-library/react"
+        },
+        {
+          "name": "screen",
+          "from": "@testing-library/react"
+        },
+        {
+          "name": "fireEvent",
+          "from": "@testing-library/react"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/atoms/Button/index.js": {
+      "default": [
+        {
+          "name": "Button",
+          "from": "./Button"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/atoms/Card/Card.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "PropTypes",
+          "from": "prop-types"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "motion",
+          "from": "framer-motion"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/atoms/Card/Card.stories.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "Card",
+          "from": "./Card"
+        },
+        {
+          "name": "Button",
+          "from": "@atoms/Button"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/atoms/Card/Card.test.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "Card",
+          "from": "@atoms/Card"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "render",
+          "from": "@testing-library/react"
+        },
+        {
+          "name": "screen",
+          "from": "@testing-library/react"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/atoms/Card/index.js": {
+      "default": [
+        {
+          "name": "Card",
+          "from": "./Card"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/atoms/CodeSnippet/CodeSnippet.jsx": {
+      "default": [
+        {
+          "name": "PropTypes",
+          "from": "prop-types"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/atoms/ConsoleHeader/ConsoleHeader.jsx": {
+      "default": [
+        {
+          "name": "PropTypes",
+          "from": "prop-types"
+        },
+        {
+          "name": "Card",
+          "from": "@atoms/Card"
+        },
+        {
+          "name": "TerminalControls",
+          "from": "@atoms/TerminalControls/TerminalControls"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/atoms/DateBubble/DateBubble.jsx": {
+      "default": [
+        {
+          "name": "PropTypes",
+          "from": "prop-types"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "motion",
+          "from": "framer-motion"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/atoms/DateChip/DateChip.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "PropTypes",
+          "from": "prop-types"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/atoms/DateChip/index.js": {
+      "default": [],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/atoms/DegreeInfo/DegreeInfo.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "PropTypes",
+          "from": "prop-types"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/atoms/DegreeInfo/index.js": {
+      "default": [],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/atoms/EducationIcon/EducationIcon.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "PropTypes",
+          "from": "prop-types"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "FaGraduationCap",
+          "from": "react-icons/fa"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/atoms/EducationIcon/index.js": {
+      "default": [],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/atoms/FieldsOfStudy/FieldsOfStudy.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "PropTypes",
+          "from": "prop-types"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/atoms/FieldsOfStudy/index.js": {
+      "default": [],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/atoms/Head/Head.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "Helmet",
+          "from": "react-helmet-async"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/atoms/Head/Head.stories.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "Head",
+          "from": "./Head"
+        },
+        {
+          "name": "Head",
+          "from": "./Head"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "mockStructuredData",
+          "from": "@stories-utils/mockData"
+        },
+        {
+          "name": "HelmetProvider",
+          "from": "react-helmet-async"
+        },
+        {
+          "name": "HelmetProvider",
+          "from": "react-helmet-async"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/atoms/Head/index.js": {
+      "default": [
+        {
+          "name": "Head",
+          "from": "./Head"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/atoms/LazyImage/LazyImage.jsx": {
+      "default": [
+        {
+          "name": "PropTypes",
+          "from": "prop-types"
+        },
+        {
+          "name": "useIntersectionObserver",
+          "from": "@hooks/useIntersectionObserver"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/atoms/LazyImage/LazyImage.stories.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "LazyImage",
+          "from": "./LazyImage"
+        },
+        {
+          "name": "LazyImage",
+          "from": "./LazyImage"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "within",
+          "from": "@storybook/test"
+        },
+        {
+          "name": "userEvent",
+          "from": "@storybook/test"
+        },
+        {
+          "name": "expect",
+          "from": "@storybook/test"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/atoms/LazyImage/index.js": {
+      "default": [
+        {
+          "name": "LazyImage",
+          "from": "./LazyImage"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/atoms/Loading/Loading.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "PropTypes",
+          "from": "prop-types"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/atoms/Loading/Loading.stories.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "Loading",
+          "from": "./Loading"
+        },
+        {
+          "name": "Loading",
+          "from": "@molecules/Loading"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "within",
+          "from": "@storybook/test"
+        },
+        {
+          "name": "userEvent",
+          "from": "@storybook/test"
+        },
+        {
+          "name": "expect",
+          "from": "@storybook/test"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/atoms/Loading/index.js": {
+      "default": [
+        {
+          "name": "Loading",
+          "from": "./Loading"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/atoms/Progress/Progress.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "PropTypes",
+          "from": "prop-types"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/atoms/Progress/index.js": {
+      "default": [
+        {
+          "name": "Progress",
+          "from": "./Progress"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/atoms/RatingStars/RatingStars.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "PropTypes",
+          "from": "prop-types"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "FaStar",
+          "from": "react-icons/fa"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/atoms/RatingStars/index.js": {
+      "default": [],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/atoms/ResponsiveImage/ResponsiveImage.jsx": {
+      "default": [
+        {
+          "name": "PropTypes",
+          "from": "prop-types"
+        },
+        {
+          "name": "useIntersectionObserver",
+          "from": "@hooks/useIntersectionObserver"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "motion",
+          "from": "framer-motion"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/atoms/ResponsiveImage/ResponsiveImage.stories.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "ResponsiveImage",
+          "from": "./ResponsiveImage"
+        },
+        {
+          "name": "ResponsiveImage",
+          "from": "./ResponsiveImage"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "within",
+          "from": "@storybook/test"
+        },
+        {
+          "name": "userEvent",
+          "from": "@storybook/test"
+        },
+        {
+          "name": "expect",
+          "from": "@storybook/test"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/atoms/ResponsiveImage/index.js": {
+      "default": [
+        {
+          "name": "ResponsiveImage",
+          "from": "./ResponsiveImage"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/atoms/SchoolHeader/SchoolHeader.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "PropTypes",
+          "from": "prop-types"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/atoms/SchoolHeader/index.js": {
+      "default": [],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/atoms/SecurityBadge/SecurityBadge.stories.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "SecurityBadge",
+          "from": "./SecurityBadge"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/atoms/SecurityBadge/SecurityBadge.tsx": {
+      "default": [],
+      "destructured": [
+        {
+          "name": "motion",
+          "from": "framer-motion"
+        },
+        {
+          "name": "Variants",
+          "from": "framer-motion"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/atoms/SecurityBadge/index.js": {
+      "default": [
+        {
+          "name": "SecurityBadge",
+          "from": "./SecurityBadge"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/atoms/SkeletonCard/SkeletonCard.jsx": {
+      "default": [
+        {
+          "name": "PropTypes",
+          "from": "prop-types"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/atoms/SkeletonCard/index.js": {
+      "default": [
+        {
+          "name": "SkeletonCard",
+          "from": "./SkeletonCard"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/atoms/Skill/Skill.jsx": {
+      "default": [
+        {
+          "name": "PropTypes",
+          "from": "prop-types"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "motion",
+          "from": "framer-motion"
+        },
+        {
+          "name": "Icon",
+          "from": "@iconify/react"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/atoms/Skill/Skill.stories.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "Skill",
+          "from": "./Skill"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/atoms/Skill/Skill.test.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "Skill",
+          "from": "@atoms/Skill"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "render",
+          "from": "@testing-library/react"
+        },
+        {
+          "name": "screen",
+          "from": "@testing-library/react"
+        },
+        {
+          "name": "describe",
+          "from": "vitest"
+        },
+        {
+          "name": "it",
+          "from": "vitest"
+        },
+        {
+          "name": "expect",
+          "from": "vitest"
+        },
+        {
+          "name": "beforeEach",
+          "from": "vitest"
+        },
+        {
+          "name": "vi",
+          "from": "vitest"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/atoms/Skill/index.js": {
+      "default": [
+        {
+          "name": "Skill",
+          "from": "./Skill"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/atoms/SkipToContent/SkipToContent.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "PropTypes",
+          "from": "prop-types"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/atoms/SkipToContent/SkipToContent.stories.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "SkipToContent",
+          "from": "./SkipToContent"
+        },
+        {
+          "name": "SkipToContent",
+          "from": "@molecules/SkipToContent"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "within",
+          "from": "@storybook/test"
+        },
+        {
+          "name": "userEvent",
+          "from": "@storybook/test"
+        },
+        {
+          "name": "expect",
+          "from": "@storybook/test"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/atoms/SkipToContent/index.js": {
+      "default": [
+        {
+          "name": "SkipToContent",
+          "from": "./SkipToContent"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/atoms/TechBadge/TechBadge.stories.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "TechBadge",
+          "from": "./TechBadge"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/atoms/TechBadge/TechBadge.tsx": {
+      "default": [],
+      "destructured": [
+        {
+          "name": "motion",
+          "from": "framer-motion"
+        },
+        {
+          "name": "HTMLMotionProps",
+          "from": "framer-motion"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/atoms/TechBadge/index.js": {
+      "default": [
+        {
+          "name": "TechBadge",
+          "from": "./TechBadge"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/atoms/TerminalControls/TerminalControls.jsx": {
+      "default": [
+        {
+          "name": "PropTypes",
+          "from": "prop-types"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/atoms/TerminalControls/TerminalControls.stories.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "TerminalControls",
+          "from": "./TerminalControls"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/atoms/TimelineNode/TimelineNode.jsx": {
+      "default": [
+        {
+          "name": "PropTypes",
+          "from": "prop-types"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/layout/Section/Section.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "PropTypes",
+          "from": "prop-types"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "motion",
+          "from": "framer-motion"
+        },
+        {
+          "name": "FaGraduationCap",
+          "from": "react-icons/fa"
+        },
+        {
+          "name": "FaBriefcase",
+          "from": "react-icons/fa"
+        },
+        {
+          "name": "FaCode",
+          "from": "react-icons/fa"
+        },
+        {
+          "name": "FaStar",
+          "from": "react-icons/fa"
+        },
+        {
+          "name": "FaHandshake",
+          "from": "react-icons/fa"
+        },
+        {
+          "name": "FaShieldAlt",
+          "from": "react-icons/fa"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/layout/Section/Section.stories.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "Section",
+          "from": "./Section"
+        },
+        {
+          "name": "Button",
+          "from": "@atoms/Button"
+        },
+        {
+          "name": "Card",
+          "from": "@atoms/Card"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/layout/Section/Section.test.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "Section",
+          "from": "@layout/Section"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "render",
+          "from": "@testing-library/react"
+        },
+        {
+          "name": "screen",
+          "from": "@testing-library/react"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/layout/Section/index.js": {
+      "default": [
+        {
+          "name": "Section",
+          "from": "./Section"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/AcademicDetails/AcademicDetails.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "PropTypes",
+          "from": "prop-types"
+        },
+        {
+          "name": "SchoolHeader",
+          "from": "@atoms/SchoolHeader"
+        },
+        {
+          "name": "DegreeInfo",
+          "from": "@atoms/DegreeInfo"
+        },
+        {
+          "name": "FieldsOfStudy",
+          "from": "@atoms/FieldsOfStudy"
+        },
+        {
+          "name": "DateChip",
+          "from": "@atoms/DateChip"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/AcademicDetails/index.js": {
+      "default": [],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/CertificationBadge/CertificationBadge.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "PropTypes",
+          "from": "prop-types"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "FaMedal",
+          "from": "react-icons/fa"
+        },
+        {
+          "name": "FaIdCard",
+          "from": "react-icons/fa"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/CertificationBadge/index.js": {
+      "default": [],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/CertificationList/CertificationList.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "PropTypes",
+          "from": "prop-types"
+        },
+        {
+          "name": "CertificationBadge",
+          "from": "@molecules/CertificationBadge"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/CertificationList/index.js": {
+      "default": [],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/CollegeInfo/CollegeInfo.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "PropTypes",
+          "from": "prop-types"
+        },
+        {
+          "name": "DateChip",
+          "from": "@atoms/DateChip"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/CollegeInfo/index.js": {
+      "default": [],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/DisplayLottie/DisplayLottie.jsx": {
+      "default": [
+        {
+          "name": "Lottie",
+          "from": "lottie-react"
+        },
+        {
+          "name": "Loading",
+          "from": "@atoms/Loading"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "FaPlay",
+          "from": "react-icons/fa"
+        },
+        {
+          "name": "FaPause",
+          "from": "react-icons/fa"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/DisplayLottie/DisplayLottie.stories.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "DisplayLottie",
+          "from": "./DisplayLottie"
+        },
+        {
+          "name": "codingAnimation",
+          "from": "@assets/animations/lottie/dev-coding.json"
+        },
+        {
+          "name": "webdevAnimation",
+          "from": "@assets/animations/lottie/dev-webdev.json"
+        },
+        {
+          "name": "buildAnimation",
+          "from": "@assets/animations/lottie/dev-building.json"
+        },
+        {
+          "name": "DisplayLottie",
+          "from": "./DisplayLottie"
+        },
+        {
+          "name": "animationData",
+          "from": "@assets/animations/lottie/dev-coding.json"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "within",
+          "from": "@storybook/test"
+        },
+        {
+          "name": "userEvent",
+          "from": "@storybook/test"
+        },
+        {
+          "name": "expect",
+          "from": "@storybook/test"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/DisplayLottie/index.js": {
+      "default": [
+        {
+          "name": "DisplayLottie",
+          "from": "./DisplayLottie"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/EducationCard/EducationCard.jsx": {
+      "default": [
+        {
+          "name": "PropTypes",
+          "from": "prop-types"
+        },
+        {
+          "name": "Card",
+          "from": "@atoms/Card"
+        },
+        {
+          "name": "EducationIcon",
+          "from": "@atoms/EducationIcon"
+        },
+        {
+          "name": "SchoolHeader",
+          "from": "@atoms/SchoolHeader"
+        },
+        {
+          "name": "DegreeInfo",
+          "from": "@atoms/DegreeInfo"
+        },
+        {
+          "name": "FieldsOfStudy",
+          "from": "@atoms/FieldsOfStudy"
+        },
+        {
+          "name": "DateChip",
+          "from": "@atoms/DateChip"
+        },
+        {
+          "name": "CertificationBadge",
+          "from": "@molecules/CertificationBadge"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/EducationCard/EducationCard.stories.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "EducationCard",
+          "from": "./EducationCard"
+        },
+        {
+          "name": "EducationCard",
+          "from": "./EducationCard"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "within",
+          "from": "@storybook/test"
+        },
+        {
+          "name": "userEvent",
+          "from": "@storybook/test"
+        },
+        {
+          "name": "expect",
+          "from": "@storybook/test"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/EducationCard/EducationCard.test.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "EducationCard",
+          "from": "@molecules/EducationCard"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "render",
+          "from": "@testing-library/react"
+        },
+        {
+          "name": "screen",
+          "from": "@testing-library/react"
+        },
+        {
+          "name": "within",
+          "from": "@testing-library/react"
+        },
+        {
+          "name": "vi",
+          "from": "vitest"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/EducationCard/index.js": {
+      "default": [
+        {
+          "name": "EducationCard",
+          "from": "./EducationCard"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/EducationDetails/EducationDetails.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "PropTypes",
+          "from": "prop-types"
+        },
+        {
+          "name": "DateChip",
+          "from": "@atoms/DateChip"
+        },
+        {
+          "name": "CertificationBadge",
+          "from": "@molecules/CertificationBadge"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/EducationDetails/index.js": {
+      "default": [],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/ErrorBoundary/ErrorBoundary.jsx": {
+      "default": [
+        {
+          "name": "PropTypes",
+          "from": "prop-types"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/ErrorBoundary/index.js": {
+      "default": [
+        {
+          "name": "ErrorBoundary",
+          "from": "./ErrorBoundary"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/ExperienceCard/ExperienceCard.stories.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "ExperienceCard",
+          "from": "./ExperienceCard"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/ExperienceCard/ExperienceCard.test.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "ExperienceCard",
+          "from": "@molecules/ExperienceCard"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "render",
+          "from": "@testing-library/react"
+        },
+        {
+          "name": "screen",
+          "from": "@testing-library/react"
+        },
+        {
+          "name": "fireEvent",
+          "from": "@testing-library/react"
+        },
+        {
+          "name": "vi",
+          "from": "vitest"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/ExperienceCard/ExperienceCard.tsx": {
+      "default": [],
+      "destructured": [
+        {
+          "name": "motion",
+          "from": "framer-motion"
+        },
+        {
+          "name": "Variants",
+          "from": "framer-motion"
+        },
+        {
+          "name": "useAnimation",
+          "from": "../../../context/AnimationContext"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/ExperienceCard/index.js": {
+      "default": [
+        {
+          "name": "ExperienceCard",
+          "from": "./ExperienceCard"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/FeedbackAuthor/FeedbackAuthor.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "PropTypes",
+          "from": "prop-types"
+        },
+        {
+          "name": "ResponsiveImage",
+          "from": "@atoms/ResponsiveImage"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/FeedbackAuthor/index.js": {
+      "default": [],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/FeedbackCard/FeedbackCard.jsx": {
+      "default": [
+        {
+          "name": "PropTypes",
+          "from": "prop-types"
+        },
+        {
+          "name": "Card",
+          "from": "@atoms/Card"
+        },
+        {
+          "name": "RatingStars",
+          "from": "@atoms/RatingStars"
+        },
+        {
+          "name": "FeedbackQuote",
+          "from": "@molecules/FeedbackQuote"
+        },
+        {
+          "name": "FeedbackAuthor",
+          "from": "@molecules/FeedbackAuthor"
+        },
+        {
+          "name": "FeedbackHighlight",
+          "from": "@molecules/FeedbackHighlight"
+        },
+        {
+          "name": "useIntersectionObserver",
+          "from": "@hooks/useIntersectionObserver"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/FeedbackCard/FeedbackCard.stories.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "FeedbackCard",
+          "from": "./FeedbackCard"
+        },
+        {
+          "name": "FeedbackCard",
+          "from": "./FeedbackCard"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "within",
+          "from": "@storybook/test"
+        },
+        {
+          "name": "userEvent",
+          "from": "@storybook/test"
+        },
+        {
+          "name": "expect",
+          "from": "@storybook/test"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/FeedbackCard/FeedbackCard.test.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "FeedbackCard",
+          "from": "@molecules/FeedbackCard"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "render",
+          "from": "@testing-library/react"
+        },
+        {
+          "name": "screen",
+          "from": "@testing-library/react"
+        },
+        {
+          "name": "vi",
+          "from": "vitest"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/FeedbackCard/index.js": {
+      "default": [
+        {
+          "name": "FeedbackCard",
+          "from": "./FeedbackCard"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/FeedbackHighlight/FeedbackHighlight.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "PropTypes",
+          "from": "prop-types"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/FeedbackHighlight/index.js": {
+      "default": [],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/FeedbackQuote/FeedbackQuote.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "PropTypes",
+          "from": "prop-types"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "FaQuoteLeft",
+          "from": "react-icons/fa"
+        },
+        {
+          "name": "FaQuoteRight",
+          "from": "react-icons/fa"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/FeedbackQuote/index.js": {
+      "default": [],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/Footer/Footer.jsx": {
+      "default": [
+        {
+          "name": "PropTypes",
+          "from": "prop-types"
+        },
+        {
+          "name": "Button",
+          "from": "@atoms/Button"
+        },
+        {
+          "name": "SocialLinks",
+          "from": "@molecules/SocialLinks"
+        },
+        {
+          "name": "useFooter",
+          "from": "@hooks/useFooter"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "FaHeart",
+          "from": "react-icons/fa"
+        },
+        {
+          "name": "FaChevronUp",
+          "from": "react-icons/fa"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/Footer/Footer.stories.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "Footer",
+          "from": "./Footer"
+        },
+        {
+          "name": "PortfolioContext",
+          "from": "@context/PortfolioContext"
+        },
+        {
+          "name": "Footer",
+          "from": "./Footer"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "within",
+          "from": "@storybook/test"
+        },
+        {
+          "name": "userEvent",
+          "from": "@storybook/test"
+        },
+        {
+          "name": "expect",
+          "from": "@storybook/test"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/Footer/Footer.test.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "Footer",
+          "from": "@molecules/Footer"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "render",
+          "from": "@testing-library/react"
+        },
+        {
+          "name": "screen",
+          "from": "@testing-library/react"
+        },
+        {
+          "name": "fireEvent",
+          "from": "@testing-library/react"
+        },
+        {
+          "name": "within",
+          "from": "@testing-library/react"
+        },
+        {
+          "name": "vi",
+          "from": "vitest"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/Footer/index.js": {
+      "default": [
+        {
+          "name": "Footer",
+          "from": "./Footer"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/GithubProfileCard/GithubProfileCard.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "PropTypes",
+          "from": "prop-types"
+        },
+        {
+          "name": "SocialLinks",
+          "from": "@molecules/SocialLinks"
+        },
+        {
+          "name": "Button",
+          "from": "@atoms/Button"
+        },
+        {
+          "name": "MapComponent",
+          "from": "../MapComponent"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "FaMapMarkerAlt",
+          "from": "react-icons/fa"
+        },
+        {
+          "name": "FaShieldAlt",
+          "from": "react-icons/fa"
+        },
+        {
+          "name": "FaLock",
+          "from": "react-icons/fa"
+        },
+        {
+          "name": "FaTerminal",
+          "from": "react-icons/fa"
+        },
+        {
+          "name": "FaRocket",
+          "from": "react-icons/fa"
+        },
+        {
+          "name": "motion",
+          "from": "framer-motion"
+        },
+        {
+          "name": "greetings",
+          "from": "@/portfolio"
+        },
+        {
+          "name": "securityFacts",
+          "from": "@/portfolio"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/GithubProfileCard/GithubProfileCard.stories.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "GithubProfileCard",
+          "from": "./GithubProfileCard"
+        },
+        {
+          "name": "GithubProfileCard",
+          "from": "./GithubProfileCard"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "within",
+          "from": "@storybook/test"
+        },
+        {
+          "name": "userEvent",
+          "from": "@storybook/test"
+        },
+        {
+          "name": "expect",
+          "from": "@storybook/test"
+        },
+        {
+          "name": "mockGithubProfile",
+          "from": "@stories-utils/mockData"
+        },
+        {
+          "name": "withPortfolioContext",
+          "from": "@stories-utils/decorators"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/GithubProfileCard/GithubProfileCard.test.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "GithubProfileCard",
+          "from": "./GithubProfileCard"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "render",
+          "from": "@testing-library/react"
+        },
+        {
+          "name": "screen",
+          "from": "@testing-library/react"
+        },
+        {
+          "name": "fireEvent",
+          "from": "@testing-library/react"
+        },
+        {
+          "name": "vi",
+          "from": "vitest"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/GithubProfileCard/index.js": {
+      "default": [
+        {
+          "name": "GithubProfileCard",
+          "from": "./GithubProfileCard"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/MapComponent/MapComponent.jsx": {
+      "default": [
+        {
+          "name": "PropTypes",
+          "from": "prop-types"
+        },
+        {
+          "name": "L",
+          "from": "leaflet"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "motion",
+          "from": "framer-motion"
+        },
+        {
+          "name": "getCoordinatesForLocation",
+          "from": "../../../utils/geocodingUtils"
+        },
+        {
+          "name": "formatPopupContent",
+          "from": "../../../utils/geocodingUtils"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/MapComponent/index.js": {
+      "default": [],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/Navigation/Navigation.jsx": {
+      "default": [
+        {
+          "name": "useNavigation",
+          "from": "@hooks/useNavigation"
+        },
+        {
+          "name": "PropTypes",
+          "from": "prop-types"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/Navigation/Navigation.stories.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "Navigation",
+          "from": "./Navigation"
+        },
+        {
+          "name": "PortfolioContext",
+          "from": "@context/PortfolioContext"
+        },
+        {
+          "name": "Navigation",
+          "from": "./Navigation"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "within",
+          "from": "@storybook/test"
+        },
+        {
+          "name": "userEvent",
+          "from": "@storybook/test"
+        },
+        {
+          "name": "expect",
+          "from": "@storybook/test"
+        },
+        {
+          "name": "withPortfolioContext",
+          "from": "@stories-utils/decorators"
+        },
+        {
+          "name": "PortfolioProvider",
+          "from": "@context/PortfolioContext"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/Navigation/Navigation.test.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "Navigation",
+          "from": "@molecules/Navigation"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "render",
+          "from": "@testing-library/react"
+        },
+        {
+          "name": "screen",
+          "from": "@testing-library/react"
+        },
+        {
+          "name": "fireEvent",
+          "from": "@testing-library/react"
+        },
+        {
+          "name": "vi",
+          "from": "vitest"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/Navigation/index.js": {
+      "default": [
+        {
+          "name": "Navigation",
+          "from": "./Navigation"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/ProjectsCard/ProjectsCard.jsx": {
+      "default": [
+        {
+          "name": "PropTypes",
+          "from": "prop-types"
+        },
+        {
+          "name": "Card",
+          "from": "@atoms/Card"
+        },
+        {
+          "name": "Button",
+          "from": "@atoms/Button"
+        },
+        {
+          "name": "ResponsiveImage",
+          "from": "@atoms/ResponsiveImage"
+        },
+        {
+          "name": "useIntersectionObserver",
+          "from": "@hooks/useIntersectionObserver"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/ProjectsCard/ProjectsCard.stories.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "ProjectsCard",
+          "from": "./ProjectsCard"
+        },
+        {
+          "name": "ProjectsCard",
+          "from": "./ProjectsCard"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "within",
+          "from": "@storybook/test"
+        },
+        {
+          "name": "userEvent",
+          "from": "@storybook/test"
+        },
+        {
+          "name": "expect",
+          "from": "@storybook/test"
+        },
+        {
+          "name": "withPortfolioContext",
+          "from": "@stories-utils/decorators"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/ProjectsCard/ProjectsCard.test.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "ProjectsCard",
+          "from": "@molecules/ProjectsCard"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "render",
+          "from": "@testing-library/react"
+        },
+        {
+          "name": "screen",
+          "from": "@testing-library/react"
+        },
+        {
+          "name": "fireEvent",
+          "from": "@testing-library/react"
+        },
+        {
+          "name": "vi",
+          "from": "vitest"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/ProjectsCard/index.js": {
+      "default": [
+        {
+          "name": "ProjectsCard",
+          "from": "./ProjectsCard"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/SkillCard/SkillCard.jsx": {
+      "default": [
+        {
+          "name": "PropTypes",
+          "from": "prop-types"
+        },
+        {
+          "name": "Skill",
+          "from": "@atoms/Skill"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "motion",
+          "from": "framer-motion"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/SkillCard/SkillCardExpanded.jsx": {
+      "default": [
+        {
+          "name": "PropTypes",
+          "from": "prop-types"
+        },
+        {
+          "name": "Skill",
+          "from": "@atoms/Skill"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "motion",
+          "from": "framer-motion"
+        },
+        {
+          "name": "Icon",
+          "from": "@iconify/react"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/SkillCard/index.js": {
+      "default": [],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/SocialLinks/SocialLinks.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "PropTypes",
+          "from": "prop-types"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "FaGithub",
+          "from": "react-icons/fa"
+        },
+        {
+          "name": "FaLinkedin",
+          "from": "react-icons/fa"
+        },
+        {
+          "name": "socialLinks",
+          "from": "@/portfolio"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/SocialLinks/SocialLinks.stories.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "SocialLinks",
+          "from": "./SocialLinks"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "FaGithub",
+          "from": "react-icons/fa"
+        },
+        {
+          "name": "FaLinkedin",
+          "from": "react-icons/fa"
+        },
+        {
+          "name": "FaTwitter",
+          "from": "react-icons/fa"
+        },
+        {
+          "name": "FaMedium",
+          "from": "react-icons/fa"
+        },
+        {
+          "name": "FaDev",
+          "from": "react-icons/fa"
+        },
+        {
+          "name": "FaStackOverflow",
+          "from": "react-icons/fa"
+        },
+        {
+          "name": "FaYoutube",
+          "from": "react-icons/fa"
+        },
+        {
+          "name": "FaInstagram",
+          "from": "react-icons/fa"
+        },
+        {
+          "name": "within",
+          "from": "@storybook/test"
+        },
+        {
+          "name": "userEvent",
+          "from": "@storybook/test"
+        },
+        {
+          "name": "expect",
+          "from": "@storybook/test"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/SocialLinks/index.js": {
+      "default": [
+        {
+          "name": "SocialLinks",
+          "from": "./SocialLinks"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/TimelineEntry/TimelineEntry.stories.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "TimelineEntry",
+          "from": "./TimelineEntry"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "AnimationProvider",
+          "from": "@context/AnimationContext"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/TimelineEntry/TimelineEntry.test.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "TimelineEntry",
+          "from": "./TimelineEntry"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "render",
+          "from": "@testing-library/react"
+        },
+        {
+          "name": "screen",
+          "from": "@testing-library/react"
+        },
+        {
+          "name": "fireEvent",
+          "from": "@testing-library/react"
+        },
+        {
+          "name": "waitFor",
+          "from": "@testing-library/react"
+        },
+        {
+          "name": "AnimationProvider",
+          "from": "@context/AnimationContext"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/TimelineEntry/TimelineEntry.tsx": {
+      "default": [
+        {
+          "name": "ExperienceCard",
+          "from": "../ExperienceCard/ExperienceCard"
+        },
+        {
+          "name": "Card",
+          "from": "@atoms/Card"
+        },
+        {
+          "name": "TimelineNode",
+          "from": "@atoms/TimelineNode/TimelineNode"
+        },
+        {
+          "name": "DateBubble",
+          "from": "@atoms/DateBubble/DateBubble"
+        },
+        {
+          "name": "CodeSnippet",
+          "from": "@atoms/CodeSnippet/CodeSnippet"
+        },
+        {
+          "name": "SecurityBadge",
+          "from": "@atoms/SecurityBadge/SecurityBadge"
+        },
+        {
+          "name": "TerminalControls",
+          "from": "@atoms/TerminalControls/TerminalControls"
+        },
+        {
+          "name": "TechBadge",
+          "from": "@atoms/TechBadge/TechBadge"
+        },
+        {
+          "name": "useTimelineAnimation",
+          "from": "@hooks/useTimelineAnimation"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "motion",
+          "from": "framer-motion"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/TimelineEntry/index.js": {
+      "default": [
+        {
+          "name": "TimelineEntry",
+          "from": "./TimelineEntry"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/molecules/__mocks__/Navigation.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/organisms/Education/Education.jsx": {
+      "default": [
+        {
+          "name": "PropTypes",
+          "from": "prop-types"
+        },
+        {
+          "name": "EducationCard",
+          "from": "@molecules/EducationCard"
+        },
+        {
+          "name": "Section",
+          "from": "@layout/Section"
+        },
+        {
+          "name": "useEducation",
+          "from": "@hooks/useEducation"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/organisms/Education/Education.stories.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "Education",
+          "from": "./Education"
+        },
+        {
+          "name": "PortfolioContext",
+          "from": "@context/PortfolioContext"
+        },
+        {
+          "name": "Education",
+          "from": "containers/Education"
+        },
+        {
+          "name": "PortfolioContext",
+          "from": "context/PortfolioContext"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "within",
+          "from": "@storybook/test"
+        },
+        {
+          "name": "expect",
+          "from": "@storybook/test"
+        },
+        {
+          "name": "mockPortfolioData",
+          "from": "@stories-utils/mockData"
+        },
+        {
+          "name": "withPortfolioContext",
+          "from": "@stories-utils/decorators"
+        },
+        {
+          "name": "withViewport",
+          "from": "@stories-utils/decorators"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/organisms/Education/Education.test.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "Education",
+          "from": "@organisms/Education"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "render",
+          "from": "@testing-library/react"
+        },
+        {
+          "name": "screen",
+          "from": "@testing-library/react"
+        },
+        {
+          "name": "vi",
+          "from": "vitest"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/organisms/Education/index.js": {
+      "default": [
+        {
+          "name": "Education",
+          "from": "./Education"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/organisms/Experience/Experience.jsx": {
+      "default": [
+        {
+          "name": "PropTypes",
+          "from": "prop-types"
+        },
+        {
+          "name": "SkeletonCard",
+          "from": "@atoms/SkeletonCard"
+        },
+        {
+          "name": "Section",
+          "from": "@layout/Section"
+        },
+        {
+          "name": "ConsoleHeader",
+          "from": "@atoms/ConsoleHeader/ConsoleHeader"
+        },
+        {
+          "name": "useExperience",
+          "from": "@hooks/useExperience"
+        },
+        {
+          "name": "ExperienceTimeline",
+          "from": "./ExperienceTimeline"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "usePortfolio",
+          "from": "@context/PortfolioContext"
+        },
+        {
+          "name": "experience as experienceData",
+          "from": "../../../portfolio"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/organisms/Experience/Experience.stories.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "Experience",
+          "from": "./Experience"
+        },
+        {
+          "name": "PortfolioContext",
+          "from": "@context/PortfolioContext"
+        },
+        {
+          "name": "Experience",
+          "from": "@/stories/containers/Experience"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "within",
+          "from": "@storybook/test"
+        },
+        {
+          "name": "userEvent",
+          "from": "@storybook/test"
+        },
+        {
+          "name": "expect",
+          "from": "@storybook/test"
+        },
+        {
+          "name": "PortfolioProvider",
+          "from": "@context/PortfolioContext"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/organisms/Experience/Experience.test.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "Experience",
+          "from": "@organisms/Experience"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "render",
+          "from": "@testing-library/react"
+        },
+        {
+          "name": "screen",
+          "from": "@testing-library/react"
+        },
+        {
+          "name": "fireEvent",
+          "from": "@testing-library/react"
+        },
+        {
+          "name": "vi",
+          "from": "vitest"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/organisms/Experience/ExperienceTimeline.test.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "ExperienceTimeline",
+          "from": "./ExperienceTimeline"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "render",
+          "from": "@testing-library/react"
+        },
+        {
+          "name": "screen",
+          "from": "@testing-library/react"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/organisms/Experience/ExperienceTimeline.tsx": {
+      "default": [
+        {
+          "name": "TimelineEntry",
+          "from": "@molecules/TimelineEntry/TimelineEntry"
+        },
+        {
+          "name": "ConsoleHeader",
+          "from": "@atoms/ConsoleHeader/ConsoleHeader"
+        },
+        {
+          "name": "TimelineNode",
+          "from": "@atoms/TimelineNode/TimelineNode"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "motion",
+          "from": "framer-motion"
+        },
+        {
+          "name": "AnimationProvider",
+          "from": "@context/AnimationContext"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/organisms/Experience/index.js": {
+      "default": [
+        {
+          "name": "Experience",
+          "from": "./Experience"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/organisms/Feedbacks/Feedbacks.jsx": {
+      "default": [
+        {
+          "name": "PropTypes",
+          "from": "prop-types"
+        },
+        {
+          "name": "FeedbackCard",
+          "from": "@molecules/FeedbackCard"
+        },
+        {
+          "name": "Section",
+          "from": "@layout/Section"
+        },
+        {
+          "name": "useFeedback",
+          "from": "@hooks/useFeedback"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/organisms/Feedbacks/Feedbacks.stories.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "Feedbacks",
+          "from": "./Feedbacks"
+        },
+        {
+          "name": "PortfolioContext",
+          "from": "@context/PortfolioContext"
+        },
+        {
+          "name": "Feedbacks",
+          "from": "@/stories/containers/Feedbacks"
+        },
+        {
+          "name": "PortfolioContext",
+          "from": "@context/PortfolioContext"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "within",
+          "from": "@storybook/test"
+        },
+        {
+          "name": "expect",
+          "from": "@storybook/test"
+        },
+        {
+          "name": "mockPortfolioData",
+          "from": "@stories-utils/mockData"
+        },
+        {
+          "name": "withPortfolioContext",
+          "from": "@stories-utils/decorators"
+        },
+        {
+          "name": "withViewport",
+          "from": "@stories-utils/decorators"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/organisms/Feedbacks/Feedbacks.test.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "Feedbacks",
+          "from": "@organisms/Feedbacks"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "render",
+          "from": "@testing-library/react"
+        },
+        {
+          "name": "screen",
+          "from": "@testing-library/react"
+        },
+        {
+          "name": "vi",
+          "from": "vitest"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/organisms/Feedbacks/index.js": {
+      "default": [
+        {
+          "name": "Feedbacks",
+          "from": "./Feedbacks"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/organisms/GithubProfile/GithubProfile.jsx": {
+      "default": [
+        {
+          "name": "PropTypes",
+          "from": "prop-types"
+        },
+        {
+          "name": "Loading",
+          "from": "@atoms/Loading"
+        },
+        {
+          "name": "axios",
+          "from": "axios"
+        },
+        {
+          "name": "GithubProfileCard",
+          "from": "@molecules/GithubProfileCard"
+        },
+        {
+          "name": "Section",
+          "from": "@layout/Section"
+        },
+        {
+          "name": "envConfig",
+          "from": "@utils/envConfig"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "openSource",
+          "from": "@/portfolio"
+        },
+        {
+          "name": "motion",
+          "from": "framer-motion"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/organisms/GithubProfile/GithubProfile.stories.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "GithubProfile",
+          "from": "./GithubProfile"
+        },
+        {
+          "name": "PortfolioContext",
+          "from": "@context/PortfolioContext"
+        },
+        {
+          "name": "axios",
+          "from": "axios"
+        },
+        {
+          "name": "GithubProfile",
+          "from": "@/stories/containers/GithubProfile"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "within",
+          "from": "@storybook/test"
+        },
+        {
+          "name": "userEvent",
+          "from": "@storybook/test"
+        },
+        {
+          "name": "expect",
+          "from": "@storybook/test"
+        },
+        {
+          "name": "mockPortfolioData",
+          "from": "@stories-utils/mockData"
+        },
+        {
+          "name": "mockGithubProfile",
+          "from": "@stories-utils/mockData"
+        },
+        {
+          "name": "withPortfolioContext",
+          "from": "@stories-utils/decorators"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/organisms/GithubProfile/GithubProfile.test.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "GithubProfile",
+          "from": "@organisms/GithubProfile"
+        },
+        {
+          "name": "axios",
+          "from": "axios"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "render",
+          "from": "@testing-library/react"
+        },
+        {
+          "name": "screen",
+          "from": "@testing-library/react"
+        },
+        {
+          "name": "waitFor",
+          "from": "@testing-library/react"
+        },
+        {
+          "name": "act",
+          "from": "@testing-library/react"
+        },
+        {
+          "name": "vi",
+          "from": "vitest"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/organisms/GithubProfile/index.js": {
+      "default": [
+        {
+          "name": "GithubProfile",
+          "from": "./GithubProfile"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/organisms/Greetings/Greetings.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "Button",
+          "from": "@atoms/Button"
+        },
+        {
+          "name": "SocialLinks",
+          "from": "@molecules/SocialLinks"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "greetings",
+          "from": "@/portfolio"
+        },
+        {
+          "name": "motion",
+          "from": "framer-motion"
+        },
+        {
+          "name": "FaDownload",
+          "from": "react-icons/fa"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/organisms/Greetings/Greetings.stories.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "Greetings",
+          "from": "./Greetings"
+        },
+        {
+          "name": "PortfolioContext",
+          "from": "@context/PortfolioContext"
+        },
+        {
+          "name": "code",
+          "from": "@assets/animations/lottie/dev-coding.json"
+        },
+        {
+          "name": "webdev",
+          "from": "@assets/animations/lottie/dev-webdev.json"
+        },
+        {
+          "name": "build",
+          "from": "@assets/animations/lottie/dev-building.json"
+        },
+        {
+          "name": "Greetings",
+          "from": "@/stories/containers/Greetings"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "within",
+          "from": "@storybook/test"
+        },
+        {
+          "name": "userEvent",
+          "from": "@storybook/test"
+        },
+        {
+          "name": "expect",
+          "from": "@storybook/test"
+        },
+        {
+          "name": "mockPortfolioData",
+          "from": "@stories-utils/mockData"
+        },
+        {
+          "name": "withPortfolioContext",
+          "from": "@stories-utils/decorators"
+        },
+        {
+          "name": "withViewport",
+          "from": "@stories-utils/decorators"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/organisms/Greetings/index.js": {
+      "default": [
+        {
+          "name": "Greetings",
+          "from": "./Greetings"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/organisms/Proficiency/Proficiency.jsx": {
+      "default": [
+        {
+          "name": "DisplayLottie",
+          "from": "@molecules/DisplayLottie"
+        },
+        {
+          "name": "Progress",
+          "from": "@atoms/Progress"
+        },
+        {
+          "name": "Section",
+          "from": "@layout/Section"
+        },
+        {
+          "name": "codingAnimation",
+          "from": "@assets/animations/lottie/dev-coding.json"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "SkillBars",
+          "from": "@/portfolio"
+        },
+        {
+          "name": "motion",
+          "from": "framer-motion"
+        },
+        {
+          "name": "useInView",
+          "from": "framer-motion"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/organisms/Proficiency/Proficiency.stories.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "Proficiency",
+          "from": "./Proficiency"
+        },
+        {
+          "name": "PortfolioContext",
+          "from": "@context/PortfolioContext"
+        },
+        {
+          "name": "build",
+          "from": "@assets/animations/lottie/dev-building.json"
+        },
+        {
+          "name": "Proficiency",
+          "from": "@/stories/containers/Proficiency"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "within",
+          "from": "@storybook/test"
+        },
+        {
+          "name": "expect",
+          "from": "@storybook/test"
+        },
+        {
+          "name": "mockPortfolioData",
+          "from": "@stories-utils/mockData"
+        },
+        {
+          "name": "withPortfolioContext",
+          "from": "@stories-utils/decorators"
+        },
+        {
+          "name": "withViewport",
+          "from": "@stories-utils/decorators"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/organisms/Proficiency/index.js": {
+      "default": [
+        {
+          "name": "Proficiency",
+          "from": "./Proficiency"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/organisms/Projects/Projects.jsx": {
+      "default": [
+        {
+          "name": "ProjectsCard",
+          "from": "@molecules/ProjectsCard"
+        },
+        {
+          "name": "SkeletonCard",
+          "from": "@atoms/SkeletonCard"
+        },
+        {
+          "name": "Section",
+          "from": "@layout/Section"
+        },
+        {
+          "name": "useProjects",
+          "from": "@hooks/useProjects"
+        },
+        {
+          "name": "useMemoValues",
+          "from": "@hooks/useMemoValues"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "usePortfolio",
+          "from": "@context/PortfolioContext"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/organisms/Projects/Projects.stories.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "Projects",
+          "from": "./Projects"
+        },
+        {
+          "name": "PortfolioContext",
+          "from": "@context/PortfolioContext"
+        },
+        {
+          "name": "Projects",
+          "from": "@/stories/containers/Projects"
+        },
+        {
+          "name": "PortfolioContext",
+          "from": "@context/PortfolioContext"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "within",
+          "from": "@storybook/test"
+        },
+        {
+          "name": "expect",
+          "from": "@storybook/test"
+        },
+        {
+          "name": "mockPortfolioData",
+          "from": "@stories-utils/mockData"
+        },
+        {
+          "name": "withPortfolioContext",
+          "from": "@stories-utils/decorators"
+        },
+        {
+          "name": "withViewport",
+          "from": "@stories-utils/decorators"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/organisms/Projects/Projects.test.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "Projects",
+          "from": "@organisms/Projects"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "render",
+          "from": "@testing-library/react"
+        },
+        {
+          "name": "screen",
+          "from": "@testing-library/react"
+        },
+        {
+          "name": "waitFor",
+          "from": "@testing-library/react"
+        },
+        {
+          "name": "act",
+          "from": "@testing-library/react"
+        },
+        {
+          "name": "vi",
+          "from": "vitest"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/organisms/Projects/index.js": {
+      "default": [
+        {
+          "name": "Projects",
+          "from": "./Projects"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/organisms/Skills/Skills.jsx": {
+      "default": [
+        {
+          "name": "SkeletonCard",
+          "from": "@atoms/SkeletonCard"
+        },
+        {
+          "name": "Section",
+          "from": "@layout/Section"
+        },
+        {
+          "name": "useSkills",
+          "from": "@hooks/useSkills"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "motion",
+          "from": "framer-motion"
+        },
+        {
+          "name": "AnimatePresence",
+          "from": "framer-motion"
+        },
+        {
+          "name": "usePortfolio",
+          "from": "@context/PortfolioContext"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/organisms/Skills/Skills.stories.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "Skills",
+          "from": "./Skills"
+        },
+        {
+          "name": "Skills",
+          "from": "@/stories/containers/Skills"
+        },
+        {
+          "name": "PortfolioContext",
+          "from": "@context/PortfolioContext"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "within",
+          "from": "@storybook/test"
+        },
+        {
+          "name": "userEvent",
+          "from": "@storybook/test"
+        },
+        {
+          "name": "expect",
+          "from": "@storybook/test"
+        },
+        {
+          "name": "withPortfolioContext",
+          "from": "@stories-utils/decorators"
+        },
+        {
+          "name": "PortfolioProvider",
+          "from": "@context/PortfolioContext"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/organisms/Skills/Skills.test.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "Skills",
+          "from": "@organisms/Skills"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "render",
+          "from": "@testing-library/react"
+        },
+        {
+          "name": "screen",
+          "from": "@testing-library/react"
+        },
+        {
+          "name": "waitFor",
+          "from": "@testing-library/react"
+        },
+        {
+          "name": "vi",
+          "from": "vitest"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/components/organisms/Skills/index.js": {
+      "default": [],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/hooks/__mocks__/useExperience.js": {
+      "default": [],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/hooks/__mocks__/useProjects.js": {
+      "default": [],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/hooks/__tests__/useSkills.test.js": {
+      "default": [
+        {
+          "name": "useSkills",
+          "from": "@hooks/useSkills"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "renderHook",
+          "from": "@testing-library/react"
+        },
+        {
+          "name": "act",
+          "from": "@testing-library/react"
+        },
+        {
+          "name": "vi",
+          "from": "vitest"
+        },
+        {
+          "name": "describe",
+          "from": "vitest"
+        },
+        {
+          "name": "it",
+          "from": "vitest"
+        },
+        {
+          "name": "expect",
+          "from": "vitest"
+        },
+        {
+          "name": "beforeEach",
+          "from": "vitest"
+        },
+        {
+          "name": "afterEach",
+          "from": "vitest"
+        },
+        {
+          "name": "usePortfolio",
+          "from": "@context/PortfolioContext"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/hooks/__tests__/useTimelineView.test.js": {
+      "default": [
+        {
+          "name": "useTimelineView",
+          "from": "@hooks/useTimelineView"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "renderHook",
+          "from": "@testing-library/react"
+        },
+        {
+          "name": "act",
+          "from": "@testing-library/react"
+        },
+        {
+          "name": "vi",
+          "from": "vitest"
+        },
+        {
+          "name": "describe",
+          "from": "vitest"
+        },
+        {
+          "name": "it",
+          "from": "vitest"
+        },
+        {
+          "name": "expect",
+          "from": "vitest"
+        },
+        {
+          "name": "beforeEach",
+          "from": "vitest"
+        },
+        {
+          "name": "afterEach",
+          "from": "vitest"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/hooks/useCallbackHandlers.js": {
+      "default": [],
+      "destructured": [
+        {
+          "name": "useCallback",
+          "from": "react"
+        },
+        {
+          "name": "useCallbackHandlers",
+          "from": "@hooks/useCallbackHandlers"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/hooks/useEducation.js": {
+      "default": [],
+      "destructured": [
+        {
+          "name": "usePortfolio",
+          "from": "@context/PortfolioContext"
+        },
+        {
+          "name": "useEducation",
+          "from": "@hooks/useEducation"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/hooks/useExperience.js": {
+      "default": [
+        {
+          "name": "useExperience",
+          "from": "@hooks/useExperience"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "useState",
+          "from": "react"
+        },
+        {
+          "name": "useEffect",
+          "from": "react"
+        },
+        {
+          "name": "useMemo",
+          "from": "react"
+        },
+        {
+          "name": "usePortfolio",
+          "from": "@context/PortfolioContext"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/hooks/useFeedback.js": {
+      "default": [],
+      "destructured": [
+        {
+          "name": "usePortfolio",
+          "from": "@context/PortfolioContext"
+        },
+        {
+          "name": "useFeedback",
+          "from": "@hooks/useFeedback"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/hooks/useFooter.js": {
+      "default": [],
+      "destructured": [
+        {
+          "name": "useCallback",
+          "from": "react"
+        },
+        {
+          "name": "usePortfolio",
+          "from": "@context/PortfolioContext"
+        },
+        {
+          "name": "useFooter",
+          "from": "@hooks/useFooter"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/hooks/useImageColor.js": {
+      "default": [
+        {
+          "name": "ColorThief",
+          "from": "colorthief"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "useState",
+          "from": "react"
+        },
+        {
+          "name": "useCallback",
+          "from": "react"
+        },
+        {
+          "name": "useImageColor",
+          "from": "@hooks/useImageColor"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/hooks/useIntersectionObserver.js": {
+      "default": [],
+      "destructured": [
+        {
+          "name": "useState",
+          "from": "react"
+        },
+        {
+          "name": "useEffect",
+          "from": "react"
+        },
+        {
+          "name": "useRef",
+          "from": "react"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/hooks/useMemoValues.js": {
+      "default": [],
+      "destructured": [
+        {
+          "name": "useMemo",
+          "from": "react"
+        },
+        {
+          "name": "useMemoValues",
+          "from": "@hooks/useMemoValues"
+        },
+        {
+          "name": "usePortfolio",
+          "from": "@context/PortfolioContext"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/hooks/useNavigation.js": {
+      "default": [],
+      "destructured": [
+        {
+          "name": "useState",
+          "from": "react"
+        },
+        {
+          "name": "useEffect",
+          "from": "react"
+        },
+        {
+          "name": "useCallback",
+          "from": "react"
+        },
+        {
+          "name": "usePortfolio",
+          "from": "@context/PortfolioContext"
+        },
+        {
+          "name": "useNavigation",
+          "from": "@hooks/useNavigation"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/hooks/useProjects.js": {
+      "default": [
+        {
+          "name": "useProjects",
+          "from": "@hooks/useProjects"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "useMemo",
+          "from": "react"
+        },
+        {
+          "name": "useState",
+          "from": "react"
+        },
+        {
+          "name": "useEffect",
+          "from": "react"
+        },
+        {
+          "name": "usePortfolio",
+          "from": "@context/PortfolioContext"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/hooks/useSkills.js": {
+      "default": [
+        {
+          "name": "useSkills",
+          "from": "@hooks/useSkills"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "useState",
+          "from": "react"
+        },
+        {
+          "name": "useEffect",
+          "from": "react"
+        },
+        {
+          "name": "useMemo",
+          "from": "react"
+        },
+        {
+          "name": "usePortfolio",
+          "from": "@context/PortfolioContext"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/hooks/useTimelineAnimation.ts": {
+      "default": [],
+      "destructured": [
+        {
+          "name": "useEffect",
+          "from": "react"
+        },
+        {
+          "name": "useCallback",
+          "from": "react"
+        },
+        {
+          "name": "useMemo",
+          "from": "react"
+        },
+        {
+          "name": "useRef",
+          "from": "react"
+        },
+        {
+          "name": "useState",
+          "from": "react"
+        },
+        {
+          "name": "Variants",
+          "from": "framer-motion"
+        },
+        {
+          "name": "useAnimation",
+          "from": "../context/AnimationContext"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/hooks/useTimelineView.js": {
+      "default": [],
+      "destructured": [
+        {
+          "name": "useState",
+          "from": "react"
+        },
+        {
+          "name": "useEffect",
+          "from": "react"
+        },
+        {
+          "name": "useCallback",
+          "from": "react"
+        },
+        {
+          "name": "useRef",
+          "from": "react"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/context/AnimationContext.tsx": {
+      "default": [],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/context/PortfolioContext.jsx": {
+      "default": [
+        {
+          "name": "React",
+          "from": "react"
+        },
+        {
+          "name": "PropTypes",
+          "from": "prop-types"
+        }
+      ],
+      "destructured": [
+        {
+          "name": "greetings",
+          "from": "@/portfolio"
+        },
+        {
+          "name": "openSource",
+          "from": "@/portfolio"
+        },
+        {
+          "name": "contact",
+          "from": "@/portfolio"
+        },
+        {
+          "name": "socialLinks",
+          "from": "@/portfolio"
+        },
+        {
+          "name": "skillsSection",
+          "from": "@/portfolio"
+        },
+        {
+          "name": "SkillBars",
+          "from": "@/portfolio"
+        },
+        {
+          "name": "educationInfo",
+          "from": "@/portfolio"
+        },
+        {
+          "name": "experience",
+          "from": "@/portfolio"
+        },
+        {
+          "name": "projects",
+          "from": "@/portfolio"
+        },
+        {
+          "name": "feedbacks",
+          "from": "@/portfolio"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/context/__mocks__/PortfolioContext.jsx": {
+      "default": [
+        {
+          "name": "PropTypes",
+          "from": "prop-types"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/utils/accessibility.js": {
+      "default": [],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/utils/accessibility.jsx": {
+      "default": [],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": [
+        {
+          "from": "smoothscroll-polyfill"
+        }
+      ]
+    },
+    "/home/derek/projects/developer-portfolio/src/utils/accessibilityUtils.js": {
+      "default": [],
+      "destructured": [
+        {
+          "name": "getAriaAttributes",
+          "from": "@utils/accessibilityUtils"
+        },
+        {
+          "name": "createAriaId",
+          "from": "@utils/accessibilityUtils"
+        },
+        {
+          "name": "getKeyboardHandlers",
+          "from": "@utils/accessibilityUtils"
+        },
+        {
+          "name": "srOnlyStyle",
+          "from": "@utils/accessibilityUtils"
+        },
+        {
+          "name": "skipLinkStyles",
+          "from": "@utils/accessibilityUtils"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/utils/browserFixes.js": {
+      "default": [],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": [
+        {
+          "from": "smoothscroll-polyfill"
+        }
+      ]
+    },
+    "/home/derek/projects/developer-portfolio/src/utils/contextUtils.ts": {
+      "default": [],
+      "destructured": [
+        {
+          "name": "createTypedContext",
+          "from": "@utils/contextUtils"
+        },
+        {
+          "name": "createContextHook",
+          "from": "@utils/contextUtils"
+        }
+      ],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/utils/envConfig.js": {
+      "default": [],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/utils/geocodingUtils.js": {
+      "default": [],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/utils/imageOptimizer.js": {
+      "default": [],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/utils/imageOptimizer.jsx": {
+      "default": [],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/utils/performanceMonitor.js": {
+      "default": [
+        {
+          "name": "envConfig",
+          "from": "@utils/envConfig"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/utils/security.js": {
+      "default": [
+        {
+          "name": "envConfig",
+          "from": "@utils/envConfig"
+        }
+      ],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    },
+    "/home/derek/projects/developer-portfolio/src/utils/validation.js": {
+      "default": [],
+      "destructured": [],
+      "namespace": [],
+      "dynamic": []
+    }
+  }
+}

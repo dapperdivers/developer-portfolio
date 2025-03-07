@@ -1,9 +1,5 @@
-// Import React globally and ensure it's available in window for browser compatibility
 import React, { ReactNode, useState, useCallback, useEffect, useMemo } from 'react';
-// Explicitly expose React to window to ensure it's available for context
-if (typeof window !== 'undefined') {
-  window.React = React;
-}
+import { createTypedContext, createContextHook } from '@utils/contextUtils';
 
 // Animation Context Types
 export interface AnimationState {
@@ -24,9 +20,9 @@ export interface AnimationContextType {
 
 /**
  * Animation Context for coordinating animations across components
- * Using direct React namespace access to prevent tree-shaking issues
+ * Using contextUtils helpers to ensure safety in production builds
  */
-const AnimationContext = React.createContext<AnimationContextType>({
+const AnimationContext = createTypedContext<AnimationContextType>({
   inView: false,
   setInView: () => {},
   animationEnabled: true,
@@ -159,18 +155,10 @@ export const AnimationProvider: React.FC<AnimationProviderProps> = ({ children }
 };
 
 /**
- * Custom hook to use animation context
+ * Custom hook to use animation context with safety checks
  * 
  * @returns {AnimationContextType} Animation context
  */
-export const useAnimation = (): AnimationContextType => {
-  const context = React.useContext(AnimationContext);
-  
-  if (context === undefined) {
-    throw new Error('useAnimation must be used within an AnimationProvider');
-  }
-  
-  return context;
-};
+export const useAnimation = createContextHook(AnimationContext, 'useAnimation');
 
 export default AnimationContext;

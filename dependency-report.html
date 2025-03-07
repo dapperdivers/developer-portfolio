@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Component Dependency Analysis</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; line-height: 1.6; margin: 0; padding: 20px; color: #333; }
+    h1, h2, h3 { margin-top: 2rem; }
+    .container { max-width: 1200px; margin: 0 auto; }
+    .summary { display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 2rem; }
+    .summary-box { background-color: #f5f5f5; border-radius: 6px; padding: 15px; flex: 1; min-width: 200px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    .summary-box h3 { margin-top: 0; }
+    table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+    th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid #ddd; }
+    th { background-color: #f5f5f5; }
+    tr:hover { background-color: #f9f9f9; }
+    .risk { color: #e53935; }
+    .safe { color: #43a047; }
+    .warning { color: #fb8c00; }
+    .risk-high { background-color: #ffebee; }
+    .risk-medium { background-color: #fff8e1; }
+    .dependencies { font-family: monospace; font-size: 0.9em; }
+    .react-apis { font-family: monospace; color: #d32f2f; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Component Dependency Analysis Report</h1>
+    
+    <div class="summary">
+      <div class="summary-box">
+        <h3>Components</h3>
+        <p>Total: <strong>153</strong></p>
+        <p>Using React APIs: <strong>27</strong> (18%)</p>
+      </div>
+      
+      <div class="summary-box">
+        <h3>Hooks</h3>
+        <p>Total: <strong>17</strong></p>
+        <p>Using React APIs: <strong>0</strong> (0%)</p>
+      </div>
+      
+      <div class="summary-box">
+        <h3>Import Analysis</h3>
+        <p>Destructured React imports: <strong>28%</strong></p>
+        <p>Total imports analyzed: <strong>185</strong></p>
+      </div>
+    </div>
+    
+    <h2>Components Using React APIs</h2>
+    <table>
+      <tr>
+        <th>Component</th>
+        <th>React APIs Used</th>
+        <th>Dependencies</th>
+      </tr>
+      
+          <tr class="risk-medium">
+            <td>src/components/organisms/Projects/Projects.jsx</td>
+            <td class="react-apis">React.memo, memo(</td>
+            <td class="dependencies">src/components/molecules/ProjectsCard/index.js<br>src/components/atoms/SkeletonCard/index.js<br>src/components/layout/Section/index.js<br>src/hooks/useProjects.js<br>src/hooks/useMemoValues.js<br>src/context/PortfolioContext.jsx</td>
+          </tr>
+        
+          <tr class="risk-medium">
+            <td>src/components/atoms/CodeSnippet/CodeSnippet.jsx</td>
+            <td class="react-apis">memo(</td>
+            <td class="dependencies">prop-types</td>
+          </tr>
+        
+          <tr class="risk-medium">
+            <td>src/components/atoms/ConsoleHeader/ConsoleHeader.jsx</td>
+            <td class="react-apis">memo(</td>
+            <td class="dependencies">prop-types<br>src/components/atoms/Card/index.js<br>src/components/atoms/TerminalControls/TerminalControls.jsx</td>
+          </tr>
+        
+          <tr class="risk-medium">
+            <td>src/components/atoms/DateBubble/DateBubble.jsx</td>
+            <td class="react-apis">memo(</td>
+            <td class="dependencies">prop-types<br>framer-motion</td>
+          </tr>
+        
+          <tr class="risk-medium">
+            <td>src/components/atoms/LazyImage/LazyImage.jsx</td>
+            <td class="react-apis">memo(</td>
+            <td class="dependencies">prop-types<br>src/hooks/useIntersectionObserver.js</td>
+          </tr>
+        
+          <tr class="risk-medium">
+            <td>src/components/atoms/SecurityBadge/SecurityBadge.tsx</td>
+            <td class="react-apis">memo(</td>
+            <td class="dependencies">framer-motion</td>
+          </tr>
+        
+          <tr class="risk-medium">
+            <td>src/components/atoms/SkeletonCard/SkeletonCard.jsx</td>
+            <td class="react-apis">memo(</td>
+            <td class="dependencies">prop-types</td>
+          </tr>
+        
+          <tr class="risk-medium">
+            <td>src/components/atoms/Skill/Skill.jsx</td>
+            <td class="react-apis">memo(</td>
+            <td class="dependencies">prop-types<br>framer-motion<br>@iconify/react</td>
+          </tr>
+        
+          <tr class="risk-medium">
+            <td>src/components/atoms/Skill/Skill.test.jsx</td>
+            <td class="react-apis">React.memo</td>
+            <td class="dependencies">react<br>src/components/atoms/Skill/index.js<br>@testing-library/react<br>vitest</td>
+          </tr>
+        
+          <tr class="risk-medium">
+            <td>src/components/atoms/TechBadge/TechBadge.tsx</td>
+            <td class="react-apis">memo(</td>
+            <td class="dependencies">framer-motion</td>
+          </tr>
+        
+          <tr class="risk-medium">
+            <td>src/components/atoms/TerminalControls/TerminalControls.jsx</td>
+            <td class="react-apis">memo(</td>
+            <td class="dependencies">prop-types</td>
+          </tr>
+        
+          <tr class="risk-medium">
+            <td>src/components/atoms/TimelineNode/TimelineNode.jsx</td>
+            <td class="react-apis">memo(</td>
+            <td class="dependencies">prop-types</td>
+          </tr>
+        
+          <tr class="risk-medium">
+            <td>src/components/molecules/EducationCard/EducationCard.jsx</td>
+            <td class="react-apis">memo(</td>
+            <td class="dependencies">prop-types<br>src/components/atoms/Card/index.js<br>src/components/atoms/EducationIcon/index.js<br>src/components/atoms/SchoolHeader/index.js<br>src/components/atoms/DegreeInfo/index.js<br>src/components/atoms/FieldsOfStudy/index.js<br>src/components/atoms/DateChip/index.js<br>src/components/molecules/CertificationBadge/index.js</td>
+          </tr>
+        
+          <tr class="risk-medium">
+            <td>src/components/molecules/ErrorBoundary/ErrorBoundary.jsx</td>
+            <td class="react-apis">extends Component</td>
+            <td class="dependencies">prop-types</td>
+          </tr>
+        
+          <tr class="risk-medium">
+            <td>src/components/molecules/ExperienceCard/ExperienceCard.tsx</td>
+            <td class="react-apis">memo(</td>
+            <td class="dependencies">framer-motion<br>src/context/AnimationContext.tsx</td>
+          </tr>
+        
+          <tr class="risk-medium">
+            <td>src/components/molecules/FeedbackCard/FeedbackCard.jsx</td>
+            <td class="react-apis">memo(</td>
+            <td class="dependencies">prop-types<br>src/components/atoms/Card/index.js<br>src/components/atoms/RatingStars/index.js<br>src/components/molecules/FeedbackQuote/index.js<br>src/components/molecules/FeedbackAuthor/index.js<br>src/components/molecules/FeedbackHighlight/index.js<br>src/hooks/useIntersectionObserver.js</td>
+          </tr>
+        
+          <tr class="risk-medium">
+            <td>src/components/molecules/Footer/Footer.jsx</td>
+            <td class="react-apis">memo(</td>
+            <td class="dependencies">prop-types<br>src/components/atoms/Button/index.js<br>src/components/molecules/SocialLinks/index.js<br>src/hooks/useFooter.js<br>react-icons/fa</td>
+          </tr>
+        
+          <tr class="risk-medium">
+            <td>src/components/molecules/Navigation/Navigation.jsx</td>
+            <td class="react-apis">memo(</td>
+            <td class="dependencies">src/hooks/useNavigation.js<br>prop-types</td>
+          </tr>
+        
+          <tr class="risk-medium">
+            <td>src/components/molecules/ProjectsCard/ProjectsCard.jsx</td>
+            <td class="react-apis">memo(</td>
+            <td class="dependencies">prop-types<br>src/components/atoms/Card/index.js<br>src/components/atoms/Button/index.js<br>src/components/atoms/ResponsiveImage/index.js<br>src/hooks/useIntersectionObserver.js</td>
+          </tr>
+        
+          <tr class="risk-medium">
+            <td>src/components/molecules/SkillCard/SkillCard.jsx</td>
+            <td class="react-apis">memo(</td>
+            <td class="dependencies">prop-types<br>src/components/atoms/Skill/index.js<br>framer-motion</td>
+          </tr>
+        
+          <tr class="risk-medium">
+            <td>src/components/molecules/SkillCard/SkillCardExpanded.jsx</td>
+            <td class="react-apis">memo(</td>
+            <td class="dependencies">prop-types<br>src/components/atoms/Skill/index.js<br>framer-motion<br>@iconify/react</td>
+          </tr>
+        
+          <tr class="risk-medium">
+            <td>src/components/molecules/TimelineEntry/TimelineEntry.tsx</td>
+            <td class="react-apis">memo(</td>
+            <td class="dependencies">src/components/molecules/ExperienceCard/ExperienceCard.tsx<br>src/components/atoms/Card/index.js<br>src/components/atoms/TimelineNode/TimelineNode.jsx<br>src/components/atoms/DateBubble/DateBubble.jsx<br>src/components/atoms/CodeSnippet/CodeSnippet.jsx<br>src/components/atoms/SecurityBadge/SecurityBadge.tsx<br>src/components/atoms/TerminalControls/TerminalControls.jsx<br>src/components/atoms/TechBadge/TechBadge.tsx<br>src/hooks/useTimelineAnimation.ts<br>framer-motion</td>
+          </tr>
+        
+          <tr class="risk-medium">
+            <td>src/components/organisms/Education/Education.jsx</td>
+            <td class="react-apis">memo(</td>
+            <td class="dependencies">prop-types<br>src/components/molecules/EducationCard/index.js<br>src/components/layout/Section/index.js<br>src/hooks/useEducation.js</td>
+          </tr>
+        
+          <tr class="risk-medium">
+            <td>src/components/organisms/Experience/Experience.jsx</td>
+            <td class="react-apis">memo(</td>
+            <td class="dependencies">prop-types<br>src/components/atoms/SkeletonCard/index.js<br>src/components/layout/Section/index.js<br>src/components/atoms/ConsoleHeader/ConsoleHeader.jsx<br>src/hooks/useExperience.js<br>src/components/organisms/Experience/ExperienceTimeline.tsx<br>src/context/PortfolioContext.jsx<br>src/portfolio.js</td>
+          </tr>
+        
+          <tr class="risk-medium">
+            <td>src/components/organisms/Experience/ExperienceTimeline.tsx</td>
+            <td class="react-apis">memo(</td>
+            <td class="dependencies">src/components/molecules/TimelineEntry/TimelineEntry.tsx<br>src/components/atoms/ConsoleHeader/ConsoleHeader.jsx<br>src/components/atoms/TimelineNode/TimelineNode.jsx<br>framer-motion<br>src/context/AnimationContext.tsx</td>
+          </tr>
+        
+          <tr class="risk-medium">
+            <td>src/components/organisms/Feedbacks/Feedbacks.jsx</td>
+            <td class="react-apis">memo(</td>
+            <td class="dependencies">prop-types<br>src/components/molecules/FeedbackCard/index.js<br>src/components/layout/Section/index.js<br>src/hooks/useFeedback.js</td>
+          </tr>
+        
+          <tr class="risk-medium">
+            <td>src/components/organisms/Skills/Skills.jsx</td>
+            <td class="react-apis">memo(</td>
+            <td class="dependencies">src/components/atoms/SkeletonCard/index.js<br>src/components/layout/Section/index.js<br>src/hooks/useSkills.js<br>framer-motion<br>src/context/PortfolioContext.jsx</td>
+          </tr>
+        
+    </table>
+    
+    <h2>Hooks Using React APIs</h2>
+    <table>
+      <tr>
+        <th>Hook</th>
+        <th>React APIs Used</th>
+        <th>Dependencies</th>
+      </tr>
+      
+    </table>
+    
+    <h2>Destructured React Imports</h2>
+    <table>
+      <tr>
+        <th>File</th>
+        <th>Destructured Imports</th>
+      </tr>
+      
+          <tr>
+            <td>src/hooks/useCallbackHandlers.js</td>
+            <td class="react-apis">useCallback</td>
+          </tr>
+        
+          <tr>
+            <td>src/hooks/useExperience.js</td>
+            <td class="react-apis">useState, useEffect, useMemo</td>
+          </tr>
+        
+          <tr>
+            <td>src/hooks/useFooter.js</td>
+            <td class="react-apis">useCallback</td>
+          </tr>
+        
+          <tr>
+            <td>src/hooks/useImageColor.js</td>
+            <td class="react-apis">useState, useCallback</td>
+          </tr>
+        
+          <tr>
+            <td>src/hooks/useIntersectionObserver.js</td>
+            <td class="react-apis">useState, useEffect, useRef</td>
+          </tr>
+        
+          <tr>
+            <td>src/hooks/useMemoValues.js</td>
+            <td class="react-apis">useMemo</td>
+          </tr>
+        
+          <tr>
+            <td>src/hooks/useNavigation.js</td>
+            <td class="react-apis">useState, useEffect, useCallback</td>
+          </tr>
+        
+          <tr>
+            <td>src/hooks/useProjects.js</td>
+            <td class="react-apis">useMemo, useState, useEffect</td>
+          </tr>
+        
+          <tr>
+            <td>src/hooks/useSkills.js</td>
+            <td class="react-apis">useState, useEffect, useMemo</td>
+          </tr>
+        
+          <tr>
+            <td>src/hooks/useTimelineAnimation.ts</td>
+            <td class="react-apis">useEffect, useCallback, useMemo, useRef, useState</td>
+          </tr>
+        
+          <tr>
+            <td>src/hooks/useTimelineView.js</td>
+            <td class="react-apis">useState, useEffect, useCallback, useRef</td>
+          </tr>
+        
+    </table>
+    
+    <h2>Dependency Chain Analysis</h2>
+    <p>Components that might be affected by tree-shaking issues due to indirect dependencies on React APIs</p>
+    <table>
+      <tr>
+        <th>Component</th>
+        <th>Dependency Chain</th>
+      </tr>
+      <!-- Dependency chains would go here - this requires more complex analysis -->
+    </table>
+    
+    <h2>Recommendations</h2>
+    <ul>
+      <li>Convert destructured React imports to namespace imports (e.g., <code>import React from 'react'</code> instead of <code>import { useState } from 'react'</code>)</li>
+      <li>Use the <code>contextUtils.ts</code> helpers for creating and consuming contexts</li>
+      <li>Consider bundling components with high React API usage with the React vendor chunk</li>
+      <li>Review component dependencies to minimize unnecessary imports</li>
+    </ul>
+  </div>
+</body>
+</html>

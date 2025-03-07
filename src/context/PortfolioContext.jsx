@@ -2,15 +2,11 @@
  * Portfolio Context - central data store for portfolio data
  * 
  * This file creates a React Context to provide portfolio data to all components
- * The implementation explicitly uses the React namespace to avoid tree-shaking issues
+ * Using contextUtils helpers to ensure safety in production builds
  */
 
-// Import React globally and ensure it's available in window for browser compatibility
 import React from 'react';
-// Explicitly expose React to window to ensure it's available for context
-if (typeof window !== 'undefined') {
-  window.React = React;
-}
+import { createTypedContext, createContextHook } from '@utils/contextUtils';
 
 import PropTypes from 'prop-types';
 import {
@@ -28,10 +24,9 @@ import {
 
 /**
  * Context for portfolio data management
- * Using direct React namespace access to prevent tree-shaking issues
  * @type {React.Context}
  */
-const PortfolioContext = React.createContext();
+const PortfolioContext = createTypedContext();
 
 /**
  * Provider component for portfolio data
@@ -80,15 +75,7 @@ PortfolioProvider.propTypes = {
  * 
  * @returns {Object} Portfolio data object containing all sections
  */
-export const usePortfolio = () => {
-  const context = React.useContext(PortfolioContext);
-  
-  if (!context) {
-    throw new Error('usePortfolio must be used within a PortfolioProvider');
-  }
-  
-  return context;
-};
+export const usePortfolio = createContextHook(PortfolioContext, 'usePortfolio');
 
 /**
  * Section-specific hooks for more targeted data access

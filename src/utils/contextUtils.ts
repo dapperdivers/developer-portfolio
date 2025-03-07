@@ -6,7 +6,10 @@
  * and prevents tree-shaking issues.
  */
 
-import React, { useContext, Context } from 'react';
+import React from 'react';
+
+// TypeScript type for React Context (without destructuring)
+type ReactContext<T> = React.Context<T>;
 
 /**
  * Create a typed context with production build protections
@@ -18,7 +21,7 @@ import React, { useContext, Context } from 'react';
  * @param defaultValue - The default value for the context
  * @returns A React Context with added safety features
  */
-export function createTypedContext<T>(defaultValue: T): Context<T> {
+export function createTypedContext<T>(defaultValue: T): ReactContext<T> {
   // Ensure React is available globally to prevent tree-shaking issues
   if (typeof window !== 'undefined') {
     window.React = window.React || React;
@@ -40,7 +43,7 @@ export function createTypedContext<T>(defaultValue: T): Context<T> {
  * @param hookName - The name of the hook for error messages
  * @returns A custom hook function that uses the context safely
  */
-export function createContextHook<T>(context: Context<T>, hookName: string) {
+export function createContextHook<T>(context: ReactContext<T>, hookName: string) {
   return function useTypedContext(): T {
     // Use React namespace methods for direct access
     const contextValue = React.useContext(context);

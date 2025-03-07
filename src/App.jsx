@@ -17,6 +17,7 @@ import { applySecurityEnhancements } from "@utils/security";
 import Loading from "@atoms/Loading";
 import ErrorBoundary from "@molecules/ErrorBoundary";
 import { PortfolioProvider } from "@context/PortfolioContext";
+import { AnimationProvider } from "@context/AnimationContext";
 import { HelmetProvider } from 'react-helmet-async';
 
 // Lazy load components for better performance
@@ -101,7 +102,8 @@ function App() {
     <ErrorBoundary fallback={errorFallback}>
       <HelmetProvider>
         <PortfolioProvider>
-          <div className="App bg-background text-text">
+          <AnimationProvider>
+            <div className="App bg-background text-text">
             <Head />
             <SkipToContent mainId="main-content" />
             <Navigation />
@@ -150,8 +152,9 @@ function App() {
               </ErrorBoundary>
             </main>
             
-            <Footer />
-          </div>
+              <Footer />
+            </div>
+          </AnimationProvider>
         </PortfolioProvider>
       </HelmetProvider>
     </ErrorBoundary>

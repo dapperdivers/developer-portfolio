@@ -1,0 +1,18 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# Run React context safety checks
+echo "🔍 Checking for React context safety issues..."
+node react-usage-analyzer.cjs 2>&1 | grep -B 1 -A 2 "⚠️ Uses destructured import" || true
+
+# If any critical issues are found, alert but allow commit
+if [ $? -eq 0 ]; then
+  echo "⚠️ WARNING: Potentially unsafe React imports detected!"
+  echo "⚠️ These patterns may cause errors in production builds."
+  echo "⚠️ Consider fixing these issues before pushing to production."
+  echo "ℹ️  See docs/react-context-safety-guide.md for details"
+fi
+
+# ESLint check with context safety rules
+echo "🔍 Running ESLint with context safety rules..."
+npx eslint --config eslint.config.react-context-safety.js src/context --quiet || true
