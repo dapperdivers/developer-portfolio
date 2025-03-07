@@ -26,7 +26,7 @@ This document outlines best practices and patterns for testing components in the
 When testing components that use external libraries like Framer Motion, implement advanced mocks that allow testing animation states:
 
 ```jsx
-jest.mock('framer-motion', () => {
+vi.mock('framer-motion', () => {
   // Create a state tracker for animations
   const animationState = {
     current: {},
@@ -132,7 +132,7 @@ For components that use custom hooks:
 
 ```jsx
 // Mock the hook
-jest.mock('../../hooks/useCustomHook');
+vi.mock('../../hooks/useCustomHook');
 
 // In your test
 useCustomHook.mockReturnValue({

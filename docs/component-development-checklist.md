@@ -1,6 +1,18 @@
 # Component Development Checklist
 
-This checklist serves as a guide for creating or updating components in the portfolio project. Following these steps ensures consistency, quality, and proper documentation.
+This checklist serves as a guide for creating or updating components in the Developer Portfolio project. Following these steps ensures consistency, quality, and proper documentation across the component library.
+
+## Development Principles
+
+When developing components, adhere to these core principles:
+
+1. **Single Responsibility**: Each component should have a single, well-defined purpose
+2. **Composition Over Inheritance**: Build complex components by composing simpler ones
+3. **Prop Driven**: Component behavior and appearance should be controllable via props
+4. **Accessibility First**: Design with accessibility in mind from the beginning
+5. **Performance Conscious**: Consider render performance and memoization needs
+6. **Consistent API**: Follow established patterns for prop naming and behavior
+7. **Documentation**: Include comprehensive JSDoc comments and Storybook stories
 
 ## New Component Creation Checklist
 
@@ -54,6 +66,195 @@ This checklist serves as a guide for creating or updating components in the port
 - [ ] Ensure the component works in all required contexts
 - [ ] Test integration with other components
 - [ ] Run linting and typechecking
+
+## Component Patterns
+
+### Naming Conventions
+
+- **Component Files**: PascalCase (e.g., `ButtonGroup.jsx`)
+- **Component Functions**: PascalCase (e.g., `function ButtonGroup()`)
+- **Props**: camelCase (e.g., `buttonSize`, `isDisabled`)
+- **CSS Classes**: kebab-case (e.g., `button-group`)
+- **CSS Modules**: camelCase for imports (e.g., `import styles from './ButtonGroup.module.css'`)
+- **Test Files**: ComponentName.test.jsx
+
+### Component Structure
+
+```jsx
+import React, { useState, useCallback } from 'react';
+import PropTypes from 'prop-types';
+import classNames from 'classnames';
+
+/**
+ * Component description goes here.
+ * Include purpose, usage, and any special considerations.
+ *
+ * @component
+ * @example
+ * ```jsx
+ * <ComponentName
+ *   requiredProp="value"
+ *   optionalProp="value"
+ * >
+ *   Children content
+ * </ComponentName>
+ * ```
+ */
+function ComponentName({ requiredProp, optionalProp = 'default', children }) {
+  // State hooks
+  const [state, setState] = useState(initialState);
+  
+  // Memoized values
+  const memoizedValue = useMemo(() => {
+    // Calculation
+    return calculatedValue;
+  }, [dependencies]);
+  
+  // Event handlers
+  const handleEvent = useCallback(() => {
+    // Handler logic
+    setState(newState);
+  }, [dependencies]);
+  
+  // ClassNames
+  const componentClasses = classNames(
+    'base-class',
+    optionalProp === 'value' && 'conditional-class',
+    {
+      'state-class': state,
+      'another-class': someCondition
+    }
+  );
+  
+  // Conditional rendering
+  if (condition) {
+    return <div>Alternative render</div>;
+  }
+  
+  // Default render
+  return (
+    <div className={componentClasses} onClick={handleEvent}>
+      <div className="child-element">{requiredProp}</div>
+      {children}
+    </div>
+  );
+}
+
+ComponentName.propTypes = {
+  /** Description of requiredProp */
+  requiredProp: PropTypes.string.isRequired,
+  
+  /** Description of optionalProp */
+  optionalProp: PropTypes.oneOf(['value1', 'value2']),
+  
+  /** Children to render */
+  children: PropTypes.node
+};
+
+ComponentName.defaultProps = {
+  optionalProp: 'value1',
+  children: null
+};
+
+export default React.memo(ComponentName);
+```
+
+### Performance Optimization
+
+- Use `React.memo()` for components that render frequently with the same props
+- Use `useCallback()` for function props to prevent unnecessary rerenders
+- Use `useMemo()` for expensive calculations
+- Consider implementing custom equality functions for `React.memo()` when needed:
+
+```jsx
+export default React.memo(
+  ComponentName,
+  (prevProps, nextProps) => {
+    // Return true if props are equal (component should not update)
+    // Return false if props are different (component should update)
+    return prevProps.id === nextProps.id && 
+           prevProps.name === nextProps.name;
+  }
+);
+```
+
+### Custom Hooks
+
+When creating custom hooks, follow these patterns:
+
+```jsx
+/**
+ * Hook description - what it does and when to use it
+ * 
+ * @param {type} param - Description of the parameter
+ * @returns {Object} - Description of the return value
+ */
+function useCustomHook(param) {
+  // State initialization
+  const [state, setState] = useState(initialState);
+  
+  // Side effects
+  useEffect(() => {
+    // Effect logic
+    
+    return () => {
+      // Cleanup logic
+    };
+  }, [dependencies]);
+  
+  // Helper functions
+  const helperFunction = useCallback(() => {
+    // Function logic
+  }, [dependencies]);
+  
+  // Return values and functions
+  return {
+    state,
+    helperFunction,
+    derivedValue: computedValue
+  };
+}
+
+// Example usage
+function Component() {
+  const { state, helperFunction } = useCustomHook('param');
+  // Rest of component
+}
+```
+
+Custom hooks should:
+- Start with the word "use" (e.g., `useSkills`, `useImageColor`)
+- Return a consistent object structure
+- Handle their own loading and error states
+- Include proper cleanup in `useEffect` hooks
+- Be thoroughly tested
+
+### State Management
+
+For component state management:
+
+1. **Local State**: Use `useState` for component-specific state
+   ```jsx
+   const [isOpen, setIsOpen] = useState(false);
+   ```
+
+2. **Complex State**: Use `useReducer` for state with complex transitions
+   ```jsx
+   const [state, dispatch] = useReducer(reducer, initialState);
+   ```
+
+3. **Shared State**: Use context for state shared between components
+   ```jsx
+   const { skills } = useContext(PortfolioContext);
+   ```
+
+4. **Derived State**: Use `useMemo` for values derived from state
+   ```jsx
+   const activeItems = useMemo(() => 
+     items.filter(item => item.isActive), 
+     [items]
+   );
+   ```
 
 ## Component Update Checklist
 
