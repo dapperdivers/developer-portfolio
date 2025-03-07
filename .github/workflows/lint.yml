@@ -3,6 +3,10 @@ name: Lint
 on:
   workflow_call:
   workflow_dispatch:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master, develop ]
 
 jobs:
   lint:
@@ -14,64 +18,17 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 22
+          node-version: '22'
           cache: 'yarn'
           
       - name: Install dependencies
         run: yarn install --frozen-lockfile
-        
-      - name: Install ESLint and plugins
-        run: |
-          yarn add --dev eslint@8.57.0 eslint-plugin-react eslint-plugin-security
           
-      - name: Create .eslintrc.json with environment globals for tests
+      - name: Run ESLint
         run: |
-          echo '{
-            "env": {
-              "browser": true,
-              "es2021": true,
-              "node": true,
-              "jest": true
-            },
-            "extends": [
-              "eslint:recommended",
-              "plugin:react/recommended"
-            ],
-            "parserOptions": {
-              "ecmaFeatures": {
-                "jsx": true
-              },
-              "ecmaVersion": "latest",
-              "sourceType": "module"
-            },
-            "plugins": [
-              "react",
-              "security"
-            ],
-            "settings": {
-              "react": {
-                "version": "detect"
-              }
-            },
-            "rules": {
-              "react/prop-types": "off",
-              "react/jsx-uses-react": "error",
-              "react/jsx-uses-vars": "error",
-              "no-unused-vars": "warn",
-              "no-undef": "off",
-              "security/detect-object-injection": "off",
-              "react/display-name": "off",
-              "react/no-unknown-property": "warn"
-            }
-          }' > .eslintrc.json
-          
-      - name: Verify ESLint configuration
-        run: |
-          echo "ESLint configuration file contents:"
-          cat .eslintrc.json
-          echo ""
           echo "ESLint version:"
           npx eslint --version
-          
-      - name: Run linting with npx
-        run: npx eslint src --ext .js,.jsx
+          npx eslint src --ext .js,.jsx,.ts,.tsx
+      
+      - name: Verify TypeScript types
+        run: yarn tsc --noEmit
