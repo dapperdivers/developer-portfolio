@@ -1,93 +1,81 @@
 /**
- * Development server configuration for the portfolio project
+ * Development server configuration
  * 
- * This file configures the Vite development server with settings for
- * port, security headers, CORS, and proxy rules.
+ * This file configures the Vite development server settings,
+ * including port, CORS, HMR, and other dev-specific options.
  */
 
 import env from '../env.js';
 
-// Get environment info
-const { isDev } = env;
-
 /**
- * Configure development server settings
- * @returns {Object} Server configuration
+ * Create development server configuration
+ * @param {Object} options - Configuration options
+ * @param {number} options.port - Port to run the dev server on
+ * @param {boolean} options.hmr - Whether to enable hot module replacement
+ * @param {boolean} options.open - Whether to open browser on startup
+ * @returns {Object} Development server configuration for Vite
  */
-export const getServerConfig = () => {
+export function createDevServerConfig({
+  port = parseInt(process.env.VITE_DEV_SERVER_PORT || '3000', 10),
+  hmr = true,
+  open = true
+} = {}) {
   return {
-    // Server port - make this customizable through env vars
-    port: process.env.DEV_PORT || 3000,
-    
-    // Automatically open browser on server start
-    open: true,
-    
-    // CORS configuration for better security and cross-origin handling
-    cors: true,
-    
-    // Security headers
-    headers: {
-      'X-Content-Type-Options': 'nosniff',
-      'X-Frame-Options': 'DENY',
-      'X-XSS-Protection': '1; mode=block',
-      // In dev mode, allow all origins for easier local testing
-      'Access-Control-Allow-Origin': '*'
-    },
-    
-    // Proxy configuration for external services
-    proxy: {
-      // Proxy OSM tile requests
-      '/osm-tiles': {
-        target: 'https://tile.openstreetmap.org',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/osm-tiles/, '')
+    server: {
+      port,
+      // Only open browser automatically if requested
+      open,
+      
+      // Hot Module Replacement configuration
+      hmr: {
+        overlay: true,
+        protocol: 'ws',
+        host: 'localhost',
+        port: port
       },
       
-      // Proxy Nominatim API requests for geocoding
-      '/nominatim': {
-        target: 'https://nominatim.openstreetmap.org',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/nominatim/, '')
+      // CORS configuration for development
+      cors: true,
+      
+      // Watch configuration
+      watch: {
+        usePolling: false,
+        // Exclude large directories and files to improve performance
+        excluded: [
+          '**/node_modules/**',
+          '**/dist/**',
+          '**/build/**',
+          '**/.git/**',
+          '**/coverage/**'
+        ],
       },
       
-      // Example of API proxy (uncomment and modify as needed)
-      /*
-      '/api': {
-        target: 'http://localhost:8080',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, '')
-      }
-      */
+      // Proxy configuration for API requests during development
+      proxy: {
+        // Example: Proxy API requests to a backend server
+        // '/api': {
+        //   target: 'http://localhost:8080',
+        //   changeOrigin: true,
+        //   rewrite: (path) => path.replace(/^\/api/, '')
+        // }
+      },
     },
     
-    // Enable HTTPS (uncomment if needed)
-    /*
-    https: {
-      key: fs.readFileSync('path/to/key.pem'),
-      cert: fs.readFileSync('path/to/cert.pem')
-    },
-    */
-    
-    // Watch configuration - for customizing file watching behavior
-    watch: {
-      // Exclude these files from watch to improve performance
-      excluded: ['**/node_modules/**', '**/dist/**', '**/.git/**'],
-    },
-    
-    // HMR configuration could go here, but we'll keep the defaults
-    hmr: true,
+    // Preview server configuration (for production builds)
+    preview: {
+      port: 4173,
+      open: true,
+      cors: true
+    }
   };
-};
+}
 
 /**
- * Get complete development mode configuration
- * @returns {Object} Development configuration
+ * Get all development configuration
+ * @returns {Object} Development configuration for Vite
  */
-export const getDevConfig = () => {
-  // Only return server config when in development mode
-  return isDev() ? {
-    server: getServerConfig()
-  } : {};
-};
+export function getDevConfig() {
+  return createDevServerConfig();
+}
 
 export default getDevConfig;

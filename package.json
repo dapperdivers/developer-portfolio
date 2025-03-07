@@ -43,6 +43,8 @@
     "build:full": "npm-run-all --parallel typecheck lint build",
     "serve": "node server.js",
     "preview": "vite preview",
+    "prod-test": "yarn build:prod && yarn preview",
+    "dev-test": "yarn dev",
     "lint": "eslint src --ext .js,.jsx",
     "lint:fix": "eslint src --ext .js,.jsx --fix",
     "lint:quiet": "eslint src --ext .js,.jsx --quiet",

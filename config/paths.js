@@ -38,51 +38,64 @@ export const componentDirs = {
 };
 
 /**
- * Path aliases shared across all tools (Vite, Babel, TypeScript, Jest)
+ * Create path aliases configuration for Vite
+ * @returns {Object} Alias configuration object for resolve.alias
  */
-export const pathAliases = {
-  '@': dirs.src,
-  '@components': dirs.components,
-  '@atoms': componentDirs.atoms,
-  '@molecules': componentDirs.molecules,
-  '@organisms': componentDirs.organisms,
-  '@layout': componentDirs.layout,
-  '@assets': dirs.assets,
-  '@utils': path.resolve(dirs.src, 'utils'),
-  '@hooks': path.resolve(dirs.src, 'hooks'),
-  '@context': path.resolve(dirs.src, 'context'),
-  
-  // Extensions for specific components
-  '@layout/Section': path.resolve(componentDirs.layout, 'Section'),
-  '@atoms/SkipToContent': path.resolve(componentDirs.atoms, 'SkipToContent'),
-  '@atoms/Skill': path.resolve(componentDirs.atoms, 'Skill'),
-  '@atoms/SkeletonCard': path.resolve(componentDirs.atoms, 'SkeletonCard'),
-  '@atoms/ResponsiveImage': path.resolve(componentDirs.atoms, 'ResponsiveImage'),
-  '@atoms/Progress': path.resolve(componentDirs.atoms, 'Progress'),
-  '@atoms/Loading': path.resolve(componentDirs.atoms, 'Loading'),
-  '@atoms/LazyImage': path.resolve(componentDirs.atoms, 'LazyImage'),
-  '@atoms/Head': path.resolve(componentDirs.atoms, 'Head'),
-  '@atoms/Card': path.resolve(componentDirs.atoms, 'Card'),
-  '@atoms/Button': path.resolve(componentDirs.atoms, 'Button'),
-  '@molecules/SocialLinks': path.resolve(componentDirs.molecules, 'SocialLinks'),
-  '@molecules/ProjectsCard': path.resolve(componentDirs.molecules, 'ProjectsCard'),
-  '@molecules/Navigation': path.resolve(componentDirs.molecules, 'Navigation'),
-  '@molecules/GithubProfileCard': path.resolve(componentDirs.molecules, 'GithubProfileCard'),
-  '@molecules/Footer': path.resolve(componentDirs.molecules, 'Footer'),
-  '@molecules/FeedbackCard': path.resolve(componentDirs.molecules, 'FeedbackCard'),
-  '@molecules/ExperienceCard': path.resolve(componentDirs.molecules, 'ExperienceCard'),
-  '@molecules/ErrorBoundary': path.resolve(componentDirs.molecules, 'ErrorBoundary'),
-  '@molecules/EducationCard': path.resolve(componentDirs.molecules, 'EducationCard'),
-  '@molecules/DisplayLottie': path.resolve(componentDirs.molecules, 'DisplayLottie'),
-  '@organisms/Skills': path.resolve(componentDirs.organisms, 'Skills'),
-  '@organisms/Projects': path.resolve(componentDirs.organisms, 'Projects'),
-  '@organisms/Proficiency': path.resolve(componentDirs.organisms, 'Proficiency'),
-  '@organisms/Greetings': path.resolve(componentDirs.organisms, 'Greetings'),
-  '@organisms/GithubProfile': path.resolve(componentDirs.organisms, 'GithubProfile'),
-  '@organisms/Feedbacks': path.resolve(componentDirs.organisms, 'Feedbacks'),
-  '@organisms/Experience': path.resolve(componentDirs.organisms, 'Experience'),
-  '@organisms/Education': path.resolve(componentDirs.organisms, 'Education'),
-};
+export function createAliases() {
+  return {
+    // Base directories
+    '@': dirs.src,
+    
+    // Component directories
+    '@components': dirs.components,
+    '@atoms': componentDirs.atoms,
+    '@molecules': componentDirs.molecules,
+    '@organisms': componentDirs.organisms,
+    '@layout': componentDirs.layout,
+    
+    // Asset directories
+    '@assets': dirs.assets,
+    
+    // Utility directories
+    '@utils': path.resolve(dirs.src, 'utils'),
+    
+    // Data and state directories
+    '@hooks': path.resolve(dirs.src, 'hooks'),
+    '@context': path.resolve(dirs.src, 'context'),
+    '@types': path.resolve(dirs.src, 'types'),
+    
+    // Component-specific aliases
+    '@atoms/Button': path.resolve(componentDirs.atoms, 'Button'),
+    '@atoms/Card': path.resolve(componentDirs.atoms, 'Card'),
+    '@atoms/Head': path.resolve(componentDirs.atoms, 'Head'),
+    '@atoms/LazyImage': path.resolve(componentDirs.atoms, 'LazyImage'),
+    '@atoms/Loading': path.resolve(componentDirs.atoms, 'Loading'),
+    '@atoms/Progress': path.resolve(componentDirs.atoms, 'Progress'),
+    '@atoms/ResponsiveImage': path.resolve(componentDirs.atoms, 'ResponsiveImage'),
+    '@atoms/SkeletonCard': path.resolve(componentDirs.atoms, 'SkeletonCard'),
+    '@atoms/Skill': path.resolve(componentDirs.atoms, 'Skill'),
+    '@atoms/SkipToContent': path.resolve(componentDirs.atoms, 'SkipToContent'),
+    '@molecules/DisplayLottie': path.resolve(componentDirs.molecules, 'DisplayLottie'),
+    '@molecules/EducationCard': path.resolve(componentDirs.molecules, 'EducationCard'),
+    '@molecules/ErrorBoundary': path.resolve(componentDirs.molecules, 'ErrorBoundary'),
+    '@molecules/ExperienceCard': path.resolve(componentDirs.molecules, 'ExperienceCard'),
+    '@molecules/FeedbackCard': path.resolve(componentDirs.molecules, 'FeedbackCard'),
+    '@molecules/Footer': path.resolve(componentDirs.molecules, 'Footer'),
+    '@molecules/GithubProfileCard': path.resolve(componentDirs.molecules, 'GithubProfileCard'),
+    '@molecules/Navigation': path.resolve(componentDirs.molecules, 'Navigation'),
+    '@molecules/ProjectsCard': path.resolve(componentDirs.molecules, 'ProjectsCard'),
+    '@molecules/SocialLinks': path.resolve(componentDirs.molecules, 'SocialLinks'),
+    '@organisms/Education': path.resolve(componentDirs.organisms, 'Education'),
+    '@organisms/Experience': path.resolve(componentDirs.organisms, 'Experience'),
+    '@organisms/Feedbacks': path.resolve(componentDirs.organisms, 'Feedbacks'),
+    '@organisms/GithubProfile': path.resolve(componentDirs.organisms, 'GithubProfile'),
+    '@organisms/Greetings': path.resolve(componentDirs.organisms, 'Greetings'),
+    '@organisms/Proficiency': path.resolve(componentDirs.organisms, 'Proficiency'),
+    '@organisms/Projects': path.resolve(componentDirs.organisms, 'Projects'),
+    '@organisms/Skills': path.resolve(componentDirs.organisms, 'Skills'),
+    '@layout/Section': path.resolve(componentDirs.layout, 'Section'),
+  };
+}
 
 /**
  * Generate TypeScript compatible path aliases
@@ -92,7 +105,7 @@ export const getTsPathAliases = () => {
   const tsPathAliases = {};
   
   // Convert each path to TypeScript format (with /* suffix)
-  Object.entries(pathAliases).forEach(([alias, aliasPath]) => {
+  Object.entries(createAliases()).forEach(([alias, aliasPath]) => {
     // Handle specific component paths differently from directory paths
     if (alias.includes('/')) {
       tsPathAliases[alias] = [aliasPath];
@@ -115,15 +128,19 @@ export const getTestAliases = () => {
     '@iconify/react': path.resolve(dirs.src, '__mocks__/iconifyMock.jsx'),
     'lottie-react': path.resolve(dirs.src, '__mocks__/lottieMock.jsx'),
     
-    // Testing paths for components (if different from production)
-    ...pathAliases
+    // Include all standard aliases
+    ...createAliases()
   };
 };
+
+// Legacy export for backward compatibility
+export const pathAliases = createAliases();
 
 export default {
   dirs,
   componentDirs,
   pathAliases,
+  createAliases,
   getTsPathAliases,
   getTestAliases
 };

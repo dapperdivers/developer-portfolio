@@ -1,14 +1,12 @@
 /**
- * Vite configuration entry point
+ * Main Vite configuration file
  * 
- * This file serves as the entry point for Vite's configuration.
- * The actual configuration is modularized and managed through the config directory.
- * 
- * @see config/index.js for the complete configuration
+ * This is the entry point for Vite's configuration. It imports the complete
+ * configuration from the modular config system in the 'config/' directory.
  */
 
-// Import the modular configuration
-import configuration from './config/index.js';
+// Import main configuration
+import config from './config/index.js';
 
-// Export the configuration for Vite
-export default configuration;
+// Export configuration
+export default config;

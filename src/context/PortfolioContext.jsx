@@ -1,4 +1,17 @@
-import React, { createContext, useContext, useMemo } from 'react';
+/**
+ * Portfolio Context - central data store for portfolio data
+ * 
+ * This file creates a React Context to provide portfolio data to all components
+ * The implementation explicitly uses the React namespace to avoid tree-shaking issues
+ */
+
+// Import React globally and ensure it's available in window for browser compatibility
+import React from 'react';
+// Explicitly expose React to window to ensure it's available for context
+if (typeof window !== 'undefined') {
+  window.React = React;
+}
+
 import PropTypes from 'prop-types';
 import {
   greetings,
@@ -15,9 +28,10 @@ import {
 
 /**
  * Context for portfolio data management
+ * Using direct React namespace access to prevent tree-shaking issues
  * @type {React.Context}
  */
-const PortfolioContext = createContext();
+const PortfolioContext = React.createContext();
 
 /**
  * Provider component for portfolio data
@@ -29,7 +43,7 @@ const PortfolioContext = createContext();
  */
 export const PortfolioProvider = ({ children, testValue = null }) => {
   // Use memoization to prevent unnecessary re-renders
-  const contextValue = useMemo(() => {
+  const contextValue = React.useMemo(() => {
     // Allow injecting test values for tests
     if (testValue) {
       return testValue;
@@ -65,24 +79,9 @@ PortfolioProvider.propTypes = {
  * Hook to access portfolio data
  * 
  * @returns {Object} Portfolio data object containing all sections
- * 
- * @example
- * import { usePortfolio } from '@context/PortfolioContext';
- * 
- * const MyComponent = () => {
- *   const { projects } = usePortfolio();
- *   
- *   return (
- *     <div>
- *       {projects.map(project => (
- *         <div key={project.name}>{project.name}</div>
- *       ))}
- *     </div>
- *   );
- * };
  */
 export const usePortfolio = () => {
-  const context = useContext(PortfolioContext);
+  const context = React.useContext(PortfolioContext);
   
   if (!context) {
     throw new Error('usePortfolio must be used within a PortfolioProvider');

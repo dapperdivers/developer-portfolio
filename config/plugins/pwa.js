@@ -1,53 +1,44 @@
 /**
- * Progressive Web App (PWA) configuration for the portfolio project
+ * Progressive Web App plugins configuration
  * 
- * This file configures the PWA features for the application, including
- * service worker, offline support, and manifest generation.
+ * This file configures the PWA plugin to enable offline functionality,
+ * app installation, and other PWA features.
  */
 
 import { VitePWA } from 'vite-plugin-pwa';
 import env from '../env.js';
 
-// Get environment mode
-const { isProd } = env;
-
 /**
- * Creates the PWA plugin with configuration for the portfolio
- * @returns {Object} Configured PWA plugin
+ * Configure PWA plugin for offline support
+ * @param {Object} options - Configuration options
+ * @param {boolean} options.isProd - Whether we're in production mode
+ * @returns {Object} Configured PWA plugin or null if disabled
  */
-export const createPwaPlugin = () => {
+export function createPwaPlugin({ isProd = false } = {}) {
+  // Only enable PWA in production by default
+  if (!isProd && !process.env.ENABLE_PWA_DEV) {
+    return null;
+  }
+  
   return VitePWA({
-    // Use autoUpdate to automatically apply updates when available
     registerType: 'autoUpdate',
-    
-    // Include static assets in the PWA
     includeAssets: ['favicon.png', 'robots.txt', 'site.webmanifest'],
-    
-    // Web app manifest configuration
     manifest: {
-      name: 'Derek Mackley | Full Stack Developer',
-      short_name: 'Derek Mackley',
-      description: 'Portfolio of Derek Mackley, a Full Stack Developer and Security Expert',
-      theme_color: '#3563E9',
+      name: 'Developer Portfolio',
+      short_name: 'Portfolio',
+      description: 'Professional developer portfolio',
+      theme_color: '#ffffff',
       icons: [
         {
-          src: '/favicon.png',
+          src: 'favicon.png',
           sizes: '192x192',
-          type: 'image/png',
-        },
-        {
-          src: '/favicon.png',
-          sizes: '512x512',
-          type: 'image/png',
-        },
-      ],
+          type: 'image/png'
+        }
+      ]
     },
-    
-    // Workbox service worker configuration
     workbox: {
-      // Cache strategies for different types of resources
+      // Cache strategies
       runtimeCaching: [
-        // Google Fonts stylesheets
         {
           urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
           handler: 'CacheFirst',
@@ -55,14 +46,10 @@ export const createPwaPlugin = () => {
             cacheName: 'google-fonts-cache',
             expiration: {
               maxEntries: 10,
-              maxAgeSeconds: 60 * 60 * 24 * 365, // 1 year
-            },
-            cacheableResponse: {
-              statuses: [0, 200],
+              maxAgeSeconds: 60 * 60 * 24 * 365 // 1 year
             },
           },
         },
-        // Google Fonts webfonts
         {
           urlPattern: /^https:\/\/fonts\.gstatic\.com\/.*/i,
           handler: 'CacheFirst',
@@ -70,29 +57,10 @@ export const createPwaPlugin = () => {
             cacheName: 'gstatic-fonts-cache',
             expiration: {
               maxEntries: 10,
-              maxAgeSeconds: 60 * 60 * 24 * 365, // 1 year
-            },
-            cacheableResponse: {
-              statuses: [0, 200],
+              maxAgeSeconds: 60 * 60 * 24 * 365 // 1 year
             },
           },
         },
-        // CDN resources (jsDelivr)
-        {
-          urlPattern: /^https:\/\/cdn\.jsdelivr\.net\/.*/i,
-          handler: 'CacheFirst',
-          options: {
-            cacheName: 'jsdelivr-cache',
-            expiration: {
-              maxEntries: 50,
-              maxAgeSeconds: 60 * 60 * 24 * 7, // 1 week
-            },
-            cacheableResponse: {
-              statuses: [0, 200],
-            },
-          },
-        },
-        // Images
         {
           urlPattern: /\.(?:png|jpg|jpeg|svg|gif)$/i,
           handler: 'CacheFirst',
@@ -100,38 +68,63 @@ export const createPwaPlugin = () => {
             cacheName: 'images-cache',
             expiration: {
               maxEntries: 50,
-              maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
+              maxAgeSeconds: 60 * 60 * 24 * 30 // 30 days
             },
           },
         },
-        // API requests (GitHub)
         {
-          urlPattern: new RegExp('^https://api.github.com/'),
+          urlPattern: /^https:\/\/api\.github\.com\/.*/i,
           handler: 'NetworkFirst',
           options: {
             cacheName: 'api-cache',
             expiration: {
-              maxEntries: 50,
-              maxAgeSeconds: 60 * 60, // 1 hour
-            },
-            networkTimeoutSeconds: 10,
-            cacheableResponse: {
-              statuses: [0, 200],
+              maxEntries: 20,
+              maxAgeSeconds: 60 * 60 // 1 hour
             },
           },
-        },
+        }
       ],
-    },
+    }
   });
-};
+}
 
 /**
- * Get PWA plugins based on environment
+ * Create the bundle analyzer plugin when analysis is enabled
+ * @param {Object} options - Configuration options
+ * @param {boolean} options.analyze - Whether to enable bundle analysis
+ * @returns {Object|null} Visualizer plugin or null if disabled
+ */
+export function createAnalyzerPlugin({ analyze = false } = {}) {
+  if (!analyze) {
+    return null;
+  }
+  
+  try {
+    const visualizer = require('rollup-plugin-visualizer').visualizer;
+    return visualizer({
+      open: true,
+      filename: 'build/stats.html',
+      gzipSize: true,
+      brotliSize: true,
+    });
+  } catch (e) {
+    console.warn('Bundle analyzer not available. Install with: yarn add rollup-plugin-visualizer -D');
+    return null;
+  }
+}
+
+/**
+ * Get all PWA and analysis related plugins
+ * @param {Object} options - Configuration options
+ * @param {boolean} options.isProd - Whether we're in production mode
+ * @param {boolean} options.analyze - Whether to enable bundle analysis
  * @returns {Array} Array of configured plugins
  */
-export const getPwaPlugins = () => {
-  // Enable PWA features in all environments for consistent behavior
-  return [createPwaPlugin()];
-};
+export function getPwaPlugins({ isProd = false, analyze = false } = {}) {
+  return [
+    createPwaPlugin({ isProd }),
+    createAnalyzerPlugin({ analyze })
+  ].filter(Boolean); // Remove null entries
+}
 
 export default getPwaPlugins;

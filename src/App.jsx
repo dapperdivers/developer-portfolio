@@ -1,4 +1,6 @@
-import React, { useEffect, Suspense, lazy } from 'react';
+// Import React with namespace access to prevent tree-shaking issues in production
+import * as React from 'react';
+const { useEffect, Suspense, lazy } = React;
 import Head from "@atoms/Head";
 import Navigation from "@molecules/Navigation";
 import Footer from "@molecules/Footer";

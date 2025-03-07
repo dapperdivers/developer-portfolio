@@ -23,11 +23,37 @@ export const ENV = {
   PROD: 'production'
 };
 
-// Determine current environment
-export const getNodeEnv = () => process.env.NODE_ENV || ENV.PROD;
-export const isProd = () => getNodeEnv() === ENV.PROD;
-export const isDev = () => getNodeEnv() === ENV.DEV;
-export const isTest = () => getNodeEnv() === ENV.TEST;
+/**
+ * Get current Node environment mode
+ * @returns {string} Environment mode (development, production, test)
+ */
+export function getNodeEnv() {
+  return process.env.NODE_ENV || ENV.DEV;
+}
+
+/**
+ * Check if running in production mode
+ * @returns {boolean} True if in production mode
+ */
+export function isProd() {
+  return getNodeEnv() === ENV.PROD;
+}
+
+/**
+ * Check if running in development mode
+ * @returns {boolean} True if in development mode
+ */
+export function isDev() {
+  return getNodeEnv() === ENV.DEV;
+}
+
+/**
+ * Check if running in test mode
+ * @returns {boolean} True if in test mode
+ */
+export function isTest() {
+  return getNodeEnv() === ENV.TEST;
+}
 
 /**
  * Load environment variables from .env files
@@ -37,7 +63,7 @@ export const isTest = () => getNodeEnv() === ENV.TEST;
  * 3. .env.local (Not committed)
  * 4. .env
  */
-export const loadEnv = () => {
+export function loadEnv() {
   const NODE_ENV = getNodeEnv();
   
   // Determine which files to load (in reverse order of priority)
@@ -64,12 +90,10 @@ export const loadEnv = () => {
   // Load optimization specific env vars
   if (process.env.ANALYZE === 'true') {
     console.log('Bundle analysis enabled');
-    // Additional env vars for bundle analysis could be set here
   }
   
-  // Return all loaded environment variables
   return process.env;
-};
+}
 
 /**
  * Define required environment variables
@@ -94,7 +118,7 @@ export const requiredVars = {
  * @param {Object} env - Environment variables object 
  * @returns {Object} Validation result
  */
-export const validateEnv = (env = process.env) => {
+export function validateEnv(env = process.env) {
   const currentEnv = getNodeEnv();
   const allRequired = [...requiredVars.all, ...requiredVars[currentEnv]];
   
@@ -105,45 +129,81 @@ export const validateEnv = (env = process.env) => {
     missing,
     currentEnv
   };
-};
+}
 
 /**
  * Get sanitized environment variables for client-side use
  * Only variables that are explicitly allowed to be exposed to the client
  * @returns {Object} Client-safe environment variables
  */
-export const getClientEnv = () => {
-  // Regular expression to match VITE_ prefix
+export function getClientEnv() {
+  // Environment variables that should be exposed to the client
+  const ALLOWED_VARS = [
+    'NODE_ENV',
+    'VITE_API_URL',
+    'VITE_GA_ID',
+    'VITE_PUBLIC_URL',
+    'VITE_PRESERVE_REACT',
+    'VITE_DEV_SERVER_PORT',
+  ];
+  
+  // Also include any variables that start with VITE_
   const VITE_APP = /^VITE_/i;
   
   const raw = { ...process.env };
   const exposed = {};
   
-  // Allow only variables that start with VITE_
+  // Process all variables
   Object.keys(raw).forEach(key => {
-    if (VITE_APP.test(key)) {
+    if (ALLOWED_VARS.includes(key) || VITE_APP.test(key)) {
       exposed[key] = raw[key];
     }
   });
   
-  // Add other safe variables here
+  // Add other safe variables
   exposed.NODE_ENV = getNodeEnv();
   exposed.APP_VERSION = raw.npm_package_version;
   exposed.APP_NAME = raw.npm_package_name;
   
+  // Create stringified versions for both import.meta.env and process.env access patterns
+  const stringified = {};
+  Object.keys(exposed).forEach(key => {
+    stringified[`import.meta.env.${key}`] = JSON.stringify(exposed[key]);
+    stringified[`process.env.${key}`] = JSON.stringify(exposed[key]);
+  });
+  
   return {
-    // For direct use in JS
     raw: exposed,
-    // Stringified for injection into HTML/JS
-    stringified: Object.keys(exposed).reduce((env, key) => {
-      env[`import.meta.env.${key}`] = JSON.stringify(exposed[key]);
-      return env;
-    }, {})
+    stringified
   };
-};
+}
 
-// Initialize environment
-export const initEnv = () => {
+/**
+ * Get environment configuration for Vite
+ * @returns {Object} Environment configuration
+ */
+export function getEnvConfig() {
+  const mode = getNodeEnv();
+  const env = getClientEnv();
+  
+  return {
+    mode,
+    env: env.raw,
+    define: {
+      ...env.stringified,
+      // Ensure React is not tree-shaken in production
+      'process.env.NODE_ENV': JSON.stringify(mode),
+      // Ensure React features used in context are preserved
+      '__REACT_FEATURES__': JSON.stringify(true)
+    }
+  };
+}
+
+/**
+ * Initialize environment variables and validate them
+ * @returns {Object} Client environment object
+ */
+export function initEnv() {
   // Load environment variables
   loadEnv();
   
@@ -160,7 +220,7 @@ export const initEnv = () => {
   }
   
   return getClientEnv();
-};
+}
 
 export default {
   ENV,
@@ -171,5 +231,6 @@ export default {
   loadEnv,
   validateEnv,
   getClientEnv,
+  getEnvConfig,
   initEnv
 };

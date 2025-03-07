@@ -1,93 +1,139 @@
 /**
- * Code splitting configuration for the portfolio project
+ * Bundle splitting and optimization strategies
  * 
- * This file defines the strategy for breaking down the application into 
- * separate chunks for optimal loading and caching behavior.
+ * This file defines the code splitting strategy for the application,
+ * optimizing chunk sizes and bundle organization.
  */
 
-import path from 'path';
-import { fileURLToPath } from 'url';
-import pathConfig from '../paths.js';
-
-// Get directory paths
-const { dirs } = pathConfig;
+import { resolve } from 'path';
 
 /**
- * Configure code splitting strategy for the application
- * 
- * The strategy focuses on:
- * 1. Separating third-party dependencies from application code
- * 2. Creating logical chunks based on usage patterns
- * 3. Ensuring good cache utilization
- * 
- * @returns {Object} Configuration for code splitting
+ * Define entry points for the build
+ * @param {Object} options - Configuration options
+ * @param {string} options.rootDir - Root directory of the project
+ * @returns {Object} Entry points for Rollup
  */
-export const getCodeSplittingConfig = () => {
+export function createEntryPoints({ rootDir = process.cwd() } = {}) {
   return {
-    // Define entry points
     input: {
-      main: path.resolve(dirs.root, 'index.html')
-    },
-    
-    // Handle warnings during bundling
-    onwarn(warning, warn) {
-      // Ignore eval warnings from third-party libraries
-      if (warning.code === 'EVAL' && warning.id && 
-          (warning.id.includes('lottie-web') || 
-           warning.id.includes('@storybook/core') ||
-           warning.id.includes('node_modules/storybook'))) {
-        return;
-      }
-      warn(warning);
-    },
-    
-    // Configure output paths and naming
-    output: {
-      // JavaScript chunk naming strategy with content hashing for cache busting
-      chunkFileNames: 'assets/js/[name]-[hash].js',
-      entryFileNames: 'assets/js/[name]-[hash].js',
-      
-      // Asset file naming by type
-      assetFileNames: ({ name }) => {
-        if (/\.(gif|jpe?g|png|svg)$/.test(name ?? '')) {
-          return 'assets/images/[name]-[hash][extname]';
-        }
-        if (/\.css$/.test(name ?? '')) {
-          return 'assets/css/[name]-[hash][extname]';
-        }
-        if (/\.(woff|woff2|eot|ttf|otf)$/.test(name ?? '')) {
-          return 'assets/fonts/[name]-[hash][extname]';
-        }
-        return 'assets/[name]-[hash][extname]';
-      },
-      
-    // Define which modules go into which chunks with a simplified strategy
+      main: resolve(rootDir, 'index.html'),
+      test: resolve(rootDir, 'test.html')
+    }
+  };
+}
+
+/**
+ * Configure code splitting strategy
+ * @returns {Object} Manual chunks configuration for Rollup
+ */
+export function createChunkStrategy() {
+  return {
     manualChunks: (id) => {
       // Vendor chunks - dependencies
       if (id.includes('node_modules')) {
-        // React core - most frequently used and changes less often
-        if (id.includes('react') || id.includes('react-dom')) {
+        // React core - always include all React functionality
+        if (id.includes('react') || id.includes('react-dom') || id.includes('scheduler')) {
           return 'vendor-react';
         }
         
+        // Animation libraries grouped together
+        if (id.includes('framer-motion') || id.includes('lottie')) {
+          return 'vendor-animation';
+        }
+        
+        // UI component libraries
+        if (id.includes('iconify') || id.includes('react-icons')) {
+          return 'vendor-ui';
+        }
+        
+        // Data fetching and utilities
+        if (id.includes('axios') || id.includes('classnames')) {
+          return 'vendor-utils';
+        }
+        
         // All other dependencies in a single vendor chunk
-        return 'vendor';
+        return 'vendor-other';
+      }
+      
+      // Context is critically important and should be bundled with core React
+      // to prevent tree-shaking from breaking context functionality
+      if (id.includes('/src/context/')) {
+        return 'vendor-react';
       }
       
       // Application code in fewer, more logical chunks
-      if (id.includes('/src/components/') || 
-          id.includes('/src/context/') || 
-          id.includes('/src/hooks/')) {
-        return 'app-core';
+      if (id.includes('/src/components/')) {
+        // Split components by atomic design pattern
+        if (id.includes('/atoms/')) {
+          return 'app-atoms';
+        }
+        if (id.includes('/molecules/')) {
+          return 'app-molecules';
+        }
+        if (id.includes('/organisms/')) {
+          return 'app-organisms';
+        }
+        if (id.includes('/layout/')) {
+          return 'app-layout';
+        }
+        return 'app-components';
+      }
+      
+      // Hooks layer
+      if (id.includes('/src/hooks/')) {
+        return 'app-hooks';
       }
       
       // Utilities and other non-critical code
       if (id.includes('/src/utils/')) {
         return 'app-utils';
       }
+    }
+  };
+}
+
+/**
+ * Get output naming configuration
+ * @returns {Object} Output naming configuration
+ */
+export function createOutputNaming() {
+  return {
+    // JavaScript chunk naming strategy with content hashing for cache busting
+    chunkFileNames: 'assets/js/[name]-[hash].js',
+    entryFileNames: 'assets/js/[name]-[hash].js',
+    
+    // Asset file naming by type
+    assetFileNames: ({ name }) => {
+      if (/\.(gif|jpe?g|png|svg)$/.test(name ?? '')) {
+        return 'assets/images/[name]-[hash][extname]';
+      }
+      if (/\.css$/.test(name ?? '')) {
+        return 'assets/css/[name]-[hash][extname]';
+      }
+      if (/\.(woff|woff2|eot|ttf|otf)$/.test(name ?? '')) {
+        return 'assets/fonts/[name]-[hash][extname]';
+      }
+      return 'assets/[name]-[hash][extname]';
+    }
+  };
+}
+
+/**
+ * Get complete code splitting configuration
+ * @param {Object} options - Configuration options
+ * @param {string} options.rootDir - Root directory of the project
+ * @returns {Object} Rollup options with code splitting configuration
+ */
+export function getCodeSplittingConfig({ rootDir = process.cwd() } = {}) {
+  return {
+    rollupOptions: {
+      ...createEntryPoints({ rootDir }),
+      output: {
+        ...createOutputNaming(),
+        ...createChunkStrategy()
       }
     }
   };
-};
+}
 
 export default getCodeSplittingConfig;
