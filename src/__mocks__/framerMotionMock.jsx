@@ -1,5 +1,6 @@
 // Mock for framer-motion
 import React from 'react';
+import { vi } from 'vitest';
 
 // Filter out framer-motion specific props to avoid React DOM warnings
 const filterMotionProps = (props) => {
@@ -26,38 +27,38 @@ const processChildren = (children) => {
   });
 };
 
-// Create proper React components for motion elements
+// Create proper React components for motion elements using forwardRef
 export const motion = {
-  div: ({children, ...props}) => (
-    <div data-testid="motion-div" {...filterMotionProps(props)}>
+  div: React.forwardRef(({children, ...props}, ref) => (
+    <div ref={ref} data-testid="motion-div" {...filterMotionProps(props)}>
       {processChildren(children)}
     </div>
-  ),
-  section: ({children, ...props}) => (
-    <section data-testid="motion-section" {...filterMotionProps(props)}>
+  )),
+  section: React.forwardRef(({children, ...props}, ref) => (
+    <section ref={ref} data-testid="motion-section" {...filterMotionProps(props)}>
       {processChildren(children)}
     </section>
-  ),
-  button: ({children, ...props}) => (
-    <button data-testid="motion-button" {...filterMotionProps(props)}>
+  )),
+  button: React.forwardRef(({children, ...props}, ref) => (
+    <button ref={ref} data-testid="motion-button" {...filterMotionProps(props)}>
       {processChildren(children)}
     </button>
-  ),
-  a: ({children, ...props}) => (
-    <a data-testid="motion-a" {...filterMotionProps(props)}>
+  )),
+  a: React.forwardRef(({children, ...props}, ref) => (
+    <a ref={ref} data-testid="motion-a" {...filterMotionProps(props)}>
       {processChildren(children)}
     </a>
-  ),
-  p: ({children, ...props}) => (
-    <p data-testid="motion-p" {...filterMotionProps(props)}>
+  )),
+  p: React.forwardRef(({children, ...props}, ref) => (
+    <p ref={ref} data-testid="motion-p" {...filterMotionProps(props)}>
       {processChildren(children)}
     </p>
-  ),
-  span: ({children, ...props}) => (
-    <span data-testid="motion-span" {...filterMotionProps(props)}>
+  )),
+  span: React.forwardRef(({children, ...props}, ref) => (
+    <span ref={ref} data-testid="motion-span" {...filterMotionProps(props)}>
       {processChildren(children)}
     </span>
-  )
+  ))
 };
 
 // AnimatePresence mock
@@ -66,8 +67,6 @@ export const AnimatePresence = ({children}) => (
     {children}
   </div>
 );
-
-import { vi } from 'vitest';
 
 // Export any other Framer Motion utilities used in the app
 export const useAnimation = () => ({

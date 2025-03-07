@@ -196,9 +196,19 @@ describe('useSkills Hook', () => {
       // No skillsSection or skillBars
     });
     
+    // Temporarily silence console.warn for this test
+    const originalWarn = console.warn;
+    console.warn = vi.fn();
+    
     const { result } = renderHook(() => useSkills());
     
     // Should return null when critical data is missing
     expect(result.current).toBeNull();
+    
+    // Verify the warning was logged
+    expect(console.warn).toHaveBeenCalledWith('Skills data is missing or invalid');
+    
+    // Restore console.warn
+    console.warn = originalWarn;
   });
 });

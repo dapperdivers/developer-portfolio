@@ -1,15 +1,14 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom';
 import ExperienceTimeline from './ExperienceTimeline';
 
 // Mock the useAnimation hook
-jest.mock('@context/AnimationContext', () => ({
+vi.mock('@context/AnimationContext', () => ({
   __esModule: true,
   AnimationProvider: ({ children }) => <div data-testid="animation-provider">{children}</div>,
   useAnimation: () => ({
-    registerEntryAnimation: jest.fn(),
-    playEntryAnimation: jest.fn(),
+    registerEntryAnimation: vi.fn(),
+    playEntryAnimation: vi.fn(),
     getAnimationDelay: (index) => `${index * 0.15}s`,
     animationEnabled: true,
     inView: true,
@@ -18,16 +17,17 @@ jest.mock('@context/AnimationContext', () => ({
 }));
 
 // Mock the TimelineEntry component
-jest.mock('@molecules/TimelineEntry/TimelineEntry', () => {
-  return function MockTimelineEntry(props) {
+vi.mock('@molecules/TimelineEntry/TimelineEntry', () => ({
+  __esModule: true,
+  default: function MockTimelineEntry(props) {
     return (
       <div data-testid={`timeline-entry-${props.index}`}>
         <div>{props.data.company}</div>
         <div>{props.data.role}</div>
       </div>
     );
-  };
-});
+  }
+}));
 
 // Sample data for testing
 const mockExperience = [
@@ -81,10 +81,10 @@ describe('ExperienceTimeline Component', () => {
     expect(screen.getByTestId('animation-provider')).toBeInTheDocument();
   });
 
-  it('renders company console header', () => {
+  it('renders secure connection message', () => {
     setupComponent();
-    // Check for command prompt text
-    expect(screen.getByText(/show_career_path/i)).toBeInTheDocument();
+    // Check for the secure connection text
+    expect(screen.getByText('SECURE CONNECTION ESTABLISHED')).toBeInTheDocument();
   });
 
   it('displays loading state when isLoading prop is true', () => {

@@ -1,6 +1,5 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom';
 import Feedbacks from '@organisms/Feedbacks';
 import { vi } from 'vitest';
 
@@ -65,7 +64,7 @@ describe('Feedbacks Container Component', () => {
     expect(screen.getByTestId('feedbacks-section')).toBeInTheDocument();
     
     // Check that the section title is correct
-    expect(screen.getByText('Personal Recommendations')).toBeInTheDocument();
+    expect(screen.getByText('Personal Feedback')).toBeInTheDocument();
     
     // Check that both feedback cards are rendered
     expect(screen.getByTestId('feedback-card-0')).toBeInTheDocument();

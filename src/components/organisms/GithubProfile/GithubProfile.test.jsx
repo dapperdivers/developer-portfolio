@@ -1,6 +1,5 @@
 import React from 'react';
 import { render, screen, waitFor, act } from '@testing-library/react';
-import '@testing-library/jest-dom';
 import GithubProfile from '@organisms/GithubProfile';
 import { vi } from 'vitest';
 
@@ -105,6 +104,19 @@ describe('GithubProfile Container Component', () => {
     location: 'Test Location',
     company: 'Test Company'
   };
+
+  // Prevent console.error from cluttering test output
+  const originalConsoleError = console.error;
+  
+  beforeAll(() => {
+    // Mock console.error to suppress GitHub Profile Error messages
+    console.error = vi.fn();
+  });
+
+  afterAll(() => {
+    // Restore console.error
+    console.error = originalConsoleError;
+  });
 
   beforeEach(() => {
     vi.clearAllMocks();

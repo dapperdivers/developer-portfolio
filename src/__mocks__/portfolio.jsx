@@ -211,6 +211,24 @@ export const feedbackSection = {
   feedbacks
 };
 
+// Add securityFacts
+export const securityFacts = {
+  title: "Security Focus",
+  subtitle: "Secure coding practices and knowledge",
+  facts: [
+    {
+      title: "OWASP Top 10",
+      description: "Knowledge of common web vulnerabilities",
+      icon: "mdi:security"
+    },
+    {
+      title: "Secure Authentication",
+      description: "Implementation of secure login systems",
+      icon: "mdi:lock"
+    }
+  ]
+};
+
 // Export as default with all properties
 const portfolio = {
   greetings,
@@ -226,6 +244,7 @@ const portfolio = {
   projectsSection,
   feedbacks,
   feedbackSection,
+  securityFacts,
   getImagePath
 };
 

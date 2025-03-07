@@ -1,6 +1,5 @@
 import React from 'react';
 import { render, screen, waitFor, act } from '@testing-library/react';
-import '@testing-library/jest-dom';
 import Projects from '@organisms/Projects';
 import { vi } from 'vitest';
 

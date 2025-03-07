@@ -1,5 +1,4 @@
 import { renderHook, act } from '@testing-library/react';
-import '@testing-library/jest-dom';
 import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 import useTimelineView from '@hooks/useTimelineView';
 

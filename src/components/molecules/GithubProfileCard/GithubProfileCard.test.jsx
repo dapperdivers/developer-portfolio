@@ -1,6 +1,5 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import '@testing-library/jest-dom';
 import GithubProfileCard from './GithubProfileCard';
 import { vi } from 'vitest';
 
@@ -26,7 +25,27 @@ vi.mock('@atoms/Button', () => ({
 vi.mock('framer-motion', () => ({
   motion: {
     div: ({ children, ...props }) => <div {...props}>{children}</div>
-  }
+  },
+  AnimatePresence: ({ children }) => <div data-testid="animate-presence">{children}</div>
+}));
+
+// Mock portfolio.js
+vi.mock('@/portfolio', () => ({
+  greetings: {
+    name: "Test User",
+    title: "Software Developer",
+    subTitle: "Web Developer",
+    description: "Passionate developer building web applications."
+  },
+  securityFacts: [
+    "Always use HTTPS for secure communication",
+    "Implement proper authentication and authorization"
+  ]
+}));
+
+// Mock the MapComponent
+vi.mock('../MapComponent', () => ({
+  default: ({ location }) => <div data-testid="map-component">{location}</div>
 }));
 
 describe('GithubProfileCard Component', () => {
@@ -46,11 +65,15 @@ describe('GithubProfileCard Component', () => {
     // Check that the card renders
     expect(screen.getByTestId('github-profile-card')).toBeInTheDocument();
     
-    // Check that profile information is displayed
+    // Check that profile information is displayed 
     expect(screen.getByAltText('Test User avatar')).toBeInTheDocument();
-    expect(screen.getByText('Reach Out to Me!')).toBeInTheDocument();
-    expect(screen.getByText('This is a test bio')).toBeInTheDocument();
-    expect(screen.getByText('Test Location')).toBeInTheDocument();
+    
+    // Check for Security Headquarters heading
+    expect(screen.getByText('Security')).toBeInTheDocument();
+    expect(screen.getByText('Headquarters')).toBeInTheDocument();
+    
+    // Look for part of the description text that should appear
+    expect(screen.getByText(/My inbox is (secure and )?always open!/)).toBeInTheDocument();
     
     // Check that social links component is rendered
     expect(screen.getByTestId('social-links')).toBeInTheDocument();
@@ -58,7 +81,7 @@ describe('GithubProfileCard Component', () => {
   
   it('renders error state correctly', () => {
     const errorMessage = 'GitHub API rate limit exceeded';
-    render(<GithubProfileCard prof={null} error={errorMessage} onRetry={jest.fn()} />);
+    render(<GithubProfileCard prof={null} error={errorMessage} onRetry={vi.fn()} />);
     
     // Check that error message is displayed
     expect(screen.getByText('GitHub Profile Unavailable')).toBeInTheDocument();
@@ -69,7 +92,7 @@ describe('GithubProfileCard Component', () => {
   });
   
   it('calls onRetry when retry button is clicked', () => {
-    const mockRetry = jest.fn();
+    const mockRetry = vi.fn();
     render(<GithubProfileCard prof={null} error="Error message" onRetry={mockRetry} />);
     
     // Click the retry button

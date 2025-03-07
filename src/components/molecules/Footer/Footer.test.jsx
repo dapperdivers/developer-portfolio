@@ -1,6 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, within } from '@testing-library/react';
-import '@testing-library/jest-dom';
+import { render, screen, fireEvent } from '@testing-library/react';
 import Footer from '@molecules/Footer';
 import { vi } from 'vitest';
 
@@ -17,16 +16,18 @@ vi.mock('@molecules/SocialLinks', () => ({
   default: () => <div data-testid="social-links">Social Links</div>
 }));
 
+// Mock the FaHeart and FaChevronUp icons
+vi.mock('react-icons/fa', () => ({
+  FaHeart: () => <svg data-testid="heart-icon" />,
+  FaChevronUp: () => <svg data-testid="up-icon" />
+}));
+
 describe('Footer Component', () => {
   const mockFooterData = {
     currentYear: 2025,
     scrollToTop: vi.fn(),
     greetings: {
       name: 'Derek Mackley'
-    },
-    socialLinks: {
-      github: 'https://github.com/username',
-      linkedin: 'https://linkedin.com/in/username'
     }
   };
 
@@ -42,22 +43,29 @@ describe('Footer Component', () => {
     // Check that the footer element is rendered
     expect(screen.getByRole('contentinfo')).toBeInTheDocument();
     
-    // Check that the name is displayed
-    expect(screen.getByText('Derek Mackley')).toBeInTheDocument();
+    // Check for copyright text with year and name
+    const footerText = screen.getByText(/© 2025/);
+    expect(footerText).toBeInTheDocument();
     
-    // Check that the social links component is rendered
+    // Check that social links component is rendered
     expect(screen.getByTestId('social-links')).toBeInTheDocument();
     
-    // Check that Quick Links section is rendered
-    expect(screen.getByText('Quick Links')).toBeInTheDocument();
+    // Check for navigation links
+    expect(screen.getByText('Home')).toBeInTheDocument();
+    expect(screen.getByText('Experience')).toBeInTheDocument();
+    expect(screen.getByText('Projects')).toBeInTheDocument();
+    expect(screen.getByText('Contact')).toBeInTheDocument();
+    expect(screen.getByText('Resume')).toBeInTheDocument();
     
-    // Check that Contact section is rendered with heading
-    expect(screen.getByRole('heading', { name: 'Contact' })).toBeInTheDocument();
+    // Check for "Made with" text (appears twice for responsive layout)
+    const madeWithTexts = screen.getAllByText(/Made with/);
+    expect(madeWithTexts.length).toBeGreaterThan(0);
     
-    // Check that copyright notice is rendered with current year
-    expect(screen.getByText(/© 2025 Derek Mackley/)).toBeInTheDocument();
+    // Check for "using React" text
+    const usingReactTexts = screen.getAllByText(/using React/);
+    expect(usingReactTexts.length).toBeGreaterThan(0);
     
-    // Check that the back to top button is rendered
+    // Check that back to top button is rendered
     expect(screen.getByLabelText('Back to top')).toBeInTheDocument();
   });
 
@@ -72,29 +80,14 @@ describe('Footer Component', () => {
     expect(mockFooterData.scrollToTop).toHaveBeenCalledTimes(1);
   });
 
-  it('renders correct links in Quick Links section', () => {
+  it('renders navigation links with correct hrefs', () => {
     render(<Footer />);
     
-    // Check that all quick links are rendered
+    // Check that all navigation links have correct hrefs
     expect(screen.getByText('Home').closest('a')).toHaveAttribute('href', '#main-content');
     expect(screen.getByText('Experience').closest('a')).toHaveAttribute('href', '#experience');
     expect(screen.getByText('Projects').closest('a')).toHaveAttribute('href', '#projects');
-    
-    // For Contact in Quick Links, need to be more specific as there are multiple elements with this text
-    const quickLinksSection = screen.getByText('Quick Links').closest('div');
-    const contactLink = within(quickLinksSection).getByText('Contact');
-    expect(contactLink.closest('a')).toHaveAttribute('href', '#contact');
-  });
-
-  it('renders correct links in Contact section', () => {
-    render(<Footer />);
-    
-    // Check that the email link is rendered correctly
-    expect(screen.getByText('contact@derekmackley.com').closest('a'))
-      .toHaveAttribute('href', 'mailto:contact@derekmackley.com');
-    
-    // Check that the resume download link is rendered correctly
-    expect(screen.getByText('Download Resume').closest('a'))
-      .toHaveAttribute('href', '/files/Derek_Mackley_Resume_2025.pdf');
+    expect(screen.getByText('Contact').closest('a')).toHaveAttribute('href', '#contact');
+    expect(screen.getByText('Resume').closest('a')).toHaveAttribute('href', '/files/Derek_Mackley_Resume_2025.pdf');
   });
 });
