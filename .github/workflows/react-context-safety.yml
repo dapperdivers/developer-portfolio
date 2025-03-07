@@ -22,7 +22,7 @@ jobs:
         cache: 'yarn'
     
     - name: Install dependencies
-      run: yarn install --frozen-lockfile
+      run: yarn install --frozen-lockfile --ignore-engines
     
     - name: Run React usage analyzer
       run: |
@@ -41,7 +41,19 @@ jobs:
     
     - name: Run ESLint with context safety rules
       run: |
-        npx eslint --config eslint.config.react-context-safety.js src/context src/hooks/useContext*.ts src/hooks/useContext*.tsx --ext .js,.jsx,.ts,.tsx --format=stylish
+        npx eslint --config eslint.config.react-context-safety.js src/context src/hooks/useContext*.ts src/hooks/useContext*.tsx --ext .js,.jsx,.ts,.tsx --format=stylish --max-warnings 9999 || {
+          EXIT_CODE=$?
+          if [ $EXIT_CODE -eq 1 ]; then
+            echo "⚠️ ESLint found errors in context files, failing the build"
+            exit 1
+          elif [ $EXIT_CODE -eq 0 ]; then
+            echo "✅ ESLint found only warnings in context files, continuing the build"
+            exit 0
+          else
+            echo "❌ ESLint command failed with exit code $EXIT_CODE"
+            exit $EXIT_CODE
+          fi
+        }
 
     - name: Check TypeScript types in context files
       run: |
