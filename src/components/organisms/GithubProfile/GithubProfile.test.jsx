@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, waitFor, act } from '@testing-library/react';
 import GithubProfile from '@organisms/GithubProfile';
-import { vi } from 'vitest';
+import { vi, describe, it, expect, beforeEach, beforeAll, afterAll } from 'vitest';
 
 // Mock dependencies
 vi.mock('axios', async () => {
@@ -106,9 +106,11 @@ describe('GithubProfile Container Component', () => {
   };
 
   // Prevent console.error from cluttering test output
-  const originalConsoleError = console.error;
+  let originalConsoleError;
   
   beforeAll(() => {
+    // Save original console.error and mock it
+    originalConsoleError = console.error;
     // Mock console.error to suppress GitHub Profile Error messages
     console.error = vi.fn();
   });

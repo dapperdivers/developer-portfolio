@@ -119,7 +119,23 @@ app.get('/healthz', (req, res) => {
 // Serve resume file
 app.get('/resume/:filename', (req, res) => {
   const filename = req.params.filename;
+  
+  // Validate filename - only allow alphanumeric chars, underscore, hyphen, and .pdf extension
+  if (!filename.match(/^[a-zA-Z0-9_-]+\.pdf$/)) {
+    console.error('Invalid resume filename requested:', filename);
+    return res.status(400).send('Invalid filename');
+  }
+  
+  // Create a safe path with validated filename
   const filePath = path.join(__dirname, 'files', filename);
+  
+  // Additional path safety check - ensure we're still in the files directory
+  const filesDir = path.join(__dirname, 'files');
+  if (!filePath.startsWith(filesDir)) {
+    console.error('Path traversal attempt detected:', filePath);
+    return res.status(403).send('Forbidden');
+  }
+  
   console.log('Serving resume from:', filePath);
   res.setHeader('Content-Type', 'application/pdf');
   res.setHeader('Content-Disposition', 'inline; filename=' + filename);
@@ -134,10 +150,32 @@ app.get('/resume/:filename', (req, res) => {
 // Serve contact VCF file
 app.get('/contact/:filename', (req, res) => {
   const filename = req.params.filename;
+  
+  // Validate filename - only allow alphanumeric chars, underscore, hyphen, and .vcf extension
+  if (!filename.match(/^[a-zA-Z0-9_-]+\.vcf$/)) {
+    console.error('Invalid contact filename requested:', filename);
+    return res.status(400).send('Invalid filename');
+  }
+  
+  // Create a safe path with validated filename
   const filePath = path.join(__dirname, 'files', filename);
+  
+  // Additional path safety check - ensure we're still in the files directory
+  const filesDir = path.join(__dirname, 'files');
+  if (!filePath.startsWith(filesDir)) {
+    console.error('Path traversal attempt detected:', filePath);
+    return res.status(403).send('Forbidden');
+  }
+  
+  console.log('Serving contact from:', filePath);
   res.setHeader('Content-Type', 'text/vcard');
   res.setHeader('Content-Disposition', 'attachment; filename=' + filename);
-  res.sendFile(filePath);
+  res.sendFile(filePath, (err) => {
+    if (err) {
+      console.error('Error sending file:', err);
+      res.status(404).send('File not found');
+    }
+  });
 });
 
 // Serve React app

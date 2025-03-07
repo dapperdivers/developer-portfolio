@@ -125,8 +125,12 @@ export const applyStrictTransportSecurity = () => {
   
   // Redirect to HTTPS if currently on HTTP
   if (window.location.protocol === 'http:' && !window.location.hostname.includes('localhost')) {
-    const httpsUrl = 'https:' + window.location.href.substring(window.location.protocol.length);
-    window.location.replace(httpsUrl);
+    // Create a safe HTTPS URL using only the current origin and path, not using href directly
+    const safeUrl = 'https://' + window.location.host + window.location.pathname + window.location.search;
+    // Only redirect if the URL appears to be valid
+    if (/^https:\/\/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)$/.test(safeUrl)) {
+      window.location.replace(safeUrl);
+    }
   }
   
   // Add a comment in the HTML to remind developers this should be set server-side

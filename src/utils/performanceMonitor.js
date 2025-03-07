@@ -3,13 +3,16 @@
  * These utilities help track rendering performance, animation smoothness, and resource usage.
  */
 
+// External dependencies
+import React from 'react';
+
+// Import environment configuration
+import envConfig from '@utils/envConfig';
+
 // Check if performance API is available
 const hasPerformanceAPI = typeof performance !== 'undefined' && 
                          typeof performance.mark === 'function' && 
                          typeof performance.measure === 'function';
-
-// Import environment configuration
-import envConfig from '@utils/envConfig';
 
 // Check if we're in development mode
 const isDev = envConfig.isDevelopment;
@@ -69,20 +72,23 @@ export const markEnd = (markName, shouldLog = true) => {
 export const withPerformanceTracking = (Component, componentName) => {
   if (!isDev) return Component;
   
+  // Destructure all React methods we need at this level to avoid references in the returned component
+  const { useRef, useEffect, createElement } = React;
+  
   return (props) => {
     const markName = `render-${componentName || Component.displayName || Component.name || 'Component'}`;
     markStart(markName);
     
     // Use a ref to track when the component has actually rendered to the DOM
-    const componentRef = React.useRef();
+    const componentRef = useRef();
     
-    React.useEffect(() => {
+    useEffect(() => {
       if (componentRef.current) {
         markEnd(markName);
       }
     }, []);
     
-    return React.createElement(Component, {
+    return createElement(Component, {
       ...props,
       ref: componentRef
     });

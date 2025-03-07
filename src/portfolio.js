@@ -55,10 +55,26 @@ const validateUrl = (url) => {
     }
 };
 
-// Sanitize text content
+// Sanitize text content with recursive sanitization to prevent incomplete sanitization attacks
 const sanitizeText = (text) => {
     if (typeof text !== 'string') return '';
-    return text.replace(/<[^>]*>/g, '').trim();
+    
+    // Create a safe version by using the browser's built-in HTML escaping
+    const div = document.createElement('div');
+    div.textContent = text;
+    const safeText = div.innerHTML;
+    
+    // Alternative approach for server-side rendering where DOM might not be available
+    const recursiveSanitize = (str) => {
+        const originalStr = str;
+        // Replace HTML tags recursively until no more changes
+        const sanitized = str.replace(/<[^>]*>/g, '');
+        // If sanitization made changes, run again to catch nested tags
+        return sanitized !== originalStr ? recursiveSanitize(sanitized) : sanitized.trim();
+    };
+    
+    // Use DOM-based approach if available, otherwise use recursive regex
+    return typeof document !== 'undefined' ? safeText.trim() : recursiveSanitize(text);
 };
 
 export const greetings = {
