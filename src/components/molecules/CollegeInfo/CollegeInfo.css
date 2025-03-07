@@ -1,0 +1,139 @@
+/**
+ * College Information Component Styles
+ */
+
+.college-info {
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-4);
+  width: 100%;
+  background-color: var(--color-card-bg);
+}
+
+/* College/University name styling */
+.college-name {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+  margin-bottom: var(--spacing-3);
+  line-height: 1.3;
+  position: relative;
+  display: inline-block;
+  border-bottom: 2px solid var(--color-primary-light);
+  padding-bottom: var(--spacing-1);
+  width: 100%;
+}
+
+/* Academic info section (degree, major, minor) */
+.academic-info {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-3);
+  margin-bottom: var(--spacing-3);
+  padding: var(--spacing-3);
+  background-color: rgba(100, 255, 218, 0.05);
+  border-radius: var(--border-radius-lg);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Label styles for academic info */
+.academic-label {
+  display: block;
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--color-text-muted);
+  margin-bottom: var(--spacing-1);
+  font-weight: var(--font-weight-medium);
+}
+
+/* Degree styling */
+.degree-container {
+  margin-bottom: var(--spacing-2);
+}
+
+.degree-value {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+  margin-top: 0;
+}
+
+/* Major styling */
+.major-container {
+  margin-bottom: var(--spacing-2);
+}
+
+.major-value {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+  padding-left: var(--spacing-2);
+  border-left: 3px solid var(--color-primary-light);
+}
+
+/* Minor styling */
+.minor-container {
+  margin-bottom: var(--spacing-2);
+}
+
+.minor-value {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary);
+  padding-left: var(--spacing-2);
+  border-left: 3px solid var(--color-primary-dark);
+}
+
+/* Graduation date chip styling */
+.graduation-date-chip {
+  margin-top: var(--spacing-2);
+  width: auto;
+  max-width: 200px;
+  align-self: flex-end;
+}
+
+/* Hover effects */
+.college-info:hover .college-name {
+  color: var(--color-primary-light);
+}
+
+.college-info:hover .academic-info {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+/* Animations */
+.academic-info {
+  transition: all 0.3s ease;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .college-info {
+    padding: var(--spacing-3);
+  }
+  
+  .college-name {
+    font-size: var(--font-size-lg);
+  }
+  
+  .degree-value {
+    font-size: var(--font-size-base);
+  }
+  
+  .academic-info {
+    padding: var(--spacing-2);
+  }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .college-info:hover .academic-info {
+    transform: none;
+  }
+  
+  .academic-info {
+    transition: none;
+  }
+}

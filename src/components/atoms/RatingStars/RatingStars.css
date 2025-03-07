@@ -1,0 +1,14 @@
+/**
+ * Rating Stars Component Styles
+ */
+
+.rating-stars {
+  color: var(--color-primary);
+  display: flex;
+  gap: var(--spacing-1);
+}
+
+.star {
+  width: 18px;
+  height: 18px;
+}

@@ -1,0 +1,49 @@
+/**
+ * Feedback Author Component Styles
+ */
+
+.author-container {
+  display: flex;
+  align-items: center;
+  margin-top: auto;
+  padding-top: var(--spacing-2);
+}
+
+.author-image {
+  width: 50px;
+  height: 50px;
+  border-radius: var(--border-radius-circle);
+  object-fit: cover;
+  margin-right: var(--spacing-3);
+  border: 2px solid var(--color-primary-light);
+}
+
+.author-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.author-name {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+  margin: 0;
+}
+
+.author-role {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .author-image {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .author-name {
+    font-size: var(--font-size-sm);
+  }
+}

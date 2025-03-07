@@ -1,0 +1,107 @@
+/**
+ * DateChip Component Styles
+ * 
+ * This file contains styles for the DateChip component
+ * which displays dates in a stylized chip format.
+ */
+
+.date-chip {
+  display: inline-block;
+  margin-bottom: var(--spacing-3);
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+}
+
+.date-chip-inner {
+  background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary));
+  border-radius: var(--border-radius-pill);
+  padding: var(--spacing-1) var(--spacing-3);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.date-chip-text {
+  color: #000;
+  background-color: rgba(255, 255, 255, 0.85);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  position: relative;
+  z-index: 2;
+  text-shadow: none;
+  padding: 2px 10px;
+  border-radius: 3px;
+}
+
+/* Glowing effect */
+.date-chip-glow {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0) 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Hover effects */
+.date-chip:hover .date-chip-inner {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.date-chip:hover .date-chip-glow {
+  opacity: 0.8;
+  animation: rotate 2s linear infinite;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Focus styles for accessibility */
+.date-chip:focus-within .date-chip-inner {
+  box-shadow: 0 0 0 2px rgba(100, 255, 218, 0.5);
+  outline: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .date-chip-inner {
+    padding: var(--spacing-1) var(--spacing-2);
+    height: 24px;
+  }
+  
+  .date-chip-text {
+    font-size: var(--font-size-xs);
+  }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .date-chip:hover .date-chip-inner {
+    transform: none;
+  }
+  
+  .date-chip:hover .date-chip-glow {
+    animation: none;
+    opacity: 0.5;
+  }
+}

@@ -5,7 +5,8 @@ import Section from '@layout/Section';
 import useEducation from "@hooks/useEducation";
 
 /**
- * Education section displaying a list of educational background items.
+ * Education section displaying educational background with integrated certifications.
+ * Redesigned for better visual presentation with combined education and certification display.
  * 
  * @component
  * @returns {React.ReactElement} Education component
@@ -13,33 +14,30 @@ import useEducation from "@hooks/useEducation";
 const Education = () => {
   const educationInfo = useEducation();
   
-  // Animation config for framer-motion
-  const animation = {
-    initial: { opacity: 0, y: 20 },
-    whileInView: { opacity: 1, y: 0 },
+  // Animation config for framer-motion - main section animation
+  const sectionAnimation = {
+    initial: { opacity: 0 },
+    whileInView: { opacity: 1 },
     viewport: { once: true, margin: "-50px" },
-    transition: { duration: 0.5 }
+    transition: { duration: 0.6 }
   };
   
   return (
     <Section
       id="education"
       title="Education"
-      animation={animation}
+      animation={sectionAnimation}
       className="education-section"
       data-testid="education-section"
     >
       {educationInfo.length > 0 ? (
-        <div className="relative pl-0 md:pl-6 md:before:absolute md:before:left-0 md:before:top-0 md:before:bottom-0 md:before:w-0.5 md:before:bg-gradient-to-b md:before:from-cyan-500 md:before:to-gray-800 md:before:rounded">
-          <div className="flex flex-wrap -mx-4 items-start">
-            {educationInfo.map((info, index) => (
-              <div 
-                key={`education-${index}`} 
-                className="w-full px-4 lg:w-6/12"
-              >
-                <EducationCard education={info} index={index} />
-              </div>
-            ))}
+        <div className="education-content">
+          {/* Education card with integrated certifications */}
+          <div className="education-main education-card-animate">
+            <EducationCard 
+              education={educationInfo[0]} 
+              index={0}
+            />
           </div>
         </div>
       ) : (

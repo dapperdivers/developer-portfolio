@@ -1,0 +1,200 @@
+/**
+ * Enhanced Education Details Component Styles
+ */
+
+.education-details {
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-4);
+  width: 100%;
+}
+
+/* School name styling */
+.education-school-name {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+  margin-bottom: var(--spacing-3);
+  line-height: 1.3;
+  position: relative;
+  display: inline-block;
+  border-bottom: 2px solid var(--color-primary-light);
+  padding-bottom: var(--spacing-1);
+  width: 100%;
+}
+
+/* Academic info section (degree, major, minor) */
+.education-academic-info {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-3);
+  margin-bottom: var(--spacing-3);
+  padding: var(--spacing-3);
+  background-color: rgba(100, 255, 218, 0.05);
+  border-radius: var(--border-radius-lg);
+}
+
+/* Label styles for academic info */
+.education-label {
+  display: block;
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--color-text-muted);
+  margin-bottom: var(--spacing-1);
+  font-weight: var(--font-weight-medium);
+}
+
+/* Degree styling */
+.education-degree-container {
+  margin-bottom: var(--spacing-2);
+}
+
+.education-degree {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+  margin-top: 0;
+}
+
+/* Major styling */
+.education-major-container {
+  margin-bottom: var(--spacing-2);
+}
+
+.education-major-value {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+  padding-left: var(--spacing-2);
+  border-left: 3px solid var(--color-primary-light);
+}
+
+/* Minor styling */
+.education-minor-container {
+  margin-bottom: var(--spacing-2);
+}
+
+.education-minor-value {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary);
+  padding-left: var(--spacing-2);
+  border-left: 3px solid var(--color-primary-dark);
+}
+
+/* Date chip styling moved to bottom */
+.education-date-chip {
+  margin-top: var(--spacing-2);
+  margin-bottom: var(--spacing-4);
+  width: auto;
+  max-width: 200px;
+  align-self: flex-end;
+}
+
+.education-bullets {
+  list-style-type: disc;
+  padding-left: var(--spacing-5);
+  margin-top: var(--spacing-2);
+}
+
+.education-bullet-item {
+  font-size: var(--font-size-sm);
+  line-height: 1.6;
+  color: var(--color-text-light);
+  margin-bottom: var(--spacing-2);
+}
+
+.education-bullet-item::marker {
+  color: var(--color-primary);
+}
+
+/* Certifications section */
+.education-certifications-container {
+  margin-top: var(--spacing-4);
+  background-color: rgba(100, 255, 218, 0.03);
+  padding: var(--spacing-3);
+  border-radius: var(--border-radius-lg);
+  border: 1px dashed rgba(100, 255, 218, 0.2);
+}
+
+.education-certifications {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-3);
+  margin-top: var(--spacing-3);
+}
+
+.certifications-title {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary);
+  margin-bottom: var(--spacing-3);
+  position: relative;
+  display: inline-block;
+}
+
+.certifications-title::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 30px;
+  height: 2px;
+  background: var(--color-primary);
+  border-radius: 2px;
+}
+
+/* Animation for certification badges */
+.certification-badge {
+  animation: slideIn 0.5s ease forwards;
+  opacity: 0;
+  transform: translateX(-10px);
+}
+
+.certification-badge:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.certification-badge:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+.certification-badge:nth-child(4) {
+  animation-delay: 0.3s;
+}
+
+@keyframes slideIn {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .education-details {
+    padding: var(--spacing-3);
+  }
+  
+  .education-school-name {
+    font-size: var(--font-size-lg);
+  }
+  
+  .education-degree {
+    font-size: var(--font-size-sm);
+  }
+  
+  .education-certifications {
+    padding: var(--spacing-2);
+  }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .certification-badge {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}

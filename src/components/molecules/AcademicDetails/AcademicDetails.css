@@ -1,0 +1,40 @@
+/**
+ * Academic Details Component Styles
+ */
+
+.academic-details {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: var(--spacing-3);
+}
+
+/* Panel containing the degree, fields of study, and graduation date */
+.academic-panel {
+  padding: var(--spacing-3);
+  background-color: rgba(100, 255, 218, 0.05);
+  border-radius: var(--border-radius-lg);
+  border-left: 2px solid var(--color-primary);
+}
+
+/* Container for the graduation date chip */
+.graduation-date-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: var(--spacing-3);
+}
+
+.graduation-date-chip {
+  max-width: 180px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .academic-panel {
+    padding: var(--spacing-2);
+  }
+  
+  .graduation-date-container {
+    justify-content: flex-start;
+  }
+}

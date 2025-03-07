@@ -1,0 +1,31 @@
+/**
+ * Feedback Quote Component Styles
+ */
+
+.feedback-quote {
+  position: relative;
+  padding: var(--spacing-2);
+  margin-bottom: var(--spacing-4);
+}
+
+.quote-icon {
+  color: var(--color-text-muted);
+  opacity: 0.7;
+  font-size: 1.2rem;
+}
+
+.quote-content {
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-base);
+  color: var(--color-text);
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  font-style: italic;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .quote-content {
+    font-size: var(--font-size-xs);
+  }
+}

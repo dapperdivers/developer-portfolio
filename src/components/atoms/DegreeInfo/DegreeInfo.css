@@ -1,0 +1,48 @@
+/**
+ * Degree Information Component Styles
+ */
+
+.degree-info {
+  margin-bottom: var(--spacing-3);
+}
+
+.degree-label {
+  display: block;
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--color-text-muted);
+  margin-bottom: var(--spacing-1);
+  font-weight: var(--font-weight-medium);
+}
+
+.degree-value {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+  margin: 0;
+  padding-left: var(--spacing-2);
+  border-left: 3px solid var(--color-primary);
+  transition: border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+/* Hover effects */
+.degree-info:hover .degree-value {
+  color: var(--color-text-bright);
+  border-left-color: var(--color-primary-light);
+  transform: translateX(2px);
+}
+
+/* Responsive adaptations */
+@media (max-width: 768px) {
+  .degree-value {
+    font-size: var(--font-size-md);
+  }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .degree-value {
+    transition: none;
+  }
+}

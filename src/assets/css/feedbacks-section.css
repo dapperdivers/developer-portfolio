@@ -4,6 +4,46 @@
   padding: var(--section-padding-y) 0;
   background-color: var(--color-background-alt);
   position: relative;
+  overflow: hidden; /* Prevent horizontal scroll */
+}
+
+/* Horizontal carousel layout */
+.feedbacks-carousel-container {
+  width: 100%;
+  overflow-x: auto; /* Enable horizontal scrolling */
+  padding: var(--spacing-3) 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-primary) transparent;
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+  position: relative;
+}
+
+.feedbacks-carousel-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.feedbacks-carousel-container::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+}
+
+.feedbacks-carousel-container::-webkit-scrollbar-thumb {
+  background-color: var(--color-primary);
+  border-radius: 4px;
+}
+
+.feedbacks-carousel {
+  display: flex;
+  gap: var(--spacing-5);
+  padding: var(--spacing-2) var(--spacing-2);
+}
+
+.feedbacks-carousel > div {
+  flex: 0 0 auto;
+  width: 380px; /* Fixed width for each card */
+  max-width: 90vw; /* Responsive on small screens */
+  transition: transform 0.3s ease;
+  margin-bottom: var(--spacing-3);
 }
 
 /* Section title and icon */
@@ -187,69 +227,74 @@
   }
 }
 
-/* Testimonial carousel styles */
+/* Enhanced carousel styles */
 .carousel-container {
   width: 100%;
   position: relative;
 }
 
-.carousel-controls {
-  display: flex;
-  justify-content: center;
-  margin-top: 2rem;
-  gap: 1rem;
+.carousel-prompt {
+  text-align: center;
+  margin-top: var(--spacing-4);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  animation: pulse 2s infinite;
 }
 
-.carousel-control {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: var(--white);
-  border: 1px solid var(--primary-100);
-  color: var(--primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
+@keyframes pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
 }
 
-.carousel-control:hover {
-  background-color: var(--primary);
-  color: var(--white);
-}
-
+/* Carousel navigation indicators */
 .carousel-indicators {
   display: flex;
   justify-content: center;
-  margin-top: 1.5rem;
-  gap: 0.5rem;
+  margin-top: var(--spacing-4);
+  gap: var(--spacing-2);
 }
 
 .carousel-indicator {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background-color: var(--light-200);
+  background-color: var(--color-text-muted);
   transition: all 0.3s ease;
+  cursor: pointer;
 }
 
 .carousel-indicator.active {
   width: 24px;
   border-radius: 4px;
-  background-color: var(--primary);
+  background-color: var(--color-primary);
+}
+
+/* Card hover effect in carousel */
+.feedbacks-carousel > div:hover {
+  transform: translateY(-5px);
+  z-index: 2;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .feedbacks-carousel > div {
+    width: 320px; /* Smaller cards on mobile */
+  }
 }
 
 /* Reduced motion preferences */
 @media (prefers-reduced-motion: reduce) {
-  .feedback-card, 
-  .feedback-card .card,
-  .carousel-control,
+  .feedbacks-carousel > div,
   .carousel-indicator {
     transition: none;
   }
   
-  .feedback-card .card:hover {
+  .feedbacks-carousel > div:hover {
     transform: none;
+  }
+  
+  .carousel-prompt {
+    animation: none;
+    opacity: 1;
   }
 }

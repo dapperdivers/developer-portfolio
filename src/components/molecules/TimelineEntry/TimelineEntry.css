@@ -1,0 +1,313 @@
+.timeline-entry {
+  display: flex;
+  margin-bottom: 6rem;
+  position: relative;
+  perspective: 1200px;
+  transform-style: preserve-3d;
+  min-height: 300px;
+}
+
+.timeline-entry:nth-child(odd) {
+  flex-direction: row;
+}
+
+.timeline-entry:nth-child(even) {
+  flex-direction: row-reverse;
+}
+
+.timeline-connector {
+  position: absolute;
+  z-index: 5;
+  left: calc(50% - 1px);
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.timeline-dot {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: var(--primary-color, #00a0dc);
+  margin-top: 35px;
+  z-index: 10;
+  box-shadow: 0 0 0 6px rgba(0, 160, 220, 0.2), 0 0 20px rgba(0, 160, 220, 0.3);
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+.timeline-entry:hover .timeline-dot {
+  transform: scale(1.4);
+  box-shadow: 0 0 0 8px rgba(0, 160, 220, 0.2), 0 0 30px rgba(0, 160, 220, 0.5);
+}
+
+.timeline-line {
+  position: absolute;
+  top: 48px;
+  bottom: -60px;
+  width: 2px;
+  background: linear-gradient(to bottom, 
+    rgba(0, 160, 220, 0.8) 0%, 
+    rgba(0, 160, 220, 0.3) 100%);
+  z-index: 1;
+}
+
+/* Hide the line for the last entry */
+.timeline-entry:last-child .timeline-line {
+  display: none;
+}
+
+.timeline-date-container {
+  width: 150px;
+  margin: 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.timeline-date {
+  font-weight: 700;
+  color: var(--primary-color, #00a0dc);
+  font-size: 1.8rem;
+  padding: 0.8rem 1.5rem;
+  background: linear-gradient(45deg, rgba(0, 160, 220, 0.08) 0%, rgba(0, 160, 220, 0.15) 100%);
+  border-radius: 30px;
+  text-align: center;
+  box-shadow: 
+    0 5px 20px rgba(0, 0, 0, 0.1),
+    inset 0 2px 4px rgba(255, 255, 255, 0.3);
+  position: relative;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(0, 160, 220, 0.2);
+  backdrop-filter: blur(5px);
+}
+
+.timeline-entry:hover .timeline-date {
+  transform: translateY(-8px);
+  box-shadow: 
+    0 15px 30px rgba(0, 0, 0, 0.15),
+    inset 0 2px 4px rgba(255, 255, 255, 0.3);
+}
+
+.timeline-card-container {
+  flex: 1;
+  width: 100%;
+  max-width: calc(50% - 100px);
+  min-width: 380px;
+  transform: translateZ(0);
+  transition: transform 0.5s ease, box-shadow 0.5s ease;
+  will-change: transform;
+  box-shadow: 
+    0 10px 30px rgba(0, 0, 0, 0.1),
+    0 1px 5px rgba(0, 0, 0, 0.05);
+  border-radius: 16px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  border: 1px solid rgba(0, 160, 220, 0.1);
+}
+
+.timeline-entry:hover .timeline-card-container {
+  transform: translateZ(30px);
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.15),
+    0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Improve the styling of the ExperienceCard content inside */
+.timeline-card-container .experience-card {
+  height: 100%;
+  padding: 0;
+}
+
+.timeline-card-container .card {
+  border: none;
+  box-shadow: none !important;
+  height: 100%;
+  background: transparent;
+}
+
+.timeline-card-container .company-logo-container {
+  padding: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.timeline-card-container .company-logo {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  border-radius: 12px;
+  padding: 1rem;
+  background-color: white;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease;
+}
+
+.timeline-card-container:hover .company-logo {
+  transform: scale(1.05);
+}
+
+.timeline-card-container .job-title {
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.timeline-card-container .date-range {
+  color: #666;
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.timeline-card-container .description {
+  padding: 0 1.5rem 1.5rem;
+  color: #444;
+  line-height: 1.6;
+}
+
+.timeline-card-container .description ul {
+  margin-top: 1rem;
+  padding-left: 1.2rem;
+}
+
+.timeline-card-container .description li {
+  margin-bottom: 0.5rem;
+  position: relative;
+}
+
+.timeline-card-container .description li::before {
+  content: '▹';
+  position: absolute;
+  left: -1.2rem;
+  color: var(--primary-color, #00a0dc);
+  font-weight: bold;
+}
+
+/* Decorative elements */
+.timeline-decorative-elements {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 15;
+}
+
+.tech-badge {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, rgba(0, 160, 220, 0.1) 0%, rgba(0, 160, 220, 0.2) 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  animation: float 4s ease-in-out infinite;
+  border: 1px solid rgba(0, 160, 220, 0.2);
+  backdrop-filter: blur(3px);
+}
+
+.tech-icon {
+  color: var(--primary-color, #00a0dc);
+  font-size: 18px;
+  font-weight: bold;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(5deg);
+  }
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+}
+
+/* Each badge floats at different rates */
+.tech-badge:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.tech-badge:nth-child(2) {
+  animation-delay: 1.3s;
+}
+
+.tech-badge:nth-child(3) {
+  animation-delay: 2.6s;
+}
+
+/* Alternating sides */
+.timeline-entry:nth-child(odd) .timeline-date-container {
+  justify-content: flex-end;
+}
+
+.timeline-entry:nth-child(even) .timeline-date-container {
+  justify-content: flex-start;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+  .timeline-card-container {
+    max-width: calc(50% - 80px);
+    min-width: 320px;
+  }
+  
+  .timeline-date-container {
+    width: 120px;
+    margin: 0 1.5rem;
+  }
+  
+  .timeline-date {
+    font-size: 1.5rem;
+    padding: 0.7rem 1.2rem;
+  }
+}
+
+@media (max-width: 960px) {
+  .timeline-card-container {
+    min-width: 280px;
+  }
+}
+
+@media (max-width: 768px) {
+  .timeline-entry,
+  .timeline-entry:nth-child(odd),
+  .timeline-entry:nth-child(even) {
+    flex-direction: column;
+    margin-bottom: 5rem;
+    min-height: auto;
+  }
+  
+  .timeline-connector {
+    left: 20px;
+  }
+  
+  .timeline-card-container {
+    max-width: calc(100% - 80px);
+    min-width: auto;
+    width: calc(100% - 80px);
+    margin-left: 60px;
+  }
+  
+  .timeline-date-container {
+    width: auto;
+    margin: 0 0 1.5rem 60px;
+    justify-content: flex-start;
+  }
+  
+  .timeline-date {
+    font-size: 1.4rem;
+    padding: 0.6rem 1.2rem;
+  }
+  
+  .tech-badge {
+    display: none;
+  }
+}

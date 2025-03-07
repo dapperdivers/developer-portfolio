@@ -1,19 +1,25 @@
-import React, { memo } from "react";
+import React, { memo, useMemo } from "react";
 import PropTypes from 'prop-types';
-import { FaStar, FaQuoteLeft, FaQuoteRight } from 'react-icons/fa';
 import Card from '@atoms/Card';
-import ResponsiveImage from '@atoms/ResponsiveImage';
+import RatingStars from '@atoms/RatingStars';
+import FeedbackQuote from '@molecules/FeedbackQuote';
+import FeedbackAuthor from '@molecules/FeedbackAuthor';
+import FeedbackHighlight from '@molecules/FeedbackHighlight';
 import useIntersectionObserver from "@hooks/useIntersectionObserver";
 import './FeedbackCard.css';
 
 /**
- * Feedback card component for displaying testimonials.
+ * Enhanced feedback card component for displaying testimonials.
+ * 
+ * This component has been refactored to use smaller, more manageable sub-components
+ * and enhanced with a highlighted section to draw focus to key parts of the feedback.
  * 
  * @component
  * @param {Object} props - Component props
  * @param {Object} props.data - Feedback data object
  * @param {string} props.data.name - Name of the person giving feedback
  * @param {string} props.data.feedback - The feedback text
+ * @param {string} [props.data.highlight] - Optional highlighted portion of the feedback
  * @param {string} [props.data.avatar] - URL to avatar image
  * @param {string} [props.data.designation] - Job title or designation of the person
  * @param {number} [props.data.rating] - Rating from 1-5
@@ -35,7 +41,28 @@ const FeedbackCard = ({ data, index = 0 }) => {
   // Extract job title/role or use a default
   const role = data.designation || "Client";
   
-  // Animation for the card
+  // Check for highlighted text or extract something impactful
+  const highlightText = useMemo(() => {
+    // If highlight is explicitly provided, use it
+    if (data.highlight) return data.highlight;
+    
+    // Otherwise try to automatically extract a good highlight
+    const feedback = data.feedback || "";
+    
+    // Try to find an impactful sentence with common keywords
+    const sentences = feedback.split(/[.!?]+/).filter(s => s.trim().length > 0);
+    const keywords = ['excellent', 'amazing', 'outstanding', 'great', 'best', 'recommend', 'impressed', 'professional'];
+    
+    // Find a sentence containing at least one keyword
+    const highlightSentence = sentences.find(sentence => 
+      keywords.some(keyword => sentence.toLowerCase().includes(keyword))
+    );
+    
+    // If found a good sentence, use it; otherwise return null
+    return highlightSentence ? highlightSentence.trim() : null;
+  }, [data.feedback, data.highlight]);
+  
+  // Enhanced animation for the card
   const animation = {
     initial: { opacity: 0, y: 30 },
     animate: isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 },
@@ -47,69 +74,35 @@ const FeedbackCard = ({ data, index = 0 }) => {
   };
   
   return (
-    <div className="h-full transition-all duration-300" ref={ref} data-testid="feedback-card">
+    <div className="h-full transition-all duration-300 feedback-card-wrapper" ref={ref} data-testid="feedback-card">
       <Card 
-        className="h-full overflow-hidden hover:-translate-y-2 transition-all duration-300 bg-theme-navy"
+        className="h-full overflow-hidden hover:-translate-y-2 hover:shadow-lg transition-all duration-300 bg-theme-navy feedback-card"
         animation={animation}
         shadow
       >
-        <div className="p-6 flex flex-col h-full bg-theme-navy">
-          {/* Rating stars */}
-          <div 
-            className="flex mb-4 text-primary" 
-            aria-label={`${rating} out of 5 stars`}
-          >
-            {[...Array(5)].map((_, i) => (
-              <FaStar 
-                key={i} 
-                className="star mr-1 text-sm" 
-                color={i < rating ? '#64ffda' : '#343a40'}
-                aria-hidden="true"
-              />
-            ))}
-          </div>
+        <div className="p-6 flex flex-col h-full bg-theme-navy relative feedback-content">
+          {/* Decorative elements */}
+          <div className="feedback-decoration-top"></div>
+          <div className="feedback-decoration-bottom"></div>
           
-          {/* Quote content */}
-          <div className="relative flex-grow mb-5">
-            <FaQuoteLeft 
-              className="text-text-muted text-lg absolute top-0 left-0" 
-              aria-hidden="true" 
-            />
-            <p 
-              className="pl-7 pr-7 text-text italic text-sm leading-relaxed relative border-l border-primary" 
-              tabIndex={0}
-            >
-              {data.feedback}
-            </p>
-            <FaQuoteRight 
-              className="text-text-muted text-lg absolute bottom-0 right-0" 
-              aria-hidden="true" 
-            />
-          </div>
+          {/* Rating stars component */}
+          <RatingStars rating={rating} className="mb-3" />
           
-          {/* Author info */}
-          <div className="flex items-center mt-auto pt-4 border-t border-border">
-            <ResponsiveImage 
-              src={avatar} 
-              alt={`${data.name}`} 
-              className="w-4 h-4 rounded-full border border-primary object-cover mr-2"
-              lazy={true}
+          {/* Highlight section (if applicable) */}
+          {highlightText && (
+            <FeedbackHighlight text={highlightText} className="mb-3" />
+          )}
+          
+          {/* Quote content component */}
+          <FeedbackQuote text={data.feedback} />
+          
+          {/* Author info component */}
+          <div className="mt-auto pt-4 border-t border-primary border-opacity-20">
+            <FeedbackAuthor 
+              name={data.name}
+              role={role}
+              avatar={avatar}
             />
-            
-            <div>
-              <h5 
-                className="font-bold text-primary text-base mb-0.5" 
-                tabIndex={0}
-              >
-                {data.name}
-              </h5>
-              <p 
-                className="text-text-muted text-xs" 
-                tabIndex={0}
-              >
-                {role}
-              </p>
-            </div>
           </div>
         </div>
       </Card>
@@ -121,7 +114,8 @@ FeedbackCard.propTypes = {
   data: PropTypes.shape({
     name: PropTypes.string.isRequired,
     feedback: PropTypes.string.isRequired,
-    avatar: PropTypes.string,
+    highlight: PropTypes.string,
+    avatar: PropTypes.string, 
     designation: PropTypes.string,
     rating: PropTypes.number
   }).isRequired,

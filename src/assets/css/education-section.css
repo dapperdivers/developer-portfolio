@@ -1,186 +1,150 @@
-/* Education Section Styles */
+/**
+ * Education Section Styles
+ * Enhanced with modern styling and animations for better visual hierarchy
+ */
 
 .education-section {
   padding: var(--section-padding-y) 0;
   position: relative;
-}
-
-/* Section title and icon */
-.education-title-container {
-  display: flex;
-  align-items: center;
-  margin-bottom: var(--spacing-6);
-}
-
-.education-icon {
-  width: calc(var(--spacing-6) * 1.25);
-  height: calc(var(--spacing-6) * 1.25);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: var(--border-radius-circle);
-  background: linear-gradient(to right, var(--color-white), var(--color-background-alt));
-  box-shadow: var(--box-shadow);
-  margin-right: var(--spacing-4);
-}
-
-.education-title {
-  font-size: var(--font-size-h2);
-  font-weight: var(--font-weight-bold);
-  color: var(--color-white);
-  margin-bottom: 0;
-}
-
-/* Timeline styling */
-.education-timeline {
-  position: relative;
-  padding-left: 2rem;
-}
-
-.education-timeline::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 3px;
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
-  border-radius: 3px;
-}
-
-/* Timeline items */
-.education-card {
-  position: relative;
-  margin-bottom: 2rem;
-  transition: all 0.3s ease;
-}
-
-.education-card::before {
-  content: "";
-  position: absolute;
-  left: -2.25rem;
-  top: 1.5rem;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background-color: var(--white);
-  border: 3px solid var(--accent);
-  z-index: 1;
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
-}
-
-/* Card styling */
-.education-card .card {
-  border: none;
-  border-radius: 0.75rem;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  background-color: var(--color-background-alt);
   overflow: hidden;
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-  background-color: var(--white);
 }
 
-.education-card .card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+/* Container for education content */
+.education-content {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: var(--spacing-6) var(--spacing-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-8);
 }
 
-.education-card .card-body {
-  padding: 1.75rem;
-}
-
-/* School name and details */
-.education-card .school-name {
-  color: var(--primary);
-  font-weight: 700;
-  font-size: 1.25rem;
-  margin-bottom: 0.5rem;
-}
-
-.education-card .degree {
-  font-weight: 600;
-  margin-bottom: 0.75rem;
-  color: var(--dark);
-}
-
-.education-card .duration-badge {
-  background-color: rgba(0, 110, 230, 0.1);
-  color: var(--primary);
-  font-weight: 600;
-  padding: 0.5rem 0.75rem;
-  border-radius: 30px;
-  font-size: 0.75rem;
-  letter-spacing: 0.03em;
-  margin-bottom: 1rem;
-  display: inline-block;
-}
-
-.education-card .description {
-  color: var(--secondary);
-  font-size: 0.95rem;
-  line-height: 1.6;
-}
-
-.education-card ul {
-  padding-left: 1.25rem;
-  margin-top: 0.75rem;
-}
-
-.education-card li {
-  color: var(--secondary);
-  margin-bottom: 0.5rem;
-  font-size: 0.95rem;
-}
-
-/* Separator styling */
-.education-separator {
+/* Main education card */
+.education-main {
   position: relative;
-  margin-top: -1px;
+  margin-bottom: var(--spacing-2);
+  transition: transform 0.5s ease-out, opacity 0.5s ease-out;
 }
+
+/* Education card styling with enhanced visuals */
+.education-card-wrapper {
+  background-color: var(--color-card-bg);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  border: 1px solid rgba(100, 255, 218, 0.15);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.education-card-wrapper:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15), 0 5px 15px rgba(100, 255, 218, 0.15);
+  border-color: rgba(100, 255, 218, 0.3);
+}
+
+/* Certifications section styling */
+.certifications-section {
+  position: relative;
+  margin-top: var(--spacing-6);
+  border-top: 1px dashed rgba(100, 255, 218, 0.2);
+  padding-top: var(--spacing-6);
+  transition: transform 0.5s ease-out, opacity 0.5s ease-out;
+}
+
+.certifications-section-title {
+  font-size: var(--font-size-xl);
+  color: var(--color-text);
+  margin-bottom: var(--spacing-5);
+  position: relative;
+  display: inline-block;
+  padding-bottom: var(--spacing-2);
+}
+
+.certifications-section-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(to right, var(--color-primary), var(--color-primary-light));
+  border-radius: 2px;
+}
+
+/* Enhanced grid layout for certifications */
+.certifications-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--spacing-5);
+  margin-top: var(--spacing-4);
+}
+
+/* Animation classes */
+.education-card-animate {
+  animation: slide-up-fade-in 0.7s ease-out 0.2s both;
+}
+
+.certifications-animate {
+  animation: slide-up-fade-in 0.7s ease-out 0.5s both;
+}
+
+@keyframes slide-up-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Animation delays for certification badges */
+.certification-badge:nth-child(1) { animation-delay: 0.6s; }
+.certification-badge:nth-child(2) { animation-delay: 0.7s; }
+.certification-badge:nth-child(3) { animation-delay: 0.8s; }
+.certification-badge:nth-child(4) { animation-delay: 0.9s; }
+.certification-badge:nth-child(5) { animation-delay: 1.0s; }
 
 /* Responsive adjustments */
-@media (max-width: 991.98px) {
-  .education-title {
-    font-size: 2rem;
+@media (max-width: 768px) {
+  .education-content {
+    padding: var(--spacing-4) var(--spacing-3);
+    gap: var(--spacing-6);
   }
   
-  .education-timeline {
-    padding-left: 1.5rem;
+  .certifications-grid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: var(--spacing-3);
   }
   
-  .education-card::before {
-    left: -1.75rem;
-    width: 12px;
-    height: 12px;
-  }
-}
-
-@media (max-width: 767.98px) {
-  .education-section {
-    padding: 4rem 0;
+  .certifications-section {
+    margin-top: var(--spacing-4);
+    padding-top: var(--spacing-4);
   }
   
-  .education-title-container {
-    margin-bottom: 2rem;
-  }
-  
-  .education-icon {
-    width: 50px;
-    height: 50px;
-  }
-  
-  .education-title {
-    font-size: 1.75rem;
+  .certifications-section-title {
+    font-size: var(--font-size-lg);
   }
 }
 
 /* Reduced motion preferences */
 @media (prefers-reduced-motion: reduce) {
-  .education-card, 
-  .education-card .card {
+  .education-card-wrapper,
+  .education-card-animate,
+  .certifications-animate {
     transition: none;
+    animation: none;
   }
   
-  .education-card .card:hover {
+  .education-card-wrapper:hover {
     transform: none;
+    box-shadow: var(--shadow-md);
+  }
+  
+  .certification-badge {
+    animation: none !important;
   }
 }

@@ -1,17 +1,14 @@
-import React, { memo, useMemo, useCallback } from 'react';
-import ExperienceCard from '@molecules/ExperienceCard';
+import React, { memo, useMemo } from "react";
+import PropTypes from 'prop-types';
 import SkeletonCard from '@atoms/SkeletonCard';
 import Section from '@layout/Section';
-import { motion } from "framer-motion";
-import { Icon } from '@iconify/react';
 import useExperience from "@hooks/useExperience";
-import useTimelineView from "@hooks/useTimelineView";
 import { usePortfolio } from "@context/PortfolioContext";
-
+import ExperienceTimeline from './ExperienceTimeline';
+import './Experience.css';
 
 /**
- * Experience section component displaying work history.
- * Renders a grid of ExperienceCard components with work history data.
+ * Experience section component displaying professional work history in a visually appealing timeline.
  * 
  * @component
  * @returns {React.ReactElement} Experience section component
@@ -20,7 +17,7 @@ const Experience = () => {
   // Get portfolio data
   const portfolioData = usePortfolio();
   
-  // Get loading delay from context or use default (demonstrates skeleton loading)
+  // Get loading delay from context or use default
   const loadingDelay = portfolioData?.settings?.loadingDelay || 0;
   
   // Get experience data with options
@@ -33,40 +30,11 @@ const Experience = () => {
   const sectionTitle = portfolioData?.experienceSection?.title || "Experience";
   const sectionSubtitle = portfolioData?.experienceSection?.subtitle;
   
-  // Get preferred view type from context or default to 'timeline'
-  const preferredViewType = portfolioData?.experienceSection?.viewType || 'timeline';
-  
-  // Use timeline view hook for managing view state and animations
-  const { 
-    viewType, 
-    setView, 
-    getAnimationDelay, 
-    entryRef,
-    extractDateYear 
-  } = useTimelineView({
-    defaultView: preferredViewType,
-    animationDelayIncrement: 150,
-    enableIntersectionObserver: true
-  });
-  
-  // Set the appropriate layout class based on view type
-  const layoutClass = useMemo(() => `layout-${viewType}`, [viewType]);
-  
-  // Handler for view toggle button clicks
-  const handleViewToggle = useCallback((view) => {
-    setView(view);
-  }, [setView]);
-  
   // Determine number of skeleton cards to show
-  const skeletonCount = useMemo(() => {
-    // Could be dynamic based on viewport, for now static
-    return 3;
-  }, []);
+  const skeletonCount = useMemo(() => 3, []);
   
-  // Loading state flag
+  // Loading and error state flags
   const isLoading = !experience;
-  
-  // Error state flag
   const hasError = experience && experience.length === 0;
   
   // Skip rendering the whole section if explicitly disabled in config
@@ -74,18 +42,24 @@ const Experience = () => {
     return null;
   }
   
-  // Memoize animation configuration to prevent unnecessary recalculations
+  // Animation config for framer-motion
   const animation = useMemo(() => ({
     initial: { opacity: 0, y: 40 },
     whileInView: { opacity: 1, y: 0 },
     viewport: { once: true, margin: "-50px" },
     transition: { 
       duration: 0.5,
-      // Optimize performance
       type: "tween",
-      translateY: true
+      ease: "easeOut"
     }
   }), []);
+  
+  // Extract year from date string (e.g., "Jan 2019 - Present" => "2019")
+  const extractDateYear = (dateString) => {
+    if (!dateString) return '';
+    const matches = dateString.match(/\b(19|20)\d{2}\b/);
+    return matches ? matches[0] : '';
+  };
   
   // Render loading state if experience data is not available
   if (isLoading) {
@@ -95,11 +69,12 @@ const Experience = () => {
         title={sectionTitle}
         subtitle={sectionSubtitle}
         className="experience-section"
+        data-testid="experience-section-loading"
       >
-        <div className="experience-grid experience-grid-loading skeleton-staggered">
+        <div className="experience-loading skeleton-staggered">
           {Array.from({ length: skeletonCount }).map((_, i) => (
             <SkeletonCard 
-              key={i} 
+              key={`skeleton-${i}`} 
               type="experience" 
               index={i} 
             />
@@ -109,7 +84,7 @@ const Experience = () => {
     );
   }
   
-  // Render error state if no experience is available
+  // Render empty state if no experience data
   if (hasError) {
     return (
       <Section
@@ -117,37 +92,14 @@ const Experience = () => {
         title={sectionTitle}
         subtitle={sectionSubtitle}
         className="experience-section"
+        data-testid="experience-section-empty"
       >
         <div className="experience-empty-state">
-          <p className="text-gray-300">No work experience is currently available.</p>
+          <p>No work experience is currently available.</p>
         </div>
       </Section>
     );
   }
-
-  // Render view controls for normal state
-  const renderViewControls = () => (
-    <div className="view-controls flex justify-end mb-6">
-      <button 
-        type="button"
-        className={`view-toggle mr-4 ${viewType === 'timeline' ? 'active text-cyan-400' : 'text-gray-500'}`}
-        onClick={() => handleViewToggle('timeline')}
-        aria-pressed={viewType === 'timeline'}
-      >
-        <Icon icon="mdi:timeline-outline" className="view-icon mr-1" aria-hidden="true" />
-        <span>Timeline</span>
-      </button>
-      <button 
-        type="button"
-        className={`view-toggle ${viewType === 'grid' ? 'active text-cyan-400' : 'text-gray-500'}`}
-        onClick={() => handleViewToggle('grid')}
-        aria-pressed={viewType === 'grid'}
-      >
-        <Icon icon="mdi:grid" className="view-icon mr-1" aria-hidden="true" />
-        <span>Grid</span>
-      </button>
-    </div>
-  );
   
   return (
     <Section
@@ -155,65 +107,20 @@ const Experience = () => {
       title={sectionTitle}
       subtitle={sectionSubtitle}
       animation={animation}
-      className={`experience-section ${layoutClass}`}
+      className="experience-section"
       aria-label="Work experience history"
+      data-testid="experience-section"
     >
-      {/* View toggle controls */}
-      {renderViewControls()}
-      
-      {/* Grid layout (default for small screens) */}
-      <div 
-        className="experience-grid" 
-        aria-label={`${experience.length} work experiences in grid layout`}
-      >
-        {experience.map((data, i) => (
-          <ExperienceCard 
-            key={`experience-grid-${data.company}-${i}`} 
-            data={data} 
-            index={i} 
-          />
-        ))}
-      </div>
-      
-      {/* Timeline layout (default for large screens) */}
-      <div 
-        className="experience-timeline timeline-animate-in" 
-        aria-label={`${experience.length} work experiences in timeline layout`}
-      >
-        {experience.map((data, i) => (
-          <motion.div 
-            key={`experience-timeline-${data.company}-${i}`}
-            className="timeline-entry"
-            ref={entryRef(i)}
-            style={{ 
-              transitionDelay: getAnimationDelay(i)
-            }}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px 0px" }}
-            transition={{ 
-              duration: 0.5, 
-              delay: 0.1 * i, 
-              ease: "easeOut" 
-            }}
-          >
-            <div className="timeline-date text-cyan-400 font-semibold" aria-label={`Work period: ${data.date}`}>
-              {extractDateYear(data.date)}
-            </div>
-            <ExperienceCard 
-              data={data} 
-              index={i} 
-            />
-          </motion.div>
-        ))}
-      </div>
+      <ExperienceTimeline 
+        experience={experience} 
+        extractDateYear={extractDateYear}
+      />
     </Section>
   );
 };
 
 Experience.propTypes = {
-  // This component doesn't accept any props directly,
-  // but uses useExperience hook to access data
+  /* No props for this component as it uses hooks for data */
 };
 
 // Apply memoization for performance optimization

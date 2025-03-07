@@ -34,10 +34,12 @@ const Feedbacks = () => {
       className="feedbacks-section"
       data-testid="feedbacks-section"
     >
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {feedbacks.map((data, i) => (
-          <FeedbackCard key={`feedback-${i}`} data={data} index={i} />
-        ))}
+      <div className="feedbacks-carousel-container">
+        <div className="feedbacks-carousel">
+          {feedbacks.map((data, i) => (
+            <FeedbackCard key={`feedback-${i}`} data={data} index={i} />
+          ))}
+        </div>
       </div>
     </Section>
   );

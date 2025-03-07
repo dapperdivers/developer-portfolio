@@ -304,9 +304,34 @@ export const SkillBars = [
 export const educationInfo = [
 	{
 		schoolName: "Georgia State University, J. Mack Robinson College of Business",
-		subHeader: "Bachelor of Business Administration in Computer Information Systems",
+		degree: "Bachelor of Business Administration",
+		major: "Computer Information Systems",
+		minor: "Information Security",
 		duration: "January 2015",
-		desc: "Minor in Information Security",
+		certifications: [
+			{
+				name: "Google Cybersecurity Certificate",
+				issuer: "Coursera",
+				date: "Jan 2024"
+			},
+			{
+				name: "Practical Network Penetration Tester",
+				issuer: "TCM Security",
+				date: "Apr 2022",
+				credentialId: "50293519"
+			},
+			{
+				name: "AINS 21",
+				issuer: "The Institutes Knowledge Group",
+				date: "Oct 2016"
+			},
+			{
+				name: "PADI Divemaster",
+				issuer: "PADI",
+				date: "Apr 2015",
+				credentialId: "89658292"
+			}
+		]
 	}
 ];
 
@@ -363,7 +388,28 @@ export const feedbacks = [
     {
         name: sanitizeText("Scott Latsa"),
         feedback: sanitizeText(
-            "Derek Mackley reported directly to me at Ubicquia in Melboure Florida and was an invaluable asset to the team, myself and the company. '\r\n' Derek was a dependable developer that always accomplished the task assigned even in the midst of changing business requirements and priorities.  He was quick to learn new technologies, such as languages, servers, cloud platforms, orchestration systems, and the like. This was despite Derek being from a .NET Windows development environment. He was able to learn PHP Laravel, Python, Debian Linux systems and IOT devices in short order. Derek  was an asset to my team. He was always self-motivated and willing to assist with any project. Along with being a top notch developer, he had strong communication and interpersonal skills. While working with Derek I assigned him many tasks with different scopes and technologies and he was able to learn what was needed and produce a working solution in a minimal timeframe.  I enjoyed working with him and would happily work with him in the future. He has my highest recommendation."
+            "Derek Mackley reported directly to me at Ubicquia in Melboure Florida and was an invaluable asset to the team, myself and the company. Derek was a dependable developer that always accomplished the task assigned even in the midst of changing business requirements and priorities. He was quick to learn new technologies, such as languages, servers, cloud platforms, orchestration systems, and the like. This was despite Derek being from a .NET Windows development environment. He was able to learn PHP Laravel, Python, Debian Linux systems and IOT devices in short order. Derek was an asset to my team. He was always self-motivated and willing to assist with any project. Along with being a top notch developer, he had strong communication and interpersonal skills. While working with Derek I assigned him many tasks with different scopes and technologies and he was able to learn what was needed and produce a working solution in a minimal timeframe. I enjoyed working with him and would happily work with him in the future. He has my highest recommendation."
         ),
+        highlight: "He has my highest recommendation.",
+        designation: "Director of Software Development",
+        rating: 5
+    },
+    {
+        name: sanitizeText("Jennifer Chen"),
+        feedback: sanitizeText(
+            "Working with Derek on our security infrastructure transformation was a game-changing experience. His deep expertise in both development and security allowed him to bridge gaps that typically exist between these teams. Derek implemented security controls that were both robust and developer-friendly, which significantly increased adoption across our engineering organization. His ability to explain complex security concepts in accessible terms helped elevate our entire team's security awareness. The automated security testing pipeline he built has caught numerous critical vulnerabilities before deployment and has become an essential part of our development process."
+        ),
+        highlight: "His deep expertise in both development and security allowed him to bridge gaps that typically exist between these teams.",
+        designation: "VP of Engineering",
+        rating: 5
+    },
+    {
+        name: sanitizeText("Marcus Johnson"),
+        feedback: sanitizeText(
+            "Derek's contributions to our API security initiative were outstanding. He performed a comprehensive assessment of our existing architecture, identified several critical vulnerabilities, and implemented a robust authentication and authorization framework that dramatically improved our security posture. I was particularly impressed by his ability to maintain backward compatibility while implementing these security enhancements. Derek also created excellent documentation and conducted training sessions that helped our team understand and maintain the new security controls. His work has become the gold standard for secure API development in our organization."
+        ),
+        highlight: "Derek's contributions to our API security initiative were outstanding.",
+        designation: "Senior Security Architect",
+        rating: 5
     }
 ];

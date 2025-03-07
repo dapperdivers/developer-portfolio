@@ -1,0 +1,55 @@
+/**
+ * Fields of Study Component Styles
+ */
+
+.fields-of-study {
+  margin-bottom: var(--spacing-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+.field-label {
+  display: block;
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--color-text-muted);
+  margin-bottom: var(--spacing-1);
+  font-weight: var(--font-weight-medium);
+}
+
+.major-container,
+.minor-container {
+  position: relative;
+}
+
+.major-value,
+.minor-value {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  padding-left: var(--spacing-2);
+}
+
+.major-value {
+  color: var(--color-text);
+  border-left: 3px solid var(--color-primary-light);
+}
+
+.minor-value {
+  color: var(--color-primary);
+  border-left: 3px solid var(--color-primary-dark);
+}
+
+/* Responsive adaptations */
+@media (min-width: 768px) {
+  .fields-of-study {
+    flex-direction: row;
+    gap: var(--spacing-4);
+  }
+  
+  .major-container,
+  .minor-container {
+    flex: 1;
+  }
+}
