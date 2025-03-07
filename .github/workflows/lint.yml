@@ -18,7 +18,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '22'
+          node-version: 22
           cache: 'yarn'
           
       - name: Install dependencies
@@ -28,7 +28,21 @@ jobs:
         run: |
           echo "ESLint version:"
           npx eslint --version
-          npx eslint src --ext .js,.jsx,.ts,.tsx
+          
+          # Run ESLint but continue with warnings (only fail on errors)
+          npx eslint src --ext .js,.jsx,.ts,.tsx --max-warnings 9999 || {
+            EXIT_CODE=$?
+            if [ $EXIT_CODE -eq 1 ]; then
+              echo "⚠️ ESLint found errors, failing the build"
+              exit 1
+            elif [ $EXIT_CODE -eq 0 ]; then
+              echo "✅ ESLint found only warnings, continuing the build"
+              exit 0
+            else
+              echo "❌ ESLint command failed with exit code $EXIT_CODE"
+              exit $EXIT_CODE
+            fi
+          }
       
       - name: Verify TypeScript types
         run: yarn tsc --noEmit
