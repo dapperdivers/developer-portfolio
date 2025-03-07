@@ -36,9 +36,15 @@ module.exports = {
       targets: { node: 'current' },
       modules: 'auto' // This allows Babel to handle both ESM and CommonJS
     }],
-    ['@babel/preset-react', { runtime: 'automatic' }]
+    ['@babel/preset-react', { runtime: 'automatic' }],
+    // Add TypeScript preset to properly handle .tsx files
+    '@babel/preset-typescript'
   ],
-  plugins: [moduleResolverPlugin],
+  plugins: [
+    moduleResolverPlugin,
+    // Fix for react-is issues in production
+    process.env.NODE_ENV === 'production' && ['transform-react-remove-prop-types', { removeImport: true }]
+  ].filter(Boolean),
   env: {
     test: {
       // Settings for test environment to ensure Vitest compatibility

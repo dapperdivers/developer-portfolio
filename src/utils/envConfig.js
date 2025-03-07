@@ -1,107 +1,114 @@
 /**
- * Environment configuration utility for the Developer Portfolio project
- * Provides a centralized way to access environment variables with proper validation
- */
-
-/**
- * Environment configuration with defaults
- * Maps environment variables to sanitized config values
+ * Type-safe environment variable access with validation
  * 
- * @typedef {Object} EnvConfig
- * @property {string} nodeEnv - Environment (development, production, test)
- * @property {number} port - Server port for production
- * @property {number} devServerPort - Development server port
- * @property {string[]} allowedDomains - Domains allowed for CORS
- * @property {string|null} githubToken - GitHub API token (optional)
- * @property {boolean} enablePerformanceMonitoring - Whether to enable performance monitoring
- * @property {boolean} enableAnimations - Whether to enable animations by default
- * @property {boolean} isDevelopment - Whether the environment is development
- * @property {boolean} isProduction - Whether the environment is production
- * @property {boolean} isTest - Whether the environment is test
+ * This module provides a consistent way to access environment variables
+ * with proper validation, default values, and TypeScript type safety.
+ * 
+ * @module envConfig
  */
 
-// Default configuration values
-const defaultConfig = {
-  nodeEnv: 'development',
-  port: 3001,
-  devServerPort: 3000,
-  allowedDomains: ['http://localhost:3001', 'http://localhost:3000'],
-  githubToken: null,
-  enablePerformanceMonitoring: true,
-  enableAnimations: true,
-};
-
 /**
- * Parse a comma-separated string to an array
- * @param {string} str - String to parse
- * @returns {string[]} - Array of strings
- */
-const parseStringArray = (str) => (str ? str.split(',').map(item => item.trim()) : []);
-
-/**
- * Parse a boolean string to a boolean
- * @param {string} str - String to parse (e.g. 'true', 'false')
+ * Parse a string value to a boolean
+ * @param {string} value - String to parse ('true', 'false', etc.)
  * @param {boolean} defaultValue - Default value if the string is not provided
  * @returns {boolean} - Parsed boolean
  */
-const parseBoolean = (str, defaultValue) => {
-  if (str === undefined || str === null) return defaultValue;
-  return str === 'true' || str === '1' || str === 'yes';
+const toBool = (value, defaultValue = false) => {
+  if (value === undefined || value === null) return defaultValue;
+  return value === 'true' || value === '1' || value === 'yes';
 };
 
 /**
- * Parse an integer string to a number
- * @param {string} str - String to parse (e.g. '3000')
- * @param {number} defaultValue - Default value if the string is not provided or invalid
+ * Parse a string value to an integer
+ * @param {string} value - String to parse ('42', etc.)
+ * @param {number} defaultValue - Default value if parsing fails
  * @returns {number} - Parsed number
  */
-const parseInteger = (str, defaultValue) => {
-  if (str === undefined || str === null) return defaultValue;
-  const parsed = parseInt(str, 10);
+const toInt = (value, defaultValue = 0) => {
+  if (value === undefined || value === null) return defaultValue;
+  const parsed = parseInt(value, 10);
   return isNaN(parsed) ? defaultValue : parsed;
 };
 
 /**
- * Get environment variable with validation and default value
- * This provides consistent access to environment variables
- * 
- * @param {Object} env - Environment object (e.g., import.meta.env, process.env)
- * @returns {EnvConfig} - Configuration object with validated values
+ * Parse a comma-separated string to an array of strings
+ * @param {string} value - String to parse ('item1,item2,item3')
+ * @param {string[]} defaultValue - Default value if parsing fails
+ * @returns {string[]} - Array of trimmed strings
  */
-export const getConfig = (env = {}) => {
-  // Use import.meta.env in browser (Vite), process.env in Node.js or tests
-  const environment = typeof import.meta !== 'undefined' ? import.meta.env : env;
-  
-  // Build the config with defaults and environment variables
-  const config = {
-    nodeEnv: environment.NODE_ENV || defaultConfig.nodeEnv,
-    port: parseInteger(environment.PORT, defaultConfig.port),
-    devServerPort: parseInteger(environment.VITE_DEV_SERVER_PORT, defaultConfig.devServerPort),
-    allowedDomains: parseStringArray(environment.ALLOWED_DOMAINS) || defaultConfig.allowedDomains,
-    githubToken: environment.GITHUB_TOKEN || null,
-    enablePerformanceMonitoring: parseBoolean(
-      environment.VITE_ENABLE_PERFORMANCE_MONITORING, 
-      defaultConfig.enablePerformanceMonitoring
-    ),
-    enableAnimations: parseBoolean(
-      environment.VITE_ENABLE_ANIMATIONS, 
-      defaultConfig.enableAnimations
-    ),
-  };
-  
-  // Add convenience properties
-  config.isDevelopment = config.nodeEnv === 'development';
-  config.isProduction = config.nodeEnv === 'production';
-  config.isTest = config.nodeEnv === 'test';
-  
-  return config;
+const toArray = (value, defaultValue = []) => {
+  if (!value) return defaultValue;
+  return value.split(',').map(item => item.trim());
 };
 
 /**
- * Environment configuration - singleton instance
- * @type {EnvConfig}
+ * Type-safe environment configuration
  */
-export const envConfig = getConfig();
+export const env = {
+  // App information
+  app: {
+    title: import.meta.env.VITE_APP_TITLE || 'Developer Portfolio',
+    apiBaseUrl: import.meta.env.VITE_API_BASE_URL || '',
+    port: toInt(import.meta.env.PORT, 3001),
+    devServerPort: toInt(import.meta.env.VITE_DEV_SERVER_PORT, 3000),
+    allowedDomains: toArray(import.meta.env.ALLOWED_DOMAINS, ['http://localhost:3001', 'http://localhost:3000']),
+  },
+  
+  // Feature flags as booleans
+  features: {
+    enablePwa: toBool(import.meta.env.VITE_ENABLE_PWA, true),
+    darkMode: toBool(import.meta.env.VITE_FEATURE_DARK_MODE, false),
+    animations: toBool(import.meta.env.VITE_FEATURE_ANIMATIONS, true),
+    performanceMonitoring: toBool(import.meta.env.VITE_ENABLE_PERFORMANCE_MONITORING, true),
+  },
+  
+  // API integrations
+  github: {
+    token: import.meta.env.VITE_GITHUB_TOKEN || '',
+    hasToken: !!import.meta.env.VITE_GITHUB_TOKEN,
+  },
+  
+  // Analytics
+  analytics: {
+    gaTrackingId: import.meta.env.VITE_GA_TRACKING_ID || '',
+    enabled: !!import.meta.env.VITE_GA_TRACKING_ID,
+  },
+  
+  // Environment info
+  isProduction: import.meta.env.MODE === 'production',
+  isDevelopment: import.meta.env.MODE === 'development',
+  isTest: import.meta.env.MODE === 'test',
+  mode: import.meta.env.MODE || 'development',
+};
+
+/**
+ * Validates that required environment variables are present
+ * @returns {Object} Validation result with any missing variables
+ */
+export const validateEnv = () => {
+  const requiredVars = [
+    // Add any required variables here
+  ];
+  
+  const missing = requiredVars.filter(varName => {
+    const path = varName.split('.');
+    let current = env;
+    
+    for (const part of path) {
+      if (current[part] === undefined || current[part] === null || current[part] === '') {
+        return true;
+      }
+      current = current[part];
+    }
+    
+    return false;
+  });
+  
+  return {
+    valid: missing.length === 0,
+    missing,
+  };
+};
 
 // Default export for convenience
-export default envConfig;
+export default env;

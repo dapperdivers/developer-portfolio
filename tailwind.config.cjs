@@ -116,7 +116,7 @@ module.exports = {
         link: 'var(--color-link)',
         'link-hover': 'var(--color-link-hover)',
         border: 'var(--color-border)',
-        background: 'var(--color-background)',
+        background: 'var(--color-background-alt)',
         'background-alt': 'var(--color-background-alt)',
         'background-muted': 'var(--color-background-muted)',
       },
@@ -273,7 +273,7 @@ module.exports = {
       // Add base styles
       addBase({
         'body': {
-          backgroundColor: 'var(--color-background)', // Using design system variable
+          backgroundColor: 'var(--color-background-alt)', // Using design system variable
           color: 'var(--color-text)', // Using design system variable
           scrollBehavior: 'smooth'
         },
