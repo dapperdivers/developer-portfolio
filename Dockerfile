@@ -16,7 +16,7 @@ ENV GENERATE_SOURCEMAP=false
 
 # Install dependencies first (better layer caching)
 COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile
+RUN yarn install --frozen-lockfile --production=false
 
 # Copy source code
 COPY . .
@@ -67,7 +67,6 @@ USER nodeapp
 
 # Copy server file and ensure correct ownership
 COPY --chown=nodeapp:nodeapp server.js .
-
 
 # Start secure express server
 CMD ["node", "server.js"]
