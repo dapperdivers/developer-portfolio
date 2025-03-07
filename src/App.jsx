@@ -1,11 +1,10 @@
-// Import React with namespace access to prevent tree-shaking issues in production
-import * as React from 'react';
-const { useEffect, Suspense, lazy } = React;
+// Use named imports to allow tree-shaking to work properly
+import { useEffect, Suspense, lazy } from 'react';
 import Head from "@atoms/Head";
 import Navigation from "@molecules/Navigation";
 import Footer from "@molecules/Footer";
 import SkipToContent from "@atoms/SkipToContent";
-import ContextDevTool from "@utils/ContextDevTool";
+// ContextDevTool is dynamically imported to prevent inclusion in production builds
 
 // Import Iconify icon collections - this ensures icons are available offline
 import '@iconify-json/logos';
@@ -99,6 +98,18 @@ function App() {
     </div>
   );
 
+  // Lazily load the ContextDevTool only in development mode
+  const DevTools = lazy(() => {
+    // Only import in development mode
+    if (import.meta.env.DEV) {
+      return import("@utils/ContextDevTool").then(module => ({
+        default: module.default
+      }));
+    }
+    // Return an empty component in production
+    return Promise.resolve({ default: () => null });
+  });
+
   return (
     <ErrorBoundary fallback={errorFallback}>
       <HelmetProvider>
@@ -109,7 +120,11 @@ function App() {
             <SkipToContent mainId="main-content" />
             <Navigation />
             {/* Developer tools - only rendered in development */}
-            <ContextDevTool />
+            {import.meta.env.DEV && (
+              <Suspense fallback={null}>
+                <DevTools />
+              </Suspense>
+            )}
             
             <main id="main-content" className="bg-background text-text">
               <ErrorBoundary>

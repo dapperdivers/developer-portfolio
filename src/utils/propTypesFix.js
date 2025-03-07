@@ -1,51 +1,95 @@
 /**
- * React PropTypes Compatibility Module
+ * Prop Types Fix for Production Builds
  * 
- * This module provides necessary symbol definitions for prop-types library
- * in a clean, decoupled manner.
+ * This module provides a safer approach to handling prop-types in production
+ * by normalizing the behavior between development and production environments.
+ * 
+ * This approach fixes the AsyncMode error in react-is by:
+ * 1. Creating a proper shim for react-is when it's being loaded
+ * 2. Adding enhanced PropTypes that work reliably in production
  */
 
-import React from 'react';
+// First, apply the fix for react-is to solve the AsyncMode error
+// This runs immediately when this module is imported
+(function fixReactIs() {
+  if (typeof window !== 'undefined') {
+    try {
+      // Create a patch function that will run once react-is attempts to load
+      const patchScript = document.createElement('script');
+      patchScript.textContent = `
+        (function() {
+          // Replace the original script tag
+          const originalCreateElement = document.createElement;
+          document.createElement = function(tagName) {
+            const element = originalCreateElement.call(document, tagName);
+            
+            if (tagName === 'script') {
+              const originalSetAttribute = element.setAttribute;
+              element.setAttribute = function(name, value) {
+                // If a script is loading react-is, set up to inject our patch
+                if (name === 'src' && value && value.includes('react-is')) {
+                  const originalOnload = element.onload;
+                  element.onload = function() {
+                    // Once react-is has loaded, apply our fix
+                    try {
+                      // Create the AsyncMode symbol if missing
+                      if (typeof ReactIs !== 'undefined' && ReactIs.AsyncMode === undefined) {
+                        ReactIs.AsyncMode = Symbol.for('react.async_mode');
+                      }
+                    } catch(e) {
+                      console.warn('Error patching ReactIs:', e);
+                    }
+                    
+                    // Call the original onload handler
+                    if (originalOnload) originalOnload.call(this);
+                  };
+                }
+                return originalSetAttribute.call(this, name, value);
+              };
+            }
+            return element;
+          };
+        })();
+      `;
+      // Add this script as early as possible
+      document.head.insertBefore(patchScript, document.head.firstChild);
+    } catch (e) {
+      console.warn('Could not apply react-is fix:', e);
+    }
+  }
+})();
 
-// Export symbols that might be used by prop-types and react-is
-export const ReactSymbols = {
-  asyncMode: Symbol.for('react.async_mode'),
-  concurrentMode: Symbol.for('react.concurrent_mode'),
-  contextConsumer: Symbol.for('react.context.consumer'),
-  contextProvider: Symbol.for('react.context.provider'),
-  element: Symbol.for('react.element'),
-  forwardRef: Symbol.for('react.forward_ref'),
-  fragment: Symbol.for('react.fragment'),
-  lazy: Symbol.for('react.lazy'),
-  memo: Symbol.for('react.memo'),
-  portal: Symbol.for('react.portal'),
-  profiler: Symbol.for('react.profiler'),
-  strictMode: Symbol.for('react.strict_mode'),
-  suspense: Symbol.for('react.suspense')
+// Now we can safely import PropTypes
+import PropTypes from 'prop-types';
+import { elementType } from 'prop-types-extra';
+
+// Create an enhanced version of PropTypes with additional utilities
+const EnhancedPropTypes = {
+  ...PropTypes,
+  elementType, // Add the elementType validator from prop-types-extra
+  
+  // Additional validators that might be useful
+  nodeOrFunc: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
+  
+  // Function to check if a component has the required props
+  checkProps(props, propTypes, componentName) {
+    if (process.env.NODE_ENV !== 'production') {
+      for (const propName in propTypes) {
+        if (Object.prototype.hasOwnProperty.call(propTypes, propName)) {
+          const validator = propTypes[propName];
+          const value = props[propName];
+          
+          // Check if the prop is required and missing
+          if (validator.isRequired && (value === undefined || value === null)) {
+            console.error(
+              `Required prop '${propName}' was not specified in '${componentName}'.`
+            );
+          }
+        }
+      }
+    }
+  }
 };
 
-/**
- * Check if a component type is a specific React type
- * @param {any} type - Component type to check
- * @param {Symbol} expectedType - Expected React type
- * @returns {boolean} True if the types match
- */
-export function isReactTypeOf(type, expectedType) {
-  return type === expectedType || 
-    (type && type.$$typeof === expectedType);
-}
-
-// Create a small helper to get the correct ReactIs behavior
-export const ReactTypeUtils = {
-  isFragment: (element) => isReactTypeOf(element?.type, ReactSymbols.fragment),
-  isPortal: (element) => isReactTypeOf(element?.type, ReactSymbols.portal),
-  isMemo: (element) => isReactTypeOf(element?.type, ReactSymbols.memo),
-  isForwardRef: (element) => isReactTypeOf(element?.type, ReactSymbols.forwardRef),
-  isContext: (element) => (
-    isReactTypeOf(element?.type, ReactSymbols.contextProvider) || 
-    isReactTypeOf(element?.type, ReactSymbols.contextConsumer)
-  )
-};
-
-// Log initialization
-console.log('React PropTypes compatibility module initialized');
+// Export the enhanced PropTypes
+export default EnhancedPropTypes;

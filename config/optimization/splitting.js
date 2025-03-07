@@ -39,8 +39,8 @@ export function createChunkStrategy() {
     manualChunks: (id) => {
       // Vendor chunks - dependencies
       if (id.includes('node_modules')) {
-        // React and related core packages
-        if (id.includes('react') || id.includes('react-dom') || id.includes('scheduler')) {
+        // React and related core packages - explicitly include react-is
+        if (id.includes('react') || id.includes('react-dom') || id.includes('scheduler') || id.includes('react-is') || id.includes('prop-types')) {
           return 'vendor-react';
         }
         
@@ -65,7 +65,7 @@ export function createChunkStrategy() {
       
       // Application code - separate by feature area
       
-      // Context provider files
+      // Context provider files - separate from utilities to allow better tree-shaking
       if (id.includes('/src/context/')) {
         return 'feature-context';
       }
@@ -89,8 +89,11 @@ export function createChunkStrategy() {
         return 'feature-hooks';
       }
       
-      // Utilities
+      // Utilities - Split context utilities from other utils to allow tree-shaking
       if (id.includes('/src/utils/')) {
+        if (id.includes('context')) {
+          return 'feature-context-utils';
+        }
         return 'feature-utils';
       }
     }

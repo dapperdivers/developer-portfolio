@@ -1,4 +1,6 @@
-import React, { ReactNode, useState, useCallback, useEffect, useMemo, Dispatch, SetStateAction } from 'react';
+// Use named imports to allow tree-shaking in production builds
+import { useState, useCallback, useEffect, useMemo, ReactElement } from 'react';
+import type { ReactNode, Dispatch, SetStateAction } from 'react';
 import { createTypedContext } from '@utils/contextUtils';
 
 // Animation Context Types
@@ -54,7 +56,7 @@ export interface AnimationProviderProps {
  * @param {AnimationProviderProps} props - Component props
  * @returns {JSX.Element} Provider component
  */
-export const AnimationProvider = ({ children }: AnimationProviderProps): React.ReactElement => {
+export const AnimationProvider = ({ children }: AnimationProviderProps): ReactElement => {
   // Animation settings
   const [inView, setInView] = useState<boolean>(false);
   const [animationEnabled, setAnimationEnabled] = useState<boolean>(true);

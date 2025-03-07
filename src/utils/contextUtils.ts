@@ -2,10 +2,12 @@
  * Context Utilities
  * 
  * Provides standardized patterns and utilities for working with
- * React Context using a decoupled, factory-based approach with registry tracking.
+ * React Context using a factory pattern approach with registry tracking.
  */
 
-import { createContext, useContext, Context } from 'react';
+// Use named imports to allow tree-shaking in production builds
+import { createContext, useContext } from 'react';
+import type { Context, Provider, Consumer } from 'react';
 import contextRegistry from './contextRegistry';
 
 /**
@@ -32,8 +34,7 @@ export interface TypedContextResult<T> {
  * Create a typed context with a customized hook
  * 
  * This factory function creates a React Context along with a custom hook
- * for safely accessing the context value. Using this pattern helps decouple
- * context usage from React internals.
+ * for safely accessing the context value.
  * 
  * @param defaultValue - The default value for the context
  * @param hookName - Name for the hook (for error messages and registry)
@@ -45,7 +46,7 @@ export function createTypedContext<T>(
   hookName: string = 'useContext',
   description?: string
 ): TypedContextResult<T> {
-  // Create the context directly from React's imported createContext
+  // Use named imports to allow tree-shaking to work properly
   const context = createContext<T>(defaultValue);
   
   // Register this context in the global registry for tracking
@@ -53,9 +54,10 @@ export function createTypedContext<T>(
   
   // Create a custom hook for this specific context
   function useTypedContext(): T {
+    // Use named import useContext
     const value = useContext(context);
     
-    // Verify context is used within provider
+    // Verify context is used within provider (only verify if value is explicitly undefined)
     if (value === undefined) {
       throw new Error(`${hookName} must be used within its corresponding Provider`);
     }
@@ -73,10 +75,7 @@ export function createTypedContext<T>(
   };
 }
 
-/**
- * Get information about all registered contexts
- * Useful for debugging and development tools
- */
+// Export additional utility functions
 export function getRegisteredContexts() {
   return contextRegistry.getAllContexts();
 }

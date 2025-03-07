@@ -113,6 +113,7 @@ export default defineConfig(({ command, mode }) => {
         'lottie-react',
         '@iconify/react',
         'prop-types',
+        'react-is', // Explicitly include react-is to prevent tree-shaking issues
         'axios',
         'classnames'
       ],

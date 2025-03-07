@@ -5,7 +5,7 @@
  * and their current values in the application.
  */
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { getRegisteredContexts } from './contextUtils';
 
 // Styling for the dev tool

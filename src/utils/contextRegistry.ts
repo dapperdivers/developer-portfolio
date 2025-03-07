@@ -40,6 +40,7 @@ class ContextRegistry {
     
     this.registry.set(name, { name, defaultValue, description });
     
+    // Only log in development mode
     if (import.meta.env.DEV) {
       console.log(`Context registered: ${name}${description ? ` - ${description}` : ''}`);
     }
