@@ -15,21 +15,49 @@ if (typeof window !== 'undefined') {
 }
 
 // Define React types that might be used by react-is
-if (typeof React !== 'undefined') {
-  // Legacy mode types that might be missing
-  React.AsyncMode = React.AsyncMode || React.unstable_AsyncMode || Symbol.for('react.async_mode');
-  React.ConcurrentMode = React.ConcurrentMode || React.unstable_ConcurrentMode || Symbol.for('react.concurrent_mode');
-  React.ContextConsumer = React.ContextConsumer || Symbol.for('react.context.consumer');
-  React.ContextProvider = React.ContextProvider || Symbol.for('react.context.provider');
-  React.Element = React.Element || Symbol.for('react.element');
-  React.ForwardRef = React.ForwardRef || Symbol.for('react.forward_ref');
-  React.Fragment = React.Fragment || Symbol.for('react.fragment');
-  React.Lazy = React.Lazy || Symbol.for('react.lazy');
-  React.Memo = React.Memo || Symbol.for('react.memo');
-  React.Portal = React.Portal || Symbol.for('react.portal');
-  React.Profiler = React.Profiler || Symbol.for('react.profiler');
-  React.StrictMode = React.StrictMode || Symbol.for('react.strict_mode');
-  React.Suspense = React.Suspense || Symbol.for('react.suspense');
+if (typeof React !== 'undefined' && React !== null) {
+  // Ensure React has an object type
+  if (typeof React !== 'object') {
+    console.warn('React is not an object type, creating backup');
+    window.React = window.React || {};
+    React = window.React;
+  }
+  
+  // Create a safe function to define React symbols
+  const defineReactSymbol = (name, fallbacks) => {
+    try {
+      if (React[name] === undefined) {
+        for (const fallback of fallbacks) {
+          if (fallback !== undefined) {
+            React[name] = fallback;
+            return;
+          }
+        }
+        
+        // If no fallbacks work, use Symbol.for
+        if (typeof Symbol !== 'undefined' && Symbol.for) {
+          React[name] = Symbol.for(`react.${name.toLowerCase()}`);
+        }
+      }
+    } catch (e) {
+      console.warn(`Error defining React.${name}`, e);
+    }
+  };
+  
+  // Define all React symbols safely
+  defineReactSymbol('AsyncMode', [React.AsyncMode, React.unstable_AsyncMode, Symbol.for('react.async_mode')]);
+  defineReactSymbol('ConcurrentMode', [React.ConcurrentMode, React.unstable_ConcurrentMode, Symbol.for('react.concurrent_mode')]);
+  defineReactSymbol('ContextConsumer', [React.ContextConsumer, Symbol.for('react.context.consumer')]);
+  defineReactSymbol('ContextProvider', [React.ContextProvider, Symbol.for('react.context.provider')]);
+  defineReactSymbol('Element', [React.Element, Symbol.for('react.element')]);
+  defineReactSymbol('ForwardRef', [React.ForwardRef, Symbol.for('react.forward_ref')]);
+  defineReactSymbol('Fragment', [React.Fragment, Symbol.for('react.fragment')]);
+  defineReactSymbol('Lazy', [React.Lazy, Symbol.for('react.lazy')]);
+  defineReactSymbol('Memo', [React.Memo, Symbol.for('react.memo')]);
+  defineReactSymbol('Portal', [React.Portal, Symbol.for('react.portal')]);
+  defineReactSymbol('Profiler', [React.Profiler, Symbol.for('react.profiler')]);
+  defineReactSymbol('StrictMode', [React.StrictMode, Symbol.for('react.strict_mode')]);
+  defineReactSymbol('Suspense', [React.Suspense, Symbol.for('react.suspense')]);
   
   // Also ensure symbols that react-is might be expecting
   if (!Symbol.for) {
