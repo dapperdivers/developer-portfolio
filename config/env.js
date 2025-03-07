@@ -194,7 +194,18 @@ export function getEnvConfig() {
       // Ensure React is not tree-shaken in production
       'process.env.NODE_ENV': JSON.stringify(mode),
       // Ensure React features used in context are preserved
-      '__REACT_FEATURES__': JSON.stringify(true)
+      '__REACT_FEATURES__': JSON.stringify(true),
+      // Explicitly preserve context features
+      'React.createContext': 'React.createContext',
+      'React.useContext': 'React.useContext'
+    },
+    optimizeDeps: {
+      include: ['react', 'react-dom', 'framer-motion', 'scheduler'],
+      // Force preservation of React methods
+      esbuildOptions: {
+        keepNames: true,
+        treeShaking: false
+      }
     }
   };
 }

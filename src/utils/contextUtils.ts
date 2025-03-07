@@ -22,9 +22,27 @@ type ReactContext<T> = React.Context<T>;
  * @returns A React Context with added safety features
  */
 export function createTypedContext<T>(defaultValue: T): ReactContext<T> {
-  // Ensure React is available globally to prevent tree-shaking issues
+  // Force React to be globally available
   if (typeof window !== 'undefined') {
     window.React = window.React || React;
+  }
+  
+  // Ensure createContext is available directly from the React object
+  // This fixes issues where React might be available but createContext is tree-shaken
+  if (!React.createContext) {
+    console.warn('React.createContext was missing, restoring from global React');
+    // Try to get it from window.React as a fallback
+    if (window && window.React && window.React.createContext) {
+      React.createContext = window.React.createContext;
+    } else {
+      // We can't create a proper polyfill that satisfies TypeScript
+      // Instead, we'll throw an error to help debugging
+      console.error('React.createContext is not available - this is a critical error');
+      throw new Error(
+        'React.createContext is not available. This is likely due to tree-shaking in production. ' +
+        'Please ensure React is properly imported and available globally.'
+      );
+    }
   }
   
   // Create the context with React namespace to avoid destructured import issues

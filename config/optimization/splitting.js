@@ -45,7 +45,13 @@ export function createChunkStrategy() {
         }
         
         // Animation libraries need direct React access - put them in the React vendor chunk
-        if (id.includes('framer-motion') || id.includes('lottie') || id.includes('motion-')) {
+        // Be very aggressive in capturing ALL animation-related code
+        if (id.includes('framer-motion') || 
+            id.includes('lottie') || 
+            id.includes('motion-') || 
+            id.includes('animation') ||
+            id.includes('/motion/') ||
+            id.includes('animate')) {
           return 'vendor-react'; // Bundle ALL animation with React to prevent context issues
         }
         
@@ -71,7 +77,7 @@ export function createChunkStrategy() {
       }
       
       // Animation-related code should also preserve React context functionality
-      if (id.includes('framer-motion') || id.includes('lottie')) {
+      if (id.includes('/framer-motion/') || id.includes('/lottie/')) {
         if (id.includes('context') || id.includes('provider')) {
           // Bundle any animation context/provider with React core
           return 'vendor-react';
@@ -90,7 +96,13 @@ export function createChunkStrategy() {
         return 'vendor-react';
       }
       
-      // Utilities and other non-critical code
+      // Utilities should be bundled with React to ensure context utils work
+      if (id.includes('/src/utils/') && 
+         (id.includes('context') || id.includes('animation'))) {
+        return 'vendor-react';
+      }
+      
+      // Other utilities
       if (id.includes('/src/utils/')) {
         return 'app-utils';
       }
