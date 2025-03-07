@@ -3,6 +3,10 @@ import react from '@vitejs/plugin-react';
 import path from 'path';
 import { VitePWA } from 'vite-plugin-pwa';
 
+// Get mode from environment or default to 'production'
+const mode = process.env.NODE_ENV || 'production';
+const isProd = mode === 'production';
+
 export default defineConfig({
   test: {
     globals: true,
@@ -243,7 +247,7 @@ export default defineConfig({
   },
   build: {
     outDir: 'build',
-    sourcemap: process.env.NODE_ENV !== 'production',
+    sourcemap: !isProd,
     chunkSizeWarningLimit: 1600,
     // Improve asset compression
     assetsInlineLimit: 4096, // 4kb
@@ -256,7 +260,7 @@ export default defineConfig({
       supported: { 'top-level-await': true },
       // Allow eval() in third-party libraries
       define: {
-        'globalThis.process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+        'globalThis.process.env.NODE_ENV': JSON.stringify(mode)
       },
       // Suppress specific warnings
       logOverride: {
@@ -328,9 +332,9 @@ export default defineConfig({
       compress: {
         passes: 2,
         warnings: false,
-        drop_console: process.env.NODE_ENV === 'production',
-        drop_debugger: process.env.NODE_ENV === 'production',
-        pure_funcs: process.env.NODE_ENV === 'production' ? ['console.log', 'console.debug', 'console.info'] : []
+        drop_console: isProd,
+        drop_debugger: isProd,
+        pure_funcs: isProd ? ['console.log', 'console.debug', 'console.info'] : []
       },
       mangle: true,
       module: false,

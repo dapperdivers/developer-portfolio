@@ -1,2 +1,20 @@
 [tools]
 node = "22"
+
+[env]
+NODE_ENV = "development"
+
+[settings]
+legacy_version_file = true
+always_keep_download = true
+
+[tasks]
+dev = "yarn dev"
+build = "yarn build"
+test = "yarn test"
+lint = "yarn lint"
+typecheck = "yarn typecheck"
+verify = "yarn verify"
+preview = "yarn preview"
+storybook = "yarn storybook"
+e2e = "yarn test:e2e"
