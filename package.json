@@ -40,6 +40,7 @@
     "workbox-window": "^7.3.0"
   },
   "scripts": {
+    "cleanup:repo": "node scripts/cleanup-repo.js",
     "dev": "vite",
     "build": "vite build",
     "build:analyze": "ANALYZE=true vite build",
