@@ -9,7 +9,7 @@ on:
 
 # Default permissions for all jobs
 permissions:
-  contents: read
+  contents: write  # Upgraded to write to allow docs deployment
   actions: read
   security-events: write
   packages: write
