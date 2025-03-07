@@ -2,10 +2,11 @@
  * Context Utilities
  * 
  * Provides standardized patterns and utilities for working with
- * React Context using a decoupled, factory-based approach.
+ * React Context using a decoupled, factory-based approach with registry tracking.
  */
 
 import { createContext, useContext, Context } from 'react';
+import contextRegistry from './contextRegistry';
 
 /**
  * Type for the context hook result that includes both the context and its hook
@@ -22,6 +23,9 @@ export interface TypedContextResult<T> {
   
   /** Context consumer component from React */
   Consumer: Context<T>['Consumer'];
+  
+  /** Name of this context (for debugging) */
+  name: string;
 }
 
 /**
@@ -32,15 +36,20 @@ export interface TypedContextResult<T> {
  * context usage from React internals.
  * 
  * @param defaultValue - The default value for the context
- * @param hookName - Optional name for the hook (for error messages)
+ * @param hookName - Name for the hook (for error messages and registry)
+ * @param description - Optional description of this context's purpose
  * @returns Object containing the context and its associated hook
  */
 export function createTypedContext<T>(
   defaultValue: T, 
-  hookName: string = 'useContext'
+  hookName: string = 'useContext',
+  description?: string
 ): TypedContextResult<T> {
   // Create the context directly from React's imported createContext
   const context = createContext<T>(defaultValue);
+  
+  // Register this context in the global registry for tracking
+  contextRegistry.register(hookName, defaultValue, description);
   
   // Create a custom hook for this specific context
   function useTypedContext(): T {
@@ -59,8 +68,25 @@ export function createTypedContext<T>(
     context,
     useTypedContext,
     Provider: context.Provider,
-    Consumer: context.Consumer
+    Consumer: context.Consumer,
+    name: hookName
   };
+}
+
+/**
+ * Get information about all registered contexts
+ * Useful for debugging and development tools
+ */
+export function getRegisteredContexts() {
+  return contextRegistry.getAllContexts();
+}
+
+/**
+ * Check if a context is registered
+ * @param name - Name of the context to check
+ */
+export function isContextRegistered(name: string) {
+  return contextRegistry.hasContext(name);
 }
 
 /**

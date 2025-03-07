@@ -5,6 +5,7 @@ import Head from "@atoms/Head";
 import Navigation from "@molecules/Navigation";
 import Footer from "@molecules/Footer";
 import SkipToContent from "@atoms/SkipToContent";
+import ContextDevTool from "@utils/ContextDevTool";
 
 // Import Iconify icon collections - this ensures icons are available offline
 import '@iconify-json/logos';
@@ -107,6 +108,8 @@ function App() {
             <Head />
             <SkipToContent mainId="main-content" />
             <Navigation />
+            {/* Developer tools - only rendered in development */}
+            <ContextDevTool />
             
             <main id="main-content" className="bg-background text-text">
               <ErrorBoundary>
