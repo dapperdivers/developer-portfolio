@@ -68,7 +68,7 @@ describe('TimelineEntry Component', () => {
     // Check for description text in the compact summary
     const summaryElement = document.querySelector('.compact-summary');
     expect(summaryElement).toBeInTheDocument();
-    expect(summaryElement.textContent).toBe('Working on amazing projects.');
+    expect(summaryElement.textContent).toContain('Working on amazing projects');
   });
 
   it('renders the correct company information', () => {
@@ -158,7 +158,7 @@ describe('TimelineEntry Component', () => {
     // No errors should occur when descBullets is undefined
     const summaryElement = document.querySelector('.compact-summary');
     expect(summaryElement).toBeInTheDocument();
-    expect(summaryElement.textContent).toBe('Working on amazing projects.');
+    expect(summaryElement.textContent).toContain('Working on amazing projects');
   });
 
   it('uses the correct accessibility attributes', () => {

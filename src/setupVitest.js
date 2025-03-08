@@ -74,7 +74,8 @@ vi.mock('../src/portfolio', () => {
       contact: {
         title: "Contact Me",
         subtitle: "Discuss a project or just want to say hi?",
-        email: "contact@johndoe.com"
+        email: "contact@johndoe.com",
+        vcfLink: "/contact/Derek_Mackley.vcf"
       },
       socialLinks: {
         github: "https://github.com/johndoe",

@@ -3,12 +3,18 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import Footer from '@molecules/Footer';
 import { vi } from 'vitest';
 
-// Create mock function for useFooter hook
+// Create mock functions for hooks
 const mockUseFooter = vi.fn();
+const mockUseCallbackHandlers = vi.fn();
 
 // Mock the useFooter hook
 vi.mock('@hooks/useFooter', () => ({
   default: () => mockUseFooter()
+}));
+
+// Mock the useCallbackHandlers hook
+vi.mock('@/hooks/useCallbackHandlers', () => ({
+  default: () => mockUseCallbackHandlers()
 }));
 
 // Mock the SocialLinks component
@@ -30,11 +36,16 @@ describe('Footer Component', () => {
       name: 'Derek Mackley'
     }
   };
+  
+  const mockHandlersData = {
+    handleDownload: vi.fn()
+  };
 
   beforeEach(() => {
     // Reset mocks before each test
     vi.clearAllMocks();
     mockUseFooter.mockReturnValue(mockFooterData);
+    mockUseCallbackHandlers.mockReturnValue(mockHandlersData);
   });
 
   it('renders correctly with all required data', () => {
@@ -56,6 +67,7 @@ describe('Footer Component', () => {
     expect(screen.getByText('Projects')).toBeInTheDocument();
     expect(screen.getByText('Contact')).toBeInTheDocument();
     expect(screen.getByText('Resume')).toBeInTheDocument();
+    expect(screen.getByText('Contact Card')).toBeInTheDocument();
     
     // Check for "Made with" text (appears twice for responsive layout)
     const madeWithTexts = screen.getAllByText(/Made with/);
@@ -64,21 +76,8 @@ describe('Footer Component', () => {
     // Check for "using React" text
     const usingReactTexts = screen.getAllByText(/using React/);
     expect(usingReactTexts.length).toBeGreaterThan(0);
-    
-    // Check that back to top button is rendered
-    expect(screen.getByLabelText('Back to top')).toBeInTheDocument();
   });
 
-  it('calls scrollToTop function when back to top button is clicked', () => {
-    render(<Footer />);
-    
-    // Find and click the back to top button
-    const backToTopButton = screen.getByLabelText('Back to top');
-    fireEvent.click(backToTopButton);
-    
-    // Check that the scrollToTop function was called
-    expect(mockFooterData.scrollToTop).toHaveBeenCalledTimes(1);
-  });
 
   it('renders navigation links with correct hrefs', () => {
     render(<Footer />);
@@ -89,5 +88,18 @@ describe('Footer Component', () => {
     expect(screen.getByText('Projects').closest('a')).toHaveAttribute('href', '#projects');
     expect(screen.getByText('Contact').closest('a')).toHaveAttribute('href', '#contact');
     expect(screen.getByText('Resume').closest('a')).toHaveAttribute('href', '/files/Derek_Mackley_Resume_2025.pdf');
+    expect(screen.getByText('Contact Card').closest('a')).toHaveAttribute('href', '/contact/Derek_Mackley.vcf');
+  });
+  
+  it('calls handleDownload when Contact Card link is clicked', () => {
+    render(<Footer />);
+    
+    // Find and click the Contact Card link
+    const contactCardLink = screen.getByText('Contact Card');
+    fireEvent.click(contactCardLink);
+    
+    // Check that the handleDownload function was called with correct parameters
+    expect(mockHandlersData.handleDownload).toHaveBeenCalledTimes(1);
+    expect(mockHandlersData.handleDownload).toHaveBeenCalledWith('/contact/Derek_Mackley.vcf', 'Derek_Mackley.vcf');
   });
 });
