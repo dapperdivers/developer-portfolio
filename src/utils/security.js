@@ -29,9 +29,9 @@ export const applyCSP = () => {
     "default-src 'self'",
     "script-src 'self' 'unsafe-inline' https://api.github.com https://code.iconify.design",
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-    "img-src 'self' data: https://avatars.githubusercontent.com https://*.githubusercontent.com",
+    "img-src 'self' data: https://avatars.githubusercontent.com https://*.githubusercontent.com https://*.basemaps.cartocdn.com https://*.tile.openstreetmap.org",
     "font-src 'self' https://fonts.gstatic.com",
-    "connect-src 'self' https://api.github.com https://api.iconify.design https://cdn.jsdelivr.net",
+    "connect-src 'self' https://api.github.com https://nominatim.openstreetmap.org https://api.iconify.design https://cdn.jsdelivr.net https://*.basemaps.cartocdn.com https://*.tile.openstreetmap.org",
     "frame-src 'none'",
     "object-src 'none'"
   ].join('; ');
@@ -73,7 +73,7 @@ export const applyXXSSProtection = () => {
   // Add CSP directive that helps with XSS protection
   const cspMeta = document.createElement('meta');
   cspMeta.httpEquiv = 'Content-Security-Policy';
-  cspMeta.content = "script-src 'self' 'unsafe-inline' https://api.github.com https://code.iconify.design";
+  cspMeta.content = "script-src 'self' 'unsafe-inline' https://api.github.com https://code.iconify.design; img-src 'self' data: https://*.basemaps.cartocdn.com https://*.tile.openstreetmap.org https://avatars.githubusercontent.com https://*.githubusercontent.com";
   document.head.appendChild(cspMeta);
   
   // Add HTML encoding helper to window object
@@ -100,7 +100,7 @@ export const applyFrameProtection = () => {
   // This achieves the same effect but works with meta tags
   const meta = document.createElement('meta');
   meta.httpEquiv = 'Content-Security-Policy';
-  meta.content = "frame-ancestors 'none'";
+  meta.content = "frame-ancestors 'none'; img-src 'self' data: https://*.basemaps.cartocdn.com https://*.tile.openstreetmap.org https://avatars.githubusercontent.com https://*.githubusercontent.com";
   document.head.appendChild(meta);
   
   // Also apply a JavaScript-based protection as a fallback

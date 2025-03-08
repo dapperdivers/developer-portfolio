@@ -3,6 +3,8 @@ import path from 'path';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import { fileURLToPath } from 'url';
+// Import fetch for the geocoding proxy
+import fetch from 'node-fetch';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -38,14 +40,17 @@ app.use(
         "'unsafe-inline'", 
         'https://fonts.googleapis.com'
       ],
-      imgSrc: ["'self'", 'data:', 'https:', 'blob:'],
+      imgSrc: ["'self'", 'data:', 'https://*.basemaps.cartocdn.com', 'https://*.tile.openstreetmap.org', 'https://avatars.githubusercontent.com', 'https://*.githubusercontent.com', 'blob:'],
       connectSrc: [
         "'self'", 
         'https://api.github.com', 
         'https://fonts.googleapis.com',
         'https://fonts.gstatic.com',
         'https://api.iconify.design',
-        'https://cdn.jsdelivr.net'
+        'https://cdn.jsdelivr.net',
+        'https://*.tile.openstreetmap.org',
+        'https://*.basemaps.cartocdn.com',
+        'https://nominatim.openstreetmap.org'
       ],
       fontSrc: ["'self'", 'https://fonts.gstatic.com', 'data:'],
       objectSrc: ["'self'"],  // Allow PDFs
@@ -176,6 +181,37 @@ app.get('/contact/:filename', (req, res) => {
       res.status(404).send('File not found');
     }
   });
+});
+
+// Geocoding proxy endpoint
+app.get('/api/geocode', async (req, res) => {
+  try {
+    const locationQuery = req.query.q;
+    
+    if (!locationQuery) {
+      return res.status(400).json({ error: 'Missing location query parameter' });
+    }
+    
+    // Forward request to Nominatim with proper headers
+    const response = await fetch(
+      `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(locationQuery)}&limit=1`,
+      {
+        headers: {
+          'User-Agent': 'PortfolioWebsite/1.0'
+        }
+      }
+    );
+    
+    if (!response.ok) {
+      throw new Error(`Geocoding API returned status ${response.status}`);
+    }
+    
+    const data = await response.json();
+    return res.json(data);
+  } catch (error) {
+    console.error('Geocoding proxy error:', error);
+    return res.status(500).json({ error: 'Failed to geocode location' });
+  }
 });
 
 // Serve React app

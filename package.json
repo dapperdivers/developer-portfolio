@@ -28,6 +28,7 @@
     "helmet": "^8.0.0",
     "leaflet": "^1.9.4",
     "lottie-react": "^2.4.1",
+    "node-fetch": "^3.3.2",
     "prop-types": "^15.8.1",
     "prop-types-extra": "^1.1.1",
     "react": "^18.3.1",

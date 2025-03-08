@@ -64,24 +64,64 @@ export const getCoordinatesForLocation = async (locationString) => {
     }
   }
   
-  // Try geocoding through our proxy
-  try {
-    const response = await fetch(`/nominatim/search?format=json&q=${encodeURIComponent(locationString)}`);
-    if (response.ok) {
-      const data = await response.json();
-      if (data && data.length > 0) {
-        const { lat, lon } = data[0];
-        console.log(`Successfully geocoded "${locationString}" via proxy`);
-        return { 
-          lat: parseFloat(lat), 
-          lng: parseFloat(lon), 
-          zoom: 13,
-          name: locationString 
-        };
-      }
+  // Skip external API geocoding due to CSP restrictions
+  console.log(`Geocoding "${locationString}" using local database only`);
+  
+  // Add more locations to our known locations data to improve coverage
+  const extendedLocations = {
+    "warrior": { lat: 33.8151, lng: -86.8129, zoom: 13 },
+    "warrior, al": { lat: 33.8151, lng: -86.8129, zoom: 13 },
+    "new york city": { lat: 40.7128, lng: -74.0060, zoom: 12 },
+    "new york": { lat: 40.7128, lng: -74.0060, zoom: 12 },
+    "ny": { lat: 40.7128, lng: -74.0060, zoom: 10 },
+    "alabama": { lat: 33.2589, lng: -86.8295, zoom: 7 },
+    "al": { lat: 33.2589, lng: -86.8295, zoom: 7 },
+    "california": { lat: 36.7783, lng: -119.4179, zoom: 6 },
+    "ca": { lat: 36.7783, lng: -119.4179, zoom: 6 },
+    "florida": { lat: 27.6648, lng: -81.5158, zoom: 7 },
+    "fl": { lat: 27.6648, lng: -81.5158, zoom: 7 },
+    "texas": { lat: 31.9686, lng: -99.9018, zoom: 6 },
+    "tx": { lat: 31.9686, lng: -99.9018, zoom: 6 },
+    "washington": { lat: 47.7511, lng: -120.7401, zoom: 7 },
+    "wa": { lat: 47.7511, lng: -120.7401, zoom: 7 },
+    "illinois": { lat: 40.6331, lng: -89.3985, zoom: 7 },
+    "il": { lat: 40.6331, lng: -89.3985, zoom: 7 },
+    "chicago": { lat: 41.8781, lng: -87.6298, zoom: 11 },
+    "seattle": { lat: 47.6062, lng: -122.3321, zoom: 12 },
+    "los angeles": { lat: 34.0522, lng: -118.2437, zoom: 11 },
+    "la": { lat: 34.0522, lng: -118.2437, zoom: 11 },
+    "san francisco": { lat: 37.7749, lng: -122.4194, zoom: 12 },
+    "sf": { lat: 37.7749, lng: -122.4194, zoom: 12 },
+    "boston": { lat: 42.3601, lng: -71.0589, zoom: 12 },
+    "miami": { lat: 25.7617, lng: -80.1918, zoom: 12 },
+    "atlanta": { lat: 33.7490, lng: -84.3880, zoom: 11 },
+    "houston": { lat: 29.7604, lng: -95.3698, zoom: 11 },
+    "denver": { lat: 39.7392, lng: -104.9903, zoom: 11 },
+    "dallas": { lat: 32.7767, lng: -96.7970, zoom: 11 },
+    "austin": { lat: 30.2672, lng: -97.7431, zoom: 11 },
+    "phoenix": { lat: 33.4484, lng: -112.0740, zoom: 11 },
+    "portland": { lat: 45.5051, lng: -122.6750, zoom: 11 },
+    "milwaukee": { lat: 43.0389, lng: -87.9065, zoom: 11 },
+    "detroit": { lat: 42.3314, lng: -83.0458, zoom: 11 },
+    "philadelphia": { lat: 39.9526, lng: -75.1652, zoom: 11 },
+    "baltimore": { lat: 39.2904, lng: -76.6122, zoom: 11 },
+    "washington dc": { lat: 38.9072, lng: -77.0369, zoom: 11 },
+    "las vegas": { lat: 36.1699, lng: -115.1398, zoom: 11 },
+    "usa": { lat: 37.0902, lng: -95.7129, zoom: 4 },
+    "united states": { lat: 37.0902, lng: -95.7129, zoom: 4 },
+    "us": { lat: 37.0902, lng: -95.7129, zoom: 4 },
+    "north america": { lat: 37.0902, lng: -95.7129, zoom: 3 }
+  };
+  
+  // Combine with existing known locations
+  const combinedLocations = { ...KNOWN_LOCATIONS, ...extendedLocations };
+  
+  // Try with the combined set
+  for (const [key, coords] of Object.entries(combinedLocations)) {
+    if (normalizedLocation.includes(key)) {
+      console.log(`Found matching known location for "${locationString}": ${key}`);
+      return { ...coords, name: locationString };
     }
-  } catch (error) {
-    console.warn('Geocoding through proxy failed:', error);
   }
   
   // No match found, return default
@@ -96,13 +136,15 @@ export const getCoordinatesForLocation = async (locationString) => {
  */
 export const formatPopupContent = (locationString) => {
   const cityName = locationString ? locationString.split(',')[0] : 'Unknown';
+  const timestamp = new Date().toISOString().replace('T', ' ').substring(0, 19);
   
   return `
     <div class="popup-content">
-      <strong>Security Office</strong>
+      <strong>Security Operations Center</strong>
       <div class="popup-location">${locationString || 'Unknown Location'}</div>
       <div class="popup-status">Status: <span class="status-active">Active</span></div>
-      <div class="popup-coordinates">Secure Connection Established</div>
+      <div class="popup-info">Secure Connection Established</div>
+      <div class="popup-info">Last Updated: ${timestamp}</div>
     </div>
   `;
 };
