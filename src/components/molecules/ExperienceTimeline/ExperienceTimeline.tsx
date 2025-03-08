@@ -1,7 +1,6 @@
 import React, { FC, memo } from 'react';
 import Timeline, { TimelineItem } from '@molecules/Timeline';
 import TimelineEntry from '@molecules/TimelineEntry/TimelineEntry';
-import './styles/index.css';
 
 export interface ExperienceData {
   company: string;

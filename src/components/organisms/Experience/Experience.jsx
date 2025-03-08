@@ -114,8 +114,8 @@ const Experience = () => {
       data-testid="experience-section"
     >
       <ConsoleHeader
-        prompt="root@security-portfolio:~#"
-        command="analyze --depth=full --secure --format=timeline professional_experience.json"
+        prompt="root@security:~$"
+        command="view --secure --timeline professional_experience.json"
         variant="security"
         className="timeline-header"
       />

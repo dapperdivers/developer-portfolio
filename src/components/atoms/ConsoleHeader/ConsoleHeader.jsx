@@ -60,7 +60,9 @@ const ConsoleHeader = ({
   ].filter(Boolean).join(' ');
   
   // Calculate correct Card variant based on ConsoleHeader variant
-  const cardVariant = variant === 'security' ? 'security' : 'terminal';
+  let cardVariant = 'terminal';
+  if (variant === 'security') cardVariant = 'security';
+  else if (variant === 'hacker') cardVariant = 'security'; // Using security as base for hacker
   
   // Build accessible label
   const ariaLabel = ariaDescription || 
@@ -78,7 +80,11 @@ const ConsoleHeader = ({
       >
       <div className="console-header-top">
         <TerminalControls variant="macos" />
-        <span className="console-title">{variant === 'security' ? 'Alacritty' : 'Command Prompt'}</span>
+        <span className="console-title">
+          {variant === 'security' ? 'Alacritty' : 
+           variant === 'hacker' ? 'H4CK3R-T3RM1N4L' : 
+           'Command Prompt'}
+        </span>
       </div>
       <div className="console-content">
         <span 
@@ -110,7 +116,7 @@ ConsoleHeader.propTypes = {
   command: PropTypes.string,
   showCursor: PropTypes.bool,
   className: PropTypes.string,
-  variant: PropTypes.oneOf(['terminal', 'security']),
+  variant: PropTypes.oneOf(['terminal', 'security', 'hacker']),
   shadow: PropTypes.bool,
   id: PropTypes.string,
   ariaDescription: PropTypes.string

@@ -1,11 +1,11 @@
 import React, { FC, useCallback, memo, ReactNode } from 'react';
-import TimelineNode from '@atoms/TimelineNode/TimelineNode';
 import { AnimationProvider } from '@context/AnimationContext';
 import { 
+  TimelineNode,
   ConnectionHeader, 
   MatrixBackground, 
-  SecurityDecorations 
-} from '@atoms/TimelineDecorations';
+  TimelineDecorations
+} from '@atoms/TimelineCore';
 // Use the modular CSS structure for better maintainability
 import './styles/index.css';
 
@@ -24,7 +24,7 @@ export interface TimelineProps {
   /** Function to extract display date from date string */
   formatDate?: (date: string) => string;
   /** Visual variant */
-  variant?: '' | 'security' | 'terminal' | 'cyberpunk';
+  variant?: '' | 'security' | 'terminal';
   /** Whether timeline data is loading */
   isLoading?: boolean;
   /** Whether there was an error loading timeline data */
@@ -107,6 +107,7 @@ const Timeline: FC<TimelineProps> = ({
       <div 
         className={timelineClasses}
         data-testid="timeline"
+        data-theme={variant} // Add data-theme attribute
       >
         {/* Timeline content */}
         <div className="timeline-content">
@@ -207,9 +208,14 @@ const Timeline: FC<TimelineProps> = ({
             </div>
           )}
           
-          {/* Decorative elements for security theme */}
-          {variant === 'security' && showBinaryStreams && showDecorations && (
-            <SecurityDecorations showLeft={true} showRight={true} />
+          {/* Decorative elements for security and terminal themes */}
+          {showDecorations && showBinaryStreams && (
+            <TimelineDecorations 
+              variant={variant === 'terminal' ? 'terminal' : 'security'}
+              showLeft={true}
+              showRight={true}
+              binaryStreamCount={40}
+            />
           )}
         </div>
       </div>
