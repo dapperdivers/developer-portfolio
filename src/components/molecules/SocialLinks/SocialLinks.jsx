@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FaGithub, FaLinkedin } from 'react-icons/fa';
-import { socialLinks } from "@/portfolio";
+import { FaGithub, FaLinkedin, FaAddressCard } from 'react-icons/fa';
+import { socialLinks, contact } from "@/portfolio";
+import useCallbackHandlers from '@/hooks/useCallbackHandlers';
 import './SocialLinks.css';
 
 
@@ -14,6 +15,13 @@ import './SocialLinks.css';
  * @returns {React.ReactElement} SocialLinks component
  */
 const SocialLinks = ({ className = '' }) => {
+    const { handleDownload } = useCallbackHandlers();
+    
+    const downloadContactCard = (e) => {
+        e.preventDefault();
+        handleDownload(contact.vcfLink, 'Derek_Mackley.vcf');
+    };
+    
     return (
         <div className={`flex items-center flex-wrap gap-3 ${className}`}>
             {socialLinks.github && (
@@ -40,7 +48,16 @@ const SocialLinks = ({ className = '' }) => {
                 </a>
             )}
             
-            {/* Additional social links can be added here */}
+            {contact.vcfLink && (
+                <a
+                    className="social-link"
+                    href={contact.vcfLink}
+                    onClick={downloadContactCard}
+                    aria-label="Download Contact Card"
+                >
+                    <FaAddressCard className="w-6 h-6" />
+                </a>
+            )}
         </div>
     );
 };

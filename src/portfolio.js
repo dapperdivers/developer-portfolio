@@ -107,7 +107,9 @@ export const openSource = {
     githubUserName: sanitizeText("DapperDivers"),
 };
 
-export const contact = {};
+export const contact = {
+    vcfLink: '/contact/Derek_Mackley.vcf',
+};
 
 export const socialLinks = {
     github: validateUrl("https://github.com/DapperDivers"),

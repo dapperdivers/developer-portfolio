@@ -4,13 +4,21 @@ import { motion } from "framer-motion";
 import { FaDownload, FaChevronDown } from 'react-icons/fa';
 import Button from '@atoms/Button';
 import SocialLinks from '@molecules/SocialLinks';
+import useCallbackHandlers from '@/hooks/useCallbackHandlers';
 
 const Greetings = () => {
+  const { handleDownload } = useCallbackHandlers();
+  
   const scrollToNextSection = () => {
     const nextSection = document.querySelector('.greetings-section').nextElementSibling;
     if (nextSection) {
       nextSection.scrollIntoView({ behavior: 'smooth' });
     }
+  };
+  
+  const downloadResume = (e) => {
+    e.preventDefault();
+    handleDownload('/files/Derek_Mackley_Resume_2025.pdf', 'Derek_Mackley_Resume_2025.pdf');
   };
 
   return (
@@ -53,6 +61,7 @@ const Greetings = () => {
               ariaLabel="Download Resume"
               type="button"
               className="bg-cyan-500 hover:bg-cyan-600 text-white font-semibold shadow-xl px-8 py-4 rounded-xl text-xl transition-all duration-300 transform hover:scale-105"
+              onClick={downloadResume}
             >
               <FaDownload className="mr-3 text-2xl" />
               Download Resume

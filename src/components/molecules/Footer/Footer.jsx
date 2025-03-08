@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { FaHeart } from 'react-icons/fa';
 import SocialLinks from '@molecules/SocialLinks';
 import useFooter from '@hooks/useFooter';
+import useCallbackHandlers from '@/hooks/useCallbackHandlers';
 import './Footer.css';
 
 /**
@@ -13,6 +14,12 @@ import './Footer.css';
  */
 const Footer = () => {
   const { currentYear, greetings } = useFooter();
+  const { handleDownload } = useCallbackHandlers();
+  
+  const downloadContactCard = (e) => {
+    e.preventDefault();
+    handleDownload('/contact/Derek_Mackley.vcf', 'Derek_Mackley.vcf');
+  };
   
   return (
     <footer 
@@ -63,6 +70,13 @@ const Footer = () => {
               className="text-gray-400 hover:text-white transition-colors duration-200 text-sm mx-2"
             >
               Resume
+            </a>
+            <a 
+              href="/contact/Derek_Mackley.vcf" 
+              className="text-gray-400 hover:text-white transition-colors duration-200 text-sm mx-2"
+              onClick={downloadContactCard}
+            >
+              Contact Card
             </a>
           </div>
           
