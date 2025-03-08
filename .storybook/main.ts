@@ -3,8 +3,8 @@ import path from 'path';
 
 const config: StorybookConfig = {
   "stories": [
-    "./examples/*.stories.jsx",
-    "./templates/*.stories.jsx",
+    "./examples/*.stories.@(jsx|tsx)",
+    "./templates/*.stories.@(jsx|tsx)",
     "../src/components/**/*.stories.@(jsx|tsx)"
   ],
   "addons": [

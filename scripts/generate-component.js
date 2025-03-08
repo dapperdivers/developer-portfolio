@@ -29,7 +29,7 @@ const config = {
   createCss: true,
   createStory: true,
   createTest: true,
-  useTypeScript: false,
+  useTypeScript: true,
   importStyles: true,
   memoize: true,
   addPropTypes: true,
