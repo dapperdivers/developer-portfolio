@@ -1,0 +1,41 @@
+/**
+ * Font Weight Utilities
+ * This file explicitly defines font-weight utility classes to ensure
+ * they're available regardless of Tailwind CSS JIT compilation.
+ */
+
+.font-hairline {
+  font-weight: 100 !important;
+}
+
+.font-thin {
+  font-weight: 200 !important;
+}
+
+.font-light {
+  font-weight: var(--font-weight-light, 300) !important;
+}
+
+.font-normal {
+  font-weight: var(--font-weight-normal, 400) !important;
+}
+
+.font-medium {
+  font-weight: var(--font-weight-medium, 500) !important;
+}
+
+.font-semibold {
+  font-weight: var(--font-weight-semibold, 600) !important;
+}
+
+.font-bold {
+  font-weight: var(--font-weight-bold, 700) !important;
+}
+
+.font-extrabold {
+  font-weight: 800 !important;
+}
+
+.font-black {
+  font-weight: 900 !important;
+}

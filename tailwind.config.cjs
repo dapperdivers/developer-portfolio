@@ -24,7 +24,7 @@ module.exports = {
     
     // Add text and font utilities
     'text-white', 'text-base', 'text-sm', 'text-lg', 'text-xl', 'text-2xl',
-    'font-bold', 'font-semibold', 'font-medium',
+    'font-hairline', 'font-thin', 'font-light', 'font-normal', 'font-medium', 'font-semibold', 'font-bold', 'font-extrabold', 'font-black',
     
     // Add background colors
     'bg-white', 'bg-primary', 'bg-gray-100', 'bg-gray-200',
@@ -146,10 +146,15 @@ module.exports = {
         '6xl': 'var(--font-size-h1)',
       },
       fontWeight: {
+        hairline: '100',
+        thin: '200',
         light: 'var(--font-weight-light)',
         normal: 'var(--font-weight-normal)',
         medium: 'var(--font-weight-medium)',
+        semibold: '600',
         bold: 'var(--font-weight-bold)',
+        extrabold: '800',
+        black: '900',
       },
       lineHeight: {
         0: '0',
@@ -292,6 +297,19 @@ module.exports = {
         '.z-fixed': {
           'z-index': '1030',
         },
+      });
+      
+      // Add font utility classes explicitly
+      addUtilities({
+        '.font-hairline': { 'font-weight': '100' },
+        '.font-thin': { 'font-weight': '200' },
+        '.font-light': { 'font-weight': 'var(--font-weight-light)' },
+        '.font-normal': { 'font-weight': 'var(--font-weight-normal)' },
+        '.font-medium': { 'font-weight': 'var(--font-weight-medium)' },
+        '.font-semibold': { 'font-weight': 'var(--font-weight-semibold)' },
+        '.font-bold': { 'font-weight': 'var(--font-weight-bold)' },
+        '.font-extrabold': { 'font-weight': '800' },
+        '.font-black': { 'font-weight': '900' },
       })
 
       // Add base utilities for older Tailwind patterns

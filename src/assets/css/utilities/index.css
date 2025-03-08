@@ -5,5 +5,6 @@
  * all utility classes and helpers.
  */
 
+@import './font-utilities.css';
 @import './animations.css';
 @import '../browser-fixes.css';

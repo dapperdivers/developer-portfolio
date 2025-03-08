@@ -14,6 +14,13 @@
 @import './design-system/index.css';
 
 /**
+ * Utility Classes
+ * 
+ * Import explicit utility classes before Tailwind layers
+ */
+@import './utilities/font-utilities.css';
+
+/**
  * Tailwind Layers
  * 
  * These directives inject Tailwind's base styles, components, and utilities.
