@@ -1,6 +1,8 @@
 import React from 'react';
 import { FaGithub, FaLinkedin, FaTwitter, FaMedium, FaDev, FaStackOverflow, FaYoutube, FaInstagram } from 'react-icons/fa';
 import { within, userEvent, expect } from '@storybook/test';
+import SocialLinks from './SocialLinks';
+import { withPortfolioContext } from '@stories-utils/decorators';
 
 // Import the CSS for styling
 import '@assets/css/components/ui/social-links.css';
@@ -132,37 +134,199 @@ const sampleLinks = {
 
 export default {
   title: 'Molecules/SocialLinks',
-  component: StorySocialLinks,
-  tags: ['autodocs'],
-  argTypes: {
-    links: {
-      control: 'object',
-      description: 'Object containing social media platform links',
-    },
-    variant: {
-      control: 'select',
-      options: ['default', 'dark'],
-      description: 'Visual style variant of the social links',
-    }
-  },
+  component: SocialLinks,
+  decorators: [withPortfolioContext],
   parameters: {
     docs: {
       description: {
-        component: 'Social Links component for displaying social media profile links with icons. Supports multiple platforms and can be extended to include additional platforms.',
+        component: 'A component that displays social media links with icons.',
       },
     },
-    a11y: {
-      config: {
-        rules: [
-          { id: 'button-name', reviewOnFail: true }, 
-          { id: 'color-contrast', reviewOnFail: true },
-          { id: 'aria-allowed-attr', reviewOnFail: true }
-        ],
+  },
+  argTypes: {
+    className: {
+      control: 'text',
+      description: 'Additional CSS classes to apply to the component',
+    },
+  },
+};
+
+/**
+ * Default story showing all social links
+ */
+export const Default = {
+  args: {
+    className: '',
+  },
+  parameters: {
+    mockData: {
+      socialLinks: {
+        github: 'https://github.com/username',
+        linkedin: 'https://linkedin.com/in/username',
+      },
+      contact: {
+        vcfLink: '/contact/contact-card.vcf',
       },
     },
   },
 };
 
+/**
+ * Story showing only GitHub link
+ */
+export const GitHubOnly = {
+  args: {
+    className: '',
+  },
+  parameters: {
+    mockData: {
+      socialLinks: {
+        github: 'https://github.com/username',
+      },
+      contact: {},
+    },
+  },
+};
+
+/**
+ * Story showing only LinkedIn link
+ */
+export const LinkedInOnly = {
+  args: {
+    className: '',
+  },
+  parameters: {
+    mockData: {
+      socialLinks: {
+        linkedin: 'https://linkedin.com/in/username',
+      },
+      contact: {},
+    },
+  },
+};
+
+/**
+ * Story showing only contact card link
+ */
+export const ContactCardOnly = {
+  args: {
+    className: '',
+  },
+  parameters: {
+    mockData: {
+      socialLinks: {},
+      contact: {
+        vcfLink: '/contact/contact-card.vcf',
+      },
+    },
+  },
+};
+
+/**
+ * Story showing custom styling
+ */
+export const CustomStyling = {
+  args: {
+    className: 'bg-gray-100 p-4 rounded-lg shadow-md',
+  },
+  parameters: {
+    mockData: {
+      socialLinks: {
+        github: 'https://github.com/username',
+        linkedin: 'https://linkedin.com/in/username',
+      },
+      contact: {
+        vcfLink: '/contact/contact-card.vcf',
+      },
+    },
+  },
+};
+
+/**
+ * Story showing the component in dark mode
+ */
+export const DarkMode = {
+  args: {
+    className: '',
+  },
+  parameters: {
+    mockData: {
+      socialLinks: {
+        github: 'https://github.com/username',
+        linkedin: 'https://linkedin.com/in/username',
+      },
+      contact: {
+        vcfLink: '/contact/contact-card.vcf',
+      },
+    },
+    backgrounds: {
+      default: 'dark',
+    },
+  },
+};
+
+/**
+ * Story showing the component in mobile viewport
+ */
+export const MobileView = {
+  args: {
+    className: '',
+  },
+  parameters: {
+    mockData: {
+      socialLinks: {
+        github: 'https://github.com/username',
+        linkedin: 'https://linkedin.com/in/username',
+      },
+      contact: {
+        vcfLink: '/contact/contact-card.vcf',
+      },
+    },
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
+  },
+};
+
+/**
+ * Story showing the component with large icons
+ */
+export const LargeIcons = {
+  args: {
+    className: 'text-2xl',
+  },
+  parameters: {
+    mockData: {
+      socialLinks: {
+        github: 'https://github.com/username',
+        linkedin: 'https://linkedin.com/in/username',
+      },
+      contact: {
+        vcfLink: '/contact/contact-card.vcf',
+      },
+    },
+  },
+};
+
+/**
+ * Story showing the component with custom colors
+ */
+export const CustomColors = {
+  args: {
+    className: 'text-blue-500 hover:text-blue-700',
+  },
+  parameters: {
+    mockData: {
+      socialLinks: {
+        github: 'https://github.com/username',
+        linkedin: 'https://linkedin.com/in/username',
+      },
+      contact: {
+        vcfLink: '/contact/contact-card.vcf',
+      },
+    },
+  },
+};
 
 // Template for the component
 const Template = (args) => (
@@ -172,13 +336,13 @@ const Template = (args) => (
 );
 
 // Default story - Standard GitHub and LinkedIn links
-export const Default = {
+export const DefaultStory = {
   args: {
   links: sampleLinks.default,
   variant: 'default'
 }
 };
-Default.play = async ({ canvasElement, step }) => {
+DefaultStory.play = async ({ canvasElement, step }) => {
   const canvas = within(canvasElement);
   
   await step('Initial render check', () => {
@@ -327,21 +491,3 @@ WrappingBehavior.parameters = {
  * - Enhancing with additional icons from the react-icons library
  * - Placing in various containers (footer, header, sidebar, etc.)
  */
-
-// Mobile view for responsive testing
-export const MobileView = {
-  args: {
-  links: sampleLinks.complete,
-  variant: 'default'
-}
-};
-MobileView.parameters = {
-  viewport: {
-    defaultViewport: 'mobile1',
-  },
-  docs: {
-    description: {
-      story: 'Shows how the social links appear on mobile devices with smaller icons and spacing.'
-    }
-  }
-};

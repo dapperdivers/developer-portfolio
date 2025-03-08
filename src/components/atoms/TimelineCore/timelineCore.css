@@ -1,0 +1,45 @@
+/* TimelineCore global styles and CSS variables */
+
+:root {
+  /* Base colors */
+  --color-background: #1e1e1e;
+  --color-background-dark: #121212;
+  --color-text: #e1e1e1;
+  --color-text-muted: #a1a1a1;
+  --color-border: #333333;
+  
+  /* Theme colors */
+  --color-accent: #05d5fa;      /* Blue for cyberpunk/digital themes */
+  --color-success: #00ff00;     /* Green for terminal/console themes */
+  --color-warning: #ffcc00;     /* Yellow for warning states */
+  --color-error: #ff3333;       /* Red for error states */
+}
+
+/* Ensure all TimelineCore components use the box-sizing: border-box model */
+.timeline-node,
+.binary-stream,
+.matrix-background,
+.secure-connection-start,
+.timeline-decorations {
+  box-sizing: border-box;
+}
+
+/* Ensure all TimelineCore components inside will also use border-box */
+.timeline-node *,
+.binary-stream *,
+.matrix-background *,
+.secure-connection-start *,
+.timeline-decorations * {
+  box-sizing: border-box;
+}
+
+/* Base styling for a dark theme */
+.timeline-core-container {
+  background-color: var(--color-background-dark, #121212);
+  color: var(--color-text, #e1e1e1);
+  border: 1px solid var(--color-border, #333333);
+  padding: 1rem;
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+} 

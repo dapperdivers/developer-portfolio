@@ -1,4 +1,5 @@
 import React from 'react';
+import { withPortfolioContext } from '@stories-utils/decorators';
 import Footer from './Footer';
 import { within, userEvent, expect } from '@storybook/test';
 import PortfolioContext from '@context/PortfolioContext';
@@ -35,15 +36,15 @@ const createPortfolioDecorator = (data) => (Story) => (
   </PortfolioContext.Provider>
 );
 
-
 export default {
   title: 'Molecules/Footer',
   component: Footer,
-  tags: ['autodocs'],
+  decorators: [withPortfolioContext],
   parameters: {
+    layout: 'fullscreen',
     docs: {
       description: {
-        component: 'Footer component with contact information, quick links, and copyright information. Includes social media links and a back-to-top button.',
+        component: 'Footer component displaying copyright information, navigation links, and social media links.',
       },
     },
     a11y: {
@@ -56,18 +57,102 @@ export default {
         ],
       },
     },
-    layout: 'fullscreen',
-    backgrounds: {
-      default: 'dark'
-    }
   },
 };
 
+/**
+ * Default story showing the footer in its standard configuration
+ */
+export const Default = {
+  args: {},
+};
+
+/**
+ * Story showing the footer with dark mode enabled
+ */
+export const DarkMode = {
+  parameters: {
+    backgrounds: {
+      default: 'dark',
+    },
+  },
+};
+
+/**
+ * Story showing the footer in a mobile viewport
+ */
+export const Mobile = {
+  parameters: {
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
+  },
+};
+
+/**
+ * Story showing the footer in a tablet viewport
+ */
+export const Tablet = {
+  parameters: {
+    viewport: {
+      defaultViewport: 'tablet',
+    },
+  },
+};
+
+/**
+ * Story showing the footer with mock data for testing
+ */
+export const WithMockData = {
+  args: {},
+  parameters: {
+    mockData: {
+      greetings: {
+        name: 'John Doe',
+      },
+      socialLinks: [
+        {
+          name: 'GitHub',
+          url: 'https://github.com/johndoe',
+          icon: 'github',
+        },
+        {
+          name: 'LinkedIn',
+          url: 'https://linkedin.com/in/johndoe',
+          icon: 'linkedin',
+        },
+      ],
+    },
+  },
+};
+
+/**
+ * Story showing the footer with all links disabled for testing
+ */
+export const DisabledLinks = {
+  args: {},
+  parameters: {
+    a11y: {
+      disable: true,
+    },
+  },
+};
+
+/**
+ * Story showing the footer with high contrast mode for accessibility testing
+ */
+export const HighContrast = {
+  parameters: {
+    themes: {
+      default: 'high-contrast',
+    },
+  },
+};
 
 // Standard footer with complete data
-export const Default = () => <Footer />;
-Default.decorators = [createPortfolioDecorator(mockPortfolioData)];
-Default.play = async ({ canvasElement, step }) => {
+export const DefaultStory = () => <Footer />;
+DefaultStory.decorators = [createPortfolioDecorator(mockPortfolioData)];
+DefaultStory.play = async ({ canvasElement, step }) => {
   const canvas = within(canvasElement);
   
   await step('Initial render check', () => {

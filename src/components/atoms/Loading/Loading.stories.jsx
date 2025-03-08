@@ -2,49 +2,67 @@ import React from 'react';
 import Loading from './Loading';
 import { within, userEvent, expect } from '@storybook/test';
 
-export default {
+const meta = {
   title: 'Atoms/Loading',
   component: Loading,
   tags: ['autodocs'],
-  parameters: {
-    docs: {
-      description: {
-        component: 'Loading spinner component that provides visual feedback during asynchronous operations. The component includes proper ARIA attributes for accessibility and smooth animations.',
-      },
+  argTypes: {
+    size: {
+      control: 'select',
+      options: ['sm', 'md', 'lg'],
+      description: 'Size of the loading indicator',
     },
-    a11y: {
-      config: {
-        rules: [
-          { id: 'aria-valid-attr', reviewOnFail: true },
-          { id: 'aria-roles', reviewOnFail: true },
-          { id: 'aria-hidden-focus', reviewOnFail: true }
-        ],
-      },
+    variant: {
+      control: 'select',
+      options: ['primary', 'secondary', 'terminal'],
+      description: 'Visual variant',
     },
-    chromatic: { pauseAnimationAtEnd: true }, // For visual testing tools
   },
 };
 
-
-// Basic template for the component
-const Template = (args) => <Loading {...args} />;
+export default meta;
 
 // Default loading spinner story
-export const Default = Template.bind({});
-Default.play = async ({ canvasElement, step }) => {
-  const canvas = within(canvasElement);
-  
-  await step('Accessibility verification', async () => {
-    // Check that the loading element has the correct ARIA attributes
-    const loadingElement = canvas.getByRole('status');
-    await expect(loadingElement).toBeInTheDocument();
-    await expect(loadingElement).toHaveAttribute('aria-busy', 'true');
-    await expect(loadingElement).toHaveAttribute('aria-live', 'polite');
+export const Default = {
+  args: {
+    size: 'md',
+    variant: 'primary',
+  },
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
     
-    // Check that there's a visually hidden message for screen readers
-    const hiddenText = canvas.getByText('Content is loading...');
-    await expect(hiddenText).toBeInTheDocument();
-  });
+    await step('Accessibility verification', async () => {
+      // Check that the loading element has the correct ARIA attributes
+      const loadingElement = canvas.getByRole('status');
+      await expect(loadingElement).toBeInTheDocument();
+      await expect(loadingElement).toHaveAttribute('aria-busy', 'true');
+      await expect(loadingElement).toHaveAttribute('aria-live', 'polite');
+      
+      // Check that there's a visually hidden message for screen readers
+      const hiddenText = canvas.getByText('Content is loading...');
+      await expect(hiddenText).toBeInTheDocument();
+    });
+  }
+};
+
+export const Sizes = {
+  render: () => (
+    <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
+      <Loading size="sm" />
+      <Loading size="md" />
+      <Loading size="lg" />
+    </div>
+  ),
+};
+
+export const Variants = {
+  render: () => (
+    <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
+      <Loading variant="primary" />
+      <Loading variant="secondary" />
+      <Loading variant="terminal" />
+    </div>
+  ),
 };
 
 // Loading in a constrained container - shows how the spinner behaves in limited space

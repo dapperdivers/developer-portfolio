@@ -1,6 +1,6 @@
 import React, { FC, useMemo } from 'react';
-import MatrixBackground from './MatrixBackground';
-import BinaryStream from './BinaryStream';
+import MatrixBackground from '../MatrixBackground/MatrixBackground';
+import BinaryStream from '../BinaryStream/BinaryStream';
 import './TimelineDecorations.css';
 
 export interface TimelineDecorationsProps {

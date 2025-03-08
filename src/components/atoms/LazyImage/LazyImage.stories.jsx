@@ -2,22 +2,22 @@ import React from 'react';
 import LazyImage from './LazyImage';
 import { within, userEvent, expect } from '@storybook/test';
 
-export default {
+const meta = {
   title: 'Atoms/LazyImage',
   component: LazyImage,
   tags: ['autodocs'],
   argTypes: {
     src: {
       control: 'text',
-      description: 'Source URL of the image',
+      description: 'Image source URL',
     },
     alt: {
       control: 'text',
-      description: 'Alt text for the image (required for accessibility)',
+      description: 'Alternative text',
     },
     className: {
       control: 'text',
-      description: 'Additional CSS classes to apply',
+      description: 'Additional CSS classes',
     },
     lowResSrc: {
       control: 'text',
@@ -60,15 +60,17 @@ export default {
   },
 };
 
+export default meta;
+
 // Template for the component
 const Template = (args) => <div style={{ maxWidth: '500px' }}><LazyImage {...args} /></div>;
 
 // Default story
 export const Default = {
   args: {
-  src: 'https://source.unsplash.com/featured/800x600/?nature',
-  alt: 'Nature landscape from Unsplash',
-}
+    src: 'https://via.placeholder.com/300x200',
+    alt: 'Placeholder image',
+  }
 };
 Default.play = async ({ canvasElement, step }) => {
   const canvas = within(canvasElement);
@@ -81,19 +83,19 @@ Default.play = async ({ canvasElement, step }) => {
 // With aspect ratio
 export const WithAspectRatio = {
   args: {
-  src: 'https://source.unsplash.com/featured/800x450/?landscape',
-  alt: 'Landscape with 16:9 aspect ratio',
-  aspectRatio: '16:9',
-}
+    src: 'https://source.unsplash.com/featured/800x450/?landscape',
+    alt: 'Landscape with 16:9 aspect ratio',
+    aspectRatio: '16:9',
+  }
 };
 
 // With low-res placeholder
 export const WithPlaceholder = {
   args: {
-  src: 'https://source.unsplash.com/featured/800x600/?mountains',
-  alt: 'Mountain landscape',
-  lowResSrc: 'https://source.unsplash.com/featured/80x60/?mountains',
-}
+    src: 'https://source.unsplash.com/featured/800x600/?mountains',
+    alt: 'Mountain landscape',
+    lowResSrc: 'https://source.unsplash.com/featured/80x60/?mountains',
+  }
 };
 
 /**
@@ -141,21 +143,36 @@ export const WithPlaceholder = {
  */
 export const ErrorState = {
   args: {
-  src: 'https://non-existent-image-url.jpg',
-  alt: 'This image will fail to load',
-}
+    src: 'https://non-existent-image-url.jpg',
+    alt: 'This image will fail to load',
+  }
 };
 
 // Responsive behavior example
 export const Responsive = {
   args: {
-  src: 'https://source.unsplash.com/featured/600x400/?technology',
-  alt: 'Technology image',
-  aspectRatio: '3:2',
-}
+    src: 'https://source.unsplash.com/featured/600x400/?technology',
+    alt: 'Technology image',
+    aspectRatio: '3:2',
+  }
 };
 Responsive.parameters = {
   viewport: {
     defaultViewport: 'mobile1',
   },
+};
+
+export const WithCustomClass = {
+  args: {
+    src: 'https://via.placeholder.com/300x200',
+    alt: 'Placeholder image with custom class',
+    className: 'rounded-lg shadow-md',
+  }
+};
+
+export const LoadingState = {
+  args: {
+    src: 'https://via.placeholder.com/800x600',
+    alt: 'Large image to demonstrate loading',
+  }
 };

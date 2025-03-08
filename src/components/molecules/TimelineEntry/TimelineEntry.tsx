@@ -1,6 +1,6 @@
 import React, { memo, useMemo, FC, useState } from 'react';
 import { motion } from 'framer-motion';
-import ExperienceCard from '../ExperienceCard/ExperienceCard';
+import ExperienceCard from '@molecules/ExperienceCard';
 import Card from '@atoms/Card';
 import { TimelineNode } from '@atoms/TimelineCore';
 import DateBubble from '@atoms/DateBubble/DateBubble';

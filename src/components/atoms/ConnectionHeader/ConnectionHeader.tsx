@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { motion } from 'framer-motion';
+import './ConnectionHeader.css';
 
 export interface ConnectionHeaderProps {
   /** The title to display */
@@ -29,8 +30,10 @@ const ConnectionHeader: FC<ConnectionHeaderProps> = ({
   animate = true,
   variant = 'security'
 }) => {
+  const variantClass = variant ? `secure-connection-start--${variant}` : '';
+  
   const component = (
-    <div className="secure-connection-start">
+    <div className={`secure-connection-start ${variantClass}`}>
       <div className="secure-connection-status">
         <span className="connection-pulse"></span>
         <div className="secure-label">

@@ -11,11 +11,13 @@
  * 
  * Options:
  * --component: The name of the component (required)
- * --type: The atomic design type (atom, molecule, organism, template) (required)
+ * --type: The atomic design type (atom, molecule, organism, layout) (required)
  * --path: Custom component path (optional, defaults to standard locations)
  * --interactions: Include interaction tests (optional, flag)
  * --context: Add context support (optional, values: portfolio, theme)
  * --detailed: Add detailed documentation templates (optional, flag)
+ * --tsx: Generate TypeScript story (optional, flag)
+ * --subdir: For components in nested directories (e.g., TimelineCore/Node)
  */
 
 import fs from 'fs';
@@ -53,7 +55,7 @@ if (!args.type) {
 }
 
 // Validate type
-const validTypes = ['atom', 'molecule', 'organism', 'template'];
+const validTypes = ['atom', 'molecule', 'organism', 'layout'];
 if (!validTypes.includes(args.type)) {
   console.error(`Error: --type must be one of: ${validTypes.join(', ')}`);
   process.exit(1);
@@ -64,32 +66,36 @@ const componentName = args.component;
 const atomicType = args.type;
 const pluralType = atomicType === 'atom' ? 'atoms' : 
                    atomicType === 'molecule' ? 'molecules' : 
-                   atomicType === 'organism' ? 'organisms' : 'templates';
+                   atomicType === 'organism' ? 'organisms' : 'layout';
+
+// Handle components with subdirectories (e.g., TimelineCore/Node/TimelineNode)
+let baseComponentName = componentName;
+let componentDir = '';
+
+if (componentName.includes('/')) {
+  const parts = componentName.split('/');
+  baseComponentName = parts[parts.length - 1];
+  componentDir = parts.slice(0, -1).join('/');
+}
+
+// Determine if we're working with a TypeScript component
+const fileExtension = args.tsx ? 'tsx' : 'jsx';
 
 // Determine the source component path
 let componentPath;
 if (args.path) {
   componentPath = args.path;
 } else {
-  // Default paths based on atomic type
-  switch(atomicType) {
-    case 'atom':
-      componentPath = `src/components/ui/${componentName}.jsx`;
-      break;
-    case 'molecule':
-      componentPath = `src/components/${componentName}.jsx`;
-      break;
-    case 'organism':
-      componentPath = `src/containers/${componentName}.jsx`;
-      break;
-    case 'template':
-      componentPath = `src/components/layout/${componentName}.jsx`;
-      break;
-  }
+  // Updated paths based on project structure
+  componentPath = componentDir 
+    ? `src/components/${pluralType}/${componentDir}/${baseComponentName}.${fileExtension}`
+    : `src/components/${pluralType}/${baseComponentName}/${baseComponentName}.${fileExtension}`;
 }
 
 // Determine the story file path
-const storyPath = `src/stories/${pluralType}/${componentName}.stories.jsx`;
+const storyPath = componentDir
+  ? `src/components/${pluralType}/${componentDir}/${baseComponentName}.stories.${fileExtension}`
+  : `src/components/${pluralType}/${baseComponentName}/${baseComponentName}.stories.${fileExtension}`;
 
 // Check if component exists
 if (!fs.existsSync(componentPath)) {
@@ -104,11 +110,10 @@ if (fs.existsSync(storyPath)) {
 }
 
 // Calculate relative import path
-const relativePath = path.relative(path.dirname(storyPath), path.dirname(componentPath))
-  .replace(/\\/g, '/') || '.';
+const importStatement = `import ${baseComponentName} from './${baseComponentName}';`;
 
 // Generate imports based on options
-let imports = `import React from 'react';\nimport ${componentName} from '${relativePath === '.' ? '.' : relativePath}/${componentName}';\n`;
+let imports = `import React from 'react';\n${importStatement}\n`;
 
 // Add interaction testing imports if needed
 if (args.interactions) {
@@ -120,18 +125,24 @@ if (args.context) {
   if (args.context === 'portfolio') {
     imports += `\n// Mock data for PortfolioContext\nconst mockPortfolioData = {\n  // Add mock data properties as needed\n};\n`;
     imports += `\n// Context decorator for providing portfolio data\nconst withPortfolioContext = (Story) => (\n  <PortfolioContext.Provider value={mockPortfolioData}>\n    <Story />\n  </PortfolioContext.Provider>\n);\n`;
-    imports += `import { PortfolioContext } from '../../context/PortfolioContext';\n`;
+    imports += `import { PortfolioContext } from '../../../context/PortfolioContext';\n`;
   } else if (args.context === 'theme') {
     imports += `\n// Mock data for ThemeContext\nconst mockThemeData = {\n  // Add mock theme properties\n};\n`;
     imports += `\n// Context decorator for providing theme\nconst withThemeContext = (Story) => (\n  <ThemeContext.Provider value={mockThemeData}>\n    <Story />\n  </ThemeContext.Provider>\n);\n`;
-    imports += `import { ThemeContext } from '../../context/ThemeContext';\n`;
+    imports += `import { ThemeContext } from '../../../context/ThemeContext';\n`;
   }
+}
+
+// Determine title path
+let titlePath = baseComponentName;
+if (componentDir) {
+  titlePath = `${componentDir}/${baseComponentName}`;
 }
 
 // Generate story configuration
 let storyConfig = `export default {
-  title: '${pluralType.charAt(0).toUpperCase() + pluralType.slice(1)}/${componentName}',
-  component: ${componentName},
+  title: '${pluralType.charAt(0).toUpperCase() + pluralType.slice(1)}/${titlePath}',
+  component: ${baseComponentName},
   tags: ['autodocs'],`;
 
 // Add decorators for context if needed
@@ -159,7 +170,7 @@ storyConfig += `
   parameters: {
     docs: {
       description: {
-        component: 'Description of the ${componentName} component',
+        component: 'Description of the ${baseComponentName} component',
       },
     },`;
 
@@ -238,10 +249,10 @@ if (args.detailed) {
  * ## Component Usage
  * 
  * \`\`\`jsx
- * import { ${componentName} } from '${atomicType === 'atom' ? 'components/ui' : atomicType === 'template' ? 'components/layout' : 'components'}';
+ * import { ${baseComponentName} } from 'components/${pluralType}/${componentDir ? componentDir + '/' : ''}${baseComponentName}';
  * 
  * function MyComponent() {
- *   return <${componentName} />;
+ *   return <${baseComponentName} />;
  * }
  * \`\`\`
  * 
@@ -291,9 +302,9 @@ export const Responsive = {
 const finalStoryContent = imports + '\n\n' + storyConfig + '\n\n' + stories;
 
 // Create the stories directory if it doesn't exist
-const storiesDir = path.dirname(storyPath);
-if (!fs.existsSync(storiesDir)) {
-  fs.mkdirSync(storiesDir, { recursive: true });
+const storyDir = path.dirname(storyPath);
+if (!fs.existsSync(storyDir)) {
+  fs.mkdirSync(storyDir, { recursive: true });
 }
 
 // Write the story file

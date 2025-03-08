@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import './BinaryStream.css';
 
 export interface BinaryStreamProps {
   /** The side to position the stream (left, right, top, bottom) */

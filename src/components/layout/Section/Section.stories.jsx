@@ -4,9 +4,16 @@ import Button from '@atoms/Button';
 import Card from '@atoms/Card';
 
 export default {
-  title: 'Templates/Section',
+  title: 'Layout/Section',
   component: Section,
-  tags: ['autodocs'],
+  parameters: {
+    layout: 'fullscreen',
+    docs: {
+      description: {
+        component: 'A layout component for structuring content into sections with consistent styling and optional animations.',
+      },
+    },
+  },
   argTypes: {
     title: {
       control: 'text',
@@ -42,30 +49,146 @@ export default {
       description: 'Section content',
     },
   },
-  parameters: {
-    layout: 'fullscreen',
+};
+
+/**
+ * Default story showing a basic section
+ */
+export const Default = {
+  args: {
+    title: 'Section Title',
+    subtitle: 'Section Subtitle',
+    children: (
+      <div style={{ padding: '20px' }}>
+        <p>This is the section content.</p>
+      </div>
+    ),
   },
 };
 
-// Template for section
-const Template = (args) => (
-  <Section {...args}>
-    <div style={{ padding: '20px 0' }}>
-      <p>This is a sample section content. Sections are used to structure the page into logical parts.</p>
-    </div>
-  </Section>
-);
-
-// Default section
-export const Default = {
+/**
+ * Story showing a section with predefined icons
+ */
+export const Education = {
   args: {
-  title: 'Section Title',
-  subtitle: 'This is a subtitle that provides additional context',
-  id: 'sample-section',
-  background: 'light',
-  container: true,
-  fluid: false,
-}
+    title: 'Education',
+    subtitle: 'My academic journey',
+    children: (
+      <div style={{ padding: '20px' }}>
+        <p>Education section content with graduation cap icon.</p>
+      </div>
+    ),
+  },
+};
+
+/**
+ * Story showing a section with experience icon
+ */
+export const Experience = {
+  args: {
+    title: 'Experience',
+    subtitle: 'Professional journey',
+    children: (
+      <div style={{ padding: '20px' }}>
+        <p>Experience section content with briefcase icon.</p>
+      </div>
+    ),
+  },
+};
+
+/**
+ * Story showing a section with animation
+ */
+export const WithAnimation = {
+  args: {
+    title: 'Animated Section',
+    subtitle: 'With Framer Motion animation',
+    children: (
+      <div style={{ padding: '20px' }}>
+        <p>This section animates on mount.</p>
+      </div>
+    ),
+    animation: {
+      initial: { opacity: 0, y: 20 },
+      animate: { opacity: 1, y: 0 },
+      transition: { duration: 0.5 },
+    },
+  },
+};
+
+/**
+ * Story showing a fluid container section
+ */
+export const FluidContainer = {
+  args: {
+    title: 'Fluid Section',
+    subtitle: 'Full-width container',
+    fluid: true,
+    children: (
+      <div style={{ padding: '20px', backgroundColor: 'rgba(255,255,255,0.1)' }}>
+        <p>This section uses a fluid container that spans the full width.</p>
+      </div>
+    ),
+  },
+};
+
+/**
+ * Story showing different background styles
+ */
+export const BackgroundStyles = {
+  args: {
+    title: 'Background Styles',
+    children: (
+      <div style={{ padding: '20px' }}>
+        <p>This section demonstrates different background options.</p>
+      </div>
+    ),
+  },
+  render: (args) => (
+    <>
+      <Section {...args} background="light" subtitle="Light Background" />
+      <Section {...args} background="dark" subtitle="Dark Background" />
+      <Section {...args} background="primary" subtitle="Primary Background" />
+      <Section {...args} background="secondary" subtitle="Secondary Background" />
+      <Section {...args} background="gray" subtitle="Gray Background" />
+    </>
+  ),
+};
+
+/**
+ * Story showing a section without a container
+ */
+export const NoContainer = {
+  args: {
+    title: 'No Container',
+    subtitle: 'Content spans full width',
+    container: false,
+    children: (
+      <div style={{ padding: '20px', backgroundColor: 'rgba(255,255,255,0.1)' }}>
+        <p>This section has no container wrapper.</p>
+      </div>
+    ),
+  },
+};
+
+/**
+ * Story showing a section in dark mode
+ */
+export const DarkMode = {
+  args: {
+    title: 'Dark Mode Section',
+    subtitle: 'Optimized for dark theme',
+    children: (
+      <div style={{ padding: '20px' }}>
+        <p>This section is optimized for dark mode viewing.</p>
+      </div>
+    ),
+  },
+  parameters: {
+    backgrounds: {
+      default: 'dark',
+    },
+  },
 };
 
 // Education section

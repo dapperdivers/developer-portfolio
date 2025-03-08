@@ -5,7 +5,7 @@ const config: StorybookConfig = {
   "stories": [
     "./examples/*.stories.jsx",
     "./templates/*.stories.jsx",
-    "../src/components/**/*.stories.jsx"
+    "../src/components/**/*.stories.@(jsx|tsx)"
   ],
   "addons": [
     "@storybook/addon-links",
@@ -28,6 +28,14 @@ const config: StorybookConfig = {
   ],
   "viteFinal": async (config) => {
     // Add path aliases
+    if (!config.resolve) {
+      config.resolve = {};
+    }
+    
+    if (!config.resolve.alias) {
+      config.resolve.alias = {};
+    }
+    
     config.resolve.alias = {
       ...config.resolve.alias,
       '@': path.resolve(__dirname, '../src'),

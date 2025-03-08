@@ -12,7 +12,7 @@ const withHelmetProvider = (Story) => (
   </HelmetProvider>
 );
 
-export default {
+const meta = {
   title: 'Atoms/Head',
   component: Head,
   tags: ['autodocs'],
@@ -20,11 +20,11 @@ export default {
   argTypes: {
     title: {
       control: 'text',
-      description: 'Page title'
+      description: 'Page title',
     },
     description: {
       control: 'text',
-      description: 'Meta description for SEO'
+      description: 'Meta description',
     },
     imageUrl: {
       control: 'text',
@@ -56,6 +56,7 @@ export default {
   },
 };
 
+export default meta;
 
 // Template for the component
 const Template = (args) => {
@@ -84,7 +85,10 @@ ${args.imageUrl ? `<meta name="twitter:image" content="${args.imageUrl}" />` : "
 
 // Default story with default values
 export const Default = {
-  args: {}
+  args: {
+    title: 'My Portfolio',
+    description: 'Welcome to my developer portfolio',
+  }
 };
 Default.parameters = {
   docs: {
@@ -197,4 +201,11 @@ export const ProductPage = {
   description: "A customizable portfolio template for developers",
   structuredData: mockStructuredData.product
 }
+};
+
+export const WithLongTitle = {
+  args: {
+    title: 'John Doe | Senior Software Engineer | Full Stack Developer',
+    description: 'Professional portfolio showcasing my work in web development, software engineering, and cloud architecture',
+  }
 };

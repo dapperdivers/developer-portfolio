@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import './MatrixBackground.css';
 
 export interface MatrixBackgroundProps {
   /** The number of characters to display */
