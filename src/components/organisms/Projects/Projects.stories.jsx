@@ -1,9 +1,8 @@
 import React from 'react';
 import Projects from './Projects';
-import { within, expect } from '@storybook/test';
+import { within, userEvent, expect } from '@storybook/test';
+import { mockPortfolioData, withPortfolioContext, withViewport } from '@stories-utils';
 import PortfolioContext from '@context/PortfolioContext';
-import { mockPortfolioData } from '@stories-utils/mockData';
-import { withPortfolioContext, withViewport } from '@stories-utils/decorators';
 
 // Helper function to create context with custom projects data
 const createContextWithProjects = (projectsData) => {

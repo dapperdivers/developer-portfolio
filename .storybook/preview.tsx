@@ -1,6 +1,10 @@
 import React from 'react';
-import { withHelmetProvider } from './utils/mockHelmetProvider';
-import { withPortfolioContext } from './utils/decorators';
+import type { Preview, StoryContext } from '@storybook/react';
+import { 
+  withHelmetProvider, 
+  withPortfolioContext,
+  withAnimationContext
+} from './utils';
 
 // Import global and design system styles only
 import '../src/assets/css/design-system/index.css';
@@ -14,7 +18,11 @@ import '../src/assets/css/global.css';
 // and don't need to be imported here. This follows the co-location principle
 // where each component imports its own CSS file.
 
-const preview = {
+/**
+ * Default Storybook preview configuration
+ * Controls global parameters and decorators for all stories
+ */
+const preview: Preview = {
   parameters: {
     actions: { argTypesRegex: "^on[A-Z].*" },
     controls: {
@@ -36,15 +44,13 @@ const preview = {
   
   // Global decorators applied to all stories
   decorators: [
-    // Wrap all stories with HelmetProvider
+    // Wrap all stories with context providers
     withHelmetProvider,
-    
-    // Use Portfolio Context only for stories that need it
-    // Comment this out if you want to apply it selectively in each story
-    // withPortfolioContext,
+    withPortfolioContext,
+    withAnimationContext,
     
     // Add padding around all stories
-    (Story) => (
+    (Story, context: StoryContext) => (
       <div style={{ padding: '2rem' }}>
         <Story />
       </div>
@@ -52,4 +58,4 @@ const preview = {
   ],
 };
 
-export default preview;
+export default preview; 

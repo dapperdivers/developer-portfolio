@@ -1,9 +1,8 @@
 import React from 'react';
 import Education from './Education';
-import { within, expect } from '@storybook/test';
+import { expect, within } from '@storybook/test';
+import { mockPortfolioData, withPortfolioContext, withViewport } from '@stories-utils';
 import PortfolioContext from '@context/PortfolioContext';
-import { mockPortfolioData } from '@stories-utils/mockData';
-import { withPortfolioContext, withViewport } from '@stories-utils/decorators';
 
 export default {
   title: 'Organisms/Education',

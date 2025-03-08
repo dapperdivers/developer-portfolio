@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
 import EducationCard from '@molecules/EducationCard';
-import SectionHeader from '@molecules/SectionHeader';
 import './Education.css';
 
 /**

@@ -1,9 +1,8 @@
 import React from 'react';
 import Proficiency from './Proficiency';
 import { within, expect } from '@storybook/test';
+import { mockPortfolioData, withPortfolioContext, withViewport } from '@stories-utils';
 import PortfolioContext from '@context/PortfolioContext';
-import { mockPortfolioData } from '@stories-utils/mockData';
-import { withPortfolioContext, withViewport } from '@stories-utils/decorators';
 import build from '@assets/animations/lottie/dev-building.json';
 
 // Helper function to create context with custom skill bars

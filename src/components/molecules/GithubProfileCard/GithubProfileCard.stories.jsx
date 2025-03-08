@@ -1,8 +1,7 @@
 import React from 'react';
 import GithubProfileCard from './GithubProfileCard';
 import { within, userEvent, expect } from '@storybook/test';
-import { mockGithubProfile } from '@stories-utils/mockData';
-import { withPortfolioContext } from '@stories-utils/decorators';
+import { mockGithubProfile, withPortfolioContext } from '@stories-utils';
 
 export default {
   title: 'Molecules/GithubProfileCard',

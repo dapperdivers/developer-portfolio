@@ -1,9 +1,7 @@
 import React from 'react';
 import GithubProfile from './GithubProfile';
 import { within, userEvent, expect } from '@storybook/test';
-import PortfolioContext from '@context/PortfolioContext';
-import { mockPortfolioData, mockGithubProfile } from '@stories-utils/mockData';
-import { withPortfolioContext } from '@stories-utils/decorators';
+import { mockPortfolioData, mockGithubProfile, withPortfolioContext } from '@stories-utils';
 import axios from 'axios';
 
 // Mock axios for GitHub API calls

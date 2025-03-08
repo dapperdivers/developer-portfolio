@@ -2,7 +2,7 @@ import React from 'react';
 import { FaGithub, FaLinkedin, FaTwitter, FaMedium, FaDev, FaStackOverflow, FaYoutube, FaInstagram } from 'react-icons/fa';
 import { within, userEvent, expect } from '@storybook/test';
 import SocialLinks from './SocialLinks';
-import { withPortfolioContext } from '@stories-utils/decorators';
+import { withPortfolioContext } from '@stories-utils';
 
 // Import the CSS for styling
 import '@assets/css/components/ui/social-links.css';

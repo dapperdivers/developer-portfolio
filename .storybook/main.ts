@@ -36,6 +36,9 @@ const config: StorybookConfig = {
       config.resolve.alias = {};
     }
     
+    // Add extensions for better module resolution
+    config.resolve.extensions = ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json'];
+    
     config.resolve.alias = {
       ...config.resolve.alias,
       '@': path.resolve(__dirname, '../src'),

@@ -1,7 +1,7 @@
 import React from 'react';
 import Navigation from './Navigation';
 import { within, userEvent, expect } from '@storybook/test';
-import { withPortfolioContext } from '@stories-utils/decorators';
+import { withPortfolioContext } from '@stories-utils';
 import PortfolioContext from '@context/PortfolioContext';
 
 export default {

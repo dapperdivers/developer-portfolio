@@ -1,8 +1,8 @@
 /**
- * Mock data for Storybook stories
+ * Mock Data for Storybook
  * 
- * This file contains mock data objects for use in Storybook stories,
- * especially for components that depend on context values.
+ * This module provides mock data objects for use in Storybook stories,
+ * particularly for context providers that need realistic data.
  */
 
 // Mock data for PortfolioContext
@@ -162,4 +162,4 @@ export const mockThemeData = {
   theme: "light",
   setTheme: () => {},
   toggleTheme: () => {}
-};
+}; 
