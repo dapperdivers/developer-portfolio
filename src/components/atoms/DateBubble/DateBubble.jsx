@@ -59,9 +59,16 @@ const DateBubble = ({
     } : {})
   };
 
-  // Content to render inside the DateBubble
+  // Content to render inside the DateBubble with hacker-themed elements
   const bubbleContent = (
-    <span className="date-bubble-text">{date}</span>
+    <>
+      <div className="date-bubble-scanner"></div>
+      <span className="date-bubble-text">
+        <span className="date-bubble-year">{date}</span>
+        <span className="date-bubble-indicator"></span>
+      </span>
+      <div className="date-chip"></div>
+    </>
   );
 
   // Conditionally wrap with motion.div if animation is provided

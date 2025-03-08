@@ -3,21 +3,39 @@
  * Styling for the TechBadge component with level variants
  */
 
-/* Base styles */
+/* Base styles with improved readability */
 .tech-badge {
-  background: rgba(var(--color-primary-rgb), 0.1);
+  background: rgba(var(--color-primary-rgb), 0.15); /* Slightly more visible background */
   color: var(--color-primary);
-  font-size: var(--font-size-xs);
-  padding: var(--spacing-1) var(--spacing-2);
-  border-radius: var(--border-radius-sm);
+  font-size: 0.85rem; /* Larger font size for better readability */
+  padding: 0.5rem 0.85rem; /* Increased padding for better visibility */
+  border-radius: 6px; /* More rounded corners */
   font-family: var(--font-family-jetbrains);
   white-space: nowrap;
   display: inline-block;
-  transition: all var(--transition-standard);
-  border: 1px solid transparent;
+  transition: all 0.2s ease;
+  border: 1px solid rgba(var(--color-primary-rgb), 0.4); /* More visible border */
   will-change: transform, background-color;
   font-weight: var(--font-weight-medium);
-  text-shadow: 0 0 2px rgba(var(--color-primary-rgb), 0.3);
+  text-shadow: 0 0 2px rgba(var(--color-primary-rgb), 0.3); /* Reduced glow for better readability */
+  position: relative;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+  overflow: hidden;
+  letter-spacing: 0.3px; /* Slightly increased letter spacing */
+}
+
+/* Simplified decoration for badges - just a top border highlight */
+.tech-badge::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: rgba(var(--color-primary-rgb), 0.6);
+  opacity: 0.7;
+  pointer-events: none;
+  z-index: 1;
 }
 
 /* Size variants - fix class naming to match component */
@@ -118,35 +136,50 @@
   text-shadow: 0 0 3px rgba(var(--color-entry5-rgb), 0.3);
 }
 
-/* Hover state */
+/* Simplified hover state for better readability */
 .tech-badge:hover {
   /* Default hover for non-clickable badges */
-  background: rgba(var(--color-primary-rgb), 0.2);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  background: rgba(var(--color-primary-rgb), 0.25); /* Slightly higher contrast on hover */
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2); /* Subtle shadow increase */
+  transform: translateY(-1px); /* Slight lift effect */
+  border-color: rgba(var(--color-primary-rgb), 0.6); /* More visible border */
+  color: #FFFFFF; /* White text on hover for better contrast */
 }
 
 .tech-badge--security:hover {
-  background: rgba(var(--color-primary-rgb), 0.2);
+  background: rgba(var(--color-primary-rgb), 0.25);
+  border-color: rgba(var(--color-primary-rgb), 0.6);
+  color: #FFFFFF;
 }
 
 .tech-badge--terminal:hover {
-  background: rgba(var(--color-info-rgb), 0.2);
+  background: rgba(var(--color-info-rgb), 0.25);
+  border-color: rgba(var(--color-info-rgb), 0.6);
+  color: #FFFFFF;
 }
 
 .tech-badge--low:hover {
-  background: rgba(var(--color-level-low-rgb), 0.2);
+  background: rgba(var(--color-level-low-rgb), 0.25);
+  border-color: rgba(var(--color-level-low-rgb), 0.6);
+  color: #FFFFFF;
 }
 
 .tech-badge--medium:hover {
-  background: rgba(var(--color-level-medium-rgb), 0.2);
+  background: rgba(var(--color-level-medium-rgb), 0.25);
+  border-color: rgba(var(--color-level-medium-rgb), 0.6);
+  color: #FFFFFF;
 }
 
 .tech-badge--high:hover {
-  background: rgba(var(--color-level-high-rgb), 0.2);
+  background: rgba(var(--color-level-high-rgb), 0.25);
+  border-color: rgba(var(--color-level-high-rgb), 0.6);
+  color: #FFFFFF;
 }
 
 .tech-badge--critical:hover {
-  background: rgba(var(--color-danger-rgb), 0.2);
+  background: rgba(var(--color-danger-rgb), 0.25);
+  border-color: rgba(var(--color-danger-rgb), 0.6);
+  color: #FFFFFF;
 }
 
 /* Clickable state */

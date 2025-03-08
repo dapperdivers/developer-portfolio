@@ -11,6 +11,6 @@ import Experience from './Experience';
 // Export the Experience component as the default export
 export default Experience;
 
-// Also export ExperienceTimeline for direct usage
-// The bundler will automatically resolve to the TypeScript version
-export { default as ExperienceTimeline } from './ExperienceTimeline';
+// Note: ExperienceTimeline has been moved to molecules folder
+// Import it directly from there if needed:
+// import ExperienceTimeline from '@molecules/ExperienceTimeline';

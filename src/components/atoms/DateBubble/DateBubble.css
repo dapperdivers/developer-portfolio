@@ -1,228 +1,373 @@
 /**
- * DateBubble Component Styles
- * Styling for the DateBubble component with security level variants
+ * DateBubble Component Styles - Completely reimagined
+ * Futuristic date display with holographic elements and data visualization
  */
 
 :root {
-  /* Size variants - using design system tokens */
-  --date-bubble-size-sm: 40px;
-  --date-bubble-size-md: 50px;
-  --date-bubble-size-lg: 60px;
+  /* Size variants with precise dimensions */
+  --date-bubble-size-sm: 75px;
+  --date-bubble-size-md: 90px;
+  --date-bubble-size-lg: 110px;
   
-  /* Custom colors for timeline entries from TimelineEntry component */
+  /* Main colors for holographic effect */
+  --hologram-primary: rgba(100, 255, 218, 0.9);
+  --hologram-secondary: rgba(88, 166, 255, 0.9);
+  --hologram-warning: rgba(255, 157, 0, 0.9);
+  --hologram-critical: rgba(255, 94, 120, 0.9);
+  
+  /* Custom colors for timeline entries */
   --color-entry1: #64ffda; /* Teal - Primary */
   --color-entry2: #ff9d00; /* Orange */
   --color-entry3: #ff5e78; /* Pink */
   --color-entry4: #a78bfa; /* Purple */
   --color-entry5: #2dd4bf; /* Turquoise */
+  
+  /* Glow effects */
+  --glow-strong: 0 0 25px;
+  --glow-medium: 0 0 15px;
+  --glow-soft: 0 0 8px;
 }
 
-/* Base styles */
+/* Base styles - holographic data chip */
 .date-bubble {
+  position: relative;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  border-radius: var(--border-radius-full);
-  background-color: rgba(10, 25, 47, 0.9); /* Darker, more opaque background */
-  color: var(--color-text);
-  font-family: var(--font-family-jetbrains);
-  font-weight: var(--font-weight-bold); /* Bolder text */
-  box-shadow: var(--shadow-md); /* Stronger shadow */
-  transition: all var(--transition-standard);
+  background-color: rgba(10, 25, 50, 0.85);
+  border-radius: 4px;
+  color: #FFFFFF;
+  font-family: var(--font-family-jetbrains, 'JetBrains Mono', monospace);
+  font-weight: 600;
   user-select: none;
-  position: relative;
-  z-index: 2;
-  overflow: hidden;
-  border: 2px solid; /* Thicker border */
-  text-shadow: 0 0 3px currentColor; /* Text glow for better visibility */
+  overflow: visible;
+  padding: 8px;
+  border: 2px solid transparent;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
 }
 
-/* Size variants */
+/* Hexagonal cutout corners - cyberpunk detail */
+.date-bubble::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 10px;
+  height: 10px;
+  background-color: transparent;
+  border-top: 2px solid var(--hologram-primary);
+  border-right: 2px solid var(--hologram-primary);
+  opacity: 0.8;
+}
+
+.date-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: -4px;
+  width: 10px;
+  height: 10px;
+  background-color: transparent;
+  border-bottom: 2px solid var(--hologram-primary);
+  border-left: 2px solid var(--hologram-primary);
+  opacity: 0.8;
+}
+
+/* Size variants with proper scaling */
 .date-bubble-sm {
-  min-width: var(--date-bubble-size-sm);
-  height: var(--date-bubble-size-sm);
-  font-size: var(--font-size-xs);
-  padding: 0 var(--spacing-2);
+  width: var(--date-bubble-size-sm);
+  height: 55px;
+  font-size: 1.1rem;
 }
 
 .date-bubble-md {
-  min-width: var(--date-bubble-size-md);
-  height: var(--date-bubble-size-md);
-  font-size: var(--font-size-sm);
-  padding: 0 var(--spacing-3);
+  width: var(--date-bubble-size-md);
+  height: 65px;
+  font-size: 1.3rem;
 }
 
 .date-bubble-lg {
-  min-width: var(--date-bubble-size-lg);
-  height: var(--date-bubble-size-lg);
-  font-size: var(--font-size-base);
-  padding: 0 var(--spacing-4);
+  width: var(--date-bubble-size-lg);
+  height: 80px;
+  font-size: 1.6rem;
 }
 
-/* Visual variants */
+/* Variant styles - distinctive color schemes */
+.date-bubble {
+  border-color: var(--hologram-primary);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5), 0 0 20px rgba(100, 255, 218, 0.2);
+}
+
 .date-bubble-security {
-  border-color: var(--color-primary);
-  box-shadow: 0 0 10px rgba(var(--color-primary-rgb), 0.2);
+  border-color: var(--hologram-primary);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5), 0 0 20px rgba(100, 255, 218, 0.2);
 }
 
 .date-bubble-terminal {
-  border-color: var(--color-info);
-  box-shadow: 0 0 10px rgba(var(--color-info-rgb), 0.2);
+  border-color: var(--hologram-secondary);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5), 0 0 20px rgba(88, 166, 255, 0.2);
 }
 
-/* Security level variations */
+/* Security level variations with clear visual differentiation */
 .date-bubble-level-low {
-  background-color: rgba(var(--color-level-low-rgb), 0.2); /* More contrast */
-  color: var(--color-level-low);
-  border-color: var(--color-level-low);
+  border-color: var(--hologram-primary);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5), 0 0 20px rgba(100, 255, 218, 0.3);
+}
+
+.date-bubble-level-low::before,
+.date-bubble-level-low::after {
+  border-color: var(--hologram-primary);
 }
 
 .date-bubble-level-medium {
-  background-color: rgba(var(--color-level-medium-rgb), 0.2); /* More contrast */
-  color: var(--color-level-medium);
-  border-color: var(--color-level-medium);
+  border-color: var(--hologram-secondary);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5), 0 0 20px rgba(88, 166, 255, 0.3);
+}
+
+.date-bubble-level-medium::before,
+.date-bubble-level-medium::after {
+  border-color: var(--hologram-secondary);
 }
 
 .date-bubble-level-high {
-  background-color: rgba(var(--color-level-high-rgb), 0.2); /* More contrast */
-  color: var(--color-level-high);
-  border-color: var(--color-level-high);
+  border-color: var(--hologram-warning);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 157, 0, 0.3);
+}
+
+.date-bubble-level-high::before,
+.date-bubble-level-high::after {
+  border-color: var(--hologram-warning);
 }
 
 .date-bubble-level-critical {
-  background-color: rgba(var(--color-danger-rgb), 0.2); /* More contrast */
-  color: var(--color-danger);
-  border-color: var(--color-danger);
+  border-color: var(--hologram-critical);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 94, 120, 0.3);
 }
 
-/* Timeline-specific entry-indexed styles */
+.date-bubble-level-critical::before,
+.date-bubble-level-critical::after {
+  border-color: var(--hologram-critical);
+}
+
+/* Timeline-specific entry-indexed styles with enhanced holographic effects */
 .timeline-entry:nth-child(5n+1) .date-bubble {
   border-color: var(--color-entry1);
-  box-shadow: 0 0 12px var(--color-entry1); /* Stronger glow */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5), 0 0 20px rgba(100, 255, 218, 0.3);
   color: var(--color-entry1);
+}
+
+.timeline-entry:nth-child(5n+1) .date-bubble::before,
+.timeline-entry:nth-child(5n+1) .date-bubble::after {
+  border-color: var(--color-entry1);
 }
 
 .timeline-entry:nth-child(5n+2) .date-bubble {
   border-color: var(--color-entry2);
-  box-shadow: 0 0 12px var(--color-entry2); /* Stronger glow */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 157, 0, 0.3);
   color: var(--color-entry2);
+}
+
+.timeline-entry:nth-child(5n+2) .date-bubble::before,
+.timeline-entry:nth-child(5n+2) .date-bubble::after {
+  border-color: var(--color-entry2);
 }
 
 .timeline-entry:nth-child(5n+3) .date-bubble {
   border-color: var(--color-entry3);
-  box-shadow: 0 0 12px var(--color-entry3); /* Stronger glow */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 94, 120, 0.3);
   color: var(--color-entry3);
+}
+
+.timeline-entry:nth-child(5n+3) .date-bubble::before,
+.timeline-entry:nth-child(5n+3) .date-bubble::after {
+  border-color: var(--color-entry3);
 }
 
 .timeline-entry:nth-child(5n+4) .date-bubble {
   border-color: var(--color-entry4);
-  box-shadow: 0 0 12px var(--color-entry4); /* Stronger glow */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5), 0 0 20px rgba(167, 139, 250, 0.3);
   color: var(--color-entry4);
+}
+
+.timeline-entry:nth-child(5n+4) .date-bubble::before,
+.timeline-entry:nth-child(5n+4) .date-bubble::after {
+  border-color: var(--color-entry4);
 }
 
 .timeline-entry:nth-child(5n+5) .date-bubble {
   border-color: var(--color-entry5);
-  box-shadow: 0 0 12px var(--color-entry5); /* Stronger glow */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5), 0 0 20px rgba(45, 212, 191, 0.3);
   color: var(--color-entry5);
 }
 
-/* Enhanced scaling effect for timeline entries */
+.timeline-entry:nth-child(5n+5) .date-bubble::before,
+.timeline-entry:nth-child(5n+5) .date-bubble::after {
+  border-color: var(--color-entry5);
+}
+
+/* Enhanced hover and animation effects */
 .timeline-entry .date-bubble {
-  transform: scale(1.1);
-  transition: transform 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 .timeline-entry:hover .date-bubble {
-  transform: scale(1.2);
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6), 0 0 30px rgba(var(--color-primary-rgb), 0.35);
 }
 
-/* Clickable state */
+/* Clickable state with improved interaction feedback */
 .date-bubble-clickable {
   cursor: pointer;
 }
 
 .date-bubble-clickable:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  transform: translateY(-5px) scale(1.05);
 }
 
 .date-bubble-clickable:active {
-  transform: translateY(0);
+  transform: translateY(-2px) scale(0.98);
 }
 
-/* Inner text container */
+/* Inner text container with improved layout */
 .date-bubble-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  font-weight: var(--font-weight-bold); /* Bolder text */
-  letter-spacing: var(--letter-spacing-technical);
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 2;
 }
 
-/* Decorative glow effect */
-.date-bubble::before {
+/* Year display with futuristic styling */
+.date-bubble-year {
+  font-family: var(--font-family-jetbrains, 'JetBrains Mono', monospace);
+  font-weight: 600;
+  letter-spacing: 1px;
+  position: relative;
+  text-shadow: 0 0 10px currentColor;
+  color: #FFFFFF;
+}
+
+/* Indicator light for cyberpunk effect */
+.date-bubble-indicator {
+  position: relative;
+  width: 50%;
+  height: 2px;
+  background-color: currentColor;
+  margin-top: 6px;
+  opacity: 0.7;
+  overflow: hidden;
+}
+
+/* Scanning effect inside indicator */
+.date-bubble-indicator::after {
   content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(255, 255, 255, 0.8) 50%, 
+    transparent 100%
+  );
+  animation: scan-animation 2s infinite;
+}
+
+@keyframes scan-animation {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+/* Scanner effect - horizontal scan line */
+.date-bubble-scanner {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  bottom: 0;
-  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0) 70%); /* Stronger gradient */
-  opacity: 0.4; /* Always visible, not just on hover */
-  transition: opacity var(--transition-standard);
-  pointer-events: none;
+  height: 1px;
+  background-color: currentColor;
+  opacity: 0.5;
+  animation: vertical-scan 3s infinite ease-in-out;
+  z-index: 3;
 }
 
-.date-bubble:hover::before {
-  opacity: 0.7; /* Even stronger on hover */
+@keyframes vertical-scan {
+  0%, 100% { top: 5%; opacity: 0; }
+  10% { opacity: 0.8; }
+  90% { opacity: 0.8; }
+  50% { top: 95%; }
 }
 
-/* Focus styles for keyboard navigation */
+/* Data chip decoration - retro computer chip aesthetic */
+.date-chip {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 8px;
+  height: 8px;
+  background-color: transparent;
+  border: 1px solid currentColor;
+  opacity: 0.6;
+}
+
+/* Focus styles for keyboard navigation with better visibility */
 .date-bubble:focus-visible {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
+  outline: none;
+  box-shadow: 0 0 0 3px currentColor, 0 5px 15px rgba(0, 0, 0, 0.5);
 }
 
-.date-bubble-security:focus-visible {
-  outline-color: var(--color-primary);
-}
-
-.date-bubble-terminal:focus-visible {
-  outline-color: var(--color-info);
-}
-
-/* Responsive styles */
+/* Responsive styles for mobile devices */
 @media (max-width: 768px) {
   .date-bubble-sm {
-    min-width: calc(var(--date-bubble-size-sm) * 0.9);
-    height: calc(var(--date-bubble-size-sm) * 0.9);
-    font-size: calc(var(--font-size-xs) * 0.9);
+    width: calc(var(--date-bubble-size-sm) * 0.9);
+    height: 50px;
+    font-size: 1rem;
   }
   
   .date-bubble-md {
-    min-width: calc(var(--date-bubble-size-md) * 0.9);
-    height: calc(var(--date-bubble-size-md) * 0.9);
-    font-size: calc(var(--font-size-sm) * 0.9);
+    width: calc(var(--date-bubble-size-md) * 0.9);
+    height: 55px;
+    font-size: 1.15rem;
   }
   
   .date-bubble-lg {
-    min-width: calc(var(--date-bubble-size-lg) * 0.9);
-    height: calc(var(--date-bubble-size-lg) * 0.9);
-    font-size: calc(var(--font-size-base) * 0.9);
+    width: calc(var(--date-bubble-size-lg) * 0.9);
+    height: 65px;
+    font-size: 1.3rem;
+  }
+  
+  /* Ensure corners are still visible on mobile */
+  .date-bubble::before,
+  .date-bubble::after {
+    width: 8px;
+    height: 8px;
   }
 }
 
 /* Reduced motion preferences */
 @media (prefers-reduced-motion: reduce) {
-  .date-bubble {
+  .date-bubble,
+  .date-bubble-indicator::after,
+  .date-bubble-scanner {
+    animation: none;
     transition: none;
   }
   
-  .date-bubble-clickable:hover {
+  .date-bubble-clickable:hover,
+  .timeline-entry:hover .date-bubble {
     transform: none;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
   }
   
-  .timeline-entry:hover .date-bubble,
-  .timeline-entry .date-bubble {
-    transform: none;
-    transition: none;
+  /* Static indicator for reduced motion */
+  .date-bubble-indicator {
+    opacity: 0.9;
   }
 }

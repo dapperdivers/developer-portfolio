@@ -69,7 +69,7 @@ const TimelineEntry: FC<TimelineEntryProps> = ({
     securityId
   } = useTimelineAnimation({ 
     index, 
-    id: id || `timeline-entry-${data.company}-${index}`,
+    id: id || `timeline-entry-${data.company.replace(/\s+/g, '-').toLowerCase()}-${index}`,
     isTimeline: false
   });
   
@@ -172,21 +172,27 @@ const TimelineEntry: FC<TimelineEntryProps> = ({
       viewport={{ once: true, margin: "-50px 0px" }}
     >
       <div className="timeline-connector">
-        <TimelineNode
-          id={`timeline-node-${index}`}
-          variant={(variant || "security") as '' | 'security' | 'terminal'}
-          animated={true}
-          active={isVerified}
-          size="md"
-          interactive={false}
-          style={{
-            opacity: isEntryInView ? 1 : 0,
-            transform: isEntryInView ? 'scale(1)' : 'scale(0)',
-            transition: 'all 0.4s ease'
-          }}
-          aria-label={`Timeline node for ${data.company} experience`}
-        />
-        <div className="timeline-line"></div>
+        <div className="node-container">
+          <div className="node-data-line node-data-line-top"></div>
+          <TimelineNode
+            id={`timeline-node-${index}`}
+            variant={(variant || "security") as '' | 'security' | 'terminal'}
+            animated={true}
+            active={isVerified}
+            size="md"
+            interactive={false}
+            style={{
+              opacity: isEntryInView ? 1 : 0,
+              transform: isEntryInView ? 'scale(1)' : 'scale(0)',
+              transition: 'all 0.4s ease'
+            }}
+            aria-label={`Timeline node for ${data.company} experience`}
+          />
+          <div className="node-data-line node-data-line-bottom"></div>
+        </div>
+        <div className="timeline-line">
+          <div className="timeline-line-packet"></div>
+        </div>
       </div>
       
       <div className="timeline-date-container">
@@ -229,18 +235,24 @@ const TimelineEntry: FC<TimelineEntryProps> = ({
           />
 
           <div className="terminal-content">
-            {/* Command: AUTH */}
+            {/* Command: AUTH with enhanced cyberpunk elements */}
             <div className="command-prompt">
               <span className="command-prompt-symbol">$</span>
               <span className={`command-text ${isEntryInView ? '' : 'typing'}`}>
                 AUTH {sessionId} "{data.company}"
               </span>
+              <span className="command-access-level">[LEVEL {index % 5 + 1}]</span>
             </div>
             
-            {/* Response: Position & Timeline */}
+            {/* Response: Position & Timeline with cyberpunk enhancements */}
             <div className="command-response">
-              <div>{'>'} POSITION: {data.role}</div>
-              <div>{'>'} TIMELINE: {data.date}</div>
+              <div className="authentication-message">
+                AUTHENTICATION VERIFIED - ACCESS GRANTED
+                <span className="auth-status-code">[0x{Math.floor(Math.random() * 0xFFFFFF).toString(16).toUpperCase().padStart(6, '0')}]</span>
+              </div>
+              <div>{'>'} POSITION: <span className="highlight-value">{data.role}</span></div>
+              <div>{'>'} TIMELINE: <span className="highlight-value">{data.date}</span></div>
+              <div>{'>'} SECURITY CLEARANCE: <span className="highlight-value blink-slow">AUTHORIZED</span></div>
             </div>
             
             {/* Company Logo */}
@@ -257,23 +269,32 @@ const TimelineEntry: FC<TimelineEntryProps> = ({
               </div>
             )}
             
-            {/* Command: DISPLAY RESPONSIBILITIES */}
+            {/* Command: DISPLAY RESPONSIBILITIES with enhanced styling */}
             <div className="command-prompt">
               <span className="command-prompt-symbol">$</span>
               <span className="command-text">
-                DISPLAY RESPONSIBILITIES
+                DISPLAY_RESPONSIBILITIES --format=secure --decrypt
               </span>
+              <span className="command-status">[EXECUTED]</span>
             </div>
             
-            {/* Display job description */}
-            <div className="command-response">
+            {/* Display job description with enhanced cyberpunk styling */}
+            <div className="command-response responsibilities-response">
               {!isExpanded ? (
                 <div className="compact-view">
+                  {/* Decryption message for compact view */}
+                  <div className="decrypt-message">
+                    <div className="decrypt-status">
+                      <span className="decrypt-icon"></span>
+                      DECRYPTION COMPLETE - SUMMARY VIEW
+                    </div>
+                  </div>
+                  
                   {/* Show brief summary in compact mode */}
                   <div className="compact-description">
                     {/* Show first line of description (truncated if needed) */}
                     <div className="compact-summary">
-                      {data.desc.split('.')[0].trim() + '.'}
+                      <span className="highlight-prefix">[SUMMARY]</span> {data.desc.split('.')[0].trim() + '.'}
                     </div>
                     
                     {/* Show key technologies in compact view */}
@@ -289,43 +310,72 @@ const TimelineEntry: FC<TimelineEntryProps> = ({
                       ))}
                     </div>
                   </div>
-                  <div className="expand-collapse-hint">Click to see full details</div>
+                  <div className="expand-collapse-hint">
+                    <span className="expand-icon">⤢</span> Click to access full data <span className="expand-icon">⤢</span>
+                  </div>
                 </div>
               ) : (
                 <>
-                  <div className="description-text">{data.desc}</div>
+                  {/* Decryption message for expanded view */}
+                  <div className="decrypt-message">
+                    <div className="decrypt-status">
+                      <span className="decrypt-icon"></span>
+                      DECRYPTION COMPLETE - FULL DETAILS
+                    </div>
+                    <div className="decrypt-id">DOCUMENT ID: FILE-{securityId.substring(2, 8)}</div>
+                  </div>
                   
-                  {/* Display bullets if available - only shown when expanded */}
+                  <div className="description-text">
+                    <span className="highlight-prefix">[DETAILS]</span> {data.desc}
+                  </div>
+                  
+                  {/* Display bullets with enhanced styling if available - only shown when expanded */}
                   {data.descBullets && data.descBullets.length > 0 && (
-                    <ul className="description-bullets">
-                      {data.descBullets.map((item, i) => (
-                        <li key={`bullet-${i}`} className="description-bullet-item">
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
+                    <>
+                      <div className="responsibilities-header">KEY RESPONSIBILITIES:</div>
+                      <ul className="description-bullets">
+                        {data.descBullets.map((item, i) => (
+                          <li key={`bullet-${i}`} className="description-bullet-item">
+                            <span className="bullet-counter">{(i + 1).toString().padStart(2, '0')}</span>
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                    </>
                   )}
                   
                   {/* Show expand/collapse hint */}
                   <div className="expand-collapse-hint">
-                    Click to collapse
+                    <span className="collapse-icon">⤡</span> Click to minimize data <span className="collapse-icon">⤡</span>
                   </div>
                 </>
               )}
             </div>
             
-            {/* Command: VERIFY TECHNOLOGIES - Shown in expanded view with all technologies */}
+            {/* Command: VERIFY TECHNOLOGIES - Shown in expanded view with enhanced cyberpunk styling */}
             {isExpanded && (
               <>
-                <div className="command-prompt">
+                <div className="command-prompt tech-verify-command">
                   <span className="command-prompt-symbol">$</span>
                   <span className="command-text">
-                    VERIFY TECHNOLOGIES
+                    VERIFY_TECHNOLOGIES --scan --authenticate
                   </span>
+                  <span className="command-status">[VERIFIED]</span>
                 </div>
                 
-                {/* Tech stack badges */}
-                <div className="command-response">
+                {/* Tech stack badges with enhanced cyberpunk styling */}
+                <div className="command-response tech-stack-response">
+                  <div className="tech-verification-header">
+                    <div className="tech-scan-status">
+                      <span className="tech-scan-icon"></span>
+                      SCANNING COMPLETE - {techKeywords.length} TECHNOLOGIES IDENTIFIED
+                    </div>
+                    <div className="tech-scan-id">
+                      SECURITY LEVEL: {techKeywords.some(k => k === 'Security') ? 'HIGH' : 'STANDARD'}
+                      <span className="security-timestamp">{new Date().toISOString().replace('T', ' ').substring(0, 19)}</span>
+                    </div>
+                  </div>
+                  
                   <div className="tech-stack">
                     {techKeywords.map((keyword, i) => (
                       <TechBadge 
@@ -335,6 +385,11 @@ const TimelineEntry: FC<TimelineEntryProps> = ({
                         level={keyword === 'Security' ? 'high' : undefined}
                       />
                     ))}
+                  </div>
+                  
+                  <div className="tech-stack-footer">
+                    <div className="tech-verification-seal"></div>
+                    TECHNOLOGIES VERIFIED - ACCESS GRANTED
                   </div>
                 </div>
               </>

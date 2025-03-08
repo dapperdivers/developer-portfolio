@@ -440,7 +440,7 @@ const MapComponent = ({ location }) => {
             )}
           </div>
         )}
-      />
+      </div>
       
       {/* Error message if map fails to load */}
       {mapError && (

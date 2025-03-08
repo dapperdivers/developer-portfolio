@@ -1,7 +1,6 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
-import { FaHeart, FaChevronUp } from 'react-icons/fa';
-import Button from '@atoms/Button';
+import { FaHeart } from 'react-icons/fa';
 import SocialLinks from '@molecules/SocialLinks';
 import useFooter from '@hooks/useFooter';
 import './Footer.css';
@@ -13,7 +12,7 @@ import './Footer.css';
  * @returns {React.ReactElement} Footer component
  */
 const Footer = () => {
-  const { currentYear, scrollToTop, greetings } = useFooter();
+  const { currentYear, greetings } = useFooter();
   
   return (
     <footer 
@@ -75,14 +74,6 @@ const Footer = () => {
             </span>
           </div>
         </div>
-        
-        <Button 
-          onClick={scrollToTop} 
-          className="fixed bottom-6 right-6 bg-primary-600 hover:bg-primary-700 text-white p-3 rounded-full shadow-lg transition-all duration-300 hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-opacity-50"
-          aria-label="Back to top"
-        >
-          <FaChevronUp aria-hidden="true" className="h-4 w-4" />
-        </Button>
       </div>
     </footer>
   );

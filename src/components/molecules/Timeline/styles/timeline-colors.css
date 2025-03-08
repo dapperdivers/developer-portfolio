@@ -1,0 +1,91 @@
+/* Timeline Colors - Color variations and themes for timeline entries */
+
+/* Custom colors for timeline entries */
+:root {
+  --color-entry1: #64ffda; /* Teal - Primary */
+  --color-entry1-rgb: 100, 255, 218; 
+  --color-entry2: #ff9d00; /* Orange */
+  --color-entry2-rgb: 255, 157, 0;
+  --color-entry3: #ff5e78; /* Pink */
+  --color-entry3-rgb: 255, 94, 120;
+  --color-entry4: #a78bfa; /* Purple */
+  --color-entry4-rgb: 167, 139, 250;
+  --color-entry5: #2dd4bf; /* Turquoise */
+  --color-entry5-rgb: 45, 212, 191;
+}
+
+/* Year color variations */
+.timeline-entry:nth-child(5n+1) .timeline-date-container {
+  filter: drop-shadow(0 0 10px rgba(var(--color-entry1-rgb), 0.4));
+}
+
+.timeline-entry:nth-child(5n+2) .timeline-date-container {
+  filter: drop-shadow(0 0 10px rgba(var(--color-entry2-rgb), 0.4));
+}
+
+.timeline-entry:nth-child(5n+3) .timeline-date-container {
+  filter: drop-shadow(0 0 10px rgba(var(--color-entry3-rgb), 0.4));
+}
+
+.timeline-entry:nth-child(5n+4) .timeline-date-container {
+  filter: drop-shadow(0 0 10px rgba(var(--color-entry4-rgb), 0.4));
+}
+
+.timeline-entry:nth-child(5n+5) .timeline-date-container {
+  filter: drop-shadow(0 0 10px rgba(var(--color-entry5-rgb), 0.4));
+}
+
+/* Color variations for data packets */
+.timeline-entry:nth-child(5n+1) .timeline-line-packet,
+.timeline-entry:nth-child(5n+1) .timeline-line::after {
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--color-entry1),
+    transparent
+  );
+}
+
+.timeline-entry:nth-child(5n+2) .timeline-line-packet,
+.timeline-entry:nth-child(5n+2) .timeline-line::after {
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--color-entry2),
+    transparent
+  );
+  animation-delay: 0.2s;
+}
+
+.timeline-entry:nth-child(5n+3) .timeline-line-packet,
+.timeline-entry:nth-child(5n+3) .timeline-line::after {
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--color-entry3),
+    transparent
+  );
+  animation-delay: 0.4s;
+}
+
+.timeline-entry:nth-child(5n+4) .timeline-line-packet,
+.timeline-entry:nth-child(5n+4) .timeline-line::after {
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--color-entry4),
+    transparent
+  );
+  animation-delay: 0.6s;
+}
+
+.timeline-entry:nth-child(5n+5) .timeline-line-packet,
+.timeline-entry:nth-child(5n+5) .timeline-line::after {
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--color-entry5),
+    transparent
+  );
+  animation-delay: 0.8s;
+}

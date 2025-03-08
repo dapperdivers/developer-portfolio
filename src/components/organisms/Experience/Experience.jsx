@@ -5,9 +5,11 @@ import Section from '@layout/Section';
 import ConsoleHeader from '@atoms/ConsoleHeader/ConsoleHeader';
 import useExperience from "@hooks/useExperience";
 import { usePortfolio } from "@context/PortfolioContext";
-import ExperienceTimeline from './ExperienceTimeline';
+// Updated import path to use the new molecule component
+import ExperienceTimeline from '@molecules/ExperienceTimeline';
 import { experience as experienceData } from '../../../portfolio';
-import './Experience.css';
+// Updated import path to use modular CSS
+import './styles/index.css';
 
 /**
  * Experience section component displaying professional work history in a visually appealing timeline.

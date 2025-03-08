@@ -1,0 +1,222 @@
+/**
+ * Timeline Colors Component Styles
+ * Color-related styling and theme variants 
+ */
+
+/* Custom colors for timeline entries */
+:root {
+  --color-entry1: #64ffda; /* Teal - Primary */
+  --color-entry1-rgb: 100, 255, 218; 
+  --color-entry2: #ff9d00; /* Orange */
+  --color-entry2-rgb: 255, 157, 0;
+  --color-entry3: #ff5e78; /* Pink */
+  --color-entry3-rgb: 255, 94, 120;
+  --color-entry4: #a78bfa; /* Purple */
+  --color-entry4-rgb: 167, 139, 250;
+  --color-entry5: #2dd4bf; /* Turquoise */
+  --color-entry5-rgb: 45, 212, 191;
+  
+  /* Terminal theme colors */
+  --color-terminal-primary: #58a6ff;
+  --color-terminal-primary-rgb: 88, 166, 255;
+  --color-terminal-secondary: #1f6feb;
+  --color-terminal-secondary-rgb: 31, 111, 235;
+  
+  /* Cyberpunk theme colors */
+  --color-cyberpunk-primary: #ff4682;
+  --color-cyberpunk-primary-rgb: 255, 70, 130;
+  --color-cyberpunk-secondary: #bd00ff;
+  --color-cyberpunk-secondary-rgb: 189, 0, 255;
+}
+
+/* Year color variations */
+.timeline-entry:nth-child(5n+1) .timeline-date-container {
+  filter: drop-shadow(0 0 10px rgba(var(--color-entry1-rgb), 0.4));
+}
+
+.timeline-entry:nth-child(5n+2) .timeline-date-container {
+  filter: drop-shadow(0 0 10px rgba(var(--color-entry2-rgb), 0.4));
+}
+
+.timeline-entry:nth-child(5n+3) .timeline-date-container {
+  filter: drop-shadow(0 0 10px rgba(var(--color-entry3-rgb), 0.4));
+}
+
+.timeline-entry:nth-child(5n+4) .timeline-date-container {
+  filter: drop-shadow(0 0 10px rgba(var(--color-entry4-rgb), 0.4));
+}
+
+.timeline-entry:nth-child(5n+5) .timeline-date-container {
+  filter: drop-shadow(0 0 10px rgba(var(--color-entry5-rgb), 0.4));
+}
+
+/* Color variations for data packets */
+.timeline-entry:nth-child(5n+1) .timeline-line-packet,
+.timeline-entry:nth-child(5n+1) .timeline-line::after {
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--color-entry1),
+    transparent
+  );
+}
+
+.timeline-entry:nth-child(5n+2) .timeline-line-packet,
+.timeline-entry:nth-child(5n+2) .timeline-line::after {
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--color-entry2),
+    transparent
+  );
+  animation-delay: 0.2s;
+}
+
+.timeline-entry:nth-child(5n+3) .timeline-line-packet,
+.timeline-entry:nth-child(5n+3) .timeline-line::after {
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--color-entry3),
+    transparent
+  );
+  animation-delay: 0.4s;
+}
+
+.timeline-entry:nth-child(5n+4) .timeline-line-packet,
+.timeline-entry:nth-child(5n+4) .timeline-line::after {
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--color-entry4),
+    transparent
+  );
+  animation-delay: 0.6s;
+}
+
+.timeline-entry:nth-child(5n+5) .timeline-line-packet,
+.timeline-entry:nth-child(5n+5) .timeline-line::after {
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--color-entry5),
+    transparent
+  );
+  animation-delay: 0.8s;
+}
+
+/* Terminal theme color overrides */
+.experience-timeline--terminal .timeline-main-line::before {
+  background: 
+    repeating-linear-gradient(
+      to bottom,
+      rgba(var(--color-terminal-primary-rgb), 0.1) 0px,
+      rgba(var(--color-terminal-primary-rgb), 0.9) 4px,
+      rgba(var(--color-terminal-primary-rgb), 0.1) 8px
+    ),
+    linear-gradient(to bottom, 
+      rgba(var(--color-terminal-primary-rgb), 0.9),
+      rgba(var(--color-terminal-primary-rgb), 0.5),
+      rgba(var(--color-terminal-primary-rgb), 0.9));
+  box-shadow: 
+    0 0 15px rgba(var(--color-terminal-primary-rgb), 0.8),
+    0 0 5px #fff,
+    inset 0 0 6px rgba(255, 255, 255, 0.9);
+}
+
+.experience-timeline--terminal .timeline-main-line::after {
+  background: 
+    radial-gradient(
+      ellipse at center,
+      rgba(var(--color-terminal-primary-rgb), 0.5),
+      transparent 70%
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      rgba(var(--color-terminal-primary-rgb), 0.2) 1px,
+      transparent 2px
+    );
+}
+
+.experience-timeline--terminal .connection-pulse {
+  background-color: var(--color-terminal-primary);
+  box-shadow: 
+    0 0 15px var(--color-terminal-primary),
+    0 0 5px #FFFFFF;
+}
+
+.experience-timeline--terminal .secure-connection-shield {
+  background-color: rgba(var(--color-terminal-primary-rgb), 0.15);
+  border: 2px solid rgba(var(--color-terminal-primary-rgb), 0.4);
+  box-shadow: 0 0 15px rgba(var(--color-terminal-primary-rgb), 0.3);
+}
+
+.experience-timeline--terminal .shield-icon {
+  color: var(--color-terminal-primary);
+  filter: drop-shadow(0 0 8px rgba(var(--color-terminal-primary-rgb), 0.8));
+}
+
+/* Cyberpunk theme color overrides */
+.experience-timeline--cyberpunk .timeline-main-line::before {
+  background: 
+    repeating-linear-gradient(
+      to bottom,
+      rgba(var(--color-cyberpunk-primary-rgb), 0.1) 0px,
+      rgba(var(--color-cyberpunk-primary-rgb), 0.9) 4px,
+      rgba(var(--color-cyberpunk-primary-rgb), 0.1) 8px
+    ),
+    linear-gradient(to bottom, 
+      rgba(var(--color-cyberpunk-primary-rgb), 0.9),
+      rgba(var(--color-cyberpunk-secondary-rgb), 0.5),
+      rgba(var(--color-cyberpunk-primary-rgb), 0.9));
+  box-shadow: 
+    0 0 15px rgba(var(--color-cyberpunk-primary-rgb), 0.8),
+    0 0 5px #fff,
+    inset 0 0 6px rgba(255, 255, 255, 0.9);
+}
+
+.experience-timeline--cyberpunk .timeline-main-line::after {
+  background: 
+    radial-gradient(
+      ellipse at center,
+      rgba(var(--color-cyberpunk-primary-rgb), 0.5),
+      transparent 70%
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      rgba(var(--color-cyberpunk-primary-rgb), 0.2) 1px,
+      transparent 2px
+    );
+}
+
+.experience-timeline--cyberpunk .connection-pulse {
+  background-color: var(--color-cyberpunk-primary);
+  box-shadow: 
+    0 0 15px var(--color-cyberpunk-primary),
+    0 0 5px #FFFFFF;
+}
+
+.experience-timeline--cyberpunk .secure-connection-shield {
+  background-color: rgba(var(--color-cyberpunk-primary-rgb), 0.15);
+  border: 2px solid rgba(var(--color-cyberpunk-primary-rgb), 0.4);
+  box-shadow: 0 0 15px rgba(var(--color-cyberpunk-primary-rgb), 0.3);
+}
+
+.experience-timeline--cyberpunk .shield-icon {
+  color: var(--color-cyberpunk-primary);
+  filter: drop-shadow(0 0 8px rgba(var(--color-cyberpunk-primary-rgb), 0.8));
+}
+
+.experience-timeline--cyberpunk .matrix-char:nth-child(3n) {
+  color: rgba(var(--color-cyberpunk-primary-rgb), 0.7);
+}
+
+.experience-timeline--cyberpunk .matrix-char:nth-child(3n+1) {
+  color: rgba(var(--color-cyberpunk-secondary-rgb), 0.7);
+}
+
+.experience-timeline--cyberpunk .matrix-char:nth-child(3n+2) {
+  color: rgba(255, 215, 0, 0.7); /* Gold color for cyberpunk theme */
+}

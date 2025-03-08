@@ -1,5 +1,5 @@
 // Use named imports to allow tree-shaking to work properly
-import { useEffect, Suspense, lazy } from 'react';
+import { useEffect, useState, useCallback, Suspense, lazy } from 'react';
 import Head from "@atoms/Head";
 import Navigation from "@molecules/Navigation";
 import Footer from "@molecules/Footer";
@@ -26,7 +26,8 @@ const Skills = lazy(() => import("@organisms/Skills"));
 const Education = lazy(() => import("@organisms/Education"));
 const Experience = lazy(() => import("@organisms/Experience"));
 const Projects = lazy(() => import("@organisms/Projects"));
-const GithubProfile = lazy(() => import("@organisms/GithubProfile"));
+// Import GithubProfile directly instead of using lazy loading
+import GithubProfile from "@organisms/GithubProfile/GithubProfile";
 const Feedbacks = lazy(() => import("@organisms/Feedbacks"));
 
 // Import CSS - Using Tailwind CSS for styled components
@@ -36,6 +37,16 @@ import "@assets/css/index.css"; // Main CSS file with global styles
 // Note: browser-fixes.css is imported through utilities/index.css
 
 function App() {
+  const [showScrollButton, setShowScrollButton] = useState(false);
+  
+  // Function to scroll to top of page
+  const scrollToTop = useCallback(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  }, []);
+  
   // Apply enhancements on mount
   useEffect(() => {
     // Apply any runtime browser compatibility fixes
@@ -47,15 +58,25 @@ function App() {
     // Apply security enhancements
     applySecurityEnhancements();
     
-    // Improve scroll behavior
-    document.addEventListener('scroll', function() {
+    // Scroll event handler
+    const handleScroll = () => {
+      // Update sections animation
       const sections = document.querySelectorAll('[class*="-section"]');
       sections.forEach(section => {
         if (isElementInViewport(section)) {
           section.classList.add('animate-fadeIn');
         }
       });
-    });
+      
+      // Show scroll button when scrolled down
+      setShowScrollButton(window.scrollY > 300);
+    };
+    
+    // Add scroll listener
+    window.addEventListener('scroll', handleScroll);
+    
+    // Initial check
+    handleScroll();
     
     // Helper function to check if element is in viewport
     function isElementInViewport(el) {
@@ -67,6 +88,9 @@ function App() {
         rect.right <= (window.innerWidth || document.documentElement.clientWidth)
       );
     }
+    
+    // Clean up
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   // Custom fallback UI for unhandled errors
@@ -164,13 +188,72 @@ function App() {
               </ErrorBoundary>
               
               <ErrorBoundary>
-                <Suspense fallback={<Loading />}>
-                  <GithubProfile id="contact" />
-                </Suspense>
+                <GithubProfile id="contact" />
               </ErrorBoundary>
             </main>
             
               <Footer />
+              
+              {/* Scroll to top button */}
+              {showScrollButton && (
+                <div className="scroll-top-container">
+                  <button
+                    onClick={scrollToTop}
+                    style={{
+                      position: 'fixed',
+                      bottom: '2rem',
+                      right: '2rem',
+                      backgroundColor: 'rgba(0, 10, 20, 0.9)', 
+                      color: '#00aaff',
+                      padding: '0.8rem 1.2rem',
+                      borderRadius: '2px',
+                      boxShadow: '0 0 15px rgba(0, 170, 255, 0.6), 0 0 30px rgba(0, 170, 255, 0.3)',
+                      zIndex: 1000,
+                      border: '1px solid rgba(0, 170, 255, 0.5)',
+                      borderLeft: '3px solid #00aaff',
+                      cursor: 'pointer',
+                      transition: 'all 0.3s ease',
+                      animation: 'fadeIn 0.3s ease-out forwards',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'flex-start',
+                      backdropFilter: 'blur(8px)',
+                      fontFamily: '"JetBrains Mono", monospace, system-ui',
+                      fontSize: '12px',
+                      fontWeight: 'bold',
+                      letterSpacing: '1px',
+                      textTransform: 'uppercase',
+                      gap: '8px',
+                      width: 'auto',
+                      height: 'auto',
+                      minWidth: '180px'
+                    }}
+                    className="scroll-top-btn"
+                    aria-label="Return to system root"
+                  >
+                    <svg 
+                      xmlns="http://www.w3.org/2000/svg" 
+                      width="14" 
+                      height="14" 
+                      viewBox="0 0 24 24" 
+                      fill="none"
+                      stroke="currentColor" 
+                      strokeWidth="2" 
+                      strokeLinecap="round" 
+                      strokeLinejoin="round"
+                      aria-hidden="true"
+                      className="arrow-icon"
+                    >
+                      <line x1="12" y1="19" x2="12" y2="5"></line>
+                      <polyline points="5 12 12 5 19 12"></polyline>
+                    </svg>
+                    <span className="btn-text">
+                      <span className="prefix">&gt;</span> cd /root
+                    </span>
+                    <div className="btn-status-light"></div>
+                  </button>
+                </div>
+              )}
             </div>
           </AnimationProvider>
         </PortfolioProvider>

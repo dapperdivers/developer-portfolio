@@ -117,3 +117,29 @@
   transform: translateZ(0);
   backface-visibility: hidden;
 }
+
+/* Scroll to Top Button Animation */
+@keyframes slideInBottom {
+  0% {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes pulseGlow {
+  0% { box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3), 0 0 5px rgba(59, 130, 246, 0.3); }
+  50% { box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3), 0 0 15px rgba(59, 130, 246, 0.5); }
+  100% { box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3), 0 0 5px rgba(59, 130, 246, 0.3); }
+}
+
+.slide-in-bottom {
+  animation: slideInBottom 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+.pulse-glow {
+  animation: pulseGlow 2s infinite;
+}

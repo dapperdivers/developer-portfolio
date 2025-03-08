@@ -32,6 +32,86 @@
   z-index: 1;
 }
 
+/* Node container with horizontal lines */
+.node-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  z-index: 2;
+}
+
+/* Data connector lines from node to main timeline */
+.node-data-line {
+  position: absolute;
+  height: 2px;
+  width: 12px;
+  background: linear-gradient(
+    to right,
+    rgba(var(--color-primary-rgb), 0.9),
+    rgba(var(--color-primary-rgb), 0.3)
+  );
+  right: -12px;
+  z-index: 2;
+  box-shadow: 0 0 4px rgba(var(--color-primary-rgb), 0.5);
+  
+  /* Animated data dots flowing along the line */
+  &::after {
+    content: '';
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.9);
+    top: 50%;
+    transform: translateY(-50%);
+    animation: horizontal-data-flow 2s infinite linear;
+    opacity: 0;
+  }
+}
+
+/* Top connector positioning */
+.node-data-line-top {
+  top: 0;
+  transform: translateY(-50%) rotate(-30deg);
+  transform-origin: right;
+  
+  &::after {
+    animation-delay: 0.5s;
+  }
+}
+
+/* Bottom connector positioning */
+.node-data-line-bottom {
+  bottom: 0;
+  transform: translateY(50%) rotate(30deg);
+  transform-origin: right;
+  
+  &::after {
+    animation-delay: 1.5s;
+  }
+}
+
+/* Horizontal data flow animation */
+@keyframes horizontal-data-flow {
+  0% {
+    right: 0;
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.8;
+  }
+  90% {
+    opacity: 0.8;
+  }
+  100% {
+    right: 100%;
+    opacity: 0;
+  }
+}
+
 .timeline-line {
   position: absolute;
   top: 20px;
@@ -42,12 +122,51 @@
     rgba(var(--color-primary-rgb), 0.9),
     rgba(var(--color-primary-rgb), 0.2)
   );
-  box-shadow: 0 0 8px rgba(var(--color-primary-rgb), 0.5);
+  box-shadow: 
+    0 0 8px rgba(var(--color-primary-rgb), 0.5),
+    inset 0 0 2px rgba(255, 255, 255, 0.8);
   left: 50%;
   transform: translateX(-50%);
   z-index: 0;
   border-radius: 2px;
   overflow: hidden;
+  
+  /* Neural data web pattern */
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent,
+    transparent 8px,
+    rgba(255, 255, 255, 0.1) 8px,
+    rgba(255, 255, 255, 0.1) 10px
+  );
+  
+  /* Connection status light */
+  &::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 7px;
+    height: 7px;
+    background-color: var(--color-primary, #64ffda);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--color-primary, #64ffda);
+    opacity: 0;
+    animation: connection-pulse 3s infinite alternate;
+    z-index: 3;
+  }
+}
+
+/* Data packet in the timeline line */
+.timeline-line-packet {
+  position: absolute;
+  top: -20px;
+  left: 0;
+  right: 0;
+  height: 20px;
+  animation: dataPacket 3s infinite;
+  opacity: 0.7;
 }
 
 /* Data packet animation base */
@@ -63,6 +182,7 @@
 }
 
 /* Color variations for data packets */
+.timeline-entry:nth-child(5n+1) .timeline-line-packet,
 .timeline-entry:nth-child(5n+1) .timeline-line::after {
   background: linear-gradient(
     to bottom,
@@ -72,6 +192,7 @@
   );
 }
 
+.timeline-entry:nth-child(5n+2) .timeline-line-packet,
 .timeline-entry:nth-child(5n+2) .timeline-line::after {
   background: linear-gradient(
     to bottom,
@@ -82,6 +203,7 @@
   animation-delay: 0.2s;
 }
 
+.timeline-entry:nth-child(5n+3) .timeline-line-packet,
 .timeline-entry:nth-child(5n+3) .timeline-line::after {
   background: linear-gradient(
     to bottom,
@@ -92,6 +214,7 @@
   animation-delay: 0.4s;
 }
 
+.timeline-entry:nth-child(5n+4) .timeline-line-packet,
 .timeline-entry:nth-child(5n+4) .timeline-line::after {
   background: linear-gradient(
     to bottom,
@@ -102,6 +225,7 @@
   animation-delay: 0.6s;
 }
 
+.timeline-entry:nth-child(5n+5) .timeline-line-packet,
 .timeline-entry:nth-child(5n+5) .timeline-line::after {
   background: linear-gradient(
     to bottom,
@@ -113,8 +237,34 @@
 }
 
 @keyframes dataPacket {
-  0% { transform: translateY(-100%); }
-  100% { transform: translateY(1000%); }
+  0% { 
+    transform: translateY(-100%); 
+    opacity: 0.1;
+  }
+  10% {
+    opacity: 0.9;
+  }
+  90% {
+    opacity: 0.9;
+  }
+  100% { 
+    transform: translateY(1000%); 
+    opacity: 0.1;
+  }
+}
+
+/* Connection status light pulse animation */
+@keyframes connection-pulse {
+  0% {
+    opacity: 0.7;
+    transform: translateX(-50%) scale(0.8);
+    box-shadow: 0 0 5px var(--color-primary, #64ffda);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) scale(1.2);
+    box-shadow: 0 0 12px var(--color-primary, #64ffda), 0 0 4px white;
+  }
 }
 
 /* Date container layout */
@@ -153,9 +303,9 @@
   padding-right: 12px; /* Maintain consistent spacing */
 }
 
-/* Add expand/collapse indicator */
+/* Add expand/collapse indicator with enhanced cyberpunk styling */
 .timeline-card-container::after {
-  content: "▼"; /* Solid downward triangle */
+  content: ""; /* Changed from triangle to icon in the hint */
   position: absolute;
   bottom: 12px;
   left: 50%;
@@ -168,9 +318,9 @@
   z-index: 10;
 }
 
-/* Add a visible button-like container for the indicator */
+/* Add a visible button-like container for the indicator with cyberpunk styling */
 .timeline-card-container::before {
-  content: "Click to expand";
+  content: "SECURE DATA AVAILABLE";
   position: absolute;
   bottom: 8px;
   left: 50%;
@@ -188,15 +338,16 @@
   z-index: 9;
   font-family: var(--terminal-font);
   box-shadow: 0 0 8px rgba(var(--color-primary-rgb), 0.3);
+  letter-spacing: 0.5px;
 }
 
 .timeline-card-container.expanded::after {
-  content: "▲"; /* Solid upward triangle */
+  content: ""; /* Changed from triangle to icon in the hint */
   bottom: 12px;
 }
 
 .timeline-card-container.expanded::before {
-  content: "Click to collapse";
+  content: "SECURE DATA ACCESSED";
 }
 
 /* Add pulse animation to the indicator in compact mode */
@@ -274,12 +425,137 @@
   margin: 0.25rem 0; /* Less margin in compact view */
 }
 
-/* Tech stack badges layout */
+/* Advanced hover effects for cyberpunk style */
+.timeline-card-container:hover {
+  transform: perspective(800px) rotateX(2deg) translateY(-5px) scale(1.02);
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.4),
+    0 0 30px rgba(var(--color-primary-rgb), 0.2);
+}
+
+.timeline-card-container.expanded:hover {
+  transform: perspective(800px) rotateX(1deg) translateY(-3px) scale(1.01);
+}
+
+/* Tech stack section with improved readability */
 .tech-stack {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem; /* Increased spacing */
-  margin-top: 0.5rem;
+  gap: 0.85rem; /* Increased spacing between badges */
+  margin: 1rem 0; /* More vertical spacing */
+  position: relative;
+  padding: 1rem; /* Increased padding */
+  background-color: rgba(10, 30, 50, 0.4); /* Better contrast */
+  border-radius: 6px; /* More rounded corners */
+  border: 1px solid rgba(var(--color-primary-rgb), 0.4); /* More visible border */
+}
+
+/* Tech verification header styling with improved readability */
+.tech-verification-header {
+  border-bottom: 2px solid rgba(var(--color-primary-rgb), 0.4); /* More visible border */
+  padding-bottom: 0.75rem; /* Increased padding */
+  margin-bottom: 1rem; /* Increased margin */
+}
+
+/* Tech scan status styling with improved readability */
+.tech-scan-status {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  font-size: 0.9em; /* Slightly larger text */
+  color: #FFFFFF; /* White text for better readability */
+  letter-spacing: 0.5px;
+}
+
+/* Tech scan ID styling with improved readability */
+.tech-scan-id {
+  font-size: 0.8em; /* Slightly larger text */
+  opacity: 0.9; /* Increased opacity for better visibility */
+  letter-spacing: 1px;
+  margin-top: 5px; /* Increased spacing */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: rgba(255, 255, 255, 0.9); /* Higher contrast text */
+}
+
+/* Security timestamp styling with improved readability */
+.security-timestamp {
+  font-family: var(--terminal-font);
+  opacity: 0.8; /* Increased opacity */
+  font-size: 0.9em;
+  background-color: rgba(0, 0, 0, 0.3); /* Background for better visibility */
+  padding: 0 5px;
+  border-radius: 3px;
+}
+
+/* Tech scan icon with improved visibility */
+.tech-scan-icon {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background-color: var(--color-success); /* Green color for success indication */
+  border-radius: 50%;
+  margin-right: 8px;
+  position: relative;
+}
+
+/* Tech stack verification command styling with improved readability */
+.tech-verify-command {
+  margin-top: 1.5rem; /* Increased margin */
+  border-top: 2px solid rgba(var(--color-primary-rgb), 0.3); /* More visible border */
+  padding-top: 1rem; /* Increased padding */
+}
+
+/* Tech stack response styling with improved readability */
+.tech-stack-response {
+  position: relative;
+  padding: 1rem; /* Increased padding */
+  background-color: rgba(10, 30, 50, 0.7); /* Higher contrast background */
+  border-radius: 6px; /* More rounded corners */
+  border: 1px solid rgba(var(--color-primary-rgb), 0.5); /* More visible border */
+  margin-bottom: 1.5rem; /* Added bottom margin */
+}
+
+/* Tech stack footer styling with improved readability */
+.tech-stack-footer {
+  text-align: center;
+  font-size: 0.85em; /* Larger text */
+  font-weight: bold;
+  margin-top: 1rem; /* Increased margin */
+  color: #FFFFFF; /* White text for better readability */
+  letter-spacing: 0.5px;
+  position: relative;
+  padding: 0.75rem 0; /* Increased padding */
+  border-top: 2px solid rgba(var(--color-primary-rgb), 0.4); /* More visible border */
+  background-color: rgba(var(--color-primary-rgb), 0.1); /* Subtle background */
+  border-radius: 0 0 5px 5px; /* Rounded bottom corners */
+}
+
+/* Tech verification seal with improved visibility */
+.tech-verification-seal {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid var(--color-success); /* Changed to success color */
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 2;
+}
+
+/* Simplified verification seal */
+.tech-verification-seal::before {
+  content: '✓'; /* Checkmark symbol */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--color-success);
+  font-size: 12px;
+  font-weight: bold;
 }
 
 /* Description bullets layout */
@@ -317,15 +593,145 @@
   letter-spacing: 0.015em; /* Subtle letter spacing for readability */
 }
 
-/* Enhance expand/collapse hint */
+/* Enhance expand/collapse hint with cyberpunk styling */
 .expand-collapse-hint {
   text-align: center;
   font-size: var(--font-size-xs);
   opacity: 0.8;
   margin-top: 0.5rem;
-  font-style: italic;
+  font-weight: bold;
   color: var(--terminal-prompt, var(--color-primary));
   letter-spacing: 0.5px;
+  padding: 3px 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 3px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Expand/collapse icons with cyberpunk styling */
+.expand-icon, .collapse-icon {
+  margin: 0 0.5rem;
+  display: inline-block;
+  font-size: 1.2em;
+  transform: scale(1.2);
+  animation: iconPulse 2s infinite alternate;
+  text-shadow: 0 0 5px currentColor;
+}
+
+@keyframes iconPulse {
+  0% { opacity: 0.5; transform: scale(1); }
+  100% { opacity: 1; transform: scale(1.2); }
+}
+
+/* Decryption message styling */
+.decrypt-message {
+  background-color: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(var(--color-primary-rgb), 0.3);
+  padding: 5px 10px;
+  border-radius: 3px;
+  margin-bottom: 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Decryption status styling */
+.decrypt-status {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  font-size: 0.85em;
+  color: var(--terminal-prompt);
+  letter-spacing: 0.5px;
+}
+
+/* Decryption ID styling */
+.decrypt-id {
+  font-size: 0.75em;
+  opacity: 0.7;
+  letter-spacing: 1px;
+  margin-top: 3px;
+}
+
+/* Decryption icon animation */
+.decrypt-icon {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background-color: var(--terminal-prompt);
+  border-radius: 50%;
+  margin-right: 8px;
+  position: relative;
+  animation: decryptPulse 2s infinite;
+}
+
+@keyframes decryptPulse {
+  0%, 100% { opacity: 0.7; box-shadow: 0 0 5px currentColor; }
+  50% { opacity: 1; box-shadow: 0 0 10px currentColor; }
+}
+
+/* Add decryption scan line effect */
+.decrypt-message::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: linear-gradient(
+    to bottom,
+    rgba(var(--color-primary-rgb), 0.3),
+    transparent
+  );
+  animation: decryptScan 1.5s infinite;
+  pointer-events: none;
+}
+
+@keyframes decryptScan {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(500%); }
+}
+
+/* Responsibilities header styling */
+.responsibilities-header {
+  font-weight: bold;
+  color: var(--terminal-prompt);
+  border-bottom: 1px solid rgba(var(--color-primary-rgb), 0.3);
+  margin: 15px 0 10px 0;
+  padding-bottom: 5px;
+  text-shadow: 0 0 5px currentColor;
+  letter-spacing: 0.5px;
+}
+
+/* Highlight prefix styling */
+.highlight-prefix {
+  color: var(--terminal-prompt);
+  font-weight: bold;
+  display: inline-block;
+  margin-right: 5px;
+  text-shadow: 0 0 5px currentColor;
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 0 5px;
+  border-radius: 2px;
+  border: 1px solid rgba(var(--color-primary-rgb), 0.2);
+  font-size: 0.85em;
+  position: relative;
+  top: -1px;
+  letter-spacing: 0.5px;
+}
+
+/* Bullet counter styling */
+.bullet-counter {
+  display: inline-block;
+  margin-right: 8px;
+  background-color: rgba(var(--color-primary-rgb), 0.1);
+  color: var(--terminal-prompt);
+  padding: 0 5px;
+  border-radius: 3px;
+  font-family: var(--terminal-font);
+  font-size: 0.85em;
+  border: 1px solid rgba(var(--color-primary-rgb), 0.2);
+  font-weight: bold;
 }
 
 /* Terminal decorations positioning */
@@ -364,11 +770,33 @@
   color: var(--color-entry1);
 }
 
+.timeline-entry:nth-child(5n+1) .timeline-card-container .card,
+.timeline-entry:nth-child(5n+1) .timeline-card {
+  border-color: rgba(100, 255, 218, 0.3);
+  box-shadow: 0 0 20px rgba(100, 255, 218, 0.15);
+}
+
+.timeline-entry:nth-child(5n+1) .timeline-card-container:hover .card,
+.timeline-entry:nth-child(5n+1) .timeline-card-container.expanded .card {
+  box-shadow: 0 0 30px rgba(100, 255, 218, 0.3);
+}
+
 .timeline-entry:nth-child(5n+2) .command-prompt-symbol,
 .timeline-entry:nth-child(5n+2) .command-text,
 .timeline-entry:nth-child(5n+2) .expand-collapse-hint,
 .timeline-entry:nth-child(5n+2) .description-bullet-item::before {
   color: var(--color-entry2);
+}
+
+.timeline-entry:nth-child(5n+2) .timeline-card-container .card,
+.timeline-entry:nth-child(5n+2) .timeline-card {
+  border-color: rgba(255, 157, 0, 0.3);
+  box-shadow: 0 0 20px rgba(255, 157, 0, 0.15);
+}
+
+.timeline-entry:nth-child(5n+2) .timeline-card-container:hover .card,
+.timeline-entry:nth-child(5n+2) .timeline-card-container.expanded .card {
+  box-shadow: 0 0 30px rgba(255, 157, 0, 0.3);
 }
 
 .timeline-entry:nth-child(5n+3) .command-prompt-symbol,
@@ -378,6 +806,17 @@
   color: var(--color-entry3);
 }
 
+.timeline-entry:nth-child(5n+3) .timeline-card-container .card,
+.timeline-entry:nth-child(5n+3) .timeline-card {
+  border-color: rgba(255, 94, 120, 0.3);
+  box-shadow: 0 0 20px rgba(255, 94, 120, 0.15);
+}
+
+.timeline-entry:nth-child(5n+3) .timeline-card-container:hover .card,
+.timeline-entry:nth-child(5n+3) .timeline-card-container.expanded .card {
+  box-shadow: 0 0 30px rgba(255, 94, 120, 0.3);
+}
+
 .timeline-entry:nth-child(5n+4) .command-prompt-symbol,
 .timeline-entry:nth-child(5n+4) .command-text,
 .timeline-entry:nth-child(5n+4) .expand-collapse-hint,
@@ -385,11 +824,57 @@
   color: var(--color-entry4);
 }
 
+.timeline-entry:nth-child(5n+4) .timeline-card-container .card,
+.timeline-entry:nth-child(5n+4) .timeline-card {
+  border-color: rgba(167, 139, 250, 0.3);
+  box-shadow: 0 0 20px rgba(167, 139, 250, 0.15);
+}
+
+.timeline-entry:nth-child(5n+4) .timeline-card-container:hover .card,
+.timeline-entry:nth-child(5n+4) .timeline-card-container.expanded .card {
+  box-shadow: 0 0 30px rgba(167, 139, 250, 0.3);
+}
+
 .timeline-entry:nth-child(5n+5) .command-prompt-symbol,
 .timeline-entry:nth-child(5n+5) .command-text,
 .timeline-entry:nth-child(5n+5) .expand-collapse-hint,
 .timeline-entry:nth-child(5n+5) .description-bullet-item::before {
   color: var(--color-entry5);
+}
+
+.timeline-entry:nth-child(5n+5) .timeline-card-container .card,
+.timeline-entry:nth-child(5n+5) .timeline-card {
+  border-color: rgba(45, 212, 191, 0.3);
+  box-shadow: 0 0 20px rgba(45, 212, 191, 0.15);
+}
+
+.timeline-entry:nth-child(5n+5) .timeline-card-container:hover .card,
+.timeline-entry:nth-child(5n+5) .timeline-card-container.expanded .card {
+  box-shadow: 0 0 30px rgba(45, 212, 191, 0.3);
+}
+
+/* Add circuit board patterns to timeline cards */
+.timeline-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.timeline-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(rgba(var(--color-primary-rgb), 0.1) 1px, transparent 1px),
+    linear-gradient(to right, rgba(var(--color-primary-rgb), 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(var(--color-primary-rgb), 0.05) 1px, transparent 1px);
+  background-size: 20px 20px, 20px 20px, 20px 20px;
+  background-position: 0 0, 0 0, 0 0;
+  opacity: 0.1;
+  z-index: -1;
+  pointer-events: none;
 }
 
 /* Reduced motion adaptations */
@@ -415,29 +900,43 @@
   .timeline-entry {
     flex-direction: column;
     align-items: flex-start;
-    margin-bottom: 2rem;
+    margin-bottom: 3rem; /* Increase spacing between entries */
+    margin-left: 40px; /* Add margin to account for connector */
+    position: relative;
+    padding-top: 40px; /* Add space at top for date */
   }
   
   .timeline-date-container {
+    position: absolute;
+    top: 0;
+    left: 0;
     margin-right: 0;
-    margin-bottom: 1rem;
+    margin-bottom: 0;
+    z-index: 10;
   }
   
   .timeline-connector {
     position: absolute;
-    left: -30px;
+    left: -30px; /* Position connector at left */
     top: 0;
-    bottom: 0;
+    height: 100%;
     margin-right: 0;
+    z-index: 5; /* Ensure connector appears above other elements */
   }
 
   .timeline-line {
     top: 20px;
-    bottom: -20px;
+    bottom: -30px; /* Extend line further down */
+    height: calc(100% + 60px); /* Ensure line extends full height */
+  }
+  
+  .timeline-card-container {
+    width: 100%; /* Full width */
+    margin-top: 10px; /* Add space between date and card */
   }
   
   .timeline-card-container.compact {
-    max-height: 220px; /* Slightly higher on smaller screens */
+    max-height: 260px; /* Slightly higher on smaller screens */
   }
 }
 

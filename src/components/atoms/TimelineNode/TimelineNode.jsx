@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import './TimelineNode.css';
 
@@ -28,6 +28,21 @@ const TimelineNode = ({
   interactive = false,
   ...rest
 }) => {
+  const nodeRef = useRef(null);
+
+  // Force visibility update when active state changes
+  useEffect(() => {
+    if (nodeRef.current && active) {
+      // Add a class then force a reflow to ensure animation triggers
+      nodeRef.current.classList.add('timeline-node-force-visible');
+      setTimeout(() => {
+        if (nodeRef.current) {
+          nodeRef.current.classList.remove('timeline-node-force-visible');
+        }
+      }, 50);
+    }
+  }, [active]);
+
   // Determine class names based on props
   const classes = [
     'timeline-node',
@@ -50,6 +65,7 @@ const TimelineNode = ({
 
   return (
     <div 
+      ref={nodeRef}
       className={classes}
       style={style}
       data-testid="timeline-node"

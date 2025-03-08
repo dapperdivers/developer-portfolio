@@ -72,6 +72,7 @@ export function createAliases() {
     '@atoms/Loading': path.resolve(componentDirs.atoms, 'Loading'),
     '@atoms/Progress': path.resolve(componentDirs.atoms, 'Progress'),
     '@atoms/ResponsiveImage': path.resolve(componentDirs.atoms, 'ResponsiveImage'),
+    '@atoms/ScrollToTop': path.resolve(componentDirs.atoms, 'ScrollToTop'),
     '@atoms/SkeletonCard': path.resolve(componentDirs.atoms, 'SkeletonCard'),
     '@atoms/Skill': path.resolve(componentDirs.atoms, 'Skill'),
     '@atoms/SkipToContent': path.resolve(componentDirs.atoms, 'SkipToContent'),

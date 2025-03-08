@@ -14,3 +14,191 @@
 [class*="-section"] {
   transition: transform 0.5s ease-out, opacity 0.5s ease-out;
 }
+
+/* Scroll to top button - Cyberpunk Hacker UI */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@keyframes scanline {
+  0% { 
+    transform: translateY(-100%);
+    opacity: 0.1;
+  }
+  50% { opacity: 0.3; }
+  100% { 
+    transform: translateY(100%);
+    opacity: 0.1;
+  }
+}
+
+@keyframes glitch {
+  0% {
+    text-shadow: 0.05em 0 0 rgba(255, 0, 0, 0.75),
+                -0.025em -0.05em 0 rgba(0, 255, 0, 0.75),
+                0.025em 0.05em 0 rgba(0, 0, 255, 0.75);
+  }
+  14% {
+    text-shadow: 0.05em 0 0 rgba(255, 0, 0, 0.75),
+                -0.025em -0.05em 0 rgba(0, 255, 0, 0.75),
+                0.025em 0.05em 0 rgba(0, 0, 255, 0.75);
+  }
+  15% {
+    text-shadow: -0.05em -0.025em 0 rgba(255, 0, 0, 0.75),
+                0.025em 0.025em 0 rgba(0, 255, 0, 0.75),
+                -0.05em -0.05em 0 rgba(0, 0, 255, 0.75);
+  }
+  49% {
+    text-shadow: -0.05em -0.025em 0 rgba(255, 0, 0, 0.75),
+                0.025em 0.025em 0 rgba(0, 255, 0, 0.75),
+                -0.05em -0.05em 0 rgba(0, 0, 255, 0.75);
+  }
+  50% {
+    text-shadow: 0.025em 0.05em 0 rgba(255, 0, 0, 0.75),
+                0.05em 0 0 rgba(0, 255, 0, 0.75),
+                0 -0.05em 0 rgba(0, 0, 255, 0.75);
+  }
+  99% {
+    text-shadow: 0.025em 0.05em 0 rgba(255, 0, 0, 0.75),
+                0.05em 0 0 rgba(0, 255, 0, 0.75),
+                0 -0.05em 0 rgba(0, 0, 255, 0.75);
+  }
+  100% {
+    text-shadow: -0.025em 0 0 rgba(255, 0, 0, 0.75),
+                -0.025em -0.025em 0 rgba(0, 255, 0, 0.75),
+                -0.025em -0.05em 0 rgba(0, 0, 255, 0.75);
+  }
+}
+
+.scroll-top-container {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 1000;
+  user-select: none;
+}
+
+/* Removed badge that was appearing behind the button */
+
+.scroll-top-btn {
+  transition: all 0.25s cubic-bezier(0.23, 1, 0.32, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.scroll-top-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(0, 170, 255, 0.2),
+    rgba(0, 170, 255, 0.8),
+    rgba(0, 170, 255, 0.2),
+    transparent
+  );
+  opacity: 0.8;
+  z-index: 2;
+}
+
+.scroll-top-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    45deg,
+    rgba(0, 0, 0, 0),
+    rgba(0, 170, 255, 0.05),
+    rgba(0, 0, 0, 0)
+  );
+  background-size: 200% 200%;
+  animation: scanline 2s linear infinite;
+}
+
+.scroll-top-btn:hover {
+  background-color: rgba(0, 15, 30, 0.95) !important;
+  transform: translateY(-3px) translateX(-3px) !important;
+  box-shadow: 
+    0 0 20px rgba(0, 170, 255, 0.8), 
+    0 0 40px rgba(0, 170, 255, 0.4),
+    0 0 80px rgba(0, 170, 255, 0.2) !important;
+  border-color: rgba(0, 170, 255, 0.9) !important;
+}
+
+.scroll-top-btn:hover .btn-text {
+  animation: glitch 0.5s infinite;
+}
+
+.scroll-top-btn:hover .arrow-icon {
+  transform: translateY(-3px);
+  filter: drop-shadow(0 0 3px rgba(0, 170, 255, 0.8));
+}
+
+.btn-text {
+  position: relative;
+}
+
+.prefix {
+  color: #4ade80;
+  margin-right: 2px;
+}
+
+/* Terminal cursor */
+.btn-text::after {
+  content: '_';
+  margin-left: 2px;
+  color: #00aaff;
+  font-weight: bold;
+  animation: cursor-blink 1s step-end infinite;
+}
+
+.arrow-icon {
+  transition: transform 0.3s ease;
+}
+
+.btn-status-light {
+  position: absolute;
+  top: 0.8rem;
+  right: 0.8rem;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #22c55e;
+  box-shadow: 0 0 5px #22c55e;
+  animation: blink 1.5s infinite;
+}
+
+/* Extra animation for the whole button */
+.scroll-top-btn {
+  position: relative;
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+/* Special effects when hovered */
+.scroll-top-btn:hover .btn-status-light {
+  background-color: #3b82f6;
+  box-shadow: 0 0 8px #3b82f6;
+  animation: blink 0.5s infinite;
+}
+
+.scroll-top-container:hover .scroll-top-badge {
+  color: #4ade80;
+  border-color: rgba(74, 222, 128, 0.5);
+}

@@ -76,8 +76,17 @@ const useTimelineAnimation = ({
   useEffect(() => {
     const currentRef = entryRef.current;
     
-    if (!currentRef || !animationEnabled) return;
+    if (!currentRef || !animationEnabled) {
+      // If animations are disabled, immediately set entry as visible
+      if (!animationEnabled) {
+        setIsEntryInView(true);
+        setIsVerified(true);
+      }
+      return;
+    }
 
+    let verifyTimer: ReturnType<typeof setTimeout>;
+    
     const observer = new IntersectionObserver(
       (entries) => {
         const [entry] = entries;
@@ -88,27 +97,28 @@ const useTimelineAnimation = ({
           playEntryAnimation(entryId, index * 0.2);
           
           // Simulate security verification after a delay
-          const verifyTimer = setTimeout(() => {
+          verifyTimer = setTimeout(() => {
             setIsVerified(true);
           }, index * 200 + 1000);
           
           observer.unobserve(currentRef);
-          
-          return () => clearTimeout(verifyTimer);
         }
       },
       {
-        threshold: 0.2,
-        rootMargin: "-50px 0px"
+        threshold: 0.1, // Lower threshold for better detection
+        rootMargin: "-20px 0px" // More forgiving margins
       }
     );
     
+    // Start observing
     observer.observe(currentRef);
     
+    // Cleanup function
     return () => {
       if (currentRef) {
         observer.unobserve(currentRef);
       }
+      clearTimeout(verifyTimer);
     };
   }, [entryId, index, animationEnabled, playEntryAnimation]);
 
