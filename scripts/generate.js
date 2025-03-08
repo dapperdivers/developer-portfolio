@@ -8,24 +8,27 @@
  * 
  * Features:
  * - Creates component TSX/JSX files with proper imports and documentation
+ * - Organizes components in their own subdirectories (e.g., Button/Button.tsx)
  * - Generates co-located CSS files in the same directory as the component
- * - Sets up proper PropTypes validation or TypeScript interfaces
+ * - Creates index.ts files for clean imports (import { Button } from '@/components/atoms/Button')
+ * - Uses TypeScript interfaces for type-safety instead of PropTypes
  * - Creates components following atomic design (atom, molecule, organism, layout)
  * - Adds Story file for Storybook documentation with interaction tests
+ * - Generates Vitest test files with essential test cases
  * - Supports TypeScript by default
  * 
  * Usage:
- * yarn generate --name=Button --type=atom --dir=src/components/atoms
+ * yarn generate --name=Button --type=atom
  * 
  * Legacy subcommand usage:
- * yarn generate component --name=Button --type=atom --dir=src/components/atoms
+ * yarn generate component --name=Button --type=atom
  * yarn generate story --component=Button --type=atom --interactions --context=portfolio
  * 
  * Options:
  * --name: The name of the component (required)
  * --type: Atomic design type (atom, molecule, organism, layout) (default: atom)
- * --dir: Custom component directory (optional, defaults to src/components/[atoms|molecules|organisms|layout])
- * --files: Which files to generate (all, tsx, css, story, test) (default: all)
+ * --dir: Custom component directory (optional, defaults to src/components/[atoms|molecules|organisms|layout]/[ComponentName])
+ * --files: Which files to generate (all, tsx, css, story, test, index) (default: all)
  * --js: Generate JavaScript instead of TypeScript (default: false)
  * 
  * Advanced story options:
@@ -54,10 +57,11 @@ const config = {
   createCss: true,
   createStory: true,
   createTest: true,
+  createIndex: true,  // Generate index.ts file for clean imports
   useTypeScript: true,
   importStyles: true,
   memoize: true,
-  addPropTypes: true,
+  addPropTypes: false,
   addJsDoc: true,
   
   // Folder mapping for atomic types
@@ -122,7 +126,6 @@ async function generateComponentFile(componentPath, componentName, componentType
   // Atom Component Template
   if (componentType === 'atom') {
     template = `import React${config.memoize ? ', { memo }' : ''} from 'react';
-${config.addPropTypes ? "import PropTypes from 'prop-types';" : ""}
 ${cssImportPath}
 
 ${config.addJsDoc ? `/**
@@ -153,13 +156,6 @@ const ${componentName} = (${useTypeScript ? `props: ${componentName}Props` : 'pr
   );
 };
 
-${!useTypeScript && config.addPropTypes ? `${componentName}.propTypes = {
-  /** Component content */
-  children: PropTypes.node,
-  /** Additional CSS class names */
-  className: PropTypes.string
-};` : ""}
-
 ${config.memoize ? `// Apply memoization for performance optimization
 export default memo(${componentName});` : `export default ${componentName};`}
 `;
@@ -168,7 +164,6 @@ export default memo(${componentName});` : `export default ${componentName};`}
   // Molecule Component Template
   else if (componentType === 'molecule') {
     template = `import React${config.memoize ? ', { memo }' : ''} from 'react';
-${config.addPropTypes ? "import PropTypes from 'prop-types';" : ""}
 ${cssImportPath}
 
 ${config.addJsDoc ? `/**
@@ -199,13 +194,6 @@ const ${componentName} = (${useTypeScript ? `props: ${componentName}Props` : 'pr
   );
 };
 
-${!useTypeScript && config.addPropTypes ? `${componentName}.propTypes = {
-  /** Component content */
-  children: PropTypes.node,
-  /** Additional CSS class names */
-  className: PropTypes.string
-};` : ""}
-
 ${config.memoize ? `// Apply memoization for performance optimization
 export default memo(${componentName});` : `export default ${componentName};`}
 `;
@@ -214,7 +202,6 @@ export default memo(${componentName});` : `export default ${componentName};`}
   // Organism Component Template
   else if (componentType === 'organism') {
     template = `import React${config.memoize ? ', { memo }' : ''} from 'react';
-${config.addPropTypes ? "import PropTypes from 'prop-types';" : ""}
 ${cssImportPath}
 
 ${config.addJsDoc ? `/**
@@ -250,15 +237,6 @@ const ${componentName} = (${useTypeScript ? `props: ${componentName}Props` : 'pr
   );
 };
 
-${!useTypeScript && config.addPropTypes ? `${componentName}.propTypes = {
-  /** Optional title for the organism */
-  title: PropTypes.string,
-  /** Component content */
-  children: PropTypes.node.isRequired,
-  /** Additional CSS class names */
-  className: PropTypes.string
-};` : ""}
-
 ${config.memoize ? `// Apply memoization for performance optimization
 export default memo(${componentName});` : `export default ${componentName};`}
 `;
@@ -267,7 +245,6 @@ export default memo(${componentName});` : `export default ${componentName};`}
   // Layout Component Template
   else if (componentType === 'layout') {
     template = `import React${config.memoize ? ', { memo }' : ''} from 'react';
-${config.addPropTypes ? "import PropTypes from 'prop-types';" : ""}
 ${cssImportPath}
 
 ${config.addJsDoc ? `/**
@@ -298,13 +275,6 @@ const ${componentName} = (${useTypeScript ? `props: ${componentName}Props` : 'pr
   );
 };
 
-${!useTypeScript && config.addPropTypes ? `${componentName}.propTypes = {
-  /** Layout content */
-  children: PropTypes.node.isRequired,
-  /** Additional CSS class names */
-  className: PropTypes.string
-};` : ""}
-
 ${config.memoize ? `// Apply memoization for performance optimization
 export default memo(${componentName});` : `export default ${componentName};`}
 `;
@@ -325,35 +295,32 @@ async function generateCssFile(componentName, componentType, componentPath) {
   const cssFilename = `${componentName}.css`;
   const cssFilepath = path.join(componentPath, cssFilename);
   
-  // CSS template with design tokens
+  // CSS template with Tailwind reference
   const cssTemplate = `/**
  * ${componentName} Component Styles
  * 
- * Styling for the ${componentName} component with design token usage
- * and responsive design considerations.
+ * Styling for the ${componentName} component
+ * This project uses Tailwind CSS. See tailwind.config.js for configuration.
+ * For custom styles beyond Tailwind, use the classes defined below.
  */
 
 .${componentName.toLowerCase()} {
-  /* Base styles */
-  padding: var(--spacing-4);
-  margin-bottom: var(--spacing-4);
-  border-radius: var(--border-radius-md);
-  background-color: var(--color-background);
-  color: var(--color-text-primary);
+  /* Add custom styles here that go beyond Tailwind's utilities */
   
-  /* Typography */
-  font-family: var(--font-family-primary);
-  font-size: var(--font-size-base);
-  
-  /* Transitions */
-  transition: all var(--transition-speed-normal) var(--transition-timing-default);
+  /* For application-wide styles, consider adding to:
+   * - tailwind.config.js (for theme customization)
+   * - src/assets/css/styles.css (for global styles) 
+   */
 }
 
-/* Responsive styles */
+/* You can use Tailwind's responsive prefixes in your component's JSX:
+ * <div className="md:flex lg:p-4 dark:bg-gray-800"></div>
+ * 
+ * Or add custom responsive styles here:
+ */
 @media (max-width: 768px) {
   .${componentName.toLowerCase()} {
-    padding: var(--spacing-3);
-    font-size: var(--font-size-sm);
+    /* Add mobile-specific styles if needed */
   }
 }
 `;
@@ -450,23 +417,41 @@ async function generateTestFile(componentPath, componentName, useTypeScript = tr
   const testFilepath = path.join(componentPath, testFilename);
   
   const testTemplate = `import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
+import { vi } from 'vitest';
 import ${componentName} from './${componentName}';
 
 describe('${componentName} Component', () => {
-  test('renders without crashing', () => {
+  beforeEach(() => {
+    // Reset any mocks before each test
+    vi.clearAllMocks();
+  });
+
+  it('renders without crashing', () => {
     render(<${componentName}>Test content</${componentName}>);
     expect(screen.getByText('Test content')).toBeInTheDocument();
   });
   
-  test('applies custom className', () => {
+  it('applies custom className', () => {
     const { container } = render(<${componentName} className="custom-class">Test</${componentName}>);
     const element = container.firstChild;
     expect(element).toHaveClass('custom-class');
     expect(element).toHaveClass('${componentName.toLowerCase()}');
   });
   
-  // Add more tests here
+  it('renders children correctly', () => {
+    const testId = 'test-child';
+    render(
+      <${componentName}>
+        <div data-testid={testId}>Child component</div>
+      </${componentName}>
+    );
+    
+    expect(screen.getByTestId(testId)).toBeInTheDocument();
+    expect(screen.getByTestId(testId)).toHaveTextContent('Child component');
+  });
+  
+  // Add more tests as needed
 });
 `;
   
@@ -476,6 +461,33 @@ describe('${componentName} Component', () => {
     return true;
   } catch (err) {
     console.error(chalk.red(`Error creating test file: ${err.message}`));
+    return false;
+  }
+}
+
+// Generate an index.ts file for the component
+async function generateIndexFile(componentPath, componentName, useTypeScript = true) {
+  const extension = useTypeScript ? 'ts' : 'js';
+  const indexFilename = `index.${extension}`;
+  const indexFilepath = path.join(componentPath, indexFilename);
+  
+  // Create a simple index file that exports the component
+  const indexContent = `/**
+ * ${componentName} Component
+ * 
+ * @module ${componentName}
+ */
+
+export { default } from './${componentName}';
+export * from './${componentName}';
+`;
+  
+  try {
+    await fs.writeFile(indexFilepath, indexContent);
+    console.log(chalk.green(`✓ Created index file: ${indexFilename}`));
+    return true;
+  } catch (err) {
+    console.error(chalk.red(`Error creating index file: ${err.message}`));
     return false;
   }
 }
@@ -504,11 +516,11 @@ async function generateStandaloneStoryFile(args) {
   // Determine paths
   const pluralType = config.atomicTypesToFolders[atomicType] || atomicType;
   const baseComponentName = componentName;
-  const componentDir = subdir ? subdir : '';
   
-  // Use the provided path or construct from atomic type
-  const componentPath = args.path || 
-    path.join(process.cwd(), 'src/components', pluralType, componentDir, baseComponentName);
+  // Use the provided path or construct from atomic type with component subdirectory
+  const componentBasePath = args.path || 
+    path.join(process.cwd(), 'src/components', pluralType);
+  const componentPath = path.join(componentBasePath, baseComponentName);
   
   // Check if component exists
   try {
@@ -536,15 +548,23 @@ async function generateStandaloneStoryFile(args) {
     await generateCssFile(baseComponentName, atomicType, componentPath);
   }
   
+  // Also check for index file, and if not found, generate it
+  const indexTsPath = path.join(componentPath, 'index.ts');
+  const indexJsPath = path.join(componentPath, 'index.js');
+  if (!(await fileExists(indexTsPath)) && !(await fileExists(indexJsPath)) && config.createIndex) {
+    console.log(chalk.yellow(`Index file not found for ${baseComponentName}, generating one...`));
+    await generateIndexFile(componentPath, baseComponentName, useTypeScript);
+  }
+  
   // Determine story path
   const storyExtension = useTypeScript ? 'tsx' : 'jsx';
   const storyBaseName = `${baseComponentName}.stories.${storyExtension}`;
   const storiesPath = args.storiesPath || 'src/components';
   
-  // Construct full story path
+  // Construct full story path - story goes in the component subdirectory
   const storyPath = args.path ?
     path.join(args.path, storyBaseName) :
-    path.join(process.cwd(), storiesPath, pluralType, componentDir, storyBaseName);
+    path.join(componentPath, storyBaseName);
   
   // Create imports section
   let imports = `import type { Meta, StoryObj } from '@storybook/react';
@@ -570,7 +590,7 @@ import { ThemeProvider } from '../../context/ThemeContext';`;
   // Create story configuration
   const storyConfig = `
 const meta = {
-  title: '${capitalizeFirstLetter(atomicType)}/${componentDir ? componentDir + '/' : ''}${baseComponentName}',
+  title: '${capitalizeFirstLetter(atomicType)}/${baseComponentName}',
   component: ${baseComponentName},
   parameters: {
     layout: 'centered',
@@ -671,7 +691,7 @@ export const WithThemeContext: Story = {
  * ## Component Usage
  * 
  * \`\`\`jsx
- * import { ${baseComponentName} } from 'components/${pluralType}/${componentDir ? componentDir + '/' : ''}${baseComponentName}';
+ * import { ${baseComponentName} } from 'components/${pluralType}/${baseComponentName}';
  * 
  * function MyComponent() {
  *   return <${baseComponentName} />;
@@ -772,8 +792,12 @@ async function generateComponent(args) {
   const componentName = args.name;
   const componentType = args.type || config.defaultComponentType;
   const folderName = config.atomicTypesToFolders[componentType] || componentType;
-  const componentDir = args.dir || `${config.defaultComponentDir}/${folderName}`;
-  const createFiles = args.files || 'all'; // all, tsx, css, story, test
+  
+  // Use the provided directory or construct the default path with a subdirectory for the component
+  const baseDir = args.dir || `${config.defaultComponentDir}/${folderName}`;
+  const componentDir = `${baseDir}/${componentName}`;
+  
+  const createFiles = args.files || 'all'; // all, tsx, css, story, test, index
   const useTypeScript = args.js !== true;
   
   console.log(chalk.blue.bold('Component Generator'));
@@ -812,6 +836,11 @@ async function generateComponent(args) {
   if (config.createTest && (createFiles === 'all' || createFiles === 'test')) {
     success = await generateTestFile(componentPath, componentName, useTypeScript);
     if (!success) console.log(chalk.yellow('⚠ Test file creation failed, but continuing...'));
+  }
+  
+  if (config.createIndex && (createFiles === 'all' || createFiles === 'index')) {
+    success = await generateIndexFile(componentPath, componentName, useTypeScript);
+    if (!success) console.log(chalk.yellow('⚠ Index file creation failed, but continuing...'));
   }
   
   console.log(chalk.green.bold(`✓ Component ${componentName} created successfully!`));
