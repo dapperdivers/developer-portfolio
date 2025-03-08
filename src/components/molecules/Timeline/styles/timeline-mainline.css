@@ -75,6 +75,82 @@
   animation: data-field-pulse 3s ease-in-out infinite alternate;
 }
 
+/* Security theme styling for timeline-main-line */
+.experience-timeline--security .timeline-main-line::before {
+  width: 4px;
+  background: 
+    repeating-linear-gradient(
+      to bottom,
+      rgba(var(--security-hacker-primary-rgb), 0.1) 0px,
+      rgba(var(--security-hacker-primary-rgb), 0.9) 4px,
+      rgba(var(--security-hacker-primary-rgb), 0.1) 8px
+    ),
+    linear-gradient(to bottom, 
+      rgba(var(--security-hacker-primary-rgb), 0.9),
+      rgba(var(--security-hacker-primary-rgb), 0.5),
+      rgba(var(--security-hacker-primary-rgb), 0.9));
+  box-shadow: 
+    0 0 15px rgba(var(--security-hacker-primary-rgb), 0.8),
+    0 0 6px rgba(255, 255, 255, 0.7),
+    inset 0 0 8px rgba(var(--security-hacker-primary-rgb), 0.9);
+  border-radius: 3px;
+  animation: security-data-flow 4s linear infinite;
+}
+
+.experience-timeline--security .timeline-main-line::after {
+  left: -7px;
+  width: 18px;
+  background: 
+    radial-gradient(
+      ellipse at center,
+      rgba(var(--security-hacker-primary-rgb), 0.5),
+      transparent 70%
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      rgba(var(--security-hacker-primary-rgb), 0.3) 1px,
+      transparent 2px
+    );
+  opacity: 0.9;
+  animation: security-field-pulse 2.5s ease-in-out infinite alternate;
+}
+
+/* Security data flow animation */
+@keyframes security-data-flow {
+  0% {
+    background-position: 0 0;
+    box-shadow: 
+      0 0 15px rgba(var(--security-hacker-primary-rgb), 0.8),
+      0 0 6px rgba(255, 255, 255, 0.7);
+  }
+  50% {
+    box-shadow: 
+      0 0 20px rgba(var(--security-hacker-primary-rgb), 0.9),
+      0 0 8px rgba(255, 255, 255, 0.8);
+  }
+  100% {
+    background-position: 0 100px;
+    box-shadow: 
+      0 0 15px rgba(var(--security-hacker-primary-rgb), 0.8),
+      0 0 6px rgba(255, 255, 255, 0.7);
+  }
+}
+
+/* Security field pulse animation */
+@keyframes security-field-pulse {
+  0% {
+    opacity: 0.7;
+    width: 12px;
+    left: -4px;
+  }
+  100% {
+    opacity: 0.9;
+    width: 18px;
+    left: -7px;
+  }
+}
+
 /* Data flow animation */
 @keyframes data-flow {
   0% {
@@ -148,6 +224,87 @@
   );
 }
 
+/* Security theme data packets */
+.experience-timeline--security .data-packet {
+  width: 16px;
+  height: 35px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(var(--security-hacker-primary-rgb), 0.95),
+    rgba(var(--security-hacker-primary-rgb), 0.6) 60%,
+    transparent 100%
+  );
+  box-shadow: 0 0 12px rgba(var(--security-hacker-primary-rgb), 0.7);
+  filter: blur(1.5px);
+  border: 1px solid rgba(var(--security-hacker-primary-rgb), 0.4);
+  animation: security-data-transmission 4s infinite cubic-bezier(0.45, 0.05, 0.55, 0.95),
+            security-data-travel 3.5s infinite cubic-bezier(0.23, 0.78, 0.69, 0.1);
+}
+
+.experience-timeline--security .packet-1 {
+  animation-delay: 0s;
+}
+
+.experience-timeline--security .packet-2 {
+  left: -5px;
+  width: 12px;
+  animation-delay: 1.2s;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(var(--security-hacker-secondary-rgb), 0.95),
+    rgba(var(--security-hacker-secondary-rgb), 0.6) 60%,
+    transparent 100%
+  );
+  box-shadow: 0 0 12px rgba(var(--security-hacker-secondary-rgb), 0.7);
+  border: 1px solid rgba(var(--security-hacker-secondary-rgb), 0.4);
+}
+
+.experience-timeline--security .packet-3 {
+  left: -6px;
+  width: 14px;
+  animation-delay: 2.4s;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(var(--security-hacker-accent2-rgb), 0.95),
+    rgba(var(--security-hacker-accent2-rgb), 0.6) 60%,
+    transparent 100%
+  );
+  box-shadow: 0 0 12px rgba(var(--security-hacker-accent2-rgb), 0.7);
+  border: 1px solid rgba(var(--security-hacker-accent2-rgb), 0.4);
+}
+
+/* Enhanced security data packet animations */
+@keyframes security-data-transmission {
+  0%, 100% { 
+    opacity: 0.9; 
+    height: 35px; 
+    box-shadow: 0 0 12px currentColor;
+  }
+  25% {
+    box-shadow: 0 0 18px currentColor;
+  }
+  75% { 
+    opacity: 0.5; 
+    height: 65px; 
+    box-shadow: 0 0 8px currentColor;
+  }
+  99% { opacity: 0; }
+}
+
+@keyframes security-data-travel {
+  0% { 
+    top: -35px; 
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% { 
+    top: 100%;
+    transform: scale(1);
+  }
+}
+
 /* Fiber optic data transmission visualization */
 @keyframes data-transmission {
   0%, 100% { opacity: 0.8; height: 30px; top: 0; }
@@ -176,6 +333,50 @@
   animation: neural-point-appear 10s infinite ease-in-out;
 }
 
+/* Security theme neural connectors */
+.experience-timeline--security .neural-connector {
+  width: 14px;
+  height: 14px;
+  background-color: rgba(var(--security-hacker-primary-rgb), 0.4);
+  border: 2px solid rgba(var(--security-hacker-primary-rgb), 0.9);
+  left: -6px;
+  box-shadow: 
+    0 0 10px rgba(var(--security-hacker-primary-rgb), 0.6),
+    inset 0 0 4px rgba(255, 255, 255, 0.8);
+  animation: security-neural-point-appear 8s infinite ease-in-out;
+}
+
+/* Security neural connector with pulse ring */
+.experience-timeline--security .neural-connector::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid rgba(var(--security-hacker-primary-rgb), 0.6);
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0;
+  animation: security-pulse-ring 8s infinite ease-in-out;
+}
+
+/* Security neural connector core */
+.experience-timeline--security .neural-connector::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.9);
+  transform: translate(-50%, -50%) scale(0);
+  box-shadow: 0 0 6px rgba(var(--security-hacker-primary-rgb), 0.9);
+  opacity: 0;
+  animation: security-core-pulse 8s infinite ease-in-out;
+}
+
 /* Staggered positioning of neural connectors */
 .neural-connector-1 {
   top: 15%;
@@ -197,6 +398,27 @@
   animation-delay: 10s;
 }
 
+/* Security neural connector staggered delays */
+.experience-timeline--security .neural-connector-1::before,
+.experience-timeline--security .neural-connector-1::after {
+  animation-delay: 1s;
+}
+
+.experience-timeline--security .neural-connector-2::before,
+.experience-timeline--security .neural-connector-2::after {
+  animation-delay: 4s;
+}
+
+.experience-timeline--security .neural-connector-3::before,
+.experience-timeline--security .neural-connector-3::after {
+  animation-delay: 7s;
+}
+
+.experience-timeline--security .neural-connector-4::before,
+.experience-timeline--security .neural-connector-4::after {
+  animation-delay: 10s;
+}
+
 /* Neural connector animation */
 @keyframes neural-point-appear {
   0%, 90%, 100% {
@@ -214,6 +436,56 @@
   45% {
     transform: scale(0);
     opacity: 0;
+  }
+}
+
+/* Security neural connector animations */
+@keyframes security-neural-point-appear {
+  0%, 90%, 100% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  2%, 5% {
+    transform: scale(1.3);
+    opacity: 1;
+  }
+  7%, 40% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  45% {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
+
+@keyframes security-pulse-ring {
+  0%, 1%, 46%, 100% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+  }
+  7% {
+    transform: translate(-50%, -50%) scale(1.0);
+    opacity: 0.8;
+  }
+  40% {
+    transform: translate(-50%, -50%) scale(1.5);
+    opacity: 0;
+  }
+}
+
+@keyframes security-core-pulse {
+  0%, 1%, 46%, 100% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+  }
+  7% {
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 1;
+  }
+  40% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.8;
   }
 }
 

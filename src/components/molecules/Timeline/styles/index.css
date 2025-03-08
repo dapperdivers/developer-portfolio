@@ -10,16 +10,16 @@
  */
 
 /* Base layout and containers */
-@import './timeline-container.css';
+@import './timeline-base.css';
 
 /* Main timeline vertical line */
-@import './timeline-main.css';
+@import './timeline-mainline.css';
 
 /* Decorative elements for cyberpunk visuals */
-@import './decorations.css';
+@import './timeline-decorations.css';
 
 /* State styles (loading, error, empty) */
-@import './states.css';
+@import './timeline-states.css';
 
 /* Color themes and variations */
-@import './colors.css';
+@import './timeline-colors.css';
