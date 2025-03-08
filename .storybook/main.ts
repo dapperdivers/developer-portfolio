@@ -21,7 +21,7 @@ const config: StorybookConfig = {
   },
   "staticDirs": [
     "../src/assets/images",
-    "../src/assets/lotte",
+    "../src/assets/animations/lottie",
     "../src/assets/fonts",
     "../src/assets/css",
     "./assets"
