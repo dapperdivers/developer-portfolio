@@ -5,6 +5,7 @@ import { FaDownload, FaChevronDown } from 'react-icons/fa';
 import Button from '@atoms/Button';
 import SocialLinks from '@molecules/SocialLinks';
 import useCallbackHandlers from '@/hooks/useCallbackHandlers';
+import './Greetings.css';
 
 const Greetings = () => {
   const { handleDownload } = useCallbackHandlers();

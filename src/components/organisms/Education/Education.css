@@ -1,0 +1,105 @@
+/**
+ * Education Section Styles
+ * 
+ * Styles for the Education section organism component.
+ * Contains section-level layout and structure styles.
+ */
+
+/* Education section container styles */
+.education-section {
+  padding: var(--section-padding-y) 0;
+  position: relative;
+  background-color: var(--color-background-alt);
+  overflow: hidden;
+}
+
+/* Container for education content */
+.education-content {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: var(--spacing-6) var(--spacing-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-8);
+}
+
+/* Main education container */
+.education-main {
+  position: relative;
+  margin-bottom: var(--spacing-2);
+  transition: transform 0.5s ease-out, opacity 0.5s ease-out;
+}
+
+/* Certifications section styling */
+.certifications-section {
+  position: relative;
+  margin-top: var(--spacing-6);
+}
+
+/* Section header styling */
+.education-section-header {
+  text-align: center;
+  margin-bottom: var(--spacing-8);
+  position: relative;
+}
+
+.education-section-title {
+  font-size: var(--font-size-h2);
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-4);
+  position: relative;
+  display: inline-block;
+}
+
+.education-section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+  border-radius: var(--border-radius-pill);
+}
+
+.education-section-subtitle {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-lg);
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* Education cards container */
+.education-cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: var(--spacing-6);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .education-section {
+    padding: var(--spacing-8) 0;
+  }
+  
+  .education-content {
+    padding: var(--spacing-4) var(--spacing-3);
+  }
+  
+  .education-section-header {
+    margin-bottom: var(--spacing-6);
+  }
+  
+  .education-cards-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .education-main {
+    transition: none;
+  }
+} 

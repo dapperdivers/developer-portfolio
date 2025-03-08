@@ -6,6 +6,7 @@ import DisplayLottie from '@molecules/DisplayLottie';
 import Progress from '@atoms/Progress';
 import Section from '@layout/Section';
 import codingAnimation from '@assets/animations/lottie/dev-coding.json';
+import './Proficiency.css';
 
 const ProgressBar = ({ skill, index }) => {
     const ref = useRef(null);

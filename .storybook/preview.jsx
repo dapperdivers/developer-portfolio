@@ -2,32 +2,17 @@ import React from 'react';
 import { withHelmetProvider } from './utils/mockHelmetProvider';
 import { withPortfolioContext } from './utils/decorators';
 
-// Import design system tokens and Tailwind CSS
+// Import global and design system styles only
 import '../src/assets/css/design-system/index.css';
 import '../src/assets/css/tailwind.css';
 import '../src/assets/css/utilities/index.css';
-import '../src/assets/css/components/index.css';
-
-// Import component-specific styles (atoms)
-import '../src/components/atoms/Button/Button.css';
-import '../src/components/atoms/Card/Card.css';
-import '../src/components/atoms/Loading/Loading.css';
-
-// Import component-specific styles (layout)
-import '../src/components/layout/Section/Section.css';
-
-// Import component-specific styles (molecules)
-import '../src/components/molecules/DisplayLottie/DisplayLottie.css';
-import '../src/components/molecules/EducationCard/EducationCard.css';
-import '../src/components/molecules/ExperienceCard/ExperienceCard.css';
-import '../src/components/molecules/FeedbackCard/FeedbackCard.css';
-import '../src/components/molecules/Footer/Footer.css';
-import '../src/components/molecules/Navigation/Navigation.css';
-import '../src/components/molecules/SocialLinks/SocialLinks.css';
-
-// Import section-specific CSS
-import '../src/assets/css/skeleton-loading.css';
 import '../src/assets/css/typography.css';
+import '../src/assets/css/browser-fixes.css';
+import '../src/assets/css/global.css';
+
+// Note: Component-specific CSS files are now imported directly by each component
+// and don't need to be imported here. This follows the co-location principle
+// where each component imports its own CSS file.
 
 const preview = {
   parameters: {

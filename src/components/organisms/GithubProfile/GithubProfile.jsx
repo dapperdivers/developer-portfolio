@@ -7,6 +7,7 @@ import GithubProfileCard from '@molecules/GithubProfileCard';
 import { motion } from "framer-motion";
 import Section from '@layout/Section';
 import envConfig from '@utils/envConfig';
+import './GithubProfile.css';
 
 // Create axios instance with base configuration
 const githubApi = axios.create({

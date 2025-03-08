@@ -1,37 +1,34 @@
 /**
  * Main CSS Entry Point
  * 
- * This file serves as the main entry point for all CSS in the application.
- * It imports all styles in the correct order.
+ * This file serves as the main entry point for all global CSS in the application.
+ * Component-specific styles are co-located with their components.
  */
 
-/* Import all CSS files */
+/* Global styles */
 @import './tailwind.css';
 @import './global.css';
-@import './components/index.css';
 @import './utilities/index.css';
-@import './component-styles.css';
-@import './contact-section.css';
-@import './education-section.css';
-@import './experience-section.css';
-@import './feedbacks-section.css';
-@import './footer.css';
-@import './hero-section.css';
-@import './proficiency-section.css';
-@import './projects-section.css';
-@import './skeleton-loading.css';
-@import './skills-section.css';
 @import './typography.css';
+@import './browser-fixes.css';
 
 /**
- * Migration Path:
+ * CSS Organization
  * 
- * 1. For each legacy CSS file:
- *    - Convert styles to Tailwind utility classes in component JSX
- *    - For component-specific styles, add them to @layer components in tailwind.css
- *    - For complex components, create a dedicated CSS file in components/ui/ or components/layout/
- * 
- * 2. Once a section is fully migrated:
- *    - Remove its import from the legacy section above
- *    - Document the migration in activeContext.md
+ * This project follows atomic design principles with component-specific CSS 
+ * files co-located directly with their components.
+ *
+ * Global styles:
+ * - global.css - Base global styles
+ * - tailwind.css - Tailwind utilities
+ * - typography.css - Typography styles
+ * - browser-fixes.css - Cross-browser compatibility fixes
+ * - utilities/index.css - Utility classes
+ * - design-system/ - Design tokens and variables
+ *
+ * Component styles are located with their respective components in:
+ * - src/components/atoms/
+ * - src/components/molecules/
+ * - src/components/organisms/
+ * - src/components/layout/
  */

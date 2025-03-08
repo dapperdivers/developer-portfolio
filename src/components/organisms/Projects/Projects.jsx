@@ -5,7 +5,7 @@ import Section from '@layout/Section';
 import useProjects from "@hooks/useProjects";
 import useMemoValues from "@hooks/useMemoValues";
 import { usePortfolio } from "@context/PortfolioContext";
-
+import './Projects.css';
 
 /**
  * Projects section displaying a grid of project cards.

@@ -1,5 +1,10 @@
-/* Projects Section Styles */
+/**
+ * Projects Organism Styles
+ *
+ * Styles for the Projects component following atomic design principles
+ */
 
+/* Projects Section */
 .projects-section {
   background-color: var(--color-background-alt);
   padding: var(--section-padding-y) 0;
@@ -29,80 +34,97 @@
 }
 
 .skeleton-image {
-  height: 180px;
-  background: linear-gradient(90deg, var(--color-gray-100) 0%, var(--color-gray-200) 50%, var(--color-gray-100) 100%);
-  background-size: 200% 100%;
-  animation: skeleton-loading 1.5s infinite;
+  height: 200px;
+  background-color: var(--color-skeleton-bg);
+  position: relative;
+  overflow: hidden;
 }
 
 .skeleton-content {
   padding: var(--spacing-4);
   display: flex;
   flex-direction: column;
-  flex: 1;
   gap: var(--spacing-3);
+  flex: 1;
 }
 
 .skeleton-title {
-  height: 24px;
-  width: 70%;
-  background: linear-gradient(90deg, var(--color-gray-100) 0%, var(--color-gray-200) 50%, var(--color-gray-100) 100%);
-  background-size: 200% 100%;
-  animation: skeleton-loading 1.5s infinite;
+  height: 28px;
+  background-color: var(--color-skeleton-bg);
   border-radius: var(--border-radius);
+  margin-bottom: var(--spacing-2);
+  position: relative;
+  overflow: hidden;
 }
 
 .skeleton-description {
   height: 60px;
-  background: linear-gradient(90deg, var(--color-gray-100) 0%, var(--color-gray-200) 50%, var(--color-gray-100) 100%);
-  background-size: 200% 100%;
-  animation: skeleton-loading 1.5s infinite;
+  background-color: var(--color-skeleton-bg);
   border-radius: var(--border-radius);
+  margin-bottom: var(--spacing-2);
+  position: relative;
+  overflow: hidden;
 }
 
 .skeleton-tags {
   display: flex;
   gap: var(--spacing-2);
+  position: relative;
 }
 
 .skeleton-tags::before,
 .skeleton-tags::after {
   content: "";
-  height: 26px;
+  height: 24px;
+  border-radius: var(--border-radius-sm);
+  background-color: var(--color-skeleton-bg);
+  position: relative;
+  overflow: hidden;
+}
+
+.skeleton-tags::before {
+  width: 60px;
+}
+
+.skeleton-tags::after {
   width: 80px;
-  background: linear-gradient(90deg, var(--color-gray-100) 0%, var(--color-gray-200) 50%, var(--color-gray-100) 100%);
-  background-size: 200% 100%;
-  animation: skeleton-loading 1.5s infinite;
-  border-radius: var(--border-radius-pill);
 }
 
 .skeleton-actions {
-  display: flex;
-  gap: var(--spacing-3);
   margin-top: auto;
+  display: flex;
+  gap: var(--spacing-2);
 }
 
 .skeleton-actions::before,
 .skeleton-actions::after {
   content: "";
   height: 36px;
-  flex: 1;
-  background: linear-gradient(90deg, var(--color-gray-100) 0%, var(--color-gray-200) 50%, var(--color-gray-100) 100%);
-  background-size: 200% 100%;
-  animation: skeleton-loading 1.5s infinite;
   border-radius: var(--border-radius);
+  background-color: var(--color-skeleton-bg);
+  position: relative;
+  overflow: hidden;
 }
 
+.skeleton-actions::before {
+  width: 100px;
+}
+
+.skeleton-actions::after {
+  width: 100px;
+}
+
+/* Skeleton animation */
 @keyframes skeleton-loading {
   0% {
-    background-position: 200% 0;
+    background-position: -200px 0;
   }
   100% {
-    background-position: -200% 0;
+    background-position: calc(200px + 100%) 0;
   }
 }
 
-/* Responsive adjustments */
+/* Responsive styles */
 @media (max-width: 992px) {
   .projects-grid {
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -112,32 +134,33 @@
 
 @media (max-width: 768px) {
   .projects-section {
-    padding: var(--spacing-7) 0;
+    padding: var(--section-padding-y-sm) 0;
   }
   
   .projects-grid {
-    grid-template-columns: 1fr;
-    margin-top: var(--spacing-5);
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--spacing-3);
+    margin-top: var(--spacing-4);
   }
 }
 
-/* Empty state styles */
+/* Empty state */
 .projects-empty-state {
-  padding: var(--spacing-6);
   text-align: center;
+  padding: var(--spacing-6);
   background-color: var(--color-background);
   border-radius: var(--border-radius-lg);
-  margin-top: var(--spacing-6);
+  box-shadow: var(--box-shadow-sm);
 }
 
 .projects-empty-state p {
-  font-size: var(--font-size-lg);
   color: var(--color-text-muted);
+  margin-top: var(--spacing-3);
 }
 
-/* Reduced motion preferences */
+/* Accessibility - Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .project-card-skeleton * {
     animation: none !important;
   }
-}
+} 

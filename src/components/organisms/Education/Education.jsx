@@ -1,56 +1,73 @@
-import React, { memo } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
+import { motion } from 'framer-motion';
 import EducationCard from '@molecules/EducationCard';
-import Section from '@layout/Section';
-import useEducation from "@hooks/useEducation";
+import SectionHeader from '@molecules/SectionHeader';
+import './Education.css';
 
 /**
- * Education section displaying educational background with integrated certifications.
- * Redesigned for better visual presentation with combined education and certification display.
+ * Education section component displaying educational history
  * 
  * @component
- * @returns {React.ReactElement} Education component
  */
-const Education = () => {
-  const educationInfo = useEducation();
-  
-  // Animation config for framer-motion - main section animation
-  const sectionAnimation = {
-    initial: { opacity: 0 },
-    whileInView: { opacity: 1 },
-    viewport: { once: true, margin: "-50px" },
-    transition: { duration: 0.6 }
-  };
-  
+const Education = ({ educationData }) => {
+  if (!educationData || educationData.length === 0) {
+    return null;
+  }
+
   return (
-    <Section
-      id="education"
-      title="Education"
-      animation={sectionAnimation}
-      className="education-section"
-      data-testid="education-section"
-    >
-      {educationInfo.length > 0 ? (
-        <div className="education-content">
-          {/* Education card with integrated certifications */}
-          <div className="education-main education-card-animate">
-            <EducationCard 
-              education={educationInfo[0]} 
-              index={0}
-            />
-          </div>
+    <section id="education" className="education-section">
+      <div className="education-content">
+        <SectionHeader
+          title="Education & Certifications"
+          subtitle="My academic background and professional credentials"
+          className="education-section-header"
+          titleClassName="education-section-title"
+          subtitleClassName="education-section-subtitle"
+        />
+
+        <div className="education-main">
+          <motion.div 
+            className="education-cards-container"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, staggerChildren: 0.2 }}
+          >
+            {educationData.map((education, index) => (
+              <motion.div
+                key={`education-${index}`}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
+                <EducationCard 
+                  education={education}
+                  index={index}
+                />
+              </motion.div>
+            ))}
+          </motion.div>
         </div>
-      ) : (
-        <div className="text-center py-8">
-          <p className="text-gray-300">No education information available.</p>
-        </div>
-      )}
-    </Section>
+      </div>
+    </section>
   );
 };
 
 Education.propTypes = {
-  /* No props for this component as it uses context */
+  educationData: PropTypes.arrayOf(
+    PropTypes.shape({
+      schoolName: PropTypes.string.isRequired,
+      degree: PropTypes.string.isRequired,
+      duration: PropTypes.string,
+      description: PropTypes.string,
+      certifications: PropTypes.arrayOf(PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        issuer: PropTypes.string,
+        date: PropTypes.string,
+        url: PropTypes.string
+      }))
+    })
+  ).isRequired
 };
 
-export default memo(Education);
+export default Education;

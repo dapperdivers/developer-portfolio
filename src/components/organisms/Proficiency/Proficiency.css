@@ -1,5 +1,10 @@
-/* Proficiency Section Styles */
+/**
+ * Proficiency Organism Styles
+ *
+ * Styles for the Proficiency component following atomic design principles
+ */
 
+/* Base section styles */
 .proficiency-section {
   padding: 5rem 0;
   background-color: var(--light);
@@ -30,40 +35,38 @@
   margin-bottom: 2rem;
 }
 
-/* Progress label and percentage */
 .progress-label {
-  display: inline-block;
-  font-weight: 600;
+  font-size: 1rem;
+  font-weight: 500;
   color: var(--dark);
-  font-size: 1.1rem;
   margin-bottom: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .progress-percentage {
-  float: right;
-  font-weight: 500;
-  color: var(--primary);
-  font-size: 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--accent);
 }
 
-/* Enhanced progress bar styling */
 .progress {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem;
   height: 10px;
-  border-radius: 5px;
-  background-color: var(--light-200);
-  box-shadow: none;
-  margin-bottom: 0.5rem;
   overflow: hidden;
+  position: relative;
+  width: 100%;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-/* Progress bar animation */
 .progress-bar {
-  border-radius: 5px;
-  transition-property: width;
-  transition-duration: 1.5s;
-  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  border-radius: 0.5rem;
+  height: 100%;
   position: relative;
   overflow: hidden;
+  transition: width 1s ease-in-out;
 }
 
 .progress-bar::after {
@@ -73,23 +76,29 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(
-    90deg, 
-    rgba(255, 255, 255, 0) 0%, 
-    rgba(255, 255, 255, 0.15) 50%, 
-    rgba(255, 255, 255, 0) 100%
+  background-image: linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.2) 25%,
+    transparent 25%,
+    transparent 50%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0.2) 75%,
+    transparent 75%,
+    transparent
   );
-  animation: shimmer 2s infinite;
-  transform: translateX(-100%);
+  background-size: 50px 50px;
+  animation: shimmer 2s linear infinite;
 }
 
 @keyframes shimmer {
+  0% {
+    background-position: 0 0;
+  }
   100% {
-    transform: translateX(100%);
+    background-position: 50px 50px;
   }
 }
 
-/* Custom progress bar colors */
 .progress-bar-primary {
   background-color: var(--primary);
 }
@@ -99,10 +108,10 @@
 }
 
 .progress-bar-info {
-  background: linear-gradient(to right, var(--primary), var(--accent));
+  background-color: var(--info);
 }
 
-/* Responsive adjustments */
+/* Responsive styles */
 @media (max-width: 768px) {
   .proficiency-section {
     padding: 3rem 0;
@@ -110,7 +119,7 @@
   
   .progress-label,
   .progress-percentage {
-    font-size: 0.95rem;
+    font-size: 0.875rem;
   }
   
   .progress {
@@ -125,16 +134,15 @@
   outline-offset: 2px;
 }
 
-/* Lottie animation container */
+/* Animation container */
 .proficiency-animation {
-  max-width: 100%;
-  height: auto;
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 100%;
 }
 
-/* Reduced motion preference */
+/* Accessibility - Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .progress-bar {
     transition: none;
@@ -143,4 +151,4 @@
   .progress-bar::after {
     animation: none;
   }
-}
+} 
