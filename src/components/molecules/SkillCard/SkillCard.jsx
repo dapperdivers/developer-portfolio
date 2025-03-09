@@ -1,6 +1,7 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
+import { useAnimation } from '@context//AnimationContext';
 
 import Skill from '@atoms/Skill';
 import './SkillCard.css';
@@ -25,6 +26,48 @@ const SkillCard = ({
   onClick,
   className = '' // Default to empty string for optional className
 }) => {
+  // Get animation settings from context
+  const { animationEnabled, getAnimationDelay } = useAnimation();
+  
+  // Determine if we should animate
+  const shouldAnimate = animationEnabled && !reducedMotion;
+  
+  // Animation variants
+  const cardVariants = {
+    hidden: { 
+      opacity: 0,
+      y: 20,
+      scale: 0.9
+    },
+    visible: { 
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        type: 'spring',
+        stiffness: 300,
+        damping: 20,
+        delay: index * 0.1 // Stagger based on index
+      }
+    },
+    hover: {
+      y: -5,
+      scale: 1.02,
+      boxShadow: '0 0 15px rgba(var(--color-cyan-rgb), 0.4)',
+      borderColor: 'var(--color-cyan)',
+      transition: { 
+        duration: 0.3
+      }
+    },
+    tap: {
+      scale: 0.98,
+      y: 0,
+      transition: { 
+        duration: 0.1
+      }
+    }
+  };
+
   // Handle click
   const handleClick = () => {
     if (onClick) {
@@ -41,13 +84,19 @@ const SkillCard = ({
   };
   
   return (
-    <div 
+    <motion.div 
       className={`skill-card ${className}`} 
       onClick={handleClick}
       onKeyDown={handleKeyDown}
-      tabIndex={0} /* Using explicit number for tabIndex */
+      tabIndex={0}
       role="button"
       aria-haspopup="dialog"
+      initial={shouldAnimate ? "hidden" : false}
+      animate={shouldAnimate ? "visible" : false}
+      whileHover={shouldAnimate ? "hover" : false}
+      whileTap={shouldAnimate ? "tap" : false}
+      variants={cardVariants}
+      transition={{ duration: 0.3 }}
     >
       <div className="skill-card-icon">
         <Skill 
@@ -61,7 +110,7 @@ const SkillCard = ({
       <h4 className="skill-card-name">{skill.skillName}</h4>
       <p className="skill-card-desc">{skill.description}</p>
       <span className="skill-card-read-more" aria-hidden="true">+</span>
-    </div>
+    </motion.div>
   );
 };
 

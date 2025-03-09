@@ -3,6 +3,7 @@
  * 
  * Styles for the Skill component following atomic design principles.
  * Updated to align with security-themed design.
+ * Animations now handled by framer-motion.
  */
 
 /* Base skill icon wrapper */
@@ -13,7 +14,7 @@
   align-items: center;
   margin: 0.5rem;
   cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  /* transition removed - now handled by framer-motion */
 }
 
 /* Skill icon container */
@@ -27,7 +28,7 @@
   background-color: var(--color-background);
   border: 1px solid var(--color-border);
   overflow: hidden;
-  transition: all 0.2s ease;
+  /* transition removed - now handled by framer-motion */
 }
 
 /* Security-themed skill icon */
@@ -36,7 +37,7 @@
   border: 1px solid var(--color-cyan);
   box-shadow: 0 0 8px rgba(var(--color-cyan-rgb), 0.2);
   backdrop-filter: blur(2px);
-  transform: perspective(500px) rotateX(10deg);
+  /* transform removed - now handled by framer-motion */
 }
 
 /* Size variants */
@@ -71,18 +72,7 @@
   height: 5.25rem;
 }
 
-/* Hover effects */
-.skill-icon-wrapper:hover .skill-icon {
-  transform: translateY(-3px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* Security-themed hover effects */
-.skill-security:hover .skill-icon {
-  transform: translateY(-3px);
-  box-shadow: 0 0 12px rgba(var(--color-cyan-rgb), 0.4);
-  border-color: var(--color-primary);
-}
+/* Hover effects removed - now handled by framer-motion */
 
 /* Skill SVG icon */
 .skill-icon-svg {
@@ -111,8 +101,6 @@
   color: var(--color-cyan);
   filter: drop-shadow(0 0 2px rgba(var(--color-cyan-rgb), 0.5));
 }
-
-/* Tooltip styles removed */
 
 /* Proficiency level indicator */
 .skill-level {
@@ -162,19 +150,6 @@
 .skill-security .skill-level.level-5 {
   background-color: var(--color-level-critical);
   box-shadow: 0 0 5px rgba(var(--color-level-critical-rgb), 0.5);
-}
-
-/* Reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  .skill-icon-wrapper.reduced-motion,
-  .reduced-motion .skill-icon-wrapper {
-    transition: none;
-  }
-  
-  .reduced-motion .skill-icon,
-  .reduced-motion .skill-tooltip {
-    transition: none;
-  }
 }
 
 /* Accessibility: Focus styles */

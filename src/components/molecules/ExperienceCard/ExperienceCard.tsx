@@ -1,6 +1,6 @@
 import React, { memo, useRef, FC } from 'react';
-import { motion, Variants } from 'framer-motion';
-import { useAnimation } from '../../../context/AnimationContext';
+import { motion, Variants, useInView } from 'framer-motion';
+import { useAnimation } from '@context//AnimationContext';
 import type { ExperienceCardProps } from '../../../types/components';
 import './ExperienceCard.css';
 
@@ -21,6 +21,11 @@ const ExperienceCard: FC<ExperienceCardProps> = ({
   className = ''
 }) => {
   const cardRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(cardRef, { 
+    once: true,
+    amount: 0.3,
+    margin: "0px 0px -100px 0px"
+  });
   
   // Use the animation context
   const { animationEnabled, getAnimationDelay } = useAnimation();
@@ -42,7 +47,48 @@ const ExperienceCard: FC<ExperienceCardProps> = ({
       transition: {
         duration: 0.5,
         delay: index * 0.1,
-        ease: [0.43, 0.13, 0.23, 0.96]
+        ease: [0.43, 0.13, 0.23, 0.96],
+        when: "beforeChildren",
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  // Logo animation variants
+  const logoVariants: Variants = {
+    hidden: { 
+      opacity: 0,
+      scale: 0.8
+    },
+    visible: { 
+      opacity: 1,
+      scale: 1,
+      transition: {
+        duration: 0.4,
+        ease: "easeOut"
+      }
+    },
+    hover: {
+      scale: 1.05,
+      transition: {
+        duration: 0.3,
+        ease: "easeInOut"
+      }
+    }
+  };
+
+  // Description and bullet point animation variants
+  const contentVariants: Variants = {
+    hidden: { 
+      opacity: 0,
+      y: 10
+    },
+    visible: { 
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.3,
+        ease: "easeOut"
       }
     }
   };
@@ -69,8 +115,8 @@ const ExperienceCard: FC<ExperienceCardProps> = ({
         ...customStyle,
         transitionDelay: animationDelay
       }}
-      initial="hidden"
-      animate="visible"
+      initial={animationEnabled ? "hidden" : false}
+      animate={animationEnabled && isInView ? "visible" : false}
       variants={cardVariants}
       data-testid="experience-card"
       data-variant={variant || 'default'}
@@ -78,7 +124,11 @@ const ExperienceCard: FC<ExperienceCardProps> = ({
       <div className="experience-card__content">
         {/* Company logo */}
         {data.companylogo && (
-          <div className="experience-card__logo-container">
+          <motion.div 
+            className="experience-card__logo-container"
+            variants={logoVariants}
+            whileHover={animationEnabled ? "hover" : undefined}
+          >
             <img
               className="experience-card__logo"
               src={data.companylogo}
@@ -87,23 +137,33 @@ const ExperienceCard: FC<ExperienceCardProps> = ({
               width={80}
               height={80}
             />
-          </div>
+          </motion.div>
         )}
         
         {/* Main content area */}
         <div className="experience-card__details">
           {/* Description */}
-          <p className="experience-card__description">{data.desc}</p>
+          <motion.p 
+            className="experience-card__description"
+            variants={contentVariants}
+          >
+            {data.desc}
+          </motion.p>
           
           {/* Description bullets if available */}
           {data.descBullets && data.descBullets.length > 0 && (
-            <ul className="experience-card__bullets">
+            <motion.ul className="experience-card__bullets">
               {data.descBullets.map((item, i) => (
-                <li key={`bullet-${i}`} className="experience-card__bullet-item">
+                <motion.li 
+                  key={`bullet-${i}`} 
+                  className="experience-card__bullet-item"
+                  variants={contentVariants}
+                  custom={i}
+                >
                   {item}
-                </li>
+                </motion.li>
               ))}
-            </ul>
+            </motion.ul>
           )}
         </div>
       </div>

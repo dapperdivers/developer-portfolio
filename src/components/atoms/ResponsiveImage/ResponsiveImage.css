@@ -2,13 +2,14 @@
  * ResponsiveImage Component
  * 
  * Styles for the responsive image component with security-themed variants.
+ * Note: Animations are now managed by framer-motion through the AnimationContext
  */
 
 /* Base styles */
 .responsive-image {
   width: 100%;
   height: auto;
-  transition: opacity 0.3s ease, filter 0.3s ease;
+  /* Transition removed - now handled by framer-motion */
 }
 
 /* Loading state */
@@ -44,7 +45,7 @@
     rgba(var(--color-navy-rgb), 0.3) 75%
   );
   background-size: 200% 200%;
-  animation: security-shimmer 1.5s ease infinite;
+  /* Animation removed - now handled by framer-motion */
 }
 
 .responsive-image-security.loaded {
@@ -74,7 +75,7 @@
     var(--color-navy) 100%
   );
   background-size: 200% 100%;
-  animation: terminal-pulse 2s ease infinite;
+  /* Animation removed - now handled by framer-motion */
 }
 
 .responsive-image-terminal.loaded {
@@ -87,38 +88,20 @@
   filter: grayscale(0.8) brightness(0.5);
 }
 
-/* Animation for security loading shimmer */
-@keyframes security-shimmer {
-  0% {
-    background-position: 0% 0%;
-  }
-  50% {
-    background-position: 100% 100%;
-  }
-  100% {
-    background-position: 0% 0%;
-  }
-}
+/* 
+ * Animation keyframes removed - now implemented with framer-motion variants
+ * @keyframes security-shimmer {...}
+ * @keyframes terminal-pulse {...}
+ */
 
-/* Animation for terminal loading pulse */
-@keyframes terminal-pulse {
-  0% {
-    background-position: -100% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
-}
-
-/* Reduced motion preferences */
+/* Reduced motion preferences - No longer needed as handled by AnimationContext */
 @media (prefers-reduced-motion: reduce) {
   .responsive-image {
-    transition: none;
+    /* No CSS animations to disable - framer-motion handles reduced motion preferences */
   }
   
   .responsive-image-security.loading,
   .responsive-image-terminal.loading {
-    animation: none;
-    opacity: 0.6;
+    /* No CSS animations to disable - framer-motion handles reduced motion preferences */
   }
 }

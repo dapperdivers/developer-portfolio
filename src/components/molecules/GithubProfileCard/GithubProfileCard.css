@@ -1,4 +1,6 @@
-/* GitHub Profile Card Styles with Security Theme */
+/* GitHub Profile Card Styles with Security Theme 
+ * Animations are now handled by framer-motion through the AnimationContext
+ */
 
 /* Security-themed background elements */
 .security-grid {
@@ -101,11 +103,11 @@
   box-shadow: 
     0 0 0 4px rgba(var(--color-navy-rgb), 0.5),
     0 10px 20px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  /* Transition removed - now handled by framer-motion */
 }
 
 .profile-image:hover {
-  transform: translateY(-5px);
+  /* Transform removed - now handled by framer-motion hover state */
   box-shadow: 
     0 0 0 4px rgba(var(--color-navy-rgb), 0.5),
     0 15px 25px rgba(0, 0, 0, 0.4);
@@ -146,26 +148,21 @@
   font-size: 0.9rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  transition: all 0.3s ease;
+  /* Transition removed - now handled by framer-motion */
   box-shadow: 0 4px 10px rgba(var(--color-cyan-rgb), 0.3);
 }
 
 .contact-button:hover {
-  transform: translateY(-3px);
+  /* Transform removed - now handled by framer-motion hover state */
   box-shadow: 0 6px 15px rgba(var(--color-cyan-rgb), 0.4);
 }
 
 .contact-button:active {
-  transform: translateY(-1px);
+  /* Transform removed - now handled by framer-motion active state */
   box-shadow: 0 3px 8px rgba(var(--color-cyan-rgb), 0.4);
 }
 
-/* Animation for hovering elements */
-@keyframes float {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
-  100% { transform: translateY(0px); }
-}
+/* Animation keyframes removed - now handled by framer-motion */
 
 /* Responsive adjustments */
 @media (max-width: 992px) {

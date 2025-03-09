@@ -17,26 +17,13 @@
   font-size: 14px;
   color: var(--color-accent, #05d5fa);
   text-shadow: 0 0 8px rgba(5, 213, 250, 0.7);
-  opacity: 0.5;
-  animation: matrixFade 5s infinite;
   transform-origin: center;
+  transition: opacity 0.3s ease-out;
 }
 
-@keyframes matrixFade {
-  0% {
-    opacity: 0;
-    transform: scale(0.8);
-  }
-  10% {
-    opacity: 0.5;
-    transform: scale(1);
-  }
-  90% {
-    opacity: 0.5;
-    transform: scale(1);
-  }
-  100% {
-    opacity: 0;
-    transform: scale(1.2);
+/* Add reduced motion preference support */
+@media (prefers-reduced-motion: reduce) {
+  .matrix-char {
+    transition: none !important;
   }
 } 

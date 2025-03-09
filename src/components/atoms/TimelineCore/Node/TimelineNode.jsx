@@ -1,5 +1,7 @@
 import React, { memo, useEffect, useRef } from 'react';
+import { motion } from 'framer-motion';
 import PropTypes from 'prop-types';
+import { useAnimation, MotionVariants } from '@context/AnimationContext';
 import './TimelineNode.css';
 
 /**
@@ -29,26 +31,96 @@ const TimelineNode = ({
   ...rest
 }) => {
   const nodeRef = useRef(null);
+  const { animationEnabled } = useAnimation();
 
-  // Force visibility update when active state changes
-  useEffect(() => {
-    if (nodeRef.current && active) {
-      // Add a class then force a reflow to ensure animation triggers
-      nodeRef.current.classList.add('timeline-node-force-visible');
-      setTimeout(() => {
-        if (nodeRef.current) {
-          nodeRef.current.classList.remove('timeline-node-force-visible');
-        }
-      }, 50);
+  // Define animation variants for the node
+  const nodeVariants = {
+    initial: { 
+      scale: 1,
+      boxShadow: '0 0 8px var(--glow-primary), inset 0 0 6px var(--glow-primary)'
+    },
+    active: { 
+      scale: 1.1,
+      boxShadow: '0 0 15px var(--glow-primary), inset 0 0 10px var(--glow-primary)',
+      transition: {
+        duration: 0.4,
+        ease: [0.165, 0.84, 0.44, 1]
+      }
+    },
+    hover: {
+      scale: 1.15,
+      boxShadow: '0 0 12px var(--glow-primary), inset 0 0 8px var(--glow-primary)',
+      transition: {
+        duration: 0.3,
+        ease: "easeOut"
+      }
     }
-  }, [active]);
+  };
+  
+  const coreVariants = {
+    initial: {
+      opacity: 0.7,
+      scale: 0.85,
+      boxShadow: '0 0 5px var(--glow-primary), 0 0 2px rgba(255, 255, 255, 0.5)'
+    },
+    pulse: {
+      opacity: [0.7, 1, 0.7],
+      scale: [0.85, 1, 0.85],
+      boxShadow: [
+        '0 0 5px var(--glow-primary), 0 0 2px rgba(255, 255, 255, 0.5)',
+        '0 0 15px var(--glow-primary), 0 0 8px rgba(255, 255, 255, 0.9)',
+        '0 0 5px var(--glow-primary), 0 0 2px rgba(255, 255, 255, 0.5)'
+      ],
+      transition: {
+        duration: 4,
+        repeat: Infinity,
+        repeatType: "mirror",
+        ease: "easeInOut"
+      }
+    },
+    active: {
+      opacity: 1,
+      scale: 1,
+      boxShadow: '0 0 15px var(--glow-primary), 0 0 8px rgba(255, 255, 255, 0.9)',
+      transition: {
+        duration: 0.4,
+        ease: "easeOut"
+      }
+    }
+  };
+  
+  const connectorVariants = {
+    initial: {
+      opacity: 0.8,
+      scale: 1.15
+    },
+    active: {
+      opacity: 1,
+      scale: 1.25,
+      rotate: 45,
+      transition: {
+        rotate: {
+          duration: 10,
+          repeat: Infinity,
+          ease: "linear"
+        },
+        duration: 0.5
+      }
+    },
+    hover: {
+      opacity: 1,
+      scale: 1.2,
+      transition: {
+        duration: 0.3
+      }
+    }
+  };
 
   // Determine class names based on props
   const classes = [
     'timeline-node',
     `timeline-node-${size}`,
     variant ? `timeline-node-${variant}` : '',
-    active ? 'timeline-node-active' : '',
     animated ? 'timeline-node-animated' : '',
     className
   ].filter(Boolean).join(' ');
@@ -62,16 +134,57 @@ const TimelineNode = ({
   } : {
     'aria-hidden': true
   };
+  
+  // Get animation state based on active and animation flags
+  const animationState = active ? "active" : (animated && animationEnabled ? "pulse" : "initial");
 
   return (
-    <div 
+    <motion.div 
       ref={nodeRef}
       className={classes}
       style={style}
       data-testid="timeline-node"
+      variants={nodeVariants}
+      initial="initial"
+      animate={animationState}
+      whileHover={interactive ? "hover" : ""}
       {...ariaProps}
       {...rest}
-    />
+    >
+      <motion.div
+        className="node-connector"
+        variants={connectorVariants}
+        initial="initial"
+        animate={animationState}
+        whileHover={interactive ? "hover" : ""}
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          borderRadius: "50%",
+          background: "conic-gradient(var(--node-primary) 0%, transparent 25%, var(--node-primary) 50%, transparent 75%, var(--node-primary) 100%)",
+          zIndex: -1,
+          filter: "drop-shadow(0 0 5px var(--glow-primary))"
+        }}
+      />
+      
+      <motion.div
+        className="node-core"
+        variants={coreVariants}
+        initial="initial"
+        animate={animationState}
+        style={{
+          position: "absolute",
+          width: "60%",
+          height: "60%",
+          borderRadius: "50%",
+          background: "radial-gradient(circle at center, rgba(255, 255, 255, 0.9), var(--node-primary) 60%)",
+          zIndex: 1
+        }}
+      />
+    </motion.div>
   );
 };
 

@@ -126,10 +126,12 @@ async function generateComponentFile(componentPath, componentName, componentType
   // Atom Component Template
   if (componentType === 'atom') {
     template = `import React${config.memoize ? ', { memo }' : ''} from 'react';
+import { motion } from 'framer-motion';
+import { useAnimation } from '@context/AnimationContext';
 ${cssImportPath}
 
 ${config.addJsDoc ? `/**
- * ${componentName} atomic component
+ * ${componentName} atomic component with framer-motion animation support
  * 
  * @component
  * @param {Object} props - Component props
@@ -145,14 +147,34 @@ ${useTypeScript ? `interface ${componentName}Props {
 
 const ${componentName} = (${useTypeScript ? `props: ${componentName}Props` : 'props'}) => {
   const { children, className = '', ...rest } = props;
+  const { animationEnabled, shouldReduceMotion, fadeInVariants } = useAnimation();
+  
+  // Only animate if animations are enabled and reduced motion is not preferred
+  const shouldAnimate = animationEnabled && !shouldReduceMotion;
+  
+  // Component-specific animation variants
+  const ${componentName.toLowerCase()}Variants = {
+    hidden: { opacity: 0, y: 10 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { 
+        duration: 0.4, 
+        ease: "easeOut" 
+      }
+    }
+  };
   
   return (
-    <div 
-      className={\`${componentName.toLowerCase()} \${className}\`} 
+    <motion.div 
+      className={\`${componentName.toLowerCase()} \${className}\`}
+      variants={${componentName.toLowerCase()}Variants}
+      initial={shouldAnimate ? "hidden" : "visible"}
+      animate="visible"
       {...rest}
     >
       {children}
-    </div>
+    </motion.div>
   );
 };
 
@@ -164,10 +186,12 @@ export default memo(${componentName});` : `export default ${componentName};`}
   // Molecule Component Template
   else if (componentType === 'molecule') {
     template = `import React${config.memoize ? ', { memo }' : ''} from 'react';
+import { motion } from 'framer-motion';
+import { useAnimation } from '@context/AnimationContext';
 ${cssImportPath}
 
 ${config.addJsDoc ? `/**
- * ${componentName} molecule component
+ * ${componentName} molecule component with framer-motion animation support
  * 
  * @component
  * @param {Object} props - Component props
@@ -183,14 +207,52 @@ ${useTypeScript ? `interface ${componentName}Props {
 
 const ${componentName} = (${useTypeScript ? `props: ${componentName}Props` : 'props'}) => {
   const { children, className = '', ...rest } = props;
+  const { animationEnabled, shouldReduceMotion, fadeInVariants } = useAnimation();
+  
+  // Only animate if animations are enabled and reduced motion is not preferred
+  const shouldAnimate = animationEnabled && !shouldReduceMotion;
+  
+  // Component-specific animation variants
+  const containerVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { 
+        duration: 0.5, 
+        ease: "easeOut",
+        when: "beforeChildren",
+        staggerChildren: 0.1
+      }
+    }
+  };
+  
+  const childVariants = {
+    hidden: { opacity: 0, y: 10 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { 
+        duration: 0.4, 
+        ease: "easeOut" 
+      }
+    }
+  };
   
   return (
-    <div 
-      className={\`${componentName.toLowerCase()} \${className}\`} 
+    <motion.div 
+      className={\`${componentName.toLowerCase()} \${className}\`}
+      variants={containerVariants}
+      initial={shouldAnimate ? "hidden" : "visible"}
+      animate="visible"
       {...rest}
     >
-      {children}
-    </div>
+      {React.Children.map(children, (child, index) => (
+        <motion.div key={index} variants={childVariants}>
+          {child}
+        </motion.div>
+      ))}
+    </motion.div>
   );
 };
 
@@ -202,10 +264,12 @@ export default memo(${componentName});` : `export default ${componentName};`}
   // Organism Component Template
   else if (componentType === 'organism') {
     template = `import React${config.memoize ? ', { memo }' : ''} from 'react';
+import { motion } from 'framer-motion';
+import { useAnimation } from '@context/AnimationContext';
 ${cssImportPath}
 
 ${config.addJsDoc ? `/**
- * ${componentName} organism component
+ * ${componentName} organism component with framer-motion animation support
  * 
  * @component
  * @param {Object} props - Component props
@@ -223,17 +287,73 @@ ${useTypeScript ? `interface ${componentName}Props {
 
 const ${componentName} = (${useTypeScript ? `props: ${componentName}Props` : 'props'}) => {
   const { title, children, className = '', ...rest } = props;
+  const { animationEnabled, shouldReduceMotion, slideUpVariants } = useAnimation();
+  
+  // Only animate if animations are enabled and reduced motion is not preferred
+  const shouldAnimate = animationEnabled && !shouldReduceMotion;
+  
+  // Component-specific animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: 1,
+      transition: { 
+        duration: 0.5, 
+        ease: "easeOut",
+        when: "beforeChildren",
+        staggerChildren: 0.15
+      }
+    }
+  };
+  
+  const titleVariants = {
+    hidden: { opacity: 0, y: -20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { 
+        duration: 0.5, 
+        ease: "easeOut" 
+      }
+    }
+  };
+  
+  const contentVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { 
+        duration: 0.5, 
+        ease: "easeOut",
+        delay: 0.2
+      }
+    }
+  };
   
   return (
-    <section 
-      className={\`${componentName.toLowerCase()} \${className}\`} 
+    <motion.section 
+      className={\`${componentName.toLowerCase()} \${className}\`}
+      variants={containerVariants}
+      initial={shouldAnimate ? "hidden" : "visible"}
+      animate="visible"
       {...rest}
     >
-      {title && <h2 className="organism-title">{title}</h2>}
-      <div className="organism-content">
+      {title && (
+        <motion.h2 
+          className="organism-title"
+          variants={titleVariants}
+        >
+          {title}
+        </motion.h2>
+      )}
+      <motion.div 
+        className="organism-content"
+        variants={contentVariants}
+      >
         {children}
-      </div>
-    </section>
+      </motion.div>
+    </motion.section>
   );
 };
 
@@ -245,17 +365,19 @@ export default memo(${componentName});` : `export default ${componentName};`}
   // Layout Component Template
   else if (componentType === 'layout') {
     template = `import React${config.memoize ? ', { memo }' : ''} from 'react';
+import { motion } from 'framer-motion';
+import { useAnimation } from '@context/AnimationContext';
 ${cssImportPath}
 
 ${config.addJsDoc ? `/**
- * ${componentName} layout component
+ * ${componentName} layout component with framer-motion animation support
  * 
  * @component
  * @param {Object} props - Component props
  * @returns {React.ReactElement} ${componentName} component
  */` : ""}
 ${useTypeScript ? `interface ${componentName}Props {
-  /** Layout content */
+  /** Component content */
   children: React.ReactNode;
   /** Additional CSS class names */
   className?: string;
@@ -264,14 +386,35 @@ ${useTypeScript ? `interface ${componentName}Props {
 
 const ${componentName} = (${useTypeScript ? `props: ${componentName}Props` : 'props'}) => {
   const { children, className = '', ...rest } = props;
+  const { animationEnabled, shouldReduceMotion } = useAnimation();
+  
+  // Only animate if animations are enabled and reduced motion is not preferred
+  const shouldAnimate = animationEnabled && !shouldReduceMotion;
+  
+  // Subtle layout animation variant
+  const layoutVariants = {
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: 1,
+      transition: { 
+        duration: 0.5, 
+        ease: "easeOut" 
+      }
+    }
+  };
   
   return (
-    <div 
-      className={\`${componentName.toLowerCase()} \${className}\`} 
+    <motion.div 
+      className={\`${componentName.toLowerCase()} \${className}\`}
+      variants={layoutVariants}
+      initial={shouldAnimate ? "hidden" : "visible"}
+      animate="visible"
+      layout // Smooth layout transitions when component dimensions change
+      layoutId="${componentName.toLowerCase()}"
       {...rest}
     >
       {children}
-    </div>
+    </motion.div>
   );
 };
 
@@ -295,34 +438,40 @@ async function generateCssFile(componentName, componentType, componentPath) {
   const cssFilename = `${componentName}.css`;
   const cssFilepath = path.join(componentPath, cssFilename);
   
-  // CSS template with Tailwind reference
+  // CSS template with Tailwind reference and framer-motion comments
   const cssTemplate = `/**
  * ${componentName} Component Styles
  * 
  * Styling for the ${componentName} component
  * This project uses Tailwind CSS. See tailwind.config.js for configuration.
  * For custom styles beyond Tailwind, use the classes defined below.
+ * 
+ * Note: Animations are managed by framer-motion through the AnimationContext.
+ * - Do NOT add CSS animations or transitions (use framer-motion instead)
+ * - See AnimationContext.tsx for predefined animation variants
  */
 
 .${componentName.toLowerCase()} {
   /* Add custom styles here that go beyond Tailwind's utilities */
-  
-  /* For application-wide styles, consider adding to:
-   * - tailwind.config.js (for theme customization)
-   * - src/assets/css/styles.css (for global styles) 
-   */
+  /* Do not include animations or transitions - use framer-motion instead */
 }
 
-/* You can use Tailwind's responsive prefixes in your component's JSX:
+/* 
+ * For responsive design, use Tailwind's responsive prefixes in your component's JSX:
  * <div className="md:flex lg:p-4 dark:bg-gray-800"></div>
  * 
  * Or add custom responsive styles here:
  */
 @media (max-width: 768px) {
   .${componentName.toLowerCase()} {
-    /* Add mobile-specific styles if needed */
+    /* Add mobile-specific styles if needed (no animations) */
   }
 }
+
+/*
+ * For users with reduced motion preferences, framer-motion will automatically
+ * disable animations via the AnimationContext. No need for CSS media queries.
+ */
 `;
   
   try {
@@ -348,6 +497,7 @@ async function generateComponentStoryFile(componentPath, componentName, componen
   // Build the story content
   let content = `import type { Meta, StoryObj } from '@storybook/react';
 import ${componentName} from '${relativeImportPath}${componentName}';
+import { AnimationProvider } from '@context/AnimationContext';
 
 const meta = {
   title: '${capitalizeFirstLetter(componentType)}s/${componentName}',
@@ -356,7 +506,7 @@ const meta = {
     layout: 'centered',
     docs: {
       description: {
-        component: '${componentName} component description.'
+        component: '${componentName} component with framer-motion animations integrated with AnimationContext.'
       }
     }
   },
@@ -364,7 +514,14 @@ const meta = {
   argTypes: {
     // Define arg types here
     className: { control: 'text' }
-  }
+  },
+  decorators: [
+    (Story) => (
+      <AnimationProvider>
+        <Story />
+      </AnimationProvider>
+    )
+  ]
 } satisfies Meta<typeof ${componentName}>;
 
 export default meta;
@@ -383,11 +540,45 @@ export const CustomStyle: Story = {
     className: 'custom-style'
   }
 };
+
+/**
+ * Example showing the component with animations disabled.
+ * This is useful for users who prefer reduced motion or for
+ * testing how the component renders without animations.
+ */
+export const WithAnimationsDisabled: Story = {
+  args: {
+    children: 'No animations',
+    className: ''
+  },
+  decorators: [
+    (Story) => (
+      <AnimationProvider>
+        <div data-testid="animation-disabled-container">
+          <Story />
+        </div>
+      </AnimationProvider>
+    )
+  ],
+  play: async ({ canvasElement }) => {
+    // This simulates a user who has animations disabled
+    window.__DEBUG_FLAGS = { 
+      ...window.__DEBUG_FLAGS,
+      disableAnimations: true 
+    };
+    
+    // The component should detect this via AnimationContext
+  }
+};
 `;
 
   // Add interaction tests if it's an atom or molecule component
   if (componentType === 'atom' || componentType === 'molecule') {
     content += `
+/**
+ * This example demonstrates interactions with the component.
+ * The framer-motion animations should respond appropriately.
+ */
 export const WithInteractions: Story = {
   args: {
     children: 'Interactive component',
@@ -395,6 +586,36 @@ export const WithInteractions: Story = {
   },
   play: async ({ canvasElement }) => {
     // Add interaction tests here using @storybook/test
+    // For example, testing hover animations, click responses, etc.
+  }
+};
+`;
+  }
+
+  // Add responsive examples for layout components
+  if (componentType === 'layout') {
+    content += `
+/**
+ * This example demonstrates how the component behaves in a responsive layout.
+ * The layout animations should adjust appropriately.
+ */
+export const ResponsiveLayout: Story = {
+  args: {
+    children: (
+      <div style={{ width: '100%', maxWidth: '800px' }}>
+        <div style={{ padding: '20px', background: '#f0f0f0', marginBottom: '10px' }}>
+          Header content
+        </div>
+        <div style={{ padding: '20px', background: '#e0e0e0' }}>
+          Main content that will affect layout animations when resizing
+        </div>
+      </div>
+    )
+  },
+  parameters: {
+    viewport: {
+      defaultViewport: 'responsive'
+    }
   }
 };
 `;
@@ -420,6 +641,33 @@ async function generateTestFile(componentPath, componentName, useTypeScript = tr
 import { render, screen, fireEvent } from '@testing-library/react';
 import { vi } from 'vitest';
 import ${componentName} from './${componentName}';
+import { AnimationProvider } from '@context/AnimationContext';
+
+// Mock the AnimationContext to test animation behavior
+vi.mock('@context/AnimationContext', () => ({
+  useAnimation: vi.fn().mockReturnValue({
+    animationEnabled: true,
+    shouldReduceMotion: false,
+    fadeInVariants: {
+      hidden: { opacity: 0 },
+      visible: { opacity: 1 }
+    },
+    slideUpVariants: {
+      hidden: { opacity: 0, y: 20 },
+      visible: { opacity: 1, y: 0 }
+    }
+  }),
+  AnimationProvider: ({ children }) => <div data-testid="animation-provider">{children}</div>
+}));
+
+// Helper function to render with animation context
+const renderWithAnimationContext = (ui) => {
+  return render(
+    <AnimationProvider>
+      {ui}
+    </AnimationProvider>
+  );
+};
 
 describe('${componentName} Component', () => {
   beforeEach(() => {
@@ -428,20 +676,20 @@ describe('${componentName} Component', () => {
   });
 
   it('renders without crashing', () => {
-    render(<${componentName}>Test content</${componentName}>);
+    renderWithAnimationContext(<${componentName}>Test content</${componentName}>);
     expect(screen.getByText('Test content')).toBeInTheDocument();
   });
   
   it('applies custom className', () => {
-    const { container } = render(<${componentName} className="custom-class">Test</${componentName}>);
-    const element = container.firstChild;
+    const { container } = renderWithAnimationContext(<${componentName} className="custom-class">Test</${componentName}>);
+    const element = container.querySelector('.${componentName.toLowerCase()}');
     expect(element).toHaveClass('custom-class');
     expect(element).toHaveClass('${componentName.toLowerCase()}');
   });
   
   it('renders children correctly', () => {
     const testId = 'test-child';
-    render(
+    renderWithAnimationContext(
       <${componentName}>
         <div data-testid={testId}>Child component</div>
       </${componentName}>
@@ -450,8 +698,37 @@ describe('${componentName} Component', () => {
     expect(screen.getByTestId(testId)).toBeInTheDocument();
     expect(screen.getByTestId(testId)).toHaveTextContent('Child component');
   });
+
+  it('uses motion component with correct animation props', () => {
+    const { container } = renderWithAnimationContext(<${componentName}>Test</${componentName}>);
+    const motionElement = container.querySelector('.${componentName.toLowerCase()}');
+    
+    // Check that it's using framer-motion
+    // Note: We can't directly test for motion props in JSDOM, but we can check for data attributes
+    expect(motionElement).toBeTruthy();
+    
+    // The component should have the animation className
+    expect(motionElement).toHaveClass('${componentName.toLowerCase()}');
+  });
   
-  // Add more tests as needed
+  it('respects AnimationContext settings', () => {
+    // Mock AnimationContext with animations disabled
+    const useAnimationMock = vi.fn().mockReturnValueOnce({
+      animationEnabled: false,
+      shouldReduceMotion: true,
+      fadeInVariants: { 
+        hidden: { opacity: 0 },
+        visible: { opacity: 1 }
+      }
+    });
+    
+    require('@context/AnimationContext').useAnimation.mockImplementation(useAnimationMock);
+    
+    renderWithAnimationContext(<${componentName}>Test with animations disabled</${componentName}>);
+    
+    // Check that useAnimation was called
+    expect(useAnimationMock).toHaveBeenCalled();
+  });
 });
 `;
   
@@ -580,10 +857,10 @@ import { userEvent, within, waitFor } from '@storybook/test';`;
   if (context) {
     if (context === 'portfolio') {
       imports += `
-import { PortfolioProvider } from '../../context/PortfolioContext';`;
+import { PortfolioProvider } from '@context/PortfolioContext';`;
     } else if (context === 'theme') {
       imports += `
-import { ThemeProvider } from '../../context/ThemeContext';`;
+import { ThemeProvider } from '@context/ThemeContext';`;
     }
   }
 

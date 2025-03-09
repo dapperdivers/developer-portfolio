@@ -1,5 +1,7 @@
 import React, { memo, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
+import { motion } from 'framer-motion';
+import { useAnimation } from '@context/AnimationContext';
 import './CodeSnippet.css';
 
 /**
@@ -29,6 +31,36 @@ const CodeSnippet = ({
   ...rest
 }) => {
   const codeRef = useRef(null);
+  const { animationEnabled, shouldReduceMotion } = useAnimation();
+
+  // Define animation variants
+  const snippetVariants = {
+    hidden: { opacity: 0, y: 10 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut"
+      }
+    }
+  };
+
+  const glitchVariants = {
+    idle: { opacity: 1 },
+    glitch: {
+      opacity: [1, 0.8, 1, 0.9, 1],
+      x: [0, -1, 1, -1, 0],
+      y: [0, 1, -1, 1, 0],
+      transition: {
+        duration: 0.2,
+        repeat: shouldReduceMotion ? 0 : 2,
+        repeatType: "reverse",
+        ease: "easeInOut",
+        repeatDelay: 5,
+      }
+    }
+  };
 
   // Apply basic syntax highlighting
   useEffect(() => {
@@ -81,10 +113,14 @@ const CodeSnippet = ({
       };
 
   return (
-    <div 
+    <motion.div 
       className={classes}
       style={style}
       data-testid="code-snippet"
+      initial={animationEnabled ? "hidden" : "visible"}
+      animate="visible"
+      variants={snippetVariants}
+      whileHover={animationEnabled && !shouldReduceMotion && !isDecorative ? "glitch" : "idle"}
       {...a11yProps}
       {...rest}
     >
@@ -97,7 +133,7 @@ const CodeSnippet = ({
           {code}
         </code>
       </pre>
-    </div>
+    </motion.div>
   );
 };
 

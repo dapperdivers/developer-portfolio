@@ -2,6 +2,7 @@
  * Skills Organism Styles
  *
  * Styles for the Skills component including security-themed visualizations
+ * Animations are now handled by framer-motion through the AnimationContext
  */
 
 /* Base Styles */
@@ -64,20 +65,16 @@
   background-color: rgba(var(--color-navy-rgb), 0.8);
   border: 1px solid rgba(var(--color-cyan-rgb), 0.3);
   border-radius: 8px;
-  transition: all 0.3s ease;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(2px);
   transform: perspective(500px) rotateX(5deg);
   height: 100%;
   position: relative;
   cursor: pointer;
+  /* Animation now handled by framer-motion */
 }
 
-.skill-card:hover {
-  border-color: var(--color-cyan);
-  box-shadow: 0 0 15px rgba(var(--color-cyan-rgb), 0.4);
-  transform: perspective(500px) rotateX(0deg) translateY(-5px);
-}
+/* Hover state now handled by framer-motion whileHover */
 
 .skill-card-icon {
   margin-bottom: 0.75rem;
@@ -124,6 +121,7 @@
   z-index: 1000;
   display: flex;
   flex-direction: column;
+  /* Animation handled by framer-motion */
 }
 
 .skill-card-expanded-header {
@@ -162,12 +160,10 @@
   align-items: center;
   justify-content: center;
   border-radius: 50%;
+  /* Hover animations now handled by framer-motion */
 }
 
-.skill-card-expanded-close:hover {
-  color: var(--color-cyan);
-  background-color: rgba(var(--color-navy-rgb), 0.7);
-}
+/* Hover effects now handled by framer-motion */
 
 .skill-card-expanded-content {
   font-size: 0.9rem;
@@ -240,6 +236,7 @@
   background-color: rgba(0, 0, 0, 0.7);
   z-index: 999;
   backdrop-filter: blur(3px);
+  /* Animation handled by framer-motion */
 }
 
 /* Domain Headers */
@@ -460,9 +457,12 @@
 
 /* Reduced motion preferences */
 @media (prefers-reduced-motion: reduce) {
+  /* 
+   * All animations are now conditionally rendered through framer-motion
+   * based on the AnimationContext which respects prefers-reduced-motion settings
+   */
   .reduced-motion .security-mode .terminal-line {
-    animation: none;
-    white-space: normal;
-    border-right: none;
+    opacity: 1 !important;
+    transform: none !important;
   }
 }

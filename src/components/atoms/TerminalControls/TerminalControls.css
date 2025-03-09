@@ -1,6 +1,7 @@
 /**
  * TerminalControls Component Styles
  * Styling for terminal window headers, content, and commands
+ * Note: TerminalControls animations are now managed by framer-motion
  */
 
 /* Base variables */
@@ -32,7 +33,7 @@
   border: none;
   padding: 0;
   flex-shrink: 0;
-  transition: all var(--transition-standard);
+  /* transition removed - now handled by framer-motion */
 }
 
 /* Terminal window styling */
@@ -455,33 +456,36 @@
   font-size: 9px;
 }
 
-/* MacOS variant */
+/* Terminal controls for macOS */
 .terminal-controls-macos .terminal-circle-close {
-  background-color: var(--color-danger);
+  background-color: #ff5f56;
 }
 
 .terminal-controls-macos .terminal-circle-minimize {
-  background-color: var(--color-warning);
+  background-color: #ffbd2e;
 }
 
 .terminal-controls-macos .terminal-circle-maximize {
-  background-color: var(--color-success);
+  background-color: #27c93f;
 }
 
-/* Windows variant */
+/* Terminal controls for Windows */
 .terminal-controls-windows {
   margin-left: auto;
-  order: 2;
+  justify-content: flex-end;
 }
 
 .terminal-controls-windows .terminal-circle {
   width: 14px;
   height: 14px;
   border-radius: 0;
+  background-color: transparent;
+  border: 1px solid #999;
 }
 
 .terminal-controls-windows .terminal-circle-close {
-  background-color: transparent;
+  background-color: #d83b3b;
+  border-color: #a12828;
   position: relative;
 }
 
@@ -489,9 +493,9 @@
 .terminal-controls-windows .terminal-circle-close::after {
   content: '';
   position: absolute;
-  width: 10px;
+  width: 8px;
   height: 1px;
-  background-color: var(--color-danger);
+  background-color: white;
   top: 50%;
   left: 50%;
 }
@@ -505,7 +509,6 @@
 }
 
 .terminal-controls-windows .terminal-circle-minimize {
-  background-color: transparent;
   position: relative;
 }
 
@@ -514,38 +517,36 @@
   position: absolute;
   width: 8px;
   height: 1px;
-  background-color: var(--color-text);
+  background-color: #999;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
 
 .terminal-controls-windows .terminal-circle-maximize {
-  background-color: transparent;
   position: relative;
-  border: 1px solid var(--color-text);
-  transform: scale(0.7);
+  border: 1px solid #999;
 }
 
-/* Linux variant */
+/* Terminal controls for Linux */
 .terminal-controls-linux .terminal-circle {
-  width: 14px;
-  height: 14px;
-  border: 1px solid var(--color-border);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  background-color: transparent;
 }
 
 .terminal-controls-linux .terminal-circle-close {
-  background-color: var(--color-navy);
+  border-color: #d83b3b;
   position: relative;
+  background-color: rgba(216, 59, 59, 0.5);
 }
 
 .terminal-controls-linux .terminal-circle-close::before,
 .terminal-controls-linux .terminal-circle-close::after {
   content: '';
   position: absolute;
-  width: 8px;
+  width: 6px;
   height: 1px;
-  background-color: var(--color-danger);
+  background-color: white;
   top: 50%;
   left: 50%;
 }
@@ -558,12 +559,46 @@
   transform: translate(-50%, -50%) rotate(-45deg);
 }
 
+/* Interactive controls */
 .terminal-controls-interactive .terminal-circle {
   cursor: pointer;
+  /* transition removed - now handled by framer-motion */
 }
 
-.terminal-controls-interactive .terminal-circle:hover {
-  filter: brightness(1.2);
+/* Hover effect removed - now handled by framer-motion */
+.terminal-controls-interactive .terminal-circle:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Media queries */
+@media (max-width: 768px) {
+  .terminal-controls {
+    margin-right: var(--spacing-2);
+  }
+  
+  .terminal-circle {
+    width: 10px;
+    height: 10px;
+    margin-right: 4px;
+  }
+  
+  .terminal-controls-windows .terminal-circle,
+  .terminal-controls-linux .terminal-circle {
+    width: 12px;
+    height: 12px;
+  }
+}
+
+/* Reduced motion preference - No longer needed for controls as handled by AnimationContext */
+@media (prefers-reduced-motion: reduce) {
+  .terminal-circle {
+    /* No CSS animations to disable - framer-motion handles reduced motion preferences */
+  }
+  
+  .terminal-controls-interactive .terminal-circle:active {
+    /* No CSS animations to disable - framer-motion handles reduced motion preferences */
+  }
 }
 
 /* Color variations for timeline entries */
@@ -660,47 +695,4 @@
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border-width: 0;
-}
-
-/* Responsive styles */
-@media (max-width: 768px) {
-  .terminal-controls {
-    margin-right: var(--spacing-2);
-  }
-  
-  .terminal-circle {
-    width: 10px;
-    height: 10px;
-    margin-right: 4px;
-  }
-  
-  .terminal-controls-windows .terminal-circle,
-  .terminal-controls-linux .terminal-circle {
-    width: 12px;
-    height: 12px;
-  }
-  
-  .command-prompt, .command-response {
-    font-size: 12px;
-  }
-  
-  .terminal-footer {
-    font-size: 9px;
-  }
-}
-
-/* Reduced motion preferences */
-@media (prefers-reduced-motion: reduce) {
-  .terminal-circle {
-    transition: none;
-  }
-  
-  .terminal-controls-interactive .terminal-circle:active {
-    transform: none;
-  }
-  
-  .command-text.typing {
-    animation: none;
-    border-right: none;
-  }
 }

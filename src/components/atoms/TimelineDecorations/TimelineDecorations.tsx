@@ -1,6 +1,8 @@
 import React, { FC, useMemo } from 'react';
+import { motion } from 'framer-motion';
 import MatrixBackground from '../MatrixBackground/MatrixBackground';
 import BinaryStream from '../BinaryStream/BinaryStream';
+import { useAnimation, MotionVariants } from '@context//AnimationContext';
 import './TimelineDecorations.css';
 
 export interface TimelineDecorationsProps {
@@ -19,6 +21,20 @@ export interface TimelineDecorationsProps {
   /** Additional CSS class name */
   className?: string;
 }
+
+// Motion variants for decorations container
+const decorationsVariants = {
+  hidden: { 
+    opacity: 0 
+  },
+  visible: { 
+    opacity: 1,
+    transition: {
+      duration: 0.8,
+      staggerChildren: 0.2
+    }
+  }
+};
 
 /**
  * TimelineDecorations component
@@ -39,6 +55,9 @@ const TimelineDecorations: FC<TimelineDecorationsProps> = ({
   binaryStreamCount = 40,
   className = ''
 }) => {
+  // Get animation context
+  const { animationEnabled } = useAnimation();
+  
   // Classes based on variant
   const decorationClasses = [
     'timeline-decorations',
@@ -49,31 +68,46 @@ const TimelineDecorations: FC<TimelineDecorationsProps> = ({
   // Default to security variant
   if (variant === 'security' || variant === 'default') {
     return (
-      <div className={decorationClasses}>
+      <motion.div 
+        className={decorationClasses}
+        variants={decorationsVariants}
+        initial="hidden"
+        animate="visible"
+      >
         {showLeft && <BinaryStream position="left" count={binaryStreamCount} />}
         {showRight && <BinaryStream position="right" count={binaryStreamCount} baseDelay={0.2} />}
         {showTop && <BinaryStream position="top" count={binaryStreamCount} baseDelay={0.15} />}
         {showBottom && <BinaryStream position="bottom" count={binaryStreamCount} baseDelay={0.25} />}
-      </div>
+      </motion.div>
     );
   }
   
   // Terminal variant
   if (variant === 'terminal') {
     return (
-      <div className={decorationClasses}>
+      <motion.div 
+        className={decorationClasses}
+        variants={decorationsVariants}
+        initial="hidden"
+        animate="visible"
+      >
         {showLeft && <BinaryStream position="left" count={binaryStreamCount} baseDelay={0.1} />}
         {showRight && <BinaryStream position="right" count={binaryStreamCount} baseDelay={0.15} />}
-      </div>
+      </motion.div>
     );
   }
 
   // Default fallback
   return (
-    <div className={decorationClasses}>
+    <motion.div 
+      className={decorationClasses}
+      variants={decorationsVariants}
+      initial="hidden"
+      animate="visible"
+    >
       {showLeft && <BinaryStream position="left" count={binaryStreamCount} />}
       {showRight && <BinaryStream position="right" count={binaryStreamCount} baseDelay={0.2} />}
-    </div>
+    </motion.div>
   );
 };
 

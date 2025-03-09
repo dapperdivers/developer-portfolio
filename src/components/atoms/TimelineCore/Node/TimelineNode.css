@@ -1,303 +1,81 @@
 /**
- * TimelineNode Component Styles
- * Completely reimagined with a futuristic cyberpunk data interface design
+ * Timeline Node Component Styles
+ * 
+ * Basic styles for the timeline node component.
+ * All animations have been moved to framer-motion in the JSX component.
+ * This file contains only the base styles and variables.
  */
 
 :root {
-  /* Size variants */
-  --timeline-node-size-sm: 14px;
-  --timeline-node-size-md: 20px;
-  --timeline-node-size-lg: 28px;
+  /* Size variables */
+  --timeline-node-sm-size: 12px;
+  --timeline-node-md-size: 18px;  
+  --timeline-node-lg-size: 24px;
   
-  /* Colors */
-  --node-primary: var(--color-primary, #64ffda);
-  --node-secondary: var(--color-info, #58a6ff);
-  --node-active: #22c55e;
-  --node-inactive: #718096;
+  /* Color variables */
+  --node-primary: var(--color-accent);
+  --node-security: var(--color-security);
+  --node-terminal: var(--color-terminal);
   
-  /* Glows */
-  --glow-light: rgba(255, 255, 255, 0.8);
-  --glow-primary: rgba(100, 255, 218, 0.6);
-  --glow-secondary: rgba(88, 166, 255, 0.6);
+  /* Glow variables */
+  --glow-primary: var(--color-accent-glow);
+  --glow-security: var(--color-security-glow);  
+  --glow-terminal: var(--color-terminal-glow);
   
   /* Data port colors */
-  --data-port-pulse: rgba(100, 255, 218, 0.4);
-  --data-port-active: rgba(100, 255, 218, 0.9);
+  --data-port-primary: var(--color-accent);
+  --data-port-security: var(--color-security);
+  --data-port-terminal: var(--color-terminal);
 }
 
-/* Base styles - cybernetic neural network node */
+/* Base styles for the timeline node */
 .timeline-node {
   position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: inline-block;
+  width: var(--timeline-node-md-size);
+  height: var(--timeline-node-md-size);
   border-radius: 50%;
-  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-  z-index: 2;
-  background-color: #0f172a; /* Dark background */
-  box-sizing: border-box;
-  /* Data injection port element */
-  box-shadow: 
-    0 0 8px var(--glow-primary),
-    inset 0 0 6px var(--glow-primary);
+  background-color: var(--color-background-darker);
+  z-index: 5;
 }
 
-/* Connection ports around the node */
-.timeline-node::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  border-radius: 50%;
-  background: conic-gradient(
-    var(--node-primary) 0%, 
-    transparent 25%, 
-    var(--node-primary) 50%,
-    transparent 75%, 
-    var(--node-primary) 100%
-  );
-  opacity: 0.8;
-  z-index: -1;
-  transform: scale(1.15);
-  filter: drop-shadow(0 0 5px var(--glow-primary));
-}
-
-/* Core of the node - neural network hub center */
-.timeline-node::after {
-  content: '';
-  position: absolute;
-  width: 60%;
-  height: 60%;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle at center,
-    rgba(255, 255, 255, 0.9),
-    var(--node-primary) 60%
-  );
-  box-shadow: 
-    0 0 10px var(--glow-primary),
-    0 0 5px rgba(255, 255, 255, 0.8);
-  z-index: 1;
-  transition: all 0.4s ease;
-  /* Pulse effect in the core */
-  animation: node-core-pulse 4s infinite alternate cubic-bezier(0.455, 0.03, 0.515, 0.955);
-}
-
-/* Core pulse animation */
-@keyframes node-core-pulse {
-  0% {
-    opacity: 0.7;
-    transform: scale(0.85);
-    box-shadow: 
-      0 0 5px var(--glow-primary),
-      0 0 2px rgba(255, 255, 255, 0.5);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-    box-shadow: 
-      0 0 15px var(--glow-primary),
-      0 0 5px rgba(255, 255, 255, 0.9);
-  }
-}
-
-/* Size variants with crisp edges */
+/* Size variants */
 .timeline-node-sm {
-  width: var(--timeline-node-size-sm);
-  height: var(--timeline-node-size-sm);
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.4), inset 0 0 3px var(--glow-light);
+  width: var(--timeline-node-sm-size);
+  height: var(--timeline-node-sm-size);
 }
 
 .timeline-node-md {
-  width: var(--timeline-node-size-md);
-  height: var(--timeline-node-size-md);
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.4), inset 0 0 4px var(--glow-light);
+  width: var(--timeline-node-md-size);
+  height: var(--timeline-node-md-size);
 }
 
 .timeline-node-lg {
-  width: var(--timeline-node-size-lg);
-  height: var(--timeline-node-size-lg);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4), inset 0 0 5px var(--glow-light);
+  width: var(--timeline-node-lg-size);
+  height: var(--timeline-node-lg-size);
 }
 
-/* Variant styles - distinctive color schemes */
-.timeline-node {
-  border: 2px solid var(--node-primary);
-}
-
+/* Variant - Security */
 .timeline-node-security {
-  border: 2px solid var(--node-primary);
+  --node-primary: var(--node-security);
+  --glow-primary: var(--glow-security);
+  --data-port-primary: var(--data-port-security);
 }
 
-.timeline-node-security::before {
-  background: conic-gradient(
-    var(--node-primary) 0%, 
-    transparent 35%, 
-    var(--node-primary) 70%,
-    transparent 90%, 
-    var(--node-primary) 100%
-  );
-}
-
+/* Variant - Terminal */
 .timeline-node-terminal {
-  border: 2px solid var(--node-secondary);
+  --node-primary: var(--node-terminal);
+  --glow-primary: var(--glow-terminal);
+  --data-port-primary: var(--data-port-terminal);
 }
 
-.timeline-node-terminal::before {
-  background: conic-gradient(
-    var(--node-secondary) 0%, 
-    transparent 35%, 
-    var(--node-secondary) 70%,
-    transparent 90%, 
-    var(--node-secondary) 100%
-  );
-}
-
-.timeline-node-terminal::after {
-  background-color: var(--node-secondary);
-  box-shadow: 0 0 10px var(--glow-secondary);
-}
-
-/* Active state with dramatic highlight */
-.timeline-node-active {
-  transform: scale(1.1);
-  border-color: var(--node-active);
-}
-
-.timeline-node-active::after {
-  background-color: var(--node-active);
-  box-shadow: 0 0 15px var(--node-active);
-  animation: core-pulse 2s infinite alternate;
-}
-
-@keyframes core-pulse {
-  0% { opacity: 0.8; transform: scale(0.9); }
-  100% { opacity: 1; transform: scale(1.1); }
-}
-
-/* Advanced active state with scanning ring */
-.timeline-node-active::before {
-  opacity: 1;
-  animation: scan-rotation 4s linear infinite;
-}
-
-@keyframes scan-rotation {
-  0% { transform: scale(1.15) rotate(0deg); }
-  100% { transform: scale(1.15) rotate(360deg); }
-}
-
-/* Animated nodes with subtle motion */
-.timeline-node-animated {
-  animation: node-breathe 3s infinite ease-in-out;
-}
-
-@keyframes node-breathe {
-  0%, 100% { transform: scale(1); box-shadow: 0 0 8px rgba(0, 0, 0, 0.4), inset 0 0 4px var(--glow-light); }
-  50% { transform: scale(1.08); box-shadow: 0 0 12px rgba(0, 0, 0, 0.5), inset 0 0 6px var(--glow-light); }
-}
-
-/* Clickable nodes for interactive timelines */
-.timeline-node-clickable {
+/* Interactive styles */
+[role="button"].timeline-node {
   cursor: pointer;
 }
 
-.timeline-node-clickable:hover {
-  transform: scale(1.15);
-}
-
-.timeline-node-clickable:hover::after {
-  width: 70%;
-  height: 70%;
-  box-shadow: 0 0 15px var(--glow-primary), 0 0 5px #fff;
-}
-
-.timeline-node-clickable:active {
-  transform: scale(0.95);
-}
-
-.timeline-node-clickable:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.5);
-}
-
-/* Node with data indicators - small satellites */
-.timeline-node::before {
-  content: '';
-  position: absolute;
-  border-radius: 50%;
-  width: 130%;
-  height: 130%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(1.15);
-}
-
-/* Add high-tech scan rings on hover */
-.timeline-node:hover::before {
-  animation: scan-pulse 2s infinite linear;
-}
-
-@keyframes scan-pulse {
-  0% { transform: translate(-50%, -50%) scale(1.15) rotate(0deg); opacity: 0.7; }
-  50% { transform: translate(-50%, -50%) scale(1.2) rotate(180deg); opacity: 1; }
-  100% { transform: translate(-50%, -50%) scale(1.15) rotate(360deg); opacity: 0.7; }
-}
-
-/* Force visibility for timeline nodes */
-.timeline-node-force-visible {
-  opacity: 1 !important;
-  visibility: visible !important;
-  transform: scale(1) !important;
-  transition: none !important;
-}
-
-/* Fix for mobile visibility with enhanced touchpoints */
-@media (max-width: 768px) {
-  .timeline-node {
-    opacity: 1 !important;
-    visibility: visible !important;
-    width: var(--timeline-node-size-md); /* Minimum size for touch targets */
-    height: var(--timeline-node-size-md);
-  }
-  
-  .timeline-node-security,
-  .timeline-node-terminal {
-    border-width: 2px; /* More visible borders on mobile */
-  }
-  
-  .timeline-node::after {
-    width: 70%; /* Larger center point for visibility */
-    height: 70%;
-  }
-}
-
-/* Reduced motion accessibility adjustments */
-@media (prefers-reduced-motion: reduce) {
-  .timeline-node-animated,
-  .timeline-node-active::after,
-  .timeline-node-active::before,
-  .timeline-node:hover::before {
-    animation: none;
-  }
-  
-  .timeline-node {
-    transition: none;
-  }
-  
-  .timeline-node-clickable:hover {
-    transform: none;
-  }
-  
-  .timeline-node-clickable:hover::after {
-    width: 60%;
-    height: 60%;
-    box-shadow: 0 0 10px var(--glow-primary);
-  }
-  
-  /* Static indicator for active nodes when animations disabled */
-  .timeline-node-active {
-    border-width: 3px; /* Thicker border when no animation */
-  }
+/* Focus styles for accessibility */
+.timeline-node:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
 }

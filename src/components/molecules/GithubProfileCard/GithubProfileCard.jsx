@@ -6,11 +6,13 @@ import SocialLinks from '@molecules/SocialLinks';
 import Button from '@atoms/Button';
 import MapComponent from '../MapComponent';
 import { greetings, securityFacts } from '@/portfolio';
+import { useAnimation } from "@context/AnimationContext";
 import './GithubProfileCard.css';
 
 /**
  * GitHub profile card component for displaying user information from GitHub API.
  * Enhanced with map visualization and security-themed decorative elements.
+ * Uses framer-motion and the AnimationContext for animations.
  * 
  * @component
  * @param {Object} props - Component props
@@ -23,24 +25,36 @@ const GithubProfileCard = ({ prof, error, onRetry }) => {
     // Check if profile data exists
     const hasProfile = prof && Object.keys(prof).length > 0;
     
-    // Animation variants for staggered elements
+    // Get animation context values
+    const { 
+      animationEnabled, 
+      animationStaggerDelay, 
+      fadeInVariants, 
+      slideUpVariants 
+    } = useAnimation();
+    
+    // Custom animation variants with staggered children for profile card elements
     const containerVariants = {
       hidden: { opacity: 0 },
       visible: { 
         opacity: 1,
         transition: {
-          staggerChildren: 0.1,
+          staggerChildren: animationStaggerDelay,
           delayChildren: 0.2
         }
       }
     };
     
+    // Customized slide up variant for card items with spring physics
     const itemVariants = {
-      hidden: { y: 20, opacity: 0 },
+      hidden: { ...slideUpVariants.hidden },
       visible: { 
-        y: 0, 
-        opacity: 1,
-        transition: { type: "spring", damping: 12 }
+        ...slideUpVariants.visible,
+        transition: { 
+          ...slideUpVariants.visible.transition,
+          type: "spring", 
+          damping: 12 
+        }
       }
     };
     
@@ -58,7 +72,12 @@ const GithubProfileCard = ({ prof, error, onRetry }) => {
         <div className="container mx-auto px-4 relative" style={{ zIndex: 2 }}>
           {!hasProfile || error ? (
             // Fallback UI when GitHub API fails
-            <div className="py-12 px-6 text-center max-w-2xl mx-auto">
+            <motion.div 
+              className="py-12 px-6 text-center max-w-2xl mx-auto"
+              variants={fadeInVariants}
+              initial={animationEnabled ? "hidden" : "visible"}
+              animate="visible"
+            >
               <div className="w-16 h-16 bg-primary-600/30 rounded-full mx-auto flex items-center justify-center mb-6">
                 <FaMapMarkerAlt size={32} className="text-primary-300" />
               </div>
@@ -75,10 +94,10 @@ const GithubProfileCard = ({ prof, error, onRetry }) => {
                   Retry
                 </Button>
               )}
-            </div>
+            </motion.div>
           ) : (
             <motion.div 
-              initial="hidden"
+              initial={animationEnabled ? "hidden" : "visible"}
               animate="visible"
               variants={containerVariants}
             >

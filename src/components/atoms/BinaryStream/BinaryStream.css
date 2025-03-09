@@ -50,10 +50,11 @@
   font-family: monospace;
   font-size: 12px;
   color: var(--binary-stream-color, #05d5fa);
-  opacity: 0.8;
   text-shadow: 0 0 5px var(--binary-stream-glow, rgba(5, 213, 250, 0.5));
-  animation: binaryFade 3s infinite;
+  /* Removed animation properties - now handled by framer-motion */
   box-sizing: border-box;
+  /* Add transition for smooth changes when motion is disabled */
+  transition: opacity 0.3s ease-out;
 }
 
 /* Left/right streams position the binary digits vertically */
@@ -62,101 +63,17 @@
   left: 5px;
 }
 
-.binary-stream--left .binary {
-  animation-name: binaryFadeLeft;
-}
-
-.binary-stream--right .binary {
-  animation-name: binaryFadeRight;
-}
-
 /* Top/bottom streams position the binary digits horizontally */
 .binary-stream--top .binary,
 .binary-stream--bottom .binary {
   top: 5px;
 }
 
-.binary-stream--top .binary {
-  animation-name: binaryFadeTop;
-}
-
-.binary-stream--bottom .binary {
-  animation-name: binaryFadeBottom;
-}
-
-/* Animations */
-@keyframes binaryFadeLeft {
-  0% {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  10% {
-    opacity: 0.8;
-  }
-  90% {
-    opacity: 0.8;
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-}
-
-@keyframes binaryFadeRight {
-  0% {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  10% {
-    opacity: 0.8;
-  }
-  90% {
-    opacity: 0.8;
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-}
-
-@keyframes binaryFadeTop {
-  0% {
-    opacity: 0;
-    transform: translateX(-10px);
-  }
-  10% {
-    opacity: 0.8;
-  }
-  90% {
-    opacity: 0.8;
-  }
-  100% {
-    opacity: 0;
-    transform: translateX(10px);
-  }
-}
-
-@keyframes binaryFadeBottom {
-  0% {
-    opacity: 0;
-    transform: translateX(10px);
-  }
-  10% {
-    opacity: 0.8;
-  }
-  90% {
-    opacity: 0.8;
-  }
-  100% {
-    opacity: 0;
-    transform: translateX(-10px);
-  }
-}
+/* Removed all the animation keyframes - now handled by framer-motion */
 
 /* Reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
   .binary {
-    animation: none !important;
     transition: none !important;
   }
 } 

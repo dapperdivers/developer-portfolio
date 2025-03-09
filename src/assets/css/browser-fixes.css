@@ -1,6 +1,10 @@
 /**
  * Cross-browser compatibility fixes
  * This file contains CSS fixes for specific browser issues
+ * 
+ * NOTE: The animations in this file are essential browser fixes and
+ * should NOT be replaced with framer-motion animations as they target
+ * specific browser behaviors and DOM events
  */
 
 /* Firefox-specific fixes for form autofill */
@@ -26,7 +30,11 @@
     background-clip: padding-box !important;
   }
   
-  /* Animation for detecting autofill events in JavaScript */
+  /* 
+   * Animation for detecting autofill events in JavaScript
+   * IMPORTANT: This animation MUST remain in CSS and cannot be replaced by framer-motion
+   * because it's used to detect browser-specific autofill events through animation events
+   */
   @keyframes autofill {
     from {
       /* This property doesn't matter, but needs to change for the animation to trigger */

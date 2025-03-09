@@ -5,6 +5,8 @@ import Section from '@layout/Section';
 import useProjects from "@hooks/useProjects";
 import useMemoValues from "@hooks/useMemoValues";
 import { usePortfolio } from "@context/PortfolioContext";
+import { useAnimation } from "@context/AnimationContext";
+import { motion } from "framer-motion";
 import './Projects.css';
 
 /**
@@ -13,7 +15,7 @@ import './Projects.css';
  * Features include:
  * - Loading state with skeleton UI
  * - Integration with portfolio context
- * - Performance-optimized animations
+ * - Performance-optimized animations using framer-motion and AnimationContext
  * - Proper error handling
  * 
  * @component
@@ -23,6 +25,9 @@ const Projects = () => {
   // Get portfolio data and derived memo values
   const portfolioData = usePortfolio();
   const { topProjects } = useMemoValues(portfolioData);
+  
+  // Get animation context values
+  const { animationEnabled, slideUpVariants, animationStaggerDelay } = useAnimation();
   
   // Get loading delay from context or use default (demonstrates skeleton loading)
   const loadingDelay = portfolioData?.settings?.loadingDelay || 0;
@@ -58,18 +63,17 @@ const Projects = () => {
   const sectionTitle = portfolioData?.projectsSection?.title || "Projects";
   const sectionSubtitle = portfolioData?.projectsSection?.subtitle;
   
-  // Memoize animation config to prevent unnecessary re-renders
-  const animation = useMemo(() => ({
-    initial: { opacity: 0, y: 40 },
-    whileInView: { opacity: 1, y: 0 },
-    viewport: { once: true, margin: "-50px" },
-    transition: { 
-      duration: 0.5,
-      // Optimize performance
-      type: "tween",
-      translateY: true
+  // Memoize animation variants with custom transition options
+  const projectsContainerVariants = useMemo(() => ({
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: 1,
+      transition: { 
+        staggerChildren: animationStaggerDelay,
+        delayChildren: 0.2
+      }
     }
-  }), []);
+  }), [animationStaggerDelay]);
 
   // Render loading state if projects data is not available
   if (isLoading) {
@@ -80,7 +84,12 @@ const Projects = () => {
         subtitle={sectionSubtitle}
         className="projects-section"
       >
-        <div className="projects-grid projects-grid-loading skeleton-staggered">
+        <motion.div 
+          className="projects-grid projects-grid-loading skeleton-staggered"
+          variants={projectsContainerVariants}
+          initial="hidden"
+          animate="visible"
+        >
           {Array.from({ length: skeletonCount }).map((_, i) => (
             <SkeletonCard 
               key={i} 
@@ -88,7 +97,7 @@ const Projects = () => {
               index={i} 
             />
           ))}
-        </div>
+        </motion.div>
       </Section>
     );
   }
@@ -102,9 +111,14 @@ const Projects = () => {
         subtitle={sectionSubtitle}
         className="projects-section"
       >
-        <div className="projects-empty-state">
+        <motion.div 
+          className="projects-empty-state"
+          variants={slideUpVariants}
+          initial="hidden"
+          animate="visible"
+        >
           <p className="text-gray-300">No projects are currently available.</p>
-        </div>
+        </motion.div>
       </Section>
     );
   }
@@ -114,10 +128,15 @@ const Projects = () => {
       id="projects"
       title={sectionTitle}
       subtitle={sectionSubtitle}
-      animation={animation}
       className="projects-section"
     >
-      <div className="projects-grid">
+      <motion.div 
+        className="projects-grid"
+        variants={projectsContainerVariants}
+        initial={animationEnabled ? "hidden" : "visible"}
+        animate="visible"
+        viewport={{ once: true, margin: "-50px" }}
+      >
         {displayProjects.map((data, i) => (
           <ProjectsCard 
             key={`project-${data.name}-${i}`} 
@@ -125,7 +144,7 @@ const Projects = () => {
             index={i} 
           />
         ))}
-      </div>
+      </motion.div>
     </Section>
   );
 };

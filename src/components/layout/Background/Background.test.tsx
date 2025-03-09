@@ -4,7 +4,7 @@ import { vi, describe, it, expect, beforeEach } from 'vitest';
 import Background from './Background';
 
 // Mock the AnimationContext
-vi.mock('../../../context/AnimationContext', () => ({
+vi.mock('@context//AnimationContext', () => ({
   useAnimation: () => ({
     animationEnabled: true,
     registerEntryAnimation: vi.fn(),

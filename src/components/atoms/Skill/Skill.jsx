@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
 import { Icon } from '@iconify/react';
+import { useAnimation } from '@context//AnimationContext';
 import '@assets/css/tailwind.css';
 
 /* 
@@ -57,7 +58,7 @@ import '@assets/css/tailwind.css';
 
 /**
  * Skill component for displaying individual skills with icons and tooltips.
- * Updated with security-themed variant.
+ * Updated with security-themed variant and integration with AnimationContext.
  * 
  * @component
  * @param {Object} props - Component props
@@ -84,6 +85,12 @@ const Skill = ({
   reducedMotion = false,
   showLevel = false
 }) => {
+  // Get animation settings from context
+  const { animationEnabled } = useAnimation();
+  
+  // Determine if we should animate
+  const shouldAnimate = animate && animationEnabled;
+  
   // Size classes
   const sizeMap = {
     sm: 'skill-icon-sm',
@@ -145,79 +152,23 @@ const Skill = ({
     }
   };
   
-  // Tooltip animations - also optimized for performance
-  // Defined but currently unused - keeping for future implementation
-  /* const tooltipVariants = reducedMotion ? {
-    hidden: { opacity: 0 },
-    visible: { 
-      opacity: 1,
-      transition: { duration: 0.1 }
-    }
-  } : {
-    hidden: { opacity: 0, y: 5, scale: 0.8 },
-    visible: { 
-      opacity: 1, 
-      y: 0, 
-      scale: 1,
-      transition: { delay: 0.1, duration: 0.2 }
-    }
-  }; */
+  // Create level indicator if needed
+  const levelIndicator = showLevel && skill.level && (
+    <div className={`skill-level level-${skill.level}`}>
+      {skill.level}
+    </div>
+  );
   
-  // Render with animation
-  if (animate) {
-    return (
-      <motion.div
-        className={baseClasses}
-        initial="hidden"
-        animate="visible"
-        whileHover="hover"
-        whileTap="tap"
-        variants={skillVariants}
-      >
-        <div 
-          className="skill-icon" 
-          aria-label={skill.skillName}
-          role="img"
-        >
-          {skill.iconName && (
-            <Icon 
-              icon={skill.iconName} 
-              className="skill-icon-svg" 
-              width="24"
-              height="24"
-              onLoad={() => console.log(`Icon loaded: ${skill.iconName}`)}
-              onError={(err) => {
-                console.warn(`Icon failed to load: ${skill.iconName}`, err);
-                // Log error only - fallback handling should happen at the parent component
-                // We can't actually change the icon here after render
-              }}
-              // Add missing aria-label for screen readers
-              aria-label={`${skill.skillName} icon`}
-              // Add more consistent sizing
-              style={{
-                display: 'block', // Fix layout issues
-                width: '100%',
-                height: '100%',
-                maxWidth: '24px',
-                maxHeight: '24px'
-              }}
-            />
-          )}
-          
-          {/* Show level indicator if requested and level is provided */}
-          {showLevel && skill.level && (
-            <div className={`skill-level level-${skill.level}`}>
-              {skill.level}
-            </div>
-          )}
-        </div>
-      </motion.div>
-    );
-  }
-  
-  // Render without animation
+  // Render a motion component regardless, but only enable animations if shouldAnimate is true
   return (
-    <div className={baseClasses}>
+    <motion.div
+      className={baseClasses}
+      initial={shouldAnimate ? "hidden" : false}
+      animate={shouldAnimate ? "visible" : false}
+      whileHover={shouldAnimate ? "hover" : false}
+      whileTap={shouldAnimate ? "tap" : false}
+      variants={skillVariants}
+    >
       <div 
         className="skill-icon" 
         aria-label={skill.skillName}
@@ -226,19 +177,16 @@ const Skill = ({
         {skill.iconName && (
           <Icon 
             icon={skill.iconName} 
-            className="skill-icon-svg"
+            className="skill-icon-svg" 
             width="24"
-            height="24" 
+            height="24"
             onError={(err) => {
               console.warn(`Icon failed to load: ${skill.iconName}`, err);
               // Log error only - fallback handling should happen at the parent component
-              // We can't actually change the icon here after render
             }}
-            // Add accessibility attributes
             aria-label={`${skill.skillName} icon`}
-            // Add more consistent sizing
             style={{
-              display: 'block',
+              display: 'block', // Fix layout issues
               width: '100%',
               height: '100%',
               maxWidth: '24px',
@@ -246,15 +194,11 @@ const Skill = ({
             }}
           />
         )}
-          
-          {/* Show level indicator if requested and level is provided */}
-          {showLevel && skill.level && (
-            <div className={`skill-level level-${skill.level}`}>
-              {skill.level}
-            </div>
-          )}
+        
+        {/* Show level indicator if requested and level is provided */}
+        {levelIndicator}
       </div>
-    </div>
+    </motion.div>
   );
 };
 
@@ -262,21 +206,16 @@ Skill.propTypes = {
   skill: PropTypes.shape({
     skillName: PropTypes.string.isRequired,
     iconName: PropTypes.string,
-    description: PropTypes.string,
-    category: PropTypes.string, // Added for better fallback icon selection
-    level: PropTypes.oneOfType([
-      PropTypes.number,
-      PropTypes.string
-    ])
+    level: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    category: PropTypes.string
   }).isRequired,
   index: PropTypes.number,
   className: PropTypes.string,
   size: PropTypes.oneOf(['sm', 'md', 'lg']),
-  variant: PropTypes.oneOf(['', 'security']),
+  variant: PropTypes.string,
   animate: PropTypes.bool,
   reducedMotion: PropTypes.bool,
   showLevel: PropTypes.bool
 };
 
-// Apply memoization for performance
 export default memo(Skill);

@@ -1,8 +1,9 @@
 import React, { memo, useEffect, useRef, useMemo, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import './Background.css';
 import MatrixBackground from '../../atoms/MatrixBackground';
 import BinaryStream from '../../atoms/BinaryStream';
-import { useAnimation } from '../../../context/AnimationContext';
+import { useAnimation, MotionVariants } from '@context//AnimationContext';
 // No longer need any debugging imports since we're using the centralized approach
 
 /**
@@ -77,17 +78,11 @@ const Background = (props: BackgroundProps) => {
   // State for device detection
   const [isLowPowerDevice] = useState(() => detectLowPowerDevice());
   
-  // Create memoized static background elements
-  const staticEffects = useMemo(() => ({
-    circuit: enableCircuitGrid && <div className="background__circuit-grid effect-layer"></div>,
-    scanlines: enableScanlines && <div className="background__scanlines effect-layer"></div>,
-    glitch: enableGlitch && <div className="background__glitch effect-layer"></div>,
-    colorPulse: enableColorPulse && <div className="background__color-pulse effect-layer"></div>,
-    noise: enableNoise && <div className="background__noise effect-layer"></div>
-  }), [enableCircuitGrid, enableScanlines, enableGlitch, enableColorPulse, enableNoise]);
-  
   // Get animation context and settings
-  const { animationEnabled, registerEntryAnimation, playEntryAnimation } = useAnimation();
+  const { 
+    animationEnabled, 
+    controls 
+  } = useAnimation();
   
   // Ref to track whether animations have been played
   const animationsPlayedRef = useRef(false);
@@ -114,30 +109,14 @@ const Background = (props: BackgroundProps) => {
     return () => observer.disconnect();
   }, []);
   
-  // Register and play animations when in view
+  // Start animations when in view
   useEffect(() => {
-    // Names of all effect elements that should animate in
-    const effectIds = [
-      'background-matrix',
-      'background-binary',
-      'background-circuit',
-      'background-scanlines',
-      'background-glitch',
-      'background-color-pulse',
-      'background-noise'
-    ];
-
-    // Register each effect
-    effectIds.forEach(id => registerEntryAnimation(id));
-
-    // Play animations only once when first in view
     if (inView && animationEnabled && !animationsPlayedRef.current) {
-      effectIds.forEach((id, index) => {
-        playEntryAnimation(id, index * 0.1);
-      });
+      // Start animations with sequenced timing
+      controls.start('visible');
       animationsPlayedRef.current = true;
     }
-  }, [registerEntryAnimation, playEntryAnimation, inView, animationEnabled]);
+  }, [inView, animationEnabled, controls]);
   
   // Only show effects if animations are enabled
   const shouldShowEffects = animationEnabled;
@@ -146,44 +125,98 @@ const Background = (props: BackgroundProps) => {
   const backgroundClass = `background ${className} ${isLowPowerDevice ? 'low-performance-mode' : ''} ${!shouldShowEffects ? 'background-disabled' : ''}`;
   
   return (
-    <div 
+    <motion.div 
       className={backgroundClass} 
       ref={backgroundRef}
+      initial="hidden"
+      animate={controls}
+      variants={MotionVariants.fadeIn}
       {...rest}
     >
       {/* Only render effects if enabled */}
-      {shouldShowEffects && (
-        <div className="background__effects hardware-accelerated">
-          {shouldShowEffects && enableMatrix && (
-            <div className="effect-layer hardware-accelerated">
-              <MatrixBackground 
-                characterCount={optimizedMatrixCount} 
-                randomPositioning={true} 
+      <AnimatePresence>
+        {shouldShowEffects && (
+          <motion.div 
+            className="background__effects hardware-accelerated"
+            initial="hidden"
+            animate="visible"
+          >
+            {shouldShowEffects && enableMatrix && (
+              <motion.div 
+                className="effect-layer hardware-accelerated"
+                variants={MotionVariants.matrix}
+              >
+                <MatrixBackground 
+                  characterCount={optimizedMatrixCount} 
+                  randomPositioning={true} 
+                />
+              </motion.div>
+            )}
+            
+            {shouldShowEffects && enableBinaryStreams && (
+              <motion.div 
+                className="effect-layer hardware-accelerated"
+                variants={MotionVariants.fadeIn}
+                transition={{ delay: 0.2 }}
+              >
+                <BinaryStream position="left" count={optimizedBinaryCount} baseDelay={0.1} />
+                <BinaryStream position="right" count={optimizedBinaryCount} baseDelay={0.15} />
+                <BinaryStream position="top" count={Math.floor(optimizedBinaryCount * 1.5)} baseDelay={0.2} />
+                <BinaryStream position="bottom" count={Math.floor(optimizedBinaryCount * 1.5)} baseDelay={0.25} />
+              </motion.div>
+            )}
+            
+            {shouldShowEffects && enableCircuitGrid && (
+              <motion.div 
+                className="background__circuit-grid effect-layer"
+                variants={{
+                  hidden: { opacity: 0 },
+                  visible: { opacity: 0.15, transition: { duration: 1.2, delay: 0.3 } }
+                }}
               />
-            </div>
-          )}
-          
-          {shouldShowEffects && enableBinaryStreams && (
-            <div className="effect-layer hardware-accelerated">
-              <BinaryStream position="left" count={optimizedBinaryCount} baseDelay={0.1} />
-              <BinaryStream position="right" count={optimizedBinaryCount} baseDelay={0.15} />
-              <BinaryStream position="top" count={Math.floor(optimizedBinaryCount * 1.5)} baseDelay={0.2} />
-              <BinaryStream position="bottom" count={Math.floor(optimizedBinaryCount * 1.5)} baseDelay={0.25} />
-            </div>
-          )}
-          
-          {shouldShowEffects && staticEffects.circuit}
-          {shouldShowEffects && staticEffects.scanlines}
-          {shouldShowEffects && staticEffects.glitch}
-          {shouldShowEffects && staticEffects.colorPulse}
-          {shouldShowEffects && staticEffects.noise}
-        </div>
-      )}
+            )}
+            
+            {shouldShowEffects && enableScanlines && (
+              <motion.div 
+                className="background__scanlines effect-layer"
+                variants={{
+                  hidden: { opacity: 0 },
+                  visible: { opacity: 0.3, transition: { duration: 0.8, delay: 0.4 } }
+                }}
+              />
+            )}
+            
+            {shouldShowEffects && enableGlitch && (
+              <motion.div 
+                className="background__glitch effect-layer"
+                variants={MotionVariants.glitch}
+              />
+            )}
+            
+            {shouldShowEffects && enableColorPulse && (
+              <motion.div 
+                className="background__color-pulse effect-layer"
+                variants={MotionVariants.pulse}
+              />
+            )}
+            
+            {shouldShowEffects && enableNoise && (
+              <motion.div 
+                className="background__noise effect-layer"
+                variants={{
+                  hidden: { opacity: 0 },
+                  visible: { opacity: 0.05, transition: { duration: 1, delay: 0.5 } }
+                }}
+              />
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
       
       <div className="background__content">
         {children}
       </div>
-    </div>
+    </motion.div>
   );
 };
 

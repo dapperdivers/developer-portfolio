@@ -15,18 +15,10 @@
   justify-content: center;
   z-index: 1000;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3), 0 0 15px rgba(59, 130, 246, 0.3);
-  transition: all 0.3s ease;
-  animation: 
-    pulse-subtle 2s infinite,
-    slide-in-bottom 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  /* Transitions now handled by framer-motion */
 }
 
-.scroll-to-top:hover {
-  background-color: var(--color-primary-700, #1d4ed8);
-  transform: translateY(-5px);
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4), 0 0 20px rgba(59, 130, 246, 0.5);
-}
-
+/* Hover styles are now handled by framer-motion variants */
 .scroll-to-top:focus {
   outline: none;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
@@ -37,32 +29,11 @@
   height: 20px;
 }
 
-/* Animations */
-@keyframes pulse-subtle {
-  0% { box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3), 0 0 5px rgba(59, 130, 246, 0.3); }
-  50% { box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3), 0 0 15px rgba(59, 130, 246, 0.5); }
-  100% { box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3), 0 0 5px rgba(59, 130, 246, 0.3); }
-}
-
-@keyframes slide-in-bottom {
-  0% {
-    transform: translateY(50px);
-    opacity: 0;
-  }
-  100% {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
 /* Accessibility considerations */
 @media (prefers-reduced-motion: reduce) {
+  /* Animations now controlled via AnimationContext and framer-motion */
   .scroll-to-top {
     animation: none;
     transition: background-color 0.2s ease;
-  }
-  
-  .scroll-to-top:hover {
-    transform: none;
   }
 }

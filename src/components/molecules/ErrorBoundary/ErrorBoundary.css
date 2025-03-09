@@ -1,0 +1,95 @@
+/**
+ * ErrorBoundary Component Styles
+ * Animations are handled by framer-motion through component props
+ */
+
+.error-boundary {
+  width: 100%;
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  border-radius: var(--border-radius-lg);
+  background-color: var(--color-background-alt);
+  border-left: 4px solid var(--color-danger);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  color: var(--color-text);
+}
+
+.error-boundary h2 {
+  color: var(--color-danger);
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.error-boundary details {
+  margin-top: 1.5rem;
+  background-color: rgba(0, 0, 0, 0.05);
+  padding: 0.75rem;
+  border-radius: var(--border-radius);
+}
+
+.error-boundary summary {
+  cursor: pointer;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  padding: 0.25rem 0;
+  outline: none;
+}
+
+.error-boundary summary:hover {
+  color: var(--color-danger);
+}
+
+.error-boundary p {
+  font-family: var(--font-family-mono);
+  font-size: 0.85rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: var(--border-radius-sm);
+  overflow-x: auto;
+}
+
+/* Dark theme adjustments */
+.dark-theme .error-boundary {
+  background-color: var(--color-background-dark);
+  border-left-color: var(--color-danger-dark);
+}
+
+.dark-theme .error-boundary h2 {
+  color: var(--color-danger-light);
+}
+
+.dark-theme .error-boundary details {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.dark-theme .error-boundary summary:hover {
+  color: var(--color-danger-light);
+}
+
+.dark-theme .error-boundary p {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .error-boundary {
+    margin: 1rem;
+    padding: 1rem;
+  }
+  
+  .error-boundary h2 {
+    font-size: 1.25rem;
+  }
+}
+
+/* Accessibility - focus styles */
+.error-boundary details summary:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+} 

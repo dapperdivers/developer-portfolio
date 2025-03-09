@@ -1,6 +1,7 @@
 /**
  * TechBadge Component Styles
  * Styling for the TechBadge component with level variants
+ * Animations now handled by framer-motion
  */
 
 /* Base styles with improved readability */
@@ -13,7 +14,7 @@
   font-family: var(--font-family-jetbrains);
   white-space: nowrap;
   display: inline-block;
-  transition: all 0.2s ease;
+  /* transition removed - now handled by framer-motion */
   border: 1px solid rgba(var(--color-primary-rgb), 0.4); /* More visible border */
   will-change: transform, background-color;
   font-weight: var(--font-weight-medium);
@@ -136,64 +137,11 @@
   text-shadow: 0 0 3px rgba(var(--color-entry5-rgb), 0.3);
 }
 
-/* Simplified hover state for better readability */
-.tech-badge:hover {
-  /* Default hover for non-clickable badges */
-  background: rgba(var(--color-primary-rgb), 0.25); /* Slightly higher contrast on hover */
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2); /* Subtle shadow increase */
-  transform: translateY(-1px); /* Slight lift effect */
-  border-color: rgba(var(--color-primary-rgb), 0.6); /* More visible border */
-  color: #FFFFFF; /* White text on hover for better contrast */
-}
-
-.tech-badge--security:hover {
-  background: rgba(var(--color-primary-rgb), 0.25);
-  border-color: rgba(var(--color-primary-rgb), 0.6);
-  color: #FFFFFF;
-}
-
-.tech-badge--terminal:hover {
-  background: rgba(var(--color-info-rgb), 0.25);
-  border-color: rgba(var(--color-info-rgb), 0.6);
-  color: #FFFFFF;
-}
-
-.tech-badge--low:hover {
-  background: rgba(var(--color-level-low-rgb), 0.25);
-  border-color: rgba(var(--color-level-low-rgb), 0.6);
-  color: #FFFFFF;
-}
-
-.tech-badge--medium:hover {
-  background: rgba(var(--color-level-medium-rgb), 0.25);
-  border-color: rgba(var(--color-level-medium-rgb), 0.6);
-  color: #FFFFFF;
-}
-
-.tech-badge--high:hover {
-  background: rgba(var(--color-level-high-rgb), 0.25);
-  border-color: rgba(var(--color-level-high-rgb), 0.6);
-  color: #FFFFFF;
-}
-
-.tech-badge--critical:hover {
-  background: rgba(var(--color-danger-rgb), 0.25);
-  border-color: rgba(var(--color-danger-rgb), 0.6);
-  color: #FFFFFF;
-}
+/* Hover and interaction states now handled by framer-motion */
 
 /* Clickable state */
 .tech-badge--interactive {
   cursor: pointer;
-}
-
-.tech-badge--interactive:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-sm);
-}
-
-.tech-badge--interactive:active {
-  transform: translateY(-1px);
 }
 
 /* Badge labels */
@@ -230,32 +178,5 @@
   .compact-tech-stack .tech-badge {
     font-size: calc(var(--font-size-xs) * 0.8);
     padding: calc(var(--spacing-1) * 0.7);
-  }
-}
-
-/* Reduced motion preferences */
-@media (prefers-reduced-motion: reduce) {
-  .tech-badge {
-    transition: none;
-  }
-  
-  .tech-badge--interactive:hover,
-  .tech-badge--interactive:active {
-    transform: none;
-  }
-}
-
-/* Small breakpoints for compact view */
-@media (max-width: 576px) {
-  .compact-tech-stack {
-    display: flex;
-    flex-wrap: wrap;
-    margin-top: 0.25rem;
-  }
-  
-  .compact-tech-stack .tech-badge {
-    font-size: calc(var(--font-size-xs) * 0.75);
-    padding: calc(var(--spacing-1) * 0.6);
-    margin: 0.15rem;
   }
 }

@@ -1,9 +1,12 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
+import { motion } from 'framer-motion';
+import { useAnimation } from '@context/AnimationContext';
 import './TerminalControls.css';
 
 /**
  * TerminalControls atom component for rendering terminal window controls
+ * Updated to use framer-motion for animations
  * 
  * @component
  * @param {Object} props - Component props
@@ -24,6 +27,8 @@ const TerminalControls = ({
   className = '',
   ...rest
 }) => {
+  const { animationEnabled, shouldReduceMotion } = useAnimation();
+  
   // Determine class names based on props
   const classes = [
     'terminal-controls',
@@ -36,35 +41,66 @@ const TerminalControls = ({
   const handleClose = interactive && onCloseClick ? onCloseClick : undefined;
   const handleMinimize = interactive && onMinimizeClick ? onMinimizeClick : undefined;
   const handleMaximize = interactive && onMaximizeClick ? onMaximizeClick : undefined;
+  
+  // Animation variants
+  const buttonVariants = {
+    initial: { scale: 1 },
+    hover: { 
+      scale: interactive ? 1.1 : 1,
+      transition: { duration: 0.2 } 
+    },
+    tap: { 
+      scale: interactive ? 0.95 : 1,
+      transition: { duration: 0.1 } 
+    }
+  };
+  
+  // Only animate if animations are enabled and user doesn't prefer reduced motion
+  const shouldAnimate = animationEnabled && !shouldReduceMotion && interactive;
 
   return (
-    <div 
+    <motion.div 
       className={classes}
       aria-hidden={!interactive}
+      initial={{ opacity: 0.9 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3 }}
       {...rest}
     >
-      <button 
+      <motion.button 
         className="terminal-circle terminal-circle-close"
         onClick={handleClose}
         aria-label="Close window"
         tabIndex={interactive ? 0 : -1}
         disabled={!interactive}
+        variants={buttonVariants}
+        initial="initial"
+        whileHover={shouldAnimate ? "hover" : "initial"}
+        whileTap={shouldAnimate ? "tap" : "initial"}
       />
-      <button 
+      <motion.button 
         className="terminal-circle terminal-circle-minimize"
         onClick={handleMinimize}
         aria-label="Minimize window"
         tabIndex={interactive ? 0 : -1}
         disabled={!interactive}
+        variants={buttonVariants}
+        initial="initial"
+        whileHover={shouldAnimate ? "hover" : "initial"}
+        whileTap={shouldAnimate ? "tap" : "initial"}
       />
-      <button 
+      <motion.button 
         className="terminal-circle terminal-circle-maximize"
         onClick={handleMaximize}
         aria-label="Maximize window"
         tabIndex={interactive ? 0 : -1}
         disabled={!interactive}
+        variants={buttonVariants}
+        initial="initial"
+        whileHover={shouldAnimate ? "hover" : "initial"}
+        whileTap={shouldAnimate ? "tap" : "initial"}
       />
-    </div>
+    </motion.div>
   );
 };
 

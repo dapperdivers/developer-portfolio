@@ -2,6 +2,7 @@
  * Proficiency Organism Styles
  *
  * Styles for the Proficiency component following atomic design principles
+ * Animations are now handled by framer-motion through the AnimationContext
  */
 
 /* Base section styles */
@@ -66,7 +67,7 @@
   height: 100%;
   position: relative;
   overflow: hidden;
-  transition: width 1s ease-in-out;
+  /* Transition removed - now handled by framer-motion */
 }
 
 .progress-bar::after {
@@ -87,17 +88,10 @@
     transparent
   );
   background-size: 50px 50px;
-  animation: shimmer 2s linear infinite;
+  /* Animation removed - now handled by framer-motion */
 }
 
-@keyframes shimmer {
-  0% {
-    background-position: 0 0;
-  }
-  100% {
-    background-position: 50px 50px;
-  }
-}
+/* Keyframe animation removed - now handled by framer-motion */
 
 .progress-bar-primary {
   background-color: var(--primary);
@@ -144,11 +138,5 @@
 
 /* Accessibility - Reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  .progress-bar {
-    transition: none;
-  }
-  
-  .progress-bar::after {
-    animation: none;
-  }
+  /* All animations are now controlled by AnimationContext which respects user preferences */
 } 

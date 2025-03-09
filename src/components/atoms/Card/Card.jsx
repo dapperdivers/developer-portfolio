@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
+import { useAnimation, MotionVariants } from '@context//AnimationContext';
 import './Card.css';
 
 /**
@@ -18,8 +19,10 @@ import './Card.css';
  * @param {boolean} [props.bordered=true] - Whether the card has a border
  * @param {boolean} [props.shadow=false] - Whether the card has a shadow
  * @param {string} [props.variant=''] - Card variant ('', 'security', 'terminal')
- * @param {Object} [props.animation] - Animation properties for Framer Motion
+ * @param {Object} [props.animation] - Custom animation overrides for Framer Motion
  * @param {string} [props.ariaLabel] - Aria label for accessibility
+ * @param {boolean} [props.animated=true] - Whether the card should animate
+ * @param {string} [props.animationVariant='default'] - Type of animation to use ('default', 'scale', 'slide')
  * @returns {React.ReactElement} The Card component
  *
  * @example
@@ -29,6 +32,7 @@ import './Card.css';
  *   variant="security"
  *   hoverable
  *   shadow
+ *   animationVariant="scale"
  * >
  *   <p>Card content goes here</p>
  * </Card>
@@ -44,10 +48,15 @@ const Card = ({
   bordered = true,
   shadow = false,
   variant = '',
-  animation,
+  animation, // Keep for backward compatibility
   ariaLabel,
+  animated = true,
+  animationVariant = 'default',
   ...rest
 }) => {
+  // Get animation context
+  const { animationEnabled, fadeInVariants, scaleVariants, slideUpVariants } = useAnimation();
+  
   // Base classes
   const baseClasses = [
     'card',
@@ -76,30 +85,35 @@ const Card = ({
       {footer}
     </div>
   );
+  
+  // Choose animation variant based on prop
+  const getAnimationVariant = () => {
+    if (!animationEnabled || !animated) return {};
+    
+    // Custom animation takes precedence if provided
+    if (animation) return animation;
+    
+    // Otherwise choose from predefined animations
+    switch (animationVariant) {
+      case 'scale':
+        return scaleVariants;
+      case 'slide':
+        return slideUpVariants;
+      case 'default':
+      default:
+        return fadeInVariants;
+    }
+  };
 
-  // Handle animation with Framer Motion
-  if (animation) {
-    return (
-      <motion.div
-        className={baseClasses}
-        aria-label={ariaLabel}
-        {...animation}
-        {...rest}
-      >
-        {headerElement}
-        <div className="card-body">
-          {children}
-        </div>
-        {footerElement}
-      </motion.div>
-    );
-  }
-
-  // Render regular card without animation
+  // Always return motion component for consistent behavior
   return (
-    <div
+    <motion.div
       className={baseClasses}
       aria-label={ariaLabel}
+      initial={animated && animationEnabled ? "hidden" : false}
+      animate={animated && animationEnabled ? "visible" : false}
+      variants={getAnimationVariant()}
+      transition={{ duration: 0.5 }}
       {...rest}
     >
       {headerElement}
@@ -107,7 +121,7 @@ const Card = ({
         {children}
       </div>
       {footerElement}
-    </div>
+    </motion.div>
   );
 };
 
@@ -123,7 +137,9 @@ Card.propTypes = {
   shadow: PropTypes.bool,
   variant: PropTypes.oneOf(['', 'security', 'terminal']),
   animation: PropTypes.object,
-  ariaLabel: PropTypes.string
+  ariaLabel: PropTypes.string,
+  animated: PropTypes.bool,
+  animationVariant: PropTypes.oneOf(['default', 'scale', 'slide'])
 };
 
 export default Card;

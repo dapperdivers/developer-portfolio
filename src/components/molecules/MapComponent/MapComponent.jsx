@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { getCoordinatesForLocation, formatPopupContent } from '../../../utils/geocodingUtils';
+import { useAnimation, MotionVariants } from '@context//AnimationContext';
 import './MapComponent.css';
 
 // Fix Leaflet default icon path issues
@@ -18,6 +19,82 @@ let DefaultIcon = L.icon({
 });
 
 L.Marker.prototype.options.icon = DefaultIcon;
+
+// Animation variants
+const mapVariants = {
+  hidden: { opacity: 0 },
+  visible: { 
+    opacity: 1,
+    transition: { duration: 0.8 }
+  }
+};
+
+const markerVariants = {
+  hidden: { 
+    scale: 0.8,
+    opacity: 0
+  },
+  visible: { 
+    scale: 1,
+    opacity: 1,
+    transition: { 
+      type: "spring",
+      stiffness: 200,
+      damping: 15,
+      delay: 0.3
+    }
+  }
+};
+
+const pulseCircleVariants = {
+  hidden: { 
+    scale: 0.5,
+    opacity: 0
+  },
+  visible: { 
+    scale: [0.5, 1.2, 0.8],
+    opacity: [0.8, 0.4, 0],
+    transition: {
+      duration: 2,
+      repeat: Infinity,
+      ease: "easeInOut"
+    }
+  }
+};
+
+const locationInfoVariants = {
+  hidden: { 
+    y: 20,
+    opacity: 0
+  },
+  visible: { 
+    y: 0,
+    opacity: 1,
+    transition: {
+      delay: 0.5,
+      duration: 0.6,
+      ease: "easeOut"
+    }
+  }
+};
+
+const dataStreamVariants = {
+  hidden: { 
+    width: 0,
+    opacity: 0 
+  },
+  visible: (custom) => ({
+    width: "100%",
+    opacity: [0, 0.7, 0.2],
+    transition: {
+      delay: custom * 0.2,
+      duration: 2,
+      repeat: Infinity,
+      repeatType: "loop",
+      ease: "linear"
+    }
+  })
+};
 
 /**
  * An interactive map component that displays a location with animation.
@@ -39,6 +116,9 @@ const MapComponent = ({ location }) => {
   const locationCircle1Ref = useRef(null);
   const locationCircle2Ref = useRef(null);
   const tileLayerRef = useRef(null);
+  
+  // Get animation context
+  const { animationEnabled } = useAnimation();
   
   useEffect(() => {
     // Initialize map
@@ -299,154 +379,173 @@ const MapComponent = ({ location }) => {
   return (
     <motion.div 
       className="map-container-wrapper"
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ 
-        duration: 0.5,
-        delay: 0.2,
-        ease: "easeOut"
-      }}
+      variants={mapVariants}
+      initial="hidden"
+      animate="visible"
     >
-      <div className="map-controls">
-        <div className="map-label">
-          <span className="blinking-dot"></span>
-          Current Location
-        </div>
-        <div className="map-actions">
-          <button 
-            className="map-action-button" 
-            title="Reset View"
-            onClick={handleResetView}
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-              <polyline points="9 22 9 12 15 12 15 22"></polyline>
-            </svg>
-          </button>
-          <button 
-            className={`map-action-button ${mapMode === 'satellite' ? 'active' : ''}`} 
-            title={`Switch to ${mapMode === 'dark' ? 'Satellite' : 'Dark'} View`}
-            onClick={handleToggleMapMode}
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="12" cy="12" r="10"></circle>
-              <line x1="2" y1="12" x2="22" y2="12"></line>
-              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-            </svg>
-          </button>
-          <button 
-            className={`map-action-button ${showGrid ? 'active' : ''}`} 
-            title="Toggle Grid"
-            onClick={handleToggleGrid}
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-              <line x1="3" y1="9" x2="21" y2="9"></line>
-              <line x1="3" y1="15" x2="21" y2="15"></line>
-              <line x1="9" y1="3" x2="9" y2="21"></line>
-              <line x1="15" y1="3" x2="15" y2="21"></line>
-            </svg>
-          </button>
-        </div>
-      </div>
-      
-      {/* Location information panel */}
-      {locationData && (
+      {mapError ? (
         <motion.div 
-          className="location-info"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5, duration: 0.3 }}
+          className="map-error-message"
+          variants={MotionVariants.fadeIn}
+          initial="hidden"
+          animate="visible"
         >
-          <div className="location-info-header">
-            <div className="location-name">{locationData.name}</div>
-            <div className="location-badge">
-              <span className="blinking-dot small"></span>
-              Live
-            </div>
-          </div>
-          <div className="location-coordinates">
-            {formatCoordinates(locationData.lat, locationData.lng)}
-          </div>
-          <div className="location-metrics">
-            <div className="metric">
-              <span className="metric-label">Status</span>
-              <span className="metric-value status-active">Active</span>
-            </div>
-            <div className="metric">
-              <span className="metric-label">Security</span>
-              <span className="metric-value">Level 3</span>
-            </div>
-            <div className="metric">
-              <span className="metric-label">Map Mode</span>
-              <span className="metric-value map-mode">
-                {mapMode === 'dark' ? 'Dark' : 'Satellite'}
-              </span>
-            </div>
-          </div>
-          <div className="location-data-streams">
-            <div className="data-stream"></div>
-            <div className="data-stream"></div>
-            <div className="data-stream"></div>
-          </div>
+          <h3>Map Error</h3>
+          <p>{mapError}</p>
         </motion.div>
-      )}
-      
-      {/* Map container with explicit dimensions */}
-      <div 
-        ref={mapRef} 
-        className="map-container" 
-        style={{ 
-          width: '100%', 
-          height: '400px', 
-          position: 'relative',
-          zIndex: 5,
-          background: 'linear-gradient(135deg, #1a1a2e, #162447)'
-        }} 
-        id="map-container"
-      >
-        {showGrid && (
-          <div className="map-grid-overlay">
-            {/* Create 10 horizontal grid lines */}
-            {[...Array(10)].map((_, i) => (
-              <div 
-                key={`h-${i}`}
-                className="map-grid-horizontal" 
-                style={{ top: `${(i + 1) * 10}%` }}
-              />
-            ))}
-            
-            {/* Create 10 vertical grid lines */}
-            {[...Array(10)].map((_, i) => (
-              <div 
-                key={`v-${i}`}
-                className="map-grid-vertical" 
-                style={{ left: `${(i + 1) * 10}%` }}
-              />
-            ))}
-            
-            {/* Create grid points at intersections */}
-            {[...Array(9)].flatMap((_, row) => 
-              [...Array(9)].map((_, col) => (
-                <div 
-                  key={`p-${row}-${col}`}
-                  className="map-grid-point" 
-                  style={{ 
-                    top: `${(row + 1) * 10}%`, 
-                    left: `${(col + 1) * 10}%` 
-                  }}
-                />
-              ))
+      ) : (
+        <>
+          <div className="map-controls">
+            <div className="map-label">
+              {mapMode === 'dark' ? 'Standard View' : 'Satellite View'}
+            </div>
+            <div className="map-actions">
+              <button 
+                className="map-action-button" 
+                onClick={handleResetView}
+                aria-label="Reset map view"
+              >
+                <span className="map-action-icon">⟲</span>
+              </button>
+              <button 
+                className={`map-action-button ${mapMode === 'satellite' ? 'active' : ''}`} 
+                onClick={handleToggleMapMode}
+                aria-label="Toggle map mode"
+              >
+                <span className="map-action-icon">{mapMode === 'dark' ? '🗺️' : '🛰️'}</span>
+              </button>
+              <button 
+                className={`map-action-button ${showGrid ? 'active' : ''}`} 
+                onClick={handleToggleGrid}
+                aria-label="Toggle grid"
+              >
+                <span className="map-action-icon">⊞</span>
+              </button>
+            </div>
+          </div>
+          
+          {/* Location information panel */}
+          {locationData && (
+            <AnimatePresence>
+              <motion.div 
+                className="location-info"
+                variants={locationInfoVariants}
+                initial="hidden"
+                animate="visible"
+              >
+                <div className="location-info-header">
+                  <div className="location-name">{locationData.name}</div>
+                  <div className="location-badge">
+                    <motion.span 
+                      className="blinking-dot small"
+                      animate={{ 
+                        opacity: animationEnabled ? [0.4, 1, 0.4] : 0.7
+                      }}
+                      transition={{ 
+                        duration: 1.5, 
+                        repeat: Infinity,
+                        repeatType: "reverse"
+                      }}
+                    />
+                    Live
+                  </div>
+                </div>
+                <div className="location-coordinates">
+                  {formatCoordinates(locationData.lat, locationData.lng)}
+                </div>
+                <div className="location-metrics">
+                  <div className="metric">
+                    <span className="metric-label">Status</span>
+                    <span className="metric-value status-active">Active</span>
+                  </div>
+                  <div className="metric">
+                    <span className="metric-label">Security</span>
+                    <span className="metric-value">Level 3</span>
+                  </div>
+                  <div className="metric">
+                    <span className="metric-label">Map Mode</span>
+                    <span className="metric-value map-mode">
+                      {mapMode === 'dark' ? 'Dark' : 'Satellite'}
+                    </span>
+                  </div>
+                </div>
+                <div className="location-data-streams">
+                  <motion.div 
+                    className="data-stream"
+                    variants={dataStreamVariants}
+                    initial="hidden"
+                    animate="visible"
+                    custom={0}
+                  />
+                  <motion.div 
+                    className="data-stream"
+                    variants={dataStreamVariants}
+                    initial="hidden"
+                    animate="visible"
+                    custom={1}
+                  />
+                  <motion.div 
+                    className="data-stream"
+                    variants={dataStreamVariants}
+                    initial="hidden"
+                    animate="visible"
+                    custom={2}
+                  />
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          )}
+          
+          {/* Map container with explicit dimensions */}
+          <div 
+            ref={mapRef} 
+            className="map-container" 
+            style={{ 
+              width: '100%', 
+              height: '400px', 
+              position: 'relative',
+              zIndex: 5,
+              background: 'linear-gradient(135deg, #1a1a2e, #162447)'
+            }} 
+            id="map-container"
+          >
+            {showGrid && (
+              <div className="map-grid-overlay">
+                {/* Create 10 horizontal grid lines */}
+                {[...Array(10)].map((_, i) => (
+                  <div 
+                    key={`h-${i}`}
+                    className="map-grid-horizontal" 
+                    style={{ top: `${(i + 1) * 10}%` }}
+                  />
+                ))}
+                
+                {/* Create 10 vertical grid lines */}
+                {[...Array(10)].map((_, i) => (
+                  <div 
+                    key={`v-${i}`}
+                    className="map-grid-vertical" 
+                    style={{ left: `${(i + 1) * 10}%` }}
+                  />
+                ))}
+                
+                {/* Create grid points at intersections */}
+                {[...Array(9)].flatMap((_, row) => 
+                  [...Array(9)].map((_, col) => (
+                    <div 
+                      key={`p-${row}-${col}`}
+                      className="map-grid-point" 
+                      style={{ 
+                        top: `${(row + 1) * 10}%`, 
+                        left: `${(col + 1) * 10}%` 
+                      }}
+                    />
+                  ))
+                )}
+              </div>
             )}
           </div>
-        )}
-      </div>
-      
-      {/* Error message if map fails to load */}
-      {mapError && (
-        <div className="map-error-message">
-          <p>Map loading error: {mapError}</p>
-        </div>
+        </>
       )}
     </motion.div>
   );

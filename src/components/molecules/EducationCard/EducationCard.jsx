@@ -1,5 +1,6 @@
 import React, { memo } from "react";
 import PropTypes from 'prop-types';
+import { motion } from 'framer-motion';
 import Card from '@atoms/Card';
 import EducationIcon from '@atoms/EducationIcon';
 import SchoolHeader from '@atoms/SchoolHeader';
@@ -7,6 +8,7 @@ import DegreeInfo from '@atoms/DegreeInfo';
 import FieldsOfStudy from '@atoms/FieldsOfStudy';
 import DateChip from '@atoms/DateChip';
 import CertificationBadge from '@molecules/CertificationBadge';
+import { useAnimation, MotionVariants } from '@context/AnimationContext';
 import './EducationCard.css';
 
 /**
@@ -28,23 +30,119 @@ import './EducationCard.css';
  */
 const EducationCard = ({ education, index = 0 }) => {
   const hasCertifications = education.certifications && education.certifications.length > 0;
+  const { animationEnabled, slideUpVariants, animationStaggerDelay, getAnimationDelay } = useAnimation();
+  
+  // Card wrapper variants
+  const cardWrapperVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: [0.175, 0.885, 0.32, 1.275],
+        delay: animationStaggerDelay * index
+      }
+    }
+  };
+  
+  // Card inner hover variants
+  const cardInnerVariants = {
+    initial: { boxShadow: 'var(--shadow-md)' },
+    hover: { 
+      boxShadow: 'var(--shadow-lg)',
+      transition: { duration: 0.3, ease: 'easeOut' }
+    }
+  };
+  
+  // Icon variants
+  const iconVariants = {
+    initial: { 
+      scale: 1, 
+      y: 0, 
+      backgroundColor: 'rgba(100, 255, 218, 0.08)' 
+    },
+    hover: { 
+      scale: 1.1, 
+      y: -5, 
+      backgroundColor: 'rgba(100, 255, 218, 0.12)',
+      transition: { duration: 0.3, ease: 'easeOut' }
+    }
+  };
+  
+  // Certifications indicator variants
+  const certIndicatorVariants = {
+    initial: { scale: 1 },
+    hover: { 
+      scale: 1.05,
+      transition: { duration: 0.3, ease: 'easeOut' }
+    }
+  };
+  
+  // Certification item variants with staggered children
+  const certListVariants = {
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+  
+  const certItemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { 
+        duration: 0.5,
+        ease: 'easeOut'
+      }
+    },
+    hover: {
+      y: -5,
+      transition: { duration: 0.3, ease: 'easeOut' }
+    }
+  };
   
   return (
-    <div className="education-card-wrapper" data-testid="education-card">
+    <motion.div 
+      className="education-card-wrapper" 
+      data-testid="education-card"
+      variants={animationEnabled ? cardWrapperVariants : null}
+      initial="hidden"
+      animate="visible"
+    >
       <Card className="education-card" shadow>
-        <div className="education-card-inner">
+        <motion.div 
+          className="education-card-inner"
+          variants={animationEnabled ? cardInnerVariants : null}
+          initial="initial"
+          whileHover="hover"
+        >
           {/* Left side - Education Icon with accent background */}
           <div className="education-card-icon-column">
-            <div className="education-card-icon">
+            <motion.div 
+              className="education-card-icon"
+              variants={animationEnabled ? iconVariants : null}
+              initial="initial"
+              whileHover="hover"
+            >
               <EducationIcon className="education-icon-large" />
-            </div>
+            </motion.div>
             
             {/* Certification indicator */}
             {hasCertifications && (
-              <div className="certifications-indicator">
+              <motion.div 
+                className="certifications-indicator"
+                variants={animationEnabled ? certIndicatorVariants : null}
+                initial="initial"
+                whileHover="hover"
+              >
                 <span className="cert-count">{education.certifications.length}</span>
                 <span className="cert-label">Certifications</span>
-              </div>
+              </motion.div>
             )}
           </div>
           
@@ -75,28 +173,44 @@ const EducationCard = ({ education, index = 0 }) => {
             
             {/* Always visible Certifications Panel */}
             {hasCertifications && (
-              <div id="certifications-panel" className="integrated-certifications-panel">
+              <motion.div 
+                id="certifications-panel" 
+                className="integrated-certifications-panel"
+                variants={animationEnabled ? slideUpVariants : null}
+                initial="hidden"
+                animate="visible"
+              >
                 <div className="certifications-header">
                   <h4 className="certifications-title">Professional Certifications</h4>
                 </div>
-                <div className="certifications-list">
+                <motion.div 
+                  className="certifications-list"
+                  variants={animationEnabled ? certListVariants : null}
+                  initial="hidden"
+                  animate="visible"
+                >
                   {education.certifications.map((cert, i) => (
-                    <div className={`certification-item certification-item-${i}`} key={`cert-${i}`}>
+                    <motion.div 
+                      className={`certification-item certification-item-${i}`} 
+                      key={`cert-${i}`}
+                      variants={animationEnabled ? certItemVariants : null}
+                      whileHover="hover"
+                    >
                       <CertificationBadge 
                         name={cert.name} 
                         issuer={cert.issuer}
                         date={cert.date}
                         credentialId={cert.credentialId}
                       />
-                    </div>
+                    </motion.div>
                   ))}
-                </div>
-              </div>
+                </motion.div>
+              </motion.div>
             )}
           </div>
-        </div>
+        </motion.div>
       </Card>
-    </div>
+    </motion.div>
   );
 };
 

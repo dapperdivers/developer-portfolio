@@ -1,9 +1,10 @@
 /**
- * headerName Component Styles
+ * HeaderName Component Styles
  * 
- * Styling for the headerName component
+ * Note: All animations have been moved to framer-motion in the component file.
+ * This CSS file only contains basic styles and fallbacks for non-JS environments.
+ * 
  * This project uses Tailwind CSS. See tailwind.config.js for configuration.
- * For custom styles beyond Tailwind, use the classes defined below.
  */
 
 .headername {
@@ -26,50 +27,31 @@
   }
 }
 
+/* Base styles */
 @font-face {
   font-family: 'Agustina';
   src: url('/fonts/agustina/Agustina.otf') format('opentype');
 }
 
-.cyber-text-animation {
-  margin: 0;
-  font-family: 'Agustina';
-  font-weight: 600;
-  font-size: 1.25rem;
-  letter-spacing: 2px;
-  line-height: 1;
-  text-shadow: 0 0 5px rgba(var(--color-cyan-rgb), 0.7), 0 0 10px rgba(var(--color-cyan-rgb), 0.5);
-  position: relative;
-  display: inline-block;
-  overflow: visible;
-  transition: all 0.3s ease;
-  cursor: pointer;
-}
-
-.cyber-text-animation:hover {
-  text-shadow: 0 0 10px rgba(var(--color-cyan-rgb), 1), 
-               0 0 20px rgba(var(--color-cyan-rgb), 0.8),
-               0 0 30px rgba(var(--color-cyan-rgb), 0.6);
-  transform: translateY(-2px);
-  color: #fff;
-}
-
-/* Blinking cursor effect */
+/* Basic styles for non-JS fallback - these are overridden by framer-motion in the component */
 .cursor {
   display: inline-block;
   width: 8px;
   height: 20px;
   background: var(--color-cyan);
   margin-left: 5px;
-  animation: cursor-blink 1.2s infinite;
   vertical-align: middle;
   box-shadow: 0 0 5px rgba(var(--color-cyan-rgb), 0.7), 
               0 0 10px rgba(var(--color-cyan-rgb), 0.5);
 }
 
-@keyframes cursor-blink {
-  0%, 49% { opacity: 1; }
-  50%, 100% { opacity: 0; }
+/* Only apply styles when JS is disabled */
+noscript ~ * .scanline {
+  display: none;
+}
+
+noscript ~ * .cursor {
+  opacity: 1;
 }
 
 /* Scanline effect */

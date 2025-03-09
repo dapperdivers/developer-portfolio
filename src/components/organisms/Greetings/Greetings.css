@@ -2,6 +2,7 @@
  * Greetings Organism Styles
  *
  * Styles for the Greetings component (Hero area) following atomic design principles
+ * Animations are now handled by framer-motion in the component file
  */
 
 /* Hero/Greetings base styles */
@@ -79,12 +80,14 @@
   }
 }
 
-/* Terminal and glitch effects */
+/* Cyberpunk terminal effect styles - not animated anymore */
 .cyberpunk-terminal {
-  box-shadow: var(--box-shadow);
-  position: relative;
+  font-family: monospace;
+  color: var(--cyan);
+  text-shadow: 0 0 3px var(--cyan-glow);
 }
 
+/* Cyberpunk glitch effect - now handled by framer-motion */
 .cyberpunk-glitch {
   position: relative;
 }
@@ -92,60 +95,42 @@
 .cyberpunk-glitch:after {
   content: attr(data-text);
   position: absolute;
-  left: 0;
+  left: 2px;
   top: 0;
-  width: 100%;
-  background: var(--color-black);
+  color: var(--cyan);
   overflow: hidden;
   clip: rect(0, 900px, 0, 0);
-  color: var(--color-cyan);
-  text-shadow: 0 0 5px var(--color-cyan);
-  animation: glitch-animation 3s infinite linear alternate-reverse;
+  /* Animation now handled by framer-motion */
 }
 
-@keyframes glitch-animation {
-  0% {
-    clip: rect(0, 900px, 0, 0);
-  }
-  2% {
-    clip: rect(10px, 900px, 25px, 0);
-  }
-  4% {
-    clip: rect(0, 900px, 10px, 0);
-  }
-  6% {
-    clip: rect(0, 900px, 0, 0);
-  }
-  98% {
-    clip: rect(0, 900px, 0, 0);
-  }
-  100% {
-    clip: rect(0, 900px, 0, 0);
-  }
-}
-
-/* Cursor and typing effects */
+/* Cursor styling */
 .blink-cursor {
-  animation: blink 1s step-end infinite;
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background-color: var(--cyan);
+  vertical-align: text-bottom;
+  margin-left: 2px;
+  /* Animation now handled by framer-motion */
 }
 
-@keyframes blink {
-  from, to { opacity: 1; }
-  50% { opacity: 0; }
-}
-
+/* Typing effect container */
 .typing-effect {
-  border-right: 2px solid transparent;
+  display: inline-block;
+  overflow: hidden;
   white-space: nowrap;
-  animation: typing 3.5s steps(40, end), blink-caret .75s step-end 8;
+  border-right: 2px solid var(--cyan);
+  /* Animations now handled by framer-motion */
 }
 
-@keyframes typing {
-  from { width: 0 }
-  to { width: 100% }
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .min-h-screen {
+    padding: 3rem 0;
+  }
 }
 
-@keyframes blink-caret {
-  from, to { border-color: transparent }
-  50% { border-color: var(--color-cyan); }
+/* Reduced motion support - now handled by framer-motion */
+@media (prefers-reduced-motion: reduce) {
+  /* framer-motion will handle these preferences automatically */
 } 

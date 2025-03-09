@@ -1,5 +1,6 @@
 /**
  * Enhanced Education Details Component Styles
+ * Animations are now handled by framer-motion through the AnimationContext
  */
 
 .education-details {
@@ -145,31 +146,12 @@
   border-radius: 2px;
 }
 
-/* Animation for certification badges */
-.certification-badge {
-  animation: slideIn 0.5s ease forwards;
-  opacity: 0;
-  transform: translateX(-10px);
+/* Wrapper for certification badges - for framer-motion */
+.certification-badge-wrapper {
+  width: 100%;
 }
 
-.certification-badge:nth-child(2) {
-  animation-delay: 0.1s;
-}
-
-.certification-badge:nth-child(3) {
-  animation-delay: 0.2s;
-}
-
-.certification-badge:nth-child(4) {
-  animation-delay: 0.3s;
-}
-
-@keyframes slideIn {
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
+/* CSS animations for certification badges removed - now handled by framer-motion */
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
@@ -190,11 +172,7 @@
   }
 }
 
-/* Reduced motion preferences */
+/* Reduced motion preferences are now handled by AnimationContext */
 @media (prefers-reduced-motion: reduce) {
-  .certification-badge {
-    animation: none;
-    opacity: 1;
-    transform: none;
-  }
+  /* All animations are now controlled by AnimationContext which respects user preferences */
 }

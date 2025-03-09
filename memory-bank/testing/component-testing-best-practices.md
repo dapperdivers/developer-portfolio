@@ -57,7 +57,7 @@ For testing component interactions and how components work together.
 ```jsx
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { PortfolioProvider } from '../../context/PortfolioContext';
+import { PortfolioProvider } from '@context/PortfolioContext';
 import Projects from '../Projects';
 import mockPortfolioData from '../../__mocks__/portfolio';
 
@@ -89,7 +89,7 @@ For testing custom hooks.
 **Example: useProjects hook test**
 ```jsx
 import { renderHook } from '@testing-library/react-hooks';
-import { PortfolioProvider } from '../../context/PortfolioContext';
+import { PortfolioProvider } from '@context/PortfolioContext';
 import { useProjects } from '../useProjects';
 import mockPortfolioData from '../../__mocks__/portfolio';
 

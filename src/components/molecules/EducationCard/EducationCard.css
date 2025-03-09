@@ -3,14 +3,16 @@
  * 
  * Enhanced with modern styling for better visual presentation
  * of academic information and integrated certifications.
+ * 
+ * Note: Animations and transitions are now managed by framer-motion
+ * through the AnimationContext.
  */
 
 .education-card-wrapper {
   position: relative;
   width: 100%;
   margin-bottom: var(--spacing-6);
-  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
-              box-shadow 0.4s ease;
+  /* Transition removed - now handled by framer-motion */
 }
 
 .education-card {
@@ -22,14 +24,14 @@
 .education-card-inner {
   display: flex;
   border-radius: var(--border-radius-lg);
-  box-shadow: var(--shadow-md);
   overflow: hidden;
-  transition: box-shadow 0.3s ease;
+  /* Box-shadow transition removed - now handled by framer-motion */
 }
 
-.education-card-inner:hover {
+/* Hover effect removed - now handled by framer-motion variants */
+/* .education-card-inner:hover {
   box-shadow: var(--shadow-lg);
-}
+} */
 
 /* Left icon column with enhanced styling */
 .education-card-icon-column {
@@ -67,13 +69,14 @@
   border-radius: 50%;
   background-color: rgba(100, 255, 218, 0.08);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, background-color 0.3s ease;
+  /* Transition removed - now handled by framer-motion */
 }
 
-.education-card-inner:hover .education-card-icon {
+/* Hover effect removed - now handled by framer-motion variants */
+/* .education-card-inner:hover .education-card-icon {
   transform: scale(1.1) translateY(-5px);
   background-color: rgba(100, 255, 218, 0.12);
-}
+} */
 
 .education-icon-large {
   font-size: 2.5rem;
@@ -90,7 +93,7 @@
   background-color: rgba(100, 255, 218, 0.08);
   border-radius: var(--border-radius-lg);
   border: 1px dashed rgba(100, 255, 218, 0.2);
-  transition: all 0.3s ease;
+  /* Transition removed - now handled by framer-motion */
 }
 
 .cert-count {
@@ -173,7 +176,7 @@
   margin-top: var(--spacing-5);
   padding: var(--spacing-4);
   border-top: 1px dashed rgba(100, 255, 218, 0.2);
-  animation: fade-in 0.5s ease-out;
+  /* Animation removed - now handled by framer-motion */
 }
 
 .certifications-header {
@@ -206,23 +209,23 @@
 }
 
 .certification-item {
-  transition: transform 0.3s ease;
-  animation: slide-in 0.5s ease-out forwards;
-  opacity: 0;
+  /* Transition and animation removed - now handled by framer-motion */
 }
 
-.certification-item:hover {
+/* Hover effect removed - now handled by framer-motion variants */
+/* .certification-item:hover {
   transform: translateY(-5px);
-}
+} */
 
-/* Animation delay for staggered entry */
-.certification-item-0 { animation-delay: 0.1s; }
+/* Animation delays removed - now handled by framer-motion staggerChildren */
+/* .certification-item-0 { animation-delay: 0.1s; }
 .certification-item-1 { animation-delay: 0.2s; }
 .certification-item-2 { animation-delay: 0.3s; }
 .certification-item-3 { animation-delay: 0.4s; }
-.certification-item-4 { animation-delay: 0.5s; }
+.certification-item-4 { animation-delay: 0.5s; } */
 
-@keyframes fade-in {
+/* Keyframes removed - now handled by framer-motion */
+/* @keyframes fade-in {
   from { opacity: 0; }
   to { opacity: 1; }
 }
@@ -236,7 +239,7 @@
     opacity: 1;
     transform: translateY(0);
   }
-}
+} */
 
 /* Responsive styles */
 @media (max-width: 768px) {
@@ -255,12 +258,11 @@
   }
   
   .education-content {
-    padding: var(--spacing-4);
+    padding: var(--spacing-4) var(--spacing-3);
   }
   
   .education-details-panel {
     padding: var(--spacing-3);
-    gap: var(--spacing-3);
   }
   
   .education-header::after {
@@ -276,7 +278,7 @@
   }
   
   .certifications-indicator {
-    padding: var(--spacing-2);
+    width: 70px;
   }
   
   .cert-count {
@@ -284,32 +286,12 @@
   }
   
   .cert-label {
-    font-size: var(--font-size-xs);
-    letter-spacing: 0.01em;
+    font-size: 0.65rem;
   }
 }
 
-/* Reduced motion preferences */
+/* Reduced motion preference - handled by AnimationContext */
 @media (prefers-reduced-motion: reduce) {
-  .education-card-wrapper,
-  .education-card-inner,
-  .education-card-icon,
-  .certification-item {
-    transition: none;
-    animation: none !important;
-  }
-  
-  .education-card-inner:hover {
-    transform: none;
-    box-shadow: var(--shadow-md);
-  }
-  
-  .education-card-inner:hover .education-card-icon {
-    transform: none;
-    background-color: rgba(100, 255, 218, 0.08);
-  }
-  
-  .certification-item:hover {
-    transform: none;
-  }
+  /* All animations and transitions are now controlled by AnimationContext
+     which respects the prefers-reduced-motion setting */
 }

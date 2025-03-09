@@ -1,11 +1,13 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
+import { motion } from 'framer-motion';
+import { useAnimation } from '@context/AnimationContext';
 import './SkeletonCard.css';
 
 
 /**
  * SkeletonCard component for use as loading placeholders
- * Updated with security-themed variants.
+ * Updated with security-themed variants and framer-motion animations.
  * 
  * @component
  * @param {Object} props - Component props
@@ -23,6 +25,7 @@ const SkeletonCard = ({
   className = '', 
   style = {} 
 }) => {
+  const { animationEnabled, shouldReduceMotion, animationStaggerDelay } = useAnimation();
   const baseClass = `${type}-card-skeleton`;
   const combinedClassName = [
     baseClass,
@@ -31,17 +34,59 @@ const SkeletonCard = ({
   ].filter(Boolean).join(' ');
   
   // Calculate animation delay based on index (staggered effect)
-  const animationDelay = `${index * 0.15}s`;
+  const staggerDelay = index * (animationStaggerDelay || 0.15);
+  
+  // Define animation variants
+  const cardVariants = {
+    hidden: {
+      opacity: 0,
+      y: 20
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut",
+        delay: staggerDelay
+      }
+    }
+  };
+  
+  // Shimmer effect animation variants
+  const shimmerVariants = {
+    initial: {
+      backgroundPosition: "200% 0"
+    },
+    animate: {
+      backgroundPosition: "-200% 0",
+      transition: {
+        repeat: Infinity,
+        duration: variant === 'terminal' ? 3 : variant === 'security' ? 2 : 1.5,
+        ease: "linear",
+        repeatType: "loop"
+      }
+    },
+    disabled: {
+      backgroundPosition: "200% 0" // Static position when animations are disabled
+    }
+  };
+  
+  // Animation properties based on context
+  const shouldAnimate = animationEnabled && !shouldReduceMotion;
   
   // Render different skeleton types
   switch (type) {
     case 'project':
       return (
-        <div 
+        <motion.div 
           className={combinedClassName} 
-          style={{ ...style, animationDelay }} 
+          style={style}
           aria-hidden="true"
           data-testid="skeleton-project"
+          variants={cardVariants}
+          initial={shouldAnimate ? "hidden" : "visible"}
+          animate="visible"
         >
           <div className="skeleton-image"></div>
           <div className="skeleton-content">
@@ -50,17 +95,25 @@ const SkeletonCard = ({
             <div className="skeleton-tags"></div>
             <div className="skeleton-actions"></div>
           </div>
-          <div className="skeleton-shimmer"></div>
-        </div>
+          <motion.div 
+            className="skeleton-shimmer"
+            variants={shimmerVariants}
+            initial="initial"
+            animate={shouldAnimate ? "animate" : "disabled"}
+          ></motion.div>
+        </motion.div>
       );
       
     case 'experience':
       return (
-        <div 
+        <motion.div 
           className={combinedClassName} 
-          style={{ ...style, animationDelay }} 
+          style={style}
           aria-hidden="true"
           data-testid="skeleton-experience"
+          variants={cardVariants}
+          initial={shouldAnimate ? "hidden" : "visible"}
+          animate="visible"
         >
           <div className="skeleton-header"></div>
           <div className="skeleton-content">
@@ -70,38 +123,59 @@ const SkeletonCard = ({
             <div className="skeleton-description"></div>
             <div className="skeleton-description"></div>
           </div>
-          <div className="skeleton-shimmer"></div>
-        </div>
+          <motion.div 
+            className="skeleton-shimmer"
+            variants={shimmerVariants}
+            initial="initial"
+            animate={shouldAnimate ? "animate" : "disabled"}
+          ></motion.div>
+        </motion.div>
       );
       
     case 'skill':
       return (
-        <div 
+        <motion.div 
           className={combinedClassName} 
-          style={{ ...style, animationDelay }} 
+          style={style} 
           aria-hidden="true"
           data-testid="skeleton-skill"
+          variants={cardVariants}
+          initial={shouldAnimate ? "hidden" : "visible"}
+          animate="visible"
         >
           <div className="skeleton-icon"></div>
           <div className="skeleton-name"></div>
-          <div className="skeleton-shimmer"></div>
-        </div>
+          <motion.div 
+            className="skeleton-shimmer"
+            variants={shimmerVariants}
+            initial="initial"
+            animate={shouldAnimate ? "animate" : "disabled"}
+          ></motion.div>
+        </motion.div>
       );
     
     default:
       return (
-        <div 
+        <motion.div 
           className={combinedClassName} 
-          style={{ ...style, animationDelay }} 
+          style={style}
           aria-hidden="true"
           data-testid="skeleton-default"
+          variants={cardVariants}
+          initial={shouldAnimate ? "hidden" : "visible"}
+          animate="visible"
         >
           <div className="skeleton-content">
             <div className="skeleton-title"></div>
             <div className="skeleton-description"></div>
           </div>
-          <div className="skeleton-shimmer"></div>
-        </div>
+          <motion.div 
+            className="skeleton-shimmer"
+            variants={shimmerVariants}
+            initial="initial"
+            animate={shouldAnimate ? "animate" : "disabled"}
+          ></motion.div>
+        </motion.div>
       );
   }
 };

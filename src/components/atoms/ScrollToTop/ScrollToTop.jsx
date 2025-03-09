@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useAnimation } from '@context//AnimationContext';
 import './ScrollToTop.css';
 
 /**
@@ -10,6 +12,7 @@ import './ScrollToTop.css';
  */
 const ScrollToTop = () => {
   const [visible, setVisible] = useState(false);
+  const { animationEnabled } = useAnimation();
 
   // Toggle button visibility based on scroll position
   useEffect(() => {
@@ -29,38 +32,63 @@ const ScrollToTop = () => {
 
   // Scroll to top with smooth animation 
   const scrollToTop = () => {
-    // Get the current scroll position
-    const currentPosition = window.pageYOffset;
-    
-    // If we're already near the top, just jump to top
-    if (currentPosition < 100) {
-      window.scrollTo(0, 0);
-      return;
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
+
+  // Animation variants
+  const buttonVariants = {
+    hidden: { 
+      y: 50, 
+      opacity: 0 
+    },
+    visible: { 
+      y: 0, 
+      opacity: 1,
+      transition: {
+        type: 'spring',
+        stiffness: 300,
+        damping: 24
+      }
+    },
+    hover: { 
+      y: -5,
+      scale: 1.05,
+      boxShadow: '0 6px 15px rgba(0, 0, 0, 0.4), 0 0 20px rgba(59, 130, 246, 0.5)',
+      transition: { 
+        duration: 0.3 
+      }
+    },
+    tap: { 
+      scale: 0.95,
+      transition: { 
+        duration: 0.1 
+      }
+    },
+    exit: { 
+      y: 50, 
+      opacity: 0,
+      transition: { 
+        duration: 0.3 
+      }
     }
-    
-    // Calculate duration based on scroll position (faster for shorter distances)
-    const scrollDuration = Math.min(1000, Math.max(500, currentPosition / 3));
-    
-    // Use requestAnimationFrame for smoother scrolling
-    const scrollStep = -currentPosition / (scrollDuration / 15);
-    
-    const scrollAnimation = () => {
-      if (window.pageYOffset <= 0) return;
-      
-      window.scrollBy(0, scrollStep);
-      requestAnimationFrame(scrollAnimation);
-    };
-    
-    requestAnimationFrame(scrollAnimation);
   };
 
   return (
-    <>
+    <AnimatePresence>
       {visible && (
-        <button
+        <motion.button
           onClick={scrollToTop}
           className="scroll-to-top"
           aria-label="Scroll to top of page"
+          initial={animationEnabled ? "hidden" : false}
+          animate={animationEnabled ? "visible" : false}
+          exit={animationEnabled ? "exit" : false}
+          whileHover={animationEnabled ? "hover" : false}
+          whileTap={animationEnabled ? "tap" : false}
+          variants={buttonVariants}
         >
           <svg 
             xmlns="http://www.w3.org/2000/svg" 
@@ -76,9 +104,9 @@ const ScrollToTop = () => {
             <line x1="12" y1="19" x2="12" y2="5"></line>
             <polyline points="5 12 12 5 19 12"></polyline>
           </svg>
-        </button>
+        </motion.button>
       )}
-    </>
+    </AnimatePresence>
   );
 };
 

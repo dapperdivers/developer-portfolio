@@ -6,22 +6,9 @@
     padding: var(--spacing-4) 0;
 }
 
-/* Animation for the heart icon */
-@keyframes heartbeat {
-    0% { transform: scale(1); }
-    25% { transform: scale(1.1); }
-    50% { transform: scale(1); }
-    75% { transform: scale(1.1); }
-    100% { transform: scale(1); }
-}
-
-.animate-pulse {
-    animation: heartbeat 2s ease infinite;
-}
-
 /* Footer link hover effects */
 footer a {
-    transition: color 0.2s ease, transform 0.2s ease;
+    /* transitions removed - now handled by framer-motion */
 }
 
 footer a:hover,
@@ -32,36 +19,8 @@ footer a:focus {
 /* Back to top button */
 .back-to-top {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3), 0 0 15px rgba(59, 130, 246, 0.3);
-    transform: translateY(0);
     opacity: 0.9;
-    transition: all 0.3s ease;
-    animation: 
-        pulse-subtle 2s infinite,
-        slide-in-bottom 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
-}
-
-.back-to-top:hover, 
-.back-to-top:focus {
-    transform: translateY(-5px);
-    opacity: 1;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4), 0 0 20px rgba(59, 130, 246, 0.5);
-}
-
-@keyframes slide-in-bottom {
-    0% {
-        transform: translateY(50px);
-        opacity: 0;
-    }
-    100% {
-        transform: translateY(0);
-        opacity: 0.9;
-    }
-}
-
-@keyframes pulse-subtle {
-    0% { box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3), 0 0 5px rgba(59, 130, 246, 0.3); }
-    50% { box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3), 0 0 15px rgba(59, 130, 246, 0.5); }
-    100% { box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3), 0 0 5px rgba(59, 130, 246, 0.3); }
+    /* transitions and animations removed - now handled by framer-motion */
 }
 
 /* Social links in footer */
@@ -76,25 +35,4 @@ footer .social-link:focus {
     color: var(--color-white);
 }
 
-/* Responsive adjustments */
-@media (prefers-reduced-motion: reduce) {
-    .animate-pulse {
-        animation: none;
-    }
-    
-    .back-to-top {
-        animation: none;
-        transition: opacity 0.2s ease;
-    }
-    
-    .back-to-top:hover, 
-    .back-to-top:focus {
-        transform: none;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3), 0 0 5px rgba(59, 130, 246, 0.3);
-    }
-    
-    footer a:hover,
-    footer a:focus {
-        transform: none;
-    }
-}
+/* Reduced motion preferences now handled by AnimationContext */

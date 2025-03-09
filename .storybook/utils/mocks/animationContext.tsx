@@ -6,7 +6,7 @@
  */
 
 import React from 'react';
-import { AnimationContext, AnimationContextType } from '../../../src/context/AnimationContext';
+import { AnimationContext, AnimationContextType } from '@context/AnimationContext';
 import type { Decorator } from '../index';
 
 /**

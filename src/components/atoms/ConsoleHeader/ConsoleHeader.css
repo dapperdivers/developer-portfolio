@@ -1,6 +1,7 @@
 /**
  * ConsoleHeader Component Styles
  * Styling for the ConsoleHeader component with terminal aesthetics
+ * Note: Animations are now managed by framer-motion through the AnimationContext
  */
 
 /* Base styles */
@@ -59,26 +60,21 @@
   font-weight: var(--font-weight-normal);
 }
 
-/* Blinking cursor */
+/* Cursor styles - Animation now handled by framer-motion */
 .console-cursor {
   display: inline-block;
   width: 8px;
   height: 16px;
   background-color: var(--color-info);
-  animation: blink 1s infinite;
+  /* animation removed - now handled by framer-motion */
   vertical-align: middle;
   margin-left: var(--spacing-1);
 }
 
-/* Cursor blink animation */
-@keyframes blink {
-  0%, 49% {
-    opacity: 1;
-  }
-  50%, 100% {
-    opacity: 0;
-  }
-}
+/* 
+ * Cursor blink animation keyframes removed
+ * Blinking is now implemented with framer-motion variants
+ */
 
 /* Visual variants */
 .console-header-security .console-header-top {
@@ -180,11 +176,10 @@
   }
 }
 
-/* Reduced motion preferences */
+/* Reduced motion preferences - No longer needed as handled by AnimationContext */
 @media (prefers-reduced-motion: reduce) {
   .console-cursor {
-    animation: none;
-    opacity: 1;
+    /* No CSS animations to disable - framer-motion handles reduced motion preferences */
   }
 }
 

@@ -1,5 +1,7 @@
 import React, { memo, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { motion } from 'framer-motion';
+import { useAnimation } from '@context/AnimationContext';
 import Card from '@atoms/Card';
 import TerminalControls from '@atoms/TerminalControls/TerminalControls';
 import './ConsoleHeader.css';
@@ -32,6 +34,7 @@ const ConsoleHeader = ({
 }) => {
   // State to track if on mobile
   const [isMobile, setIsMobile] = useState(false);
+  const { animationEnabled, shouldReduceMotion } = useAnimation();
   
   // Set up mobile detection
   useEffect(() => {
@@ -48,6 +51,34 @@ const ConsoleHeader = ({
     // Cleanup
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
+  
+  // Animation variants
+  const consoleVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { 
+        duration: 0.4,
+        ease: "easeOut"
+      }
+    }
+  };
+
+  const cursorVariants = {
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: [1, 0, 1],
+      transition: {
+        repeat: Infinity,
+        repeatType: "reverse",
+        duration: 1,
+        repeatDelay: 0,
+        ease: "linear"
+      }
+    },
+    noAnimation: { opacity: 1 }
+  };
   
   // Use shorter prompt on mobile
   const displayPrompt = isMobile ? 'user:~$' : prompt;
@@ -69,7 +100,12 @@ const ConsoleHeader = ({
     `Console with command: ${prompt} ${command}`;
 
   return (
-    <div id={id}>
+    <motion.div 
+      id={id}
+      initial={animationEnabled ? "hidden" : "visible"}
+      animate="visible"
+      variants={consoleVariants}
+    >
       <Card 
         className={classes}
         variant={cardVariant}
@@ -96,10 +132,13 @@ const ConsoleHeader = ({
           aria-hidden="true" // Hide from screen readers as the full command is provided via aria-label
         >{command}</span>
         {showCursor && (
-          <span 
+          <motion.span 
             className="console-cursor" 
             aria-hidden="true"
-          ></span>
+            variants={cursorVariants}
+            initial="visible"
+            animate={animationEnabled && !shouldReduceMotion ? "visible" : "noAnimation"}
+          ></motion.span>
         )}
       </div>
       {/* Hidden text for screen readers that represents the full command */}
@@ -107,7 +146,7 @@ const ConsoleHeader = ({
         {`${prompt} ${command}`}
       </span>
       </Card>
-    </div>
+    </motion.div>
   );
 };
 

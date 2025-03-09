@@ -1,7 +1,9 @@
 import React, { Suspense, useState, useRef, useEffect, useMemo } from 'react';
 import Lottie from 'lottie-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import Loading from '@atoms/Loading';
 import { FaPlay, FaPause } from 'react-icons/fa';
+import { useAnimation, MotionVariants } from '@context/AnimationContext';
 import './DisplayLottie.css';
 // CSS is now properly organized in the design system
 
@@ -37,6 +39,9 @@ const DisplayLottie = ({
     const [controlsVisible, setControlsVisible] = useState(false);
     const lottieRef = useRef(null);
     
+    // Get animation context values
+    const { animationEnabled, fadeInVariants, shouldReduceMotion } = useAnimation();
+    
     // Define size constraints
     const sizeMap = useMemo(() => ({
         small: { maxWidth: "25rem", maxHeight: "25rem" },
@@ -48,149 +53,196 @@ const DisplayLottie = ({
     const optimizedAnimationData = useMemo(() => {
         if (!shouldOptimize || !animationData) return animationData;
         
-        try {
-            // Deep clone the animation data
-            const optimized = JSON.parse(JSON.stringify(animationData));
+        // Make a copy of the animation data to avoid mutating the original
+        const optimized = JSON.parse(JSON.stringify(animationData));
+        
+        // Reduce quality if needed
+        if (quality < 1 && quality > 0) {
+            // Recursively reduce the precision of numerical values in the animation data
+            const reduceQuality = (obj) => {
+                if (!obj) return;
+                
+                if (Array.isArray(obj)) {
+                    for (let i = 0; i < obj.length; i++) {
+                        if (typeof obj[i] === 'number') {
+                            obj[i] = Number(obj[i].toFixed(2));
+                        } else if (typeof obj[i] === 'object') {
+                            reduceQuality(obj[i]);
+                        }
+                    }
+                } else if (typeof obj === 'object') {
+                    for (const key in obj) {
+                        if (typeof obj[key] === 'number') {
+                            obj[key] = Number(obj[key].toFixed(2));
+                        } else if (typeof obj[key] === 'object') {
+                            reduceQuality(obj[key]);
+                        }
+                    }
+                }
+            };
             
-            // Apply optimizations based on device capabilities
-            const optimizationLevel = isLowPower ? 0.5 : quality;
-            
-            // Reduce framerate for low-power devices
-            if (optimized.fr && optimized.fr > 30 && optimizationLevel < 0.8) {
-                optimized.fr = 30;
-            }
-            
-            // Limit number of animations on low-power devices
-            if (optimized.layers && optimizationLevel < 0.7) {
-                // Keep only essential layers
-                optimized.layers = optimized.layers.filter((layer, index) => {
-                    // Keep first few layers and essential animation layers
-                    return index < 5 || layer.nm?.includes('main');
-                });
-            }
-            
-            return optimized;
-        } catch (err) {
-            console.error("Error optimizing animation:", err);
-            return animationData;
+            reduceQuality(optimized);
         }
-    }, [animationData, shouldOptimize, isLowPower, quality]);
+        
+        return optimized;
+    }, [animationData, quality, shouldOptimize]);
     
-    // Detect low-power devices
+    // Check device capabilities and user preferences
     useEffect(() => {
-        // Check for battery API
+        // Check if user prefers reduced motion
+        // Using the context's shouldReduceMotion instead of managing our own state
+        setPrefersReducedMotion(shouldReduceMotion);
+        
+        // Check for battery status to detect low power mode
         if ('getBattery' in navigator) {
             navigator.getBattery().then(battery => {
-                // Consider low power if battery level is below 20%
-                setIsLowPower(battery.level < 0.2 && !battery.charging);
+                const checkBatteryStatus = () => {
+                    setIsLowPower(battery.level <= 0.2 && !battery.charging);
+                };
                 
-                // Listen for changes
-                battery.addEventListener('levelchange', () => {
-                    setIsLowPower(battery.level < 0.2 && !battery.charging);
-                });
+                battery.addEventListener('levelchange', checkBatteryStatus);
+                battery.addEventListener('chargingchange', checkBatteryStatus);
+                
+                checkBatteryStatus();
+                
+                return () => {
+                    battery.removeEventListener('levelchange', checkBatteryStatus);
+                    battery.removeEventListener('chargingchange', checkBatteryStatus);
+                };
             }).catch(() => {
-                // If unable to access battery API, use device memory as fallback
-                if ('deviceMemory' in navigator) {
-                    setIsLowPower(navigator.deviceMemory < 4);
-                }
+                // Battery API not supported or permission denied
+                setIsLowPower(false);
             });
-        } else if ('deviceMemory' in navigator) {
-            // Use device memory as fallback for battery API
-            setIsLowPower(navigator.deviceMemory < 4);
         }
-    }, []);
+    }, [shouldReduceMotion]);
     
-    // Check for reduced motion preference
-    useEffect(() => {
-        const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-        
-        const handleMotionPreferenceChange = (e) => {
-            const prefersReduced = e.matches;
-            setPrefersReducedMotion(prefersReduced);
-            
-            // If user prefers reduced motion, pause animation by default
-            if (prefersReduced && isPlaying) {
-                setIsPlaying(false);
-            }
-        };
-        
-        // Initial check
-        handleMotionPreferenceChange(motionQuery);
-        
-        // Add listener for changes
-        motionQuery.addEventListener('change', handleMotionPreferenceChange);
-        
-        // Cleanup
-        return () => {
-            motionQuery.removeEventListener('change', handleMotionPreferenceChange);
-        };
-    }, [isPlaying]);
-    
-    // Configure style based on size and optimization level
-    const containerStyle = {
-        ...sizeMap[size],
-        margin: '0 auto'
-    };
-    
-    // Play/pause the animation
+    // Toggle play/pause
     const togglePlay = () => {
+        setIsPlaying(prev => !prev);
+        
         if (lottieRef.current) {
             if (isPlaying) {
                 lottieRef.current.pause();
             } else {
                 lottieRef.current.play();
             }
-            setIsPlaying(!isPlaying);
         }
     };
     
+    const handleHoverStart = () => {
+        if (animationEnabled && !prefersReducedMotion) {
+            setControlsVisible(true);
+        }
+    };
+    
+    const handleHoverEnd = () => {
+        if (!prefersReducedMotion) {
+            setControlsVisible(false);
+        }
+    };
+    
+    // Animation variants for the controls
+    const controlsVariants = {
+        hidden: { opacity: 0, y: 10 },
+        visible: { 
+            opacity: 1, 
+            y: 0,
+            transition: {
+                duration: 0.2,
+                ease: "easeOut"
+            }
+        },
+        exit: {
+            opacity: 0,
+            y: 10,
+            transition: {
+                duration: 0.2,
+                ease: "easeIn"
+            }
+        }
+    };
+    
+    // Button animation variants
+    const buttonVariants = {
+        initial: { scale: 1 },
+        hover: { 
+            scale: 1.1,
+            backgroundColor: "var(--color-primary-dark)",
+            transition: {
+                duration: 0.2,
+                ease: "easeOut"
+            }
+        },
+        tap: { 
+            scale: 0.95,
+            transition: {
+                duration: 0.1,
+                ease: "easeOut"
+            }
+        }
+    };
+    
+    // Determine if we should show animations
+    const shouldShowAnimations = animationEnabled && !prefersReducedMotion && !isLowPower;
+    
     return (
-        <Suspense fallback={<Loading />}>
-            <div 
-                className={`lottie-container ${controlsVisible ? 'controls-visible' : ''}`}
-                style={containerStyle}
-                role="img"
-                aria-label={ariaLabel}
-                onClick={() => setControlsVisible(!controlsVisible)}
-            >
+        <motion.div 
+            className="lottie-container"
+            style={sizeMap[size]}
+            variants={fadeInVariants}
+            initial="hidden"
+            animate="visible"
+            onHoverStart={handleHoverStart}
+            onHoverEnd={handleHoverEnd}
+            aria-label={ariaLabel}
+        >
+            <Suspense fallback={<Loading />}>
                 <Lottie
                     lottieRef={lottieRef}
                     animationData={optimizedAnimationData}
-                    loop={loop}
-                    autoplay={!prefersReducedMotion}
-                    rendererSettings={{
-                        preserveAspectRatio: 'xMidYMid slice',
-                        progressiveLoad: true,
-                        hideOnTransparent: true
+                    loop={loop && shouldShowAnimations}
+                    autoplay={shouldShowAnimations}
+                    style={{
+                        width: '100%',
+                        height: '100%'
                     }}
+                    aria-hidden="true"
                 />
-                
-                {/* Accessibility controls */}
-                <div className="absolute bottom-2 right-2 flex items-center bg-black/60 p-1 px-2 rounded opacity-0 transition-opacity duration-200 z-10" aria-live="polite">
-                    <button 
-                        onClick={togglePlay}
-                        className="bg-primary text-white border-none rounded-full w-10 h-10 mr-2 flex items-center justify-center cursor-pointer transition-colors duration-200 hover:bg-primary-dark focus:outline focus:outline-2 focus:outline-white focus:outline-offset-2"
-                        aria-label={isPlaying ? "Pause animation" : "Play animation"}
-                        aria-pressed={isPlaying}
+            </Suspense>
+            
+            <AnimatePresence>
+                {(controlsVisible || prefersReducedMotion) && (
+                    <motion.div
+                        className="animation-controls"
+                        variants={controlsVariants}
+                        initial="hidden"
+                        animate="visible"
+                        exit="exit"
                     >
-                        {isPlaying ? <FaPause /> : <FaPlay />}
-                        <span className="absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0">
-                            {isPlaying ? "Pause" : "Play"} animation
+                        <motion.button
+                            className="animation-control-button"
+                            onClick={togglePlay}
+                            aria-label={isPlaying ? "Pause animation" : "Play animation"}
+                            variants={buttonVariants}
+                            initial="initial"
+                            whileHover="hover"
+                            whileTap="tap"
+                        >
+                            {isPlaying ? <FaPause /> : <FaPlay />}
+                        </motion.button>
+                        
+                        <span className="animation-status">
+                            {isPlaying ? "Animation playing" : "Animation paused"}
                         </span>
-                    </button>
-                    
-                    <div className="text-sm text-white ml-1" aria-live="polite">
-                        Animation is {isPlaying ? "playing" : "paused"}
-                    </div>
-                </div>
-                
-                {/* Hidden text for screen readers to explain what the animation shows */}
-                <div className="absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0">
-                    {ariaLabel}
-                </div>
-            </div>
-        </Suspense>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+            
+            <span className="sr-only">
+                {isPlaying ? `${ariaLabel} animation is playing` : `${ariaLabel} animation is paused`}
+            </span>
+        </motion.div>
     );
 };
- 
+
 export default DisplayLottie;

@@ -1,6 +1,7 @@
 /**
  * SecurityBadge Component Styles
  * Styling for the SecurityBadge component with variants
+ * Animations now handled by framer-motion
  */
 
 /* Base styles with improved readability */
@@ -18,7 +19,6 @@
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4); /* More subtle shadow */
   z-index: 20;
   font-family: var(--font-family-jetbrains);
-  transition: all 0.2s ease;
   border: 2px solid rgba(var(--color-primary-rgb), 0.7); /* More visible border */
   background-clip: padding-box;
 }
@@ -75,16 +75,14 @@
 }
 
 /* Status styles - enhanced visuals */
-.security-badge-scanning .security-badge-icon {
-  animation: securityBadgePulse 1.5s infinite ease-in-out;
-}
+/* Animation removed - now handled by framer-motion */
 
 .security-badge-verified {
   font-weight: var(--font-weight-bold);
 }
 
 .security-badge-verified .security-badge-icon {
-  transform: scale(1.1);
+  /* Animation removed - now handled by framer-motion */
   filter: drop-shadow(0 0 5px currentColor); /* Enhanced glow effect */
 }
 
@@ -136,42 +134,11 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5), 0 0 16px rgba(var(--color-entry5-rgb, 45, 212, 191), 0.4);
 }
 
-/* Animation for scanning state - more visible pulsing */
-@keyframes securityBadgePulse {
-  0% {
-    transform: scale(1);
-    opacity: 0.8;
-    filter: brightness(0.9);
-  }
-  50% {
-    transform: scale(1.15);
-    opacity: 1;
-    filter: brightness(1.4);
-  }
-  100% {
-    transform: scale(1);
-    opacity: 0.8;
-    filter: brightness(0.9);
-  }
-}
+/* Animation keyframes removed - now handled by framer-motion */
 
-/* Loading icon animation */
-.security-badge-loading-icon {
-  animation: securityBadgeRotate 1.5s infinite linear;
-}
+/* Loading icon animation removed - now handled by framer-motion */
 
-@keyframes securityBadgeRotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-/* Hover effect */
-.security-badge:hover {
-  transform: translateY(-3px) scale(1.05);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6), 
-              0 0 20px rgba(var(--color-primary-rgb), 0.6);
-  filter: brightness(1.2);
-}
+/* Hover effect removed - now handled by framer-motion's whileHover */
 
 /* Focus styles */
 .security-badge:focus-visible {
@@ -226,26 +193,5 @@
   
   .security-badge-id {
     font-size: 0.5rem;
-  }
-}
-
-/* Reduced motion preferences */
-@media (prefers-reduced-motion: reduce) {
-  .security-badge,
-  .security-badge-icon {
-    transition: none;
-  }
-  
-  .security-badge-scanning .security-badge-icon,
-  .security-badge-loading-icon {
-    animation: none;
-  }
-  
-  .security-badge:hover {
-    transform: none;
-  }
-  
-  .security-badge-verified .security-badge-icon {
-    transform: none;
   }
 }

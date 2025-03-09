@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Icon } from '@iconify/react';
+import { motion } from 'framer-motion';
+import { useAnimation } from '@context//AnimationContext';
 import './Button.css';
 
 /**
@@ -19,6 +21,8 @@ import './Button.css';
  * @param {boolean} [props.disabled=false] - Whether the button is disabled
  * @param {string} [props.type='button'] - Button type (button, submit, reset)
  * @param {string} [props.ariaLabel] - Aria label for accessibility
+ * @param {boolean} [props.animated=true] - Whether to animate the button
+ * @param {string} [props.animationVariant='default'] - Animation variant (default, tap, hover)
  * @returns {ReactElement} The Button component
  * 
  * @example
@@ -38,8 +42,13 @@ const Button = ({
   disabled = false,
   type = 'button',
   ariaLabel,
+  animated = true,
+  animationVariant = 'default',
   ...rest
 }) => {
+  // Get animation context
+  const { animationEnabled, defaultButtonVariants } = useAnimation();
+
   // Determine size class
   const sizeClass = {
     sm: 'btn-sm',
@@ -64,18 +73,52 @@ const Button = ({
     </span>
   );
 
+  // Define animation variants
+  const getButtonAnimations = () => {
+    // Animation enabled check
+    if (!animated || !animationEnabled) {
+      return {};
+    }
+
+    // Default tap animation
+    const tapAnimation = {
+      scale: 0.95,
+      transition: { duration: 0.1 }
+    };
+
+    // Animation variants
+    switch (animationVariant) {
+      case 'hover':
+        return {
+          whileHover: { scale: 1.05, transition: { duration: 0.2 } },
+          whileTap: tapAnimation
+        };
+      case 'tap':
+        return {
+          whileTap: tapAnimation
+        };
+      case 'default':
+      default:
+        return {
+          whileTap: tapAnimation,
+          ...defaultButtonVariants
+        };
+    }
+  };
+
   // Common props
   const commonProps = {
     className: baseClasses,
     'aria-label': ariaLabel || (typeof children === 'string' ? children : undefined),
     'aria-disabled': disabled ? 'true' : undefined,
+    ...getButtonAnimations(),
     ...rest
   };
 
-  // Render as anchor if href is provided
+  // Render as motion anchor if href is provided
   if (href) {
     return (
-      <a
+      <motion.a
         href={disabled ? undefined : href}
         onClick={disabled ? (e) => e.preventDefault() : onClick}
         role="button"
@@ -85,13 +128,13 @@ const Button = ({
         {iconPosition === 'left' && iconElement}
         {children}
         {iconPosition === 'right' && iconElement}
-      </a>
+      </motion.a>
     );
   }
 
-  // Render as button
+  // Render as motion button
   return (
-    <button
+    <motion.button
       type={type}
       onClick={onClick}
       disabled={disabled}
@@ -100,7 +143,7 @@ const Button = ({
       {iconPosition === 'left' && iconElement}
       {children}
       {iconPosition === 'right' && iconElement}
-    </button>
+    </motion.button>
   );
 };
 
@@ -115,7 +158,9 @@ Button.propTypes = {
   iconPosition: PropTypes.oneOf(['left', 'right']),
   disabled: PropTypes.bool,
   type: PropTypes.oneOf(['button', 'submit', 'reset']),
-  ariaLabel: PropTypes.string
+  ariaLabel: PropTypes.string,
+  animated: PropTypes.bool,
+  animationVariant: PropTypes.oneOf(['default', 'tap', 'hover'])
 };
 
 export default Button;

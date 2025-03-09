@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { motion } from 'framer-motion';
+import { useAnimation } from '@context/AnimationContext';
 import './ConnectionHeader.css';
 
 export interface ConnectionHeaderProps {
@@ -16,6 +17,7 @@ export interface ConnectionHeaderProps {
 /**
  * Connection header component for timelines
  * Displays a cyberpunk-style secure connection header
+ * Enhanced with framer-motion animations controlled by AnimationContext
  * 
  * @component
  * @example
@@ -30,14 +32,66 @@ const ConnectionHeader: FC<ConnectionHeaderProps> = ({
   animate = true,
   variant = 'security'
 }) => {
+  // Get animation context values
+  const { animationEnabled, fadeInVariants } = useAnimation();
+  
+  // Only animate if both props and context allow it
+  const shouldAnimate = animate && animationEnabled;
+  
   const variantClass = variant ? `secure-connection-start--${variant}` : '';
   
-  const component = (
-    <div className={`secure-connection-start ${variantClass}`}>
+  // Pulse animation variants
+  const pulseVariants = {
+    hidden: { opacity: 0.6, scale: 0.8 },
+    visible: {
+      opacity: [0.6, 1, 0.6],
+      scale: [0.8, 1.2, 0.8],
+      transition: {
+        repeat: Infinity,
+        duration: 2,
+        ease: "easeInOut"
+      }
+    }
+  };
+  
+  // Scan line animation variants
+  const scanLineVariants = {
+    hidden: { opacity: 0, left: 0 },
+    visible: {
+      opacity: [0, 0.5, 0.5, 0],
+      left: ["0%", "20%", "80%", "100%"],
+      transition: {
+        repeat: Infinity,
+        duration: 3,
+        ease: "linear",
+        times: [0, 0.2, 0.8, 1]
+      }
+    }
+  };
+  
+  return (
+    <motion.div 
+      className={`secure-connection-start ${variantClass}`}
+      variants={fadeInVariants}
+      initial={shouldAnimate ? "hidden" : "visible"}
+      animate="visible"
+      transition={{ delay: 0.5 }}
+      data-testid="connection-start"
+    >
       <div className="secure-connection-status">
-        <span className="connection-pulse"></span>
+        <motion.span 
+          className="connection-pulse"
+          variants={pulseVariants}
+          initial="hidden"
+          animate={shouldAnimate ? "visible" : "hidden"}
+        />
         <div className="secure-label">
-          <div className="scanner-line"></div>
+          <motion.div 
+            className="scanner-line"
+            variants={scanLineVariants}
+            initial="hidden"
+            animate={shouldAnimate ? "visible" : "hidden"}
+          />
           {title}
           <div className="status-code">{statusCode}</div>
         </div>
@@ -50,20 +104,8 @@ const ConnectionHeader: FC<ConnectionHeaderProps> = ({
           </div>
         </div>
       </div>
-    </div>
-  );
-
-  // If animation is enabled, wrap in motion.div
-  return animate ? (
-    <motion.div 
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: 0.5 }}
-      data-testid="connection-start"
-    >
-      {component}
     </motion.div>
-  ) : component;
+  );
 };
 
 export default ConnectionHeader;

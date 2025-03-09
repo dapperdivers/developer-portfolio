@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { FaGraduationCap, FaBriefcase, FaCode, FaStar, FaHandshake, FaShieldAlt } from 'react-icons/fa';
 import '@assets/css/tailwind.css';
 import './Section.css';
+import { useAnimation, MotionVariants } from '@context//AnimationContext';
 
 /**
  * Section component for layout structuring and consistent section styling.
@@ -39,6 +40,8 @@ const Section = ({
   role = 'region',
   ...rest
 }) => {
+  const { animationEnabled, slideUpVariants, fadeInVariants } = useAnimation();
+  
   // Base classes
   const defaultBg = 'text-white'; // Removed bg-gray-900 to allow cyberpunk background to show
   const sectionClasses = [
@@ -50,13 +53,48 @@ const Section = ({
   // Container classes
   const containerClasses = `container${fluid ? '-fluid' : ''}`;
 
+  // Animation variants for diagonal lines
+  const diagonalVariants = {
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: 0.1, 
+      x: [0, -200],
+      transition: { 
+        repeat: Infinity, 
+        duration: 120,
+        ease: "linear"
+      }
+    }
+  };
+  
+  // Animation variants for border glow
+  const glowVariants = {
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: [0.2, 0.6, 0.2], 
+      transition: { 
+        repeat: Infinity, 
+        duration: 3,
+        ease: "easeInOut"
+      }
+    }
+  };
+
   // Section header with appropriate icon based on section title
   const sectionHeader = (title || subtitle) && (
-    <div className="section-header backdrop-blur-md bg-black/50 rounded-lg p-6 mb-8 border border-cyan-500 shadow-[0_0_20px_rgba(5,213,250,0.2)] relative overflow-hidden">
+    <motion.div 
+      className="section-header backdrop-blur-md bg-black/50 rounded-lg p-6 mb-8 border border-cyan-500 shadow-[0_0_20px_rgba(5,213,250,0.2)] relative overflow-hidden"
+      variants={fadeInVariants}
+    >
       {/* Animated diagonal lines in the background */}
-      <div className="absolute inset-0 overflow-hidden opacity-10 pointer-events-none">
+      <motion.div 
+        className="absolute inset-0 overflow-hidden pointer-events-none"
+        variants={diagonalVariants}
+        initial="hidden"
+        animate="visible"
+      >
         <div className="diagonal-lines"></div>
-      </div>
+      </motion.div>
       
       {/* Cyberpunk decorative elements */}
       <div className="absolute top-0 left-0 w-16 h-1 bg-cyan-500 opacity-70"></div>
@@ -68,7 +106,10 @@ const Section = ({
       <div className="absolute -top-10 -left-10 w-20 h-20 rounded-full bg-cyan-500 opacity-10 blur-xl"></div>
       
       {/* Map section titles to appropriate React icons */}
-      <div className="flex flex-col items-center justify-center relative">
+      <motion.div 
+        className="flex flex-col items-center justify-center relative"
+        variants={slideUpVariants}
+      >
         {title === "Education" && <FaGraduationCap className="section-icon" />}
         {title === "Experience" && <FaBriefcase className="section-icon" />}
         {title === "Projects" && <FaCode className="section-icon" />}
@@ -82,20 +123,38 @@ const Section = ({
           <span className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-cyan-500 to-transparent w-full opacity-70"></span>
         </h2>}
         {subtitle && <div className="section-subtitle text-gray-100 max-w-2xl text-center">{subtitle}</div>}
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
+  );
+
+  // Motion content wrapper
+  const contentWrapper = (content) => (
+    <motion.div 
+      variants={slideUpVariants}
+      className="relative z-10 pt-2"
+    >
+      {content}
+    </motion.div>
   );
 
   // Content with optional container
   const content = container ? (
     <div className={`${containerClasses} py-16`}>
       {sectionHeader}
-      <div className="section-content backdrop-blur-md bg-black/40 p-8 rounded-lg border-2 border-gray-800 shadow-[0_0_30px_rgba(0,0,0,0.3)] relative overflow-hidden">
+      <motion.div 
+        className="section-content backdrop-blur-md bg-black/40 p-8 rounded-lg border-2 border-gray-800 shadow-[0_0_30px_rgba(0,0,0,0.3)] relative overflow-hidden"
+        variants={fadeInVariants}
+      >
         {/* Circuit pattern overlay */}
         <div className="absolute inset-0 circuit-pattern opacity-5 pointer-events-none"></div>
         
         {/* Animated border glow */}
-        <div className="absolute inset-0 border-glow pointer-events-none"></div>
+        <motion.div 
+          className="absolute inset-0 border-glow pointer-events-none"
+          variants={glowVariants}
+          initial="hidden"
+          animate="visible"
+        ></motion.div>
         
         {/* Cyberpunk decorative corner elements */}
         <div className="absolute top-0 left-0 w-24 h-24 pointer-events-none">
@@ -116,10 +175,8 @@ const Section = ({
         </div>
         
         {/* Actual content */}
-        <div className="relative z-10 pt-2">
-          {children}
-        </div>
-      </div>
+        {contentWrapper(children)}
+      </motion.div>
     </div>
   ) : (
     <>
@@ -128,12 +185,20 @@ const Section = ({
           {sectionHeader}
         </div>
       )}
-      <div className="section-content backdrop-blur-md bg-black/40 p-8 rounded-lg border-2 border-gray-800 shadow-[0_0_30px_rgba(0,0,0,0.3)] relative overflow-hidden">
+      <motion.div 
+        className="section-content backdrop-blur-md bg-black/40 p-8 rounded-lg border-2 border-gray-800 shadow-[0_0_30px_rgba(0,0,0,0.3)] relative overflow-hidden"
+        variants={fadeInVariants}
+      >
         {/* Circuit pattern overlay */}
         <div className="absolute inset-0 circuit-pattern opacity-5 pointer-events-none"></div>
         
         {/* Animated border glow */}
-        <div className="absolute inset-0 border-glow pointer-events-none"></div>
+        <motion.div 
+          className="absolute inset-0 border-glow pointer-events-none"
+          variants={glowVariants}
+          initial="hidden"
+          animate="visible"
+        ></motion.div>
         
         {/* Cyberpunk decorative corner elements */}
         <div className="absolute top-0 left-0 w-24 h-24 pointer-events-none">
@@ -154,10 +219,8 @@ const Section = ({
         </div>
         
         {/* Actual content */}
-        <div className="relative z-10 pt-2">
-          {children}
-        </div>
-      </div>
+        {contentWrapper(children)}
+      </motion.div>
     </>
   );
 
@@ -170,20 +233,34 @@ const Section = ({
     ...rest
   };
 
+  // Only use animations if they're enabled
+  const motionProps = animationEnabled ? {
+    initial: "hidden",
+    animate: "visible",
+    variants: MotionVariants.container,
+  } : {};
+
   // Handle animation with Framer Motion
   if (animation) {
     return (
-      <motion.section {...commonProps} {...animation}>
+      <motion.section 
+        {...commonProps} 
+        {...motionProps}
+        {...animation}
+      >
         {content}
       </motion.section>
     );
   }
 
-  // Regular section without animation
+  // Regular section with default animation
   return (
-    <section {...commonProps}>
+    <motion.section 
+      {...commonProps}
+      {...motionProps}
+    >
       {content}
-    </section>
+    </motion.section>
   );
 };
 

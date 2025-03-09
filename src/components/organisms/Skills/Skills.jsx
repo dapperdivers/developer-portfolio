@@ -6,6 +6,7 @@ import SkeletonCard from '@atoms/SkeletonCard';
 import Section from '@layout/Section';
 import useSkills from "@hooks/useSkills";
 import { usePortfolio } from "@context/PortfolioContext";
+import { useAnimation, MotionVariants } from '@context/AnimationContext';
 import '@assets/css/tailwind.css';
 import './Skills.css';
 
@@ -20,6 +21,14 @@ import './Skills.css';
 const Skills = () => {
   // Get portfolio data
   const portfolioData = usePortfolio();
+  
+  // Get animation context
+  const { 
+    animationEnabled, 
+    slideUpVariants, 
+    fadeInVariants, 
+    animationStaggerDelay 
+  } = useAnimation();
   
   // Get loading delay from context or use default (demonstrates skeleton loading)
   const loadingDelay = portfolioData?.settings?.loadingDelay || 0;
@@ -51,13 +60,11 @@ const Skills = () => {
   // Determine number of skeleton cards to show
   const skeletonCount = 12; // Reasonable default
   
-  // Device capability detection
-  const [isLowEndDevice, setIsLowEndDevice] = useState(false);
+  // Device capability detection - now simplified using AnimationContext
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   
-  // Detect low-end devices and motion preferences
+  // Check for reduced motion preference
   useEffect(() => {
-    // Check for reduced motion preference
     const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     setPrefersReducedMotion(motionQuery.matches);
     
@@ -65,76 +72,55 @@ const Skills = () => {
     const handleMotionChange = (e) => setPrefersReducedMotion(e.matches);
     motionQuery.addEventListener('change', handleMotionChange);
     
-    // Device performance detection
-    const checkDevicePerformance = () => {
-      // Check device memory (available in Chrome)
-      if ('deviceMemory' in navigator && typeof navigator.deviceMemory === 'number') {
-        setIsLowEndDevice(navigator.deviceMemory < 4);
-        return;
-      }
-      
-      // Check hardware concurrency (CPU cores)
-      if ('hardwareConcurrency' in navigator && typeof navigator.hardwareConcurrency === 'number') {
-        setIsLowEndDevice(navigator.hardwareConcurrency < 4);
-        return;
-      }
-      
-      // Fallback: use user agent for basic mobile detection
-      const userAgent = navigator.userAgent || '';
-      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
-      setIsLowEndDevice(isMobile);
-    };
-    
-    checkDevicePerformance();
-    
     return () => {
       motionQuery.removeEventListener('change', handleMotionChange);
     };
   }, []);
   
   // Determine if we should use simplified animations
-  const useSimplifiedAnimations = useMemo(() => 
-    isLowEndDevice || prefersReducedMotion, 
-    [isLowEndDevice, prefersReducedMotion]
+  // Now uses animationEnabled from context plus local prefersReducedMotion
+  const shouldAnimate = useMemo(() => 
+    animationEnabled && !prefersReducedMotion, 
+    [animationEnabled, prefersReducedMotion]
   );
   
-  // Animation config for framer-motion - optimized for device capabilities
+  // Animation config for framer-motion - optimized with context values
   const sectionAnimation = useMemo(() => ({
-    initial: useSimplifiedAnimations ? { opacity: 0 } : { opacity: 0, y: 20 },
-    whileInView: useSimplifiedAnimations ? { opacity: 1 } : { opacity: 1, y: 0 },
-    viewport: { once: true, margin: useSimplifiedAnimations ? "0px" : "-50px" },
+    initial: shouldAnimate ? { opacity: 0, y: 20 } : { opacity: 0 },
+    whileInView: shouldAnimate ? { opacity: 1, y: 0 } : { opacity: 1 },
+    viewport: { once: true, margin: shouldAnimate ? "-50px" : "0px" },
     transition: { 
-      duration: useSimplifiedAnimations ? 0.3 : 0.5,
+      duration: shouldAnimate ? 0.5 : 0.3,
       // Use simpler animation curve on low-end devices
-      ease: useSimplifiedAnimations ? "easeIn" : "easeInOut"
+      ease: shouldAnimate ? "easeInOut" : "easeIn"
     }
-  }), [useSimplifiedAnimations]);
+  }), [shouldAnimate]);
   
-  // Text entry animations - simplified for low-end devices
+  // Text entry animations - simplified when needed
   const textVariants = useMemo(() => ({
-    hidden: useSimplifiedAnimations ? { opacity: 0 } : { opacity: 0, y: 20 },
+    hidden: shouldAnimate ? { opacity: 0, y: 20 } : { opacity: 0 },
     visible: {
       opacity: 1,
-      y: useSimplifiedAnimations ? 0 : 0,
+      y: shouldAnimate ? 0 : 0,
       transition: { 
-        delay: useSimplifiedAnimations ? 0.3 : 0.6, 
-        duration: useSimplifiedAnimations ? 0.3 : 0.5,
-        staggerChildren: useSimplifiedAnimations ? 0.05 : 0.1
+        delay: shouldAnimate ? 0.6 : 0.3, 
+        duration: shouldAnimate ? 0.5 : 0.3,
+        staggerChildren: shouldAnimate ? animationStaggerDelay : animationStaggerDelay / 2
       }
     }
-  }), [useSimplifiedAnimations]);
+  }), [shouldAnimate, animationStaggerDelay]);
   
   // Function to generate staggered animations for skill text items - optimized version
   const getSkillTextVariants = useMemo(() => (index) => {
     // Convert index to number for calculations
     const numIndex = typeof index === 'string' ? parseInt(index, 10) || 0 : index || 0;
     
-    if (useSimplifiedAnimations) {
+    if (!shouldAnimate) {
       return {
         hidden: { opacity: 0 },
         visible: {
           opacity: 1,
-          transition: { delay: 0.3 + (numIndex * 0.05) }
+          transition: { delay: 0.1 + (numIndex * 0.03) }
         }
       };
     }
@@ -144,10 +130,10 @@ const Skills = () => {
       visible: {
         opacity: 1,
         x: 0,
-        transition: { delay: 0.7 + (numIndex * 0.1) }
+        transition: { delay: 0.3 + (numIndex * animationStaggerDelay) }
       }
     };
-  }, [useSimplifiedAnimations]);
+  }, [shouldAnimate, animationStaggerDelay]);
   
   // Group skills by security domain
   const groupedSkills = useMemo(() => {
@@ -172,8 +158,8 @@ const Skills = () => {
     return grouped;
   }, [skillsSection.softwareSkills]);
   
-  // Modal animations
-  const modalVariants = {
+  // Modal animations - use standard patterns from context when appropriate
+  const modalVariants = useMemo(() => ({
     hidden: { opacity: 0, scale: 0.8 },
     visible: { 
       opacity: 1, 
@@ -185,14 +171,10 @@ const Skills = () => {
       scale: 0.8,
       transition: { duration: 0.2 }
     }
-  };
+  }), []);
   
-  // Background overlay animations
-  const overlayVariants = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { duration: 0.2 } },
-    exit: { opacity: 0, transition: { duration: 0.2 } }
-  };
+  // Background overlay animations - simplified from context
+  const overlayVariants = useMemo(() => MotionVariants.fadeIn, []);
   
   // Handle skill card click
   const handleSkillClick = (skill) => {
@@ -224,7 +206,7 @@ const Skills = () => {
         id="skills"
         title="Skills"
         icon="simple-icons:apachespark"
-        className={`skills-section bg-gray-900 text-white ${useSimplifiedAnimations ? 'reduced-motion' : ''}`}
+        className={`skills-section bg-gray-900 text-white ${!shouldAnimate ? 'reduced-motion' : ''}`}
       >
         <div className="flex flex-wrap -mx-4 items-center">
           <div className="w-full px-4 lg:w-6/12">
@@ -329,7 +311,7 @@ const Skills = () => {
                     key={`skill-card-${skill.skillName}`}
                     skill={skill}
                     index={+index}
-                    reducedMotion={useSimplifiedAnimations}
+                    reducedMotion={!shouldAnimate}
                     onClick={handleSkillClick}
                   />
                 ))}

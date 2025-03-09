@@ -3,6 +3,9 @@
  * 
  * Styles for the DisplayLottie component responsible for rendering
  * Lottie animations with accessibility controls and optimizations.
+ * 
+ * Note: Animations and transitions are now managed by framer-motion
+ * through the AnimationContext.
  */
 
 /* Container for the Lottie animation */
@@ -24,16 +27,15 @@
   background-color: rgba(0, 0, 0, 0.6);
   padding: var(--spacing-1) var(--spacing-2);
   border-radius: var(--border-radius);
-  opacity: 0;
-  transition: var(--transition-base);
   z-index: var(--z-index-dropdown);
+  /* transition property removed - now handled by framer-motion */
 }
 
-/* Show controls on hover or when explicitly made visible */
-.lottie-container:hover .animation-controls,
+/* Control visibility now managed by framer-motion AnimatePresence */
+/* .lottie-container:hover .animation-controls,
 .lottie-container.controls-visible .animation-controls {
   opacity: 1;
-}
+} */
 
 /* Play/pause button styling */
 .animation-control-button {
@@ -48,15 +50,15 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: var(--transition-base);
+  /* transition property removed - now handled by framer-motion variants */
 }
 
-/* Hover state for control buttons */
-.animation-control-button:hover {
+/* Hover and focus states now managed by framer-motion */
+/* .animation-control-button:hover {
   background-color: var(--color-primary-dark);
-}
+} */
 
-/* Focus state for control buttons */
+/* Focus outline still maintained for accessibility */
 .animation-control-button:focus {
   outline: 2px solid var(--color-white);
   outline-offset: 2px;
@@ -84,7 +86,6 @@
 
 /* Accommodate users who prefer reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  .animation-controls {
-    opacity: 1; /* Always show controls for users who prefer reduced motion */
-  }
+  /* All animations are now controlled by AnimationContext 
+     which respects the prefers-reduced-motion setting */
 }

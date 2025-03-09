@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
 import { motion } from 'framer-motion';
+import { useAnimation } from '@context//AnimationContext';
 import './ScrollDown.css';
 
 /**
@@ -16,14 +17,60 @@ interface ScrollDownProps {
   label?: string;
   /** Additional CSS class names */
   className?: string;
+  /** Whether to animate the component */
+  animated?: boolean;
 }
 
-const ScrollDown = ({ onClick, label = '>>_NEXT', className = '' }: ScrollDownProps) => {
+const ScrollDown = ({ 
+  onClick, 
+  label = '>>_NEXT', 
+  className = '',
+  animated = true 
+}: ScrollDownProps) => {
+  // Get animation settings from context
+  const { animationEnabled } = useAnimation();
+  
+  // Only animate if both component prop and global setting allow it
+  const shouldAnimate = animated && animationEnabled;
+
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: 1,
+      transition: { delay: 1.5, duration: 0.8 }
+    }
+  };
+  
+  const dataFlowVariants = {
+    animate: {
+      opacity: [0, 1, 0],
+      y: [0, 48, 48],
+      transition: {
+        repeat: Infinity,
+        duration: 2,
+        ease: "linear",
+        times: [0, 0.5, 1]
+      }
+    }
+  };
+  
+  const labelVariants = {
+    animate: {
+      opacity: [1, 0.5, 1],
+      transition: {
+        repeat: Infinity,
+        duration: 2,
+        ease: "linear"
+      }
+    }
+  };
+
   return (
     <motion.button
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: 1.5, duration: 0.8 }}
+      initial={shouldAnimate ? "hidden" : false}
+      animate={shouldAnimate ? "visible" : false}
+      variants={containerVariants}
       className={`scroll-down-container group ${className}`}
       onClick={onClick}
       aria-label={label}
@@ -35,16 +82,7 @@ const ScrollDown = ({ onClick, label = '>>_NEXT', className = '' }: ScrollDownPr
           <div className="relative w-px h-full bg-theme-cyan/20">
             {/* Animated data points */}
             <motion.div
-              animate={{
-                opacity: [0, 1, 0],
-                y: [0, 48, 48]
-              }}
-              transition={{
-                repeat: Infinity,
-                duration: 2,
-                ease: "linear",
-                times: [0, 0.5, 1]
-              }}
+              animate={shouldAnimate ? dataFlowVariants.animate : false}
               className="absolute top-0 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
             >
               <div className="w-3 h-0.5 bg-theme-cyan data-point"></div>
@@ -73,14 +111,7 @@ const ScrollDown = ({ onClick, label = '>>_NEXT', className = '' }: ScrollDownPr
         {/* Label */}
         <motion.div 
           className="mt-2 terminal-text"
-          animate={{
-            opacity: [1, 0.5, 1]
-          }}
-          transition={{
-            repeat: Infinity,
-            duration: 2,
-            ease: "linear"
-          }}
+          animate={shouldAnimate ? labelVariants.animate : false}
         >
           <span className="text-xs font-mono text-theme-cyan tracking-widest">
             {label}

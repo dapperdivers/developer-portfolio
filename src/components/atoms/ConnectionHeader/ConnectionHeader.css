@@ -1,4 +1,6 @@
-/* ConnectionHeader component styles */
+/* ConnectionHeader component styles 
+ * Animations are now handled by framer-motion through the AnimationContext
+ */
 
 .secure-connection-start {
   display: flex;
@@ -26,7 +28,7 @@
   margin-right: 15px;
   position: relative;
   box-shadow: 0 0 8px var(--color-accent, #05d5fa);
-  animation: pulse 2s infinite;
+  /* Animation removed - now handled by framer-motion */
 }
 
 .secure-label {
@@ -46,7 +48,7 @@
   left: 0;
   transform: translateY(-50%);
   opacity: 0;
-  animation: scanLine 3s infinite;
+  /* Animation removed - now handled by framer-motion */
 }
 
 .status-code {
@@ -108,35 +110,4 @@
   color: var(--color-warning, #ffcc00);
 }
 
-/* Animations */
-@keyframes pulse {
-  0% {
-    opacity: 0.6;
-    transform: scale(0.8);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.2);
-  }
-  100% {
-    opacity: 0.6;
-    transform: scale(0.8);
-  }
-}
-
-@keyframes scanLine {
-  0% {
-    opacity: 0;
-    left: 0;
-  }
-  20% {
-    opacity: 0.5;
-  }
-  80% {
-    opacity: 0.5;
-  }
-  100% {
-    opacity: 0;
-    left: 100%;
-  }
-} 
+/* Animation keyframes removed - now handled by framer-motion */ 

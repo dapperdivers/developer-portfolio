@@ -7,6 +7,7 @@ import GithubProfileCard from '@molecules/GithubProfileCard';
 import { motion } from "framer-motion";
 import Section from '@layout/Section';
 import envConfig from '@utils/envConfig';
+import { useAnimation } from "@context/AnimationContext";
 import './GithubProfile.css';
 
 // Create axios instance with base configuration
@@ -39,6 +40,9 @@ const GithubProfile = ({ id = 'contact' }) => {
     const [loading, setLoading] = useState(true);
     const [retryCount, setRetryCount] = useState(0);
 
+    // Use animation context for animation values
+    const { slideUpVariants, fadeInVariants, animationEnabled } = useAnimation();
+
     // Validate GitHub username
     const validateGithubUsername = (username) => {
         const githubUsernameRegex = /^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i;
@@ -62,14 +66,6 @@ const GithubProfile = ({ id = 'contact' }) => {
     // Handle retry action
     const handleRetry = () => {
         setRetryCount(prevCount => prevCount + 1);
-    };
-
-    // Animation config for framer-motion
-    const animation = {
-        initial: { opacity: 0, y: 40 },
-        whileInView: { opacity: 1, y: 0 },
-        viewport: { once: true, margin: "-50px" },
-        transition: { duration: 0.5 }
     };
 
     useEffect(() => {
@@ -143,21 +139,25 @@ const GithubProfile = ({ id = 'contact' }) => {
         <Section
             id={id}
             title="Contact Me"
-            animation={animation}
             className="github-profile-section"
             data-testid="github-profile-section"
         >
             <Suspense fallback={<div className="py-20 text-center"><Loading /></div>}>
                 <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
+                    variants={slideUpVariants}
+                    initial={animationEnabled ? "hidden" : "visible"}
+                    animate="visible"
                     className="mt-8"
                 >
                     {loading ? (
-                        <div className="min-h-[300px] flex items-center justify-center">
+                        <motion.div 
+                            className="min-h-[300px] flex items-center justify-center"
+                            variants={fadeInVariants}
+                            initial="hidden"
+                            animate="visible"
+                        >
                             <Loading />
-                        </div>
+                        </motion.div>
                     ) : (
                         <GithubProfileCard 
                             prof={prof} 

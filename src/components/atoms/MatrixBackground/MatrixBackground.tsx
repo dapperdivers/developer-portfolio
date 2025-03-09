@@ -1,5 +1,7 @@
 import React, { FC, memo, useMemo } from 'react';
+import { motion, Variants } from 'framer-motion';
 import './MatrixBackground.css';
+import { useAnimation, MotionVariants } from '@context//AnimationContext';
 // No longer need direct import for debugging - it's handled centrally in App.jsx
 
 export interface MatrixBackgroundProps {
@@ -22,35 +24,50 @@ const MatrixBackground: FC<MatrixBackgroundProps & { __debug?: any }> = ({
   randomPositioning = true,
   __debug // Debug props can still be received if registered centrally
 }) => {
+  // Get animation context
+  const { animationEnabled } = useAnimation();
+  
   // Memoize the matrix characters to prevent unnecessary re-renders
   const matrixCharacters = useMemo(() => {
     return Array(characterCount).fill(null).map((_, i) => {
-      const style = randomPositioning ? {
+      const customProps = randomPositioning ? {
         left: `${Math.random() * 100}%`,
         top: `${Math.random() * 100}%`,
-        animationDelay: `${Math.random() * 5}s`,
+        delay: Math.random() * 5,
         opacity: Math.random() * 0.5 + 0.1
       } : {
-        animationDelay: `${i * 0.1}s`,
+        delay: i * 0.1,
         opacity: 0.3
       };
       
       return (
-        <div 
+        <motion.div 
           key={`matrix-char-${i}`}
           className="matrix-char"
-          style={style}
+          variants={MotionVariants.item}
+          initial="hidden"
+          animate="visible"
+          custom={customProps}
+          style={{ 
+            left: customProps.left, 
+            top: customProps.top
+          }}
         >
           {Math.random() > 0.5 ? '1' : '0'}
-        </div>
+        </motion.div>
       );
     });
   }, [characterCount, randomPositioning]);
   
   return (
-    <div className="matrix-background">
+    <motion.div 
+      className="matrix-background"
+      variants={MotionVariants.container}
+      initial="hidden"
+      animate="visible"
+    >
       {matrixCharacters}
-    </div>
+    </motion.div>
   );
 };
 

@@ -2,6 +2,7 @@
  * SkeletonCard Component
  * 
  * Styles for the skeleton loading cards with security-themed variants.
+ * Note: Animations are now managed by framer-motion through the AnimationContext
  */
 
 /* Base skeleton card */
@@ -12,7 +13,7 @@
   border-radius: var(--border-radius);
   padding: 1rem;
   margin-bottom: 1rem;
-  animation: fadeIn 0.5s ease forwards;
+  /* Animation removed - now handled by framer-motion */
 }
 
 /* Security-themed skeleton cards */
@@ -186,7 +187,7 @@
   border: 1px dashed rgba(var(--color-cyan-rgb), 0.2);
 }
 
-/* Shimmer effect overlay */
+/* Shimmer effect overlay - static styling, animation now handled by framer-motion */
 .skeleton-shimmer {
   position: absolute;
   top: 0;
@@ -200,7 +201,7 @@
     rgba(255, 255, 255, 0) 100%
   );
   background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
+  /* Animation removed - now handled by framer-motion */
 }
 
 /* Security-themed shimmer */
@@ -212,7 +213,7 @@
     rgba(var(--color-cyan-rgb), 0) 100%
   );
   background-size: 200% 100%;
-  animation: shimmer 2s infinite;
+  /* Animation removed - now handled by framer-motion */
 }
 
 /* Terminal-themed shimmer */
@@ -224,32 +225,22 @@
     rgba(var(--color-navy-rgb), 0) 100%
   );
   background-size: 200% 100%;
-  animation: shimmer 3s infinite;
+  /* Animation removed - now handled by framer-motion */
 }
 
-/* Animations */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
+/* 
+ * Animations removed - now implemented with framer-motion variants
+ * @keyframes fadeIn {...}
+ * @keyframes shimmer {...}
+ */
 
-@keyframes shimmer {
-  to {
-    background-position: -200% 0;
-  }
-}
-
-/* Reduce motion */
+/* Reduced motion preferences - No longer needed as handled by AnimationContext */
 @media (prefers-reduced-motion: reduce) {
   [class*="-card-skeleton"] {
-    animation: fadeIn 0.5s ease forwards;
+    /* No CSS animations to disable - framer-motion handles reduced motion preferences */
   }
   
   .skeleton-shimmer {
-    animation-duration: 3s;
+    /* No CSS animations to disable - framer-motion handles reduced motion preferences */
   }
 }

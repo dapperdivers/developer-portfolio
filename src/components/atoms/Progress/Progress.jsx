@@ -1,5 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { motion } from 'framer-motion';
+import { useAnimation } from '@context/AnimationContext';
+import './Progress.css';
 
 /**
  * Custom Progress component with security-themed variants
@@ -31,10 +34,41 @@ const Progress = ({
   size = "",
   ...rest
 }) => {
+  const { animationEnabled, shouldReduceMotion } = useAnimation();
+  
   // Convert string values to numbers if needed and calculate width as percentage
   const numericValue = typeof value === 'string' ? parseFloat(value) : value;
   const numericMax = typeof max === 'string' ? parseFloat(max) : max;
   const percent = Math.round((numericValue / numericMax) * 100);
+  
+  // Define animation variants
+  const progressVariants = {
+    initial: { 
+      width: '0%'
+    },
+    animate: { 
+      width: `${percent}%`,
+      transition: {
+        duration: 0.8,
+        ease: "easeOut"
+      }
+    }
+  };
+  
+  const stripesVariants = {
+    static: {
+      backgroundPosition: "1rem 0"
+    },
+    animated: {
+      backgroundPosition: ["1rem 0", "0 0"],
+      transition: {
+        duration: 1,
+        ease: "linear",
+        repeat: Infinity,
+        repeatType: "loop"
+      }
+    }
+  };
   
   // Construct class names
   const baseClassName = "tailwind-progress";
@@ -52,28 +86,41 @@ const Progress = ({
     barBaseClassName,
     colorClassName,
     striped ? 'tailwind-progress-striped' : '',
-    animated ? 'tailwind-progress-animated' : '',
+    // Remove animated class as we'll handle it with framer-motion
     barClassName
   ].filter(Boolean).join(' ');
   
   return (
-    <div 
+    <motion.div 
       className={combinedClassName} 
       style={style}
       role="progressbar"
       aria-valuenow={numericValue}
       aria-valuemin={0} 
       aria-valuemax={numericMax}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3 }}
       {...rest}
     >
-      <div 
+      <motion.div 
         className={combinedBarClassName} 
-        style={{ width: `${percent}%` }}
+        variants={progressVariants}
+        initial="initial"
+        animate="animate"
+        // Apply stripes animation if animated is true and not reduced motion
+        {...(striped && animated && animationEnabled && !shouldReduceMotion ? {
+          variants: stripesVariants,
+          animate: "animated",
+        } : striped ? {
+          variants: stripesVariants,
+          animate: "static"
+        } : {})}
       />
       <span className="tailwind-progress-label">
         {percent}% complete
       </span>
-    </div>
+    </motion.div>
   );
 };
 

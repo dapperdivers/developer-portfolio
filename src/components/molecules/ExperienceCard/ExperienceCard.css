@@ -1,6 +1,7 @@
 /**
  * ExperienceCard Component Styles
  * Styling for the experience card within timeline entries
+ * Animations now handled by framer-motion
  */
 
 /* Base styles */
@@ -8,7 +9,6 @@
   position: relative;
   width: 100%;
   padding: var(--spacing-4);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
   color: var(--color-text);
   background-color: var(--color-card-bg);
   overflow: hidden;
@@ -41,7 +41,6 @@
   overflow: hidden;
   background-color: var(--color-background-alt);
   border-radius: var(--border-radius-sm);
-  transition: transform 0.3s ease;
 }
 
 /* Logo styling */
@@ -135,23 +134,6 @@
   
   .experience-card__bullet-item {
     font-size: var(--font-size-xs);
-  }
-}
-
-/* Animation styles */
-.experience-card:hover .experience-card__logo-container {
-  transform: scale(1.05);
-}
-
-/* Reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  .experience-card,
-  .experience-card__logo-container {
-    transition: none;
-  }
-  
-  .experience-card:hover .experience-card__logo-container {
-    transform: none;
   }
 }
 

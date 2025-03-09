@@ -74,6 +74,7 @@ html, body {
   contain: layout style paint;
 }
 
+/* Effect layer */
 .effect-layer {
   position: absolute;
   top: 0;
@@ -83,8 +84,7 @@ html, body {
   /* Improved containment to reduce painting */
   contain: strict;
   transform: translate3d(0, 0, 0);
-  /* Reduce animation frame rate on lower-end devices */
-  animation-timeline: auto;
+  /* Remove animation properties, handled by framer-motion */
 }
 
 /* Circuit grid overlay - optimized for performance */

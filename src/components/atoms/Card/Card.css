@@ -4,6 +4,7 @@
  * Styles for the Card component following atomic design principles.
  * Uses design tokens for consistent styling across the application.
  * Updated with security-themed variants.
+ * Animations now handled by framer-motion.
  */
 
 .card {
@@ -46,7 +47,7 @@
   box-shadow: 0 4px 14px rgba(var(--color-navy-rgb), 0.5), 0 0 0 1px rgba(var(--color-cyan-rgb), 0.1);
 }
 
-/* Hoverable card */
+/* Hoverable card - transition handled by framer-motion */
 .card-hoverable:hover {
   transform: translateY(-5px);
   box-shadow: var(--box-shadow-lg);
@@ -212,8 +213,8 @@
   color: var(--color-gray-400);
 }
 
-/* Card animations */
-@keyframes cardFadeIn {
+/* Card animations - now handled by framer-motion */
+/* @keyframes cardFadeIn {
   from {
     opacity: 0;
     transform: translateY(20px);
@@ -222,7 +223,7 @@
     opacity: 1;
     transform: translateY(0);
   }
-}
+} */
 
 /* Accessibility: Focus outline */
 .card:focus-within {

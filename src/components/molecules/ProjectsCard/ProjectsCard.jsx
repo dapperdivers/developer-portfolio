@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import Card from '@atoms/Card';
 import Button from '@atoms/Button';
 import ResponsiveImage from '@atoms/ResponsiveImage';
-import useIntersectionObserver from "@hooks/useIntersectionObserver";
-
+import { useInView } from "framer-motion";
+import { useAnimation } from "@context/AnimationContext";
 
 /**
  * Project card component for displaying individual project information.
@@ -22,10 +22,15 @@ import useIntersectionObserver from "@hooks/useIntersectionObserver";
  * @returns {React.ReactElement} ProjectsCard component
  */
 const ProjectsCard = ({ data, index = 0 }) => {
-    const [ref, isInView] = useIntersectionObserver({ 
-      threshold: 0.1,
-      rootMargin: "-50px 0px" 
+    const ref = React.useRef(null);
+    const isInView = useInView(ref, { 
+      once: true,
+      amount: 0.1,
+      margin: "-50px 0px"
     });
+    
+    // Get animation context values
+    const { animationEnabled, slideUpVariants, animationStaggerDelay } = useAnimation();
     
     // Only use the image if it's explicitly provided
     const hasImage = !!data.image;
@@ -33,26 +38,28 @@ const ProjectsCard = ({ data, index = 0 }) => {
     // Extract tech stack from data or use defaults
     const techStack = data.stack || [];
     
-    // Memoize animation configuration to prevent unnecessary re-renders
-    const animation = useMemo(() => ({
-      initial: { opacity: 0, y: 30 },
-      animate: isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 },
-      transition: { 
-        duration: 0.5, 
-        delay: 0.1 * (index % 3), 
-        ease: "easeOut",
-        // Optimize performance by using hardware acceleration
-        type: "tween",
-        // Use only transforms for better performance
-        translateY: true
+    // Customize the slide up variants with index-based delay
+    const cardVariants = useMemo(() => ({
+      hidden: { ...slideUpVariants.hidden },
+      visible: { 
+        ...slideUpVariants.visible,
+        transition: {
+          ...slideUpVariants.visible.transition,
+          delay: animationStaggerDelay * (index % 4), 
+        }
       }
-    }), [isInView, index]);
+    }), [slideUpVariants, index, animationStaggerDelay]);
+
+    // Skip animations if disabled at the context level
+    const shouldAnimate = animationEnabled && isInView;
   
     return (
       <div className="project-card" ref={ref}>
         <Card 
           className="h-100"
-          animation={animation}
+          variants={cardVariants}
+          initial={animationEnabled ? "hidden" : "visible"}
+          animate={shouldAnimate ? "visible" : "hidden"}
           hoverable
           shadow
         >
@@ -98,6 +105,7 @@ const ProjectsCard = ({ data, index = 0 }) => {
                   Code
                 </Button>
               )}
+              
               {data.link && (
                 <Button
                   className="project-button demo-button"

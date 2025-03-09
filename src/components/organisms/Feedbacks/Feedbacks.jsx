@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import FeedbackCard from '@molecules/FeedbackCard';
 import Section from '@layout/Section';
 import useFeedback from "@hooks/useFeedback";
+import { useAnimation } from "@context/AnimationContext";
 
 /**
  * Feedbacks section displaying testimonials and recommendations.
@@ -12,13 +13,16 @@ import useFeedback from "@hooks/useFeedback";
  */
 const Feedbacks = () => {
   const feedbacks = useFeedback();
+  const { animationEnabled, slideUpVariants } = useAnimation();
   
-  // Animation config for framer-motion
+  // Animation config for framer-motion using AnimationContext
   const animation = {
-    initial: { opacity: 0, y: 40 },
-    whileInView: { opacity: 1, y: 0 },
+    variants: slideUpVariants,
+    initial: "hidden",
+    whileInView: "visible",
     viewport: { once: true, margin: "-50px" },
-    transition: { duration: 0.5 }
+    // Use the animation context to determine if animations should be enabled
+    animate: animationEnabled ? undefined : "visible"
   };
 
   // Skip rendering if no feedbacks are available

@@ -2,6 +2,7 @@
  * Projects Organism Styles
  *
  * Styles for the Projects component following atomic design principles
+ * Animations are now handled by framer-motion through the AnimationContext
  */
 
 /* Projects Section */
@@ -38,6 +39,7 @@
   background-color: var(--color-skeleton-bg);
   position: relative;
   overflow: hidden;
+  /* Animation removed - now handled by framer-motion */
 }
 
 .skeleton-content {
@@ -55,6 +57,7 @@
   margin-bottom: var(--spacing-2);
   position: relative;
   overflow: hidden;
+  /* Animation removed - now handled by framer-motion */
 }
 
 .skeleton-description {
@@ -64,6 +67,7 @@
   margin-bottom: var(--spacing-2);
   position: relative;
   overflow: hidden;
+  /* Animation removed - now handled by framer-motion */
 }
 
 .skeleton-tags {
@@ -80,6 +84,7 @@
   background-color: var(--color-skeleton-bg);
   position: relative;
   overflow: hidden;
+  /* Animation removed - now handled by framer-motion */
 }
 
 .skeleton-tags::before {
@@ -104,6 +109,7 @@
   background-color: var(--color-skeleton-bg);
   position: relative;
   overflow: hidden;
+  /* Animation removed - now handled by framer-motion */
 }
 
 .skeleton-actions::before {
@@ -114,15 +120,7 @@
   width: 100px;
 }
 
-/* Skeleton animation */
-@keyframes skeleton-loading {
-  0% {
-    background-position: -200px 0;
-  }
-  100% {
-    background-position: calc(200px + 100%) 0;
-  }
-}
+/* Skeleton animation keyframes removed - now handled by framer-motion */
 
 /* Responsive styles */
 @media (max-width: 992px) {
@@ -160,7 +158,5 @@
 
 /* Accessibility - Reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  .project-card-skeleton * {
-    animation: none !important;
-  }
+  /* All animations are now controlled by AnimationContext which respects user preferences */
 } 

@@ -1,5 +1,5 @@
-import React, { memo, useMemo, FC, useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { memo, useMemo, FC, useState, useRef } from 'react';
+import { motion, useInView } from 'framer-motion';
 import ExperienceCard from '@molecules/ExperienceCard';
 import Card from '@atoms/Card';
 import { TimelineNode } from '@atoms/TimelineCore';
@@ -9,6 +9,7 @@ import SecurityBadge from '@atoms/SecurityBadge/SecurityBadge';
 import TerminalControls from '@atoms/TerminalControls/TerminalControls';
 import TechBadge from '@atoms/TechBadge/TechBadge';
 import useTimelineAnimation from '@hooks/useTimelineAnimation';
+import { useAnimation, MotionVariants } from '@context/AnimationContext';
 import './TimelineEntry.css';
 
 export interface TimelineEntryProps {
@@ -51,10 +52,16 @@ const TimelineEntry: FC<TimelineEntryProps> = ({
   id
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const componentRef = useRef(null);
+  const isInView = useInView(componentRef, { once: true, amount: 0.2 });
+  
+  // Get animation context
+  const { animationEnabled, getAnimationDelay } = useAnimation();
   
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
   };
+  
   // Use the animation hook for all animation-related logic
   const {
     entryRef,
@@ -98,333 +105,180 @@ const TimelineEntry: FC<TimelineEntryProps> = ({
   const sessionId = useMemo(() => {
     const hash = Math.abs(
       data.company.split('').reduce((acc, char) => {
-        return (acc * 31 + char.charCodeAt(0)) & 0xffffffff;
+        return (acc << 5) - acc + char.charCodeAt(0) >>> 0;
       }, 0)
-    ).toString(16).toUpperCase().padStart(8, '0');
-    return `0x${hash}`;
+    ).toString(16).substring(0, 8);
+    return `session-${hash}`;
   }, [data.company]);
-
-  // Parse tech keywords from description
-  const techKeywords = useMemo(() => {
-    const keywords = [];
-    const text = data.desc.toLowerCase();
-    
-    if (text.includes('react')) keywords.push('React');
-    if (text.includes('angular')) keywords.push('Angular');
-    if (text.includes('vue')) keywords.push('Vue');
-    if (text.includes('node')) keywords.push('Node.js');
-    if (text.includes('typescript') || text.includes(' ts ')) keywords.push('TypeScript');
-    if (text.includes('javascript') || text.includes(' js ')) keywords.push('JavaScript');
-    if (text.includes('python')) keywords.push('Python');
-    if (text.includes('php')) keywords.push('PHP');
-    if (text.includes('laravel')) keywords.push('Laravel');
-    if (text.includes('aws')) keywords.push('AWS');
-    if (text.includes('azure')) keywords.push('Azure');
-    if (text.includes('google cloud') || text.includes('gcp')) keywords.push('GCP');
-    if (text.includes('docker')) keywords.push('Docker');
-    if (text.includes('kubernetes') || text.includes(' k8s ')) keywords.push('Kubernetes');
-    if (text.includes('ci/cd') || text.includes('cicd') || text.includes('devops')) keywords.push('CI/CD');
-    if (text.includes('.net') || text.includes('dotnet') || text.includes('c#')) keywords.push('.NET');
-    if (text.includes('sql')) keywords.push('SQL');
-    
-    // Add role-based keywords if not detected in text
-    if (data.role.toLowerCase().includes('frontend') && !keywords.includes('React')) keywords.push('React');
-    if (data.role.toLowerCase().includes('backend') && !keywords.includes('Node.js')) keywords.push('Node.js');
-    if (data.role.toLowerCase().includes('full') && !keywords.includes('Full Stack')) keywords.push('Full Stack');
-    if ((data.role.toLowerCase().includes('security') || data.role.toLowerCase().includes('cyber')) && 
-        !keywords.includes('Security')) keywords.push('Security');
-    
-    // Ensure we have at least some tech badges
-    if (keywords.length === 0) {
-      keywords.push(index % 2 === 0 ? 'JavaScript' : 'TypeScript');
-      keywords.push('Web Dev');
-    }
-    
-    // Limit to at most 5 keywords
-    return keywords.slice(0, 5);
-  }, [data.desc, data.role, index]);
-
-  // Create binary code decorations
-  const binaryCode = useMemo(() => {
-    const chars = '01';
-    let result = '';
-    const length = 50 + Math.floor(Math.random() * 50);
-    
-    for (let i = 0; i < length; i++) {
-      result += chars.charAt(Math.floor(Math.random() * chars.length));
-      if (i % 8 === 7) result += ' ';
-      if (i % 32 === 31) result += '\n';
-    }
-    
-    return result;
-  }, []);
-
+  
+  // Create an animated timeline entry
   return (
     <motion.div 
-      className="timeline-entry"
-      ref={entryRef}
-      style={{ 
-        transitionDelay: animationDelay
-      }}
+      className="timeline-entry" 
+      ref={componentRef}
+      variants={MotionVariants.timeline.entry}
       initial="hidden"
-      animate={isEntryInView ? "visible" : "hidden"}
-      variants={slideVariants}
-      viewport={{ once: true, margin: "-50px 0px" }}
+      animate={isInView && animationEnabled ? "visible" : "hidden"}
+      transition={{ delay: index * 0.3 }}
     >
       <div className="timeline-connector">
-        <div className="node-container">
-          <div className="node-data-line node-data-line-top"></div>
-          <TimelineNode
-            id={`timeline-node-${index}`}
-            variant={(variant || "security") as '' | 'security' | 'terminal'}
-            animated={true}
-            active={isVerified}
-            size="md"
-            interactive={false}
-            style={{
-              opacity: isEntryInView ? 1 : 0,
-              transform: isEntryInView ? 'scale(1)' : 'scale(0)',
-              transition: 'all 0.4s ease'
-            }}
-            aria-label={`Timeline node for ${data.company} experience`}
-          />
-          <div className="node-data-line node-data-line-bottom"></div>
-        </div>
-        <div className="timeline-line">
-          <div className="timeline-line-packet"></div>
-        </div>
-      </div>
-      
-      <div className="timeline-date-container">
-        <DateBubble
-          date={extractDateYear(data.date)}
-          level={index % 3 === 0 ? 'low' : (index % 3 === 1 ? 'medium' : 'high')}
-          variant={(variant || "security") as '' | 'security' | 'terminal'}
-          size="md"
-          animation={bubbleVariants}
-          aria-label={`Work period: ${data.date}`}
-        />
-      </div>
-      
-      <div 
-        className={`timeline-card-container ${isExpanded ? 'expanded' : 'compact'}`}
-        onClick={toggleExpand}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            toggleExpand();
-            e.preventDefault();
-          }
-        }}
-        tabIndex={0}
-        role="button"
-        aria-expanded={isExpanded}
-        aria-label={`Experience at ${data.company} as ${data.role}`}
-      >
-        <Card
-          variant={(variant || "security") as '' | 'security' | 'terminal'}
-          shadow
-          header={cardHeader}
-          className="timeline-card"
+        <motion.div 
+          className="node-container"
+          variants={MotionVariants.timeline.connector}
+          initial="hidden"
+          animate={isInView && animationEnabled ? "visible" : "hidden"}
+          transition={{ delay: index * 0.3 + 0.1 }}
         >
-          {/* Security verification badge */}
-          <SecurityBadge 
-            verified={isVerified}
-            variant={(variant || "security") as '' | 'security' | 'terminal'}
-            securityId={securityId}
-            animation={securityBadgeVariants}
+          <DateBubble date={extractDateYear(data.date)} />
+          
+          <motion.div
+            className="node-data-line node-data-line-top"
+            variants={MotionVariants.timeline.nodeLine}
+            initial="hidden"
+            animate={isInView && animationEnabled ? "visible" : "hidden"}
+            transition={{ delay: index * 0.3 + 0.2 }}
+          >
+            <motion.span 
+              className="data-packet"
+              variants={MotionVariants.timeline.dataFlow}
+              initial="hidden"
+              animate={isInView && animationEnabled ? "visible" : "hidden"}
+            />
+          </motion.div>
+          
+          <TimelineNode active={isEntryInView} />
+          
+          <motion.div
+            className="node-data-line node-data-line-bottom"
+            variants={MotionVariants.timeline.nodeLine}
+            initial="hidden"
+            animate={isInView && animationEnabled ? "visible" : "hidden"}
+            transition={{ delay: index * 0.3 + 0.2 }}
+          >
+            <motion.span 
+              className="data-packet"
+              variants={MotionVariants.timeline.dataFlow}
+              initial="hidden"
+              animate={isInView && animationEnabled ? "visible" : "hidden"}
+            />
+          </motion.div>
+        </motion.div>
+        
+        <motion.div 
+          className="timeline-line"
+          variants={MotionVariants.timeline.line}
+          initial="hidden"
+          animate={isInView && animationEnabled ? "visible" : "hidden"}
+          transition={{ delay: index * 0.3 + 0.15 }}
+        >
+          <motion.div 
+            className="timeline-line-packet"
+            variants={MotionVariants.timeline.dataFlow}
+            initial="hidden"
+            animate={isInView && animationEnabled ? "visible" : "hidden"}
           />
+        </motion.div>
+      </div>
 
-          <div className="terminal-content">
-            {/* Command: AUTH with enhanced cyberpunk elements */}
-            <div className="command-prompt">
-              <span className="command-prompt-symbol">$</span>
-              <span className={`command-text ${isEntryInView ? '' : 'typing'}`}>
-                AUTH {sessionId} "{data.company}"
-              </span>
-              <span className="command-access-level">[LEVEL {index % 5 + 1}]</span>
-            </div>
-            
-            {/* Response: Position & Timeline with cyberpunk enhancements */}
-            <div className="command-response">
-              <div className="authentication-message">
-                AUTHENTICATION VERIFIED - ACCESS GRANTED
-                <span className="auth-status-code">[0x{Math.floor(Math.random() * 0xFFFFFF).toString(16).toUpperCase().padStart(6, '0')}]</span>
-              </div>
-              <div>{'>'} POSITION: <span className="highlight-value">{data.role}</span></div>
-              <div>{'>'} TIMELINE: <span className="highlight-value">{data.date}</span></div>
-              <div>{'>'} SECURITY CLEARANCE: <span className="highlight-value blink-slow">AUTHORIZED</span></div>
-            </div>
-            
-            {/* Company Logo */}
-            {data.companylogo && (
-              <div className="company-logo-container">
-                <img
-                  className="company-logo"
-                  src={data.companylogo}
-                  alt={`${data.company} logo`}
-                  loading="lazy"
-                  width={80}
-                  height={80}
-                />
-              </div>
-            )}
-            
-            {/* Command: DISPLAY RESPONSIBILITIES with enhanced styling */}
-            <div className="command-prompt">
-              <span className="command-prompt-symbol">$</span>
-              <span className="command-text">
-                DISPLAY_RESPONSIBILITIES --format=secure --decrypt
-              </span>
-              <span className="command-status">[EXECUTED]</span>
-            </div>
-            
-            {/* Display job description with enhanced cyberpunk styling */}
-            <div className="command-response responsibilities-response">
-              {!isExpanded ? (
-                <div className="compact-view">
-                  {/* Decryption message for compact view */}
-                  <div className="decrypt-message">
-                    <div className="decrypt-status">
-                      <span className="decrypt-icon"></span>
-                      DECRYPTION COMPLETE - SUMMARY VIEW
-                    </div>
-                  </div>
-                  
-                  {/* Show brief summary in compact mode */}
-                  <div className="compact-description">
-                    {/* Show first line of description (truncated if needed) */}
-                    <div className="compact-summary">
-                      <span className="highlight-prefix">[SUMMARY]</span> {data.desc.split('.')[0].trim() + '.'}
+      <div className="timeline-date-container">
+        <motion.div 
+          className={`timeline-card-container ${isExpanded ? 'expanded' : 'compact'}`}
+          variants={MotionVariants.timeline.card}
+          initial="hidden"
+          animate={isInView && animationEnabled ? "visible" : (isExpanded ? "expanded" : "visible")}
+          transition={{ delay: index * 0.3 + 0.25 }}
+          onClick={toggleExpand}
+        >
+          {variant === 'terminal' ? (
+            // Terminal-style card
+            <Card className="timeline-card terminal-card">
+              {cardHeader}
+              <div className="terminal-content">
+                <div className="compact-summary">
+                  <span className="command-prompt-symbol">$</span>
+                  <motion.span 
+                    className="command-text"
+                    variants={MotionVariants.timeline.typing}
+                    initial="hidden"
+                    animate={isInView && animationEnabled ? "visible" : "hidden"}
+                    transition={{ delay: index * 0.3 + 0.4 }}
+                  >
+                    view job --role="{data.role}" --company="{data.company}"
+                  </motion.span>
+                  <motion.span 
+                    className="cursor"
+                    variants={MotionVariants.timeline.cursor}
+                    initial="hidden"
+                    animate={isInView && animationEnabled ? "visible" : "hidden"}
+                  >
+                    |
+                  </motion.span>
+                </div>
+                
+                {isExpanded && (
+                  <motion.div 
+                    className="expanded-content"
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <div className="company-logo-container">
+                      <img
+                        className="company-logo"
+                        src={data.companylogo}
+                        alt={`${data.company} logo`}
+                      />
                     </div>
                     
-                    {/* Show key technologies in compact view */}
-                    <div className="tech-stack compact-tech-stack">
-                      {techKeywords.slice(0, 3).map((keyword, i) => (
-                        <TechBadge 
-                          key={`tech-compact-${i}`}
-                          label={keyword} 
-                          variant={(variant || "security") as '' | 'security' | 'terminal'}
-                          level={keyword === 'Security' ? 'high' : undefined}
-                          size="sm"
-                        />
-                      ))}
+                    <div className="description-text">
+                      {data.desc}
                     </div>
-                  </div>
-                  <div className="expand-collapse-hint">
-                    <span className="expand-icon">⤢</span> Click to access full data <span className="expand-icon">⤢</span>
-                  </div>
-                </div>
-              ) : (
-                <>
-                  {/* Decryption message for expanded view */}
-                  <div className="decrypt-message">
-                    <div className="decrypt-status">
-                      <span className="decrypt-icon"></span>
-                      DECRYPTION COMPLETE - FULL DETAILS
-                    </div>
-                    <div className="decrypt-id">DOCUMENT ID: FILE-{securityId.substring(2, 8)}</div>
-                  </div>
-                  
-                  <div className="description-text">
-                    <span className="highlight-prefix">[DETAILS]</span> {data.desc}
-                  </div>
-                  
-                  {/* Display bullets with enhanced styling if available - only shown when expanded */}
-                  {data.descBullets && data.descBullets.length > 0 && (
-                    <>
-                      <div className="responsibilities-header">KEY RESPONSIBILITIES:</div>
+                    
+                    {data.descBullets && data.descBullets.length > 0 && (
                       <ul className="description-bullets">
-                        {data.descBullets.map((item, i) => (
-                          <li key={`bullet-${i}`} className="description-bullet-item">
-                            <span className="bullet-counter">{(i + 1).toString().padStart(2, '0')}</span>
-                            {item}
+                        {data.descBullets.map((bullet, i) => (
+                          <li key={i} className="description-bullet-item">
+                            {bullet}
                           </li>
                         ))}
                       </ul>
-                    </>
-                  )}
-                  
-                  {/* Show expand/collapse hint */}
-                  <div className="expand-collapse-hint">
-                    <span className="collapse-icon">⤡</span> Click to minimize data <span className="collapse-icon">⤡</span>
-                  </div>
-                </>
-              )}
-            </div>
-            
-            {/* Command: VERIFY TECHNOLOGIES - Shown in expanded view with enhanced cyberpunk styling */}
-            {isExpanded && (
-              <>
-                <div className="command-prompt tech-verify-command">
-                  <span className="command-prompt-symbol">$</span>
-                  <span className="command-text">
-                    VERIFY_TECHNOLOGIES --scan --authenticate
-                  </span>
-                  <span className="command-status">[VERIFIED]</span>
-                </div>
+                    )}
+                    
+                    <div className="tech-stack">
+                      <div className="tech-verification-header">
+                        <div className="tech-scan-status">TECH SCAN COMPLETE</div>
+                        <div className="tech-scan-id">ID: {sessionId}</div>
+                      </div>
+                      <div className="tech-stack-response">
+                        <TechBadge label="React" />
+                        <TechBadge label="TypeScript" />
+                        <TechBadge label="Node.js" />
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
                 
-                {/* Tech stack badges with enhanced cyberpunk styling */}
-                <div className="command-response tech-stack-response">
-                  <div className="tech-verification-header">
-                    <div className="tech-scan-status">
-                      <span className="tech-scan-icon"></span>
-                      SCANNING COMPLETE - {techKeywords.length} TECHNOLOGIES IDENTIFIED
-                    </div>
-                    <div className="tech-scan-id">
-                      SECURITY LEVEL: {techKeywords.some(k => k === 'Security') ? 'HIGH' : 'STANDARD'}
-                      <span className="security-timestamp">{new Date().toISOString().replace('T', ' ').substring(0, 19)}</span>
-                    </div>
-                  </div>
-                  
-                  <div className="tech-stack">
-                    {techKeywords.map((keyword, i) => (
-                      <TechBadge 
-                        key={`tech-${i}`}
-                        label={keyword} 
-                        variant={(variant || "security") as '' | 'security' | 'terminal'}
-                        level={keyword === 'Security' ? 'high' : undefined}
-                      />
-                    ))}
-                  </div>
-                  
-                  <div className="tech-stack-footer">
-                    <div className="tech-verification-seal"></div>
-                    TECHNOLOGIES VERIFIED - ACCESS GRANTED
-                  </div>
+                <div className="terminal-decoration">
+                  <CodeSnippet code={codeSnippet} language="javascript" />
                 </div>
-              </>
-            )}
-          </div>
-          
-          {/* Terminal footer */}
-          <div className="terminal-footer">
-            <div className="session-id">SESSION ID: {sessionId}</div>
-            <div className="connection-status">
-              <span className="status-indicator"></span>
-              CONNECTION SECURE
-            </div>
-          </div>
-          
-          {/* Binary decoration - simplified and reduced in quantity */}
-          <div className="binary-decoration binary-top-right">
-            {binaryCode.slice(0, 60)}
-          </div>
-        </Card>
-      </div>
-      
-      {/* Decorative code snippets */}
-      <div className="terminal-decoration">
-        <CodeSnippet
-          code={codeSnippet}
-          variant={variant || "security"}
-          theme="dark"
-          language="javascript"
-          isDecorative={true}
-          className={`terminal-code-snippet ${isEven ? 'terminal-code-left' : 'terminal-code-right'}`}
-        />
+              </div>
+            </Card>
+          ) : (
+            // Default card (you have other variants too)
+            <ExperienceCard
+              data={data}
+              index={index}
+              variant={variant}
+              showHeader={true}
+              shadow={true}
+            />
+          )}
+        </motion.div>
       </div>
     </motion.div>
   );
 };
 
+// Memoize the component to prevent unnecessary re-renders
 export default memo(TimelineEntry);

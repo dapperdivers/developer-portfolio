@@ -1,6 +1,7 @@
 /**
  * DateBubble Component Styles - Completely reimagined
  * Futuristic date display with holographic elements and data visualization
+ * Animations are now handled by framer-motion through the AnimationContext
  */
 
 :root {
@@ -44,7 +45,7 @@
   overflow: visible;
   padding: 8px;
   border: 2px solid transparent;
-  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  /* Transition removed - now handled by framer-motion */
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
 }
 
@@ -207,27 +208,27 @@
   border-color: var(--color-entry5);
 }
 
-/* Enhanced hover and animation effects */
+/* Enhanced hover and animation effects - now handled by framer-motion */
 .timeline-entry .date-bubble {
-  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  /* Transition removed - now handled by framer-motion */
 }
 
 .timeline-entry:hover .date-bubble {
-  transform: translateY(-5px);
+  /* Transform removed - now handled by framer-motion */
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6), 0 0 30px rgba(var(--color-primary-rgb), 0.35);
 }
 
-/* Clickable state with improved interaction feedback */
+/* Clickable state with improved interaction feedback - now handled by framer-motion */
 .date-bubble-clickable {
   cursor: pointer;
 }
 
 .date-bubble-clickable:hover {
-  transform: translateY(-5px) scale(1.05);
+  /* Transform removed - now handled by framer-motion */
 }
 
 .date-bubble-clickable:active {
-  transform: translateY(-2px) scale(0.98);
+  /* Transform removed - now handled by framer-motion */
 }
 
 /* Inner text container with improved layout */
@@ -264,28 +265,14 @@
   overflow: hidden;
 }
 
-/* Scanning effect inside indicator */
+/* Scanning effect inside indicator - now handled by framer-motion */
 .date-bubble-indicator::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, 
-    transparent 0%, 
-    rgba(255, 255, 255, 0.8) 50%, 
-    transparent 100%
-  );
-  animation: scan-animation 2s infinite;
+  /* Content removed - now handled by framer-motion */
 }
 
-@keyframes scan-animation {
-  0% { left: -100%; }
-  100% { left: 100%; }
-}
+/* Animation keyframes removed - now handled by framer-motion */
 
-/* Scanner effect - horizontal scan line */
+/* Scanner effect - horizontal scan line - now handled by framer-motion */
 .date-bubble-scanner {
   position: absolute;
   top: 0;
@@ -294,16 +281,11 @@
   height: 1px;
   background-color: currentColor;
   opacity: 0.5;
-  animation: vertical-scan 3s infinite ease-in-out;
+  /* Animation removed - now handled by framer-motion */
   z-index: 3;
 }
 
-@keyframes vertical-scan {
-  0%, 100% { top: 5%; opacity: 0; }
-  10% { opacity: 0.8; }
-  90% { opacity: 0.8; }
-  50% { top: 95%; }
-}
+/* Animation keyframes removed - now handled by framer-motion */
 
 /* Data chip decoration - retro computer chip aesthetic */
 .date-chip {
@@ -351,23 +333,7 @@
   }
 }
 
-/* Reduced motion preferences */
+/* Reduced motion preferences - now handled by AnimationContext */
 @media (prefers-reduced-motion: reduce) {
-  .date-bubble,
-  .date-bubble-indicator::after,
-  .date-bubble-scanner {
-    animation: none;
-    transition: none;
-  }
-  
-  .date-bubble-clickable:hover,
-  .timeline-entry:hover .date-bubble {
-    transform: none;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-  }
-  
-  /* Static indicator for reduced motion */
-  .date-bubble-indicator {
-    opacity: 0.9;
-  }
+  /* All animations are now controlled by AnimationContext which respects user preferences */
 }

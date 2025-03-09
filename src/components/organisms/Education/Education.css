@@ -3,6 +3,7 @@
  * 
  * Styles for the Education section organism component.
  * Contains section-level layout and structure styles.
+ * Animations now handled by framer-motion.
  */
 
 /* Education section container styles */
@@ -28,7 +29,7 @@
 .education-main {
   position: relative;
   margin-bottom: var(--spacing-2);
-  transition: transform 0.5s ease-out, opacity 0.5s ease-out;
+  /* transition removed - now handled by framer-motion */
 }
 
 /* Certifications section styling */
@@ -78,6 +79,11 @@
   gap: var(--spacing-6);
 }
 
+/* Education card wrapper - for animation purposes */
+.education-card-wrapper {
+  width: 100%;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .education-section {
@@ -94,12 +100,5 @@
   
   .education-cards-container {
     grid-template-columns: 1fr;
-  }
-}
-
-/* Reduced motion preferences */
-@media (prefers-reduced-motion: reduce) {
-  .education-main {
-    transition: none;
   }
 } 

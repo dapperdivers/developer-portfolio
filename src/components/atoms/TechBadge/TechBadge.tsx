@@ -1,5 +1,6 @@
 import React, { FC, memo } from 'react';
-import { motion, HTMLMotionProps } from 'framer-motion';
+import { motion, HTMLMotionProps, Variants } from 'framer-motion';
+import { useAnimation } from '@context//AnimationContext';
 import './TechBadge.css';
 
 interface TechBadgeProps extends Omit<HTMLMotionProps<'div'>, 'size'> {
@@ -19,10 +20,15 @@ interface TechBadgeProps extends Omit<HTMLMotionProps<'div'>, 'size'> {
   className?: string;
   /** Tooltip text */
   tooltip?: string;
+  /** Whether to animate the badge */
+  animate?: boolean;
+  /** Index for staggered animations */
+  index?: number;
 }
 
 /**
  * TechBadge component for displaying technology labels
+ * Enhanced with framer-motion animations that respect user preferences
  * 
  * @component
  * @param {TechBadgeProps} props - Component props
@@ -37,8 +43,16 @@ const TechBadge: FC<TechBadgeProps> = ({
   onClick,
   className = '',
   tooltip,
+  animate = true,
+  index = 0,
   ...rest
 }) => {
+  // Get animation settings from context
+  const { animationEnabled } = useAnimation();
+  
+  // Determine if animations should run
+  const shouldAnimate = animate && animationEnabled;
+  
   // Determine if the badge is clickable
   const isClickable = interactive || !!onClick;
   
@@ -51,6 +65,46 @@ const TechBadge: FC<TechBadgeProps> = ({
     isClickable ? 'tech-badge--interactive' : '',
     className
   ].filter(Boolean).join(' ');
+  
+  // Animation variants
+  const badgeVariants: Variants = {
+    hidden: { 
+      opacity: 0,
+      y: 10,
+      scale: 0.9
+    },
+    visible: { 
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: 0.3,
+        delay: index * 0.05,
+        ease: "easeOut"
+      }
+    },
+    hover: isClickable ? { 
+      y: -2,
+      scale: 1.05,
+      boxShadow: "0 3px 6px rgba(0, 0, 0, 0.2)",
+      transition: { 
+        duration: 0.2
+      }
+    } : {
+      y: -1,
+      boxShadow: "0 3px 6px rgba(0, 0, 0, 0.2)",
+      transition: { 
+        duration: 0.2
+      }
+    },
+    tap: isClickable ? { 
+      scale: 0.95,
+      y: -1,
+      transition: { 
+        duration: 0.1
+      }
+    } : {}
+  };
   
   // Handle keyboard accessibility for interactive badges
   const handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -67,8 +121,11 @@ const TechBadge: FC<TechBadgeProps> = ({
       onKeyPress={isClickable ? handleKeyPress : undefined}
       tabIndex={isClickable ? 0 : undefined}
       role={isClickable ? 'button' : undefined}
-      whileHover={isClickable ? { scale: 1.05 } : undefined}
-      whileTap={isClickable ? { scale: 0.95 } : undefined}
+      initial={shouldAnimate ? "hidden" : undefined}
+      animate={shouldAnimate ? "visible" : undefined}
+      whileHover={shouldAnimate ? "hover" : undefined}
+      whileTap={(isClickable && shouldAnimate) ? "tap" : undefined}
+      variants={badgeVariants}
       title={tooltip}
       aria-label={tooltip || `Technology: ${label}`}
       data-testid="tech-badge"

@@ -6,7 +6,7 @@
  */
 
 import React from 'react';
-import PortfolioContext from '../../../src/context/PortfolioContext';
+import PortfolioContext from '@context/PortfolioContext';
 import { mockPortfolioData } from './data';
 import type { Decorator } from '../index';
 

@@ -1,11 +1,14 @@
 import React, { FC, useCallback, memo, ReactNode } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { AnimationProvider } from '@context/AnimationContext';
+import { useAnimation, MotionVariants } from '@context/AnimationContext';
 import { 
   TimelineNode,
   ConnectionHeader, 
   MatrixBackground, 
   TimelineDecorations
 } from '@atoms/TimelineCore';
+import { TimelineAnimations } from './TimelineAnimations';
 // Use the modular CSS structure for better maintainability
 import './styles/index.css';
 
@@ -24,7 +27,7 @@ export interface TimelineProps {
   /** Function to extract display date from date string */
   formatDate?: (date: string) => string;
   /** Visual variant */
-  variant?: '' | 'security' | 'terminal';
+  variant?: 'default' | 'security' | 'terminal';
   /** Whether timeline data is loading */
   isLoading?: boolean;
   /** Whether there was an error loading timeline data */
@@ -50,8 +53,8 @@ export interface TimelineProps {
 }
 
 /**
- * Generic Timeline component for displaying a sequence of items in a timeline format
- * with a cyberpunk hacker aesthetic
+ * Timeline component that displays a vertical timeline of entries
+ * with cyberpunk-themed styling and animations
  * 
  * @component
  * @param {TimelineProps} props - Component props
@@ -60,166 +63,215 @@ export interface TimelineProps {
 const Timeline: FC<TimelineProps> = ({
   items = [],
   entryComponent: EntryComponent,
-  formatDate = (date) => date,
-  variant = 'security',
+  formatDate = (date: string) => date,
+  variant = 'default',
   isLoading = false,
   hasError = false,
   className = '',
-  errorMessage = 'Error loading the timeline data. Please try again later.',
-  emptyMessage = 'No timeline entries found.',
+  errorMessage = 'Error loading timeline data',
+  emptyMessage = 'No timeline entries found',
   skeletonCount = 3,
   connectionHeader,
   connectionFooter,
   showDecorations = true,
   showMatrixBg = true,
-  showBinaryStreams = true,
+  showBinaryStreams = true
 }) => {
-  // Generate skeleton loading items for loading state
-  const renderSkeletons = useCallback(() => {
-    return Array(skeletonCount).fill(null).map((_, i) => (
-      <div key={`skeleton-${i}`} className="timeline-skeleton">
-        <div className="timeline-skeleton__connector">
-          <div className="timeline-skeleton__dot"></div>
-          <div className="timeline-skeleton__line"></div>
-        </div>
-        <div className="timeline-skeleton__date"></div>
-        <div className="timeline-skeleton__card">
-          <div className="timeline-skeleton__header"></div>
-          <div className="timeline-skeleton__content">
-            <div className="timeline-skeleton__text-line"></div>
-            <div className="timeline-skeleton__text-line"></div>
-            <div className="timeline-skeleton__text-line"></div>
-          </div>
-        </div>
-      </div>
-    ));
-  }, [skeletonCount]);
+  // Get animation context
+  const { animationEnabled } = useAnimation();
   
-  // Generate CSS classes
+  // Build classes
   const timelineClasses = [
-    'experience-timeline', // Keeping this class for backward compatibility
+    'experience-timeline',
     `experience-timeline--${variant}`,
     className
   ].filter(Boolean).join(' ');
-
-  return (
-    <AnimationProvider>
-      <div 
-        className={timelineClasses}
-        data-testid="timeline"
-        data-theme={variant} // Add data-theme attribute
+  
+  // Generate timeline items
+  const renderTimelineItems = useCallback(() => {
+    if (!items?.length) return null;
+    
+    return items.map((item, index) => (
+      <motion.div
+        key={item.id}
+        className="timeline-item-wrapper"
+        variants={TimelineAnimations.item}
+        custom={{ index }}
       >
-        {/* Timeline content */}
-        <div className="timeline-content">
-          {/* Show loading state */}
-          {isLoading && (
-            <div className="timeline-loading">
-              {renderSkeletons()}
-            </div>
-          )}
-          
-          {/* Show error state */}
-          {hasError && !isLoading && (
-            <div className="timeline-error">
-              <p className="timeline-error__message">
-                <span className="timeline-error__icon">⚠️</span>
-                {errorMessage}
-              </p>
-              <TimelineNode
-                variant={variant as '' | 'security' | 'terminal'}
-                animated={false}
-                active={false}
-                size="lg"
-              />
-            </div>
-          )}
-          
-          {/* Show empty state */}
-          {!isLoading && !hasError && items.length === 0 && (
-            <div className="timeline-empty">
-              <p className="timeline-empty__message">
-                {emptyMessage}
-              </p>
-              <TimelineNode
-                variant={variant as '' | 'security' | 'terminal'}
-                animated={false}
-                active={false}
-                size="lg"
-              />
-            </div>
-          )}
-          
-          {/* Render timeline entries */}
-          {!isLoading && !hasError && items.length > 0 && (
-            <div className="timeline-entries">
-              <div className="timeline-container">
-                {/* Connection line that runs through all entries */}
-                <div className="timeline-main-line">
-                  <div className="data-packet packet-1"></div>
-                  <div className="data-packet packet-2"></div>
-                  <div className="data-packet packet-3"></div>
-                  
-                  {/* Neural network connection points */}
-                  <div className="neural-connector neural-connector-1"></div>
-                  <div className="neural-connector neural-connector-2"></div>
-                  <div className="neural-connector neural-connector-3"></div>
-                  <div className="neural-connector neural-connector-4"></div>
-                  
-                  {/* Data integrity shield */}
-                  <div className="data-integrity-shield">
-                    <div className="shield-inner"></div>
-                  </div>
-                </div>
-                
-                {/* Matrix background - optional */}
-                {showMatrixBg && <MatrixBackground characterCount={50} />}
-                
-                {/* Connection start - custom or default */}
-                {connectionHeader ? (
-                  connectionHeader
-                ) : (
-                  showDecorations && (
-                    <ConnectionHeader 
-                      title="SECURE CONNECTION ESTABLISHED"
-                      statusCode="[0xFF2941] VERIFIED"
-                      animate={true}
-                      variant={variant}
-                    />
-                  )
-                )}
-                
-                {/* Map over items and render the provided entry component */}
-                {items.map((item, index) => (
-                  <EntryComponent
-                    key={item.id || `timeline-entry-${index}`}
-                    data={item.content}
-                    date={item.date}
-                    index={index}
-                    formatDate={formatDate}
-                    variant={variant as '' | 'security' | 'terminal'}
-                    id={item.id || `timeline-entry-${index}`}
-                  />
-                ))}
-                
-                {/* Connection end - custom footer if provided */}
-                {connectionFooter && connectionFooter}
-                
-              </div>
-            </div>
-          )}
-          
-          {/* Decorative elements for security and terminal themes */}
-          {showDecorations && showBinaryStreams && (
+        <EntryComponent
+          {...item}
+          index={index}
+          isLast={index === items.length - 1}
+          variant={variant}
+          formattedDate={formatDate(item.date)}
+        />
+      </motion.div>
+    ));
+  }, [items, EntryComponent, formatDate, variant]);
+  
+  // Render error state
+  if (hasError) {
+    return (
+      <div className={`${timelineClasses} timeline-error`}>
+        <div className="timeline-error-message">
+          <motion.div 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <h3>Error</h3>
+            <p>{errorMessage}</p>
+          </motion.div>
+        </div>
+      </div>
+    );
+  }
+  
+  // Render loading state
+  if (isLoading) {
+    return (
+      <div className={`${timelineClasses} timeline-loading`}>
+        {/* Loading state implementation... */}
+      </div>
+    );
+  }
+  
+  // Render empty state
+  if (!items?.length) {
+    return (
+      <div className={`${timelineClasses} timeline-empty`}>
+        <motion.div 
+          className="timeline-empty-message"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <p>{emptyMessage}</p>
+        </motion.div>
+      </div>
+    );
+  }
+  
+  // Main render
+  return (
+    <div className={timelineClasses}>
+      {/* Apply decorative elements if enabled */}
+      {showDecorations && (
+        <div className="timeline-decorations-wrapper">
+          {showMatrixBg && <MatrixBackground characterCount={20} />}
+          {variant === 'security' && showBinaryStreams && (
             <TimelineDecorations 
-              variant={variant === 'terminal' ? 'terminal' : 'security'}
-              showLeft={true}
-              showRight={true}
-              binaryStreamCount={40}
+              variant="security" 
+              showLeft 
+              showRight 
             />
           )}
         </div>
-      </div>
-    </AnimationProvider>
+      )}
+      
+      {/* Connection header */}
+      {connectionHeader && (
+        <div className="timeline-connection-header">
+          {connectionHeader}
+        </div>
+      )}
+      
+      {/* Timeline content */}
+      <motion.div 
+        className="timeline-content"
+        variants={TimelineAnimations.timeline}
+        initial="hidden"
+        animate="visible"
+      >
+        {/* Main timeline line with animated elements */}
+        <motion.div 
+          className="timeline-main-line" 
+          variants={TimelineAnimations.mainline}
+        >
+          {/* Dynamic elements that will use the framer-motion variants */}
+          {variant === 'security' && (
+            <>
+              {/* Security Data packet elements */}
+              <motion.div 
+                className="data-packet packet-1" 
+                variants={TimelineAnimations.securityPacket}
+                custom={{ delay: 0.5, duration: 2.5, initialDelay: 0 }}
+              />
+              <motion.div 
+                className="data-packet packet-2" 
+                variants={TimelineAnimations.securityPacket}
+                custom={{ delay: 1, duration: 3, initialDelay: 0.7 }}
+              />
+              <motion.div 
+                className="data-packet packet-3" 
+                variants={TimelineAnimations.securityPacket}
+                custom={{ delay: 1.5, duration: 2.8, initialDelay: 1.2 }}
+              />
+              
+              {/* Security neural connectors */}
+              <motion.div 
+                className="neural-connector neural-connector-1" 
+                variants={TimelineAnimations.neuralConnector}
+              />
+              <motion.div 
+                className="neural-connector neural-connector-2" 
+                variants={TimelineAnimations.neuralConnector}
+              />
+              <motion.div 
+                className="neural-connector neural-connector-3" 
+                variants={TimelineAnimations.neuralConnector}
+              />
+              <motion.div 
+                className="neural-connector neural-connector-4" 
+                variants={TimelineAnimations.neuralConnector}
+              />
+              
+              {/* Security shields */}
+              <motion.div 
+                className="data-integrity-shield" 
+                variants={TimelineAnimations.shieldPulse}
+              >
+                <motion.div 
+                  className="shield-inner" 
+                  variants={TimelineAnimations.shieldScan}
+                />
+              </motion.div>
+            </>
+          )}
+          
+          {variant !== 'security' && (
+            <>
+              {/* Default data packet elements */}
+              <motion.div 
+                className="data-packet packet-1" 
+                variants={TimelineAnimations.dataPacket}
+                custom={{ delay: 0.5, duration: 2, initialDelay: 0 }}
+              />
+              <motion.div 
+                className="data-packet packet-2" 
+                variants={TimelineAnimations.dataPacket}
+                custom={{ delay: 1, duration: 2.2, initialDelay: 0.5 }}
+              />
+              <motion.div 
+                className="data-packet packet-3" 
+                variants={TimelineAnimations.dataPacket}
+                custom={{ delay: 1.5, duration: 2.4, initialDelay: 1 }}
+              />
+            </>
+          )}
+        </motion.div>
+        
+        {/* Timeline items */}
+        {renderTimelineItems()}
+      </motion.div>
+      
+      {/* Connection footer */}
+      {connectionFooter && (
+        <div className="timeline-connection-footer">
+          {connectionFooter}
+        </div>
+      )}
+    </div>
   );
 };
 
