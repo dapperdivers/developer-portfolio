@@ -112,10 +112,87 @@
 
 /* Keyframes removed - now handled by framer-motion */
 
+/* Experience grid layout */
+.experience-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.experience-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.experience-card {
+  background: var(--color-background);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 
+    0 4px 6px rgba(0, 0, 0, 0.1),
+    0 1px 3px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(var(--color-primary-rgb), 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.experience-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 
+    0 10px 20px rgba(0, 0, 0, 0.12),
+    0 4px 8px rgba(0, 0, 0, 0.06);
+}
+
+.experience-card h3 {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+  margin-bottom: 0.5rem;
+}
+
+.experience-card h4 {
+  font-size: var(--font-size-md);
+  color: var(--color-text);
+  margin-bottom: 1rem;
+}
+
+.experience-card .date {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin-bottom: 1rem;
+}
+
+.experience-card .description {
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.experience-card .technologies {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.experience-card .tech-tag {
+  font-size: var(--font-size-sm);
+  color: var(--color-primary);
+  background: rgba(var(--color-primary-rgb), 0.1);
+  padding: 0.25rem 0.75rem;
+  border-radius: 16px;
+  display: inline-block;
+}
+
 /* Responsive adjustments */
 @media (max-width: 991.98px) {
   .experience-title {
     font-size: 2rem;
+  }
+  
+  .experience-cards {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   }
 }
 
@@ -140,5 +217,18 @@
   .experience-section .subtitle {
     font-size: 1rem;
     margin-bottom: 2rem;
+  }
+  
+  .experience-grid {
+    padding: 0 1rem;
+  }
+  
+  .experience-cards {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .experience-card {
+    padding: 1.5rem;
   }
 }

@@ -4,17 +4,13 @@ import PropTypes from 'prop-types';
 import SkeletonCard from '@atoms/SkeletonCard';
 import Section from '@layout/Section';
 import ConsoleHeader from '@atoms/ConsoleHeader/ConsoleHeader';
-import useExperience from "@hooks/useExperience";
 import { usePortfolio } from "@context/PortfolioContext";
 import { useAnimation } from "@context//AnimationContext";
-// Updated import path to use the new molecule component
-import ExperienceTimeline from '@molecules/ExperienceTimeline';
 import { experience as experienceData } from '../../../portfolio';
-// Updated import path to use modular CSS
 import './styles/index.css';
 
 /**
- * Experience section component displaying professional work history in a visually appealing timeline.
+ * Experience section component displaying professional work history in a grid layout.
  * Enhanced with framer-motion animations that respect user preferences.
  * 
  * @component
@@ -78,7 +74,7 @@ const Experience = () => {
     }
   };
   
-  const skeletonVariants = {
+  const cardVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: (index) => ({
       opacity: 1,
@@ -89,13 +85,6 @@ const Experience = () => {
         ease: "easeOut"
       }
     })
-  };
-  
-  // Extract year from date string (e.g., "Jan 2019 - Present" => "2019")
-  const extractDateYear = (dateString) => {
-    if (!dateString) return '';
-    const matches = dateString.match(/\b(19|20)\d{2}\b/);
-    return matches ? matches[0] : '';
   };
   
   // Skip rendering the whole section if explicitly disabled in config
@@ -124,7 +113,7 @@ const Experience = () => {
             {Array.from({ length: skeletonCount }).map((_, i) => (
               <motion.div 
                 key={`skeleton-${i}`}
-                variants={skeletonVariants}
+                variants={cardVariants}
                 custom={i}
               >
                 <SkeletonCard 
@@ -175,21 +164,39 @@ const Experience = () => {
         initial={animationEnabled ? "hidden" : false}
         animate={animationEnabled && isInView ? "visible" : false}
         variants={sectionVariants}
+        className="experience-grid"
       >
         <motion.div variants={headerVariants}>
           <ConsoleHeader
             prompt="root@security:~$"
-            command="view --secure --timeline professional_experience.json"
+            command="view --secure professional_experience.json"
             variant="security"
-            className="timeline-header"
+            className="experience-header"
           />
         </motion.div>
         
-        <ExperienceTimeline 
-          experience={experience} 
-          extractDateYear={extractDateYear}
-          variant="security"
-        />
+        <div className="experience-cards">
+          {experience.map((item, index) => (
+            <motion.div
+              key={`experience-${index}`}
+              variants={cardVariants}
+              custom={index}
+              className="experience-card"
+            >
+              <h3>{item.title}</h3>
+              <h4>{item.company}</h4>
+              <p className="date">{item.date}</p>
+              <p className="description">{item.description}</p>
+              {item.technologies && (
+                <div className="technologies">
+                  {item.technologies.map((tech, i) => (
+                    <span key={`tech-${i}`} className="tech-tag">{tech}</span>
+                  ))}
+                </div>
+              )}
+            </motion.div>
+          ))}
+        </div>
       </motion.div>
     </Section>
   );
