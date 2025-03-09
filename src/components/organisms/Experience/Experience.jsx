@@ -7,7 +7,7 @@ import ConsoleHeader from '@atoms/ConsoleHeader/ConsoleHeader';
 import { usePortfolio } from "@context/PortfolioContext";
 import { useAnimation } from "@context//AnimationContext";
 import { experience as experienceData } from '../../../portfolio';
-import './styles/index.css';
+import './Experience.css';
 
 /**
  * Experience section component displaying professional work history in a grid layout.

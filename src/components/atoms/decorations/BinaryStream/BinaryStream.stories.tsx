@@ -1,5 +1,5 @@
 import React from 'react';
-import BinaryStream from './BinaryStream';
+import BinaryStream from '@components/atoms/decorations/BinaryStream';
 
 /**
  * # BinaryStream
@@ -17,7 +17,7 @@ import BinaryStream from './BinaryStream';
  * ## Usage
  * 
  * ```jsx
- * import BinaryStream from '@components/atoms/BinaryStream';
+ * import BinaryStream from '@components/decorations/BinaryStream';
  * 
  * // Default usage (left side)
  * <BinaryStream />
@@ -36,7 +36,7 @@ import BinaryStream from './BinaryStream';
  * It is automatically set with appropriate ARIA attributes.
  */
 export default {
-  title: 'Atoms/BinaryStream',
+  title: 'Atoms/Decorations/BinaryStream',
   component: BinaryStream,
   tags: ['autodocs'],
   argTypes: {

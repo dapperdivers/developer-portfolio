@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   DebugProvider, 
   useDebug, 
   withDebug, 
   PerformanceDisplay 
 } from './index';
+import PerformanceMonitor from './PerformanceMonitor';
 
 /**
  * Example component using the debug hook
@@ -42,6 +43,36 @@ const SimpleComponent = ({ name }) => {
 // Wrap the component with the debug HOC
 const DebuggedComponent = withDebug(SimpleComponent, 'SimpleComponent');
 
+// Test component that will create some measurable performance impact
+const PerformanceTest = () => {
+  const [counter, setCounter] = useState(0);
+
+  // Create some CPU load
+  useEffect(() => {
+    const interval = setInterval(() => {
+      // Do some heavy computation
+      let result = 0;
+      for (let i = 0; i < 1000000; i++) {
+        result += Math.random();
+      }
+      setCounter(prev => prev + 1);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // Create some memory allocation
+  const array = new Array(10000).fill(0).map(() => new Object());
+
+  return (
+    <div>
+      <h3>Performance Test Component</h3>
+      <p>Counter: {counter}</p>
+      <p>Array length: {array.length}</p>
+    </div>
+  );
+};
+
 /**
  * Main example showing how to use the debug utilities
  */
@@ -62,6 +93,15 @@ export const DebugExample = () => {
       features: {
         profiling: true,
         showFPS: true,
+      },
+      performance: {
+        longTaskThreshold: 50,
+        fpsWarningThreshold: 30,
+        showComponentTimings: true,
+        showStackTraces: true,
+        logToConsole: true,
+        monitorScriptExecution: true,
+        monitorNetworkActivity: true,
       }
     }}>
       <div className="debug-example">
@@ -100,6 +140,27 @@ export const DebugExample = () => {
             trackComponents={['HookedComponent', 'SimpleComponent']}
           />
         )}
+        
+        <PerformanceTest />
+        <PerformanceMonitor 
+          enabled={true}
+          initialExpanded={true}
+          config={{
+            longTaskThreshold: 50,
+            fpsWarningThreshold: 30,
+            showComponentTimings: true,
+            showStackTraces: true,
+            logToConsole: true,
+            monitorScriptExecution: true,
+            monitorNetworkActivity: true,
+          }}
+          positionStyle={{
+            position: 'fixed',
+            bottom: '20px',
+            right: '20px',
+            zIndex: 9999
+          }}
+        />
       </div>
     </DebugProvider>
   );

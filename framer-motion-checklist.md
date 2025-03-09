@@ -207,7 +207,6 @@ For each CSS animation keyframe, follow this pattern:
 | SkipToContent | ✅ | ✅ | ✅ | ✅ | Low |
 | TechBadge | ✅ | ✅ | ✅ | ✅ | Medium |
 | TerminalControls | ✅ | ✅ | ✅ | ✅ | Low |
-| TimelineCore | ✅ | ✅ | ✅ | ✅ | Medium |
 | TimelineDecorations | ✅ | ✅ | ✅ | ✅ | Medium |
 | TimelineNode | ✅ | ✅ | ✅ | ✅ | High |
 

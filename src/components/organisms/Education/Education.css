@@ -1,20 +1,13 @@
 /**
- * Education Section Styles
- * 
- * Styles for the Education section organism component.
- * Contains section-level layout and structure styles.
- * Animations now handled by framer-motion.
+ * Education Styles
  */
 
-/* Education section container styles */
 .education-section {
   padding: var(--section-padding-y) 0;
   position: relative;
-  background-color: var(--color-background-alt);
   overflow: hidden;
 }
 
-/* Container for education content */
 .education-content {
   width: 100%;
   max-width: 1000px;
@@ -25,20 +18,16 @@
   gap: var(--spacing-8);
 }
 
-/* Main education container */
 .education-main {
   position: relative;
   margin-bottom: var(--spacing-2);
-  /* transition removed - now handled by framer-motion */
 }
 
-/* Certifications section styling */
 .certifications-section {
   position: relative;
   margin-top: var(--spacing-6);
 }
 
-/* Section header styling */
 .education-section-header {
   text-align: center;
   margin-bottom: var(--spacing-8);
@@ -72,19 +61,16 @@
   margin: 0 auto;
 }
 
-/* Education cards container */
 .education-cards-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   gap: var(--spacing-6);
 }
 
-/* Education card wrapper - for animation purposes */
 .education-card-wrapper {
   width: 100%;
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
   .education-section {
     padding: var(--spacing-8) 0;

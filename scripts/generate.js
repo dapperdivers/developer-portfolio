@@ -35,7 +35,7 @@
  * --interactions: Include interaction tests (optional, flag)
  * --context: Add context support (optional, values: portfolio, theme)
  * --detailed: Add detailed documentation templates (optional, flag)
- * --subdir: For components in nested directories (e.g., TimelineCore/Node)
+ * --subdir: For components in nested directories (e.g., Experience/Node)
  */
 
 import { promises as fs } from 'fs';
@@ -639,7 +639,7 @@ async function generateTestFile(componentPath, componentName, useTypeScript = tr
   
   const testTemplate = `import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { vi } from 'vitest';
+import { vi, describe, it, expect, beforeEach } from 'vitest';
 import ${componentName} from './${componentName}';
 import { AnimationProvider } from '@context/AnimationContext';
 

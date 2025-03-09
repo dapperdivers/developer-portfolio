@@ -43,8 +43,6 @@ const componentsToDebug = {
   Background,
   
   // Atom components - import them here so we don't need to modify each file
-  BinaryStream: lazy(() => import("@atoms/BinaryStream")),
-  MatrixBackground: lazy(() => import("@atoms/MatrixBackground")),
   Loading,
   SkipToContent,
   Head,
@@ -69,8 +67,6 @@ const initialDebugConfig = {
   components: {
     // Components to debug by default
     Background: true,
-    MatrixBackground: true,
-    BinaryStream: true,
     Greetings: true,
     Skills: true,
     Experience: true,

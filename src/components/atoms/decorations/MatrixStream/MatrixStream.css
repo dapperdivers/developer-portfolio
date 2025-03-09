@@ -1,0 +1,76 @@
+/**
+ * MatrixStream Component Styles
+ * 
+ * Styling for the MatrixStream component
+ * This project uses Tailwind CSS. See tailwind.config.js for configuration.
+ * For custom styles beyond Tailwind, use the classes defined below.
+ * 
+ * Note: Animations are managed by framer-motion through the AnimationContext.
+ * - Do NOT add CSS animations or transitions (use framer-motion instead)
+ * - See AnimationContext.tsx for predefined animation variants
+ */
+
+.matrixstream {
+  /* Add custom styles here that go beyond Tailwind's utilities */
+  /* Do not include animations or transitions - use framer-motion instead */
+}
+
+/* 
+ * For responsive design, use Tailwind's responsive prefixes in your component's JSX:
+ * <div className="md:flex lg:p-4 dark:bg-gray-800"></div>
+ * 
+ * Or add custom responsive styles here:
+ */
+@media (max-width: 768px) {
+  .matrixstream {
+    /* Add mobile-specific styles if needed (no animations) */
+  }
+}
+
+/*
+ * For users with reduced motion preferences, framer-motion will automatically
+ * disable animations via the AnimationContext. No need for CSS media queries.
+ */
+
+.matrix-stream-container {
+  position: relative;
+  display: inline-block; /* Allow multiple streams to be placed side by side */
+  overflow: hidden;
+}
+
+.matrix-stream-background {
+  position: fixed;
+  z-index: -1;
+}
+
+.matrix-stream-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Helper classes for common positioning */
+.matrix-stream-left {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.matrix-stream-right {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.matrix-stream-center {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+}
+
+/* For creating repeating patterns */
+.matrix-stream-repeat {
+  display: flex;
+  gap: 1rem;
+}

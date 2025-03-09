@@ -167,7 +167,7 @@ export const WithInteractions = {
       <p style={{ margin: '0 0 10px 0' }}>Here's how you might combine these components:</p>
       <pre style={{ overflow: 'auto', background: '#f8f8f8', padding: '10px', margin: '0', fontSize: '14px' }}>
 {`import React from 'react';
-import MatrixBackground from '@atoms/MatrixBackground';
+import MatrixBackground from '@components/decorations/MatrixBackground';
 import ConsoleHeader from '@atoms/ConsoleHeader';
 import CodeSnippet from '@atoms/CodeSnippet';
 

@@ -1,7 +1,7 @@
 import React, { FC, memo, useMemo } from 'react';
 import { motion, Variants } from 'framer-motion';
 import './BinaryStream.css';
-import { useAnimation, MotionVariants } from '@context//AnimationContext';
+import { useAnimation, MotionVariants } from '@context/AnimationContext';
 // No longer need direct import for debugging - it's handled centrally in App.jsx
 
 export interface BinaryStreamProps {

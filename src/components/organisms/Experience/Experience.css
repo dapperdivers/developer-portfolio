@@ -1,18 +1,14 @@
 /**
  * Experience Section Styles
- * Base styling for the experience section and its container
- * Animations now handled by framer-motion
  */
 
 .experience-section {
   padding: var(--section-padding-y) 0;
-  background-color: var(--color-background-alt);
   position: relative;
-  overflow: hidden; /* Prevent horizontal scroll */
+  overflow: hidden;
   color: var(--color-text);
 }
 
-/* Add cyberspace atmosphere with subtle grid lines */
 .experience-section::before {
   content: '';
   position: absolute;
@@ -24,12 +20,11 @@
     linear-gradient(rgba(var(--color-primary-rgb), 0.05) 1px, transparent 1px),
     linear-gradient(90deg, rgba(var(--color-primary-rgb), 0.05) 1px, transparent 1px);
   background-size: 30px 30px;
-  opacity: 0.3;
+  opacity: 0.15;
   pointer-events: none;
   z-index: 1;
 }
 
-/* Loading state styling */
 .experience-loading {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -39,14 +34,11 @@
   max-width: 1200px;
   background: linear-gradient(145deg, rgba(var(--color-primary-rgb), 0.05) 0%, rgba(var(--color-primary-rgb), 0.1) 100%);
   border-radius: 16px;
-  box-shadow: 
-    0 20px 40px rgba(0, 0, 0, 0.05),
-    inset 0 0 20px rgba(0, 0, 0, 0.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05), inset 0 0 20px rgba(0, 0, 0, 0.02);
   border: 1px solid rgba(var(--color-primary-rgb), 0.1);
   position: relative;
 }
 
-/* Enhanced experience header */
 .experience-header {
   max-width: 1200px;
   margin: 0 auto 3rem;
@@ -74,28 +66,6 @@
   z-index: -1;
 }
 
-.experience-title {
-  font-size: var(--font-size-h2);
-  font-weight: var(--font-weight-bold);
-  color: var(--color-primary);
-  margin-bottom: 0.5rem;
-  position: relative;
-  display: inline-block;
-  padding: 0 1.5rem;
-  background-color: var(--color-background-alt);
-}
-
-.experience-subtitle {
-  font-size: var(--font-size-lg);
-  color: var(--color-text-secondary);
-  margin-bottom: 1rem;
-  font-weight: var(--font-weight-medium);
-  max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* Security badge styles - Animations now handled by framer-motion */
 .experience-header::after {
   content: '';
   position: absolute;
@@ -107,12 +77,8 @@
   background-repeat: no-repeat;
   background-position: center;
   opacity: 0.5;
-  /* Animation removed - now handled by framer-motion */
 }
 
-/* Keyframes removed - now handled by framer-motion */
-
-/* Experience grid layout */
 .experience-grid {
   max-width: 1200px;
   margin: 0 auto;
@@ -130,18 +96,14 @@
   background: var(--color-background);
   border-radius: 12px;
   padding: 2rem;
-  box-shadow: 
-    0 4px 6px rgba(0, 0, 0, 0.1),
-    0 1px 3px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
   border: 1px solid rgba(var(--color-primary-rgb), 0.1);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .experience-card:hover {
   transform: translateY(-4px);
-  box-shadow: 
-    0 10px 20px rgba(0, 0, 0, 0.12),
-    0 4px 8px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.06);
 }
 
 .experience-card h3 {
@@ -185,12 +147,7 @@
   display: inline-block;
 }
 
-/* Responsive adjustments */
 @media (max-width: 991.98px) {
-  .experience-title {
-    font-size: 2rem;
-  }
-  
   .experience-cards {
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   }
@@ -199,24 +156,6 @@
 @media (max-width: 767.98px) {
   .experience-section {
     padding: 4rem 0;
-  }
-  
-  .experience-title-container {
-    margin-bottom: 2rem;
-  }
-  
-  .experience-icon {
-    width: 50px;
-    height: 50px;
-  }
-  
-  .experience-title {
-    font-size: 1.75rem;
-  }
-  
-  .experience-section .subtitle {
-    font-size: 1rem;
-    margin-bottom: 2rem;
   }
   
   .experience-grid {

@@ -9,7 +9,7 @@ import ScrollDown from './ScrollDown';
  * It features a customizable label and animated dot to draw attention.
  */
 const meta = {
-  title: 'Atom/ScrollDown',
+  title: 'Atoms/ScrollDown',
   component: ScrollDown,
   parameters: {
     layout: 'centered',

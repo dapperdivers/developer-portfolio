@@ -35,7 +35,7 @@ const PerformanceMonitor = ({
   
   // Add state for monitor config
   const [monitorConfig, setConfig] = useState({
-    longTaskThreshold: 50, // ms
+    longTaskThreshold: 100, // Increased from 50ms to 100ms
     fpsWarningThreshold: 30,
     showComponentTimings: true,
     showStackTraces: true,
@@ -43,6 +43,8 @@ const PerformanceMonitor = ({
     componentFilter: [],
     monitorScriptExecution: true,
     monitorNetworkActivity: true,
+    minReportInterval: 5000, // New: minimum time between console reports
+    ignoreFramerMotionBatches: true, // New: ignore normal Framer Motion render batches
     ...config
   });
   
@@ -87,6 +89,9 @@ const PerformanceMonitor = ({
   const originalOnCommitFiberRootRef = useRef(null);
   const originalOnCommitFiberUnmountRef = useRef(null);
   
+  // Add ref for last report time
+  const lastReportTime = useRef(0);
+  
   // Update config when props change
   useEffect(() => {
     setConfig(prevConfig => ({
@@ -100,11 +105,21 @@ const PerformanceMonitor = ({
     setVisible(enabled);
   }, [enabled]);
   
+  // Helper to check if operation is a normal Framer Motion batch
+  const isNormalFramerMotionBatch = (operations) => {
+    if (!monitorConfig.ignoreFramerMotionBatches) return false;
+    
+    return operations.every(op => 
+      op.type === 'react-commit' && 
+      op.details?.componentCount < 1500 && // Only ignore normal-sized batches
+      op.details?.duration < 1 // Only ignore quick renders
+    );
+  };
+  
   // Track long tasks with PerformanceObserver
   useEffect(() => {
     if (!visible || !window.PerformanceObserver) return;
     
-    // Use configured threshold for long tasks
     const longTaskThreshold = monitorConfig.longTaskThreshold;
     
     // Observer for long tasks (tasks that block the main thread)
@@ -115,11 +130,42 @@ const PerformanceMonitor = ({
         // Skip if duration doesn't exceed our custom threshold
         if (entry.duration < longTaskThreshold) return;
         
+        // Get the recent operations that might have caused this long task
+        const recentOperations = [...lastOperationsRef.current];
+        const relevantOperations = recentOperations.filter(op => {
+          return Date.now() - op.timestamp < 300;
+        });
+
+        // Skip logging if this is just a normal Framer Motion batch
+        if (isNormalFramerMotionBatch(relevantOperations)) {
+          return;
+        }
+        
+        // Check if enough time has passed since last report
+        const now = Date.now();
+        if (now - lastReportTime.current < monitorConfig.minReportInterval) {
+          // Just update the state without logging
+          longTasksRef.current = [
+            ...longTasksRef.current.slice(-9),
+            {
+              duration: Math.round(entry.duration),
+              timestamp: now,
+              location: entry.name || 'unknown'
+            }
+          ];
+          setPerformanceData(prev => ({
+            ...prev,
+            longTasks: longTasksRef.current
+          }));
+          return;
+        }
+        
+        lastReportTime.current = now;
+        
         // Get additional context about what's happening
         const renderingComponents = monitorConfig.showComponentTimings ? 
           Object.keys(renderTimings.current)
             .filter(key => {
-              // Apply component filter if specified
               if (monitorConfig.componentFilter.length > 0 && 
                   !monitorConfig.componentFilter.includes(key)) {
                 return false;
@@ -127,7 +173,6 @@ const PerformanceMonitor = ({
               
               const timing = renderTimings.current[key];
               const timeDiff = Date.now() - timing.timestamp;
-              // Only include components that rendered in the last 100ms
               return timeDiff < 100;
             })
             .map(name => ({ name, time: renderTimings.current[name].duration })) 
@@ -135,7 +180,7 @@ const PerformanceMonitor = ({
         
         // Get stack trace if configured to do so
         let stack = '';
-        if (monitorConfig.showStackTraces) {
+        if (monitorConfig.showStackTraces && entry.duration > longTaskThreshold * 1.5) {
           try {
             throw new Error('Long task trace');
           } catch (e) {
@@ -143,16 +188,10 @@ const PerformanceMonitor = ({
           }
         }
         
-        // Get the recent operations that might have caused this long task
-        const recentOperations = [...lastOperationsRef.current];
-        const relevantOperations = recentOperations.filter(op => {
-          return Date.now() - op.timestamp < 300; // Last 300ms
-        });
-        
         // Store only the 10 most recent long tasks with more details
         const newTask = {
           duration: Math.round(entry.duration),
-          timestamp: Date.now(),
+          timestamp: now,
           location: entry.name || 'unknown',
           attribution: entry.attribution ? [...entry.attribution] : [],
           activeComponents: renderingComponents,
@@ -165,19 +204,18 @@ const PerformanceMonitor = ({
           newTask
         ];
         
-        // Update state with new long tasks
         setPerformanceData(prev => ({
           ...prev,
           longTasks: longTasksRef.current
         }));
         
-        // Log detailed information if configured to do so
-        if (monitorConfig.logToConsole) {
+        // Log detailed information if configured to do so and task is significantly long
+        if (monitorConfig.logToConsole && entry.duration > longTaskThreshold * 1.2) {
           console.group(`[PERFORMANCE] Long task detected: ${Math.round(entry.duration)}ms`);
           console.log(`Time: ${new Date().toLocaleTimeString()}`);
           console.log(`Duration: ${Math.round(entry.duration)}ms (threshold: ${longTaskThreshold}ms)`);
           
-          if (relevantOperations.length > 0) {
+          if (relevantOperations.length > 0 && entry.duration > longTaskThreshold * 1.5) {
             console.group('Recent operations (may have caused the long task):');
             relevantOperations.forEach(op => {
               console.log(`${new Date(op.timestamp).toLocaleTimeString()} - ${op.type}:`, op.details);
@@ -185,7 +223,7 @@ const PerformanceMonitor = ({
             console.groupEnd();
           }
           
-          if (renderingComponents.length > 0) {
+          if (renderingComponents.length > 0 && entry.duration > longTaskThreshold * 1.5) {
             console.group('Recently rendered components:');
             renderingComponents.forEach(comp => {
               console.log(`  - ${comp.name}: ${comp.time}ms`);
@@ -193,51 +231,27 @@ const PerformanceMonitor = ({
             console.groupEnd();
           }
           
-          if (stack) {
+          if (stack && entry.duration > longTaskThreshold * 2) {
             console.log('Stack trace:');
             console.log(stack);
           }
           
-          // Add detailed analysis and actionable advice
-          console.group('Analysis:');
-          if (renderingComponents.length > 3) {
-            console.warn('Too many components rendering at once. Consider staggering renders.');
-          }
-          
-          if (relevantOperations.some(op => op.type === 'dom-mutation' && op.details.count > 50)) {
-            console.warn('Large DOM mutations detected. Consider virtualizing lists or optimizing DOM updates.');
-          }
-          
-          if (relevantOperations.some(op => op.type === 'user-interaction' && 
-              ['scroll', 'resize', 'mousemove'].includes(op.details.type))) {
-            console.warn('Performance issue during user interaction. Consider debouncing/throttling event handlers.');
-          }
-          
-          if (relevantOperations.some(op => op.type === 'network')) {
-            console.warn('Network operations during UI updates. Consider moving data fetching to separate workers or earlier in the component lifecycle.');
-          }
-          
-          // Add React-specific analysis
-          if (relevantOperations.some(op => op.type === 'react-commit')) {
-            const reactCommits = relevantOperations.filter(op => op.type === 'react-commit');
-            console.warn(`React rendering batches detected (${reactCommits.length}). Consider using React.memo, useMemo, or useCallback to prevent unnecessary renders.`);
+          // Only show analysis for very long tasks
+          if (entry.duration > longTaskThreshold * 2) {
+            console.group('Analysis:');
+            if (renderingComponents.length > 3) {
+              console.warn('Too many components rendering at once. Consider staggering renders.');
+            }
             
-            // Log the components that were part of this commit
-            reactCommits.forEach(commit => {
-              if (commit.details.components && commit.details.components.length > 0) {
-                console.log(`  Components in batch: ${commit.details.components.join(', ')}${commit.details.componentCount > 5 ? ` (and ${commit.details.componentCount - 5} more)` : ''}`);
-              }
-            });
+            if (relevantOperations.some(op => op.type === 'dom-mutation' && op.details.count > 50)) {
+              console.warn('Large DOM mutations detected. Consider virtualizing lists or optimizing DOM updates.');
+            }
+            
+            if (entry.duration > longTaskThreshold * 3) {
+              console.warn('SUGGESTION: Consider breaking down this operation or moving it to a web worker');
+            }
+            console.groupEnd();
           }
-          
-          if (relevantOperations.some(op => op.type === 'react-event-end' && op.details.duration > 16)) {
-            console.warn('Slow React event handlers detected. Consider optimizing or debouncing event callbacks.');
-          }
-          
-          if (entry.duration > 100) {
-            console.warn('SUGGESTION: Consider breaking down this operation or moving it to a web worker');
-          }
-          console.groupEnd();
           
           console.groupEnd();
         }
@@ -314,42 +328,72 @@ const PerformanceMonitor = ({
     };
   };
 
-  // FPS calculation callback
-  const calculateFPS = useCallback(() => {
+  // Update memory tracking
+  useEffect(() => {
     if (!visible) return;
     
-    frameCounter.current++;
-    const now = performance.now();
-    const elapsed = now - lastFrameTime.current;
+    const updateMemoryUsage = () => {
+      if (performance.memory) {
+        const memory = performance.memory;
+        setPerformanceData(prev => ({
+          ...prev,
+          memory: memory.usedJSHeapSize,
+          memoryHistory: [...prev.memoryHistory.slice(1), memory.usedJSHeapSize]
+        }));
+      } else {
+        // If memory API is not available, try to estimate memory usage
+        const heapSizeEstimate = window.performance?.memory?.usedJSHeapSize || 
+                                process?.memoryUsage?.()?.heapUsed || 
+                                0;
+        setPerformanceData(prev => ({
+          ...prev,
+          memory: heapSizeEstimate,
+          memoryHistory: [...prev.memoryHistory.slice(1), heapSizeEstimate]
+        }));
+      }
+    };
+
+    const memoryInterval = setInterval(updateMemoryUsage, 1000);
+    return () => clearInterval(memoryInterval);
+  }, [visible]);
+
+  // Update FPS tracking
+  useEffect(() => {
+    if (!visible) return;
     
-    // Update FPS every second
-    if (elapsed >= 1000) {
-      const currentFps = Math.round((frameCounter.current * 1000) / elapsed);
-      const memory = (window.performance?.memory?.usedJSHeapSize || 0) / (1024 * 1024);
-      
-      setPerformanceData(prev => ({
-        ...prev,
-        fps: currentFps,
-        memory: memory,
-        lastUpdate: now,
-        fpsHistory: [...prev.fpsHistory.slice(1), currentFps],
-        memoryHistory: [...prev.memoryHistory.slice(1), memory]
-      }));
-      
-      // Reset counters
-      frameCounter.current = 0;
-      lastFrameTime.current = now;
-    }
+    let frameCount = 0;
+    let lastTime = performance.now();
     
-    rafId.current = requestAnimationFrame(calculateFPS);
+    const measureFPS = () => {
+      const currentTime = performance.now();
+      frameCount++;
+      
+      if (currentTime - lastTime >= 1000) {
+        const fps = Math.round((frameCount * 1000) / (currentTime - lastTime));
+        setPerformanceData(prev => ({
+          ...prev,
+          fps,
+          fpsHistory: [...prev.fpsHistory.slice(1), fps]
+        }));
+        
+        frameCount = 0;
+        lastTime = currentTime;
+      }
+      
+      rafId.current = requestAnimationFrame(measureFPS);
+    };
+    
+    measureFPS();
+    return () => {
+      if (rafId.current) {
+        cancelAnimationFrame(rafId.current);
+      }
+    };
   }, [visible]);
   
   // Start monitoring
   useEffect(() => {
     if (visible) {
-      // Start FPS monitoring
-      rafId.current = requestAnimationFrame(calculateFPS);
-      
       // Set up performance observer if available
       let observer;
       if (window.PerformanceObserver) {
@@ -369,14 +413,11 @@ const PerformanceMonitor = ({
       };
       
       return () => {
-        if (rafId.current) {
-          cancelAnimationFrame(rafId.current);
-        }
         observer?.disconnect();
         React.Component.prototype.render = originalRender;
       };
     }
-  }, [visible, calculateFPS]);
+  }, [visible]);
   
   // Determine color based on FPS
   const getFpsColor = (fps) => {
@@ -503,227 +544,95 @@ const PerformanceMonitor = ({
     };
   }, [trackOperation]);
 
-  // Add script execution tracking
+  // Monitor script execution
   useEffect(() => {
     if (!visible || !monitorConfig.monitorScriptExecution) return;
-    
-    // Function to track function execution time
-    const trackFunctionExecution = (original, name, context) => {
-      return function(...args) {
-        const startTime = performance.now();
-        const functionName = name || (original.name || 'anonymous');
-        
-        trackOperation('script-execution-start', {
-          name: functionName,
-          context,
-          timestamp: Date.now()
-        });
-        
-        try {
-          const result = original.apply(this, args);
+
+    // Create performance observer for script execution
+    const scriptObserver = new PerformanceObserver((list) => {
+      const entries = list.getEntries();
+      entries.forEach(entry => {
+        if (entry.entryType === 'resource' && entry.initiatorType === 'script') {
+          const scriptExecution = {
+            name: entry.name,
+            duration: entry.duration,
+            timestamp: Date.now(),
+            size: entry.transferSize || 0
+          };
           
-          // Handle promises
-          if (result && typeof result.then === 'function') {
-            return result.then(value => {
-              const duration = performance.now() - startTime;
-              trackOperation('script-execution-end', {
-                name: functionName,
-                context,
-                duration,
-                async: true,
-                timestamp: Date.now()
-              });
-              
-              if (duration > 16) {
-                console.warn(`[SLOW ASYNC FUNCTION] ${functionName} took ${duration.toFixed(2)}ms`);
-              }
-              
-              return value;
-            }).catch(error => {
-              trackOperation('script-execution-error', {
-                name: functionName,
-                context,
-                error: error.message,
-                timestamp: Date.now()
-              });
-              throw error;
-            });
-          } 
+          scriptExecutionsRef.current = [
+            ...scriptExecutionsRef.current.slice(-19),
+            scriptExecution
+          ];
           
-          // Handle synchronous functions
-          const duration = performance.now() - startTime;
-          trackOperation('script-execution-end', {
-            name: functionName,
-            context,
-            duration,
-            timestamp: Date.now()
-          });
+          setPerformanceData(prev => ({
+            ...prev,
+            scriptTime: entry.duration,
+          }));
           
-          if (duration > 16) {
-            console.warn(`[SLOW FUNCTION] ${functionName} took ${duration.toFixed(2)}ms`);
+          if (monitorConfig.logToConsole && entry.duration > monitorConfig.longTaskThreshold) {
+            console.warn(
+              `[PERFORMANCE] Long script execution detected:`,
+              `\nScript: ${entry.name}`,
+              `\nDuration: ${Math.round(entry.duration)}ms`,
+              `\nSize: ${formatBytes(entry.transferSize || 0)}`
+            );
           }
-          
-          return result;
-        } catch (error) {
-          trackOperation('script-execution-error', {
-            name: functionName,
-            context,
-            error: error.message,
-            timestamp: Date.now()
-          });
-          throw error;
         }
-      };
-    };
-
-    // Patch setTimeout and setInterval to track callbacks
-    originalSetTimeoutRef.current = window.setTimeout;
-    originalSetIntervalRef.current = window.setInterval;
-    originalRequestAnimationFrameRef.current = window.requestAnimationFrame;
-    
-    window.setTimeout = function(callback, delay, ...args) {
-      let wrappedCallback = callback;
-      
-      if (typeof callback === 'function') {
-        wrappedCallback = trackFunctionExecution(callback, `setTimeout-${delay}ms`, 'timer');
-      }
-      
-      return originalSetTimeoutRef.current.call(this, wrappedCallback, delay, ...args);
-    };
-    
-    window.setInterval = function(callback, delay, ...args) {
-      let wrappedCallback = callback;
-      
-      if (typeof callback === 'function') {
-        wrappedCallback = trackFunctionExecution(callback, `setInterval-${delay}ms`, 'timer');
-      }
-      
-      return originalSetIntervalRef.current.call(this, wrappedCallback, delay, ...args);
-    };
-    
-    window.requestAnimationFrame = function(callback) {
-      let wrappedCallback = callback;
-      
-      if (typeof callback === 'function') {
-        wrappedCallback = trackFunctionExecution(callback, 'requestAnimationFrame', 'animation');
-      }
-      
-      return originalRequestAnimationFrameRef.current.call(this, wrappedCallback);
-    };
-    
-    // Cleanup
-    return () => {
-      window.setTimeout = originalSetTimeoutRef.current;
-      window.setInterval = originalSetIntervalRef.current;
-      window.requestAnimationFrame = originalRequestAnimationFrameRef.current;
-    };
-  }, [visible, monitorConfig.monitorScriptExecution]);
-  
-  // Event listener tracking
-  useEffect(() => {
-    if (!visible) return;
-
-    // Track user interactions that could lead to long tasks
-    const trackInteraction = (e) => {
-      const interactionType = e.type;
-      const target = e.target;
-      const targetInfo = target ? {
-        tagName: target.tagName?.toLowerCase() || 'unknown',
-        id: target.id || '',
-        className: target.className || '',
-        type: target.type || '',
-      } : 'unknown';
-
-      trackOperation('user-interaction', {
-        type: interactionType,
-        target: targetInfo,
-        timestamp: Date.now()
       });
-    };
-
-    // Track common interactions
-    const interactionEvents = ['click', 'input', 'change', 'submit', 'keydown', 'scroll', 'resize'];
-    
-    interactionEvents.forEach(eventType => {
-      const handler = (e) => trackInteraction(e);
-      window.addEventListener(eventType, handler, { passive: true });
-      eventListenersRef.current.set(eventType, handler);
     });
 
-    // Track network activity
-    if (window.fetch && monitorConfig.monitorNetworkActivity) {
-      // Store the original fetch in the ref
-      originalFetchRef.current = window.fetch;
-      window.fetch = function(...args) {
-        const url = typeof args[0] === 'string' ? args[0] : args[0]?.url || 'unknown';
-        const startTime = Date.now();
-        
-        trackOperation('network', {
-          type: 'fetch',
-          url: url.split('?')[0], // Remove query params for privacy
-          startTime
-        });
-        
-        const promise = originalFetchRef.current.apply(this, args);
-        
-        promise.then(() => {
-          trackOperation('network', {
-            type: 'fetch-complete',
-            url: url.split('?')[0],
-            duration: Date.now() - startTime
-          });
-        }).catch(error => {
-          trackOperation('network', {
-            type: 'fetch-error',
-            url: url.split('?')[0],
-            error: error.message
-          });
-        });
-        
-        return promise;
-      };
+    try {
+      scriptObserver.observe({ entryTypes: ['resource'] });
+    } catch (e) {
+      console.warn('Script execution monitoring not supported:', e);
     }
 
-    // Track DOM mutations
-    const mutationObserver = new MutationObserver(mutations => {
-      if (mutations.length > 10) {
-        // Only track significant batches of mutations
-        trackOperation('dom-mutation', {
-          count: mutations.length,
-          types: [...new Set(mutations.map(m => m.type))],
-          targets: [...new Set(mutations.map(m => 
-            m.target?.tagName?.toLowerCase() || 'unknown'
-          ))]
-        });
-      }
-    });
+    return () => scriptObserver.disconnect();
+  }, [visible, monitorConfig.monitorScriptExecution, monitorConfig.longTaskThreshold, monitorConfig.logToConsole]);
 
-    mutationObserver.observe(document.body, {
-      childList: true,
-      attributes: true,
-      subtree: true,
-      characterData: true
-    });
+  // Monitor network activity
+  useEffect(() => {
+    if (!visible || !monitorConfig.monitorNetworkActivity) return;
 
-    // Cleanup event listeners and patches
-    return () => {
-      interactionEvents.forEach(eventType => {
-        const handler = eventListenersRef.current.get(eventType);
-        if (handler) {
-          window.removeEventListener(eventType, handler);
-          eventListenersRef.current.delete(eventType);
+    const networkObserver = new PerformanceObserver((list) => {
+      const entries = list.getEntries();
+      entries.forEach(entry => {
+        if (entry.entryType === 'resource') {
+          const request = {
+            url: entry.name,
+            duration: entry.duration,
+            size: entry.transferSize || 0,
+            timestamp: Date.now(),
+            type: entry.initiatorType
+          };
+          
+          networkRequestsRef.current = [
+            ...networkRequestsRef.current.slice(-19),
+            request
+          ];
+          
+          if (monitorConfig.logToConsole && entry.duration > monitorConfig.longTaskThreshold) {
+            console.warn(
+              `[PERFORMANCE] Slow network request detected:`,
+              `\nURL: ${entry.name}`,
+              `\nDuration: ${Math.round(entry.duration)}ms`,
+              `\nSize: ${formatBytes(entry.transferSize || 0)}`,
+              `\nType: ${entry.initiatorType}`
+            );
+          }
         }
       });
+    });
 
-      // Restore original fetch using the ref
-      if (window.fetch && originalFetchRef.current && window.fetch !== originalFetchRef.current) {
-        window.fetch = originalFetchRef.current;
-      }
+    try {
+      networkObserver.observe({ entryTypes: ['resource'] });
+    } catch (e) {
+      console.warn('Network activity monitoring not supported:', e);
+    }
 
-      // Disconnect mutation observer
-      mutationObserver.disconnect();
-    };
-  }, [visible, trackOperation, monitorConfig.monitorNetworkActivity]);
+    return () => networkObserver.disconnect();
+  }, [visible, monitorConfig.monitorNetworkActivity, monitorConfig.longTaskThreshold, monitorConfig.logToConsole]);
   
   // Add React-specific event tracking
   useEffect(() => {

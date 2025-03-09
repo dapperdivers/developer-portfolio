@@ -1,17 +1,11 @@
 /**
- * Projects Organism Styles
- *
- * Styles for the Projects component following atomic design principles
- * Animations are now handled by framer-motion through the AnimationContext
+ * Projects Styles
  */
 
-/* Projects Section */
 .projects-section {
-  background-color: var(--color-background-alt);
   padding: var(--section-padding-y) 0;
 }
 
-/* Projects grid */
 .projects-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -19,7 +13,6 @@
   margin-top: var(--spacing-6);
 }
 
-/* Skeleton loading styles */
 .projects-grid-loading {
   opacity: 0.7;
 }
@@ -39,7 +32,6 @@
   background-color: var(--color-skeleton-bg);
   position: relative;
   overflow: hidden;
-  /* Animation removed - now handled by framer-motion */
 }
 
 .skeleton-content {
@@ -57,7 +49,6 @@
   margin-bottom: var(--spacing-2);
   position: relative;
   overflow: hidden;
-  /* Animation removed - now handled by framer-motion */
 }
 
 .skeleton-description {
@@ -67,7 +58,6 @@
   margin-bottom: var(--spacing-2);
   position: relative;
   overflow: hidden;
-  /* Animation removed - now handled by framer-motion */
 }
 
 .skeleton-tags {
@@ -84,7 +74,6 @@
   background-color: var(--color-skeleton-bg);
   position: relative;
   overflow: hidden;
-  /* Animation removed - now handled by framer-motion */
 }
 
 .skeleton-tags::before {
@@ -109,7 +98,6 @@
   background-color: var(--color-skeleton-bg);
   position: relative;
   overflow: hidden;
-  /* Animation removed - now handled by framer-motion */
 }
 
 .skeleton-actions::before {
@@ -120,9 +108,19 @@
   width: 100px;
 }
 
-/* Skeleton animation keyframes removed - now handled by framer-motion */
+.projects-empty-state {
+  text-align: center;
+  padding: var(--spacing-6);
+  background-color: var(--color-background);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--box-shadow-sm);
+}
 
-/* Responsive styles */
+.projects-empty-state p {
+  color: var(--color-text-muted);
+  margin-top: var(--spacing-3);
+}
+
 @media (max-width: 992px) {
   .projects-grid {
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -140,20 +138,6 @@
     gap: var(--spacing-3);
     margin-top: var(--spacing-4);
   }
-}
-
-/* Empty state */
-.projects-empty-state {
-  text-align: center;
-  padding: var(--spacing-6);
-  background-color: var(--color-background);
-  border-radius: var(--border-radius-lg);
-  box-shadow: var(--box-shadow-sm);
-}
-
-.projects-empty-state p {
-  color: var(--color-text-muted);
-  margin-top: var(--spacing-3);
 }
 
 /* Accessibility - Reduced motion */
