@@ -76,4 +76,47 @@
   .binary {
     transition: none !important;
   }
+}
+
+.binary-stream-container {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+}
+
+.binary-stream-background {
+  position: fixed;
+  z-index: -1;
+}
+
+.binary-stream-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Helper classes for common positioning */
+.binary-stream-left {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.binary-stream-right {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.binary-stream-center {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+}
+
+/* For creating repeating patterns */
+.binary-stream-repeat {
+  display: flex;
+  gap: 1rem;
 } 

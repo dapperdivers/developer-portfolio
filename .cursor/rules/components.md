@@ -3,7 +3,7 @@
 ## [REQUIRED] Component Creation
 ALWAYS use the component generator command:
 ```bash
-yarn generate --name=ComponentName --type=[atom|molecule|organism|layout]
+yarn generate-component --name=ComponentName --type=[atom|molecule|organism|layout]
 ```
 See `workflows.md` for detailed guidelines on component creation.
 

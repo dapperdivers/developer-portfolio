@@ -57,7 +57,7 @@
         "src/components/atoms/Card/*"
       ],
       "@atoms/Head/*": [
-        "src/components/atoms/Head/*"
+        "src/components/layout/Head/*"
       ],
       "@atoms/LazyImage/*": [
         "src/components/atoms/LazyImage/*"

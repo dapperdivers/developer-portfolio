@@ -13,7 +13,7 @@ const withHelmetProvider = (Story) => (
 );
 
 const meta = {
-  title: 'Atoms/Head',
+  title: 'Layout/Head',
   component: Head,
   tags: ['autodocs'],
   decorators: [withHelmetProvider],

@@ -1,7 +1,7 @@
 // Use named imports to allow tree-shaking to work properly
 import { useEffect, useState, Suspense, lazy } from 'react';
 import { createRoot } from 'react-dom/client';
-import Head from "@atoms/Head";
+import Head from "@/components/layout/Head";
 import Navigation from "@molecules/Navigation";
 import Footer from "@molecules/Footer";
 import SkipToContent from "@atoms/SkipToContent";

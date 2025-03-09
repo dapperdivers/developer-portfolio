@@ -1,0 +1,33 @@
+/**
+ * NetworkBackground Component Styles
+ * 
+ * Styling for the NetworkBackground component
+ * This project uses Tailwind CSS. See tailwind.config.js for configuration.
+ * For custom styles beyond Tailwind, use the classes defined below.
+ * 
+ * Note: Animations are managed by framer-motion through the AnimationContext.
+ * - Do NOT add CSS animations or transitions (use framer-motion instead)
+ * - See AnimationContext.tsx for predefined animation variants
+ */
+
+.networkbackground {
+  /* Add custom styles here that go beyond Tailwind's utilities */
+  /* Do not include animations or transitions - use framer-motion instead */
+}
+
+/* 
+ * For responsive design, use Tailwind's responsive prefixes in your component's JSX:
+ * <div className="md:flex lg:p-4 dark:bg-gray-800"></div>
+ * 
+ * Or add custom responsive styles here:
+ */
+@media (max-width: 768px) {
+  .networkbackground {
+    /* Add mobile-specific styles if needed (no animations) */
+  }
+}
+
+/*
+ * For users with reduced motion preferences, framer-motion will automatically
+ * disable animations via the AnimationContext. No need for CSS media queries.
+ */
