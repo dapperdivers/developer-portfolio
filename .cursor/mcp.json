@@ -1,0 +1,40 @@
+{
+    "mcpServers": {
+      "filesystem": {
+        "command": "npx",
+        "args": [
+          "-y",
+          "@modelcontextprotocol/server-filesystem",
+          "/home/derek/projects/developer-portfolio",
+          "/home/derek/Cline/MCP/filesystem"
+        ]
+      },
+      "git": {
+        "command": "npx",
+        "args": [
+          "-y",
+          "@modelcontextprotocol/server-github"
+        ],
+        "env": {
+          "GITHUB_TOKEN": "${env:GITHUB_TOKEN}"
+        }
+      },
+      "puppeteer": {
+        "command": "npx",
+        "args": [
+          "-y",
+          "@modelcontextprotocol/server-puppeteer"
+        ]
+      },
+      "perplexity": {
+        "command": "node",
+        "args": [
+          "/home/derek/Cline/MCP/perplexity-mcp/build/index.js"
+        ],
+        "env": {
+          "PERPLEXITY_API_KEY": "${env:PERPLEXITY_API_KEY}",
+          "PERPLEXITY_MODEL": "${env:PERPLEXITY_MODEL}"
+        }
+      }
+    }
+  }

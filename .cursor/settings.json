@@ -1,0 +1,30 @@
+{
+  "python.defaultInterpreterPath": "/opt/cursor/venv/bin/python",
+  "python.analysis.typeCheckingMode": "basic",
+  "python.analysis.diagnosticMode": "workspace",
+  "python.analysis.autoSearchPaths": true,
+  "python.analysis.extraPaths": [
+    "/opt/cursor/venv/lib/python3.11/site-packages"
+  ],
+  "python.languageServer": "Pylance",
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "ms-python.black-formatter",
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true
+  },
+  "python.linting.enabled": true,
+  "python.linting.pylintEnabled": true,
+  "python.linting.flake8Enabled": true,
+  "python.linting.mypyEnabled": true,
+  "python.formatting.provider": "black",
+  "python.formatting.blackPath": "/opt/cursor/venv/bin/black",
+  "python.linting.pylintPath": "/opt/cursor/venv/bin/pylint",
+  "python.linting.flake8Path": "/opt/cursor/venv/bin/flake8",
+  "python.linting.mypyPath": "/opt/cursor/venv/bin/mypy",
+  "python.envFile": "${workspaceFolder}/.env",
+  "files.exclude": {
+    "**/__pycache__": true,
+    "**/.pytest_cache": true,
+    "**/*.pyc": true
+  }
+}
