@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { vi } from 'vitest';
+import { vi, describe, it, expect, beforeEach } from 'vitest';
 import ScrollDown from './ScrollDown';
 
 describe('ScrollDown Component', () => {
@@ -10,27 +10,33 @@ describe('ScrollDown Component', () => {
   });
 
   it('renders without crashing', () => {
-    render(<ScrollDown>Test content</ScrollDown>);
-    expect(screen.getByText('Test content')).toBeInTheDocument();
+    render(<ScrollDown />);
+    // Check for the default label
+    expect(screen.getByText('>>_NEXT')).toBeInTheDocument();
   });
   
   it('applies custom className', () => {
-    const { container } = render(<ScrollDown className="custom-class">Test</ScrollDown>);
+    const { container } = render(<ScrollDown className="custom-class" />);
     const element = container.firstChild;
     expect(element).toHaveClass('custom-class');
-    expect(element).toHaveClass('scrolldown');
+    expect(element).toHaveClass('scroll-down-container');
   });
   
-  it('renders children correctly', () => {
-    const testId = 'test-child';
-    render(
-      <ScrollDown>
-        <div data-testid={testId}>Child component</div>
-      </ScrollDown>
-    );
+  it('renders custom label', () => {
+    const customLabel = 'Custom Label';
+    render(<ScrollDown label={customLabel} />);
+    expect(screen.getByText(customLabel)).toBeInTheDocument();
+  });
+
+  it('calls onClick handler when clicked', () => {
+    const handleClick = vi.fn();
+    render(<ScrollDown onClick={handleClick} />);
     
-    expect(screen.getByTestId(testId)).toBeInTheDocument();
-    expect(screen.getByTestId(testId)).toHaveTextContent('Child component');
+    // Find the button and click it
+    const button = screen.getByRole('button');
+    fireEvent.click(button);
+    
+    expect(handleClick).toHaveBeenCalledTimes(1);
   });
   
   // Add more tests as needed
