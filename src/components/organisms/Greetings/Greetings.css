@@ -77,4 +77,75 @@
   .cyberpunk-button:hover::after {
     animation: none !important;
   }
+}
+
+/* Terminal and glitch effects */
+.cyberpunk-terminal {
+  box-shadow: var(--box-shadow);
+  position: relative;
+}
+
+.cyberpunk-glitch {
+  position: relative;
+}
+
+.cyberpunk-glitch:after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  background: var(--color-black);
+  overflow: hidden;
+  clip: rect(0, 900px, 0, 0);
+  color: var(--color-cyan);
+  text-shadow: 0 0 5px var(--color-cyan);
+  animation: glitch-animation 3s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-animation {
+  0% {
+    clip: rect(0, 900px, 0, 0);
+  }
+  2% {
+    clip: rect(10px, 900px, 25px, 0);
+  }
+  4% {
+    clip: rect(0, 900px, 10px, 0);
+  }
+  6% {
+    clip: rect(0, 900px, 0, 0);
+  }
+  98% {
+    clip: rect(0, 900px, 0, 0);
+  }
+  100% {
+    clip: rect(0, 900px, 0, 0);
+  }
+}
+
+/* Cursor and typing effects */
+.blink-cursor {
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  from, to { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.typing-effect {
+  border-right: 2px solid transparent;
+  white-space: nowrap;
+  animation: typing 3.5s steps(40, end), blink-caret .75s step-end 8;
+}
+
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: var(--color-cyan); }
 } 

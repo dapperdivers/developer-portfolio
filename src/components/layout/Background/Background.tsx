@@ -1,7 +1,8 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import './Background.css';
 import MatrixBackground from '../../atoms/MatrixBackground';
 import BinaryStream from '../../atoms/BinaryStream';
+import { useAnimation } from '../../../context/AnimationContext';
 
 /**
  * Background layout component
@@ -49,6 +50,40 @@ const Background = (props: BackgroundProps) => {
     matrixCharCount = 100,
     ...rest 
   } = props;
+
+  // Get animation context
+  const { 
+    animationEnabled, 
+    registerEntryAnimation, 
+    playEntryAnimation,
+    inView 
+  } = useAnimation();
+
+  // Register background effects with animation system
+  useEffect(() => {
+    const effectIds = [
+      'background-matrix',
+      'background-binary',
+      'background-circuit',
+      'background-scanlines',
+      'background-glitch',
+      'background-color-pulse',
+      'background-noise'
+    ];
+
+    // Register each effect
+    effectIds.forEach(id => registerEntryAnimation(id));
+
+    // Play animations when in view
+    if (inView && animationEnabled) {
+      effectIds.forEach((id, index) => {
+        playEntryAnimation(id, index * 0.1);
+      });
+    }
+  }, [registerEntryAnimation, playEntryAnimation, inView, animationEnabled]);
+  
+  // Only show effects if animations are enabled
+  const shouldShowEffects = animationEnabled;
   
   return (
     <div 
@@ -56,11 +91,11 @@ const Background = (props: BackgroundProps) => {
       {...rest}
     >
       <div className="background__effects">
-        {enableMatrix && (
+        {shouldShowEffects && enableMatrix && (
           <MatrixBackground characterCount={matrixCharCount} randomPositioning={true} />
         )}
         
-        {enableBinaryStreams && (
+        {shouldShowEffects && enableBinaryStreams && (
           <>
             <BinaryStream position="left" count={30} baseDelay={0.1} />
             <BinaryStream position="right" count={30} baseDelay={0.15} />
@@ -69,23 +104,23 @@ const Background = (props: BackgroundProps) => {
           </>
         )}
         
-        {enableCircuitGrid && (
+        {shouldShowEffects && enableCircuitGrid && (
           <div className="background__circuit-grid"></div>
         )}
         
-        {enableScanlines && (
+        {shouldShowEffects && enableScanlines && (
           <div className="background__scanlines"></div>
         )}
         
-        {enableGlitch && (
+        {shouldShowEffects && enableGlitch && (
           <div className="background__glitch"></div>
         )}
         
-        {enableColorPulse && (
+        {shouldShowEffects && enableColorPulse && (
           <div className="background__color-pulse"></div>
         )}
         
-        {enableNoise && (
+        {shouldShowEffects && enableNoise && (
           <div className="background__noise"></div>
         )}
       </div>

@@ -1,5 +1,6 @@
 import React, { memo, useState, useRef, useEffect } from 'react';
 import useNavigation from '@hooks/useNavigation';
+import HeaderName from '@/components/atoms/HeaderName';
 import PropTypes from 'prop-types';
 import './Navigation.css';
 
@@ -54,7 +55,7 @@ const Navigation = () => {
   return (
     <header 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-gray-900 shadow-lg' : 'bg-transparent'
+        isScrolled ? 'shadow-lg' : ''
       } ${
         isVisible ? 'translate-y-0' : '-translate-y-full'
       }`}
@@ -68,14 +69,7 @@ const Navigation = () => {
       >
         <div className="container mx-auto px-4 flex items-center justify-between">
           <div className="flex items-center">
-            <h2 
-              className="text-xl font-bold text-cyan-400 cyber-text-animation" 
-              id="nav-title"
-              data-content={greetings.name}
-            >
-              {greetings.name}
-              <span className="cursor"></span>
-            </h2>
+            <HeaderName name={greetings.name} />
           </div>
           
           {/* Empty div to maintain spacing for future navigation items */}

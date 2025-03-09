@@ -60,10 +60,6 @@ const Greetings = () => {
             </h1>
             
             <div className="space-y-3 md:space-y-4">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-theme-cyan cyberpunk-text" data-testid="name-heading">
-                {greetings.name}
-              </h2>
-              
               <p className="text-lg sm:text-xl md:text-2xl max-w-3xl mx-auto leading-loose text-theme-offwhite opacity-90 px-2 sm:px-4" data-testid="title-text">
                 {greetings.description}
               </p>
@@ -95,78 +91,6 @@ const Greetings = () => {
       <div className="absolute bottom-4 sm:bottom-8 md:bottom-10 left-1/2 transform -translate-x-1/2">
         <ScrollDown onClick={scrollToNextSection} />
       </div>
-      
-      {/* Add some CSS for the animations and effects */}
-      <style jsx>{`
-        .cyberpunk-terminal {
-          box-shadow: var(--box-shadow);
-          position: relative;
-        }
-        
-        .cyberpunk-glitch {
-          position: relative;
-        }
-        
-        .cyberpunk-glitch:after {
-          content: attr(data-text);
-          position: absolute;
-          left: 0;
-          top: 0;
-          width: 100%;
-          background: var(--color-black);
-          overflow: hidden;
-          clip: rect(0, 900px, 0, 0);
-          color: var(--color-cyan);
-          text-shadow: 0 0 5px var(--color-cyan);
-          animation: glitch-animation 3s infinite linear alternate-reverse;
-        }
-        
-        @keyframes glitch-animation {
-          0% {
-            clip: rect(0, 900px, 0, 0);
-          }
-          2% {
-            clip: rect(10px, 900px, 25px, 0);
-          }
-          4% {
-            clip: rect(0, 900px, 10px, 0);
-          }
-          6% {
-            clip: rect(0, 900px, 0, 0);
-          }
-          98% {
-            clip: rect(0, 900px, 0, 0);
-          }
-          100% {
-            clip: rect(0, 900px, 0, 0);
-          }
-        }
-        
-        .blink-cursor {
-          animation: blink 1s step-end infinite;
-        }
-        
-        @keyframes blink {
-          from, to { opacity: 1; }
-          50% { opacity: 0; }
-        }
-        
-        .typing-effect {
-          border-right: 2px solid transparent;
-          white-space: nowrap;
-          animation: typing 3.5s steps(40, end), blink-caret .75s step-end 8;
-        }
-        
-        @keyframes typing {
-          from { width: 0 }
-          to { width: 100% }
-        }
-        
-        @keyframes blink-caret {
-          from, to { border-color: transparent }
-          50% { border-color: var(--color-cyan); }
-        }
-      `}</style>
     </div>
   );
 }

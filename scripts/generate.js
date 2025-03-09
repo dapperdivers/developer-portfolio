@@ -350,7 +350,7 @@ async function generateComponentStoryFile(componentPath, componentName, componen
 import ${componentName} from '${relativeImportPath}${componentName}';
 
 const meta = {
-  title: '${capitalizeFirstLetter(componentType)}/${componentName}',
+  title: '${capitalizeFirstLetter(componentType)}s/${componentName}',
   component: ${componentName},
   parameters: {
     layout: 'centered',

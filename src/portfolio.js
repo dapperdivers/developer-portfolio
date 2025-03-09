@@ -82,7 +82,7 @@ const sanitizeText = (text) => {
 
 export const greetings = {
     name: sanitizeText("Derek Mackley"),
-    title: sanitizeText("Hi There, I'm Derek"),
+    title: sanitizeText("Hi There, I'm Derek Mackley"),
     description: sanitizeText(
         "A Staff Product Security Engineer with a long web development career spanning many languages and frameworks. Specializing in securing applications throughout the development lifecycle. Extensive experience with .NET / C# / Python / JavaScript / React / Node.js / Angular / Docker / Azure while implementing robust security measures across applications."
     ),
