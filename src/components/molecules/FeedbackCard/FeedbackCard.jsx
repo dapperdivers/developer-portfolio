@@ -1,5 +1,7 @@
 import React, { memo, useMemo } from "react";
 import PropTypes from 'prop-types';
+import { motion } from 'framer-motion';
+import { useAnimation } from '@context/AnimationContext';
 import Card from '@atoms/Card';
 import RatingStars from '@atoms/RatingStars';
 import FeedbackQuote from '@molecules/FeedbackQuote';
@@ -24,13 +26,19 @@ import './FeedbackCard.css';
  * @param {string} [props.data.designation] - Job title or designation of the person
  * @param {number} [props.data.rating] - Rating from 1-5
  * @param {number} [props.index=0] - Index number for staggered animations
+ * @param {boolean} [props.animated=true] - Whether to animate the component
  * @returns {React.ReactElement} FeedbackCard component
  */
-const FeedbackCard = ({ data, index = 0 }) => {
+const FeedbackCard = ({ data, index = 0, animated = true }) => {
   const [ref, isInView] = useIntersectionObserver({ 
     threshold: 0.1,
     rootMargin: "-50px 0px" 
   });
+  
+  const { animationEnabled, getAnimationDelay } = useAnimation();
+  
+  // Only use animations if both props are enabled
+  const shouldAnimate = animated && animationEnabled;
   
   // Generate a rating based on the feedback length or use a default of 5
   const rating = data.rating || 5;
@@ -58,55 +66,110 @@ const FeedbackCard = ({ data, index = 0 }) => {
       keywords.some(keyword => sentence.toLowerCase().includes(keyword))
     );
     
-    // If found a good sentence, use it; otherwise return null
-    return highlightSentence ? highlightSentence.trim() : null;
+    // If found a good sentence, return it, otherwise return the first sentence (if it's not too long)
+    if (highlightSentence) return highlightSentence.trim();
+    if (sentences[0] && sentences[0].length < 100) return sentences[0].trim();
+    
+    // Return nothing if can't find a good highlight
+    return '';
   }, [data.feedback, data.highlight]);
   
-  // Enhanced animation for the card
-  const animation = {
-    initial: { opacity: 0, y: 30 },
-    animate: isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 },
-    transition: { 
-      duration: 0.5, 
-      delay: 0.1 * (index % 3), 
-      ease: "easeOut" 
+  // Card animation variants
+  const cardVariants = {
+    hidden: { 
+      opacity: 0, 
+      y: 50,
+      rotateX: -10,
+      scale: 0.95
+    },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      rotateX: 0,
+      scale: 1,
+      transition: { 
+        type: "spring", 
+        stiffness: 200, 
+        damping: 20,
+        delay: index * 0.1
+      }
     }
   };
   
+  // Hover animation for the card
+  const hoverVariants = {
+    hover: { 
+      y: -10,
+      rotateX: 5,
+      boxShadow: "0 15px 30px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(100, 255, 218, 0.1)",
+      transition: { 
+        duration: 0.4,
+        ease: [0.175, 0.885, 0.32, 1.275]
+      }
+    }
+  };
+  
+  // Decoration animation variants
+  const decorationVariants = {
+    initial: { opacity: 0.3, scale: 1 },
+    hover: { 
+      opacity: 0.7, 
+      scale: 1.1, 
+      filter: "blur(1px)",
+      transition: { duration: 0.4, yoyo: Infinity, repeatDelay: 0.5 }
+    }
+  };
+
   return (
-    <div className="h-full transition-all duration-300 feedback-card-wrapper" ref={ref} data-testid="feedback-card">
-      <Card 
-        className="h-full overflow-hidden hover:-translate-y-2 hover:shadow-lg transition-all duration-300 bg-theme-navy feedback-card"
-        animation={animation}
-        shadow
-      >
-        <div className="p-6 flex flex-col h-full bg-theme-navy relative feedback-content">
-          {/* Decorative elements */}
-          <div className="feedback-decoration-top"></div>
-          <div className="feedback-decoration-bottom"></div>
+    <motion.div 
+      ref={ref}
+      className="feedback-card-wrapper"
+      initial={shouldAnimate ? "hidden" : "visible"}
+      animate={isInView && shouldAnimate ? "visible" : "visible"}
+      whileHover={shouldAnimate ? "hover" : ""}
+      variants={shouldAnimate ? cardVariants : {}}
+    >
+      <Card className="feedback-card" padded elevated>
+        {/* Decorative elements */}
+        <motion.div 
+          className="feedback-decoration-top"
+          variants={shouldAnimate ? decorationVariants : {}}
+          initial="initial"
+          animate={isInView && shouldAnimate ? "initial" : "initial"}
+          whileHover="hover"
+        ></motion.div>
+        
+        <motion.div 
+          className="feedback-decoration-bottom"
+          variants={shouldAnimate ? decorationVariants : {}}
+          initial="initial"
+          animate={isInView && shouldAnimate ? "initial" : "initial"}
+          whileHover="hover"
+        ></motion.div>
+        
+        {/* Main content */}
+        <div className="feedback-content">
+          {/* Rating stars */}
+          <RatingStars rating={rating} animated={shouldAnimate} />
           
-          {/* Rating stars component */}
-          <RatingStars rating={rating} className="mb-3" />
-          
-          {/* Highlight section (if applicable) */}
+          {/* Highlighted excerpt */}
           {highlightText && (
-            <FeedbackHighlight text={highlightText} className="mb-3" />
+            <FeedbackHighlight text={highlightText} animated={shouldAnimate} />
           )}
           
-          {/* Quote content component */}
-          <FeedbackQuote text={data.feedback} />
+          {/* Main feedback quote */}
+          <FeedbackQuote text={data.feedback} animated={shouldAnimate} />
           
-          {/* Author info component */}
-          <div className="mt-auto pt-4 border-t border-primary border-opacity-20">
-            <FeedbackAuthor 
-              name={data.name}
-              role={role}
-              avatar={avatar}
-            />
-          </div>
+          {/* Author information */}
+          <FeedbackAuthor 
+            name={data.name} 
+            role={role} 
+            avatar={avatar}
+            animated={shouldAnimate} 
+          />
         </div>
       </Card>
-    </div>
+    </motion.div>
   );
 };
 
@@ -115,12 +178,12 @@ FeedbackCard.propTypes = {
     name: PropTypes.string.isRequired,
     feedback: PropTypes.string.isRequired,
     highlight: PropTypes.string,
-    avatar: PropTypes.string, 
+    avatar: PropTypes.string,
     designation: PropTypes.string,
     rating: PropTypes.number
   }).isRequired,
-  index: PropTypes.number
+  index: PropTypes.number,
+  animated: PropTypes.bool
 };
 
-// Apply memoization for performance optimization
 export default memo(FeedbackCard);

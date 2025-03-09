@@ -7,6 +7,8 @@
  * - FeedbackQuote.css 
  * - FeedbackAuthor.css
  * - FeedbackHighlight.css
+ * 
+ * Animations are now managed by framer-motion through AnimationContext
  */
 
 /* Card container styles */
@@ -24,12 +26,6 @@
 .feedback-card {
   border-radius: var(--border-radius-lg);
   border: 1px solid rgba(100, 255, 218, 0.1);
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.feedback-card:hover {
-  transform: translateY(-10px) rotateX(5deg);
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(100, 255, 218, 0.1);
 }
 
 /* Main content container */
@@ -48,47 +44,41 @@
   position: absolute;
   top: 0;
   right: 0;
-  width: 60px;
-  height: 60px;
-  background: radial-gradient(circle at top right, rgba(100, 255, 218, 0.15), transparent 70%);
-  border-top-right-radius: var(--border-radius-lg);
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(circle, 
+    rgba(100, 255, 218, 0.05) 0%, 
+    rgba(100, 255, 218, 0) 70%
+  );
   z-index: 0;
-  opacity: 0.8;
+  pointer-events: none;
+  border-radius: 50%;
 }
 
 .feedback-decoration-bottom {
   position: absolute;
   bottom: 0;
   left: 0;
-  width: 80px;
-  height: 80px;
-  background: radial-gradient(circle at bottom left, rgba(100, 255, 218, 0.1), transparent 70%);
-  border-bottom-left-radius: var(--border-radius-lg);
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(circle, 
+    rgba(100, 255, 218, 0.05) 0%, 
+    rgba(100, 255, 218, 0) 70%
+  );
   z-index: 0;
-  opacity: 0.7;
+  pointer-events: none;
+  border-radius: 50%;
 }
 
-/* Animations */
-@keyframes pulse {
-  0% { opacity: 0.5; }
-  50% { opacity: 0.8; }
-  100% { opacity: 0.5; }
-}
-
-.feedback-card:hover .feedback-decoration-top,
-.feedback-card:hover .feedback-decoration-bottom {
-  animation: pulse 3s infinite;
-}
-
-/* Responsive styles */
+/* Responsive adjustments */
 @media (max-width: 768px) {
   .feedback-card-wrapper {
-    min-width: 250px;
+    min-width: 100%;
   }
   
   .feedback-decoration-top,
   .feedback-decoration-bottom {
-    width: 40px;
-    height: 40px;
+    width: 80px;
+    height: 80px;
   }
 }

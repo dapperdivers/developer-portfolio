@@ -3,6 +3,9 @@
  * 
  * Styles for the lazy-loaded image component with loading states and transitions.
  * Updated with security-themed variants.
+ * 
+ * Note: Animations and transitions are now managed by framer-motion
+ * through the AnimationContext.
  */
 
 /* Container */
@@ -12,7 +15,7 @@
   height: 100%;
   overflow: hidden;
   background-color: var(--color-gray-200);
-  transition: opacity 0.3s ease;
+  /* transition property removed - now handled by framer-motion */
 }
 
 /* Security-themed container */
@@ -42,7 +45,7 @@
     var(--color-gray-200) 63%
   );
   background-size: 400% 100%;
-  animation: skeleton-loading 1.4s ease infinite;
+  /* animation property removed - now handled by framer-motion */
 }
 
 /* Security-themed skeleton */
@@ -79,7 +82,7 @@
   object-fit: cover;
   filter: blur(10px);
   transform: scale(1.05);
-  transition: opacity 0.3s ease;
+  /* transition property removed - now handled by framer-motion */
 }
 
 /* Security-themed low-res image */
@@ -103,22 +106,22 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0;
-  transition: opacity 0.3s ease;
+  /* opacity property is now controlled by framer-motion */
+  /* transition property removed - now handled by framer-motion */
 }
 
-/* Image when loaded */
-.lazy-image-loaded {
+/* Image when loaded - class no longer needed since we use framer-motion variants */
+/* .lazy-image-loaded {
   opacity: 1;
-}
+} */
 
 /* Security-themed loaded image */
-.lazy-image-security .lazy-image-loaded {
+.lazy-image-security .lazy-image {
   box-shadow: 0 0 15px rgba(var(--color-cyan-rgb), 0.2);
 }
 
 /* Terminal-themed loaded image */
-.lazy-image-terminal .lazy-image-loaded {
+.lazy-image-terminal .lazy-image {
   border: 1px solid var(--color-cyan);
 }
 
@@ -154,18 +157,18 @@
   letter-spacing: var(--letter-spacing-technical);
 }
 
-/* Image loading animation */
-@keyframes skeleton-loading {
+/* Image loading animation keyframes removed - now handled by framer-motion */
+/* @keyframes skeleton-loading {
   0% {
     background-position: 100% 50%;
   }
   100% {
     background-position: 0 50%;
   }
-}
+} */
 
-/* Reduced motion */
-@media (prefers-reduced-motion: reduce) {
+/* Reduced motion preferences are now handled by the AnimationContext */
+/* @media (prefers-reduced-motion: reduce) {
   .lazy-image-skeleton {
     animation-duration: 3s;
   }
@@ -174,4 +177,4 @@
   .lazy-image-low-res {
     transition-duration: 0s;
   }
-}
+} */

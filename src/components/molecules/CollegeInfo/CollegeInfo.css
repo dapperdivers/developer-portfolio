@@ -49,7 +49,7 @@
 
 /* Degree styling */
 .degree-container {
-  margin-bottom: var(--spacing-2);
+  margin-bottom: var(--spacing-1);
 }
 
 .degree-value {
@@ -57,40 +57,39 @@
   font-weight: var(--font-weight-bold);
   color: var(--color-text);
   margin-top: 0;
+  margin-bottom: var(--spacing-1);
 }
 
 /* Major styling */
 .major-container {
-  margin-bottom: var(--spacing-2);
+  margin-bottom: var(--spacing-1);
 }
 
 .major-value {
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-semibold);
-  color: var(--color-text);
+  color: var(--color-primary);
+  border-left: 3px solid var(--color-primary);
   padding-left: var(--spacing-2);
-  border-left: 3px solid var(--color-primary-light);
 }
 
 /* Minor styling */
 .minor-container {
-  margin-bottom: var(--spacing-2);
+  margin-bottom: var(--spacing-1);
 }
 
 .minor-value {
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-semibold);
-  color: var(--color-primary);
-  padding-left: var(--spacing-2);
+  color: var(--color-text-bright);
   border-left: 3px solid var(--color-primary-dark);
+  padding-left: var(--spacing-2);
 }
 
-/* Graduation date chip styling */
+/* Date chip positioning */
 .graduation-date-chip {
-  margin-top: var(--spacing-2);
-  width: auto;
-  max-width: 200px;
   align-self: flex-end;
+  margin-top: var(--spacing-2);
 }
 
 /* Hover effects */
@@ -101,11 +100,6 @@
 .college-info:hover .academic-info {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   transform: translateY(-2px);
-}
-
-/* Animations */
-.academic-info {
-  transition: all 0.3s ease;
 }
 
 /* Responsive adjustments */
@@ -119,11 +113,12 @@
   }
   
   .degree-value {
-    font-size: var(--font-size-base);
+    font-size: var(--font-size-md);
   }
   
   .academic-info {
     padding: var(--spacing-2);
+    gap: var(--spacing-2);
   }
 }
 
@@ -131,9 +126,5 @@
 @media (prefers-reduced-motion: reduce) {
   .college-info:hover .academic-info {
     transform: none;
-  }
-  
-  .academic-info {
-    transition: none;
   }
 }

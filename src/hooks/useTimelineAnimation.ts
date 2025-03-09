@@ -86,11 +86,13 @@ const useTimelineAnimation = ({
     }
 
     let verifyTimer: ReturnType<typeof setTimeout>;
+    let hasTriggeredAnimation = false;
     
     const observer = new IntersectionObserver(
       (entries) => {
         const [entry] = entries;
-        if (entry.isIntersecting) {
+        if (entry.isIntersecting && !hasTriggeredAnimation) {
+          hasTriggeredAnimation = true;
           setIsEntryInView(true);
           
           // Trigger animation with staggered delay

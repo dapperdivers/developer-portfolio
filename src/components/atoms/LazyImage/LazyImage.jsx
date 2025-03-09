@@ -1,13 +1,15 @@
 import React, { useState, useRef, memo } from 'react';
 import PropTypes from 'prop-types';
+import { motion, AnimatePresence } from 'framer-motion';
 import useIntersectionObserver from '@hooks/useIntersectionObserver';
+import { useAnimation } from '@context/AnimationContext';
 import '@assets/css/tailwind.css';
 import './LazyImage.css';
 
 /**
  * Lazy-loaded image component that only loads images when they enter the viewport.
  * Includes loading skeleton, blur-up effect, and proper accessibility attributes.
- * Updated with security-themed variants.
+ * Updated with security-themed variants and framer-motion animations.
  * 
  * @component
  * @param {Object} props - Component props
@@ -41,6 +43,12 @@ const LazyImage = ({
   });
   const imageRef = useRef(null);
   
+  // Get animation context values
+  const { animationEnabled, fadeInVariants, shouldReduceMotion } = useAnimation();
+  
+  // Determine if animations should run
+  const shouldAnimate = animationEnabled && !shouldReduceMotion;
+  
   // Calculate aspect ratio styles if provided
   const aspectRatioStyle = {};
   if (aspectRatio) {
@@ -67,54 +75,134 @@ const LazyImage = ({
     variant ? `lazy-image-${variant}` : '',
     className
   ].filter(Boolean).join(' ');
+  
+  // Define animation variants
+  const containerVariants = {
+    initial: { opacity: 0.7 },
+    animate: { 
+      opacity: 1,
+      transition: { 
+        duration: shouldAnimate ? 0.3 : 0
+      }
+    }
+  };
+  
+  const skeletonVariants = {
+    initial: { backgroundPosition: '100% 50%' },
+    animate: { 
+      backgroundPosition: '0% 50%',
+      transition: {
+        repeat: Infinity,
+        repeatType: 'mirror',
+        duration: shouldAnimate ? 1.4 : 0,
+        ease: 'easeInOut'
+      }
+    }
+  };
+  
+  const lowResVariants = {
+    initial: { opacity: 1 },
+    exit: { 
+      opacity: 0,
+      transition: { 
+        duration: shouldAnimate ? 0.3 : 0
+      }
+    }
+  };
+  
+  const imageVariants = {
+    initial: { opacity: 0 },
+    animate: { 
+      opacity: 1,
+      transition: { 
+        duration: shouldAnimate ? 0.3 : 0
+      }
+    }
+  };
+  
+  const errorVariants = {
+    initial: { opacity: 0 },
+    animate: { 
+      opacity: 1,
+      transition: { 
+        duration: shouldAnimate ? 0.3 : 0
+      }
+    }
+  };
     
   return (
-    <div 
+    <motion.div 
       ref={ref}
       className={containerClasses}
       style={aspectRatio ? aspectRatioStyle : {}}
       role="img"
       aria-label={hasError ? `Failed to load image: ${alt}` : ""}
+      variants={containerVariants}
+      initial="initial"
+      animate="animate"
     >
       {/* Loading skeleton shown until image loads */}
-      {!isLoaded && !hasError && (
-        <div className="lazy-image-skeleton"></div>
-      )}
+      <AnimatePresence>
+        {!isLoaded && !hasError && (
+          <motion.div 
+            className="lazy-image-skeleton"
+            variants={skeletonVariants}
+            initial="initial"
+            animate="animate"
+            exit={{ opacity: 0 }}
+          />
+        )}
+      </AnimatePresence>
       
       {/* Low resolution placeholder if provided */}
-      {!isLoaded && !hasError && lowResSrc && (
-        <img
-          src={lowResSrc}
-          alt=""
-          className="lazy-image-low-res"
-          aria-hidden="true"
-        />
-      )}
+      <AnimatePresence>
+        {!isLoaded && !hasError && lowResSrc && (
+          <motion.img
+            src={lowResSrc}
+            alt=""
+            className="lazy-image-low-res"
+            aria-hidden="true"
+            variants={lowResVariants}
+            initial="initial"
+            exit="exit"
+          />
+        )}
+      </AnimatePresence>
       
       {/* Error state placeholder */}
-      {hasError && (
-        <div className="lazy-image-error">
-          <span role="alert">Failed to load image</span>
-        </div>
-      )}
+      <AnimatePresence>
+        {hasError && (
+          <motion.div 
+            className="lazy-image-error"
+            variants={errorVariants}
+            initial="initial"
+            animate="animate"
+          >
+            <span role="alert">Failed to load image</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
       
       {/* The actual image (only loaded when in viewport) */}
       {isInView && !hasError && (
-        <img
+        <motion.img
           ref={imageRef}
           src={src}
           alt={alt}
-          className={`lazy-image ${isLoaded ? 'lazy-image-loaded' : ''}`}
+          className="lazy-image"
           onLoad={handleImageLoad}
           onError={handleImageError}
           width={imgProps.width}
           height={imgProps.height}
           loading="lazy"
           decoding="async"
+          variants={imageVariants}
+          initial="initial"
+          animate={isLoaded ? "animate" : "initial"}
           {...imgProps}
         />
       )}
-    </div>
+    </motion.div>
   );
 };
 

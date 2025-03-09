@@ -23,26 +23,11 @@
   margin: 0;
   padding-left: var(--spacing-2);
   border-left: 3px solid var(--color-primary);
-  transition: border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
-}
-
-/* Hover effects */
-.degree-info:hover .degree-value {
-  color: var(--color-text-bright);
-  border-left-color: var(--color-primary-light);
-  transform: translateX(2px);
 }
 
 /* Responsive adaptations */
 @media (max-width: 768px) {
   .degree-value {
     font-size: var(--font-size-md);
-  }
-}
-
-/* Reduced motion preferences */
-@media (prefers-reduced-motion: reduce) {
-  .degree-value {
-    transition: none;
   }
 }

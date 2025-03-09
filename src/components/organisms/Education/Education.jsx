@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { motion, Variants, useInView } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 import { useAnimation } from '@context//AnimationContext';
 import EducationCard from '@molecules/EducationCard';
 import { useEducation } from '@context/PortfolioContext';

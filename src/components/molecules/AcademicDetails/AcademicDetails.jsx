@@ -1,5 +1,7 @@
 import React from "react";
 import PropTypes from 'prop-types';
+import { motion } from 'framer-motion';
+import { useAnimation } from '@context/AnimationContext';
 import SchoolHeader from '@atoms/SchoolHeader';
 import DegreeInfo from '@atoms/DegreeInfo';
 import FieldsOfStudy from '@atoms/FieldsOfStudy';
@@ -18,6 +20,7 @@ import './AcademicDetails.css';
  * @param {string} [props.minor] - Minor field of study (optional)
  * @param {string} props.graduationDate - Graduation date
  * @param {string} [props.className] - Additional CSS classes
+ * @param {boolean} [props.animated=true] - Whether to animate the component
  * @returns {React.ReactElement} AcademicDetails component
  */
 const AcademicDetails = ({ 
@@ -26,27 +29,73 @@ const AcademicDetails = ({
   major, 
   minor, 
   graduationDate,
-  className = "" 
+  className = "",
+  animated = true
 }) => {
+  const { animationEnabled, slideUpVariants } = useAnimation();
+  
+  // Only use animations if both props are enabled
+  const shouldAnimate = animated && animationEnabled;
+  
+  // Content variants for staggered animations
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+        delayChildren: 0.1
+      }
+    }
+  };
+  
+  // Item variant for child components
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.5 }
+    }
+  };
+
   return (
-    <div className={`academic-details ${className}`}>
+    <motion.div 
+      className={`academic-details ${className}`}
+      initial={shouldAnimate ? "hidden" : "visible"}
+      animate="visible"
+      variants={shouldAnimate ? slideUpVariants : {}}
+    >
       {/* School/University Header */}
-      <SchoolHeader schoolName={schoolName} />
+      <SchoolHeader 
+        schoolName={schoolName} 
+        animated={shouldAnimate} 
+      />
       
       {/* Academic Information Panel */}
-      <div className="academic-panel">
+      <motion.div 
+        className="academic-panel"
+        variants={shouldAnimate ? containerVariants : {}}
+      >
         {/* Degree Information */}
-        <DegreeInfo degree={degree} />
+        <motion.div variants={shouldAnimate ? itemVariants : {}}>
+          <DegreeInfo degree={degree} animated={shouldAnimate} />
+        </motion.div>
         
         {/* Fields of Study (Major/Minor) */}
-        <FieldsOfStudy major={major} minor={minor} />
+        <motion.div variants={shouldAnimate ? itemVariants : {}}>
+          <FieldsOfStudy major={major} minor={minor} animated={shouldAnimate} />
+        </motion.div>
         
         {/* Graduation Date */}
-        <div className="graduation-date-container">
+        <motion.div 
+          className="graduation-date-container"
+          variants={shouldAnimate ? itemVariants : {}}
+        >
           <DateChip date={graduationDate} className="graduation-date-chip" />
-        </div>
-      </div>
-    </div>
+        </motion.div>
+      </motion.div>
+    </motion.div>
   );
 };
 
@@ -56,7 +105,8 @@ AcademicDetails.propTypes = {
   major: PropTypes.string.isRequired,
   minor: PropTypes.string,
   graduationDate: PropTypes.string.isRequired,
-  className: PropTypes.string
+  className: PropTypes.string,
+  animated: PropTypes.bool
 };
 
 export default AcademicDetails;

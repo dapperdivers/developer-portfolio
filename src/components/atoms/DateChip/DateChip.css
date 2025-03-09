@@ -3,6 +3,9 @@
  * 
  * This file contains styles for the DateChip component
  * which displays dates in a stylized chip format.
+ * 
+ * Note: Animations and transitions are now managed by framer-motion
+ * through the AnimationContext.
  */
 
 .date-chip {
@@ -23,9 +26,9 @@
   align-items: center;
   justify-content: center;
   height: 32px;
-  transition: all 0.3s ease;
+  /* transition removed - now handled by framer-motion */
   border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  /* box-shadow is now managed by framer-motion variants */
 }
 
 .date-chip-text {
@@ -50,14 +53,14 @@
   width: 200%;
   height: 200%;
   background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0) 70%);
-  opacity: 0;
-  transition: opacity 0.3s ease;
+  /* opacity is now controlled by framer-motion */
+  /* transition removed - now handled by framer-motion */
   pointer-events: none;
   z-index: 1;
 }
 
-/* Hover effects */
-.date-chip:hover .date-chip-inner {
+/* Hover effects now managed by framer-motion */
+/* .date-chip:hover .date-chip-inner {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
@@ -65,16 +68,17 @@
 .date-chip:hover .date-chip-glow {
   opacity: 0.8;
   animation: rotate 2s linear infinite;
-}
+} */
 
-@keyframes rotate {
+/* Keyframes removed - animation now handled by framer-motion */
+/* @keyframes rotate {
   0% {
     transform: rotate(0deg);
   }
   100% {
     transform: rotate(360deg);
   }
-}
+} */
 
 /* Focus styles for accessibility */
 .date-chip:focus-within .date-chip-inner {
@@ -94,8 +98,8 @@
   }
 }
 
-/* Reduced motion preferences */
-@media (prefers-reduced-motion: reduce) {
+/* Reduced motion preferences are now handled by the AnimationContext */
+/* @media (prefers-reduced-motion: reduce) {
   .date-chip:hover .date-chip-inner {
     transform: none;
   }
@@ -104,4 +108,4 @@
     animation: none;
     opacity: 0.5;
   }
-}
+} */

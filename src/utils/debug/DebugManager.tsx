@@ -23,16 +23,22 @@ export interface DebugConfig {
     renderVisualizer: boolean;
     showFPS: boolean;
   };
+  
+  // Performance monitoring configuration
+  performance: {
+    longTaskThreshold: number;
+    fpsWarningThreshold: number;
+    showComponentTimings: boolean;
+    showStackTraces: boolean;
+    logToConsole: boolean;
+    componentFilter: string[];
+  };
 }
 
 // Default configuration
 const DEFAULT_CONFIG: DebugConfig = {
-  enabled: false,
-  components: {
-    Background: true,
-    MatrixBackground: true,
-    BinaryStream: true
-  },
+  enabled: import.meta.env.DEV,
+  components: {},
   features: {
     profiling: false,
     backgroundEffects: true,
@@ -41,6 +47,14 @@ const DEFAULT_CONFIG: DebugConfig = {
     layoutMonitoring: false,
     renderVisualizer: false,
     showFPS: false
+  },
+  performance: {
+    longTaskThreshold: 50,
+    fpsWarningThreshold: 30,
+    showComponentTimings: true,
+    showStackTraces: true,
+    logToConsole: true,
+    componentFilter: []
   }
 };
 
@@ -65,7 +79,9 @@ interface DebugContextType {
   isComponentDebugged: (componentName: string) => boolean;
   registerComponent: (componentName: string) => void;
   componentRegistry: ComponentRegistry;
-  // NEW: Add auto-registration mechanism
+  // Add setter for config
+  setConfig: React.Dispatch<React.SetStateAction<DebugConfig>>;
+  // Auto-registration mechanism
   autoRegisterComponent: <P extends object>(
     Component: React.ComponentType<P>,
     componentName: string
@@ -80,6 +96,7 @@ export const DebugContext = createContext<DebugContextType>({
   isComponentDebugged: () => false,
   registerComponent: () => {},
   componentRegistry: {},
+  setConfig: () => {},
   autoRegisterComponent: <P extends object>(Component: React.ComponentType<P>) => Component
 });
 
@@ -107,6 +124,10 @@ export const DebugProvider: React.FC<DebugProviderProps> = ({
     features: {
       ...DEFAULT_CONFIG.features,
       ...(initialConfig.features || {})
+    },
+    performance: {
+      ...DEFAULT_CONFIG.performance,
+      ...(initialConfig.performance || {})
     }
   });
 
@@ -319,6 +340,7 @@ export const DebugProvider: React.FC<DebugProviderProps> = ({
     isComponentDebugged,
     registerComponent,
     componentRegistry,
+    setConfig,
     autoRegisterComponent
   };
 
@@ -328,7 +350,7 @@ export const DebugProvider: React.FC<DebugProviderProps> = ({
       
       {/* Render debug UI if enabled */}
       {config.enabled && config.features.showFPS && (
-        <PerformanceMonitor enabled={true} />
+        <PerformanceMonitor enabled={true} config={config.performance} />
       )}
       
       {/* Debug panel */}
@@ -342,7 +364,7 @@ export const DebugProvider: React.FC<DebugProviderProps> = ({
 
 // Debug panel component
 const DebugPanel: React.FC = () => {
-  const { config, toggleDebug, toggleFeature, toggleComponent } = useDebugManager();
+  const { config, toggleDebug, toggleFeature, toggleComponent, setConfig } = useDebugManager();
   const [isMinimized, setIsMinimized] = useState(true);
   
   // Toggle panel
@@ -463,6 +485,41 @@ const DebugPanel: React.FC = () => {
             <div>Ctrl+Shift+A: Toggle animations</div>
             <div>Ctrl+Shift+P: Toggle profiling</div>
             <div>Ctrl+Shift+F: Toggle FPS</div>
+          </div>
+          
+          {/* Performance monitoring section */}
+          <div className="debug-section">
+            <h4>Performance Monitoring</h4>
+            <div className="debug-controls">
+              <label>
+                <input 
+                  type="number" 
+                  value={config.performance.longTaskThreshold}
+                  onChange={(e) => setConfig(prev => ({
+                    ...prev,
+                    performance: {
+                      ...prev.performance,
+                      longTaskThreshold: parseInt(e.target.value)
+                    }
+                  }))}
+                />
+                Long task threshold (ms)
+              </label>
+              <label>
+                <input 
+                  type="checkbox" 
+                  checked={config.performance.logToConsole} 
+                  onChange={(e) => setConfig(prev => ({
+                    ...prev,
+                    performance: {
+                      ...prev.performance,
+                      logToConsole: e.target.checked
+                    }
+                  }))}
+                />
+                Log to console
+              </label>
+            </div>
           </div>
         </>
       )}

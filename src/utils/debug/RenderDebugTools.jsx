@@ -6,6 +6,16 @@ const PerformanceMonitor = lazy(() => import('./PerformanceMonitor'));
 const ComponentProfilerViewer = lazy(() => import('./ComponentProfiler'));
 const RenderVisualizer = lazy(() => import('./RenderVisualizer'));
 
+// Default performance monitoring settings
+const DEFAULT_PERFORMANCE_CONFIG = {
+  longTaskThreshold: 50,
+  fpsWarningThreshold: 30,
+  showComponentTimings: true,
+  showStackTraces: true,
+  logToConsole: true,
+  componentFilter: []
+};
+
 // Utility to add or remove DOM markers for debug monitoring
 const setupDebugMonitoring = (enabled) => {
   if (enabled) {
@@ -40,13 +50,27 @@ const setupDebugMonitoring = (enabled) => {
 };
 
 /**
- * Master debug tools component
- * Combines all performance monitoring and visualization tools
+ * RenderDebugTools Component
+ * 
+ * Renders debug monitoring tools for performance profiling
+ * 
+ * @param {Object} props - Component properties
+ * @param {boolean} props.defaultEnabled - Whether debug tools are enabled by default
+ * @param {Object} props.performanceConfig - Configuration for the performance monitor
+ * @param {React.ReactNode} props.children - Child components to render
  */
-const RenderDebugTools = ({ defaultEnabled = false, children }) => {
-  const [isEnabled, setIsEnabled] = useState(
-    localStorage.getItem('debug_tools_enabled') === 'true' || defaultEnabled
-  );
+const RenderDebugTools = ({ 
+  defaultEnabled = false, 
+  performanceConfig = {}, 
+  children 
+}) => {
+  const [isEnabled, setIsEnabled] = useState(defaultEnabled);
+  
+  // Merge performance configuration with defaults
+  const mergedPerformanceConfig = {
+    ...DEFAULT_PERFORMANCE_CONFIG,
+    ...performanceConfig
+  };
   
   // Set up keyboard shortcut to toggle tools
   useEffect(() => {
@@ -100,7 +124,10 @@ const RenderDebugTools = ({ defaultEnabled = false, children }) => {
       <RenderProfiler id="app-root">
         <RenderVisualizer enabled={isEnabled}>
           {/* Tools UI */}
-          <PerformanceMonitor enabled={isEnabled} />
+          <PerformanceMonitor 
+            enabled={isEnabled} 
+            config={mergedPerformanceConfig} 
+          />
           <ComponentProfilerViewer enabled={isEnabled} />
           
           {/* Main app content */}

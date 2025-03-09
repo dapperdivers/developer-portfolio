@@ -1,4 +1,4 @@
-import React, { FC, memo } from 'react';
+import React, { FC, memo, useCallback } from 'react';
 import Timeline, { TimelineItem } from '@molecules/Timeline';
 import TimelineEntry from '@molecules/TimelineEntry/TimelineEntry';
 
@@ -17,7 +17,7 @@ export interface ExperienceTimelineProps {
   /** Extract year from date string function */
   extractDateYear: (date: string) => string;
   /** Visual variant */
-  variant?: '' | 'security' | 'terminal';
+  variant?: 'default' | 'security' | 'terminal';
   /** Whether experience data is loading */
   isLoading?: boolean;
   /** Whether there was an error loading experience data */
@@ -58,17 +58,17 @@ const ExperienceTimeline: FC<ExperienceTimelineProps> = ({
   }));
 
   // Define a render function for TimelineEntry that adapts to our API
-  const renderTimelineEntry = (props: any) => {
+  const renderTimelineEntry = useCallback((props: any) => {
     return (
       <TimelineEntry
-        data={props.data}
+        data={props.content}
         index={props.index}
         extractDateYear={extractDateYear}
         variant={props.variant}
         id={props.id}
       />
     );
-  };
+  }, [extractDateYear]); // Only depends on extractDateYear function
 
   return (
     <Timeline

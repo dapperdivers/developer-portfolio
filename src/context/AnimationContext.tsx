@@ -3,6 +3,14 @@ import { useState, useCallback, useEffect, useMemo, ReactElement, useRef } from 
 import type { ReactNode, Dispatch, SetStateAction } from 'react';
 import { createTypedContext } from '@utils/contextUtils';
 import { useAnimation as useFramerAnimation, AnimationControls, Variants } from 'framer-motion';
+import useAnimationOptimization from '@hooks/useAnimationOptimization';
+
+// Add process env declaration for TypeScript
+declare const process: {
+  env: {
+    NODE_ENV: 'development' | 'production' | 'test';
+  };
+};
 
 // At the top of the file, add this declaration for the global window object
 declare global {
@@ -40,6 +48,15 @@ export interface AnimationContextType {
   pulseVariants: Variants;
   matrixVariants: Variants;
   glitchVariants: Variants;
+  
+  // Animation optimization properties
+  prefersReducedMotion: boolean;
+  isLowPowerDevice: boolean;
+  optimizeVariants: (variants: Variants, options?: any) => Variants;
+  
+  // Performance monitoring (dev only)
+  enablePerformanceMonitoring: (options?: any) => void;
+  disablePerformanceMonitoring: () => void;
 }
 
 // Define standard variants to use across components
@@ -118,7 +135,16 @@ const defaultAnimationContext: AnimationContextType = {
   scaleVariants: defaultScale,
   pulseVariants: defaultPulse,
   matrixVariants: defaultMatrix,
-  glitchVariants: defaultGlitch
+  glitchVariants: defaultGlitch,
+  
+  // Default optimization values
+  prefersReducedMotion: false,
+  isLowPowerDevice: false,
+  optimizeVariants: (variants) => variants,
+  
+  // Default performance monitoring functions (no-ops)
+  enablePerformanceMonitoring: () => {},
+  disablePerformanceMonitoring: () => {}
 };
 
 /**
@@ -155,6 +181,119 @@ export const AnimationProvider = ({ children }: AnimationProviderProps): ReactEl
   // Initialize framer-motion animation controls
   const controls = useFramerAnimation();
 
+  /**
+   * Helper to generate variants with custom timing
+   */
+  const getVariants = useCallback((duration: number = 0.5, delay: number = 0): Variants => {
+    return {
+      hidden: { opacity: 0 },
+      visible: { 
+        opacity: 1, 
+        transition: { 
+          duration, 
+          delay 
+        } 
+      }
+    };
+  }, []);
+
+  // Add animation optimization
+  const { 
+    prefersReducedMotion, 
+    isLowPowerDevice,
+    optimizeVariants
+  } = useAnimationOptimization();
+  
+  // Types for performance monitoring
+  interface PerformanceMonitorOptions {
+    threshold?: number;
+    reportingInterval?: number;
+    debug?: boolean;
+  }
+  
+  // Add performance monitoring (dev only)
+  const enablePerformanceMonitoring = (options: Partial<PerformanceMonitorOptions> = {}) => {
+    // Check for development using import.meta.env.DEV for Vite compatibility
+    const isDev = import.meta.env?.DEV || (process.env.NODE_ENV !== 'production');
+    
+    if (isDev) {
+      // Using dynamic import
+      const importPromise = import('../../scripts/monitor-animation-performance');
+      importPromise.then(module => {
+        try {
+          const monitor = module.default;
+          
+          // Check if browser supports required features
+          if (typeof window !== 'undefined' && 
+              typeof window.PerformanceObserver !== 'undefined') {
+            
+            monitor.start({
+              threshold: 16, 
+              reportingInterval: 3000, 
+              // Enable debug in development for better error reporting
+              debug: true,
+              ...options
+            });
+          } else {
+            // Provide a helpful message but don't fail
+            console.info('Animation performance monitoring is not fully supported in this browser. Some features will be limited.');
+            
+            // Try to start with limited functionality
+            monitor.start({
+              threshold: 16, 
+              reportingInterval: 3000, 
+              debug: true, // Force debug mode to see what's happening
+              ...options
+            });
+          }
+        } catch (error) {
+          // More detailed error information
+          console.error('Error initializing animation performance monitoring:', error);
+          console.info('Animation performance monitoring will be disabled. This will not affect the application functionality.');
+        }
+      }).catch(err => {
+        console.error('Failed to load animation performance monitor:', err);
+      });
+    }
+  };
+  
+  const disablePerformanceMonitoring = () => {
+    // Check for development using import.meta.env.DEV for Vite compatibility
+    const isDev = import.meta.env?.DEV || (process.env.NODE_ENV !== 'production');
+    
+    if (isDev) {
+      // Using dynamic import
+      const importPromise = import('../../scripts/monitor-animation-performance');
+      importPromise.then(module => {
+        try {
+          const monitor = module.default;
+          monitor.stop();
+        } catch (error) {
+          console.error('Error stopping animation performance monitor:', error);
+        }
+      }).catch(err => {
+        console.error('Failed to load animation performance monitor:', err);
+      });
+    }
+  };
+
+  // Adjust animationEnabled to respect optimization settings
+  const combinedAnimationEnabled = animationEnabled && !prefersReducedMotion;
+  
+  // Enhance all variant creators to use optimizeVariants
+  const enhancedGetVariants = (duration = 0.5, delay = 0) => {
+    const variants = getVariants(duration, delay);
+    return optimizeVariants(variants);
+  };
+  
+  // Optimize standard variants
+  const optimizedFadeInVariants = optimizeVariants(defaultFadeIn);
+  const optimizedSlideUpVariants = optimizeVariants(defaultSlideUp);
+  const optimizedScaleVariants = optimizeVariants(defaultScale);
+  const optimizedPulseVariants = optimizeVariants(defaultPulse);
+  const optimizedMatrixVariants = optimizeVariants(defaultMatrix);
+  const optimizedGlitchVariants = optimizeVariants(defaultGlitch);
+  
   // Check if reduced motion is preferred
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -258,54 +397,44 @@ export const AnimationProvider = ({ children }: AnimationProviderProps): ReactEl
     return `${animationStaggerDelay * index}s`;
   }, [animationStaggerDelay]);
   
-  /**
-   * Helper to generate variants with custom timing
-   */
-  const getVariants = useCallback((duration: number = 0.5, delay: number = 0): Variants => {
-    return {
-      hidden: { opacity: 0 },
-      visible: { 
-        opacity: 1, 
-        transition: { 
-          duration, 
-          delay 
-        } 
-      }
-    };
+  // Enable performance monitoring in dev mode when the component mounts
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'development') {
+      enablePerformanceMonitoring({ 
+        threshold: 16, 
+        reportingInterval: 10000,
+        debug: false
+      });
+      
+      return () => disablePerformanceMonitoring();
+    }
   }, []);
 
   // Create context value
-  const contextValue = useMemo((): AnimationContextType => ({
+  const contextValue = {
     inView,
     setInView,
-    animationEnabled,
+    animationEnabled: combinedAnimationEnabled,
     entryAnimations,
     registerEntryAnimation,
     playEntryAnimation,
     resetEntryAnimations,
     animationStaggerDelay,
     getAnimationDelay,
-    // Add framer-motion specific values
     controls,
-    getVariants,
-    fadeInVariants: defaultFadeIn,
-    slideUpVariants: defaultSlideUp,
-    scaleVariants: defaultScale,
-    pulseVariants: defaultPulse,
-    matrixVariants: defaultMatrix,
-    glitchVariants: defaultGlitch
-  }), [
-    inView, 
-    animationEnabled, 
-    entryAnimations, 
-    registerEntryAnimation, 
-    playEntryAnimation, 
-    resetEntryAnimations,
-    animationStaggerDelay,
-    getAnimationDelay,
-    controls,
-    getVariants
-  ]);
+    getVariants: enhancedGetVariants,
+    fadeInVariants: optimizedFadeInVariants,
+    slideUpVariants: optimizedSlideUpVariants,
+    scaleVariants: optimizedScaleVariants,
+    pulseVariants: optimizedPulseVariants,
+    matrixVariants: optimizedMatrixVariants,
+    glitchVariants: optimizedGlitchVariants,
+    prefersReducedMotion,
+    isLowPowerDevice,
+    optimizeVariants,
+    enablePerformanceMonitoring,
+    disablePerformanceMonitoring
+  };
 
   return (
     <AnimationContextProvider value={contextValue}>

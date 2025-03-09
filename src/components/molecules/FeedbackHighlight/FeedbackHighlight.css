@@ -1,5 +1,6 @@
 /**
  * Feedback Highlight Component Styles
+ * Animations are now managed by framer-motion through AnimationContext
  */
 
 .feedback-highlight {
@@ -48,30 +49,19 @@
   width: 100px;
   height: 100px;
   background-color: rgba(var(--color-primary-rgb), 0.08);
-  border-top-left-radius: 100%;
+  clip-path: circle(50% at center);
   z-index: 0;
-}
-
-/* Add subtle animation */
-@keyframes pulseHighlight {
-  0%, 100% { opacity: 0.05; }
-  50% { opacity: 0.1; }
-}
-
-.highlight-decoration {
-  animation: pulseHighlight 4s infinite ease-in-out;
+  opacity: 0.7;
 }
 
 /* Responsive styles */
 @media (max-width: 768px) {
   .highlight-container {
-    padding: var(--spacing-4) var(--spacing-3);
-    border-left-width: 3px;
+    padding: var(--spacing-3);
   }
   
   .highlight-text {
     font-size: var(--font-size-lg);
-    line-height: 1.5;
   }
   
   .highlight-decoration {

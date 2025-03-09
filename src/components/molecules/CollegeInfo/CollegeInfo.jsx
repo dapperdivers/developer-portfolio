@@ -1,5 +1,7 @@
 import React from "react";
 import PropTypes from 'prop-types';
+import { motion } from "framer-motion";
+import { useAnimation } from "@context/AnimationContext";
 import DateChip from '@atoms/DateChip';
 import './CollegeInfo.css';
 
@@ -15,6 +17,7 @@ import './CollegeInfo.css';
  * @param {string} [props.minor] - Minor field of study
  * @param {string} props.graduationDate - Graduation date
  * @param {string} [props.className] - Additional CSS classes
+ * @param {boolean} [props.animated=true] - Whether to animate the component
  * @returns {React.ReactElement} CollegeInfo component
  */
 const CollegeInfo = ({ 
@@ -23,41 +26,103 @@ const CollegeInfo = ({
   major, 
   minor, 
   graduationDate,
-  className = "" 
+  className = "",
+  animated = true
 }) => {
+  const { animationEnabled, slideUpVariants } = useAnimation();
+  
+  // Only use animations if both props are enabled
+  const shouldAnimate = animated && animationEnabled;
+  
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+        delayChildren: 0.1,
+      }
+    }
+  };
+  
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.4, ease: "easeOut" }
+    }
+  };
+  
+  // Hover variants
+  const hoverVariants = {
+    hover: {
+      boxShadow: "0 8px 20px rgba(0, 0, 0, 0.2)",
+      scale: 1.01,
+      transition: { duration: 0.3 }
+    }
+  };
+
   return (
-    <div className={`college-info ${className}`}>
+    <motion.div 
+      className={`college-info ${className}`}
+      initial={shouldAnimate ? "hidden" : "visible"}
+      animate="visible"
+      whileHover={shouldAnimate ? "hover" : ""}
+      variants={shouldAnimate ? {
+        ...slideUpVariants,
+        ...hoverVariants
+      } : {}}
+    >
       {/* University name */}
-      <h5 className="college-name">
+      <motion.h5 
+        className="college-name"
+        variants={shouldAnimate ? itemVariants : {}}
+      >
         {schoolName}
-      </h5>
+      </motion.h5>
       
       {/* Academic information section */}
-      <div className="academic-info">
+      <motion.div 
+        className="academic-info"
+        variants={shouldAnimate ? containerVariants : {}}
+      >
         {/* Degree */}
-        <div className="degree-container">
+        <motion.div 
+          className="degree-container"
+          variants={shouldAnimate ? itemVariants : {}}
+        >
           <span className="academic-label">Degree</span>
           <h6 className="degree-value">{degree}</h6>
-        </div>
+        </motion.div>
         
         {/* Major */}
-        <div className="major-container">
+        <motion.div 
+          className="major-container"
+          variants={shouldAnimate ? itemVariants : {}}
+        >
           <span className="academic-label">Major</span>
           <div className="major-value">{major}</div>
-        </div>
+        </motion.div>
         
         {/* Minor (if provided) */}
         {minor && (
-          <div className="minor-container">
+          <motion.div 
+            className="minor-container"
+            variants={shouldAnimate ? itemVariants : {}}
+          >
             <span className="academic-label">Minor</span>
             <div className="minor-value">{minor.replace("Minor in ", "")}</div>
-          </div>
+          </motion.div>
         )}
-      </div>
+      </motion.div>
       
       {/* Date chip for graduation date */}
-      <DateChip date={graduationDate} className="graduation-date-chip" />
-    </div>
+      <motion.div variants={shouldAnimate ? itemVariants : {}}>
+        <DateChip date={graduationDate} className="graduation-date-chip" />
+      </motion.div>
+    </motion.div>
   );
 };
 
@@ -67,7 +132,8 @@ CollegeInfo.propTypes = {
   major: PropTypes.string.isRequired,
   minor: PropTypes.string,
   graduationDate: PropTypes.string.isRequired,
-  className: PropTypes.string
+  className: PropTypes.string,
+  animated: PropTypes.bool
 };
 
 export default CollegeInfo;

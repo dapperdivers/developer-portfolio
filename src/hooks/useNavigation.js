@@ -40,29 +40,34 @@ const useNavigation = () => {
   const onExiting = useCallback(() => setCollapseClasses("collapsing-out"), []);
   const onExited = useCallback(() => setCollapseClasses(""), []);
 
-  // Handle scroll behavior
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollPos = window.scrollY;
-      const greetingsSection = document.getElementById('greetings');
-      const greetingsHeight = greetingsSection?.offsetHeight || 0;
-      const buffer = 50; // Buffer zone for smoother transition
-      
-      // Update scroll state for visual effects
-      setIsScrolled(currentScrollPos > 50);
-      
-      // Determine if we should show/hide based on scroll position and direction
-      const isScrollingDown = currentScrollPos > prevScrollPos;
+  // Define handleScroll with useCallback
+  const handleScroll = useCallback(() => {
+    const currentScrollPos = window.scrollY;
+    const greetingsSection = document.getElementById('greetings');
+    const greetingsHeight = greetingsSection?.offsetHeight || 0;
+    const buffer = 50; // Buffer zone for smoother transition
+    
+    // Update scroll state for visual effects
+    setIsScrolled(currentScrollPos > 50);
+    
+    // Determine if we should show/hide based on scroll position and direction
+    // Use functional update to avoid dependency on prevScrollPos
+    setPrevScrollPos(prevPos => {
+      const isScrollingDown = currentScrollPos > prevPos;
       const isPastGreetings = currentScrollPos > (greetingsHeight - buffer);
       
       // Hide navbar when scrolling down past greetings section
       setIsVisible(!isPastGreetings || !isScrollingDown);
-      setPrevScrollPos(currentScrollPos);
-    };
+      
+      return currentScrollPos;
+    });
+  }, []); // No dependencies required
 
+  // Handle scroll behavior
+  useEffect(() => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [prevScrollPos]);
+  }, [handleScroll]); // Only depend on the handleScroll function
 
   return {
     // Navbar state
