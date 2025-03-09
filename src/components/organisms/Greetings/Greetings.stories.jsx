@@ -25,7 +25,7 @@ export default {
   parameters: {
     docs: {
       description: {
-        component: 'Hero section with personal greeting, description, animation, and call-to-action buttons.',
+        component: 'Hero section with personal greeting, description, download resume button, social links, and scroll down indicator.',
       },
     },
     a11y: {
@@ -37,6 +37,7 @@ export default {
         ],
       },
     },
+    layout: 'fullscreen',
   },
 };
 
@@ -49,24 +50,53 @@ export const Default = Template.bind({});
 Default.play = async ({ canvasElement, step }) => {
   const canvas = within(canvasElement);
   
-  await step('Check essential elements', async () => {
-    // Title should be visible
-    await expect(canvas.getByText(mockPortfolioData.greetings.title)).toBeInTheDocument();
+  // Test heading elements
+  await step('Verify greeting elements are present', async () => {
+    const headingElement = canvas.getByTestId('greeting-heading');
+    const nameElement = canvas.getByTestId('name-heading');
+    const descriptionElement = canvas.getByTestId('title-text');
     
-    // Description should be visible
-    await expect(canvas.getByText(mockPortfolioData.greetings.description)).toBeInTheDocument();
-    
-    // Resume button should be present
-    await expect(canvas.getByRole('link', { name: /download resume/i })).toBeInTheDocument();
-    
-    // Social links should be present
-    const socialLinksContainer = canvas.getByRole('list');
-    await expect(socialLinksContainer).toBeInTheDocument();
+    expect(headingElement).toBeInTheDocument();
+    expect(nameElement).toBeInTheDocument();
+    expect(descriptionElement).toBeInTheDocument();
   });
   
-  await step('Button interaction', async () => {
-    const resumeButton = canvas.getByRole('link', { name: /download resume/i });
-    await expect(resumeButton).toHaveAttribute('href', mockPortfolioData.greetings.resumeLink);
+  // Test download button
+  await step('Verify download button works', async () => {
+    const downloadButton = canvas.getByText('Download Resume');
+    expect(downloadButton).toBeInTheDocument();
+    
+    // Click the download button (note: actual download functionality can't be fully tested in Storybook)
+    await userEvent.click(downloadButton);
+  });
+  
+  // Test SocialLinks component is present after the download button
+  await step('Verify social links are present and correctly positioned', async () => {
+    // Look for the social links container
+    const socialLinksContainer = canvas.getByRole('list');
+    expect(socialLinksContainer).toBeInTheDocument();
+    
+    // Verify social links appear after the download button in the DOM
+    const downloadButton = canvas.getByText('Download Resume');
+    const downloadButtonParent = downloadButton.closest('div');
+    const socialLinksParent = socialLinksContainer.closest('div');
+    
+    // Check that the social links div comes after the download button div in the DOM order
+    expect(socialLinksParent.compareDocumentPosition(downloadButtonParent) & Node.DOCUMENT_POSITION_PRECEDING)
+      .toBeTruthy();
+  });
+  
+  // Test scroll down button
+  await step('Verify scroll down component is present', async () => {
+    const scrollDownLabel = canvas.getByText('SCROLL_DOWN');
+    expect(scrollDownLabel).toBeInTheDocument();
+    
+    // Find the ScrollDown component by its container class
+    const scrollDownContainer = canvas.getByText('SCROLL_DOWN').closest('.scroll-down-container');
+    expect(scrollDownContainer).toBeInTheDocument();
+    
+    // Click the scroll down button
+    await userEvent.click(scrollDownContainer);
   });
 };
 
@@ -157,24 +187,25 @@ LongContent.play = async ({ canvasElement, step }) => {
  * decorative animation. These enhance the visual appeal without affecting usability.
  */
 
-// Mobile view
+// Mobile viewport story
 export const Mobile = Template.bind({});
-Mobile.decorators = [withViewport('mobile')];
 Mobile.parameters = {
-  docs: {
-    description: {
-      story: 'Mobile view of the greeting section, showing how it adapts to smaller screens.'
-    }
-  }
+  viewport: { defaultViewport: 'mobile1' },
 };
 
-// Tablet view
+// Tablet viewport story
 export const Tablet = Template.bind({});
-Tablet.decorators = [withViewport('tablet')];
 Tablet.parameters = {
-  docs: {
-    description: {
-      story: 'Tablet view of the greeting section.'
-    }
-  }
+  viewport: { defaultViewport: 'tablet' },
 };
+
+// Story with customized greeting content
+export const CustomContent = Template.bind({});
+CustomContent.decorators = [
+  createContextWithGreetings({
+    title: "Hello World!",
+    name: "Jane Developer",
+    description: "Frontend Developer & UI/UX Enthusiast",
+    resumeLink: "jane-developer-resume.pdf",
+  }),
+];

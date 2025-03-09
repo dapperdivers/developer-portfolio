@@ -23,7 +23,7 @@ const Footer = () => {
   
   return (
     <footer 
-      className="bg-gray-900 text-gray-300 py-6" 
+      className="text-gray-200 py-6 backdrop-blur-sm bg-black/40 border-t border-gray-800 shadow-lg" 
       role="contentinfo"
       data-testid="footer"
     >

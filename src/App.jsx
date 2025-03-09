@@ -4,6 +4,7 @@ import Head from "@atoms/Head";
 import Navigation from "@molecules/Navigation";
 import Footer from "@molecules/Footer";
 import SkipToContent from "@atoms/SkipToContent";
+import Background from "@layout/Background";
 // ContextDevTool is dynamically imported to prevent inclusion in production builds
 
 // Import Iconify icon collections - this ensures icons are available offline
@@ -95,11 +96,12 @@ function App() {
 
   // Custom fallback UI for unhandled errors
   const errorFallback = () => (
-    <div className="error-container bg-gray-900 text-white" role="alert" style={{ 
+    <div className="error-container text-white" role="alert" style={{ 
       padding: '2rem', 
       margin: '2rem auto',
       maxWidth: '800px',
-      textAlign: 'center' 
+      textAlign: 'center',
+      backgroundColor: 'rgba(0, 0, 0, 0.7)'
     }}>
       <h1>Something went wrong</h1>
       <p>We&apos;re sorry, but there was an error loading this page.</p>
@@ -139,122 +141,133 @@ function App() {
       <HelmetProvider>
         <PortfolioProvider>
           <AnimationProvider>
-            <div className="App bg-background text-text">
-            <Head />
-            <SkipToContent mainId="main-content" />
-            <Navigation />
-            {/* Developer tools - only rendered in development */}
-            {import.meta.env.DEV && (
-              <Suspense fallback={null}>
-                <DevTools />
-              </Suspense>
-            )}
-            
-            <main id="main-content" className="bg-background text-text">
-              <ErrorBoundary>
-                <Suspense fallback={<Loading />}>
-                  <Greetings />
-                </Suspense>
-              </ErrorBoundary>
-              
-              <ErrorBoundary>
-                <Suspense fallback={<Loading />}>
-                  <Skills />
-                </Suspense>
-              </ErrorBoundary>
-              
-              <ErrorBoundary>
-                <Suspense fallback={<Loading />}>
-                  <Education />
-                </Suspense>
-              </ErrorBoundary>
-              
-              <ErrorBoundary>
-                <Suspense fallback={<Loading />}>
-                  <Experience />
-                </Suspense>
-              </ErrorBoundary>
-              
-              <ErrorBoundary>
-                <Suspense fallback={<Loading />}>
-                  <Feedbacks />
-                </Suspense>
-              </ErrorBoundary>
-              
-              <ErrorBoundary>
-                <Suspense fallback={<Loading />}>
-                  <Projects />
-                </Suspense>
-              </ErrorBoundary>
-              
-              <ErrorBoundary>
-                <GithubProfile id="contact" />
-              </ErrorBoundary>
-            </main>
-            
-              <Footer />
-              
-              {/* Scroll to top button */}
-              {showScrollButton && (
-                <div className="scroll-top-container">
-                  <button
-                    onClick={scrollToTop}
-                    style={{
-                      position: 'fixed',
-                      bottom: '2rem',
-                      right: '2rem',
-                      backgroundColor: 'rgba(0, 10, 20, 0.9)', 
-                      color: '#00aaff',
-                      padding: '0.8rem 1.2rem',
-                      borderRadius: '2px',
-                      boxShadow: '0 0 15px rgba(0, 170, 255, 0.6), 0 0 30px rgba(0, 170, 255, 0.3)',
-                      zIndex: 1000,
-                      border: '1px solid rgba(0, 170, 255, 0.5)',
-                      borderLeft: '3px solid #00aaff',
-                      cursor: 'pointer',
-                      transition: 'all 0.3s ease',
-                      animation: 'fadeIn 0.3s ease-out forwards',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'flex-start',
-                      backdropFilter: 'blur(8px)',
-                      fontFamily: '"JetBrains Mono", monospace, system-ui',
-                      fontSize: '12px',
-                      fontWeight: 'bold',
-                      letterSpacing: '1px',
-                      textTransform: 'uppercase',
-                      gap: '8px',
-                      width: 'auto',
-                      height: 'auto',
-                      minWidth: '180px'
-                    }}
-                    className="scroll-top-btn"
-                    aria-label="Return to system root"
-                  >
-                    <svg 
-                      xmlns="http://www.w3.org/2000/svg" 
-                      width="14" 
-                      height="14" 
-                      viewBox="0 0 24 24" 
-                      fill="none"
-                      stroke="currentColor" 
-                      strokeWidth="2" 
-                      strokeLinecap="round" 
-                      strokeLinejoin="round"
-                      aria-hidden="true"
-                      className="arrow-icon"
+            <Background
+              enableMatrix={true}
+              enableBinaryStreams={true}
+              enableCircuitGrid={true}
+              enableScanlines={true}
+              enableGlitch={true}
+              enableColorPulse={true}
+              enableNoise={true}
+              matrixCharCount={150}
+            >
+              <div className="App text-text">
+                <Head />
+                <SkipToContent mainId="main-content" />
+                <Navigation />
+                {/* Developer tools - only rendered in development */}
+                {import.meta.env.DEV && (
+                  <Suspense fallback={null}>
+                    <DevTools />
+                  </Suspense>
+                )}
+                
+                <main id="main-content" className="text-text">
+                  <ErrorBoundary>
+                    <Suspense fallback={<Loading />}>
+                      <Greetings />
+                    </Suspense>
+                  </ErrorBoundary>
+                  
+                  <ErrorBoundary>
+                    <Suspense fallback={<Loading />}>
+                      <Skills />
+                    </Suspense>
+                  </ErrorBoundary>
+                  
+                  <ErrorBoundary>
+                    <Suspense fallback={<Loading />}>
+                      <Education />
+                    </Suspense>
+                  </ErrorBoundary>
+                  
+                  <ErrorBoundary>
+                    <Suspense fallback={<Loading />}>
+                      <Experience />
+                    </Suspense>
+                  </ErrorBoundary>
+                  
+                  <ErrorBoundary>
+                    <Suspense fallback={<Loading />}>
+                      <Feedbacks />
+                    </Suspense>
+                  </ErrorBoundary>
+                  
+                  <ErrorBoundary>
+                    <Suspense fallback={<Loading />}>
+                      <Projects />
+                    </Suspense>
+                  </ErrorBoundary>
+                  
+                  <ErrorBoundary>
+                    <GithubProfile id="contact" />
+                  </ErrorBoundary>
+                </main>
+                
+                <Footer />
+                
+                {/* Scroll to top button */}
+                {showScrollButton && (
+                  <div className="scroll-top-container">
+                    <button
+                      onClick={scrollToTop}
+                      style={{
+                        position: 'fixed',
+                        bottom: '2rem',
+                        right: '2rem',
+                        backgroundColor: 'rgba(0, 10, 20, 0.9)', 
+                        color: '#00aaff',
+                        padding: '0.8rem 1.2rem',
+                        borderRadius: '2px',
+                        boxShadow: '0 0 15px rgba(0, 170, 255, 0.6), 0 0 30px rgba(0, 170, 255, 0.3)',
+                        zIndex: 1000,
+                        border: '1px solid rgba(0, 170, 255, 0.5)',
+                        borderLeft: '3px solid #00aaff',
+                        cursor: 'pointer',
+                        transition: 'all 0.3s ease',
+                        animation: 'fadeIn 0.3s ease-out forwards',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'flex-start',
+                        backdropFilter: 'blur(8px)',
+                        fontFamily: '"JetBrains Mono", monospace, system-ui',
+                        fontSize: '12px',
+                        fontWeight: 'bold',
+                        letterSpacing: '1px',
+                        textTransform: 'uppercase',
+                        gap: '8px',
+                        width: 'auto',
+                        height: 'auto',
+                        minWidth: '180px'
+                      }}
+                      className="scroll-top-btn"
+                      aria-label="Return to system root"
                     >
-                      <line x1="12" y1="19" x2="12" y2="5"></line>
-                      <polyline points="5 12 12 5 19 12"></polyline>
-                    </svg>
-                    <span className="btn-text">
-                      <span className="prefix">&gt;</span> cd /root
-                    </span>
-                    <div className="btn-status-light"></div>
-                  </button>
-                </div>
-              )}
-            </div>
+                      <svg 
+                        xmlns="http://www.w3.org/2000/svg" 
+                        width="14" 
+                        height="14" 
+                        viewBox="0 0 24 24" 
+                        fill="none"
+                        stroke="currentColor" 
+                        strokeWidth="2" 
+                        strokeLinecap="round" 
+                        strokeLinejoin="round"
+                        aria-hidden="true"
+                        className="arrow-icon"
+                      >
+                        <line x1="12" y1="19" x2="12" y2="5"></line>
+                        <polyline points="5 12 12 5 19 12"></polyline>
+                      </svg>
+                      <span className="btn-text">
+                        <span className="prefix">&gt;</span> cd /root
+                      </span>
+                      <div className="btn-status-light"></div>
+                    </button>
+                  </div>
+                )}
+              </div>
+            </Background>
           </AnimationProvider>
         </PortfolioProvider>
       </HelmetProvider>

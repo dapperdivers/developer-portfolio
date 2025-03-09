@@ -262,7 +262,7 @@ const Skills = () => {
         id="skills"
         title="Skills"
         icon="simple-icons:apachespark"
-        className="skills-section bg-gray-900 text-white"
+        className="skills-section text-white"
       >
         <div className="skills-empty-state">
           <p>No skills are currently available.</p>
@@ -278,7 +278,7 @@ const Skills = () => {
       title={skillsSection.title}
       subtitle={skillsSection.subTitle}
       animation={sectionAnimation}
-      className="skills-section bg-gray-900 text-white"
+      className="skills-section text-white"
       aria-label="Developer skills and technologies"
     >
       <div className="skills-content-wrapper">

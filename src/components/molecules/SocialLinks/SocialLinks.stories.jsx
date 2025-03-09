@@ -4,9 +4,6 @@ import { within, userEvent, expect } from '@storybook/test';
 import SocialLinks from './SocialLinks';
 import { withPortfolioContext } from '@stories-utils';
 
-// Import the CSS for styling
-import '@assets/css/components/ui/social-links.css';
-
 // Create a modified version of SocialLinks component for Storybook
 // This allows us to pass socialLinks as a prop instead of importing from portfolio.js
 const StorySocialLinks = ({ links, variant = 'default' }) => {

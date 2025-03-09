@@ -1,0 +1,121 @@
+/**
+ * ScrollDown Component Styles
+ * 
+ * Styling for the ScrollDown component
+ * This project uses Tailwind CSS. See tailwind.config.js for configuration.
+ * For custom styles beyond Tailwind, use the classes defined below.
+ */
+
+.scrolldown {
+  /* Add custom styles here that go beyond Tailwind's utilities */
+  
+  /* For application-wide styles, consider adding to:
+   * - tailwind.config.js (for theme customization)
+   * - src/assets/css/styles.css (for global styles) 
+   */
+}
+
+/* You can use Tailwind's responsive prefixes in your component's JSX:
+ * <div className="md:flex lg:p-4 dark:bg-gray-800"></div>
+ * 
+ * Or add custom responsive styles here:
+ */
+@media (max-width: 768px) {
+  .scrolldown {
+    /* Add mobile-specific styles if needed */
+  }
+}
+
+/**
+ * ScrollDown Atomic Component Styles
+ */
+
+.scroll-down-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 30;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.scroll-down-container:hover {
+  transform: translateY(2px);
+}
+
+.scroll-down-container:focus-visible {
+  outline: 2px solid var(--color-cyan);
+  outline-offset: 4px;
+}
+
+/* Interface dots styling */
+.interface-dot {
+  width: 2px;
+  height: 2px;
+  background-color: var(--color-cyan);
+  opacity: 0.6;
+  transition: all 0.3s ease;
+}
+
+/* Data points animation */
+.data-point {
+  transform-origin: center;
+  transition: all 0.3s ease;
+}
+
+/* Hover effects */
+.scroll-down-container:hover .data-point {
+  transform: scaleX(1.5);
+}
+
+.scroll-down-container:hover .interface-dot {
+  opacity: 1;
+  box-shadow: 0 0 4px var(--color-cyan);
+}
+
+/* Terminal text effect */
+.terminal-text {
+  position: relative;
+  padding: 0 0.5rem;
+}
+
+.terminal-text::before {
+  content: '';
+  position: absolute;
+  left: -4px;
+  top: 50%;
+  width: 3px;
+  height: 1px;
+  background-color: var(--color-cyan);
+  opacity: 0.6;
+}
+
+.terminal-text::after {
+  content: '';
+  position: absolute;
+  right: -4px;
+  top: 50%;
+  width: 3px;
+  height: 1px;
+  background-color: var(--color-cyan);
+  opacity: 0.6;
+}
+
+/* Accessibility - Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .scroll-down-container *,
+  .scroll-down-container *::before,
+  .scroll-down-container *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  
+  .scroll-down-container:hover {
+    transform: none;
+  }
+}
+

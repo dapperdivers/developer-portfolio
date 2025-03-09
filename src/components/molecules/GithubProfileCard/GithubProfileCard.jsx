@@ -48,7 +48,7 @@ const GithubProfileCard = ({ prof, error, onRetry }) => {
     const randomFact = securityFacts[Math.floor(Math.random() * securityFacts.length)];
     
     return (
-      <div className="bg-gray-900 shadow-lg rounded-lg py-10 overflow-hidden" data-testid="github-profile-card">
+      <div className="shadow-lg rounded-lg py-10 overflow-hidden backdrop-blur-sm bg-black/30 border border-gray-800" data-testid="github-profile-card">
         {/* Security-themed background elements */}
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none" style={{ zIndex: 1 }}>
           <div className="security-grid"></div>

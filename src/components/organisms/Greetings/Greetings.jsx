@@ -1,9 +1,10 @@
 import React from "react";
 import { greetings } from "@/portfolio";
 import { motion } from "framer-motion";
-import { FaDownload, FaChevronDown } from 'react-icons/fa';
+import { FaDownload } from 'react-icons/fa';
 import Button from '@atoms/Button';
 import SocialLinks from '@molecules/SocialLinks';
+import ScrollDown from '@atoms/ScrollDown';
 import useCallbackHandlers from '@/hooks/useCallbackHandlers';
 import './Greetings.css';
 
@@ -11,7 +12,7 @@ const Greetings = () => {
   const { handleDownload } = useCallbackHandlers();
   
   const scrollToNextSection = () => {
-    const nextSection = document.querySelector('.greetings-section').nextElementSibling;
+    const nextSection = document.querySelector('#greetings-section').nextElementSibling;
     if (nextSection) {
       nextSection.scrollIntoView({ behavior: 'smooth' });
     }
@@ -23,73 +24,150 @@ const Greetings = () => {
   };
 
   return (
-    <section className="greetings-section min-h-screen bg-gray-900 text-white flex flex-col justify-center items-center relative">
-      <div className="container mx-auto px-4 py-16 md:py-24">
+    <div id="greetings-section" className="min-h-screen text-text flex flex-col justify-center items-center relative">
+      <div className="container mx-auto px-container-x py-8 md:py-section-y">
         <motion.div
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="text-center max-w-4xl mx-auto"
+          className="text-center backdrop-blur-sm bg-theme-navy/80 p-card rounded-lg border border-theme-cyan/30 shadow-lg relative overflow-hidden"
         >
-          <motion.h1 
-            className="text-5xl md:text-7xl font-bold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.3, duration: 0.7 }}
-          >
-            {greetings.title}
-          </motion.h1>
+          {/* Cyberpunk decorative elements - Hide on very small screens */}
+          <div className="hidden sm:block absolute top-0 left-0 w-16 md:w-20 h-16 md:h-20 pointer-events-none opacity-60">
+            <div className="absolute top-0 left-0 w-6 md:w-8 h-0.5 bg-theme-cyan"></div>
+            <div className="absolute top-0 left-0 w-0.5 h-6 md:h-8 bg-theme-cyan"></div>
+          </div>
+          <div className="hidden sm:block absolute top-0 right-0 w-16 md:w-20 h-16 md:h-20 pointer-events-none opacity-60">
+            <div className="absolute top-0 right-0 w-6 md:w-8 h-0.5 bg-theme-cyan"></div>
+            <div className="absolute top-0 right-0 w-0.5 h-6 md:h-8 bg-theme-cyan"></div>
+          </div>
+          <div className="hidden sm:block absolute bottom-0 right-0 w-16 md:w-20 h-16 md:h-20 pointer-events-none opacity-60">
+            <div className="absolute bottom-0 right-0 w-6 md:w-8 h-0.5 bg-theme-cyan"></div>
+            <div className="absolute bottom-0 right-0 w-0.5 h-6 md:h-8 bg-theme-cyan"></div>
+          </div>
+          <div className="hidden sm:block absolute bottom-0 left-0 w-16 md:w-20 h-16 md:h-20 pointer-events-none opacity-60">
+            <div className="absolute bottom-0 left-0 w-6 md:w-8 h-0.5 bg-theme-cyan"></div>
+            <div className="absolute bottom-0 left-0 w-0.5 h-6 md:h-8 bg-theme-cyan"></div>
+          </div>
           
-          <motion.p 
-            className="text-xl md:text-2xl mb-10 leading-relaxed text-gray-200"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.6, duration: 0.8 }}
-          >
-            {greetings.description}
-          </motion.p>
-          
-          <motion.div 
-            className="flex flex-col sm:flex-row justify-center items-center gap-8 mb-16"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.9, duration: 0.6 }}
-          >
-            <Button
-              variant="light"
-              size="lg"
-              href={greetings.resumeLink}
-              ariaLabel="Download Resume"
-              type="button"
-              className="bg-cyan-500 hover:bg-cyan-600 text-white font-semibold shadow-xl px-8 py-4 rounded-xl text-xl transition-all duration-300 transform hover:scale-105"
-              onClick={downloadResume}
+          {/* Content with relative positioning for layering */}
+          <div className="relative z-fixed">
+            <h1 
+              className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 md:mb-8 text-transparent bg-clip-text bg-gradient-to-r from-theme-cyan to-primary"
+              data-testid="greeting-heading"
             >
-              <FaDownload className="mr-3 text-2xl" />
-              Download Resume
-            </Button>
+              {greetings.title}
+            </h1>
             
-            <div className="social-links-wrapper p-3 scale-110">
+            <div className="space-y-3 md:space-y-4">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-theme-cyan cyberpunk-text" data-testid="name-heading">
+                {greetings.name}
+              </h2>
+              
+              <p className="text-lg sm:text-xl md:text-2xl max-w-3xl mx-auto leading-loose text-theme-offwhite opacity-90 px-2 sm:px-4" data-testid="title-text">
+                {greetings.description}
+              </p>
+            </div>
+            
+            {/* Download resume button with cyberpunk styling */}
+            <div className="pt-6 md:pt-8 mb-4 md:mb-6">
+              <button
+                onClick={downloadResume}
+                className="group relative px-button-x py-button-y bg-transparent hover:bg-theme-cyan/20 text-theme-cyan transition-all duration-DEFAULT border border-theme-cyan/50 hover:shadow-focus focus:outline-none cyberpunk-button"
+              >
+                <span className="absolute top-0 left-0 w-2 sm:w-3 h-0.5 bg-theme-cyan transform -translate-y-1/2 group-hover:w-4 sm:group-hover:w-6 transition-all duration-DEFAULT"></span>
+                <span className="absolute top-0 left-0 w-0.5 h-2 sm:h-3 bg-theme-cyan transform -translate-x-1/2 group-hover:h-4 sm:group-hover:h-6 transition-all duration-DEFAULT"></span>
+                <span className="absolute bottom-0 right-0 w-2 sm:w-3 h-0.5 bg-theme-cyan transform translate-y-1/2 group-hover:w-4 sm:group-hover:w-6 transition-all duration-DEFAULT"></span>
+                <span className="absolute bottom-0 right-0 w-0.5 h-2 sm:h-3 bg-theme-cyan transform translate-x-1/2 group-hover:h-4 sm:group-hover:h-6 transition-all duration-DEFAULT"></span>
+                <span className="font-mono text-base sm:text-lg tracking-widest whitespace-nowrap">Download Resume</span>
+              </button>
+            </div>
+            
+            {/* Social Links */}
+            <div className="flex justify-center mt-2 md:mt-4">
               <SocialLinks />
             </div>
-          </motion.div>
+          </div>
         </motion.div>
       </div>
-
-      <motion.div 
-        className="absolute bottom-8 left-0 right-0 flex justify-center"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.2, duration: 0.5 }}
-      >
-        <button 
-          onClick={scrollToNextSection}
-          className="animate-bounce p-2 bg-transparent text-cyan-400 rounded-full hover:text-cyan-300 focus:outline-none transition-colors duration-300"
-          aria-label="Scroll to next section"
-        >
-          <FaChevronDown className="text-3xl" />
-        </button>
-      </motion.div>
-    </section>
+      
+      {/* Scroll down indicator using the ScrollDown atom component */}
+      <div className="absolute bottom-4 sm:bottom-8 md:bottom-10 left-1/2 transform -translate-x-1/2">
+        <ScrollDown onClick={scrollToNextSection} />
+      </div>
+      
+      {/* Add some CSS for the animations and effects */}
+      <style jsx>{`
+        .cyberpunk-terminal {
+          box-shadow: var(--box-shadow);
+          position: relative;
+        }
+        
+        .cyberpunk-glitch {
+          position: relative;
+        }
+        
+        .cyberpunk-glitch:after {
+          content: attr(data-text);
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          background: var(--color-black);
+          overflow: hidden;
+          clip: rect(0, 900px, 0, 0);
+          color: var(--color-cyan);
+          text-shadow: 0 0 5px var(--color-cyan);
+          animation: glitch-animation 3s infinite linear alternate-reverse;
+        }
+        
+        @keyframes glitch-animation {
+          0% {
+            clip: rect(0, 900px, 0, 0);
+          }
+          2% {
+            clip: rect(10px, 900px, 25px, 0);
+          }
+          4% {
+            clip: rect(0, 900px, 10px, 0);
+          }
+          6% {
+            clip: rect(0, 900px, 0, 0);
+          }
+          98% {
+            clip: rect(0, 900px, 0, 0);
+          }
+          100% {
+            clip: rect(0, 900px, 0, 0);
+          }
+        }
+        
+        .blink-cursor {
+          animation: blink 1s step-end infinite;
+        }
+        
+        @keyframes blink {
+          from, to { opacity: 1; }
+          50% { opacity: 0; }
+        }
+        
+        .typing-effect {
+          border-right: 2px solid transparent;
+          white-space: nowrap;
+          animation: typing 3.5s steps(40, end), blink-caret .75s step-end 8;
+        }
+        
+        @keyframes typing {
+          from { width: 0 }
+          to { width: 100% }
+        }
+        
+        @keyframes blink-caret {
+          from, to { border-color: transparent }
+          50% { border-color: var(--color-cyan); }
+        }
+      `}</style>
+    </div>
   );
 }
  
