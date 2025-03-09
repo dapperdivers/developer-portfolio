@@ -32,6 +32,8 @@ export interface DebugConfig {
     showStackTraces: boolean;
     logToConsole: boolean;
     componentFilter: string[];
+    monitorScriptExecution: boolean;
+    monitorNetworkActivity: boolean;
   };
 }
 
@@ -54,7 +56,9 @@ const DEFAULT_CONFIG: DebugConfig = {
     showComponentTimings: true,
     showStackTraces: true,
     logToConsole: true,
-    componentFilter: []
+    componentFilter: [],
+    monitorScriptExecution: true,
+    monitorNetworkActivity: true
   }
 };
 
@@ -101,7 +105,13 @@ export const DebugContext = createContext<DebugContextType>({
 });
 
 // Custom hook to use debug context
-export const useDebugManager = () => useContext(DebugContext);
+export function useDebugManager() {
+  const context = useContext(DebugContext);
+  if (context === undefined) {
+    throw new Error('useDebugManager must be used within a DebugProvider');
+  }
+  return context;
+}
 
 // Debug provider component
 interface DebugProviderProps {
@@ -109,10 +119,7 @@ interface DebugProviderProps {
   initialConfig?: Partial<DebugConfig>;
 }
 
-export const DebugProvider: React.FC<DebugProviderProps> = ({ 
-  children, 
-  initialConfig = {} 
-}) => {
+export function DebugProvider({ children, initialConfig = {} }: DebugProviderProps) {
   // Merge default config with initial config
   const [config, setConfig] = useState<DebugConfig>({
     ...DEFAULT_CONFIG,
@@ -350,7 +357,16 @@ export const DebugProvider: React.FC<DebugProviderProps> = ({
       
       {/* Render debug UI if enabled */}
       {config.enabled && config.features.showFPS && (
-        <PerformanceMonitor enabled={true} config={config.performance} />
+        <PerformanceMonitor 
+          enabled={true} 
+          config={config.performance}
+          positionStyle={{
+            position: 'fixed',
+            top: '10px',
+            right: '10px'
+          }}
+          initialExpanded={false}
+        />
       )}
       
       {/* Debug panel */}
@@ -360,138 +376,62 @@ export const DebugProvider: React.FC<DebugProviderProps> = ({
       )}
     </DebugContext.Provider>
   );
-};
+}
 
 // Debug panel component
 const DebugPanel: React.FC = () => {
   const { config, toggleDebug, toggleFeature, toggleComponent, setConfig } = useDebugManager();
   const [isMinimized, setIsMinimized] = useState(true);
+  const [activeTab, setActiveTab] = useState('features');
   
   // Toggle panel
   const togglePanel = () => {
     setIsMinimized(prev => !prev);
   };
-  
-  return (
-    <div
-      style={{
-        position: 'fixed',
-        bottom: '10px',
-        left: '10px',
-        backgroundColor: 'rgba(0, 0, 0, 0.8)',
-        color: '#fff',
-        padding: isMinimized ? '8px' : '12px',
-        borderRadius: '4px',
-        zIndex: 9999,
-        fontFamily: 'monospace',
-        fontSize: '12px',
-        maxWidth: isMinimized ? 'auto' : '300px',
-        boxShadow: '0 0 10px rgba(0, 0, 0, 0.3)'
-      }}
-    >
-      {isMinimized ? (
-        <button
-          onClick={togglePanel}
-          style={{
-            background: 'transparent',
-            border: 'none',
-            color: '#fff',
-            cursor: 'pointer',
-            fontSize: '16px',
-            padding: '0',
-            margin: '0'
-          }}
-        >
-          🐞
-        </button>
-      ) : (
-        <>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
-            <strong>Debug Panel</strong>
-            <button
-              onClick={togglePanel}
-              style={{
-                background: 'transparent',
-                border: 'none',
-                color: '#fff',
-                cursor: 'pointer',
-                fontSize: '14px'
-              }}
-            >
-              −
-            </button>
-          </div>
-          
-          <div style={{ marginBottom: '12px' }}>
-            <button
-              onClick={toggleDebug}
-              style={{
-                background: config.enabled ? 'rgba(59, 130, 246, 0.5)' : 'transparent',
-                border: '1px solid #555',
-                borderRadius: '3px',
-                color: '#fff',
-                cursor: 'pointer',
-                padding: '4px 8px',
-                width: '100%',
-                textAlign: 'left'
-              }}
-            >
-              Debug Mode: {config.enabled ? 'ON' : 'OFF'}
-            </button>
-          </div>
-          
-          <div style={{ marginBottom: '12px' }}>
-            <div style={{ marginBottom: '6px', borderBottom: '1px solid #555', paddingBottom: '4px' }}>
-              Features:
-            </div>
+
+  // Render tab content
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case 'features':
+        return (
+          <div className="debug-features">
             {Object.entries(config.features).map(([feature, enabled]) => (
-              <div key={feature} style={{ marginBottom: '4px' }}>
-                <label style={{ display: 'flex', alignItems: 'center' }}>
+              <div key={feature} className="debug-feature-item">
+                <label className="debug-label">
                   <input
                     type="checkbox"
                     checked={enabled}
                     onChange={() => toggleFeature(feature as keyof DebugConfig['features'])}
-                    style={{ marginRight: '6px' }}
                   />
-                  {feature.charAt(0).toUpperCase() + feature.slice(1)}
+                  <span>{feature.charAt(0).toUpperCase() + feature.slice(1)}</span>
                 </label>
               </div>
             ))}
           </div>
-          
-          <div>
-            <div style={{ marginBottom: '6px', borderBottom: '1px solid #555', paddingBottom: '4px' }}>
-              Components:
-            </div>
+        );
+      case 'components':
+        return (
+          <div className="debug-components">
             {Object.entries(config.components).map(([component, enabled]) => (
-              <div key={component} style={{ marginBottom: '4px' }}>
-                <label style={{ display: 'flex', alignItems: 'center' }}>
+              <div key={component} className="debug-component-item">
+                <label className="debug-label">
                   <input
                     type="checkbox"
                     checked={enabled}
                     onChange={() => toggleComponent(component)}
-                    style={{ marginRight: '6px' }}
                   />
-                  {component}
+                  <span>{component}</span>
                 </label>
               </div>
             ))}
           </div>
-          
-          <div style={{ marginTop: '12px', fontSize: '10px', color: '#999' }}>
-            <div>Keyboard shortcuts:</div>
-            <div>Ctrl+Shift+D: Toggle debug</div>
-            <div>Ctrl+Shift+B: Toggle background</div>
-            <div>Ctrl+Shift+A: Toggle animations</div>
-            <div>Ctrl+Shift+P: Toggle profiling</div>
-            <div>Ctrl+Shift+F: Toggle FPS</div>
-          </div>
-          
-          {/* Performance monitoring section */}
-          <div className="debug-section">
-            <h4>Performance Monitoring</h4>
-            <div className="debug-controls">
-              <label>
+        );
+      case 'performance':
+        return (
+          <div className="debug-performance">
+            <div className="debug-performance-item">
+              <label className="debug-label">
+                Long task threshold (ms)
                 <input 
                   type="number" 
                   value={config.performance.longTaskThreshold}
@@ -503,12 +443,29 @@ const DebugPanel: React.FC = () => {
                     }
                   }))}
                 />
-                Long task threshold (ms)
               </label>
-              <label>
+            </div>
+            <div className="debug-performance-item">
+              <label className="debug-label">
                 <input 
                   type="checkbox" 
-                  checked={config.performance.logToConsole} 
+                  checked={config.performance.showComponentTimings}
+                  onChange={(e) => setConfig(prev => ({
+                    ...prev,
+                    performance: {
+                      ...prev.performance,
+                      showComponentTimings: e.target.checked
+                    }
+                  }))}
+                />
+                <span>Show Component Timings</span>
+              </label>
+            </div>
+            <div className="debug-performance-item">
+              <label className="debug-label">
+                <input 
+                  type="checkbox" 
+                  checked={config.performance.logToConsole}
                   onChange={(e) => setConfig(prev => ({
                     ...prev,
                     performance: {
@@ -517,15 +474,203 @@ const DebugPanel: React.FC = () => {
                     }
                   }))}
                 />
-                Log to console
+                <span>Log to Console</span>
               </label>
+            </div>
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
+  
+  return (
+    <div className="debug-panel" style={{
+      position: 'fixed',
+      bottom: '10px',
+      left: '10px',
+      backgroundColor: 'rgba(0, 0, 0, 0.9)',
+      color: '#fff',
+      padding: isMinimized ? '8px' : '12px',
+      borderRadius: '6px',
+      zIndex: 9999,
+      fontFamily: 'monospace',
+      fontSize: '12px',
+      maxWidth: isMinimized ? 'auto' : '300px',
+      boxShadow: '0 0 10px rgba(0, 0, 0, 0.5)',
+      border: '1px solid rgba(255, 255, 255, 0.1)'
+    }}>
+      {isMinimized ? (
+        <button
+          onClick={togglePanel}
+          className="debug-toggle-btn"
+          style={{
+            background: 'transparent',
+            border: 'none',
+            color: '#fff',
+            cursor: 'pointer',
+            fontSize: '16px',
+            padding: '0',
+            margin: '0',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '4px'
+          }}
+        >
+          🐞 <span style={{ fontSize: '10px' }}>Debug</span>
+        </button>
+      ) : (
+        <>
+          <div className="debug-header" style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: '12px',
+            borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+            paddingBottom: '8px'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span>🐞</span>
+              <strong>Debug Tools</strong>
+            </div>
+            <button
+              onClick={togglePanel}
+              style={{
+                background: 'transparent',
+                border: 'none',
+                color: '#fff',
+                cursor: 'pointer',
+                fontSize: '14px',
+                padding: '4px',
+                opacity: 0.7
+              }}
+            >
+              ×
+            </button>
+          </div>
+          
+          <div className="debug-main">
+            <div className="debug-global" style={{ marginBottom: '12px' }}>
+              <button
+                onClick={toggleDebug}
+                style={{
+                  background: config.enabled ? 'rgba(59, 130, 246, 0.5)' : 'rgba(255, 255, 255, 0.1)',
+                  border: 'none',
+                  borderRadius: '4px',
+                  color: '#fff',
+                  cursor: 'pointer',
+                  padding: '6px 12px',
+                  width: '100%',
+                  textAlign: 'left',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center'
+                }}
+              >
+                <span>Debug Mode</span>
+                <span style={{ 
+                  fontSize: '10px',
+                  padding: '2px 6px',
+                  borderRadius: '3px',
+                  background: config.enabled ? 'rgba(0, 255, 0, 0.2)' : 'rgba(255, 0, 0, 0.2)'
+                }}>
+                  {config.enabled ? 'ON' : 'OFF'}
+                </span>
+              </button>
+            </div>
+            
+            <div className="debug-tabs" style={{
+              display: 'flex',
+              gap: '4px',
+              marginBottom: '12px'
+            }}>
+              {['features', 'components', 'performance'].map(tab => (
+                <button
+                  key={tab}
+                  onClick={() => setActiveTab(tab)}
+                  style={{
+                    background: activeTab === tab ? 'rgba(255, 255, 255, 0.1)' : 'transparent',
+                    border: 'none',
+                    borderRadius: '4px',
+                    color: '#fff',
+                    cursor: 'pointer',
+                    padding: '4px 8px',
+                    fontSize: '11px',
+                    textTransform: 'capitalize'
+                  }}
+                >
+                  {tab}
+                </button>
+              ))}
+            </div>
+            
+            <div className="debug-content" style={{
+              maxHeight: '300px',
+              overflowY: 'auto',
+              padding: '4px'
+            }}>
+              {renderTabContent()}
+            </div>
+            
+            <div className="debug-footer" style={{
+              marginTop: '12px',
+              padding: '8px',
+              background: 'rgba(0, 0, 0, 0.3)',
+              borderRadius: '4px',
+              fontSize: '10px'
+            }}>
+              <div style={{ marginBottom: '4px', color: '#888' }}>Quick Actions:</div>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
+                <button
+                  onClick={() => toggleFeature('showFPS')}
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.1)',
+                    border: 'none',
+                    borderRadius: '3px',
+                    color: '#fff',
+                    cursor: 'pointer',
+                    padding: '3px 6px',
+                    fontSize: '10px'
+                  }}
+                >
+                  {config.features.showFPS ? 'Hide' : 'Show'} FPS
+                </button>
+                <button
+                  onClick={() => toggleFeature('profiling')}
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.1)',
+                    border: 'none',
+                    borderRadius: '3px',
+                    color: '#fff',
+                    cursor: 'pointer',
+                    padding: '3px 6px',
+                    fontSize: '10px'
+                  }}
+                >
+                  {config.features.profiling ? 'Disable' : 'Enable'} Profiling
+                </button>
+                <button
+                  onClick={() => toggleFeature('renderVisualizer')}
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.1)',
+                    border: 'none',
+                    borderRadius: '3px',
+                    color: '#fff',
+                    cursor: 'pointer',
+                    padding: '3px 6px',
+                    fontSize: '10px'
+                  }}
+                >
+                  {config.features.renderVisualizer ? 'Hide' : 'Show'} Renders
+                </button>
+              </div>
             </div>
           </div>
         </>
       )}
     </div>
   );
-};
+}
 
 // HOC to inject debugging to components
 export function withDebugging<P extends object>(
@@ -557,8 +702,9 @@ export function withDebugging<P extends object>(
   return WithDebugging;
 }
 
-// Add DebugComponentRegistrar component
-export const DebugComponentRegistrar: React.FC = () => {
-  // This component is a placeholder for registering components dynamically
+// Export the registrar component
+export function DebugComponentRegistrar() {
   return null;
-}; 
+}
+
+// No need to re-export DebugConfig as it's already exported in the interface definition above 

@@ -72,6 +72,9 @@ const useTimelineAnimation = ({
     }
   }, [entryId, registerEntryAnimation]);
 
+  // Track if animation has been triggered
+  const hasTriggeredAnimation = useRef(false);
+
   // Set up intersection observer to trigger animations when entry becomes visible
   useEffect(() => {
     const currentRef = entryRef.current;
@@ -86,70 +89,61 @@ const useTimelineAnimation = ({
     }
 
     let verifyTimer: ReturnType<typeof setTimeout>;
-    let hasTriggeredAnimation = false;
     
     const observer = new IntersectionObserver(
       (entries) => {
         const [entry] = entries;
-        if (entry.isIntersecting && !hasTriggeredAnimation) {
-          hasTriggeredAnimation = true;
+        if (entry.isIntersecting && !hasTriggeredAnimation.current) {
+          hasTriggeredAnimation.current = true;
           setIsEntryInView(true);
           
           // Trigger animation with staggered delay
           playEntryAnimation(entryId, index * 0.2);
           
-          // Simulate security verification after a delay
+          // Start verification process
           verifyTimer = setTimeout(() => {
             setIsVerified(true);
-          }, index * 200 + 1000);
+          }, 1000 + (index * 200));
           
-          observer.unobserve(currentRef);
+          // Cleanup observer after animation is triggered
+          observer.disconnect();
         }
       },
-      {
-        threshold: 0.1, // Lower threshold for better detection
-        rootMargin: "-20px 0px" // More forgiving margins
-      }
+      { threshold: 0.2 }
     );
     
-    // Start observing
     observer.observe(currentRef);
     
-    // Cleanup function
     return () => {
-      if (currentRef) {
-        observer.unobserve(currentRef);
+      observer.disconnect();
+      if (verifyTimer) {
+        clearTimeout(verifyTimer);
       }
-      clearTimeout(verifyTimer);
     };
-  }, [entryId, index, animationEnabled, playEntryAnimation]);
+  }, [animationEnabled, entryId, index, playEntryAnimation]);
 
-  // Animation variants for the entry
-  const slideVariants = useMemo<Variants>(() => {
-    const isEven = index % 2 === 0;
-    
-    return {
-      hidden: { 
-        opacity: 0, 
-        x: isEven ? -50 : 50,
-        y: 20,
-        scale: 0.95,
-        rotateY: isEven ? -5 : 5
-      },
-      visible: { 
-        opacity: 1, 
-        x: 0,
-        y: 0,
-        scale: 1,
-        rotateY: 0,
-        transition: { 
-          duration: 0.7, 
-          delay: index * 0.1,
-          ease: [0.43, 0.13, 0.23, 0.96] // Custom easing curve
-        }
+  // Animation variants
+  const slideVariants = useMemo<Variants>(() => ({
+    hidden: { 
+      opacity: 0, 
+      x: index % 2 === 0 ? -50 : 50,
+      y: 20,
+      scale: 0.95,
+      rotateY: index % 2 === 0 ? -5 : 5
+    },
+    visible: { 
+      opacity: 1, 
+      x: 0,
+      y: 0,
+      scale: 1,
+      rotateY: 0,
+      transition: { 
+        duration: 0.7, 
+        delay: index * 0.1,
+        ease: [0.43, 0.13, 0.23, 0.96]
       }
-    };
-  }, [index]);
+    }
+  }), [index]);
   
   // Date bubble animation
   const bubbleVariants = useMemo<Variants>(() => ({
@@ -222,25 +216,16 @@ const useTimelineAnimation = ({
   const securityId = useMemo(() => generateSecurityId(), [generateSecurityId]);
 
   return {
-    // Refs
     entryRef,
-    
-    // State
     isEntryInView,
     isVerified,
     isEven: index % 2 === 0,
-    
-    // Animation controls
     animationDelay,
     animationEnabled,
-    
-    // Animation variants
     slideVariants,
     bubbleVariants,
     dotVariants,
     securityBadgeVariants,
-    
-    // Generated values
     securityId
   };
 };

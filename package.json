@@ -151,6 +151,7 @@
     "postcss": "^8.5.3",
     "postcss-import": "^16.1.0",
     "prettier": "^3.5.3",
+    "puppeteer": "^24.4.0",
     "rollup-plugin-visualizer": "^5.14.0",
     "sharp": "^0.33.5",
     "storybook": "^8.6.4",

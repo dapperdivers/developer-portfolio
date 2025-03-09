@@ -39,51 +39,56 @@
  * - Ctrl+Shift+P: Toggle performance monitor
  */
 
-// Export the simplified API components first
-export { DebugProvider } from './DebugManager';
-export { default as PerformanceMonitor, SimplePerformanceMonitor as PerformanceDisplay } from './PerformanceMonitor';
-
-// Simplified hook/HOC API
-import { withDebugging } from './DebugManager';
 import { useRenderTracking } from './debugHooks';
+import { withDebugging } from './DebugManager';
+import type { ComponentType } from 'react';
+
+// Performance monitoring exports
+export { default as PerformanceMonitor } from './PerformanceMonitor';
+export { SimplePerformanceMonitor, withRenderTracking } from './PerformanceMonitor';
+
+// Debug hooks exports
+export { useTrackRender } from './debugHooks';
+
+// Debug context exports
+export { DebugProvider, useDebugManager } from './DebugManager';
+export type { DebugConfig } from './DebugManager';
+
+// Export utility hooks
+export {
+  useRenderTracking,
+  useAdaptivePerformance,
+  useAnimationDebug,
+  useBackgroundEffects,
+  useLayoutDebug
+} from './debugHooks';
+
+// Export HOCs and components
+export { withDebugging } from './DebugManager';
+export { DebugComponentRegistrar as RegisterDebugComponents } from './DebugManager';
 
 /**
  * Main debugging hook - use this inside components to enable debugging
- * @param componentName The name to identify this component in debug tools
  */
-export const useDebug = (componentName: string) => {
+export function useDebug(componentName: string) {
   return useRenderTracking(componentName);
-};
-
-/**
- * Main HOC for debugging - wrap components with this to enable debugging
- * @param Component The component to debug
- * @param name Optional name (defaults to Component.displayName)
- */
-export const withDebug = withDebugging;
-
-// Export other utility functions
-export * from './DebugManager';
-export * from './debugHooks';
-
-// Re-export the Component Registrar with a more intuitive name
-import { DebugComponentRegistrar } from './DebugManager';
-
-/**
- * Auto-registers multiple components for debugging
- */
-export const RegisterDebugComponents = DebugComponentRegistrar;
+}
 
 /**
  * One-liner to create a debuggable version of a component
  */
-// Implementation of simple createDebuggable as it was missing from exports
-import React, { ComponentType } from 'react';
-
 export function createDebuggable<P extends object>(
   Component: ComponentType<P>, 
   componentName?: string
 ): React.FC<P> {
   const name = componentName || Component.displayName || Component.name || 'UnknownComponent';
-  return withDebugging(Component, name);
+  
+  // Create a named function component for better Fast Refresh support
+  function DebuggableComponent(props: P) {
+    const WrappedComponent = withDebugging(Component, name);
+    return <WrappedComponent {...props} />;
+  }
+  
+  DebuggableComponent.displayName = `Debuggable(${name})`;
+  return DebuggableComponent;
 } 

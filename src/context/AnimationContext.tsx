@@ -374,44 +374,26 @@ export const AnimationProvider = ({ children }: AnimationProviderProps): ReactEl
         [id]: 'visible'
       }));
       playedAnimationsRef.current.add(id);
-      
-      // Also start framer-motion animation if we're using it
-      controls.start(id);
     }, delay * 1000);
-  }, [animationEnabled, controls]);
+  }, [animationEnabled]);
 
   /**
-   * Reset all animations to hidden state
+   * Reset all animations
    */
   const resetEntryAnimations = useCallback(() => {
     setEntryAnimations({});
     playedAnimationsRef.current.clear();
-    setInView(false);
-    controls.stop();
-  }, [controls]);
-  
-  /**
-   * Helper to calculate animation delay based on index
-   */
-  const getAnimationDelay = useCallback((index: number): string => {
-    return `${animationStaggerDelay * index}s`;
-  }, [animationStaggerDelay]);
-  
-  // Enable performance monitoring in dev mode when the component mounts
-  useEffect(() => {
-    if (process.env.NODE_ENV === 'development') {
-      enablePerformanceMonitoring({ 
-        threshold: 16, 
-        reportingInterval: 10000,
-        debug: false
-      });
-      
-      return () => disablePerformanceMonitoring();
-    }
   }, []);
 
-  // Create context value
-  const contextValue = {
+  /**
+   * Get animation delay based on index
+   */
+  const getAnimationDelay = useCallback((index: number): string => {
+    return `${index * animationStaggerDelay}s`;
+  }, [animationStaggerDelay]);
+
+  // Memoize context value to prevent unnecessary re-renders
+  const contextValue = useMemo(() => ({
     inView,
     setInView,
     animationEnabled: combinedAnimationEnabled,
@@ -434,7 +416,27 @@ export const AnimationProvider = ({ children }: AnimationProviderProps): ReactEl
     optimizeVariants,
     enablePerformanceMonitoring,
     disablePerformanceMonitoring
-  };
+  }), [
+    inView,
+    combinedAnimationEnabled,
+    entryAnimations,
+    registerEntryAnimation,
+    playEntryAnimation,
+    resetEntryAnimations,
+    animationStaggerDelay,
+    getAnimationDelay,
+    controls,
+    enhancedGetVariants,
+    optimizedFadeInVariants,
+    optimizedSlideUpVariants,
+    optimizedScaleVariants,
+    optimizedPulseVariants,
+    optimizedMatrixVariants,
+    optimizedGlitchVariants,
+    prefersReducedMotion,
+    isLowPowerDevice,
+    optimizeVariants
+  ]);
 
   return (
     <AnimationContextProvider value={contextValue}>

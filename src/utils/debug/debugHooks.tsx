@@ -6,7 +6,7 @@ import { useDebugManager } from './DebugManager';
  * @param componentName Name of the component to track
  * @returns The number of renders
  */
-export const useRenderTracking = (componentName: string) => {
+export function useRenderTracking(componentName: string) {
   const renderCountRef = useRef(0);
   const { config, isComponentDebugged } = useDebugManager();
   
@@ -19,14 +19,14 @@ export const useRenderTracking = (componentName: string) => {
   });
   
   return renderCountRef.current;
-};
+}
 
 /**
  * Hook to optimize performance based on FPS monitoring
  * @param initialCount Initial count of items to render
  * @returns Optimized count and FPS info
  */
-export const useAdaptivePerformance = (initialCount: number = 100) => {
+export function useAdaptivePerformance(initialCount: number = 100) {
   const [fps, setFps] = useState(60);
   const [optimizedCount, setOptimizedCount] = useState(initialCount);
   const { config } = useDebugManager();
@@ -94,12 +94,12 @@ export const useAdaptivePerformance = (initialCount: number = 100) => {
     fps,
     isOptimized: optimizedCount !== initialCount
   };
-};
+}
 
 /**
  * Hook to monitor and debug animations
  */
-export const useAnimationDebug = () => {
+export function useAnimationDebug() {
   const { config } = useDebugManager();
   const [isAnimationEnabled, setIsAnimationEnabled] = useState(true);
   
@@ -125,13 +125,13 @@ export const useAnimationDebug = () => {
     isAnimationEnabled,
     debugEnabled: config.enabled
   };
-};
+}
 
 /**
  * Hook to check if background effects should be shown
  * @returns Boolean indicating if effects should be shown
  */
-export const useBackgroundEffects = () => {
+export function useBackgroundEffects() {
   const { config } = useDebugManager();
   const [showEffects, setShowEffects] = useState(true);
   
@@ -154,13 +154,13 @@ export const useBackgroundEffects = () => {
   }, [config.features.backgroundEffects]);
   
   return showEffects;
-};
+}
 
 /**
  * Hook to instrument layout changes and detect performance issues
  * @param elementRef Reference to element to observe layout changes
  */
-export const useLayoutDebug = (elementRef: React.RefObject<HTMLElement>) => {
+export function useLayoutDebug(elementRef: React.RefObject<HTMLElement>) {
   const { config } = useDebugManager();
   
   useEffect(() => {
@@ -192,4 +192,56 @@ export const useLayoutDebug = (elementRef: React.RefObject<HTMLElement>) => {
       resizeObserver.disconnect();
     };
   }, [config.enabled, config.features.layoutMonitoring, elementRef]);
-}; 
+}
+
+/**
+ * Hook to track render times of components
+ */
+export function useTrackRender(componentName: string) {
+  const monitorRef = useRef<HTMLElement | null>(null);
+  const timeRef = useRef(0);
+  
+  useEffect(() => {
+    // Get a reference to the monitor instance
+    monitorRef.current = document.querySelector('#performance-monitor');
+    
+    if (!monitorRef.current) return;
+    
+    // Start timing this render
+    const endTracking = (monitorRef.current as any).__monitor?.trackComponentRender 
+      ? (monitorRef.current as any).__monitor.trackComponentRender(componentName, 'mount')
+      : () => {};
+    
+    // Call the end tracking function when unmounting
+    return () => {
+      if (typeof endTracking === 'function') {
+        endTracking();
+      }
+    };
+  }, [componentName]);
+  
+  // Track updates
+  useEffect(() => {
+    if (!monitorRef.current) return;
+    
+    // Skip the first render (already tracked by mount)
+    if (timeRef.current === 0) {
+      timeRef.current = Date.now();
+      return;
+    }
+    
+    // Start timing this update
+    const endTracking = (monitorRef.current as any).__monitor?.trackComponentRender 
+      ? (monitorRef.current as any).__monitor.trackComponentRender(componentName, 'update')
+      : () => {};
+    
+    // End tracking immediately since this is for the current render
+    if (typeof endTracking === 'function') {
+      setTimeout(endTracking, 0);
+    }
+  });
+  
+  return null;
+}
+
+// Export other hooks here if needed 

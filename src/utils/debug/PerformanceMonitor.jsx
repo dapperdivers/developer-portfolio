@@ -46,6 +46,10 @@ const PerformanceMonitor = ({
     ...config
   });
   
+  // Add constants for history tracking
+  const MAX_HISTORY_LENGTH = 60; // Keep 1 minute of history at 1 sample per second
+
+  // Update performanceData state to include history
   const [performanceData, setPerformanceData] = useState({
     fps: 0,
     memory: 0,
@@ -56,6 +60,9 @@ const PerformanceMonitor = ({
     longTasks: [],
     eventHandlers: 0,
     lastUpdate: Date.now(),
+    // Add history arrays
+    fpsHistory: Array(MAX_HISTORY_LENGTH).fill(0),
+    memoryHistory: Array(MAX_HISTORY_LENGTH).fill(0)
   });
   
   const frameCounter = useRef(0);
@@ -295,71 +302,47 @@ const PerformanceMonitor = ({
     }
   }, [visible]);
   
-  // Track frame rate and other performance metrics
+  // Add throttle helper
+  const throttle = (func, limit) => {
+    let inThrottle;
+    return function(...args) {
+      if (!inThrottle) {
+        func.apply(this, args);
+        inThrottle = true;
+        setTimeout(() => inThrottle = false, limit);
+      }
+    };
+  };
+
+  // FPS calculation callback
   const calculateFPS = useCallback(() => {
-    const now = performance.now();
-    const delta = now - lastFrameTime.current;
-    frameCounter.current++;
+    if (!visible) return;
     
-    // Update FPS counter once per second
-    if (delta >= 1000) {
-      const fps = Math.round((frameCounter.current * 1000) / delta);
-      const memory = performance?.memory?.usedJSHeapSize ? 
-        Math.round(performance.memory.usedJSHeapSize / (1024 * 1024)) : 0;
-      
-      // Count event handlers (potential leaks)
-      const eventHandlers = countEventHandlers();
+    frameCounter.current++;
+    const now = performance.now();
+    const elapsed = now - lastFrameTime.current;
+    
+    // Update FPS every second
+    if (elapsed >= 1000) {
+      const currentFps = Math.round((frameCounter.current * 1000) / elapsed);
+      const memory = (window.performance?.memory?.usedJSHeapSize || 0) / (1024 * 1024);
       
       setPerformanceData(prev => ({
         ...prev,
-        fps,
-        memory,
-        eventHandlers,
-        lastUpdate: Date.now(),
+        fps: currentFps,
+        memory: memory,
+        lastUpdate: now,
+        fpsHistory: [...prev.fpsHistory.slice(1), currentFps],
+        memoryHistory: [...prev.memoryHistory.slice(1), memory]
       }));
       
       // Reset counters
       frameCounter.current = 0;
       lastFrameTime.current = now;
-      
-      // Clear old performance entries
-      performanceEntries.current = [];
     }
     
-    // Process performance entries
-    if (performance && performance.getEntriesByType) {
-      const entries = performance.getEntriesByType('measure');
-      if (entries.length > 0) {
-        performanceEntries.current = performanceEntries.current.concat(entries);
-        
-        // Analyze performance categories
-        const layoutEntries = entries.filter(e => e.name.includes('layout'));
-        const paintEntries = entries.filter(e => e.name.includes('paint'));
-        const scriptEntries = entries.filter(e => e.name.includes('script') || e.name.includes('evaluation'));
-        
-        if (layoutEntries.length > 0) {
-          const avgLayoutTime = layoutEntries.reduce((sum, entry) => sum + entry.duration, 0) / layoutEntries.length;
-          setPerformanceData(prev => ({ ...prev, layoutTime: Math.round(avgLayoutTime) }));
-        }
-        
-        if (paintEntries.length > 0) {
-          const avgPaintTime = paintEntries.reduce((sum, entry) => sum + entry.duration, 0) / paintEntries.length;
-          setPerformanceData(prev => ({ ...prev, paintTime: Math.round(avgPaintTime) }));
-        }
-        
-        if (scriptEntries.length > 0) {
-          const avgScriptTime = scriptEntries.reduce((sum, entry) => sum + entry.duration, 0) / scriptEntries.length;
-          setPerformanceData(prev => ({ ...prev, scriptTime: Math.round(avgScriptTime) }));
-        }
-        
-        // Clear processed entries
-        performance.clearMeasures();
-      }
-    }
-    
-    // Request next frame
     rafId.current = requestAnimationFrame(calculateFPS);
-  }, [countEventHandlers]);
+  }, [visible]);
   
   // Start monitoring
   useEffect(() => {
@@ -386,7 +369,9 @@ const PerformanceMonitor = ({
       };
       
       return () => {
-        cancelAnimationFrame(rafId.current);
+        if (rafId.current) {
+          cancelAnimationFrame(rafId.current);
+        }
         observer?.disconnect();
         React.Component.prototype.render = originalRender;
       };
@@ -954,150 +939,351 @@ const PerformanceMonitor = ({
     };
   }, [visible, trackComponentRender, trackOperation]);
   
+  // Add helper for formatting numbers
+  const formatNumber = (num) => {
+    if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`;
+    if (num >= 1000) return `${(num / 1000).toFixed(1)}K`;
+    return num.toFixed(1);
+  };
+
+  // Add helper for formatting time
+  const formatTime = (timestamp) => {
+    return new Date(timestamp).toLocaleTimeString();
+  };
+
+  // Add helper for formatting bytes
+  const formatBytes = (bytes) => {
+    if (bytes === 0) return '0 B';
+    const k = 1024;
+    const sizes = ['B', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`;
+  };
+
+  // Add SparklineGraph component for real-time metrics
+  const SparklineGraph = ({ data, width = 100, height = 30, color = '#4CAF50' }) => {
+    const points = data.map((value, index) => {
+      const x = (index / (data.length - 1)) * width;
+      const y = height - ((value / Math.max(...data)) * height);
+      return `${x},${y}`;
+    }).join(' ');
+
+    return (
+      <svg width={width} height={height} style={{ display: 'block' }}>
+        <polyline
+          points={points}
+          fill="none"
+          stroke={color}
+          strokeWidth="1.5"
+        />
+      </svg>
+    );
+  };
+
+  // Add MetricCard component for consistent metric display
+  const MetricCard = ({ label, value, sparkline, warning = false, critical = false }) => (
+    <div style={{
+      background: 'rgba(255, 255, 255, 0.05)',
+      borderRadius: '4px',
+      padding: '8px',
+      marginBottom: '8px'
+    }}>
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: '4px'
+      }}>
+        <span style={{ fontSize: '11px', opacity: 0.7 }}>{label}</span>
+        <span style={{ 
+          fontSize: '14px',
+          fontWeight: 'bold',
+          color: critical ? '#ff4444' : warning ? '#ffbb33' : '#fff'
+        }}>
+          {value}
+        </span>
+      </div>
+      {sparkline && (
+        <div style={{ marginTop: '4px' }}>
+          {sparkline}
+        </div>
+      )}
+    </div>
+  );
+  
   // Early return if not visible
   if (!visible) return null;
   
   return createPortal(
-    <div 
-      id="performance-monitor" 
+    <div
       ref={monitorContainerRef}
-      className={`performance-monitor ${expanded ? 'expanded' : 'collapsed'}`} 
       style={{
-        position: 'fixed',
-        bottom: 0,
-        right: 0,
-        zIndex: 9999,
-        background: '#111',
-        color: '#ffffff',
-        padding: expanded ? '10px' : '5px',
-        fontSize: '12px',
+        ...positionStyle,
+        backgroundColor: 'rgba(0, 0, 0, 0.9)',
+        color: '#fff',
+        padding: expanded ? '16px' : '8px',
+        borderRadius: '6px',
+        zIndex: 10000,
         fontFamily: 'monospace',
-        boxShadow: '0 0 10px rgba(0,0,0,0.5)',
-        maxHeight: expanded ? '50vh' : 'auto',
-        maxWidth: expanded ? '600px' : 'auto',
-        overflowY: expanded ? 'auto' : 'hidden',
-        transition: 'all 0.3s ease',
-        borderRadius: '4px 0 0 0',
-        userSelect: 'none',
-        display: visible ? 'block' : 'none',
-        opacity: 0.9,
-        ...positionStyle
+        fontSize: '12px',
+        minWidth: expanded ? '300px' : 'auto',
+        maxWidth: expanded ? '400px' : 'auto',
+        maxHeight: expanded ? '80vh' : 'auto',
+        overflow: 'hidden',
+        boxShadow: '0 0 10px rgba(0, 0, 0, 0.5)',
+        border: '1px solid rgba(255, 255, 255, 0.1)',
+        transition: 'all 0.3s ease'
       }}
     >
-      {/* Header with controls */}
       <div style={{ 
-        display: 'flex', 
-        justifyContent: 'space-between', 
+        display: 'flex',
+        justifyContent: 'space-between',
         alignItems: 'center',
-        borderBottom: '1px solid #333',
-        paddingBottom: '5px',
-        marginBottom: '5px'
-      }}>
-        <div style={{ fontWeight: 'bold', color: getFpsColor(performanceData.fps) }}>
-          FPS: {performanceData.fps.toFixed(1)}
+        marginBottom: expanded ? '12px' : '0',
+        cursor: 'pointer'
+      }} onClick={() => setExpanded(!expanded)}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <span role="img" aria-label="performance">⚡</span>
+          <span style={{ fontWeight: 'bold' }}>
+            Performance {expanded ? 'Monitor' : `${Math.round(performanceData.fps)} FPS`}
+          </span>
         </div>
-        <div style={{ display: 'flex', gap: '5px' }}>
-          <button 
-            onClick={() => setConfig(prev => ({
-              ...prev,
-              monitorScriptExecution: !prev.monitorScriptExecution
-            }))}
-            style={{ 
-              background: monitorConfig.monitorScriptExecution ? '#4c4' : '#444',
-              border: 'none',
-              padding: '2px 4px',
-              borderRadius: '2px',
-              fontSize: '10px',
-              cursor: 'pointer',
-              color: '#fff'
-            }}
-          >
-            Script
-          </button>
-          <button 
-            onClick={() => setConfig(prev => ({
-              ...prev,
-              monitorNetworkActivity: !prev.monitorNetworkActivity
-            }))}
-            style={{ 
-              background: monitorConfig.monitorNetworkActivity ? '#4c4' : '#444',
-              border: 'none',
-              padding: '2px 4px',
-              borderRadius: '2px',
-              fontSize: '10px',
-              cursor: 'pointer',
-              color: '#fff'
-            }}
-          >
-            Network
-          </button>
-          <button 
-            onClick={() => setExpanded(!expanded)}
-            style={{ 
-              background: '#555', 
-              border: 'none',
-              padding: '2px 4px',
-              borderRadius: '2px',
-              fontSize: '10px',
-              cursor: 'pointer',
-              color: '#fff'
-            }}
-          >
-            {expanded ? 'Collapse' : 'Expand'}
-          </button>
-        </div>
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            setVisible(false);
+          }}
+          style={{
+            background: 'transparent',
+            border: 'none',
+            color: '#fff',
+            cursor: 'pointer',
+            fontSize: '14px',
+            padding: '4px',
+            opacity: 0.7
+          }}
+        >
+          ×
+        </button>
       </div>
-      
-      {/* Basic stats */}
-      <div style={{ marginBottom: '8px' }}>
-        <div>Memory: {(performanceData.memory / 1024 / 1024).toFixed(1)} MB</div>
-        <div>Long tasks: {performanceData.longTasks.length} detected</div>
-        {performanceData.longTasks.length > 0 && (
-          <div>
-            Latest: {performanceData.longTasks[performanceData.longTasks.length - 1]?.duration}ms
-          </div>
-        )}
-      </div>
-      
-      {/* Only show detailed report when expanded */}
+
       {expanded && (
-        <>
-          {/* Operation counts */}
-          <div style={{ marginBottom: '8px', borderTop: '1px solid #333', paddingTop: '5px' }}>
-            <div style={{ fontWeight: 'bold', marginBottom: '4px' }}>Recent Operations:</div>
-            {renderOperationCounts(lastOperationsRef.current)}
+        <div style={{ overflowY: 'auto', maxHeight: 'calc(80vh - 40px)' }}>
+          <div style={{ marginBottom: '16px' }}>
+            <MetricCard
+              label="FPS"
+              value={`${Math.round(performanceData.fps)}`}
+              sparkline={
+                <SparklineGraph
+                  data={performanceData.fpsHistory}
+                  color={performanceData.fps < monitorConfig.fpsWarningThreshold ? '#ff4444' : '#4CAF50'}
+                />
+              }
+              warning={performanceData.fps < monitorConfig.fpsWarningThreshold}
+              critical={performanceData.fps < monitorConfig.fpsWarningThreshold * 0.5}
+            />
+            
+            <MetricCard
+              label="Memory Usage"
+              value={formatBytes(performanceData.memory)}
+              sparkline={
+                <SparklineGraph
+                  data={performanceData.memoryHistory}
+                  color="#2196F3"
+                />
+              }
+            />
+            
+            <MetricCard
+              label="Script Execution Time"
+              value={`${Math.round(performanceData.scriptTime)}ms`}
+              warning={performanceData.scriptTime > monitorConfig.longTaskThreshold * 0.5}
+              critical={performanceData.scriptTime > monitorConfig.longTaskThreshold}
+            />
+            
+            <MetricCard
+              label="Layout Time"
+              value={`${Math.round(performanceData.layoutTime)}ms`}
+              warning={performanceData.layoutTime > 16}
+              critical={performanceData.layoutTime > 32}
+            />
           </div>
-          
-          {/* Component render tracking */}
-          <div style={{ marginBottom: '8px', borderTop: '1px solid #333', paddingTop: '5px' }}>
-            <div style={{ fontWeight: 'bold', marginBottom: '4px' }}>Top Rendered Components:</div>
-            {renderTopComponents(renderTimings.current)}
-          </div>
-          
-          {/* Long tasks list */}
-          <div style={{ marginBottom: '8px', borderTop: '1px solid #333', paddingTop: '5px' }}>
-            <div style={{ fontWeight: 'bold', marginBottom: '4px' }}>Recent Long Tasks:</div>
-            {renderLongTasks(performanceData.longTasks)}
-          </div>
-          
-          {/* Threshold controls */}
-          <div style={{ marginTop: '10px', borderTop: '1px solid #333', paddingTop: '5px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
-              <label style={{ marginRight: '5px', fontSize: '10px' }}>
-                Long task threshold (ms):
+
+          {performanceData.longTasks.length > 0 && (
+            <div style={{ marginBottom: '16px' }}>
+              <h4 style={{ 
+                margin: '0 0 8px 0',
+                fontSize: '12px',
+                opacity: 0.7
+              }}>
+                Recent Long Tasks
+              </h4>
+              <div style={{ 
+                maxHeight: '150px',
+                overflowY: 'auto',
+                background: 'rgba(255, 255, 255, 0.05)',
+                borderRadius: '4px',
+                padding: '8px'
+              }}>
+                {performanceData.longTasks.map((task, index) => (
+                  <div
+                    key={index}
+                    style={{
+                      padding: '4px 0',
+                      borderBottom: index < performanceData.longTasks.length - 1 ? 
+                        '1px solid rgba(255, 255, 255, 0.1)' : 'none'
+                    }}
+                  >
+                    <div style={{ 
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      fontSize: '11px'
+                    }}>
+                      <span>{formatTime(task.timestamp)}</span>
+                      <span style={{
+                        color: task.duration > monitorConfig.longTaskThreshold * 2 ? 
+                          '#ff4444' : '#ffbb33'
+                      }}>
+                        {task.duration}ms
+                      </span>
+                    </div>
+                    {task.activeComponents.length > 0 && (
+                      <div style={{ 
+                        fontSize: '10px',
+                        opacity: 0.7,
+                        marginTop: '2px'
+                      }}>
+                        Components: {task.activeComponents.map(c => c.name).join(', ')}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div style={{ marginBottom: '16px' }}>
+            <h4 style={{ 
+              margin: '0 0 8px 0',
+              fontSize: '12px',
+              opacity: 0.7
+            }}>
+              Settings
+            </h4>
+            <div style={{ 
+              background: 'rgba(255, 255, 255, 0.05)',
+              borderRadius: '4px',
+              padding: '8px'
+            }}>
+              <label style={{ 
+                display: 'block',
+                marginBottom: '8px',
+                fontSize: '11px'
+              }}>
+                Long Task Threshold
+                <input
+                  type="range"
+                  min="16"
+                  max="200"
+                  value={monitorConfig.longTaskThreshold}
+                  onChange={(e) => setConfig(prev => ({
+                    ...prev,
+                    longTaskThreshold: parseInt(e.target.value)
+                  }))}
+                  style={{ 
+                    width: '100%',
+                    margin: '4px 0'
+                  }}
+                />
+                <span style={{ float: 'right' }}>
+                  {monitorConfig.longTaskThreshold}ms
+                </span>
               </label>
-              <input 
-                type="number" 
-                value={monitorConfig.longTaskThreshold}
-                onChange={(e) => setConfig(prev => ({
-                  ...prev,
-                  longTaskThreshold: parseInt(e.target.value) || 50
-                }))}
-                style={{ width: '40px', padding: '2px', fontSize: '10px' }}
-              />
+              
+              <label style={{ 
+                display: 'block',
+                marginBottom: '8px',
+                fontSize: '11px'
+              }}>
+                FPS Warning Threshold
+                <input
+                  type="range"
+                  min="15"
+                  max="60"
+                  value={monitorConfig.fpsWarningThreshold}
+                  onChange={(e) => setConfig(prev => ({
+                    ...prev,
+                    fpsWarningThreshold: parseInt(e.target.value)
+                  }))}
+                  style={{ 
+                    width: '100%',
+                    margin: '4px 0'
+                  }}
+                />
+                <span style={{ float: 'right' }}>
+                  {monitorConfig.fpsWarningThreshold} FPS
+                </span>
+              </label>
+
+              <div style={{ 
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '4px'
+              }}>
+                <label style={{ 
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  fontSize: '11px'
+                }}>
+                  <input
+                    type="checkbox"
+                    checked={monitorConfig.showComponentTimings}
+                    onChange={(e) => setConfig(prev => ({
+                      ...prev,
+                      showComponentTimings: e.target.checked
+                    }))}
+                  />
+                  Show Component Timings
+                </label>
+                
+                <label style={{ 
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  fontSize: '11px'
+                }}>
+                  <input
+                    type="checkbox"
+                    checked={monitorConfig.showStackTraces}
+                    onChange={(e) => setConfig(prev => ({
+                      ...prev,
+                      showStackTraces: e.target.checked
+                    }))}
+                  />
+                  Show Stack Traces
+                </label>
+                
+                <label style={{ 
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  fontSize: '11px'
+                }}>
+                  <input
+                    type="checkbox"
+                    checked={monitorConfig.logToConsole}
+                    onChange={(e) => setConfig(prev => ({
+                      ...prev,
+                      logToConsole: e.target.checked
+                    }))}
+                  />
+                  Log to Console
+                </label>
+              </div>
             </div>
           </div>
-        </>
+        </div>
       )}
     </div>,
     document.body
@@ -1157,12 +1343,8 @@ export const useTrackRender = (componentName) => {
   return null;
 };
 
-/**
- * HOC to wrap components with render tracking
- * @param {React.ComponentType} Component - Component to wrap
- * @param {string} componentName - Name of the component (optional)
- */
-export const withRenderTracking = (Component, componentName = Component.displayName || Component.name) => {
+// Move HOC outside of the file scope
+export function withRenderTracking(Component, componentName = Component.displayName || Component.name) {
   const TrackedComponent = (props) => {
     useTrackRender(componentName);
     
@@ -1181,24 +1363,15 @@ export const withRenderTracking = (Component, componentName = Component.displayN
   
   TrackedComponent.displayName = `Tracked(${componentName})`;
   return TrackedComponent;
-};
+}
 
-/**
- * SimplePerformanceMonitor - An easier-to-use version of the performance monitor
- * 
- * @param {Object} props 
- * @param {boolean} props.enabled - Whether the monitor should start enabled
- * @param {string} props.position - Position on screen ('top-right', 'top-left', 'bottom-right', 'bottom-left')
- * @param {boolean} props.expanded - Whether to start in expanded mode
- * @param {string[]} props.trackComponents - Array of component names to track
- * @returns {JSX.Element}
- */
-export const SimplePerformanceMonitor = ({ 
+// Export SimplePerformanceMonitor as a named function
+export function SimplePerformanceMonitor({ 
   enabled = false,
   position = 'bottom-right',
   expanded = false,
   trackComponents = []
-}) => {
+}) {
   // Derive position styles
   const getPositionStyle = () => {
     switch (position) {
@@ -1234,4 +1407,4 @@ export const SimplePerformanceMonitor = ({
       initialExpanded={expanded}
     />
   );
-}; 
+} 

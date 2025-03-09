@@ -24,8 +24,9 @@
         "command": "npx",
         "args": [
           "-y",
-          "@modelcontextprotocol/server-puppeteer"
-        ]
+          "puppeteer-mcp-server"
+        ],
+        "env": []
       },
       "perplexity": {
         "command": "~/Cline/MCP/scripts/start-perplexity-mcp.sh",
