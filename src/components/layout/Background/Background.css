@@ -33,6 +33,8 @@ html, body {
   overflow: hidden;
   background-color: var(--cyberpunk-bg);
   z-index: 0;
+  /* Apply will-change judiciously */
+  will-change: opacity;
 }
 
 /* Effects container */
@@ -44,9 +46,11 @@ html, body {
   height: 100%;
   pointer-events: none;
   z-index: -1;
+  /* Improved hardware acceleration */
   transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
   transform-style: preserve-3d;
+  contain: strict;
 }
 
 /* Content container that sits above the background */
@@ -55,6 +59,7 @@ html, body {
   z-index: 1;
   /* Add some padding so content doesn't touch edges */
   box-sizing: border-box;
+  /* Force GPU rendering for smoother scrolling */
   transform: translate3d(0, 0, 0);
 }
 
@@ -65,6 +70,8 @@ html, body {
   perspective: 1000px;
   will-change: transform;
   isolation: isolate;
+  /* Add contain property to limit repaints */
+  contain: layout style paint;
 }
 
 .effect-layer {
@@ -73,8 +80,11 @@ html, body {
   left: 0;
   width: 100%;
   height: 100%;
-  contain: layout style paint;
+  /* Improved containment to reduce painting */
+  contain: strict;
   transform: translate3d(0, 0, 0);
+  /* Reduce animation frame rate on lower-end devices */
+  animation-timeline: auto;
 }
 
 /* Circuit grid overlay - optimized for performance */
@@ -86,21 +96,15 @@ html, body {
   height: 100%;
   z-index: 1;
   pointer-events: none;
+  /* Convert to static image with SVG for better performance */
   background-image: 
     /* Main grid */
     linear-gradient(var(--cyberpunk-grid) 1px, transparent 1px),
-    linear-gradient(90deg, var(--cyberpunk-grid) 1px, transparent 1px),
-    /* Subtle sub-grid */
-    linear-gradient(var(--cyberpunk-grid) 0.5px, transparent 0.5px),
-    linear-gradient(90deg, var(--cyberpunk-grid) 0.5px, transparent 0.5px);
-  background-size: 
-    20px 20px,
-    20px 20px,
-    10px 10px,
-    10px 10px;
+    linear-gradient(90deg, var(--cyberpunk-grid) 1px, transparent 1px);
+  background-size: 20px 20px;
   opacity: 0.4;
   transform: translate3d(0, 0, 0);
-  will-change: transform;
+  /* Don't use will-change for static elements */
   contain: strict;
 }
 
@@ -116,16 +120,16 @@ html, body {
   background: repeating-linear-gradient(
     to bottom,
     transparent 50%,
-    rgba(5, 213, 250, 0.05) 50%
+    rgba(5, 213, 250, 0.03) 50%
   );
   background-size: 100% 4px;
-  opacity: 0.7;
+  opacity: 0.5;
   transform: translate3d(0, 0, 0);
-  will-change: transform;
+  /* Static element, contain strictly */
   contain: strict;
 }
 
-/* Vignette effect */
+/* Vignette effect - optimized to reduce gradient complexity */
 .background::after {
   content: '';
   position: fixed;
@@ -136,10 +140,12 @@ html, body {
   background: radial-gradient(
     circle at center,
     transparent 40%,
-    rgba(0, 0, 0, 0.6) 100%
+    rgba(0, 0, 0, 0.5) 100%
   );
   pointer-events: none;
   z-index: 1;
+  /* Better containment */
+  contain: strict;
 }
 
 /* Glitch effect - optimized */
@@ -151,16 +157,17 @@ html, body {
   height: 100%;
   z-index: 2;
   pointer-events: none;
+  /* Simplified pattern */
   background-image: repeating-linear-gradient(
     90deg,
-    rgba(16, 16, 32, 0.1) 0px,
-    rgba(16, 16, 32, 0.1) 1px,
+    rgba(16, 16, 32, 0.05) 0px,
+    rgba(16, 16, 32, 0.05) 1px,
     transparent 1px,
     transparent 3px
   );
-  opacity: 0.2;
+  opacity: 0.15;
   transform: translate3d(0, 0, 0);
-  will-change: transform;
+  /* No animation by default, use JS to add */
   contain: strict;
 }
 
@@ -178,11 +185,11 @@ html, body {
   pointer-events: none;
   opacity: 0;
   transform: translate3d(0, 0, 0);
-  will-change: transform;
+  /* JS-controlled animation only */
   contain: strict;
 }
 
-/* Noise texture - optimized */
+/* Noise texture - optimized with smaller SVG */
 .background__noise {
   position: fixed;
   top: 0;
@@ -191,45 +198,61 @@ html, body {
   height: 100%;
   z-index: 2;
   pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  /* Use a simpler noise pattern */
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
   opacity: 0.02;
   mix-blend-mode: overlay;
   transform: translate3d(0, 0, 0);
-  will-change: transform;
   contain: strict;
+}
+
+/* Low-performance-mode adjustments */
+.low-performance-mode .background__circuit-grid,
+.low-performance-mode .background__noise {
+  display: none;
+}
+
+.low-performance-mode .background__scanlines {
+  opacity: 0.2;
+  background-size: 100% 6px;
+}
+
+.low-performance-mode .background__glitch {
+  opacity: 0.05;
 }
 
 /* Animations */
 
-/* Optimized animations */
+/* Optimized animations with reduced complexity */
 @keyframes glitch {
   0%, 100% { transform: translate3d(0, 0, 0); }
-  50% { transform: translate3d(2px, 0, 0); }
+  50% { transform: translate3d(1px, 0, 0); }
 }
 
 @keyframes pulse {
   0%, 100% { 
     opacity: 0; 
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translate3d(0, 0, 0);
   }
   50% { 
-    opacity: 0.2; 
-    transform: translate3d(0, 0, 0) scale(1.05);
+    opacity: 0.15; 
+    transform: translate3d(0, 0, 0);
   }
 }
 
 /* Responsive styles */
 @media (max-width: 768px) {
   .background__circuit-grid {
-    background-size: 
-      15px 15px,
-      15px 15px,
-      5px 5px,
-      5px 5px;
+    background-size: 30px 30px;
   }
   
   .background__scanlines {
-    background-size: 100% 2px;
+    background-size: 100% 3px;
+  }
+  
+  /* Reduce effects on mobile */
+  .background__noise {
+    opacity: 0.01;
   }
 }
 
@@ -242,10 +265,10 @@ html, body {
   
   .background__scanlines,
   .background__noise {
-    opacity: 0.03;
+    opacity: 0.01;
   }
   
   .background__circuit-grid {
-    opacity: 0.2;
+    opacity: 0.1;
   }
 }

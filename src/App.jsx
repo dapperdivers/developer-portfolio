@@ -1,13 +1,19 @@
 // Use named imports to allow tree-shaking to work properly
-import { useEffect, useState, useCallback, Suspense, lazy } from 'react';
+import { useEffect, useState, Suspense, lazy } from 'react';
 import { createRoot } from 'react-dom/client';
 import Head from "@atoms/Head";
 import Navigation from "@molecules/Navigation";
 import Footer from "@molecules/Footer";
 import SkipToContent from "@atoms/SkipToContent";
 import Background from "@layout/Background";
-// Import the global debug wrapper
-import { withGlobalDebug } from "@utils/ContextDevTool";
+
+// Use single import for all debugging
+import { DebugProvider, ComponentRegistrar } from "@utils/debug";
+
+// Enable debug tools if not set
+if (localStorage.getItem('debug_tools_enabled') === null) {
+  localStorage.setItem('debug_tools_enabled', 'true');
+}
 
 // Import Iconify icon collections - this ensures icons are available offline
 import '@iconify-json/logos';
@@ -23,82 +29,81 @@ import { PortfolioProvider } from "@context/PortfolioContext";
 import { AnimationProvider } from "@context/AnimationContext";
 import { HelmetProvider } from 'react-helmet-async';
 
-// Lazy load components for better performance
+// Lazy load components
 const Greetings = lazy(() => import("@organisms/Greetings"));
 const Skills = lazy(() => import("@organisms/Skills"));
 const Education = lazy(() => import("@organisms/Education"));
 const Experience = lazy(() => import("@organisms/Experience"));
 const Projects = lazy(() => import("@organisms/Projects"));
-// Import GithubProfile directly instead of using lazy loading
-import GithubProfile from "@organisms/GithubProfile/GithubProfile";
-const Feedbacks = lazy(() => import("@organisms/Feedbacks"));
+const Contact = lazy(() => import("@organisms/GithubProfile"));
 
-// Import CSS - Using Tailwind CSS for styled components
-import "@assets/css/design-system/index.css"; // Design system variables
-import "@assets/css/tailwind.css"; // Tailwind styles with component customizations
-import "@assets/css/index.css"; // Main CSS file with global styles
-// Note: browser-fixes.css is imported through utilities/index.css
-
-function App() {
-  const [showScrollButton, setShowScrollButton] = useState(false);
+// Updated comprehensive list of components to debug
+const componentsToDebug = {
+  // Layout components
+  Background,
   
-  // Function to scroll to top of page
-  const scrollToTop = useCallback(() => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-  }, []);
+  // Atom components - import them here so we don't need to modify each file
+  BinaryStream: lazy(() => import("@atoms/BinaryStream")),
+  MatrixBackground: lazy(() => import("@atoms/MatrixBackground")),
+  Loading,
+  SkipToContent,
+  Head,
+  
+  // Molecule components
+  Navigation,
+  Footer,
+  ErrorBoundary,
+  
+  // Organism components
+  Greetings,
+  Skills,
+  Experience,
+  Projects,
+  Education,
+  Contact
+};
 
-  // Intersection Observer for section animations
+// Initial debug configuration - THIS IS THE ONLY PLACE WE NEED TO EDIT FOR DEBUGGING
+const initialDebugConfig = {
+  enabled: localStorage.getItem('debug_tools_enabled') === 'true',
+  components: {
+    // Components to debug by default
+    Background: true,
+    MatrixBackground: true,
+    BinaryStream: true,
+    Greetings: true,
+    Skills: true,
+    Experience: true,
+    Projects: false,
+    Education: false,
+    Contact: false,
+    Navigation: false,
+    Footer: false
+  },
+  features: {
+    // Features to enable by default
+    profiling: true,
+    backgroundEffects: true,
+    animations: true,
+    scrollDebugging: false,
+    layoutMonitoring: false,
+    renderVisualizer: false,
+    showFPS: true
+  }
+};
+
+/**
+ * Main App Component
+ * 
+ * The root component for the portfolio application
+ */
+function App() {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [hideLoader, setHideLoader] = useState(false);
+  
+  // Handle initial loading
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('animate-fadeIn');
-          }
-        });
-      },
-      {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.1
-      }
-    );
-
-    // Observe all section elements
-    document.querySelectorAll('[class*="-section"]').forEach(section => {
-      observer.observe(section);
-    });
-
-    return () => observer.disconnect();
-  }, []);
-
-  // Optimized scroll handler for scroll button only
-  useEffect(() => {
-    let lastKnownScrollPosition = 0;
-    let ticking = false;
-
-    const handleScroll = () => {
-      lastKnownScrollPosition = window.scrollY;
-
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          setShowScrollButton(lastKnownScrollPosition > 300);
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // Apply enhancements on mount
-  useEffect(() => {
-    // Apply any runtime browser compatibility fixes
+    // Apply runtime fixes for browser compatibility
     applyRuntimeFixes();
     
     // Initialize image optimization
@@ -106,75 +111,72 @@ function App() {
     
     // Apply security enhancements
     applySecurityEnhancements();
+    
+    // Simulate loading delay for dev testing of the loader
+    const timer = setTimeout(() => {
+      setIsLoaded(true);
+      
+      // Hide loader after transition completes
+      setTimeout(() => {
+        setHideLoader(true);
+      }, 1000);
+    }, 1500);
+    
+    return () => clearTimeout(timer);
   }, []);
-
-  // Custom fallback UI for unhandled errors
+  
+  // Error fallback component for suspense
   const errorFallback = () => (
-    <div className="error-fallback">
+    <div className="error-boundary">
       <h2>Something went wrong</h2>
-      <p>We apologize for the inconvenience. Please try refreshing the page.</p>
-      <button onClick={() => window.location.reload()}>Refresh Page</button>
+      <p>There was an error loading this section.</p>
+      <button onClick={() => window.location.reload()}>
+        Reload page
+      </button>
     </div>
   );
-  
+
   return (
-    <ErrorBoundary fallback={errorFallback}>
-      <HelmetProvider>
+    <HelmetProvider>
+      <ErrorBoundary fallback={errorFallback}>
         <PortfolioProvider>
           <AnimationProvider>
-            <Background
-              enableMatrix={true}
-              enableBinaryStreams={true}
-              enableCircuitGrid={true}
-              enableScanlines={true}
-              enableGlitch={true}
-              enableColorPulse={true}
-              enableNoise={true}
-              matrixCharCount={150}
-            >
-              <div className="App text-text">
+            {/* Wrap the app with our debug provider - everything inside gets debugging capabilities */}
+            <DebugProvider initialConfig={initialDebugConfig}>
+              {/* Register components for debugging without modifying their source files */}
+              <ComponentRegistrar components={componentsToDebug} />
+              
+              <Background>
+                <SkipToContent />
                 <Head />
-                <SkipToContent mainId="main-content" />
                 <Navigation />
                 
-                <main id="main-content" className="text-text">
-                  <ErrorBoundary>
-                    <Suspense fallback={<Loading />}>
-                      <>
-                        <Greetings />
-                        <Skills />
-                        <Education />
-                        <Experience />
-                        <Feedbacks />
-                        <Projects />
-                        <GithubProfile id="contact" />
-                      </>
-                    </Suspense>
-                  </ErrorBoundary>
+                <main id="main-content">
+                  <Suspense fallback={<Loading text="Loading sections..." />}>
+                    <Greetings />
+                    <Skills />
+                    <Experience />
+                    <Projects />
+                    <Education />
+                    <Contact />
+                  </Suspense>
                 </main>
                 
                 <Footer />
                 
-                {/* Scroll to top button */}
-                {showScrollButton && (
-                  <div 
-                    className="scroll-to-top-btn"
-                    onClick={scrollToTop}
-                    aria-label="Scroll to top"
-                    role="button"
-                    tabIndex={0}
-                  >
-                    <span className="arrow-up">↑</span>
+                {!hideLoader && (
+                  <div className={`initial-loader ${isLoaded ? 'loaded' : ''}`}>
+                    <Loading text="Initializing portfolio..." />
                   </div>
                 )}
-              </div>
-            </Background>
+              </Background>
+            </DebugProvider>
           </AnimationProvider>
         </PortfolioProvider>
-      </HelmetProvider>
-    </ErrorBoundary>
+      </ErrorBoundary>
+    </HelmetProvider>
   );
 }
 
-// Wrap App component with global debug tools
-export default withGlobalDebug(App);
+// Export the app - no need for withGlobalDebug, the DebugProvider handles debugging now
+export default App;

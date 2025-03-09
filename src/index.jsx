@@ -6,8 +6,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 
 // Import the main application
-// Note: App is already wrapped with withGlobalDebug in App.jsx,
-// so we're importing the DebugWrappedApp component here
+// App already includes the DebugProvider setup internally
 import App from '@/App';
 
 // Create root and render application

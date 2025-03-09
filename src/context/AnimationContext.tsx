@@ -3,6 +3,18 @@ import { useState, useCallback, useEffect, useMemo, ReactElement, useRef } from 
 import type { ReactNode, Dispatch, SetStateAction } from 'react';
 import { createTypedContext } from '@utils/contextUtils';
 
+// At the top of the file, add this declaration for the global window object
+declare global {
+  interface Window {
+    __DEBUG_FLAGS?: {
+      disableAnimations: boolean;
+      debugScrolling: boolean;
+      monitorLayout: boolean;
+      [key: string]: boolean;
+    };
+  }
+}
+
 // Animation Context Types
 export interface AnimationState {
   [key: string]: 'hidden' | 'visible' | string;
@@ -87,8 +99,23 @@ export const AnimationProvider = ({ children }: AnimationProviderProps): ReactEl
     // Listen for changes
     mediaQuery.addEventListener('change', handleChange);
     
+    // Add listener for debug flag changes
+    const handleDebugToggle = (e: CustomEvent) => {
+      const isEnabled = !(e.detail?.enabled === false);
+      setAnimationEnabled(isEnabled);
+      console.log(`[AnimationContext] Animations ${isEnabled ? 'enabled' : 'disabled'}`);
+    };
+    
+    window.addEventListener('debug:toggle-animations', handleDebugToggle as EventListener);
+    
+    // Check for global debug flags
+    if (window.__DEBUG_FLAGS && 'disableAnimations' in window.__DEBUG_FLAGS) {
+      setAnimationEnabled(!window.__DEBUG_FLAGS.disableAnimations);
+    }
+    
     return () => {
       mediaQuery.removeEventListener('change', handleChange);
+      window.removeEventListener('debug:toggle-animations', handleDebugToggle as EventListener);
     };
   }, []);
 
