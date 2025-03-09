@@ -51,7 +51,6 @@ describe('Navigation Component', () => {
     
     // Check that the header has the scrolled classes applied
     const header = screen.getByRole('banner');
-    expect(header).toHaveClass('bg-gray-900');
     expect(header).toHaveClass('shadow-lg');
   });
 

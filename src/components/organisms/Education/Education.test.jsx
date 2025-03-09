@@ -31,8 +31,8 @@ vi.mock('@molecules/EducationCard', () => ({
 }));
 
 // Mock useEducation hook
-vi.mock('@hooks/useEducation', () => ({
-  default: () => mockUseEducation()
+vi.mock('@context/PortfolioContext', () => ({
+  useEducation: () => mockUseEducation()
 }));
 
 describe('Education Container Component', () => {
@@ -66,7 +66,7 @@ describe('Education Container Component', () => {
     expect(screen.getByTestId('education-section')).toBeInTheDocument();
     
     // Check that the section title is correct
-    expect(screen.getByText('Education')).toBeInTheDocument();
+    expect(screen.getByText('Education & Certifications')).toBeInTheDocument();
     
     // Check that education card is rendered (only first one is used)
     expect(screen.getByTestId('education-card-0')).toBeInTheDocument();
@@ -82,7 +82,7 @@ describe('Education Container Component', () => {
     expect(screen.getByTestId('education-section')).toBeInTheDocument();
     
     // Check that the section title is correct
-    expect(screen.getByText('Education')).toBeInTheDocument();
+    expect(screen.getByText('Education & Certifications')).toBeInTheDocument();
     
     // Check that the empty state message is displayed
     expect(screen.getByText('No education information available.')).toBeInTheDocument();

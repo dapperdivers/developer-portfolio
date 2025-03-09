@@ -15,7 +15,17 @@ const Education = () => {
   const educationData = useEducation();
 
   if (!educationData || educationData.length === 0) {
-    return null;
+    return (
+      <Section
+        id="education"
+        title="Education & Certifications"
+        subtitle="My academic background and professional credentials"
+        data-testid="education-section"
+        className="education-section"
+      >
+        <p>No education information available.</p>
+      </Section>
+    );
   }
 
   return (
@@ -23,6 +33,8 @@ const Education = () => {
       id="education"
       title="Education & Certifications"
       subtitle="My academic background and professional credentials"
+      data-testid="education-section"
+      className="education-section"
     >
       <motion.div 
         className="education-cards-container"
