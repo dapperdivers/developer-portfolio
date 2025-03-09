@@ -21,13 +21,17 @@ import { createPortal } from 'react-dom';
  * @param {Object} props - Component props
  * @param {boolean} props.enabled - Whether the monitor is initially enabled
  * @param {PerformanceMonitorConfig} props.config - Monitor configuration options
+ * @param {Object} props.positionStyle - Optional custom positioning styles
+ * @param {boolean} props.initialExpanded - Whether to start in expanded mode
  */
 const PerformanceMonitor = ({ 
   enabled = false,
-  config = {}
+  config = {},
+  positionStyle = {},
+  initialExpanded = false
 }) => {
   const [visible, setVisible] = useState(enabled);
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(initialExpanded);
   
   // Add state for monitor config
   const [monitorConfig, setConfig] = useState({
@@ -976,7 +980,8 @@ const PerformanceMonitor = ({
         borderRadius: '4px 0 0 0',
         userSelect: 'none',
         display: visible ? 'block' : 'none',
-        opacity: 0.9
+        opacity: 0.9,
+        ...positionStyle
       }}
     >
       {/* Header with controls */}
@@ -1176,4 +1181,57 @@ export const withRenderTracking = (Component, componentName = Component.displayN
   
   TrackedComponent.displayName = `Tracked(${componentName})`;
   return TrackedComponent;
+};
+
+/**
+ * SimplePerformanceMonitor - An easier-to-use version of the performance monitor
+ * 
+ * @param {Object} props 
+ * @param {boolean} props.enabled - Whether the monitor should start enabled
+ * @param {string} props.position - Position on screen ('top-right', 'top-left', 'bottom-right', 'bottom-left')
+ * @param {boolean} props.expanded - Whether to start in expanded mode
+ * @param {string[]} props.trackComponents - Array of component names to track
+ * @returns {JSX.Element}
+ */
+export const SimplePerformanceMonitor = ({ 
+  enabled = false,
+  position = 'bottom-right',
+  expanded = false,
+  trackComponents = []
+}) => {
+  // Derive position styles
+  const getPositionStyle = () => {
+    switch (position) {
+      case 'top-right':
+        return { top: 0, right: 0, borderRadius: '0 0 0 4px' };
+      case 'top-left':
+        return { top: 0, left: 0, borderRadius: '0 0 4px 0' };
+      case 'bottom-left':
+        return { bottom: 0, left: 0, borderRadius: '0 4px 0 0' };
+      case 'bottom-right':
+      default:
+        return { bottom: 0, right: 0, borderRadius: '4px 0 0 0' };
+    }
+  };
+
+  // Configure the monitor
+  const config = {
+    longTaskThreshold: 50,
+    fpsWarningThreshold: 30,
+    showComponentTimings: true,
+    showStackTraces: true,
+    logToConsole: true,
+    componentFilter: trackComponents,
+    monitorScriptExecution: true,
+    monitorNetworkActivity: true
+  };
+
+  return (
+    <PerformanceMonitor 
+      enabled={enabled} 
+      config={config}
+      positionStyle={getPositionStyle()}
+      initialExpanded={expanded}
+    />
+  );
 }; 

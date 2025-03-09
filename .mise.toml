@@ -2,6 +2,7 @@
 node = "22"
 
 [env]
+_.file = '.env'
 NODE_ENV = "development"
 
 [settings]

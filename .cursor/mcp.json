@@ -6,7 +6,8 @@
           "-y",
           "@modelcontextprotocol/server-filesystem",
           "/home/derek/projects/developer-portfolio",
-          "/home/derek/Cline/MCP/filesystem"
+          "/home/derek/Cline/MCP"
+
         ]
       },
       "git": {
@@ -27,14 +28,9 @@
         ]
       },
       "perplexity": {
-        "command": "node",
-        "args": [
-          "/home/derek/Cline/MCP/perplexity-mcp/build/index.js"
-        ],
-        "env": {
-          "PERPLEXITY_API_KEY": "${env:PERPLEXITY_API_KEY}",
-          "PERPLEXITY_MODEL": "${env:PERPLEXITY_MODEL}"
-        }
+        "command": "~/Cline/MCP/scripts/start-perplexity-mcp.sh",
+        "args": []
+        
       }
     }
   }

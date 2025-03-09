@@ -8,7 +8,7 @@ import SkipToContent from "@atoms/SkipToContent";
 import Background from "@layout/Background";
 
 // Use single import for all debugging
-import { DebugProvider, ComponentRegistrar } from "@utils/debug";
+import { DebugProvider, RegisterDebugComponents } from "@utils/debug";
 
 // Enable debug tools if not set
 if (localStorage.getItem('debug_tools_enabled') === null) {
@@ -144,7 +144,7 @@ function App() {
             {/* Wrap the app with our debug provider - everything inside gets debugging capabilities */}
             <DebugProvider initialConfig={initialDebugConfig}>
               {/* Register components for debugging without modifying their source files */}
-              <ComponentRegistrar components={componentsToDebug} />
+              <RegisterDebugComponents components={componentsToDebug} />
               
               <Background>
                 <SkipToContent />
