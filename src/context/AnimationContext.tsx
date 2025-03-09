@@ -1,5 +1,5 @@
 // Use named imports to allow tree-shaking in production builds
-import { useState, useCallback, useEffect, useMemo, ReactElement } from 'react';
+import { useState, useCallback, useEffect, useMemo, ReactElement, useRef } from 'react';
 import type { ReactNode, Dispatch, SetStateAction } from 'react';
 import { createTypedContext } from '@utils/contextUtils';
 
@@ -63,6 +63,9 @@ export const AnimationProvider = ({ children }: AnimationProviderProps): ReactEl
   const [entryAnimations, setEntryAnimations] = useState<AnimationState>({});
   const [animationStaggerDelay, setAnimationStaggerDelay] = useState<number>(0.15);
 
+  // Store played animations in a ref to prevent re-renders
+  const playedAnimationsRef = useRef<Set<string>>(new Set());
+
   // Check if reduced motion is preferred
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -93,22 +96,31 @@ export const AnimationProvider = ({ children }: AnimationProviderProps): ReactEl
    * Register a new animation entry
    */
   const registerEntryAnimation = useCallback((id: string, initialState: string = 'hidden') => {
-    setEntryAnimations(prev => ({
-      ...prev,
-      [id]: initialState
-    }));
+    // Only register if not already played
+    if (!playedAnimationsRef.current.has(id)) {
+      setEntryAnimations(prev => ({
+        ...prev,
+        [id]: initialState
+      }));
+    }
   }, []);
 
   /**
    * Play animation for specific entry
    */
   const playEntryAnimation = useCallback((id: string, delay: number = 0) => {
+    // Skip if already played
+    if (playedAnimationsRef.current.has(id)) {
+      return;
+    }
+
     // If animations disabled, immediately set to visible
     if (!animationEnabled) {
       setEntryAnimations(prev => ({
         ...prev,
         [id]: 'visible'
       }));
+      playedAnimationsRef.current.add(id);
       return;
     }
 
@@ -118,6 +130,7 @@ export const AnimationProvider = ({ children }: AnimationProviderProps): ReactEl
         ...prev,
         [id]: 'visible'
       }));
+      playedAnimationsRef.current.add(id);
     }, delay * 1000);
   }, [animationEnabled]);
 
@@ -126,6 +139,7 @@ export const AnimationProvider = ({ children }: AnimationProviderProps): ReactEl
    */
   const resetEntryAnimations = useCallback(() => {
     setEntryAnimations({});
+    playedAnimationsRef.current.clear();
     setInView(false);
   }, []);
   

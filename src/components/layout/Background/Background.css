@@ -28,16 +28,11 @@ html, body {
 /* Main background container - fill entire viewport */
 .background {
   position: relative;
-  min-height: 100vh;
   width: 100%;
+  min-height: 100vh;
   overflow: hidden;
   background-color: var(--cyberpunk-bg);
-  color: #ffffff;
-  margin: 0;
-  padding: 0;
-  border: none;
-  /* Ensure we're using the full screen */
-  box-sizing: border-box;
+  z-index: 0;
 }
 
 /* Effects container */
@@ -47,12 +42,11 @@ html, body {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 0;
   pointer-events: none;
-  overflow: hidden;
-  /* Ensure no white edges */
-  margin: 0;
-  padding: 0;
+  z-index: -1;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
 }
 
 /* Content container that sits above the background */
@@ -61,11 +55,31 @@ html, body {
   z-index: 1;
   /* Add some padding so content doesn't touch edges */
   box-sizing: border-box;
+  transform: translate3d(0, 0, 0);
 }
 
-/* Circuit grid overlay */
-.background__circuit-grid {
+/* Hardware acceleration and performance optimizations */
+.hardware-accelerated {
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  will-change: transform;
+  isolation: isolate;
+}
+
+.effect-layer {
   position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  contain: layout style paint;
+  transform: translate3d(0, 0, 0);
+}
+
+/* Circuit grid overlay - optimized for performance */
+.background__circuit-grid {
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -73,43 +87,42 @@ html, body {
   z-index: 1;
   pointer-events: none;
   background-image: 
-    /* Small grid pattern */
-    linear-gradient(to right, var(--cyberpunk-grid) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--cyberpunk-grid) 1px, transparent 1px),
-    /* Larger grid pattern */
-    linear-gradient(to right, var(--cyberpunk-grid) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--cyberpunk-grid) 1px, transparent 1px),
-    /* Hexagons pattern */
-    radial-gradient(circle at 50% 50%, var(--cyberpunk-grid) 1px, transparent 1px);
+    /* Main grid */
+    linear-gradient(var(--cyberpunk-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--cyberpunk-grid) 1px, transparent 1px),
+    /* Subtle sub-grid */
+    linear-gradient(var(--cyberpunk-grid) 0.5px, transparent 0.5px),
+    linear-gradient(90deg, var(--cyberpunk-grid) 0.5px, transparent 0.5px);
   background-size: 
     20px 20px,
     20px 20px,
-    100px 100px,
-    100px 100px,
-    60px 60px;
+    10px 10px,
+    10px 10px;
   opacity: 0.4;
-  animation: gridGlow 8s infinite alternate;
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+  contain: strict;
 }
 
-/* Scanlines effect */
+/* Scanlines effect - optimized */
 .background__scanlines {
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
   width: 100%;
   height: 100%;
   z-index: 2;
   pointer-events: none;
-  /* Subtle horizontal scanlines */
-  background: linear-gradient(
+  background: repeating-linear-gradient(
     to bottom,
     transparent 50%,
     rgba(5, 213, 250, 0.05) 50%
   );
   background-size: 100% 4px;
-  opacity: 0.3;
+  opacity: 0.7;
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+  contain: strict;
 }
 
 /* Vignette effect */
@@ -129,7 +142,7 @@ html, body {
   z-index: 1;
 }
 
-/* NEW: Glitch effect overlay */
+/* Glitch effect - optimized */
 .background__glitch {
   position: fixed;
   top: 0;
@@ -138,30 +151,38 @@ html, body {
   height: 100%;
   z-index: 2;
   pointer-events: none;
-  opacity: 0;
-  mix-blend-mode: overlay;
-  animation: randomGlitch 10s infinite;
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(16, 16, 32, 0.1) 0px,
+    rgba(16, 16, 32, 0.1) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  opacity: 0.2;
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+  contain: strict;
 }
 
-/* NEW: Color pulse overlay */
+/* Color pulse - optimized */
 .background__color-pulse {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(
-    circle at 50% 50%,
-    rgba(5, 213, 250, 0.1),
-    transparent 70%
-  );
+  background: radial-gradient(circle at 50% 50%, 
+    var(--cyberpunk-primary-glow),
+    transparent 70%);
   z-index: 1;
   pointer-events: none;
-  animation: colorPulse 15s infinite alternate;
-  mix-blend-mode: overlay;
+  opacity: 0;
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+  contain: strict;
 }
 
-/* NEW: Digital noise texture */
+/* Noise texture - optimized */
 .background__noise {
   position: fixed;
   top: 0;
@@ -170,104 +191,30 @@ html, body {
   height: 100%;
   z-index: 2;
   pointer-events: none;
-  opacity: 0.04;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.02;
   mix-blend-mode: overlay;
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+  contain: strict;
 }
 
 /* Animations */
 
-/* Grid glow animation */
-@keyframes gridGlow {
-  0% {
-    opacity: 0.3;
-    box-shadow: none;
-  }
-  50% {
-    opacity: 0.4;
-  }
-  100% {
-    opacity: 0.5;
-    box-shadow: 0 0 20px rgba(5, 213, 250, 0.05);
-  }
+/* Optimized animations */
+@keyframes glitch {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(2px, 0, 0); }
 }
 
-/* Random glitch effect */
-@keyframes randomGlitch {
-  0%, 93%, 100% {
-    opacity: 0;
-    transform: scale(1);
-    background: transparent;
+@keyframes pulse {
+  0%, 100% { 
+    opacity: 0; 
+    transform: translate3d(0, 0, 0) scale(1);
   }
-  93.5% {
-    opacity: 0.2;
-    transform: scale(1.01);
-    background: rgba(255, 0, 85, 0.1);
-  }
-  94% {
-    opacity: 0;
-    transform: scale(1);
-    background: rgba(5, 213, 250, 0.1);
-  }
-  94.5% {
-    opacity: 0.1;
-    transform: scale(1);
-    background: rgba(255, 204, 0, 0.1);
-  }
-  95% {
-    opacity: 0;
-  }
-  95.5% {
-    opacity: 0.3;
-    transform: translateX(2px);
-  }
-  96% {
-    opacity: 0;
-    transform: translateX(0);
-  }
-  96.5% {
-    opacity: 0.2;
-    transform: translateY(-2px);
-  }
-  97% {
-    opacity: 0;
-    transform: translateY(0);
-  }
-}
-
-/* Color pulse animation */
-@keyframes colorPulse {
-  0% {
-    opacity: 0.1;
-    background: radial-gradient(
-      circle at 30% 50%,
-      rgba(5, 213, 250, 0.1),
-      transparent 70%
-    );
-  }
-  33% {
-    opacity: 0.2;
-    background: radial-gradient(
-      circle at 70% 30%,
-      rgba(255, 0, 85, 0.1),
-      transparent 70%
-    );
-  }
-  66% {
-    opacity: 0.1;
-    background: radial-gradient(
-      circle at 50% 70%,
-      rgba(255, 204, 0, 0.1),
-      transparent 70%
-    );
-  }
-  100% {
-    opacity: 0.15;
-    background: radial-gradient(
-      circle at 30% 50%,
-      rgba(5, 213, 250, 0.1),
-      transparent 70%
-    );
+  50% { 
+    opacity: 0.2; 
+    transform: translate3d(0, 0, 0) scale(1.05);
   }
 }
 
@@ -275,11 +222,10 @@ html, body {
 @media (max-width: 768px) {
   .background__circuit-grid {
     background-size: 
-      10px 10px,
-      10px 10px,
-      50px 50px,
-      50px 50px,
-      30px 30px;
+      15px 15px,
+      15px 15px,
+      5px 5px,
+      5px 5px;
   }
   
   .background__scanlines {
@@ -289,13 +235,17 @@ html, body {
 
 /* Accessibility - Reduce motion */
 @media (prefers-reduced-motion: reduce) {
-  .background__scanlines,
   .background__glitch,
   .background__color-pulse {
-    display: none;
+    animation: none;
+  }
+  
+  .background__scanlines,
+  .background__noise {
+    opacity: 0.03;
   }
   
   .background__circuit-grid {
-    animation: none;
+    opacity: 0.2;
   }
 }

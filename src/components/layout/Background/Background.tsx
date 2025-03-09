@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo, useEffect, useRef, useMemo } from 'react';
 import './Background.css';
 import MatrixBackground from '../../atoms/MatrixBackground';
 import BinaryStream from '../../atoms/BinaryStream';
@@ -59,6 +59,28 @@ const Background = (props: BackgroundProps) => {
     inView 
   } = useAnimation();
 
+  // Track if animations have already played
+  const animationsPlayedRef = useRef(false);
+
+  // Memoize static effects to prevent re-renders
+  const staticEffects = useMemo(() => ({
+    circuit: enableCircuitGrid && (
+      <div className="background__circuit-grid effect-layer hardware-accelerated" />
+    ),
+    scanlines: enableScanlines && (
+      <div className="background__scanlines effect-layer hardware-accelerated" />
+    ),
+    glitch: enableGlitch && (
+      <div className="background__glitch effect-layer hardware-accelerated" />
+    ),
+    colorPulse: enableColorPulse && (
+      <div className="background__color-pulse effect-layer hardware-accelerated" />
+    ),
+    noise: enableNoise && (
+      <div className="background__noise effect-layer hardware-accelerated" />
+    )
+  }), [enableCircuitGrid, enableScanlines, enableGlitch, enableColorPulse, enableNoise]);
+
   // Register background effects with animation system
   useEffect(() => {
     const effectIds = [
@@ -74,11 +96,12 @@ const Background = (props: BackgroundProps) => {
     // Register each effect
     effectIds.forEach(id => registerEntryAnimation(id));
 
-    // Play animations when in view
-    if (inView && animationEnabled) {
+    // Play animations only once when first in view
+    if (inView && animationEnabled && !animationsPlayedRef.current) {
       effectIds.forEach((id, index) => {
         playEntryAnimation(id, index * 0.1);
       });
+      animationsPlayedRef.current = true;
     }
   }, [registerEntryAnimation, playEntryAnimation, inView, animationEnabled]);
   
@@ -90,39 +113,27 @@ const Background = (props: BackgroundProps) => {
       className={`background ${className}`} 
       {...rest}
     >
-      <div className="background__effects">
+      <div className="background__effects hardware-accelerated">
         {shouldShowEffects && enableMatrix && (
-          <MatrixBackground characterCount={matrixCharCount} randomPositioning={true} />
+          <div className="effect-layer hardware-accelerated">
+            <MatrixBackground characterCount={matrixCharCount} randomPositioning={true} />
+          </div>
         )}
         
         {shouldShowEffects && enableBinaryStreams && (
-          <>
+          <div className="effect-layer hardware-accelerated">
             <BinaryStream position="left" count={30} baseDelay={0.1} />
             <BinaryStream position="right" count={30} baseDelay={0.15} />
             <BinaryStream position="top" count={50} baseDelay={0.2} />
             <BinaryStream position="bottom" count={50} baseDelay={0.25} />
-          </>
+          </div>
         )}
         
-        {shouldShowEffects && enableCircuitGrid && (
-          <div className="background__circuit-grid"></div>
-        )}
-        
-        {shouldShowEffects && enableScanlines && (
-          <div className="background__scanlines"></div>
-        )}
-        
-        {shouldShowEffects && enableGlitch && (
-          <div className="background__glitch"></div>
-        )}
-        
-        {shouldShowEffects && enableColorPulse && (
-          <div className="background__color-pulse"></div>
-        )}
-        
-        {shouldShowEffects && enableNoise && (
-          <div className="background__noise"></div>
-        )}
+        {shouldShowEffects && staticEffects.circuit}
+        {shouldShowEffects && staticEffects.scanlines}
+        {shouldShowEffects && staticEffects.glitch}
+        {shouldShowEffects && staticEffects.colorPulse}
+        {shouldShowEffects && staticEffects.noise}
       </div>
       
       <div className="background__content">
