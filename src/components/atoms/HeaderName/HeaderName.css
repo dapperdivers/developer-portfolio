@@ -31,18 +31,87 @@
 @font-face {
   font-family: 'Agustina';
   src: url('/fonts/agustina/Agustina.otf') format('opentype');
+  font-display: swap;
 }
 
-/* Basic styles for non-JS fallback - these are overridden by framer-motion in the component */
+.font-agustina {
+  font-family: 'Agustina', cursive;
+  letter-spacing: 0.05em;
+}
+
+/* Canvas container styles */
+.canvas-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 4rem;
+}
+
+/* Glitch effect styles */
+@keyframes glitch {
+  0% {
+    transform: translate(0);
+  }
+  20% {
+    transform: translate(-2px, 2px);
+  }
+  40% {
+    transform: translate(-2px, -2px);
+  }
+  60% {
+    transform: translate(2px, 2px);
+  }
+  80% {
+    transform: translate(2px, -2px);
+  }
+  100% {
+    transform: translate(0);
+  }
+}
+
+/* Glow effect */
+.glow-effect {
+  position: absolute;
+  inset: -20px;
+  background: radial-gradient(circle at center, rgba(5, 213, 250, 0.2), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+/* Hover effects */
+.hover-trigger:hover .glow-effect {
+  opacity: 1;
+}
+
+/* Ensure the text remains crisp */
+.text-sharp {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Terminal-style cursor */
 .cursor {
   display: inline-block;
-  width: 8px;
-  height: 20px;
-  background: var(--color-cyan);
-  margin-left: 5px;
-  vertical-align: middle;
-  box-shadow: 0 0 5px rgba(var(--color-cyan-rgb), 0.7), 
-              0 0 10px rgba(var(--color-cyan-rgb), 0.5);
+  width: 10px;
+  height: 1.25em;
+  background: #05D5FA;
+  margin-left: 6px;
+  animation: terminalBlink 1.2s step-end infinite;
+  box-shadow: 0 0 8px rgba(5, 213, 250, 0.8);
+  position: relative;
+  top: 3px;
+  border-radius: 1px;
+}
+
+@keyframes terminalBlink {
+  0%, 100% { 
+    opacity: 1;
+  }
+  50% { 
+    opacity: 0;
+  }
 }
 
 /* Only apply styles when JS is disabled */
@@ -55,54 +124,70 @@ noscript ~ * .cursor {
 }
 
 /* Scanline effect */
-.cyber-text-animation .scanline {
-  content: "";
+.cyber-text-animation {
+  position: relative;
+  display: inline-block;
+  padding: 0.5rem 0;
+}
+
+.cyber-text-animation h2 {
+  position: relative;
+  color: #05D5FA;
+  text-shadow: 0 0 10px rgba(5, 213, 250, 0.5);
+  z-index: 1;
+  overflow: visible; /* Allow text to be fully visible */
+}
+
+/* Multiple Scanlines */
+.scanline {
   position: absolute;
   top: 0;
-  left: -10%;
-  width: 120%;
+  left: 0;
+  width: 100%;
   height: 100%;
-  background: linear-gradient(
-    to bottom,
-    transparent 0%,
-    rgba(var(--color-cyan-rgb), 0) 20%,
-    rgba(var(--color-cyan-rgb), 0.3) 50%,
-    rgba(var(--color-cyan-rgb), 0) 80%,
-    transparent 100%
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(64, 255, 180, 0.3) 3px,
+    transparent 4px
   );
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.2s ease;
-  transform: skewX(-20deg);
+  mix-blend-mode: overlay;
+  clip-path: inset(0); /* Contain scanlines to text area */
 }
 
 .cyber-text-animation:hover .scanline {
-  opacity: 1;
-  animation: scan 0.75s linear infinite;
+  opacity: 0.7;
+  animation: scan 8s linear infinite;
 }
 
 @keyframes scan {
-  0% { transform: translateY(-100%) skewX(-20deg); }
-  100% { transform: translateY(100%) skewX(-20deg); }
+  0% { 
+    transform: translateY(0%);
+  }
+  100% { 
+    transform: translateY(100%);
+  }
 }
 
-/* Underline effect */
-.cyber-text-animation::after {
-  content: '';
+/* Glow line */
+.glow-line {
   position: absolute;
-  bottom: -4px;
+  bottom: 0;
   left: 0;
   width: 100%;
-  height: 2px;
-  background: var(--color-cyan);
+  height: 1px;
+  background: #05D5FA;
+  opacity: 0;
   transform: scaleX(0);
-  transform-origin: right;
-  transition: transform 0.3s ease;
-  box-shadow: 0 0 10px rgba(var(--color-cyan-rgb), 1), 
-              0 0 20px rgba(var(--color-cyan-rgb), 0.8);
+  transform-origin: left;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 10px rgba(5, 213, 250, 0.8);
 }
 
-.cyber-text-animation:hover::after {
+.cyber-text-animation:hover .glow-line {
+  opacity: 0.5;
   transform: scaleX(1);
-  transform-origin: left;
 }
