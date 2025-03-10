@@ -9,12 +9,12 @@
 import { defineConfig } from 'vite';
 
 // Import configuration components
-import paths from './paths.js';
-import envConfig from './env.js';
-import getCorePlugins from './plugins/core.js';
-import getPwaPlugins from './plugins/pwa.js';
-import getCodeSplittingConfig from './optimization/splitting.js';
-import getDevConfig from './dev/server.js';
+import paths from './base/paths';
+import envConfig from './base/env';
+import getCorePlugins from './plugins/core';
+import getPwaPlugins from './plugins/pwa';
+import getCodeSplittingConfig from './optimization/splitting';
+import getDevConfig from './dev/server';
 
 // Initialize environment variables
 const { initEnv, getClientEnv, isProd, isDev, getNodeEnv } = envConfig;
@@ -125,7 +125,7 @@ export default defineConfig(({ command, mode }) => {
     test: {
       globals: true,
       environment: 'jsdom',
-      setupFiles: ['./src/setupVitest.js'],
+      setupFiles: ['./src/test/setup.ts'],
       include: [
         'src/__tests__/**/*.test.js?(x)',
         'src/components/**/__tests__/*.test.jsx',

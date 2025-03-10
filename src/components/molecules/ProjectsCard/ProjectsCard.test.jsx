@@ -7,23 +7,37 @@ import { vi } from 'vitest';
 vi.mock('@constants/animations', () => ({
   slideUpVariants: {
     hidden: { opacity: 0, y: 50 },
-    visible: { opacity: 1, y: 0 }
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: 'easeOut'
+      }
+    }
   }
 }));
 
 // Mock the Card component
 vi.mock('@atoms/Card', () => ({
-  default: ({ children, className, animation, hoverable, shadow }) => (
-    <div 
-      data-testid="card-mock" 
-      className={className}
-      data-animation={JSON.stringify(animation)}
-      data-hoverable={hoverable}
-      data-shadow={shadow}
-    >
-      {children}
-    </div>
-  )
+  default: ({ children, className, variants, initial, animate, hoverable, shadow }) => {
+    const animationData = {
+      initial,
+      animate,
+      variants
+    };
+    return (
+      <div 
+        data-testid="card-mock" 
+        className={className}
+        data-animation={JSON.stringify(animationData)}
+        data-hoverable={hoverable}
+        data-shadow={shadow}
+      >
+        {children}
+      </div>
+    );
+  }
 }));
 
 // Mock the Button component
@@ -67,7 +81,18 @@ vi.mock('@hooks/useIntersectionObserver', () => ({
 vi.mock('@context/AnimationContext', () => ({
   useAnimation: () => ({
     animationEnabled: true,
-    getAnimationDelay: (index) => `${index * 0.1}s`
+    slideUpVariants: {
+      hidden: { opacity: 0, y: 50 },
+      visible: { 
+        opacity: 1, 
+        y: 0,
+        transition: {
+          duration: 0.5,
+          ease: 'easeOut'
+        }
+      }
+    },
+    animationStaggerDelay: 0.1
   })
 }));
 
@@ -185,10 +210,16 @@ describe('ProjectsCard Integration Tests', () => {
     const firstAnimationData = JSON.parse(firstCard.getAttribute('data-animation') || '{}');
     
     // Check first card animation properties
-    expect(firstAnimationData.transition.delay).toBe('0s');
     expect(firstAnimationData.initial).toEqual({ opacity: 0, y: 50 });
-    expect(firstAnimationData.whileInView).toEqual({ opacity: 1, y: 0 });
-    expect(firstAnimationData.viewport).toEqual({ once: true });
+    expect(firstAnimationData.animate).toEqual({ 
+      opacity: 1, 
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: 'easeOut',
+        delay: 0
+      }
+    });
     
     // Rerender with different index
     rerender(<ProjectsCard data={mockProjectData} index={2} />);
@@ -197,10 +228,16 @@ describe('ProjectsCard Integration Tests', () => {
     const secondAnimationData = JSON.parse(secondCard.getAttribute('data-animation') || '{}');
     
     // Check second card animation properties
-    expect(secondAnimationData.transition.delay).toBe('0.2s');
     expect(secondAnimationData.initial).toEqual({ opacity: 0, y: 50 });
-    expect(secondAnimationData.whileInView).toEqual({ opacity: 1, y: 0 });
-    expect(secondAnimationData.viewport).toEqual({ once: true });
+    expect(secondAnimationData.animate).toEqual({ 
+      opacity: 1, 
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: 'easeOut',
+        delay: 0.2
+      }
+    });
   });
 
   it('applies correct accessibility attributes', () => {

@@ -100,7 +100,7 @@ async function startServer() {
       test: {
         globals: true,
         environment: 'jsdom',
-        setupFiles: ['./src/setupVitest.js'],
+        setupFiles: ['./src/test/setup.ts'],
       }
     };
     

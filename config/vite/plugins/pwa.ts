@@ -6,7 +6,15 @@
  */
 
 import { VitePWA } from 'vite-plugin-pwa';
-import env from '../env.js';
+import env from '../base/env';
+
+interface PwaPluginOptions {
+  isProd?: boolean;
+}
+
+interface AnalyzerPluginOptions {
+  analyze?: boolean;
+}
 
 /**
  * Configure PWA plugin for offline support
@@ -14,7 +22,7 @@ import env from '../env.js';
  * @param {boolean} options.isProd - Whether we're in production mode
  * @returns {Object} Configured PWA plugin or null if disabled
  */
-export function createPwaPlugin({ isProd = false } = {}) {
+export function createPwaPlugin({ isProd = false }: PwaPluginOptions = {}) {
   // Only enable PWA in production by default
   if (!isProd && !process.env.ENABLE_PWA_DEV) {
     return null;
@@ -94,7 +102,7 @@ export function createPwaPlugin({ isProd = false } = {}) {
  * @param {boolean} options.analyze - Whether to enable bundle analysis
  * @returns {Object|null} Visualizer plugin or null if disabled
  */
-export function createAnalyzerPlugin({ analyze = false } = {}) {
+export function createAnalyzerPlugin({ analyze = false }: AnalyzerPluginOptions = {}) {
   if (!analyze) {
     return null;
   }
@@ -120,7 +128,7 @@ export function createAnalyzerPlugin({ analyze = false } = {}) {
  * @param {boolean} options.analyze - Whether to enable bundle analysis
  * @returns {Array} Array of configured plugins
  */
-export function getPwaPlugins({ isProd = false, analyze = false } = {}) {
+export function getPwaPlugins({ isProd = false, analyze = false }: PwaPluginOptions & AnalyzerPluginOptions = {}) {
   return [
     createPwaPlugin({ isProd }),
     createAnalyzerPlugin({ analyze })

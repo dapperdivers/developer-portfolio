@@ -13,7 +13,11 @@ import fs from 'fs';
 // Get project root directory correctly in ESM context
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const projectRoot = path.resolve(__dirname, '../..');
+const projectRoot = path.resolve(__dirname, '../../..');
+
+interface EntryPointsOptions {
+  rootDir?: string;
+}
 
 /**
  * Define entry points for the build
@@ -21,7 +25,7 @@ const projectRoot = path.resolve(__dirname, '../..');
  * @param {string} options.rootDir - Root directory of the project
  * @returns {Object} Entry points for Rollup
  */
-export function createEntryPoints({ rootDir = projectRoot } = {}) {
+export function createEntryPoints({ rootDir = projectRoot }: EntryPointsOptions = {}) {
   console.log('Creating entry points with rootDir:', rootDir);
   return {
     input: {
@@ -36,7 +40,7 @@ export function createEntryPoints({ rootDir = projectRoot } = {}) {
  */
 export function createChunkStrategy() {
   return {
-    manualChunks: (id) => {
+    manualChunks: (id: string) => {
       // Vendor chunks - dependencies
       if (id.includes('node_modules')) {
         // React and related core packages - explicitly include react-is
@@ -111,7 +115,7 @@ export function createOutputNaming() {
     entryFileNames: 'assets/js/[name]-[hash].js',
     
     // Asset file naming by type
-    assetFileNames: ({ name }) => {
+    assetFileNames: ({ name }: { name?: string }) => {
       if (/\.(gif|jpe?g|png|svg)$/.test(name ?? '')) {
         return 'assets/images/[name]-[hash][extname]';
       }
@@ -132,7 +136,7 @@ export function createOutputNaming() {
  * @param {string} options.rootDir - Root directory of the project
  * @returns {Object} Rollup options with code splitting configuration
  */
-export function getCodeSplittingConfig({ rootDir = projectRoot } = {}) {
+export function getCodeSplittingConfig({ rootDir = projectRoot }: EntryPointsOptions = {}) {
   return {
     rollupOptions: {
       ...createEntryPoints({ rootDir }),

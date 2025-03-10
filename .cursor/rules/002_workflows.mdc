@@ -1,0 +1,24 @@
+---
+description: Development workflow standards and component creation processes
+globs: **/*
+---
+
+# Development Workflows
+
+- ALWAYS use component generator: `yarn generate --name=ComponentName --type=[atom|molecule|organism|layout]`
+- NEVER create components manually or copy/paste existing ones
+- Component types must follow these guidelines:
+  - atoms: Basic UI elements (Button, Input, Icon)
+  - molecules: Composite components (Card, SearchBar)
+  - organisms: Complex sections with business logic (ProjectList)
+  - layout: Structure components (Section, Grid, Flex)
+- Generator ensures:
+  - TypeScript types
+  - Test setup
+  - Storybook docs
+  - Animation integration
+  - CSS module setup
+- Examples of correct usage:
+  - Button: `yarn generate --name=Button --type=atom`
+  - ProjectCard: `yarn generate --name=ProjectCard --type=molecule`
+  - ProjectsSection: `yarn generate --name=ProjectsSection --type=organism`

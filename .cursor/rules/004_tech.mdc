@@ -1,0 +1,36 @@
+---
+description: Technical stack requirements and configuration standards
+globs: **/*
+---
+
+# Technical Requirements
+
+- Core stack:
+  - React 18+
+  - TypeScript
+  - Vite
+  - Tailwind CSS
+  - Framer Motion
+  - Node.js v22+
+  - Yarn v1.22+
+- Build requirements:
+  - Vite for dev/prod
+  - Code splitting
+  - Bundle analysis
+  - Tree shaking
+- Performance:
+  - Route-based code splitting
+  - Image optimization
+  - Lazy loading
+  - Bundle monitoring
+- Security:
+  - Helmet headers
+  - CORS config
+  - Env variables
+  - Non-root Docker
+  - CSP headers
+- Debug features enabled:
+  - Component debugging
+  - Performance profiling
+  - FPS monitoring
+  - React DevTools
