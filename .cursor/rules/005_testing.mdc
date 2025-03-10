@@ -1,0 +1,75 @@
+---
+description: Testing standards and requirements for components and utilities
+globs: src/**/*.{test,spec}.{js,jsx,ts,tsx}, src/**/__tests__/*, e2e/**/*.spec.{js,ts}, **/*.stories.{js,jsx,ts,tsx}
+---
+
+# Testing Standards
+
+## Required Test Types
+- Unit Tests (Vitest + React Testing Library)
+  - Components: src/components/**/*.test.{jsx,tsx}
+  - Hooks: src/hooks/**/*.test.{js,ts}
+  - Utils: src/utils/**/*.test.{js,ts}
+- E2E Tests (Playwright)
+  - Location: e2e/**/*.spec.{js,ts}
+  - Critical user flows
+- Visual Tests (Storybook)
+  - Location: src/components/**/*.stories.{jsx,tsx}
+  - Visual regression testing
+- Accessibility Tests
+  - Use @testing-library/jest-dom
+  - ARIA compliance checks
+
+## Test File Structure
+- Co-locate with implementation
+- Follow naming: `ComponentName.test.{jsx,tsx}`
+- Group in __tests__ for utilities
+
+## Testing Packages
+- @testing-library/react: ^16.2.0
+- @testing-library/jest-dom: ^6.6.3
+- vitest: ^3.0.7
+- @playwright/test: ^1.51.0
+- @storybook/test: ^8.6.4
+
+## Component Test Requirements
+- Render testing
+- Props validation
+- Event handlers
+- State changes
+- Error states
+- Loading states
+- Accessibility
+- Responsive behavior
+
+## Hook Test Requirements
+- Initial state
+- State updates
+- Side effects
+- Cleanup
+- Error handling
+- Custom events
+
+## E2E Test Requirements
+- User flows
+- Form submissions
+- Navigation
+- Data persistence
+- Error handling
+- Performance
+- Cross-browser
+
+## Coverage Requirements
+- Components: 100%
+- Hooks: 100%
+- Utils: 100%
+- E2E: Critical paths
+
+## Best Practices
+- Use React Testing Library queries
+- Avoid implementation details
+- Test user interactions
+- Mock external dependencies
+- Use proper assertions
+- Document test cases
+- Follow AAA pattern (Arrange-Act-Assert)

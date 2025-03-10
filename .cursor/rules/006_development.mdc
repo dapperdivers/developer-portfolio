@@ -1,0 +1,28 @@
+---
+description: Development environment setup and configuration requirements
+globs: **/*
+---
+
+# Development Environment
+
+- Use these existing development URLs:
+  - Development server is running at: http://localhost:3001
+  - Storybook is running at: http://localhost:7000
+  - DO NOT start new server instances
+- Project structure:
+  - src/components/: atoms, molecules, organisms, layout
+  - src/context/: React Context providers
+  - src/hooks/: Custom React hooks
+  - src/utils/: Utilities
+  - src/styles/: Global styles
+- Environment requirements:
+  - Node.js v22+
+  - Yarn v1.22+
+  - Port 3001: Reserved for running dev server
+  - Port 7000: Reserved for running Storybook
+- Development tools:
+  - Use existing Vite dev server instance
+  - Use existing Storybook instance
+  - TypeScript compiler
+  - ESLint + Prettier
+  - Vitest watch mode

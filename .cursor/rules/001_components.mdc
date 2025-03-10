@@ -1,0 +1,19 @@
+---
+description: Standards for component creation and development
+globs: src/components/**/*
+---
+
+# Component Development Rules
+
+- ALWAYS use generator command: `yarn generate-component --name=ComponentName --type=[atom|molecule|organism|layout]`
+- Follow Atomic Design: atoms, molecules, organisms, layouts
+- Required files: TypeScript, CSS module, Storybook, tests
+- Use Framer Motion for animations
+- Implement proper memoization and lazy loading
+- Include proper typing and interfaces
+- Document usage patterns in Storybook
+- Each component must pass accessibility testing
+- Performance considerations: optimize bundle size, lazy load when appropriate
+- Follow memoization patterns for expensive renders
+- Image optimization must be applied
+- Components must integrate with AnimationContext

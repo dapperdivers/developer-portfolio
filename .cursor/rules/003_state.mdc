@@ -1,0 +1,21 @@
+---
+description: State management patterns and context usage guidelines
+globs: src/**/*.{ts,tsx}
+---
+
+# State Management Rules
+
+- Use designated context providers:
+  - PortfolioContext: Global data management
+  - AnimationContext: Animation states
+  - DebugProvider: Debug tools
+- Custom hooks requirements:
+  - TypeScript types
+  - Cleanup implementation
+  - Comprehensive tests
+  - Usage documentation
+- Performance guidelines:
+  - Implement proper memoization
+  - Use context selectors
+  - Avoid unnecessary rerenders
+  - Set up error boundaries
