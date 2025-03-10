@@ -7,13 +7,12 @@ import { vi } from 'vitest';
 
 // Mock the Card component
 vi.mock('@atoms/Card', () => ({
-  default: ({ children, animation, className, style }) => {
-    const animationData = {
-      initial: { opacity: 0, y: 50 },
-      whileInView: { opacity: 1, y: 0 },
-      viewport: { once: true },
-      transition: animation?.transition || {}
-    };
+  default: ({ children, variants, initial, animate, className, style }) => {
+    const animationData = variants ? {
+      initial,
+      animate,
+      variants
+    } : {};
     return (
       <div 
         data-testid="mocked-card" 
@@ -77,7 +76,18 @@ vi.mock('@molecules/FeedbackHighlight', () => ({
 vi.mock('@context/AnimationContext', () => ({
   useAnimation: () => ({
     animationEnabled: true,
-    getAnimationDelay: (index) => `${index * 0.1}s`
+    slideUpVariants: {
+      hidden: { opacity: 0, y: 50 },
+      visible: { 
+        opacity: 1, 
+        y: 0,
+        transition: {
+          duration: 0.5,
+          ease: 'easeOut'
+        }
+      }
+    },
+    animationStaggerDelay: 0.1
   })
 }));
 
@@ -152,10 +162,20 @@ describe('FeedbackCard Component', () => {
     const firstAnimationData = JSON.parse(firstCard.dataset.animation || '{}');
     
     // Check first card animation properties
-    expect(firstAnimationData.initial).toEqual({ opacity: 0, y: 50 });
-    expect(firstAnimationData.whileInView).toEqual({ opacity: 1, y: 0 });
-    expect(firstAnimationData.viewport).toEqual({ once: true });
-    expect(firstAnimationData.transition.delay).toBe('0s');
+    expect(firstAnimationData.initial).toBe('hidden');
+    expect(firstAnimationData.animate).toBe('visible');
+    expect(firstAnimationData.variants).toEqual({
+      hidden: { opacity: 0, y: 50 },
+      visible: { 
+        opacity: 1, 
+        y: 0,
+        transition: {
+          duration: 0.5,
+          ease: 'easeOut',
+          delay: 0
+        }
+      }
+    });
     
     rerender(<FeedbackCard data={mockFeedbackData.minimal} index={2} />);
     
@@ -163,10 +183,20 @@ describe('FeedbackCard Component', () => {
     const secondAnimationData = JSON.parse(secondCard.dataset.animation || '{}');
     
     // Check second card animation properties
-    expect(secondAnimationData.initial).toEqual({ opacity: 0, y: 50 });
-    expect(secondAnimationData.whileInView).toEqual({ opacity: 1, y: 0 });
-    expect(secondAnimationData.viewport).toEqual({ once: true });
-    expect(secondAnimationData.transition.delay).toBe('0.2s');
+    expect(secondAnimationData.initial).toBe('hidden');
+    expect(secondAnimationData.animate).toBe('visible');
+    expect(secondAnimationData.variants).toEqual({
+      hidden: { opacity: 0, y: 50 },
+      visible: { 
+        opacity: 1, 
+        y: 0,
+        transition: {
+          duration: 0.5,
+          ease: 'easeOut',
+          delay: 0.2
+        }
+      }
+    });
   });
 
   it('handles animation when animation is disabled', () => {
@@ -174,17 +204,60 @@ describe('FeedbackCard Component', () => {
     vi.mock('@context/AnimationContext', () => ({
       useAnimation: () => ({
         animationEnabled: false,
-        getAnimationDelay: () => '0s'
+        slideUpVariants: {
+          hidden: { opacity: 0, y: 50 },
+          visible: { 
+            opacity: 1, 
+            y: 0,
+            transition: {
+              duration: 0.5,
+              ease: 'easeOut'
+            }
+          }
+        },
+        animationStaggerDelay: 0.1
       })
-    }));
+    }), { virtual: true });
 
     render(<FeedbackCard data={mockFeedbackData.minimal} index={0} />);
     
     const card = screen.getByTestId('mocked-card');
     const animationData = JSON.parse(card.dataset.animation || '{}');
     
-    // When animations are disabled, should have no animation properties
-    expect(animationData).toEqual({});
+    // When animations are disabled, should still have variants but initial should be visible
+    expect(animationData.initial).toBe('visible');
+    expect(animationData.animate).toBe('visible');
+    expect(animationData.variants).toEqual({
+      hidden: { opacity: 0, y: 50 },
+      visible: { 
+        opacity: 1, 
+        y: 0,
+        transition: {
+          duration: 0.5,
+          ease: 'easeOut',
+          delay: 0
+        }
+      }
+    });
+
+    // Reset the mock to enable animations for other tests
+    vi.mock('@context/AnimationContext', () => ({
+      useAnimation: () => ({
+        animationEnabled: true,
+        slideUpVariants: {
+          hidden: { opacity: 0, y: 50 },
+          visible: { 
+            opacity: 1, 
+            y: 0,
+            transition: {
+              duration: 0.5,
+              ease: 'easeOut'
+            }
+          }
+        },
+        animationStaggerDelay: 0.1
+      })
+    }), { virtual: true });
   });
 
   it('handles missing avatar gracefully', () => {

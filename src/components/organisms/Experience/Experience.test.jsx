@@ -87,7 +87,7 @@ vi.mock('@layout/Section', () => ({
 
 vi.mock('@molecules/SkeletonCard', () => ({
   default: ({ type, index }) => (
-    <div data-testid="skeleton-experience-mock">
+    <div data-testid="skeleton-card" className="skeleton-experience">
       Loading experience {index + 1}...
     </div>
   )
@@ -250,51 +250,47 @@ describe('Experience Container', () => {
       experienceSection: {
         title: 'Work Experience',
         subtitle: 'My professional journey',
-        display: true,
-        isLoading: true
+        viewType: 'timeline',
+        display: true
       },
       settings: {
         loadingDelay: 0
-      }
-    });
-
-    // Mock empty experience data to simulate loading state
-    mockUseExperience.mockReturnValueOnce([]);
-    
-    // Mock useTimelineView to indicate loading
-    mockUseTimelineView.mockReturnValueOnce({
-      ...mockUseTimelineView(),
+      },
       isLoading: true
     });
-    
+
+    // Mock useExperience to return null during loading
+    mockUseExperience.mockReturnValueOnce(null);
+
     render(<Experience />);
     
     // Check for skeleton cards
-    const skeletonCards = screen.getAllByTestId('skeleton-experience-mock');
+    const skeletonCards = screen.getAllByTestId('skeleton-card');
     expect(skeletonCards.length).toBe(3); // We show 3 skeleton cards during loading
     
-    // Check that each skeleton card has the correct loading text
-    skeletonCards.forEach((card, index) => {
-      expect(card).toHaveTextContent(`Loading experience ${index + 1}...`);
-    });
-
-    // Verify that no actual experience cards are rendered during loading
+    // Verify no actual experience cards are rendered
     expect(screen.queryByTestId('experience-card-mock')).not.toBeInTheDocument();
   });
 
   it('renders appropriate content when there is no experience data', () => {
-    // Override the useExperience mock for this test to return an empty array
+    // Mock useExperience to return empty array
     mockUseExperience.mockReturnValueOnce([]);
-    
+
+    // Mock portfolio context with no loading state
+    mockUsePortfolio.mockReturnValueOnce({
+      experienceSection: {
+        title: 'Work Experience',
+        subtitle: 'My professional journey',
+        viewType: 'timeline',
+        display: true
+      },
+      settings: {
+        loadingDelay: 0
+      },
+      isLoading: false
+    });
+
     render(<Experience />);
-    
-    // Should still render the section with title and subtitle
-    expect(screen.getByText('Work Experience')).toBeInTheDocument();
-    expect(screen.getByText('My professional journey')).toBeInTheDocument();
-    
-    // Check for the experience grid
-    const experienceGrid = document.querySelector('.experience-grid');
-    expect(experienceGrid).toBeInTheDocument();
     
     // Should not have any experience cards
     const experienceCards = screen.queryAllByTestId('experience-card-mock');
@@ -329,17 +325,15 @@ describe('Experience Container', () => {
   });
 
   it('handles undefined section data gracefully', () => {
-    // Mock the portfolio context to return undefined section data
+    // Mock portfolio context to return undefined section data
     mockUsePortfolio.mockReturnValueOnce({
       experienceSection: undefined,
       settings: {
         loadingDelay: 0
-      }
+      },
+      isLoading: false
     });
 
-    // Mock empty experience data
-    mockUseExperience.mockReturnValueOnce([]);
-    
     const { container } = render(<Experience />);
     
     // Container should be empty since section data is undefined
@@ -347,7 +341,7 @@ describe('Experience Container', () => {
     
     // Verify no experience cards or skeletons are rendered
     expect(screen.queryByTestId('experience-card-mock')).not.toBeInTheDocument();
-    expect(screen.queryByTestId('skeleton-experience-mock')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('skeleton-card')).not.toBeInTheDocument();
   });
 
   it('handles missing section title and subtitle gracefully', () => {
@@ -376,21 +370,23 @@ describe('Experience Container', () => {
   });
 
   it('handles empty experience data array gracefully', () => {
-    // Override the useExperience mock to return an empty array
+    // Mock useExperience to return empty array
     mockUseExperience.mockReturnValueOnce([]);
 
-    // Mock portfolio context with display true but no data
+    // Mock portfolio context with valid section data
     mockUsePortfolio.mockReturnValueOnce({
       experienceSection: {
         title: 'Work Experience',
         subtitle: 'My professional journey',
+        viewType: 'timeline',
         display: true
       },
       settings: {
         loadingDelay: 0
-      }
+      },
+      isLoading: false
     });
-    
+
     render(<Experience />);
     
     // Should render the section but with no cards

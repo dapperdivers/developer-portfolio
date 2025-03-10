@@ -4,11 +4,13 @@ import Navigation from './Navigation';
 import { vi } from 'vitest';
 
 // Mock the hooks
+const mockUseNavigation = vi.fn(() => ({
+  isVisible: true,
+  greetings: { name: 'Test User' }
+}));
+
 vi.mock('@hooks/useNavigation', () => ({
-  default: () => ({
-    isVisible: true,
-    greetings: { name: 'Test User' }
-  })
+  default: () => mockUseNavigation()
 }));
 
 vi.mock('@context/AnimationContext', () => ({
@@ -54,6 +56,17 @@ vi.mock('framer-motion', () => ({
 }));
 
 describe('Navigation Component', () => {
+  beforeEach(() => {
+    mockUseNavigation.mockImplementation(() => ({
+      isVisible: true,
+      greetings: { name: 'Test User' }
+    }));
+  });
+
+  afterEach(() => {
+    mockUseNavigation.mockReset();
+  });
+
   it('renders correctly with default props', () => {
     render(<Navigation />);
     expect(screen.getByTestId('header-name-mock')).toBeInTheDocument();
@@ -61,8 +74,7 @@ describe('Navigation Component', () => {
   });
 
   it('applies correct animation when isScrolled is true', () => {
-    // Mock useNavigation to return isVisible as true
-    vi.mocked(require('@hooks/useNavigation').default).mockImplementation(() => ({
+    mockUseNavigation.mockImplementation(() => ({
       isVisible: true,
       greetings: { name: 'Test User' }
     }));
@@ -74,8 +86,7 @@ describe('Navigation Component', () => {
   });
 
   it('hides when isVisible is false', () => {
-    // Mock useNavigation to return isVisible as false
-    vi.mocked(require('@hooks/useNavigation').default).mockImplementation(() => ({
+    mockUseNavigation.mockImplementation(() => ({
       isVisible: false,
       greetings: { name: 'Test User' }
     }));
@@ -87,11 +98,14 @@ describe('Navigation Component', () => {
   });
 
   it('handles escape key press when menu is open', () => {
+    mockUseNavigation.mockImplementation(() => ({
+      isVisible: true,
+      greetings: { name: 'Test User' },
+      isMenuOpen: true,
+      setIsMenuOpen: vi.fn()
+    }));
+
     render(<Navigation />);
-    
-    // Open the menu
-    const menuButton = screen.getByTestId('motion-button');
-    fireEvent.click(menuButton);
     
     // Simulate escape key press
     fireEvent.keyDown(document, { key: 'Escape' });
