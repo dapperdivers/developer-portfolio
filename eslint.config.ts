@@ -1,4 +1,30 @@
-export default [
+import { Linter } from 'eslint';
+import typescriptPlugin from '@typescript-eslint/eslint-plugin';
+import typescriptParser from '@typescript-eslint/parser';
+
+interface ESLintFlatConfig {
+  files?: string[];
+  ignores?: string[];
+  languageOptions?: {
+    ecmaVersion?: number;
+    sourceType?: 'module' | 'script' | 'commonjs';
+    parser?: any;
+    parserOptions?: {
+      ecmaVersion?: number;
+      sourceType?: 'module' | 'script' | 'commonjs';
+      ecmaFeatures?: {
+        jsx?: boolean;
+      };
+      project?: string;
+      tsconfigRootDir?: string;
+    };
+    globals?: Record<string, 'readonly' | 'writable' | 'off'>;
+  };
+  plugins?: Record<string, any>;
+  rules?: Record<string, any>;
+}
+
+const config: ESLintFlatConfig[] = [
   {
     ignores: [
       "node_modules/**",
@@ -12,7 +38,7 @@ export default [
     // Configuration for JavaScript files
     files: ["**/*.js", "**/*.jsx"],
     languageOptions: {
-      ecmaVersion: "latest",
+      ecmaVersion: 2024,
       sourceType: "module",
       parserOptions: {
         ecmaFeatures: {
@@ -40,6 +66,9 @@ export default [
         AbortController: "readonly",
         CustomEvent: "readonly",
         Event: "readonly",
+        PerformanceObserver: "readonly",
+        Element: "readonly",
+        Node: "readonly",
         
         // Node.js globals
         require: "readonly",
@@ -55,6 +84,7 @@ export default [
         beforeEach: "readonly",
         afterEach: "readonly",
         vi: "readonly",
+        jest: "readonly",
         performance: "readonly"
       }
     },
@@ -65,8 +95,30 @@ export default [
     }
   },
   {
-    // Configuration for TypeScript files - just ignore them for now
+    // Configuration for TypeScript files
     files: ["**/*.ts", "**/*.tsx"],
-    ignores: ["**/*.ts", "**/*.tsx"]
+    languageOptions: {
+      parser: typescriptParser,
+      parserOptions: {
+        ecmaVersion: 2024,
+        sourceType: "module",
+        ecmaFeatures: {
+          jsx: true
+        },
+        project: "./tsconfig.json",
+        tsconfigRootDir: "."
+      }
+    },
+    plugins: {
+      "@typescript-eslint": typescriptPlugin
+    },
+    rules: {
+      // TypeScript will handle these
+      "no-undef": "off",
+      "no-unused-vars": "off",
+      "@typescript-eslint/no-unused-vars": "warn"
+    }
   }
 ];
+
+export default config; 

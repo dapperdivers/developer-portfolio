@@ -4473,7 +4473,7 @@ eslint-plugin-security@^3.0.1:
 
 eslint-plugin-storybook@^0.11.4:
   version "0.11.4"
-  resolved "https://registry.npmjs.org/eslint-plugin-storybook/-/eslint-plugin-storybook-0.11.4.tgz"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-storybook/-/eslint-plugin-storybook-0.11.4.tgz#137a425c20683face8848e692ad6dd7803a69a75"
   integrity sha512-OvLf1ljpDQ6Y/U2kM7hT5hESn+hg0vq/nh62+YiPFWdRIEjuQM9ivmwoTP9nRBExH8fT2VPqM5t/RB68lqTWJw==
   dependencies:
     "@storybook/csf" "^0.1.11"
@@ -6024,6 +6024,11 @@ jiti@^1.21.6:
   version "1.21.7"
   resolved "https://registry.npmjs.org/jiti/-/jiti-1.21.7.tgz"
   integrity sha512-/imKNG4EbWNrVjoNC/1H5/9GFy+tqjGBHCaSsN+P2RnPqjsLmv6UD3Ej+Kj8nBWaRAwyk7kK5ZUc+OEatnTR3A==
+
+jiti@^2.4.2:
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/jiti/-/jiti-2.4.2.tgz#d19b7732ebb6116b06e2038da74a55366faef560"
+  integrity sha512-rg9zJN+G4n2nfJl5MW3BMygZX56zKPNVEYYqq7adpmMh4Jn2QNEwhvQlFy6jPVdcod7txZtKHWnyZiA3a0zP7A==
 
 jju@^1.1.0:
   version "1.4.0"

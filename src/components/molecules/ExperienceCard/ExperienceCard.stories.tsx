@@ -1,4 +1,3 @@
-import React from 'react';
 import ExperienceCard from './ExperienceCard';
 import type { Meta, StoryObj } from '@storybook/react';
 

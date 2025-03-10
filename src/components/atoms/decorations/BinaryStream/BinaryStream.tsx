@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { useAnimation } from '@context/AnimationContext';
 import './BinaryStream.css';
 
-interface BinaryStreamProps {
+export interface BinaryStreamProps {
   /** Text color for the binary stream (default: #0F0) */
   color?: string;
   /** Font size for the characters (default: 20) */
