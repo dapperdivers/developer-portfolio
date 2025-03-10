@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import SkeletonCard from '@atoms/SkeletonCard';
 import Section from '@layout/Section';
 import ConsoleHeader from '@atoms/ConsoleHeader/ConsoleHeader';
+import ExperienceCard from '@molecules/ExperienceCard';
 import { usePortfolio } from "@context/PortfolioContext";
 import { useAnimation } from "@context//AnimationContext";
 import { experience as experienceData } from '../../../portfolio';
@@ -115,6 +116,7 @@ const Experience = () => {
                 key={`skeleton-${i}`}
                 variants={cardVariants}
                 custom={i}
+                data-testid="skeleton-experience-mock"
               >
                 <SkeletonCard 
                   type="experience" 
@@ -177,24 +179,19 @@ const Experience = () => {
         
         <div className="experience-cards">
           {experience.map((item, index) => (
-            <motion.div
+            <ExperienceCard
               key={`experience-${index}`}
-              variants={cardVariants}
-              custom={index}
-              className="experience-card"
-            >
-              <h3>{item.title}</h3>
-              <h4>{item.company}</h4>
-              <p className="date">{item.date}</p>
-              <p className="description">{item.description}</p>
-              {item.technologies && (
-                <div className="technologies">
-                  {item.technologies.map((tech, i) => (
-                    <span key={`tech-${i}`} className="tech-tag">{tech}</span>
-                  ))}
-                </div>
-              )}
-            </motion.div>
+              data={{
+                role: item.title,
+                company: item.company,
+                date: item.date,
+                desc: item.description,
+                descBullets: item.technologies,
+                companylogo: item.logo
+              }}
+              index={index}
+              data-testid="experience-card-mock"
+            />
           ))}
         </div>
       </motion.div>

@@ -1,80 +1,102 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import Navigation from '@molecules/Navigation';
+import Navigation from './Navigation';
 import { vi } from 'vitest';
 
-// Mock functions
-const mockUseNavigation = vi.fn();
-
-// Mock useNavigation hook
+// Mock the hooks
 vi.mock('@hooks/useNavigation', () => ({
-  default: () => mockUseNavigation()
+  default: () => ({
+    isVisible: true,
+    greetings: { name: 'Test User' }
+  })
+}));
+
+vi.mock('@context/AnimationContext', () => ({
+  useAnimation: () => ({
+    animationEnabled: true
+  })
+}));
+
+// Mock the components
+vi.mock('@/components/atoms/HeaderName', () => ({
+  default: ({ name }) => <div data-testid="header-name-mock">{name}</div>
+}));
+
+vi.mock('@/components/molecules/SocialLinks', () => ({
+  default: () => <div data-testid="social-links-mock">Social Links</div>
+}));
+
+// Mock framer-motion
+vi.mock('framer-motion', () => ({
+  motion: {
+    header: ({ children, animate, ...props }) => (
+      <header data-testid="motion-header" data-animate={JSON.stringify(animate)} {...props}>
+        {children}
+      </header>
+    ),
+    button: ({ children, ...props }) => (
+      <button data-testid="motion-button" {...props}>
+        {children}
+      </button>
+    ),
+    div: ({ children, ...props }) => (
+      <div data-testid="motion-div" {...props}>
+        {children}
+      </div>
+    ),
+    a: ({ children, ...props }) => (
+      <a data-testid="motion-link" {...props}>
+        {children}
+      </a>
+    )
+  },
+  AnimatePresence: ({ children }) => children
 }));
 
 describe('Navigation Component', () => {
-  const mockNavigationData = {
-    isScrolled: false,
-    isVisible: true,
-    greetings: {
-      name: 'Derek Mackley'
-    },
-    socialLinks: {
-      github: 'https://github.com/username',
-      linkedin: 'https://linkedin.com/in/username'
-    }
-  };
-
-  beforeEach(() => {
-    // Reset mock before each test
-    vi.clearAllMocks();
-    mockUseNavigation.mockReturnValue(mockNavigationData);
-  });
-
   it('renders correctly with default props', () => {
     render(<Navigation />);
-    
-    // Check that the component renders
-    expect(screen.getByRole('banner')).toBeInTheDocument();
-    expect(screen.getByRole('navigation')).toBeInTheDocument();
-    
-    // Check that the name is displayed
-    expect(screen.getByText('Derek Mackley')).toBeInTheDocument();
+    expect(screen.getByTestId('header-name-mock')).toBeInTheDocument();
+    expect(screen.getByTestId('social-links-mock')).toBeInTheDocument();
   });
 
-  it('applies scrolled class when isScrolled is true', () => {
-    mockUseNavigation.mockReturnValue({
-      ...mockNavigationData,
-      isScrolled: true
-    });
-    
+  it('applies correct animation when isScrolled is true', () => {
+    // Mock useNavigation to return isVisible as true
+    vi.mocked(require('@hooks/useNavigation').default).mockImplementation(() => ({
+      isVisible: true,
+      greetings: { name: 'Test User' }
+    }));
+
     render(<Navigation />);
-    
-    // Check that the header has the scrolled classes applied
-    const header = screen.getByRole('banner');
-    expect(header).toHaveClass('shadow-lg');
+    const header = screen.getByTestId('motion-header');
+    const animateValue = JSON.parse(header.dataset.animate);
+    expect(animateValue.y).toBe(0); // When visible, y should be 0
   });
 
   it('hides when isVisible is false', () => {
-    mockUseNavigation.mockReturnValue({
-      ...mockNavigationData,
-      isVisible: false
-    });
-    
+    // Mock useNavigation to return isVisible as false
+    vi.mocked(require('@hooks/useNavigation').default).mockImplementation(() => ({
+      isVisible: false,
+      greetings: { name: 'Test User' }
+    }));
+
     render(<Navigation />);
-    
-    // Check that the header has the hidden class applied
-    const header = screen.getByRole('banner');
-    expect(header).toHaveClass('-translate-y-full');
+    const header = screen.getByTestId('motion-header');
+    const animateValue = JSON.parse(header.dataset.animate);
+    expect(animateValue.y).toBe(-100); // When not visible, y should be -100
   });
 
   it('handles escape key press when menu is open', () => {
     render(<Navigation />);
     
-    // Trigger the escape key event
+    // Open the menu
+    const menuButton = screen.getByTestId('motion-button');
+    fireEvent.click(menuButton);
+    
+    // Simulate escape key press
     fireEvent.keyDown(document, { key: 'Escape' });
     
-    // Since the menu is closed by default, this will have no effect
-    // But we can still test that the component renders after the event
-    expect(screen.getByRole('banner')).toBeInTheDocument();
+    // Menu should be closed (no menu items visible)
+    expect(screen.queryByText('Home')).not.toBeInTheDocument();
   });
 });

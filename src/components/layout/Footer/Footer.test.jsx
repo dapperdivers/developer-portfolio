@@ -1,11 +1,22 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import Footer from '@molecules/Footer';
+import Footer from '@layout/Footer';
 import { vi } from 'vitest';
 
 // Create mock functions for hooks
 const mockUseFooter = vi.fn();
 const mockUseCallbackHandlers = vi.fn();
+
+// Mock framer-motion
+vi.mock('framer-motion', () => ({
+  motion: {
+    footer: ({ children, ...props }) => <footer {...props}>{children}</footer>,
+    div: ({ children, ...props }) => <div {...props}>{children}</div>,
+    a: ({ children, ...props }) => <a {...props}>{children}</a>,
+    span: ({ children, ...props }) => <span {...props}>{children}</span>
+  },
+  AnimatePresence: ({ children }) => <>{children}</>
+}));
 
 // Mock the useFooter hook
 vi.mock('@hooks/useFooter', () => ({
@@ -26,6 +37,13 @@ vi.mock('@molecules/SocialLinks', () => ({
 vi.mock('react-icons/fa', () => ({
   FaHeart: () => <svg data-testid="heart-icon" />,
   FaChevronUp: () => <svg data-testid="up-icon" />
+}));
+
+// Mock AnimationContext
+vi.mock('@context/AnimationContext', () => ({
+  useAnimation: () => ({
+    animationEnabled: true
+  })
 }));
 
 describe('Footer Component', () => {

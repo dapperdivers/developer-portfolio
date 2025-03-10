@@ -3,6 +3,14 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import ProjectsCard from '@molecules/ProjectsCard';
 import { vi } from 'vitest';
 
+// Mock the animation variants
+vi.mock('@constants/animations', () => ({
+  slideUpVariants: {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0 }
+  }
+}));
+
 // Mock the Card component
 vi.mock('@atoms/Card', () => ({
   default: ({ children, className, animation, hoverable, shadow }) => (
@@ -53,6 +61,14 @@ vi.mock('@atoms/ResponsiveImage', () => ({
 // Mock the useIntersectionObserver hook
 vi.mock('@hooks/useIntersectionObserver', () => ({
   default: () => [vi.fn(), true] // [ref, isInView]
+}));
+
+// Mock AnimationContext
+vi.mock('@context/AnimationContext', () => ({
+  useAnimation: () => ({
+    animationEnabled: true,
+    getAnimationDelay: (index) => `${index * 0.1}s`
+  })
 }));
 
 describe('ProjectsCard Integration Tests', () => {
@@ -163,18 +179,28 @@ describe('ProjectsCard Integration Tests', () => {
   });
 
   it('passes correct animation properties based on index', () => {
-    render(<ProjectsCard data={mockProjectData} index={2} />);
+    const { rerender } = render(<ProjectsCard data={mockProjectData} index={0} />);
     
-    const card = screen.getByTestId('card-mock');
-    const animationData = JSON.parse(card.getAttribute('data-animation'));
+    const firstCard = screen.getByTestId('card-mock');
+    const firstAnimationData = JSON.parse(firstCard.getAttribute('data-animation') || '{}');
     
-    // Check that animation object is structured correctly
-    expect(animationData).toHaveProperty('initial');
-    expect(animationData).toHaveProperty('animate');
-    expect(animationData).toHaveProperty('transition');
+    // Check first card animation properties
+    expect(firstAnimationData.transition.delay).toBe('0s');
+    expect(firstAnimationData.initial).toEqual({ opacity: 0, y: 50 });
+    expect(firstAnimationData.whileInView).toEqual({ opacity: 1, y: 0 });
+    expect(firstAnimationData.viewport).toEqual({ once: true });
     
-    // Check transition delay is affected by index
-    expect(animationData.transition.delay).toBe(0.1 * (2 % 3));
+    // Rerender with different index
+    rerender(<ProjectsCard data={mockProjectData} index={2} />);
+    
+    const secondCard = screen.getByTestId('card-mock');
+    const secondAnimationData = JSON.parse(secondCard.getAttribute('data-animation') || '{}');
+    
+    // Check second card animation properties
+    expect(secondAnimationData.transition.delay).toBe('0.2s');
+    expect(secondAnimationData.initial).toEqual({ opacity: 0, y: 50 });
+    expect(secondAnimationData.whileInView).toEqual({ opacity: 1, y: 0 });
+    expect(secondAnimationData.viewport).toEqual({ once: true });
   });
 
   it('applies correct accessibility attributes', () => {

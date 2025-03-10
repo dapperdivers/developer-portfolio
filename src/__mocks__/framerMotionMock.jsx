@@ -74,7 +74,9 @@ export const useAnimation = () => ({
   stop: vi.fn()
 });
 
-export const useInView = () => [true, { ref: React.createRef() }];
+export const useInView = (ref, options) => {
+  return true; // Mock always returns true for inView
+};
 
 export const useScroll = () => ({
   scrollY: { get: () => 0, onChange: vi.fn() },

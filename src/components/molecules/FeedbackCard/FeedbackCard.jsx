@@ -5,7 +5,7 @@ import { useAnimation } from '@context/AnimationContext';
 import Card from '@atoms/Card';
 import RatingStars from '@atoms/RatingStars';
 import FeedbackQuote from '@molecules/FeedbackQuote';
-import FeedbackAuthor from '@molecules/FeedbackAuthor';
+import FeedbackAuthor from '@molecules/FeedbackAuthor/FeedbackAuthor';
 import FeedbackHighlight from '@molecules/FeedbackHighlight';
 import useIntersectionObserver from "@hooks/useIntersectionObserver";
 import './FeedbackCard.css';
