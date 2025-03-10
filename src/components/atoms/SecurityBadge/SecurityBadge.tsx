@@ -80,20 +80,6 @@ const SecurityBadge: FC<SecurityBadgeProps> = ({
     }
   };
   
-  // Pulse animation variants for scanning state
-  const pulseVariants: Variants = {
-    pulse: {
-      scale: [1, 1.15, 1],
-      opacity: [0.8, 1, 0.8],
-      filter: ["brightness(0.9)", "brightness(1.4)", "brightness(0.9)"],
-      transition: {
-        duration: 1.5,
-        repeat: Infinity,
-        ease: "easeInOut"
-      }
-    }
-  };
-  
   // Hover animation
   const hoverVariants = hoverEffect && shouldAnimate ? {
     whileHover: { 

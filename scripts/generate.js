@@ -638,36 +638,10 @@ async function generateTestFile(componentPath, componentName, useTypeScript = tr
   const testFilepath = path.join(componentPath, testFilename);
   
   const testTemplate = `import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { screen, fireEvent } from '@testing-library/react';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import ${componentName} from './${componentName}';
-import { AnimationProvider } from '@context/AnimationContext';
-
-// Mock the AnimationContext to test animation behavior
-vi.mock('@context/AnimationContext', () => ({
-  useAnimation: vi.fn().mockReturnValue({
-    animationEnabled: true,
-    shouldReduceMotion: false,
-    fadeInVariants: {
-      hidden: { opacity: 0 },
-      visible: { opacity: 1 }
-    },
-    slideUpVariants: {
-      hidden: { opacity: 0, y: 20 },
-      visible: { opacity: 1, y: 0 }
-    }
-  }),
-  AnimationProvider: ({ children }) => <div data-testid="animation-provider">{children}</div>
-}));
-
-// Helper function to render with animation context
-const renderWithAnimationContext = (ui) => {
-  return render(
-    <AnimationProvider>
-      {ui}
-    </AnimationProvider>
-  );
-};
+import { renderWithProviders } from '@/test/setup';
 
 describe('${componentName} Component', () => {
   beforeEach(() => {
@@ -676,61 +650,30 @@ describe('${componentName} Component', () => {
   });
 
   it('renders without crashing', () => {
-    renderWithAnimationContext(<${componentName}>Test content</${componentName}>);
+    renderWithProviders(<${componentName}>Test content</${componentName}>);
     expect(screen.getByText('Test content')).toBeInTheDocument();
   });
   
   it('applies custom className', () => {
-    const { container } = renderWithAnimationContext(<${componentName} className="custom-class">Test</${componentName}>);
+    const { container } = renderWithProviders(<${componentName} className="custom-class">Test</${componentName}>);
     const element = container.querySelector('.${componentName.toLowerCase()}');
     expect(element).toHaveClass('custom-class');
     expect(element).toHaveClass('${componentName.toLowerCase()}');
   });
   
-  it('renders children correctly', () => {
-    const testId = 'test-child';
-    renderWithAnimationContext(
-      <${componentName}>
-        <div data-testid={testId}>Child component</div>
-      </${componentName}>
+  it('respects animation settings', () => {
+    const { container } = renderWithProviders(
+      <${componentName}>Test with animations disabled</${componentName}>,
+      { animationEnabled: false }
     );
     
-    expect(screen.getByTestId(testId)).toBeInTheDocument();
-    expect(screen.getByTestId(testId)).toHaveTextContent('Child component');
+    const element = container.querySelector('.${componentName.toLowerCase()}');
+    expect(element).toHaveAttribute('data-motion');
+    
+    const motionProps = JSON.parse(element?.getAttribute('data-motion') || '{}');
+    expect(motionProps.initial).toBe('visible');
   });
-
-  it('uses motion component with correct animation props', () => {
-    const { container } = renderWithAnimationContext(<${componentName}>Test</${componentName}>);
-    const motionElement = container.querySelector('.${componentName.toLowerCase()}');
-    
-    // Check that it's using framer-motion
-    // Note: We can't directly test for motion props in JSDOM, but we can check for data attributes
-    expect(motionElement).toBeTruthy();
-    
-    // The component should have the animation className
-    expect(motionElement).toHaveClass('${componentName.toLowerCase()}');
-  });
-  
-  it('respects AnimationContext settings', () => {
-    // Mock AnimationContext with animations disabled
-    const useAnimationMock = vi.fn().mockReturnValueOnce({
-      animationEnabled: false,
-      shouldReduceMotion: true,
-      fadeInVariants: { 
-        hidden: { opacity: 0 },
-        visible: { opacity: 1 }
-      }
-    });
-    
-    require('@context/AnimationContext').useAnimation.mockImplementation(useAnimationMock);
-    
-    renderWithAnimationContext(<${componentName}>Test with animations disabled</${componentName}>);
-    
-    // Check that useAnimation was called
-    expect(useAnimationMock).toHaveBeenCalled();
-  });
-});
-`;
+});`;
   
   try {
     await fs.writeFile(testFilepath, testTemplate);

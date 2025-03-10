@@ -2,7 +2,6 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
 import { useAnimation } from '@context//AnimationContext';
-
 import Skill from '@atoms/Skill';
 import './SkillCard.css';
 
@@ -27,29 +26,14 @@ const SkillCard = ({
   className = '' // Default to empty string for optional className
 }) => {
   // Get animation settings from context
-  const { animationEnabled, getAnimationDelay } = useAnimation();
+  const { animationEnabled, getAnimationDelay, slideUpVariants } = useAnimation();
   
   // Determine if we should animate
   const shouldAnimate = animationEnabled && !reducedMotion;
   
   // Animation variants
   const cardVariants = {
-    hidden: { 
-      opacity: 0,
-      y: 20,
-      scale: 0.9
-    },
-    visible: { 
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: {
-        type: 'spring',
-        stiffness: 300,
-        damping: 20,
-        delay: index * 0.1 // Stagger based on index
-      }
-    },
+    ...slideUpVariants,
     hover: {
       y: -5,
       scale: 1.02,
@@ -96,7 +80,7 @@ const SkillCard = ({
       whileHover={shouldAnimate ? "hover" : false}
       whileTap={shouldAnimate ? "tap" : false}
       variants={cardVariants}
-      transition={{ duration: 0.3 }}
+      {...getAnimationDelay(index)}
     >
       <div className="skill-card-icon">
         <Skill 

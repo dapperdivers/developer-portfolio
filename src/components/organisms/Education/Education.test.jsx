@@ -1,7 +1,8 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import Education from '@organisms/Education';
 import { vi } from 'vitest';
+import { renderWithProviders } from '@/tests/unit/setup';
 
 // Create mock function
 const mockUseEducation = vi.fn();
@@ -35,6 +36,35 @@ vi.mock('@context/PortfolioContext', () => ({
   useEducation: () => mockUseEducation()
 }));
 
+// Mock framer-motion
+vi.mock('framer-motion', () => ({
+  motion: {
+    div: ({ children, variants, initial, animate, ...props }) => (
+      <div 
+        data-testid="motion-div"
+        data-variants={JSON.stringify(variants)}
+        data-initial={JSON.stringify(initial)}
+        data-animate={JSON.stringify(animate)}
+        {...props}
+      >
+        {children}
+      </div>
+    ),
+    p: ({ children, variants, initial, animate, ...props }) => (
+      <p 
+        data-testid="motion-p"
+        data-variants={JSON.stringify(variants)}
+        data-initial={JSON.stringify(initial)}
+        data-animate={JSON.stringify(animate)}
+        {...props}
+      >
+        {children}
+      </p>
+    )
+  },
+  useInView: () => [null, true]
+}));
+
 describe('Education Container Component', () => {
   const mockEducationData = [
     {
@@ -60,7 +90,7 @@ describe('Education Container Component', () => {
     // Mock the hook to return education data
     mockUseEducation.mockReturnValue(mockEducationData);
     
-    render(<Education />);
+    renderWithProviders(<Education />);
     
     // Check that the section renders
     expect(screen.getByTestId('education-section')).toBeInTheDocument();
@@ -76,7 +106,7 @@ describe('Education Container Component', () => {
     // Mock the hook to return empty array
     mockUseEducation.mockReturnValue([]);
     
-    render(<Education />);
+    renderWithProviders(<Education />);
     
     // Check that the section renders
     expect(screen.getByTestId('education-section')).toBeInTheDocument();
@@ -91,14 +121,49 @@ describe('Education Container Component', () => {
     expect(screen.queryByTestId(/education-card-/)).not.toBeInTheDocument();
   });
 
-  it('passes animation props to the Section component', () => {
+  it('applies correct animations when enabled', () => {
     mockUseEducation.mockReturnValue(mockEducationData);
     
-    render(<Education />);
+    renderWithProviders(<Education />, { animationEnabled: true });
     
-    // Check that the section has the correct props
-    const section = screen.getByTestId('education-section');
-    expect(section).toHaveAttribute('id', 'education');
-    expect(section).toHaveAttribute('class', 'education-section');
+    const container = screen.getByTestId('motion-div');
+    const initial = JSON.parse(container.dataset.initial);
+    const animate = JSON.parse(container.dataset.animate);
+    const variants = JSON.parse(container.dataset.variants);
+
+    expect(initial).toBe('hidden');
+    expect(animate).toBe('visible');
+    expect(variants).toEqual(expect.objectContaining({
+      hidden: expect.any(Object),
+      visible: expect.any(Object)
+    }));
+  });
+
+  it('disables animations when animation context is disabled', () => {
+    mockUseEducation.mockReturnValue(mockEducationData);
+    
+    renderWithProviders(<Education />, { animationEnabled: false });
+    
+    const container = screen.getByTestId('motion-div');
+    expect(container.dataset.initial).toBe('false');
+    expect(container.dataset.animate).toBe('false');
+  });
+
+  it('applies correct animations to empty state message', () => {
+    mockUseEducation.mockReturnValue([]);
+    
+    renderWithProviders(<Education />, { animationEnabled: true });
+    
+    const message = screen.getByTestId('motion-p');
+    const initial = JSON.parse(message.dataset.initial);
+    const animate = JSON.parse(message.dataset.animate);
+    const variants = JSON.parse(message.dataset.variants);
+
+    expect(initial).toBe('hidden');
+    expect(animate).toBe('visible');
+    expect(variants).toEqual(expect.objectContaining({
+      hidden: expect.any(Object),
+      visible: expect.any(Object)
+    }));
   });
 });

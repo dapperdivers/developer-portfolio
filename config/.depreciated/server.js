@@ -14,8 +14,8 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3001;
-const ALLOWED_DOMAINS = (process.env.ALLOWED_DOMAINS || 'http://localhost:3001,http://localhost:3000').split(',');
+const PORT = process.env.PORT || 3000;
+const ALLOWED_DOMAINS = (process.env.ALLOWED_DOMAINS || 'http://localhost:3000').split(',');
 
 // Trust first proxy for secure headers
 app.set('trust proxy', 1);

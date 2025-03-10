@@ -14,7 +14,7 @@ import './Education.css';
  */
 const Education = () => {
   const educationData = useEducation();
-  const { animationEnabled } = useAnimation();
+  const { animationEnabled, fadeInVariants, slideUpVariants } = useAnimation();
   const containerRef = useRef(null);
   const isInView = useInView(containerRef, { 
     once: true,
@@ -24,31 +24,24 @@ const Education = () => {
   
   // Animation variants
   const containerVariants = {
-    hidden: { 
-      opacity: 0 
-    },
-    visible: { 
-      opacity: 1,
+    ...fadeInVariants,
+    visible: {
+      ...fadeInVariants.visible,
       transition: {
+        ...fadeInVariants.visible.transition,
         staggerChildren: 0.2,
-        duration: 0.5,
         when: "beforeChildren"
       }
     }
   };
   
   const cardVariants = {
-    hidden: { 
-      opacity: 0, 
-      y: 20 
-    },
+    ...slideUpVariants,
     visible: (index) => ({ 
-      opacity: 1, 
-      y: 0,
+      ...slideUpVariants.visible,
       transition: {
-        duration: 0.5,
-        delay: index * 0.1,
-        ease: "easeOut"
+        ...slideUpVariants.visible.transition,
+        delay: index * 0.1
       }
     })
   };
@@ -63,9 +56,9 @@ const Education = () => {
         className="education-section"
       >
         <motion.p
-          initial={animationEnabled ? { opacity: 0 } : false}
-          animate={animationEnabled ? { opacity: 1 } : false}
-          transition={{ duration: 0.5 }}
+          variants={fadeInVariants}
+          initial={animationEnabled ? "hidden" : false}
+          animate={animationEnabled ? "visible" : false}
         >
           No education information available.
         </motion.p>

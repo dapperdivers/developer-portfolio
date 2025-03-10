@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import NetworkBackground from './NetworkBackground';
-import { AnimationProvider } from '@context/AnimationContext';
+import { AnimationProvider } from '@utils/AnimationContext';
 
 // Mock the AnimationContext to test animation behavior
 vi.mock('@context/AnimationContext', () => ({

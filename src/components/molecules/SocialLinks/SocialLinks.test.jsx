@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import SocialLinks from '@molecules/SocialLinks';
+import SocialLinks from './SocialLinks';
 import { vi } from 'vitest';
 
 // Create mock functions for hooks

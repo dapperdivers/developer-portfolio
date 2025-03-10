@@ -1,10 +1,11 @@
 import '@testing-library/jest-dom';
 import { vi } from 'vitest';
-import { setProjectAnnotations } from '@storybook/testing-react';
-import * as globalStorybookConfig from './preview';
+import { configure } from '@storybook/test';
+import type { StorybookConfig } from '@storybook/react-vite';
+import * as globalStorybookConfig from '../../../.storybook/preview';
 
 // Initialize Storybook's configuration for testing
-setProjectAnnotations(globalStorybookConfig);
+configure(globalStorybookConfig as StorybookConfig);
 
 // Mock Storybook-specific features
 vi.mock('@storybook/addon-actions', () => ({

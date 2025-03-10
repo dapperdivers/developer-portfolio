@@ -6,44 +6,53 @@ import { vi } from 'vitest';
 // Mock framer-motion
 vi.mock('framer-motion', () => ({
   motion: {
-    div: ({ children, variants, animate, initial, whileHover, ...props }) => (
-      <div data-testid="motion-div" data-animate={JSON.stringify({ variants, animate, initial })} {...props}>
+    div: ({ children, variants, initial, whileInView, viewport, ...props }) => (
+      <div 
+        data-testid="motion-div" 
+        data-animation={JSON.stringify({ variants, initial, whileInView, viewport })} 
+        {...props}
+      >
         {children}
       </div>
     )
-  },
-  useInView: () => true
+  }
 }));
 
 // Mock AnimationContext
+const mockGetAnimationDelay = vi.fn((index) => index * 0.1);
 vi.mock('@context/AnimationContext', () => ({
   useAnimation: () => ({
     animationEnabled: true,
-    getAnimationDelay: (index) => `${index * 0.1}s`
+    getAnimationDelay: mockGetAnimationDelay
   })
 }));
 
 // Mock the Card component
 vi.mock('@atoms/Card', () => ({
-  default: ({ children, className }) => (
-    <div data-testid="card" className={className}>
+  default: ({ children, className, ...props }) => (
+    <div data-testid="card" className={className} {...props}>
       {children}
     </div>
   )
 }));
 
+// Mock color hook with spy functions
+const mockGetColorFromImage = vi.fn();
+const mockResetToDefaultColor = vi.fn();
 vi.mock('@hooks/useImageColor', () => ({
   default: () => ({
-    color: [0, 100, 200],
-    getColorFromImage: vi.fn(),
-    resetToDefaultColor: vi.fn(),
-    rgbToString: () => 'rgb(0, 100, 200)'
+    color: { r: 0, g: 100, b: 200 },
+    getColorFromImage: mockGetColorFromImage,
+    resetToDefaultColor: mockResetToDefaultColor,
+    rgbToString: () => '0, 100, 200'
   })
 }));
 
+// Mock callback handlers with spy function
+const mockHandleExternalLink = vi.fn();
 vi.mock('@hooks/useCallbackHandlers', () => ({
   default: () => ({
-    handleExternalLink: vi.fn()
+    handleExternalLink: mockHandleExternalLink
   })
 }));
 
@@ -65,14 +74,9 @@ describe('ExperienceCard Component', () => {
   it('renders the experience card with correct information', () => {
     render(<ExperienceCard data={mockExperienceData} index={0} />);
     
-    // Check if the card renders
-    const card = screen.getByTestId('experience-card');
-    expect(card).toBeInTheDocument();
-    
-    // Check for description
+    expect(screen.getByTestId('card')).toBeInTheDocument();
     expect(screen.getByText('Working on exciting projects')).toBeInTheDocument();
     
-    // Check if all description bullets are rendered
     mockExperienceData.descBullets.forEach(bullet => {
       expect(screen.getByText(bullet)).toBeInTheDocument();
     });
@@ -91,20 +95,16 @@ describe('ExperienceCard Component', () => {
   it('applies correct accessibility attributes', () => {
     render(<ExperienceCard data={mockExperienceData} index={0} />);
     
-    const card = screen.getByTestId('experience-card');
+    const card = screen.getByTestId('card');
     expect(card).toHaveAttribute('data-variant', 'default');
   });
 
   it('applies animation with correct delay based on index', () => {
-    const { rerender } = render(<ExperienceCard data={mockExperienceData} index={0} />);
+    render(<ExperienceCard data={mockExperienceData} index={2} />);
     
-    const firstCard = screen.getByTestId('experience-card');
-    expect(firstCard.style.transitionDelay).toBe('0s');
-    
-    rerender(<ExperienceCard data={mockExperienceData} index={2} />);
-    
-    const secondCard = screen.getByTestId('experience-card');
-    expect(secondCard.style.transitionDelay).toBe('0.2s');
+    const card = screen.getByTestId('motion-div');
+    const animation = JSON.parse(card.getAttribute('data-animation'));
+    expect(animation.variants.visible.transition.delay).toBe(0.2);
   });
 
   it('handles missing company logo gracefully', () => {
@@ -135,7 +135,7 @@ describe('ExperienceCard Component', () => {
     const colorOverride = { r: 255, g: 0, b: 0 };
     render(<ExperienceCard data={mockExperienceData} index={0} colorOverride={colorOverride} />);
     
-    const card = screen.getByTestId('experience-card');
+    const card = screen.getByTestId('card');
     expect(card.style.getPropertyValue('--card-accent-color')).toBe('rgb(255, 0, 0)');
     expect(card.style.getPropertyValue('--card-accent-color-rgb')).toBe('255, 0, 0');
   });
@@ -143,46 +143,38 @@ describe('ExperienceCard Component', () => {
   it('applies shadow class when shadow prop is true', () => {
     render(<ExperienceCard data={mockExperienceData} index={0} shadow={true} />);
     
-    const card = screen.getByTestId('experience-card');
+    const card = screen.getByTestId('card');
     expect(card.className).toContain('experience-card--shadow');
   });
 
   it('applies variant class when variant prop is provided', () => {
     render(<ExperienceCard data={mockExperienceData} index={0} variant="custom" />);
     
-    const card = screen.getByTestId('experience-card');
+    const card = screen.getByTestId('card');
     expect(card.className).toContain('experience-card--custom');
     expect(card).toHaveAttribute('data-variant', 'custom');
   });
 
-  it('handles image interactions', () => {
+  it('calls color handlers on image load', () => {
     render(<ExperienceCard data={mockExperienceData} index={0} />);
-    
-    const image = screen.getByAltText('Test Company logo');
-    
-    // Just verify the image renders - we can't easily test the events
-    // without triggering actual browser behavior
-    expect(image).toBeInTheDocument();
-  });
-
-  it('calls color handlers on image load and unmount', () => {
-    const { unmount } = render(<ExperienceCard data={mockExperienceData} index={0} />);
     
     const image = screen.getByAltText('Test Company logo');
     fireEvent.load(image);
     
-    expect(vi.fn()).toHaveBeenCalledWith('/test-logo.png');
-    
-    unmount();
-    expect(vi.fn()).toHaveBeenCalled();
+    expect(mockGetColorFromImage).toHaveBeenCalledWith('/test-logo.png');
   });
 
   it('handles external link clicks', () => {
-    render(<ExperienceCard data={{ ...mockExperienceData, url: 'https://example.com' }} index={0} />);
+    const dataWithUrl = {
+      ...mockExperienceData,
+      url: 'https://example.com'
+    };
     
-    const card = screen.getByTestId('experience-card');
+    render(<ExperienceCard data={dataWithUrl} index={0} />);
+    
+    const card = screen.getByTestId('card');
     fireEvent.click(card);
     
-    expect(vi.fn()).toHaveBeenCalledWith('https://example.com');
+    expect(mockHandleExternalLink).toHaveBeenCalledWith('https://example.com');
   });
 });

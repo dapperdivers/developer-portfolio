@@ -1,7 +1,8 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { screen, fireEvent } from '@testing-library/react';
 import Navigation from './Navigation';
 import { vi } from 'vitest';
+import { renderWithProviders } from '@/tests/unit/setup';
 
 // Mock the hooks
 const mockUseNavigation = vi.fn(() => ({
@@ -15,7 +16,11 @@ vi.mock('@hooks/useNavigation', () => ({
 
 vi.mock('@context/AnimationContext', () => ({
   useAnimation: () => ({
-    animationEnabled: true
+    animationEnabled: true,
+    slideUpVariants: {
+      hidden: { y: -20, opacity: 0 },
+      visible: { y: 0, opacity: 1 }
+    }
   })
 }));
 
@@ -31,13 +36,24 @@ vi.mock('@/components/molecules/SocialLinks', () => ({
 // Mock framer-motion
 vi.mock('framer-motion', () => ({
   motion: {
-    header: ({ children, animate, ...props }) => (
-      <header data-testid="motion-header" data-animate={JSON.stringify(animate)} {...props}>
+    header: ({ children, animate, initial, variants, ...props }) => (
+      <header 
+        data-testid="motion-header" 
+        data-animate={JSON.stringify(animate)}
+        data-initial={JSON.stringify(initial)}
+        data-variants={JSON.stringify(variants)}
+        {...props}
+      >
         {children}
       </header>
     ),
-    button: ({ children, ...props }) => (
-      <button data-testid="motion-button" {...props}>
+    button: ({ children, whileHover, whileTap, ...props }) => (
+      <button 
+        data-testid="motion-button"
+        data-while-hover={JSON.stringify(whileHover)}
+        data-while-tap={JSON.stringify(whileTap)}
+        {...props}
+      >
         {children}
       </button>
     ),
@@ -46,8 +62,13 @@ vi.mock('framer-motion', () => ({
         {children}
       </div>
     ),
-    a: ({ children, ...props }) => (
-      <a data-testid="motion-link" {...props}>
+    a: ({ children, whileHover, whileTap, ...props }) => (
+      <a 
+        data-testid="motion-link"
+        data-while-hover={JSON.stringify(whileHover)}
+        data-while-tap={JSON.stringify(whileTap)}
+        {...props}
+      >
         {children}
       </a>
     )
@@ -68,21 +89,29 @@ describe('Navigation Component', () => {
   });
 
   it('renders correctly with default props', () => {
-    render(<Navigation />);
+    renderWithProviders(<Navigation />);
     expect(screen.getByTestId('header-name-mock')).toBeInTheDocument();
     expect(screen.getByTestId('social-links-mock')).toBeInTheDocument();
   });
 
-  it('applies correct animation when isScrolled is true', () => {
+  it('applies correct animation when visible', () => {
     mockUseNavigation.mockImplementation(() => ({
       isVisible: true,
       greetings: { name: 'Test User' }
     }));
 
-    render(<Navigation />);
+    renderWithProviders(<Navigation />);
     const header = screen.getByTestId('motion-header');
     const animateValue = JSON.parse(header.dataset.animate);
-    expect(animateValue.y).toBe(0); // When visible, y should be 0
+    const initialValue = JSON.parse(header.dataset.initial);
+    const variants = JSON.parse(header.dataset.variants);
+
+    expect(initialValue).toBe('hidden');
+    expect(animateValue).toBe('visible');
+    expect(variants).toEqual({
+      hidden: { y: -20, opacity: 0 },
+      visible: { y: 0, opacity: 1 }
+    });
   });
 
   it('hides when isVisible is false', () => {
@@ -91,10 +120,10 @@ describe('Navigation Component', () => {
       greetings: { name: 'Test User' }
     }));
 
-    render(<Navigation />);
+    renderWithProviders(<Navigation />);
     const header = screen.getByTestId('motion-header');
     const animateValue = JSON.parse(header.dataset.animate);
-    expect(animateValue.y).toBe(-100); // When not visible, y should be -100
+    expect(animateValue).toBe('hidden');
   });
 
   it('handles escape key press when menu is open', () => {
@@ -105,12 +134,23 @@ describe('Navigation Component', () => {
       setIsMenuOpen: vi.fn()
     }));
 
-    render(<Navigation />);
+    renderWithProviders(<Navigation />);
     
     // Simulate escape key press
     fireEvent.keyDown(document, { key: 'Escape' });
     
     // Menu should be closed (no menu items visible)
     expect(screen.queryByText('Home')).not.toBeInTheDocument();
+  });
+
+  it('applies hover and tap animations to buttons', () => {
+    renderWithProviders(<Navigation />);
+    
+    const button = screen.getByTestId('motion-button');
+    const whileHover = JSON.parse(button.dataset.whileHover);
+    const whileTap = JSON.parse(button.dataset.whileTap);
+
+    expect(whileHover).toEqual({ scale: 1.05 });
+    expect(whileTap).toEqual({ scale: 0.95 });
   });
 });

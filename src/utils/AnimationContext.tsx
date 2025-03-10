@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useContext, useEffect } from 'react';
+import { fadeInVariants, scaleVariants, slideUpVariants, getAnimationDelay } from './animations';
 
 interface AnimationSettings {
   enabled: boolean;
@@ -12,6 +13,10 @@ interface AnimationContextType extends AnimationSettings {
   setAnimationSettings: React.Dispatch<React.SetStateAction<AnimationSettings>>;
   shouldAnimate: (priority?: 'high' | 'medium' | 'low') => boolean;
   getOptimizedVariants: (variants: any) => any;
+  fadeInVariants: typeof fadeInVariants;
+  scaleVariants: typeof scaleVariants;
+  slideUpVariants: typeof slideUpVariants;
+  getAnimationDelay: typeof getAnimationDelay;
 }
 
 export const AnimationContext = React.createContext<AnimationContextType>({
@@ -23,6 +28,10 @@ export const AnimationContext = React.createContext<AnimationContextType>({
   setAnimationSettings: () => {},
   shouldAnimate: () => true,
   getOptimizedVariants: (variants) => variants,
+  fadeInVariants,
+  scaleVariants,
+  slideUpVariants,
+  getAnimationDelay,
 });
 
 export const AnimationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -92,7 +101,11 @@ export const AnimationProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         };
       }
       return variants;
-    }
+    },
+    fadeInVariants,
+    scaleVariants,
+    slideUpVariants,
+    getAnimationDelay,
   }), [animationSettings]);
 
   return (
@@ -107,5 +120,11 @@ export const useAnimation = () => {
   if (!context) {
     throw new Error('useAnimation must be used within an AnimationProvider');
   }
-  return context;
+  return {
+    ...context,
+    fadeInVariants,
+    scaleVariants,
+    slideUpVariants,
+    getAnimationDelay,
+  };
 }; 

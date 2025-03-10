@@ -1,93 +1,96 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import {  act } from '@testing-library/react';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import MatrixStream from './MatrixStream';
-import { AnimationProvider } from '@context/AnimationContext';
+import { renderWithProviders } from '@/tests/unit/setup';
 
-// Mock the AnimationContext to test animation behavior
-vi.mock('@context/AnimationContext', () => ({
-  useAnimation: vi.fn().mockReturnValue({
-    animationEnabled: true,
-    shouldReduceMotion: false,
-    fadeInVariants: {
-      hidden: { opacity: 0 },
-      visible: { opacity: 1 }
-    },
-    slideUpVariants: {
-      hidden: { opacity: 0, y: 20 },
-      visible: { opacity: 1, y: 0 }
-    }
-  }),
-  AnimationProvider: ({ children }) => <div data-testid="animation-provider">{children}</div>
-}));
-
-// Helper function to render with animation context
-const renderWithAnimationContext = (ui) => {
-  return render(
-    <AnimationProvider>
-      {ui}
-    </AnimationProvider>
-  );
+// Mock the canvas context
+const mockContext = {
+  fillStyle: '',
+  font: '',
+  fillText: vi.fn(),
+  fillRect: vi.fn(),
+  clearRect: vi.fn(),
+  textAlign: ''
 };
+
+// Mock canvas getContext
+HTMLCanvasElement.prototype.getContext = vi.fn().mockReturnValue(mockContext);
+
+// Mock requestAnimationFrame
+global.requestAnimationFrame = vi.fn(() => 1);
+
+// Mock cancelAnimationFrame
+global.cancelAnimationFrame = vi.fn();
 
 describe('MatrixStream Component', () => {
   beforeEach(() => {
-    // Reset any mocks before each test
     vi.clearAllMocks();
+    mockContext.fillStyle = '';
+    mockContext.font = '';
+    mockContext.textAlign = '';
   });
 
   it('renders without crashing', () => {
-    renderWithAnimationContext(<MatrixStream>Test content</MatrixStream>);
-    expect(screen.getByText('Test content')).toBeInTheDocument();
+    const { container } = renderWithProviders(<MatrixStream />);
+    expect(container.querySelector('.matrix-stream-container')).toBeInTheDocument();
+    expect(container.querySelector('.matrix-stream-canvas')).toBeInTheDocument();
   });
   
   it('applies custom className', () => {
-    const { container } = renderWithAnimationContext(<MatrixStream className="custom-class">Test</MatrixStream>);
-    const element = container.querySelector('.matrixstream');
+    const { container } = renderWithProviders(<MatrixStream className="custom-class" />);
+    const element = container.querySelector('.matrix-stream-container');
     expect(element).toHaveClass('custom-class');
-    expect(element).toHaveClass('matrixstream');
   });
   
-  it('renders children correctly', () => {
-    const testId = 'test-child';
-    renderWithAnimationContext(
-      <MatrixStream>
-        <div data-testid={testId}>Child component</div>
-      </MatrixStream>
-    );
-    
-    expect(screen.getByTestId(testId)).toBeInTheDocument();
-    expect(screen.getByTestId(testId)).toHaveTextContent('Child component');
+  it('applies background class when isBackground is true', () => {
+    const { container } = renderWithProviders(<MatrixStream isBackground />);
+    const element = container.querySelector('.matrix-stream-container');
+    expect(element).toHaveClass('matrix-stream-background');
   });
 
-  it('uses motion component with correct animation props', () => {
-    const { container } = renderWithAnimationContext(<MatrixStream>Test</MatrixStream>);
-    const motionElement = container.querySelector('.matrixstream');
+  it('initializes canvas with correct settings', async () => {
+    const props = {
+      color: '#00FF00',
+      fontSize: 24,
+      width: 100,
+      height: 300
+    };
+
+    renderWithProviders(<MatrixStream {...props} />);
     
-    // Check that it's using framer-motion
-    // Note: We can't directly test for motion props in JSDOM, but we can check for data attributes
-    expect(motionElement).toBeTruthy();
-    
-    // The component should have the animation className
-    expect(motionElement).toHaveClass('matrixstream');
-  });
-  
-  it('respects AnimationContext settings', () => {
-    // Mock AnimationContext with animations disabled
-    const useAnimationMock = vi.fn().mockReturnValueOnce({
-      animationEnabled: false,
-      shouldReduceMotion: true,
-      fadeInVariants: { 
-        hidden: { opacity: 0 },
-        visible: { opacity: 1 }
-      }
+    // Wait for useEffect and first animation frame
+    await act(async () => {
+      // Get the draw function that was passed to requestAnimationFrame
+      const drawFn = (global.requestAnimationFrame as ReturnType<typeof vi.fn>).mock.calls[0][0];
+      // Execute the draw function to trigger the canvas updates
+      drawFn();
     });
     
-    require('@context/AnimationContext').useAnimation.mockImplementation(useAnimationMock);
+    // Check that canvas was initialized
+    expect(HTMLCanvasElement.prototype.getContext).toHaveBeenCalledWith('2d');
     
-    renderWithAnimationContext(<MatrixStream>Test with animations disabled</MatrixStream>);
+    // Verify canvas context was configured
+    expect(mockContext.fillRect).toHaveBeenCalledWith(0, 0, props.width, props.height);
+    expect(mockContext.font).toBe('24px monospace');
+    expect(mockContext.textAlign).toBe('center');
+    expect(mockContext.fillStyle).toBe(props.color);
+
+    // Verify animation frame was requested
+    expect(requestAnimationFrame).toHaveBeenCalled();
+  });
+  
+  it('respects animation settings', () => {
+    const { container } = renderWithProviders(
+      <MatrixStream />,
+      { animationEnabled: false }
+    );
     
-    // Check that useAnimation was called
-    expect(useAnimationMock).toHaveBeenCalled();
+    const element = container.querySelector('.matrix-stream-container');
+    expect(element).toHaveAttribute('data-motion');
+    
+    const motionProps = JSON.parse(element?.getAttribute('data-motion') || '{}');
+    expect(motionProps.animate.opacity).toBe(1);
+    expect(motionProps.initial.opacity).toBe(0);
   });
 });

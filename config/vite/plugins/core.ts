@@ -24,9 +24,6 @@ interface ReactPluginOptions {
  */
 export function createReactPlugin({ isProd = false }: ReactPluginOptions = {}) {
   return react({
-    // Enable React fast refresh for better development experience
-    fastRefresh: true,
-    
     // Use automatic JSX runtime to avoid issues with react-is
     jsxRuntime: 'automatic',
     
@@ -35,10 +32,8 @@ export function createReactPlugin({ isProd = false }: ReactPluginOptions = {}) {
       plugins: [
         // Remove prop-types in production for smaller bundle size
         // Setting to false to prevent removal for easier debugging
-        isProd ? 
-          ['babel-plugin-transform-react-remove-prop-types', { removeImport: false }] : 
-          null,
-      ].filter(Boolean)
+        ...(isProd ? [['babel-plugin-transform-react-remove-prop-types', { removeImport: false }]] : [])
+      ]
     }
   });
 }

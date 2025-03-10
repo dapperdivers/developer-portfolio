@@ -8,7 +8,7 @@ import DegreeInfo from '@atoms/DegreeInfo';
 import FieldsOfStudy from '@atoms/FieldsOfStudy';
 import DateChip from '@atoms/DateChip';
 import CertificationBadge from '@molecules/CertificationBadge';
-import { useAnimation, MotionVariants } from '@context/AnimationContext';
+import { useAnimation } from '@context/AnimationContext';
 import './EducationCard.css';
 
 /**
@@ -30,21 +30,11 @@ import './EducationCard.css';
  */
 const EducationCard = ({ education, index = 0 }) => {
   const hasCertifications = education.certifications && education.certifications.length > 0;
-  const { animationEnabled, slideUpVariants, animationStaggerDelay, getAnimationDelay } = useAnimation();
-  
-  // Card wrapper variants
-  const cardWrapperVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: {
-        duration: 0.5,
-        ease: [0.175, 0.885, 0.32, 1.275],
-        delay: animationStaggerDelay * index
-      }
-    }
-  };
+  const { 
+    animationEnabled, 
+    getAnimationDelay,
+    slideUpVariants 
+  } = useAnimation();
   
   // Card inner hover variants
   const cardInnerVariants = {
@@ -107,110 +97,110 @@ const EducationCard = ({ education, index = 0 }) => {
   };
   
   return (
-    <motion.div 
-      className="education-card-wrapper" 
-      data-testid="education-card"
-      variants={animationEnabled ? cardWrapperVariants : null}
-      initial="hidden"
-      animate="visible"
+    <Card
+      className="education-card"
+      shadow
+      animation={{
+        ...slideUpVariants,
+        ...getAnimationDelay(index)
+      }}
+      animated={animationEnabled}
     >
-      <Card className="education-card" shadow>
-        <motion.div 
-          className="education-card-inner"
-          variants={animationEnabled ? cardInnerVariants : null}
-          initial="initial"
-          whileHover="hover"
-        >
-          {/* Left side - Education Icon with accent background */}
-          <div className="education-card-icon-column">
+      <motion.div 
+        className="education-card-inner"
+        variants={animationEnabled ? cardInnerVariants : null}
+        initial="initial"
+        whileHover="hover"
+      >
+        {/* Left side - Education Icon with accent background */}
+        <div className="education-card-icon-column">
+          <motion.div 
+            className="education-card-icon"
+            variants={animationEnabled ? iconVariants : null}
+            initial="initial"
+            whileHover="hover"
+          >
+            <EducationIcon className="education-icon-large" />
+          </motion.div>
+          
+          {/* Certification indicator */}
+          {hasCertifications && (
             <motion.div 
-              className="education-card-icon"
-              variants={animationEnabled ? iconVariants : null}
+              className="certifications-indicator"
+              variants={animationEnabled ? certIndicatorVariants : null}
               initial="initial"
               whileHover="hover"
             >
-              <EducationIcon className="education-icon-large" />
+              <span className="cert-count">{education.certifications.length}</span>
+              <span className="cert-label">Certifications</span>
             </motion.div>
-            
-            {/* Certification indicator */}
-            {hasCertifications && (
-              <motion.div 
-                className="certifications-indicator"
-                variants={animationEnabled ? certIndicatorVariants : null}
-                initial="initial"
-                whileHover="hover"
-              >
-                <span className="cert-count">{education.certifications.length}</span>
-                <span className="cert-label">Certifications</span>
-              </motion.div>
-            )}
+          )}
+        </div>
+        
+        {/* Right side - Content Container */}
+        <div className="education-content">
+          {/* School/University Header */}
+          <div className="education-header">
+            <SchoolHeader schoolName={education.schoolName} />
           </div>
           
-          {/* Right side - Content Container */}
-          <div className="education-content">
-            {/* School/University Header */}
-            <div className="education-header">
-              <SchoolHeader schoolName={education.schoolName} />
+          {/* Academic Information Panel */}
+          <div className="education-details-panel">
+            {/* Degree Information */}
+            <div className="degree-container">
+              <DegreeInfo degree={education.degree} />
             </div>
             
-            {/* Academic Information Panel */}
-            <div className="education-details-panel">
-              {/* Degree Information */}
-              <div className="degree-container">
-                <DegreeInfo degree={education.degree} />
-              </div>
-              
-              {/* Fields of Study (Major/Minor) */}
-              <div className="fields-container">
-                <FieldsOfStudy major={education.major} minor={education.minor} />
-              </div>
-              
-              {/* Graduation Date */}
-              <div className="graduation-date-container">
-                <DateChip date={education.duration} className="graduation-date-chip" />
-              </div>
+            {/* Fields of Study (Major/Minor) */}
+            <div className="fields-container">
+              <FieldsOfStudy major={education.major} minor={education.minor} />
             </div>
             
-            {/* Always visible Certifications Panel */}
-            {hasCertifications && (
+            {/* Graduation Date */}
+            <div className="graduation-date-container">
+              <DateChip date={education.duration} className="graduation-date-chip" />
+            </div>
+          </div>
+          
+          {/* Always visible Certifications Panel */}
+          {hasCertifications && (
+            <motion.div 
+              id="certifications-panel" 
+              className="integrated-certifications-panel"
+              variants={animationEnabled ? slideUpVariants : null}
+              initial="hidden"
+              animate="visible"
+            >
+              <div className="certifications-header">
+                <h4 className="certifications-title">Professional Certifications</h4>
+              </div>
               <motion.div 
-                id="certifications-panel" 
-                className="integrated-certifications-panel"
-                variants={animationEnabled ? slideUpVariants : null}
+                className="certifications-list"
+                variants={animationEnabled ? certListVariants : null}
                 initial="hidden"
                 animate="visible"
               >
-                <div className="certifications-header">
-                  <h4 className="certifications-title">Professional Certifications</h4>
-                </div>
-                <motion.div 
-                  className="certifications-list"
-                  variants={animationEnabled ? certListVariants : null}
-                  initial="hidden"
-                  animate="visible"
-                >
-                  {education.certifications.map((cert, i) => (
-                    <motion.div 
-                      className={`certification-item certification-item-${i}`} 
-                      key={`cert-${i}`}
-                      variants={animationEnabled ? certItemVariants : null}
-                      whileHover="hover"
-                    >
-                      <CertificationBadge 
-                        name={cert.name} 
-                        issuer={cert.issuer}
-                        date={cert.date}
-                        credentialId={cert.credentialId}
-                      />
-                    </motion.div>
-                  ))}
-                </motion.div>
+                {education.certifications.map((cert, i) => (
+                  <motion.div 
+                    className={`certification-item certification-item-${i}`} 
+                    key={`cert-${i}`}
+                    variants={animationEnabled ? certItemVariants : null}
+                    whileHover="hover"
+                  >
+                    <CertificationBadge 
+                      name={cert.name} 
+                      issuer={cert.issuer}
+                      date={cert.date}
+                      credentialId={cert.credentialId}
+                    />
+                  </motion.div>
+                ))}
               </motion.div>
-            )}
-          </div>
-        </motion.div>
-      </Card>
-    </motion.div>
+            </motion.div>
+          )}
+        </div>
+      </motion.div>
+    </Card>
   );
 };
 

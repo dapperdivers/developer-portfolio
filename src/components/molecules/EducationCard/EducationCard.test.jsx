@@ -1,7 +1,8 @@
 import React from 'react';
-import { render, screen, within } from '@testing-library/react';
-import EducationCard from '@molecules/EducationCard';
+import { screen, within } from '@testing-library/react';
+import EducationCard from './EducationCard';
 import { vi } from 'vitest';
+import { renderWithProviders } from '@/tests/unit/setup';
 
 // Mock the Card component
 vi.mock('@atoms/Card', () => ({
@@ -53,6 +54,12 @@ describe('EducationCard Component', () => {
     descBullets: [
       'Thesis on Deep Learning applications in healthcare',
       'Received Outstanding Graduate Student Award'
+    ],
+    certifications: [
+      {
+        name: 'Deep Learning Specialization',
+        issuer: 'Coursera'
+      }
     ]
   };
 
@@ -64,57 +71,70 @@ describe('EducationCard Component', () => {
   };
 
   it('renders all education information correctly', () => {
-    render(<EducationCard education={mockEducation} />);
+    renderWithProviders(<EducationCard education={mockEducation} index={0} />);
     
-    // Check that the card renders
-    expect(screen.getByTestId('education-card')).toBeInTheDocument();
-    
-    // Check for school name
     expect(screen.getByText('Stanford University')).toBeInTheDocument();
-    
-    // Mock atoms here, so we just need to check if their wrappers are present
-    expect(document.querySelector('.degree-container')).toBeInTheDocument();
-    
-    // Check for duration
+    expect(screen.getByText('Degree: Master of Computer Science')).toBeInTheDocument();
+    expect(screen.getByText('Major: Artificial Intelligence Minor: Data Science')).toBeInTheDocument();
     expect(screen.getByText('2018 - 2020')).toBeInTheDocument();
-    
-    // Check for fields container
-    expect(document.querySelector('.fields-container')).toBeInTheDocument();
+    expect(screen.getByText('Cert: Deep Learning Specialization - Coursera')).toBeInTheDocument();
   });
 
-  it('renders with minimal education info (no description or bullets)', () => {
-    render(<EducationCard education={minimalEducation} />);
+  it('applies correct animation based on index', () => {
+    const { container } = renderWithProviders(<EducationCard education={mockEducation} index={2} />);
+
+    const card = screen.getByTestId('mocked-card');
+    const animation = JSON.parse(card.dataset.animation);
+
+    // The animation context from renderWithProviders already includes slideUpVariants
+    expect(animation).toEqual({
+      variants: expect.any(Object), // We don't need to test the exact variant object
+      initial: 'hidden',
+      whileInView: 'visible',
+      viewport: { once: true },
+      transition: {
+        delay: 0.2
+      }
+    });
+  });
+
+  it('renders with minimal education info', () => {
+    renderWithProviders(<EducationCard education={minimalEducation} index={0} />);
     
-    // Check that the essential fields are rendered
     expect(screen.getByText('MIT')).toBeInTheDocument();
+    expect(screen.getByText('Degree: Bachelor of Science')).toBeInTheDocument();
+    expect(screen.getByText('Major: Computer Science')).toBeInTheDocument();
     expect(screen.getByText('2014 - 2018')).toBeInTheDocument();
-    
-    // Check that degree and fields containers exist
-    expect(document.querySelector('.degree-container')).toBeInTheDocument();
-    expect(document.querySelector('.fields-container')).toBeInTheDocument();
-    
-    // Check that certifications are not rendered
-    expect(document.querySelector('.certifications-list')).not.toBeInTheDocument();
+    expect(screen.queryByText(/Cert:/)).not.toBeInTheDocument();
   });
 
-  it('accepts different index props', () => {
-    const { rerender } = render(<EducationCard education={minimalEducation} index={0} />);
+  it('has correct accessibility attributes', () => {
+    renderWithProviders(<EducationCard education={mockEducation} index={0} />);
     
-    // Rerender with different index
-    rerender(<EducationCard education={minimalEducation} index={2} />);
+    const card = screen.getByTestId('mocked-card');
+    expect(card).toHaveAttribute('role', 'article');
+    expect(card).toHaveAttribute('aria-label', 'Education at Stanford University');
     
-    // Just check that render succeeds
-    expect(screen.getByTestId('education-card')).toBeInTheDocument();
+    const heading = screen.getByRole('heading', { level: 5 });
+    expect(heading).toHaveTextContent('Stanford University');
+    
+    const duration = screen.getByText('2018 - 2020');
+    expect(duration).toHaveClass('date-chip');
   });
 
-  it('has proper accessibility attributes', () => {
-    render(<EducationCard education={mockEducation} />);
+  it('disables animations when animation context is disabled', () => {
+    renderWithProviders(<EducationCard education={mockEducation} index={0} />, { animationEnabled: false });
     
-    // Check for proper containers
-    expect(document.querySelector('.education-details-panel')).toBeInTheDocument();
-    expect(document.querySelector('.graduation-date-container')).toBeInTheDocument();
-    
-    // Check that the school name is present
-    expect(screen.getByText('Stanford University')).toBeInTheDocument();
+    const card = screen.getByTestId('mocked-card');
+    const animation = JSON.parse(card.dataset.animation);
+    expect(animation).toEqual({
+      variants: expect.any(Object), // We don't need to test the exact variant object
+      initial: 'visible',
+      whileInView: 'visible',
+      viewport: { once: true },
+      transition: {
+        delay: 0
+      }
+    });
   });
 });

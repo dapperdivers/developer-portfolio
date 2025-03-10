@@ -15,14 +15,16 @@ import './Experience.css';
  * Enhanced with framer-motion animations that respect user preferences.
  * 
  * @component
+ * @param {Object} props - Component props
+ * @param {boolean} [props.isLoading] - Whether the component is in loading state
  * @returns {React.ReactElement} Experience section component
  */
-const Experience = () => {
+const Experience = ({ isLoading: forcedLoading }) => {
   // Get portfolio data
-  const portfolioData = usePortfolio();
+  const { isLoading: contextLoading } = usePortfolio();
   
   // Get animation settings from context
-  const { animationEnabled } = useAnimation();
+  const { animationEnabled, fadeInVariants, slideUpVariants } = useAnimation();
   
   // Reference for scroll animation
   const sectionRef = useRef(null);
@@ -32,31 +34,28 @@ const Experience = () => {
     margin: "0px 0px -100px 0px"
   });
   
-  // Get loading delay from context or use default
-  const loadingDelay = portfolioData?.settings?.loadingDelay || 0;
-  
   // Use the directly imported experience data from portfolio.js
   // Fallback to context data only if needed
-  const experience = experienceData || portfolioData?.experience || [];
+  const experience = experienceData || [];
   
-  // Determine section title and subtitle from context if available
-  const sectionTitle = portfolioData?.experienceSection?.title || "Professional Experience";
-  const sectionSubtitle = portfolioData?.experienceSection?.subtitle || "My career journey and professional highlights";
+  // Determine section title and subtitle
+  const sectionTitle = "Professional Experience";
+  const sectionSubtitle = "My career journey and professional highlights";
   
   // Determine number of skeleton cards to show
   const skeletonCount = useMemo(() => 3, []);
   
   // Loading and error state flags
-  const isLoading = !experience || experience.length === 0;
-  const hasError = false; // We'll always use portfolio.js data as fallback
+  const isLoading = forcedLoading || contextLoading;
+  const hasError = !isLoading && (!experience || experience.length === 0);
   
   // Animation variants for framer-motion
   const sectionVariants = {
-    hidden: { opacity: 0 },
-    visible: { 
-      opacity: 1,
+    ...fadeInVariants,
+    visible: {
+      ...fadeInVariants.visible,
       transition: {
-        duration: 0.5,
+        ...fadeInVariants.visible.transition,
         when: "beforeChildren",
         staggerChildren: 0.1
       }
@@ -64,34 +63,26 @@ const Experience = () => {
   };
   
   const headerVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
+    ...slideUpVariants,
+    visible: {
+      ...slideUpVariants.visible,
       transition: {
-        duration: 0.4,
-        ease: "easeOut"
+        ...slideUpVariants.visible.transition,
+        duration: 0.4
       }
     }
   };
   
   const cardVariants = {
-    hidden: { opacity: 0, y: 20 },
+    ...slideUpVariants,
     visible: (index) => ({
-      opacity: 1,
-      y: 0,
+      ...slideUpVariants.visible,
       transition: {
-        duration: 0.4,
-        delay: index * 0.1,
-        ease: "easeOut"
+        ...slideUpVariants.visible.transition,
+        delay: index * 0.1
       }
     })
   };
-  
-  // Skip rendering the whole section if explicitly disabled in config
-  if (portfolioData?.experienceSection?.display === false) {
-    return null;
-  }
   
   // Render loading state if experience data is not available
   if (isLoading) {
@@ -116,11 +107,12 @@ const Experience = () => {
                 key={`skeleton-${i}`}
                 variants={cardVariants}
                 custom={i}
-                data-testid="skeleton-experience-mock"
+                data-testid="skeleton-card"
               >
                 <SkeletonCard 
                   type="experience" 
-                  index={i} 
+                  index={i}
+                  data-testid="skeleton-card-content"
                 />
               </motion.div>
             ))}
@@ -142,9 +134,9 @@ const Experience = () => {
       >
         <motion.div 
           className="experience-empty-state"
-          initial={animationEnabled ? { opacity: 0, y: 10 } : false}
-          animate={animationEnabled ? { opacity: 1, y: 0 } : false}
-          transition={{ duration: 0.4 }}
+          variants={fadeInVariants}
+          initial={animationEnabled ? "hidden" : false}
+          animate={animationEnabled ? "visible" : false}
         >
           <p>No work experience is currently available.</p>
         </motion.div>
@@ -200,7 +192,7 @@ const Experience = () => {
 };
 
 Experience.propTypes = {
-  /* No props for this component as it uses hooks for data */
+  isLoading: PropTypes.bool
 };
 
 // Apply memoization for performance optimization

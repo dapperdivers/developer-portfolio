@@ -4,7 +4,7 @@ import { render } from '@testing-library/react';
 import { vi, afterEach } from 'vitest';
 import { AnimationContext } from '@utils/AnimationContext';
 import { PortfolioContext } from '@context/PortfolioContext';
-import { slideUpVariants, fadeInVariants, scaleVariants, getAnimationDelay } from '@utils/animations';
+import { slideUpVariants, fadeInVariants, scaleVariants } from '@utils/animations';
 
 // Browser API Mocks
 Object.defineProperty(window, 'matchMedia', {
@@ -111,17 +111,8 @@ class MockResizeObserver {
     this.elements.clear();
   }
 
-  // Test helper
-  triggerResize() {
-    const entries = Array.from(this.elements).map(target => ({
-      target,
-      contentRect: { width: 100, height: 100 } as DOMRectReadOnly,
-      borderBoxSize: [{ inlineSize: 100, blockSize: 100 }],
-      contentBoxSize: [{ inlineSize: 100, blockSize: 100 }],
-      devicePixelContentBoxSize: [{ inlineSize: 100, blockSize: 100 }]
-    }));
-
-    this.callback(entries as ResizeObserverEntry[], this as ResizeObserver);
+  takeRecords(): ResizeObserverEntry[] {
+    return [];
   }
 }
 
@@ -258,28 +249,38 @@ export const mockPortfolioData = {
 interface RenderOptions {
   animationEnabled?: boolean;
   portfolioData?: typeof mockPortfolioData;
+  reducedMotion?: boolean;
+  quality?: 'low' | 'medium' | 'high';
+  batchSize?: number;
+  throttleMs?: number;
 }
 
 export const renderWithProviders = (
   ui: React.ReactElement,
   { 
     animationEnabled = true,
-    portfolioData = mockPortfolioData
+    portfolioData = mockPortfolioData,
+    reducedMotion = false,
+    quality = 'high',
+    batchSize = 5,
+    throttleMs = 16
   }: RenderOptions = {}
 ): ReturnType<typeof render> => {
   const animationValue = {
     enabled: animationEnabled,
-    reducedMotion: false,
-    quality: 'high' as const,
-    batchSize: 5,
-    throttleMs: 16,
+    reducedMotion,
+    quality,
+    batchSize,
+    throttleMs,
     setAnimationSettings: vi.fn(),
     shouldAnimate: () => animationEnabled,
     getOptimizedVariants: (variants: any) => variants,
     fadeInVariants,
     scaleVariants,
     slideUpVariants,
-    getAnimationDelay
+    getAnimationDelay: (index: number) => ({
+      transition: { delay: index * 0.1 }
+    })
   };
 
   const portfolioValue = {
@@ -300,7 +301,7 @@ export const renderWithProviders = (
   );
 };
 
-// Maintain backwards compatibility
+// For backwards compatibility
 export const renderWithAnimation = renderWithProviders;
 
 // Global cleanup

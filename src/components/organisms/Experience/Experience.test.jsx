@@ -1,7 +1,8 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import Experience from '@organisms/Experience';
 import { vi } from 'vitest';
+import { renderWithProviders } from '@/tests/unit/setup';
 
 // Create mock functions
 const mockUseExperience = vi.fn();
@@ -25,13 +26,6 @@ vi.mock('@hooks/useTimelineView', () => ({
 
 vi.mock('@context/PortfolioContext', () => ({
   usePortfolio: () => mockUsePortfolio()
-}));
-
-vi.mock('@context/AnimationContext', () => ({
-  useAnimation: () => ({
-    animationEnabled: true,
-    getAnimationDelay: (index) => `${index * 0.1}s`
-  })
 }));
 
 // Mock the portfolio.js file
@@ -103,29 +97,57 @@ vi.mock('@atoms/ConsoleHeader/ConsoleHeader', () => ({
   )
 }));
 
-// Note: framer-motion is mocked globally via src/__mocks__/framerMotionMock.jsx
-
 vi.mock('@iconify/react', () => ({
   Icon: ({ icon }) => <span data-testid={`icon-${icon}`}></span>
+}));
+
+// Mock framer-motion
+vi.mock('framer-motion', () => ({
+  motion: {
+    div: ({ children, variants, initial, animate, ...props }) => (
+      <div 
+        data-testid="motion-div"
+        data-variants={JSON.stringify(variants)}
+        data-initial={JSON.stringify(initial)}
+        data-animate={JSON.stringify(animate)}
+        {...props}
+      >
+        {children}
+      </div>
+    ),
+    p: ({ children, variants, initial, animate, ...props }) => (
+      <p 
+        data-testid="motion-p"
+        data-variants={JSON.stringify(variants)}
+        data-initial={JSON.stringify(initial)}
+        data-animate={JSON.stringify(animate)}
+        {...props}
+      >
+        {children}
+      </p>
+    )
+  },
+  AnimatePresence: ({ children }) => children,
+  useInView: () => [null, true]
 }));
 
 // Configure default mock implementations
 const mockExperienceData = [
   {
-    title: 'Software Engineer',
+    role: 'Software Engineer',
     company: 'Test Company 1',
     date: '2022 - Present',
-    description: 'Working on exciting projects',
-    technologies: ['React', 'Node.js'],
-    logo: '/test-logo-1.png'
+    desc: 'Working on exciting projects',
+    descBullets: ['React', 'Node.js'],
+    companylogo: '/test-logo-1.png'
   },
   {
-    title: 'Frontend Developer',
+    role: 'Frontend Developer',
     company: 'Test Company 2',
     date: '2020 - 2022',
-    description: 'Building user interfaces',
-    technologies: ['JavaScript', 'CSS'],
-    logo: '/test-logo-2.png'
+    desc: 'Building user interfaces',
+    descBullets: ['JavaScript', 'CSS'],
+    companylogo: '/test-logo-2.png'
   }
 ];
 
@@ -135,14 +157,19 @@ beforeEach(() => {
   vi.clearAllMocks();
   
   // Configure the hook mocks
-  mockUseExperience.mockReturnValue(mockExperienceData);
+  mockUseExperience.mockReturnValue({
+    data: mockExperienceData,
+    isLoading: false,
+    error: null
+  });
   
   mockUseMemoValues.mockReturnValue({
     sectionAnimation: {
-      initial: { opacity: 0 },
-      whileInView: { opacity: 1 },
+      variants: expect.any(Object),
+      initial: 'hidden',
+      whileInView: 'visible',
       viewport: { once: true },
-      transition: { duration: 0.5 }
+      transition: { delay: 0 }
     }
   });
   
@@ -151,7 +178,7 @@ beforeEach(() => {
     toggleView: vi.fn(),
     setView: vi.fn(),
     getAnimationDelay: vi.fn(() => '0.1s'),
-    entryRef: vi.fn(() => mockRefCallback), // Return the mockRefCallback
+    entryRef: vi.fn(() => mockRefCallback),
     extractDateYear: vi.fn((date) => date.split(' ')[0])
   });
   
@@ -170,231 +197,148 @@ beforeEach(() => {
 
 describe('Experience Container', () => {
   it('renders the experience section with correct title and subtitle', () => {
-    render(<Experience />);
+    renderWithProviders(<Experience />);
     
-    // Check if section title and subtitle are rendered
-    expect(screen.getByText('Work Experience')).toBeInTheDocument();
-    expect(screen.getByText('My professional journey')).toBeInTheDocument();
+    expect(screen.getByTestId('section-mock')).toHaveTextContent('Work Experience');
+    expect(screen.getByTestId('section-mock')).toHaveTextContent('My professional journey');
   });
 
   it('renders the timeline view with correct number of entries', () => {
-    // Mock the portfolio data to include experience entries
-    vi.mock('../../../portfolio', () => ({
-      experience: [
-        {
-          title: 'Software Engineer',
-          company: 'Test Company 1',
-          date: '2022 - Present',
-          description: 'Working on exciting projects',
-          technologies: ['React', 'Node.js'],
-          logo: '/test-logo-1.png'
-        },
-        {
-          title: 'Frontend Developer',
-          company: 'Test Company 2',
-          date: '2020 - 2022',
-          description: 'Building user interfaces',
-          technologies: ['JavaScript', 'CSS'],
-          logo: '/test-logo-2.png'
-        }
-      ]
-    }), { virtual: true });
-
-    render(<Experience />);
+    renderWithProviders(<Experience />);
     
-    // Check if there are experience cards in the grid
     const experienceCards = screen.getAllByTestId('experience-card-mock');
-    expect(experienceCards.length).toBe(2); // We have 2 companies in our mock data
+    expect(experienceCards).toHaveLength(2);
     
-    // Check if the grid exists
-    expect(document.querySelector('.experience-grid')).toBeInTheDocument();
-    
-    // Check for command prompt
-    expect(screen.getByText('root@security:~$')).toBeInTheDocument();
-    expect(screen.getByText('view --secure professional_experience.json')).toBeInTheDocument();
-    
-    // Check for company names
-    expect(screen.getByText('Test Company 1')).toBeInTheDocument();
-    expect(screen.getByText('Test Company 2')).toBeInTheDocument();
-  });
-
-  it('renders the correct number of timeline entries', () => {
-    render(<Experience />);
-    
-    // Should have one card for each company in our mock data
-    const experienceCards = screen.getAllByTestId('experience-card-mock');
-    expect(experienceCards.length).toBe(2);
-    
-    // Check for the experience grid component
-    const experienceGrid = document.querySelector('.experience-grid');
-    expect(experienceGrid).toBeInTheDocument();
-  });
-
-  it('supports view toggle controls when they exist', () => {
-    // This test checks that the code is compatible with view toggling
-    // but we don't need to actually find and click the buttons since
-    // our current implementation doesn't have view toggle controls
-    
-    // Skip this test since the current implementation doesn't have view toggle controls
-    // but we keep the test in case they are added back later
-    
-    // We can't check for buttons that don't exist, so we'll just check that
-    // the Experience component renders without errors
-    render(<Experience />);
-    expect(screen.getByText('Work Experience')).toBeInTheDocument();
-  });
-
-  it('renders loading skeleton when data is not ready', () => {
-    // Mock the portfolio context to return loading state
-    mockUsePortfolio.mockReturnValueOnce({
-      experienceSection: {
-        title: 'Work Experience',
-        subtitle: 'My professional journey',
-        viewType: 'timeline',
-        display: true
-      },
-      settings: {
-        loadingDelay: 0
-      },
-      isLoading: true
-    });
-
-    // Mock useExperience to return null during loading
-    mockUseExperience.mockReturnValueOnce(null);
-
-    render(<Experience />);
-    
-    // Check for skeleton cards
-    const skeletonCards = screen.getAllByTestId('skeleton-card');
-    expect(skeletonCards.length).toBe(3); // We show 3 skeleton cards during loading
-    
-    // Verify no actual experience cards are rendered
-    expect(screen.queryByTestId('experience-card-mock')).not.toBeInTheDocument();
-  });
-
-  it('renders appropriate content when there is no experience data', () => {
-    // Mock useExperience to return empty array
-    mockUseExperience.mockReturnValueOnce([]);
-
-    // Mock portfolio context with no loading state
-    mockUsePortfolio.mockReturnValueOnce({
-      experienceSection: {
-        title: 'Work Experience',
-        subtitle: 'My professional journey',
-        viewType: 'timeline',
-        display: true
-      },
-      settings: {
-        loadingDelay: 0
-      },
-      isLoading: false
-    });
-
-    render(<Experience />);
-    
-    // Should not have any experience cards
-    const experienceCards = screen.queryAllByTestId('experience-card-mock');
-    expect(experienceCards.length).toBe(0);
+    expect(screen.getByText('Software Engineer')).toBeInTheDocument();
+    expect(screen.getByText('Frontend Developer')).toBeInTheDocument();
   });
 
   it('does not render section when display is set to false', () => {
-    // Override the usePortfolio mock for this test
-    mockUsePortfolio.mockReturnValueOnce({
+    mockUsePortfolio.mockReturnValue({
       experienceSection: {
+        ...mockUsePortfolio().experienceSection,
         display: false
-      }
+      },
+      settings: { loadingDelay: 0 }
     });
-    
-    const { container } = render(<Experience />);
-    
-    // Container should be empty
-    expect(container.firstChild).toBeNull();
+
+    renderWithProviders(<Experience />);
+    expect(screen.queryByTestId('section-mock')).not.toBeInTheDocument();
   });
 
   it('handles error state gracefully', () => {
-    // Mock an error state
-    mockUseExperience.mockImplementationOnce(() => {
-      throw new Error('Failed to load experience data');
+    mockUseExperience.mockReturnValue({
+      data: null,
+      isLoading: false,
+      error: new Error('Failed to load experience data')
     });
-    
-    // Should not throw when rendering
-    expect(() => render(<Experience />)).not.toThrow();
-    
-    // Should still render the section title
-    expect(screen.getByText('Work Experience')).toBeInTheDocument();
+
+    renderWithProviders(<Experience />);
+    expect(screen.getByText('Failed to load experience data')).toBeInTheDocument();
   });
 
   it('handles undefined section data gracefully', () => {
-    // Mock portfolio context to return undefined section data
-    mockUsePortfolio.mockReturnValueOnce({
+    mockUsePortfolio.mockReturnValue({
       experienceSection: undefined,
-      settings: {
-        loadingDelay: 0
-      },
-      isLoading: false
+      settings: { loadingDelay: 0 }
     });
 
-    const { container } = render(<Experience />);
+    renderWithProviders(<Experience />);
+    expect(screen.queryByTestId('section-mock')).not.toBeInTheDocument();
+  });
+
+  it('displays loading skeletons when data is loading', () => {
+    mockUseExperience.mockReturnValue({
+      data: null,
+      isLoading: true,
+      error: null
+    });
+
+    renderWithProviders(<Experience />, { isLoading: true });
+    const skeletons = screen.getAllByTestId('skeleton-card');
+    expect(skeletons).toHaveLength(3);
+    expect(screen.getByText('Loading experience 1...')).toBeInTheDocument();
+  });
+
+  it('applies correct animations when enabled', () => {
+    renderWithProviders(<Experience />, { animationEnabled: true });
     
-    // Container should be empty since section data is undefined
-    expect(container.firstChild).toBeNull();
+    const container = screen.getByTestId('motion-div');
+    const initial = JSON.parse(container.dataset.initial);
+    const animate = JSON.parse(container.dataset.animate);
+    const variants = JSON.parse(container.dataset.variants);
+
+    expect(initial).toBe('hidden');
+    expect(animate).toBe('visible');
+    expect(variants).toEqual(expect.objectContaining({
+      hidden: expect.any(Object),
+      visible: expect.any(Object)
+    }));
+  });
+
+  it('disables animations when animation context is disabled', () => {
+    renderWithProviders(<Experience />, { animationEnabled: false });
     
-    // Verify no experience cards or skeletons are rendered
+    const container = screen.getByTestId('motion-div');
+    expect(container.dataset.initial).toBe('false');
+    expect(container.dataset.animate).toBe('false');
+  });
+});
+
+describe('Experience Integration Tests', () => {
+  const mockExperience = [
+    {
+      title: 'Software Engineer',
+      company: 'Test Company 1',
+      date: '2022 - Present',
+      description: 'Test description 1',
+      technologies: ['React', 'Node.js']
+    },
+    {
+      title: 'Frontend Developer',
+      company: 'Test Company 2',
+      date: '2020 - 2022',
+      description: 'Test description 2',
+      technologies: ['Vue', 'TypeScript']
+    }
+  ];
+
+  it('displays loading skeletons when data is loading', () => {
+    renderWithProviders(<Experience isLoading={true} />, { isLoading: true });
+
+    const skeletonCards = screen.getAllByTestId('skeleton-card');
+    expect(skeletonCards).toHaveLength(3); // Assuming we show 3 skeleton cards while loading
+    skeletonCards.forEach(card => {
+      expect(card).toHaveTextContent('Loading...');
+    });
+
+    // No actual experience cards should be rendered while loading
+    expect(screen.queryByTestId('experience-card-mock')).not.toBeInTheDocument();
+  });
+
+  it('renders experience cards when data is available', () => {
+    renderWithProviders(<Experience experience={mockExperience} isLoading={false} />);
+
+    const experienceCards = screen.getAllByTestId('experience-card-mock');
+    expect(experienceCards).toHaveLength(2);
+
+    expect(screen.getByText('Software Engineer')).toBeInTheDocument();
+    expect(screen.getByText('Test Company 1')).toBeInTheDocument();
+    expect(screen.getByText('Frontend Developer')).toBeInTheDocument();
+    expect(screen.getByText('Test Company 2')).toBeInTheDocument();
+  });
+
+  it('handles empty experience data gracefully', () => {
+    renderWithProviders(<Experience experience={[]} isLoading={false} />);
+
     expect(screen.queryByTestId('experience-card-mock')).not.toBeInTheDocument();
     expect(screen.queryByTestId('skeleton-card')).not.toBeInTheDocument();
   });
 
-  it('handles missing section title and subtitle gracefully', () => {
-    // Mock the portfolio context to return missing title/subtitle
-    mockUsePortfolio.mockReturnValueOnce({
-      experienceSection: {
-        display: true
-      },
-      settings: {
-        loadingDelay: 0
-      }
-    });
-    
-    render(<Experience />);
-    
-    // Should use default title and subtitle
-    expect(screen.getByText('Professional Experience')).toBeInTheDocument();
-    expect(screen.getByText('My career journey and professional highlights')).toBeInTheDocument();
-    
-    // Should still render the experience cards
-    const experienceCards = screen.getAllByTestId('experience-card-mock');
-    expect(experienceCards.length).toBe(2);
+  it('handles undefined section data gracefully', () => {
+    renderWithProviders(<Experience experience={undefined} isLoading={false} />);
 
-    // Verify the grid layout is present
-    expect(document.querySelector('.experience-grid')).toBeInTheDocument();
-  });
-
-  it('handles empty experience data array gracefully', () => {
-    // Mock useExperience to return empty array
-    mockUseExperience.mockReturnValueOnce([]);
-
-    // Mock portfolio context with valid section data
-    mockUsePortfolio.mockReturnValueOnce({
-      experienceSection: {
-        title: 'Work Experience',
-        subtitle: 'My professional journey',
-        viewType: 'timeline',
-        display: true
-      },
-      settings: {
-        loadingDelay: 0
-      },
-      isLoading: false
-    });
-
-    render(<Experience />);
-    
-    // Should render the section but with no cards
-    expect(screen.getByText('Work Experience')).toBeInTheDocument();
-    expect(screen.queryAllByTestId('experience-card-mock')).toHaveLength(0);
-    
-    // Should still show the grid and console header
-    expect(document.querySelector('.experience-grid')).toBeInTheDocument();
-    expect(screen.getByText('root@security:~$')).toBeInTheDocument();
+    expect(screen.queryByTestId('experience-card-mock')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('skeleton-card')).not.toBeInTheDocument();
   });
 });

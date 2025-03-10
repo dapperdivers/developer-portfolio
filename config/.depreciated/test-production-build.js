@@ -17,7 +17,7 @@ async function testProductionBuild() {
     
     // Import config modules
     console.log('Loading configuration modules...');
-    const configModule = await import('./vite.config.js');
+    const configModule = await import('../../vite.config.js');
     const config = configModule.default;
     
     console.log('Starting production build with config:', Object.keys(config));

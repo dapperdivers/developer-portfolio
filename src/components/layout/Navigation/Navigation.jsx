@@ -24,7 +24,7 @@ const Navigation = () => {
   } = useNavigation();
   
   // Get animation context
-  const { animationEnabled } = useAnimation();
+  const { animationEnabled, slideUpVariants } = useAnimation();
 
   // Menu animation variants
   const menuVariants = {
@@ -66,9 +66,9 @@ const Navigation = () => {
     <motion.header 
       className="fixed top-0 left-0 right-0 z-50 bg-gray-900/95 backdrop-blur-md pt-4 pb-2"
       role="banner"
-      initial={{ y: -100 }}
-      animate={{ y: isVisible ? 0 : -100 }}
-      transition={{ duration: 0.3, ease: "easeInOut" }}
+      initial="hidden"
+      animate={isVisible ? "visible" : "hidden"}
+      variants={slideUpVariants}
     >
       <nav 
         className="container mx-auto px-6 py-2"
@@ -81,8 +81,8 @@ const Navigation = () => {
           <motion.button
             onClick={toggleMenu}
             className="appearance-none focus:outline-none group px-2"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             aria-expanded={isMenuOpen}
             aria-controls="nav-menu"
           >
@@ -123,7 +123,7 @@ const Navigation = () => {
                     onClick={() => setIsMenuOpen(false)}
                     variants={itemVariants}
                     whileHover={{ x: 4 }}
-                    whileTap={{ scale: 0.98 }}
+                    whileTap={{ scale: 0.95 }}
                   >
                     {item.label}
                   </motion.a>

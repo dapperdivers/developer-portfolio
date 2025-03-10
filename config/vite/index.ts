@@ -15,6 +15,7 @@ import getCorePlugins from './plugins/core';
 import getPwaPlugins from './plugins/pwa';
 import getCodeSplittingConfig from './optimization/splitting';
 import getDevConfig from './dev/server';
+import getSecurityPlugins from './plugins/security';
 
 // Initialize environment variables
 const { initEnv, getClientEnv, isProd, isDev, getNodeEnv } = envConfig;
@@ -40,6 +41,9 @@ export default defineConfig(({ command, mode }) => {
     
     // Progressive Web App features and analysis tools
     ...getPwaPlugins({ isProd: isProd(), analyze: isAnalyze }),
+
+    // Security plugins
+    ...getSecurityPlugins({ isProd: isProd() }),
   ].filter(Boolean); // Remove any false/undefined entries
   
   // Development server configuration
