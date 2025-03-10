@@ -63,12 +63,13 @@ const Button = ({
     sizeClass,
     className,
     icon && !children ? 'btn-icon' : '',
-    disabled ? 'disabled' : ''
+    disabled ? 'disabled' : '',
+    variant === 'cyberpunk' ? 'group' : ''
   ].filter(Boolean).join(' ');
 
-  // Icon element
+  // Icon element with potential pulse animation for cyberpunk variant
   const iconElement = icon && (
-    <span className={`btn-icon-${iconPosition}`}>
+    <span className={`btn-icon-${iconPosition} ${variant === 'cyberpunk' ? 'group-hover:animate-pulse' : ''}`}>
       <Icon icon={icon} />
     </span>
   );
@@ -86,7 +87,25 @@ const Button = ({
       transition: { duration: 0.1 }
     };
 
-    // Animation variants
+    // Cyberpunk-specific animations
+    if (variant === 'cyberpunk') {
+      return {
+        initial: { opacity: 0, scale: 0.9 },
+        animate: { 
+          opacity: 1, 
+          scale: 1,
+          transition: { duration: 0.4 }
+        },
+        whileHover: { 
+          scale: 1.05,
+          boxShadow: "0 0 8px rgba(5, 213, 250, 0.5)",
+          transition: { duration: 0.2 }
+        },
+        whileTap: tapAnimation
+      };
+    }
+
+    // Standard animation variants
     switch (animationVariant) {
       case 'hover':
         return {
@@ -106,6 +125,20 @@ const Button = ({
     }
   };
 
+  // Cyberpunk glint effect
+  const GlintEffect = variant === 'cyberpunk' && (
+    <motion.span 
+      className="absolute inset-0 bg-gradient-to-r from-transparent via-theme-cyan/10 to-transparent"
+      initial={{ x: "-100%", opacity: 0 }}
+      whileHover={{
+        x: "100%",
+        opacity: [0, 0.3, 0],
+        transition: { duration: 1.5 }
+      }}
+      style={{ rotate: 45 }}
+    />
+  );
+
   // Common props
   const commonProps = {
     className: baseClasses,
@@ -114,6 +147,24 @@ const Button = ({
     ...getButtonAnimations(),
     ...rest
   };
+
+  // Wrap children for cyberpunk variant
+  const wrappedChildren = variant === 'cyberpunk' ? (
+    <>
+      <span className="relative font-mono text-base sm:text-lg tracking-widest whitespace-nowrap z-10 flex items-center justify-center gap-2">
+        {iconPosition === 'left' && iconElement}
+        {children}
+        {iconPosition === 'right' && iconElement}
+      </span>
+      {GlintEffect}
+    </>
+  ) : (
+    <>
+      {iconPosition === 'left' && iconElement}
+      {children}
+      {iconPosition === 'right' && iconElement}
+    </>
+  );
 
   // Render as motion anchor if href is provided
   if (href) {
@@ -125,9 +176,7 @@ const Button = ({
         tabIndex={disabled ? -1 : 0}
         {...commonProps}
       >
-        {iconPosition === 'left' && iconElement}
-        {children}
-        {iconPosition === 'right' && iconElement}
+        {wrappedChildren}
       </motion.a>
     );
   }
@@ -140,9 +189,7 @@ const Button = ({
       disabled={disabled}
       {...commonProps}
     >
-      {iconPosition === 'left' && iconElement}
-      {children}
-      {iconPosition === 'right' && iconElement}
+      {wrappedChildren}
     </motion.button>
   );
 };
@@ -150,7 +197,22 @@ const Button = ({
 Button.propTypes = {
   children: PropTypes.node,
   onClick: PropTypes.func,
-  variant: PropTypes.oneOf(['primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark', 'link', 'critical', 'high', 'medium', 'low']),
+  variant: PropTypes.oneOf([
+    'primary', 
+    'secondary', 
+    'success', 
+    'danger', 
+    'warning', 
+    'info', 
+    'light', 
+    'dark', 
+    'link', 
+    'critical', 
+    'high', 
+    'medium', 
+    'low',
+    'cyberpunk'
+  ]),
   size: PropTypes.oneOf(['sm', 'md', 'lg']),
   className: PropTypes.string,
   href: PropTypes.string,

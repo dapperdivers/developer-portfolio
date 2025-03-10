@@ -41,10 +41,14 @@
   padding: 0;
   outline: none;
   transition: all 0.3s ease;
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .scroll-down-container:hover {
-  transform: translateY(2px);
+  transform: translate(-50%, 2px);
 }
 
 .scroll-down-container:focus-visible {

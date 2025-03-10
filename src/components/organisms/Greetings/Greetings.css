@@ -38,45 +38,125 @@
 .cyberpunk-button {
   position: relative;
   overflow: hidden;
+  transition: all 0.4s ease;
+  background: rgba(5, 213, 250, 0.02);
+  border: 1px solid rgba(5, 213, 250, 0.2);
 }
 
-/* Add animated light glint to the button */
+/* Subtle border glow effect */
+.cyberpunk-button::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(5, 213, 250, 0.2),
+    transparent
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+/* Inner highlight */
 .cyberpunk-button::after {
   content: '';
   position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
+  inset: 1px;
   background: linear-gradient(
-    to right,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.1) 50%,
-    rgba(255, 255, 255, 0) 100%
+    180deg,
+    rgba(5, 213, 250, 0.03) 0%,
+    transparent 15%,
+    transparent 85%,
+    rgba(5, 213, 250, 0.03) 100%
   );
-  transform: rotate(45deg);
   opacity: 0;
-  transition: opacity 0.5s ease;
+  transition: opacity 0.4s ease;
 }
 
+/* Hover states */
+.cyberpunk-button:hover {
+  background: rgba(5, 213, 250, 0.05);
+  border-color: rgba(5, 213, 250, 0.4);
+  box-shadow: 
+    0 0 20px rgba(5, 213, 250, 0.1),
+    inset 0 0 15px rgba(5, 213, 250, 0.05);
+}
+
+.cyberpunk-button:hover::before,
 .cyberpunk-button:hover::after {
-  animation: glint 1.5s ease forwards;
+  opacity: 1;
 }
 
-@keyframes glint {
-  0% { transform: rotate(45deg) translateX(-100%); opacity: 0; }
-  10% { opacity: 0.3; }
-  100% { transform: rotate(45deg) translateX(100%); opacity: 0; }
+/* Gentle text glow on hover */
+.cyberpunk-button:hover span {
+  text-shadow: 0 0 8px rgba(5, 213, 250, 0.3);
+  transition: text-shadow 0.4s ease;
+}
+
+/* Subtle scan line effect */
+.cyberpunk-button::after {
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent,
+    transparent 49%,
+    rgba(5, 213, 250, 0.02) 50%,
+    transparent 51%
+  );
+  background-size: 100% 4px;
+  animation: subtle-scan 8s linear infinite;
+  opacity: 0;
+}
+
+@keyframes subtle-scan {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 0 100%;
+  }
+}
+
+/* Gentle highlight animation */
+.cyberpunk-button::before {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(5, 213, 250, 0.1) 45%,
+    rgba(5, 213, 250, 0.1) 55%,
+    transparent 100%
+  );
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+
+.cyberpunk-button:hover::before {
+  transform: translateX(100%);
+  animation: subtle-highlight 3s ease infinite;
+}
+
+@keyframes subtle-highlight {
+  0% {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  20% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.2;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(100%);
+  }
 }
 
 /* Accessibility - Reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  .bg-gradient-info {
-    animation: none !important;
-  }
-  
-  .cyberpunk-button:hover::after {
-    animation: none !important;
+  .cyberpunk-button::after,
+  .cyberpunk-button:hover::before {
+    animation: none;
   }
 }
 

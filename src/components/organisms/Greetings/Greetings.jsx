@@ -143,23 +143,15 @@ const Greetings = () => {
               variants={buttonVariants}
               className="pt-6 md:pt-8 mb-4 md:mb-6"
             >
-              <motion.button
+              <Button
+                variant="cyberpunk"
                 onClick={downloadResume}
-                variants={buttonVariants}
-                whileHover="hover"
-                className="group relative px-button-x py-button-y bg-transparent hover:bg-theme-cyan/20 text-theme-cyan transition-all duration-DEFAULT border border-theme-cyan/50 hover:shadow-focus focus:outline-none cyberpunk-button"
+                icon="fa:download"
+                iconPosition="right"
+                animated={true}
               >
-                <span className="absolute top-0 left-0 w-2 sm:w-3 h-0.5 bg-theme-cyan transform -translate-y-1/2 group-hover:w-4 sm:group-hover:w-6 transition-all duration-DEFAULT"></span>
-                <span className="absolute top-0 left-0 w-0.5 h-2 sm:h-3 bg-theme-cyan transform -translate-x-1/2 group-hover:h-4 sm:group-hover:h-6 transition-all duration-DEFAULT"></span>
-                <span className="absolute bottom-0 right-0 w-2 sm:w-3 h-0.5 bg-theme-cyan transform translate-y-1/2 group-hover:w-4 sm:group-hover:w-6 transition-all duration-DEFAULT"></span>
-                <span className="absolute bottom-0 right-0 w-0.5 h-2 sm:h-3 bg-theme-cyan transform translate-x-1/2 group-hover:h-4 sm:group-hover:h-6 transition-all duration-DEFAULT"></span>
-                <span className="font-mono text-base sm:text-lg tracking-widest whitespace-nowrap">Download Resume</span>
-                <motion.span 
-                  className="absolute inset-0 bg-gradient-to-r from-transparent via-theme-cyan/10 to-transparent"
-                  variants={glintVariants}
-                  style={{ rotate: 45 }}
-                />
-              </motion.button>
+                Download Resume
+              </Button>
             </motion.div>
             
             {/* Social Links */}
@@ -175,7 +167,6 @@ const Greetings = () => {
       
       {/* Scroll down indicator using the ScrollDown atom component */}
       <motion.div 
-        className="absolute bottom-4 sm:bottom-8 md:bottom-10 left-1/2 transform -translate-x-1/2"
         variants={slideUpVariants}
         initial="hidden"
         animate={animationEnabled ? "visible" : "hidden"}
