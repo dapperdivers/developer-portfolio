@@ -48,7 +48,6 @@ export default [
         global: "readonly",
         
         // Testing globals
-        jest: "readonly",
         describe: "readonly",
         it: "readonly",
         test: "readonly",

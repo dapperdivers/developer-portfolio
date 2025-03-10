@@ -140,7 +140,9 @@
     }
   },
   "include": [
-    "src/**/*"
+    "src/**/*",
+    "src/**/*.json",
+    "src/**/*.d.ts"
   ],
   "exclude": [
     "node_modules",
