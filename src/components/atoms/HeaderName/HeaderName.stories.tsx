@@ -74,7 +74,7 @@ export const WithInteractions: Story = {
     name: 'Interactive component',
     className: 'interactive-test'
   },
-  play: async ({ canvasElement }) => {
+  play: async () => {
     // Add interaction tests here using @storybook/test
   }
 };

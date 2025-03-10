@@ -174,7 +174,7 @@ export const WithAnimationsDisabled: Story = {
       </AnimationProvider>
     )
   ],
-  play: async ({ canvasElement }) => {
+  play: async () => {
     // This simulates a user who has animations disabled
     window.__DEBUG_FLAGS = { 
       ...window.__DEBUG_FLAGS,
@@ -194,8 +194,13 @@ export const WithInteractions: Story = {
     children: 'Interactive component',
     className: 'interactive-test'
   },
-  play: async ({ canvasElement }) => {
-    // Add interaction tests here using @storybook/test
-    // For example, testing hover animations, click responses, etc.
+  play: async () => {
+    // This simulates a user who has animations disabled
+    window.__DEBUG_FLAGS = { 
+      ...window.__DEBUG_FLAGS,
+      disableAnimations: true 
+    };
+    
+    // The component should detect this via AnimationContext
   }
 };

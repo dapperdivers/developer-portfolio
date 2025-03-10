@@ -28,8 +28,6 @@ interface Connection {
  * @returns {React.ReactElement} NetworkBackground component
  */
 interface NetworkBackgroundProps {
-  /** Component content */
-  children?: React.ReactNode;
   /** Additional CSS class names */
   className?: string;
   /** Grid size for node placement (default: 30) */
@@ -43,7 +41,6 @@ interface NetworkBackgroundProps {
 
 const NetworkBackground = (props: NetworkBackgroundProps) => {
   const { 
-    children,
     className = '',
     gridSize = 30,
     nodeColor = '#00f5d4',
