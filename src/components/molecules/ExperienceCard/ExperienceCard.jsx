@@ -5,11 +5,11 @@ import Card from '@atoms/Card';
 import { useAnimation } from '@context/AnimationContext';
 import useImageColor from '@hooks/useImageColor';
 import useCallbackHandlers from '@hooks/useCallbackHandlers';
-import { slideUpVariants } from '@constants/animations';
+import { slideUpVariants } from '@utils/animations';
 
 const ExperienceCard = ({ data, index, colorOverride, shadow = false, variant = 'default' }) => {
   const { animationEnabled, getAnimationDelay } = useAnimation();
-  const { color, getColorFromImage, resetToDefaultColor, rgbToString } = useImageColor();
+  const { color, getColorFromImage, rgbToString } = useImageColor();
   const { handleExternalLink } = useCallbackHandlers();
 
   const cardVariants = useMemo(() => ({

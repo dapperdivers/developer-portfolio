@@ -7,7 +7,7 @@
 
 // Use named imports to allow tree-shaking in production builds
 import { createContext, useContext } from 'react';
-import type { Context, Provider, Consumer } from 'react';
+import type { Context } from 'react';
 import contextRegistry from './contextRegistry';
 
 /**

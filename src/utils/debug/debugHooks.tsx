@@ -169,20 +169,18 @@ export function useLayoutDebug(elementRef: React.RefObject<HTMLElement>) {
     }
     
     const element = elementRef.current;
-    const resizeObserver = new ResizeObserver(entries => {
-      for (const entry of entries) {
-        const startTime = performance.now();
-        
-        // Force a layout calculation
-        const { width, height } = entry.contentRect;
-        const layout = element.getBoundingClientRect();
-        
-        const endTime = performance.now();
-        const duration = endTime - startTime;
-        
-        if (duration > 16) {
-          console.warn(`[LAYOUT] Slow layout in ${element.tagName}: ${Math.round(duration)}ms`);
-        }
+    const resizeObserver = new ResizeObserver(() => {
+      const startTime = performance.now();
+      
+      // Force a layout calculation
+      // Trigger layout calculation by reading layout properties
+      element.getBoundingClientRect();
+      
+      const endTime = performance.now();
+      const duration = endTime - startTime;
+      
+      if (duration > 16) {
+        console.warn(`[LAYOUT] Slow layout in ${element.tagName}: ${Math.round(duration)}ms`);
       }
     });
     

@@ -16,7 +16,6 @@ const ExperienceCard: FC<ExperienceCardProps> = ({
   index = 0, 
   variant = '', 
   colorOverride = null,
-  showHeader = true,
   shadow = true,
   className = ''
 }) => {
