@@ -51,3 +51,5 @@ dist/
 *storybook.log
 /storybook-static
 
+# Cursor
+.cursor/mcp.json
