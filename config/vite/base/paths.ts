@@ -12,7 +12,7 @@ import { fileURLToPath } from 'url';
 // Get __dirname equivalent in ESM
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const rootDir = path.resolve(__dirname, '..');
+const rootDir = path.resolve(__dirname, '../../..');
 
 /**
  * Project directory structure
@@ -25,7 +25,7 @@ export const dirs = {
   nodeModules: path.resolve(rootDir, 'node_modules'),
   assets: path.resolve(rootDir, 'src/assets'),
   components: path.resolve(rootDir, 'src/components')
-};
+} as const;
 
 /**
  * Component directory structure for atomic design pattern
@@ -35,7 +35,7 @@ export const componentDirs = {
   molecules: path.resolve(dirs.components, 'molecules'),
   organisms: path.resolve(dirs.components, 'organisms'),
   layout: path.resolve(dirs.components, 'layout')
-};
+} as const;
 
 /**
  * Create path aliases configuration for Vite
@@ -103,7 +103,7 @@ export function createAliases() {
  * @returns {Object} TypeScript compatible path mapping
  */
 export const getTsPathAliases = () => {
-  const tsPathAliases = {};
+  const tsPathAliases: Record<string, string[]> = {};
   
   // Convert each path to TypeScript format (with /* suffix)
   Object.entries(createAliases()).forEach(([alias, aliasPath]) => {

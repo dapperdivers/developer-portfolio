@@ -6,11 +6,15 @@
  */
 
 import react from '@vitejs/plugin-react';
-import env from '../env.js';
+import env from '../base/env';
 
 // Get environment info
 const { isProd, getNodeEnv } = env;
 const mode = getNodeEnv();
+
+interface ReactPluginOptions {
+  isProd?: boolean;
+}
 
 /**
  * Configure the core React plugin
@@ -18,7 +22,7 @@ const mode = getNodeEnv();
  * @param {boolean} options.isProd - Whether we're in production mode
  * @returns {Object} Configured React plugin instance
  */
-export function createReactPlugin({ isProd = false } = {}) {
+export function createReactPlugin({ isProd = false }: ReactPluginOptions = {}) {
   return react({
     // Enable React fast refresh for better development experience
     fastRefresh: true,
@@ -45,7 +49,7 @@ export function createReactPlugin({ isProd = false } = {}) {
  * @param {boolean} options.isProd - Whether we're in production mode
  * @returns {Array} Array of configured plugins
  */
-export function getCorePlugins({ isProd = false } = {}) {
+export function getCorePlugins({ isProd = false }: ReactPluginOptions = {}) {
   return [
     createReactPlugin({ isProd }),
   ];

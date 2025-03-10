@@ -5,7 +5,13 @@
  * including port, CORS, HMR, and other dev-specific options.
  */
 
-import env from '../env.js';
+import env from '../base/env';
+
+interface DevServerOptions {
+  port?: number;
+  hmr?: boolean;
+  open?: boolean;
+}
 
 /**
  * Create development server configuration
@@ -19,7 +25,7 @@ export function createDevServerConfig({
   port = parseInt(process.env.VITE_DEV_SERVER_PORT || '3000', 10),
   hmr = true,
   open = true
-} = {}) {
+}: DevServerOptions = {}) {
   return {
     server: {
       port,

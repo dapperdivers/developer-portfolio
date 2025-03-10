@@ -1,9 +1,131 @@
 import '@testing-library/jest-dom';
 import React from 'react';
 import { render } from '@testing-library/react';
-import { vi } from 'vitest';
+import { vi, afterEach } from 'vitest';
 import { AnimationContext } from '@utils/AnimationContext';
+import { PortfolioContext } from '@context/PortfolioContext';
 import { slideUpVariants, fadeInVariants, scaleVariants, getAnimationDelay } from '@utils/animations';
+
+// Browser API Mocks
+Object.defineProperty(window, 'matchMedia', {
+  writable: true,
+  value: vi.fn().mockImplementation(query => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addListener: vi.fn(),
+    removeListener: vi.fn(),
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    dispatchEvent: vi.fn(),
+  })),
+});
+
+// Mock localStorage
+const mockStorage = () => {
+  let store: Record<string, string> = {};
+  return {
+    getItem: vi.fn((key: string) => store[key] || null),
+    setItem: vi.fn((key: string, value: string) => { store[key] = value; }),
+    clear: vi.fn(() => { store = {}; }),
+    removeItem: vi.fn((key: string) => { delete store[key]; }),
+    key: vi.fn((idx: number) => Object.keys(store)[idx]),
+    get length() { return Object.keys(store).length; }
+  };
+};
+
+Object.defineProperty(window, 'localStorage', { value: mockStorage(), writable: true });
+Object.defineProperty(window, 'sessionStorage', { value: mockStorage(), writable: true });
+
+// Mock IntersectionObserver
+class MockIntersectionObserver {
+  callback: IntersectionObserverCallback;
+  elements: Set<Element>;
+  root: Element | Document | null;
+  rootMargin: string;
+  thresholds: number[];
+
+  constructor(callback: IntersectionObserverCallback, options: IntersectionObserverInit = {}) {
+    this.callback = callback;
+    this.elements = new Set();
+    this.root = options.root || null;
+    this.rootMargin = options.rootMargin || '0px';
+    this.thresholds = options.threshold ? 
+      Array.isArray(options.threshold) ? options.threshold : [options.threshold] : 
+      [0];
+  }
+
+  observe(element: Element) {
+    this.elements.add(element);
+  }
+
+  unobserve(element: Element) {
+    this.elements.delete(element);
+  }
+
+  disconnect() {
+    this.elements.clear();
+  }
+
+  takeRecords(): IntersectionObserverEntry[] {
+    return [];
+  }
+
+  // Test helper
+  triggerIntersection(isIntersecting: boolean) {
+    const entries = Array.from(this.elements).map(target => ({
+      isIntersecting,
+      target,
+      boundingClientRect: { top: 0, left: 0, width: 100, height: 100 } as DOMRectReadOnly,
+      intersectionRatio: isIntersecting ? 1 : 0,
+      intersectionRect: { top: 0, left: 0, width: 100, height: 100 } as DOMRectReadOnly,
+      rootBounds: { top: 0, left: 0, width: 1000, height: 1000 } as DOMRectReadOnly,
+      time: Date.now()
+    }));
+
+    this.callback(entries as IntersectionObserverEntry[], this);
+  }
+}
+
+global.IntersectionObserver = MockIntersectionObserver as unknown as typeof IntersectionObserver;
+
+// Mock ResizeObserver
+class MockResizeObserver {
+  callback: ResizeObserverCallback;
+  elements: Set<Element>;
+
+  constructor(callback: ResizeObserverCallback) {
+    this.callback = callback;
+    this.elements = new Set();
+  }
+
+  observe(element: Element) {
+    this.elements.add(element);
+  }
+
+  unobserve(element: Element) {
+    this.elements.delete(element);
+  }
+
+  disconnect() {
+    this.elements.clear();
+  }
+
+  // Test helper
+  triggerResize() {
+    const entries = Array.from(this.elements).map(target => ({
+      target,
+      contentRect: { width: 100, height: 100 } as DOMRectReadOnly,
+      borderBoxSize: [{ inlineSize: 100, blockSize: 100 }],
+      contentBoxSize: [{ inlineSize: 100, blockSize: 100 }],
+      devicePixelContentBoxSize: [{ inlineSize: 100, blockSize: 100 }]
+    }));
+
+    this.callback(entries as ResizeObserverEntry[], this as ResizeObserver);
+  }
+}
+
+global.ResizeObserver = MockResizeObserver as unknown as typeof ResizeObserver;
 
 // Define types for motion components
 type MotionProps = {
@@ -47,36 +169,7 @@ vi.mock('framer-motion', () => ({
   AnimatePresence: ({ children }: { children: React.ReactNode }) => children
 }));
 
-// Global test utilities
-interface RenderWithAnimationOptions {
-  animationEnabled?: boolean;
-}
-
-export const renderWithAnimation = (
-  ui: React.ReactElement,
-  { animationEnabled = true }: RenderWithAnimationOptions = {}
-): ReturnType<typeof render> => {
-  const contextValue = {
-    enabled: animationEnabled,
-    reducedMotion: false,
-    quality: 'high' as const,
-    batchSize: 5,
-    throttleMs: 16,
-    setAnimationSettings: vi.fn(),
-    shouldAnimate: () => animationEnabled,
-    getOptimizedVariants: (variants: any) => variants,
-    fadeInVariants,
-    scaleVariants,
-    slideUpVariants,
-    getAnimationDelay
-  };
-
-  return render(
-    React.createElement(AnimationContext.Provider, { value: contextValue }, ui)
-  );
-};
-
-// Global test data
+// Global test data types
 export interface MockSkill {
   skillName: string;
   iconName: string;
@@ -105,6 +198,7 @@ export interface MockExperience {
   companylogo: string;
 }
 
+// Mock data
 export const mockSkillData: MockSkill = {
   skillName: 'Test Skill',
   iconName: 'test-icon',
@@ -132,3 +226,87 @@ export const mockExperienceData: MockExperience = {
   descBullets: ['Test bullet 1', 'Test bullet 2'],
   companylogo: '/test-logo.png'
 };
+
+export const mockPortfolioData = {
+  greetings: {
+    name: 'Test User',
+    title: 'Test Title',
+    description: 'Test Description'
+  },
+  openSource: {
+    githubToken: ''
+  },
+  contact: {
+    email: 'test@example.com'
+  },
+  socialLinks: {
+    github: 'https://github.com/test',
+    linkedin: 'https://linkedin.com/test'
+  },
+  skillsSection: {
+    title: 'Skills',
+    skills: [mockSkillData]
+  },
+  skillBars: [],
+  educationInfo: [],
+  experience: [mockExperienceData],
+  projects: [mockProjectData],
+  feedbacks: []
+};
+
+// Global test utilities
+interface RenderOptions {
+  animationEnabled?: boolean;
+  portfolioData?: typeof mockPortfolioData;
+}
+
+export const renderWithProviders = (
+  ui: React.ReactElement,
+  { 
+    animationEnabled = true,
+    portfolioData = mockPortfolioData
+  }: RenderOptions = {}
+): ReturnType<typeof render> => {
+  const animationValue = {
+    enabled: animationEnabled,
+    reducedMotion: false,
+    quality: 'high' as const,
+    batchSize: 5,
+    throttleMs: 16,
+    setAnimationSettings: vi.fn(),
+    shouldAnimate: () => animationEnabled,
+    getOptimizedVariants: (variants: any) => variants,
+    fadeInVariants,
+    scaleVariants,
+    slideUpVariants,
+    getAnimationDelay
+  };
+
+  const portfolioValue = {
+    ...portfolioData,
+    updatePortfolioData: vi.fn(),
+    isLoading: false,
+    error: null
+  };
+
+  return render(
+    React.createElement(PortfolioContext.Provider, 
+      { value: portfolioValue },
+      React.createElement(AnimationContext.Provider, 
+        { value: animationValue }, 
+        ui
+      )
+    )
+  );
+};
+
+// Maintain backwards compatibility
+export const renderWithAnimation = renderWithProviders;
+
+// Global cleanup
+afterEach(() => {
+  vi.clearAllMocks();
+  document.body.innerHTML = '';
+  (window.localStorage as any).clear();
+  (window.sessionStorage as any).clear();
+});

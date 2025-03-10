@@ -14,14 +14,14 @@ import dotenv from 'dotenv';
 // Get __dirname equivalent in ESM
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const rootDir = path.resolve(__dirname, '..');
+const rootDir = path.resolve(__dirname, '../../..');
 
 // Environment constants
 export const ENV = {
   DEV: 'development',
   TEST: 'test',
   PROD: 'production'
-};
+} as const;
 
 /**
  * Get current Node environment mode
@@ -111,7 +111,7 @@ export const requiredVars = {
   
   // Variables required only in test
   [ENV.TEST]: []
-};
+} as const;
 
 /**
  * Validate that all required environment variables are present
@@ -151,22 +151,22 @@ export function getClientEnv() {
   const VITE_APP = /^VITE_/i;
   
   const raw = { ...process.env };
-  const exposed = {};
+  const exposed: Record<string, string> = {};
   
   // Process all variables
   Object.keys(raw).forEach(key => {
     if (ALLOWED_VARS.includes(key) || VITE_APP.test(key)) {
-      exposed[key] = raw[key];
+      exposed[key] = raw[key]!;
     }
   });
   
   // Add other safe variables
   exposed.NODE_ENV = getNodeEnv();
-  exposed.APP_VERSION = raw.npm_package_version;
-  exposed.APP_NAME = raw.npm_package_name;
+  exposed.APP_VERSION = raw.npm_package_version!;
+  exposed.APP_NAME = raw.npm_package_name!;
   
   // Create stringified versions for both import.meta.env and process.env access patterns
-  const stringified = {};
+  const stringified: Record<string, string> = {};
   Object.keys(exposed).forEach(key => {
     stringified[`import.meta.env.${key}`] = JSON.stringify(exposed[key]);
     stringified[`process.env.${key}`] = JSON.stringify(exposed[key]);

@@ -1,75 +1,165 @@
 ---
+title: Testing Standards
 description: Testing standards and requirements for components and utilities
-globs: src/**/*.{test,spec}.{js,jsx,ts,tsx}, src/**/__tests__/*, e2e/**/*.spec.{js,ts}, **/*.stories.{js,jsx,ts,tsx}
+author: Development Team
+updated: 2024
+version: 2.0
+category: Testing
+tags:
+  - testing
+  - vitest
+  - playwright
+  - storybook
+  - accessibility
 ---
 
 # Testing Standards
 
+## Overview
+This document outlines the testing standards and requirements for the developer portfolio project. All team members must follow these guidelines to maintain code quality and reliability.
+
 ## Required Test Types
-- Unit Tests (Vitest + React Testing Library)
-  - Components: src/components/**/*.test.{jsx,tsx}
-  - Hooks: src/hooks/**/*.test.{js,ts}
-  - Utils: src/utils/**/*.test.{js,ts}
-- E2E Tests (Playwright)
-  - Location: e2e/**/*.spec.{js,ts}
-  - Critical user flows
-- Visual Tests (Storybook)
-  - Location: src/components/**/*.stories.{jsx,tsx}
-  - Visual regression testing
-- Accessibility Tests
-  - Use @testing-library/jest-dom
-  - ARIA compliance checks
+### Unit Tests (Vitest + React Testing Library)
+- **Location**:
+  - Components: `src/components/**/*.test.{jsx,tsx}`
+  - Hooks: `src/hooks/**/*.test.{js,ts}`
+  - Utils: `src/utils/**/*.test.{js,ts}`
+- **Framework**: Vitest with React Testing Library
+- **Purpose**: Verify individual component and utility functionality
+
+### E2E Tests (Playwright)
+- **Location**: `e2e/**/*.spec.{js,ts}`
+- **Purpose**: Validate critical user flows
+- **Scope**: Full application end-to-end testing
+
+### Visual Tests (Storybook)
+- **Location**: `src/components/**/*.stories.{jsx,tsx}`
+- **Purpose**: Visual regression testing
+- **Tool**: Storybook
+
+### Accessibility Tests
+- **Framework**: @testing-library/jest-dom
+- **Focus**: ARIA compliance checks
+- **Integration**: Part of unit and E2E tests
+
+## Test Configuration
+### Environment Setup
+- **Runtime**: jsdom
+- **Setup File**: `src/test/setup.ts`
+- **Mode**: Global test mode enabled
+
+### Coverage Configuration
+- **Reporters**:
+  - Text output
+  - JSON reports
+  - HTML reports
+- **Excluded Paths**:
+  ```
+  - node_modules/**
+  - src/test/**
+  - **/*.d.ts
+  - **/*.config.*
+  - **/coverage/**
+  ```
+
+## Path Aliases
+### Import Paths
+Use these aliases in test files for consistent imports:
+```
+@components: ./src/components
+@atoms: ./src/components/atoms
+@molecules: ./src/components/molecules
+@organisms: ./src/components/organisms
+@utils: ./src/utils
+@hooks: ./src/hooks
+@context: ./src/context
+@assets: ./src/assets
+@styles: ./src/styles
+```
 
 ## Test File Structure
-- Co-locate with implementation
-- Follow naming: `ComponentName.test.{jsx,tsx}`
-- Group in __tests__ for utilities
+### Organization
+- Co-locate tests with implementation
+- Use naming convention: `ComponentName.test.{jsx,tsx}`
+- Group utility tests in `__tests__` directory
 
-## Testing Packages
-- @testing-library/react: ^16.2.0
-- @testing-library/jest-dom: ^6.6.3
-- vitest: ^3.0.7
-- @playwright/test: ^1.51.0
-- @storybook/test: ^8.6.4
+### Dependencies
+```json
+{
+  "@testing-library/react": "^16.2.0",
+  "@testing-library/jest-dom": "^6.6.3",
+  "vitest": "^3.0.7",
+  "@playwright/test": "^1.51.0",
+  "@storybook/test": "^8.6.4"
+}
+```
 
 ## Component Test Requirements
-- Render testing
+### Required Test Cases
+- Render validation
 - Props validation
-- Event handlers
-- State changes
-- Error states
-- Loading states
-- Accessibility
-- Responsive behavior
+- Event handler verification
+- State change testing
+- Error state handling
+- Loading state verification
+- Accessibility compliance
+- Responsive behavior testing
 
 ## Hook Test Requirements
-- Initial state
-- State updates
-- Side effects
-- Cleanup
-- Error handling
-- Custom events
+### Required Test Cases
+- Initial state verification
+- State update validation
+- Side effect testing
+- Cleanup function verification
+- Error handling scenarios
+- Custom event testing
 
 ## E2E Test Requirements
-- User flows
-- Form submissions
-- Navigation
-- Data persistence
-- Error handling
-- Performance
-- Cross-browser
+### Critical Paths
+- User flow validation
+- Form submission testing
+- Navigation verification
+- Data persistence checks
+- Error handling scenarios
+- Performance monitoring
+- Cross-browser compatibility
 
 ## Coverage Requirements
-- Components: 100%
-- Hooks: 100%
-- Utils: 100%
-- E2E: Critical paths
+### Minimum Coverage
+- **Components**: 100%
+- **Hooks**: 100%
+- **Utils**: 100%
+- **E2E**: All critical paths
 
 ## Best Practices
-- Use React Testing Library queries
-- Avoid implementation details
-- Test user interactions
-- Mock external dependencies
-- Use proper assertions
-- Document test cases
+### General Guidelines
+- Utilize React Testing Library queries
+- Avoid testing implementation details
+- Focus on user interaction testing
+- Properly mock external dependencies
+- Write clear assertions
+- Document test cases thoroughly
 - Follow AAA pattern (Arrange-Act-Assert)
+- Use path aliases for clean imports
+- Maintain setup file configuration
+- Regular coverage report monitoring
+
+### Code Example
+```typescript
+// Example of a well-structured test
+import { render, screen, fireEvent } from '@testing-library/react';
+import { Button } from '@atoms/Button';
+
+describe('Button', () => {
+  it('should handle click events', () => {
+    // Arrange
+    const handleClick = vi.fn();
+    render(<Button onClick={handleClick}>Click me</Button>);
+
+    // Act
+    fireEvent.click(screen.getByText('Click me'));
+
+    // Assert
+    expect(handleClick).toHaveBeenCalledTimes(1);
+  });
+}); 
