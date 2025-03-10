@@ -37,7 +37,7 @@ const createPortfolioDecorator = (data) => (Story) => (
 );
 
 export default {
-  title: 'Molecules/Footer',
+  title: 'Layout/Footer',
   component: Footer,
   decorators: [withPortfolioContext],
   parameters: {

@@ -49,6 +49,9 @@ module.exports = {
     
     // Add animation classes
     'animate-fadeIn', 'animate-smoothScroll', 'animate-slideUp',
+    
+    // Add responsive classes we want to ensure are always included
+    'hidden', 'lg:hidden', 'lg:block',
   ],
   theme: {
     extend: {
@@ -227,11 +230,11 @@ module.exports = {
       
       // Breakpoints from design system
       screens: {
-        sm: 'var(--breakpoint-sm)',
-        md: 'var(--breakpoint-md)',
-        lg: 'var(--breakpoint-lg)',
-        xl: 'var(--breakpoint-xl)',
-        '2xl': 'var(--breakpoint-xxl)',
+        sm: '576px',
+        md: '768px',
+        lg: '992px',
+        xl: '1200px',
+        '2xl': '1400px',
       },
       
       // Z-index from design system

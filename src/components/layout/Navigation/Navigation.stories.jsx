@@ -5,7 +5,7 @@ import { withPortfolioContext } from '@stories-utils';
 import PortfolioContext from '@context/PortfolioContext';
 
 export default {
-  title: 'Molecules/Navigation',
+  title: 'Layout/Navigation',
   component: Navigation,
   tags: ['autodocs'],
   decorators: [withPortfolioContext],

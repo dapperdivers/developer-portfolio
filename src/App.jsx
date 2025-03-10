@@ -2,10 +2,10 @@
 import { useEffect, useState, Suspense, lazy } from 'react';
 import { createRoot } from 'react-dom/client';
 import Head from "@/components/layout/Head";
-import Navigation from "@molecules/Navigation";
-import Footer from "@molecules/Footer";
-import SkipToContent from "@atoms/SkipToContent";
-import Background from "@layout/Background";
+import Navigation from "@/components/layout/Navigation";
+import Footer from "@/components/layout/Footer";
+import SkipToContent from "@/components/atoms/SkipToContent";
+import Background from "@/components/layout/Background";
 
 // Use single import for all debugging
 import { DebugProvider, RegisterDebugComponents } from "@utils/debug";
