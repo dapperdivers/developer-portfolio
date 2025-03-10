@@ -18,7 +18,7 @@ const ExperienceCard = ({ data, index, colorOverride, shadow = false, variant = 
       ...slideUpVariants.visible,
       transition: {
         ...slideUpVariants.visible.transition,
-        delay: getAnimationDelay(index)
+        ...getAnimationDelay(index)
       }
     }
   }), [index, getAnimationDelay]);
