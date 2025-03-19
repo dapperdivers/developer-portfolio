@@ -10,7 +10,3 @@ import Experience from './Experience';
 
 // Export the Experience component as the default export
 export default Experience;
-
-// Note: ExperienceTimeline has been moved to molecules folder
-// Import it directly from there if needed:
-// import ExperienceTimeline from '@molecules/ExperienceTimeline';

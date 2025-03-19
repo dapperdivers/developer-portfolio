@@ -146,21 +146,3 @@ export interface TimelineEntryProps extends BaseComponentProps {
   variant?: ComponentVariant;
   id?: string;
 }
-
-/**
- * ExperienceTimeline Component Props
- */
-export interface ExperienceTimelineProps extends BaseComponentProps {
-  experience: Array<{
-    company: string;
-    role: string;
-    date: string;
-    desc: string;
-    companylogo: string;
-    descBullets?: string[];
-  }>;
-  extractDateYear: (date: string) => string;
-  variant?: ComponentVariant;
-  isLoading?: boolean;
-  hasError?: boolean;
-}

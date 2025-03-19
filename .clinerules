@@ -1,0 +1,151 @@
+# Project Intelligence & Usage Patterns
+
+This document serves as a reference guide to the AI context documentation for the Developer Portfolio project. For detailed guidelines, please refer to the structured documentation in the `ai-context/` directory.
+
+## Development Server
+
+- The development server is running at http://localhost:3001
+- Do not attempt to start the development server as it is already running
+
+## AI Context Documentation Structure
+
+The project guidelines and best practices are organized in the following structure:
+
+```
+ai-context/
+├── README.md                    # Overview and navigation
+├── component/                   # Component guidelines
+│   ├── organization.md          # Atomic Design structure
+│   ├── naming.md                # Naming conventions
+│   ├── implementation.md        # Component implementation guidelines
+│   └── migration.md             # Migration patterns and strategies
+├── design-system/               # Design system guidelines
+│   ├── tokens.md                # Design token organization
+│   ├── css.md                   # CSS methodology and patterns
+│   └── accessibility.md         # Accessibility guidelines
+├── testing/                     # Testing guidelines
+│   ├── strategy.md              # Testing approach and types
+│   ├── best-practices.md        # Testing best practices
+│   └── automation.md            # Test automation guidelines
+├── performance/                 # Performance guidelines
+│   ├── optimization.md          # Performance optimization patterns
+│   └── monitoring.md            # Performance monitoring guidelines
+└── development/                 # Development guidelines
+    ├── tools.md                 # Development tools and setup
+    ├── practices.md             # Modern development practices
+    └── documentation.md         # Documentation guidelines
+```
+
+## Key Guidelines Summary
+
+### Component Organization (Atomic Design)
+- Atoms: Basic building blocks (`src/components/atoms/`)
+- Molecules: Groups of atoms (`src/components/molecules/`)
+- Organisms: Complex UI components (`src/components/organisms/`)
+- Layout components: Structural components (`src/components/layout/`)
+- Container components: Page sections (`src/containers/`)
+- Each component has a paired CSS file with the same name
+- Component tests go in `__tests__` directories adjacent to components
+- Feature-specific hooks live in `src/hooks/`
+- Context providers live in `src/context/`
+
+For details, see: `ai-context/component/organization.md`
+
+### Naming Conventions
+- PascalCase for component files and component names
+- camelCase for utility functions and hooks
+- Hooks start with `use` prefix (e.g., `useProjects.js`)
+- CSS files match component names exactly
+- Test files use `.test.jsx` extension
+- Enhanced tests use `.enhanced.test.jsx` extension
+
+For details, see: `ai-context/component/naming.md`
+
+### Design System Approach
+- Use CSS variables (custom properties) for design tokens
+- Design tokens are defined in `src/assets/css/design-system/`
+- Component-specific styles in dedicated CSS files
+- Follow BEM naming convention for CSS classes
+- Use CSS Modules for component-scoped styles
+
+For details, see: `ai-context/design-system/tokens.md` and `ai-context/design-system/css.md`
+
+### Testing Strategy
+- Unit Tests: Component-level in `__tests__/` directories
+- Integration Tests: Component interactions
+- Enhanced Tests: Animations and accessibility with `.enhanced.test.jsx`
+- E2E Tests: Full user flows in `e2e/` directory
+
+For details, see: `ai-context/testing/strategy.md`
+
+### Performance Optimization
+- Use React.memo for expensive components
+- Apply useCallback for event handlers passed as props
+- Use useMemo for expensive calculations
+- Implement proper key props for list items
+- Use intersection observer for lazy loading and animations
+
+For details, see: `ai-context/performance/optimization.md`
+
+### Modern Development Practices
+- TypeScript for type safety
+- CSS Modules for component styling
+- Storybook for component development
+- Automated accessibility testing
+- Vite for fast development and optimized builds
+- ESLint and Prettier for code quality
+
+For details, see: `ai-context/development/practices.md`
+
+## Critical Implementation Paths
+
+### Adding a New Section
+1. Create a new container component in `src/containers/`
+2. Use the Section layout component as a wrapper
+3. Create feature-specific components in appropriate atomic level directories
+4. Create a feature-specific custom hook in `src/hooks/`
+5. Add data to the portfolio context
+6. Import and add to App.jsx (consider using React.lazy)
+7. Create section-specific CSS using design tokens
+
+For details, see: `ai-context/component/implementation.md`
+
+### Component Migration Pattern
+1. Identify common patterns in existing component
+2. Extract these patterns to base UI components
+3. Create appropriate component hierarchy
+4. Add prop validation and documentation
+5. Implement feature-specific custom hooks for logic
+6. Apply context for data access
+7. Apply performance optimizations
+8. Update CSS to use design tokens
+9. Add necessary tests
+
+For details, see: `ai-context/component/migration.md`
+
+## Implementation Approach
+
+### Incremental Migration Strategy
+1. Start with project structure and design token system
+2. Create base atomic components (atoms)
+3. Implement context API for state management
+4. Refactor one section at a time
+   - Start with Projects section
+   - Then Experience, Skills, Education, and other sections
+5. Apply performance optimizations
+6. Improve accessibility
+7. Add tests and documentation
+
+For details, see: `ai-context/README.md`
+
+## User Preferences
+
+### Implementation Focus
+- Prefer atomic, reusable components over one-off solutions
+- Focus on maintainable code with clear documentation
+- Prioritize accessibility and performance
+- Follow the implementation steps checklist in docs
+- Use component migration examples as reference
+- Implement design system tokens consistently
+
+For details, see: `ai-context/README.md`
