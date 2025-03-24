@@ -42,13 +42,12 @@ interface NetworkBackgroundProps {
 }
 
 const NetworkBackground = (props: NetworkBackgroundProps) => {
-  const { 
-    children,
+  const {
     className = '',
     gridSize = 30,
     nodeColor = '#00f5d4',
     networkIntensity = 0.5,
-    ...rest 
+    ...rest
   } = props;
 
   const { animationEnabled, prefersReducedMotion } = useAnimation();

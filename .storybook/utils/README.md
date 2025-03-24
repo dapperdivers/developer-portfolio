@@ -12,6 +12,7 @@ This directory contains utilities and helpers for Storybook, organized by respon
   - `animationContext.tsx` - Mock provider for Animation context
 - **decorators/** - Storybook decorators
   - `ui.tsx` - UI decorators (dark background, viewport) with TypeScript support
+  - `atomic.tsx` - Atomic Design decorators for atoms, molecules, and organisms
 
 ## Usage
 
@@ -27,6 +28,13 @@ import {
   // UI decorators
   withDarkBackground,
   withViewport,
+  
+  // Atomic Design decorators
+  withAtomLayout,
+  withMoleculeLayout,
+  withOrganismLayout,
+  withSecurityTheme,
+  withContactTheme,
 
   // Mock data
   mockPortfolioData,
@@ -64,10 +72,37 @@ DarkModeStoryWithContext.decorators = [
 ];
 ```
 
+### Atomic Design Decorators
+
+The Atomic Design decorators provide consistent styling for different component types:
+
+```tsx
+// For atomic components
+export const Default = Template.bind({});
+Default.decorators = [withAtomLayout, withAnimationContext];
+
+// For security-themed components
+export const SecurityVariant = Template.bind({});
+SecurityVariant.decorators = [withSecurityTheme, withAnimationContext];
+
+// For contact-themed components
+export const ContactVariant = Template.bind({});
+ContactVariant.decorators = [withContactTheme, withAnimationContext];
+
+// For molecule components
+export const MoleculeExample = Template.bind({});
+MoleculeExample.decorators = [withMoleculeLayout, withAnimationContext];
+
+// For organism components
+export const OrganismExample = Template.bind({});
+OrganismExample.decorators = [withOrganismLayout, withAnimationContext];
+```
+
 ## Design Principles
 
 1. **Separation of Concerns** - Each file has a single responsibility
 2. **Composability** - Decorators are designed to be composable using Storybook's native mechanisms
 3. **Centralized Exports** - All exports are available through the index
 4. **Mock Data Separation** - Mock data is separate from the components that use it
-5. **Type Safety** - TypeScript is used to ensure type safety and better IDE integration 
+5. **Type Safety** - TypeScript is used to ensure type safety and better IDE integration
+6. **Atomic Design** - Decorators follow Atomic Design principles for consistent styling

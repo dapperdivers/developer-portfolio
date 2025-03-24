@@ -1,5 +1,4 @@
-// emoji is not used but may be used in future features
-// import emoji from "react-easy-emoji";
+
 
 // Security domain constants for consistent categorization
 const SECURITY_DOMAINS = {

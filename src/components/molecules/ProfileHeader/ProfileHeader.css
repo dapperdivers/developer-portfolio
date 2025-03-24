@@ -1,0 +1,44 @@
+/* ProfileHeader Component Styles */
+
+.profile-header {
+  text-align: center;
+  margin-bottom: var(--spacing-4);
+}
+
+.profile-header__badge-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--spacing-3);
+}
+
+.profile-header__title {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  margin-bottom: var(--spacing-2);
+  color: var(--color-white);
+}
+
+.profile-header__highlight {
+  color: var(--color-cyan-400);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .profile-header__title {
+    font-size: var(--font-size-2xl);
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-header {
+    margin-bottom: var(--spacing-3);
+  }
+  
+  .profile-header__badge-container {
+    margin-bottom: var(--spacing-2);
+  }
+  
+  .profile-header__title {
+    font-size: var(--font-size-xl);
+  }
+}

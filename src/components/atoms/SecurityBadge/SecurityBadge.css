@@ -1,197 +1,38 @@
-/**
- * SecurityBadge Component Styles
- * Styling for the SecurityBadge component with variants
- * Animations now handled by framer-motion
- */
+/* SecurityBadge Component Styles */
 
-/* Base styles with improved readability */
 .security-badge {
-  position: absolute;
-  top: -16px; /* Better positioning */
-  right: -12px; /* Better positioning */
-  background-color: rgba(10, 25, 47, 0.95); /* Solid background for better readability */
-  font-size: 0.8rem; /* Larger font size */
-  padding: 0.4rem 0.6rem; /* Increased padding */
-  border-radius: 6px; /* More rounded corners */
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 0.5rem; /* Increased spacing between elements */
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4); /* More subtle shadow */
-  z-index: 20;
+  background: linear-gradient(90deg, rgba(var(--color-navy-rgb), 0.9) 0%, rgba(var(--color-primary-rgb), 0.3) 100%);
+  padding: var(--spacing-2) var(--spacing-4);
+  border-radius: var(--border-radius-full);
   font-family: var(--font-family-jetbrains);
-  border: 2px solid rgba(var(--color-primary-rgb), 0.7); /* More visible border */
-  background-clip: padding-box;
+  font-size: var(--font-size-sm);
+  color: var(--color-primary);
+  letter-spacing: var(--letter-spacing-wide);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(var(--color-primary-rgb), 0.3);
 }
 
-/* Icon styles with improved visibility */
-.security-badge-icon {
-  width: 18px; /* Larger icon */
-  height: 18px;
-  flex-shrink: 0;
-  background-color: rgba(var(--color-primary-rgb), 0.15); /* Background for icon */
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2px;
+.security-badge__icon {
+  color: var(--color-primary-400);
+  margin-right: var(--spacing-2);
+  font-size: var(--font-size-md);
 }
 
-/* Text styles with improved readability */
-.security-badge-text {
-  display: flex;
-  flex-direction: column;
-  white-space: nowrap;
-  font-weight: var(--font-weight-bold);
-  line-height: 1.3; /* Improved line height */
-  letter-spacing: 0.3px; /* Better letter spacing */
+.security-badge__text {
+  font-weight: var(--font-weight-medium);
 }
 
-.security-badge-status {
-  letter-spacing: 0.5px;
-  font-size: 0.75rem; /* Larger text */
-  color: #FFFFFF; /* White text for better contrast */
-}
-
-/* Security ID display with improved readability */
-.security-badge-id {
-  font-size: 0.65rem; /* Larger text */
-  opacity: 0.9;
-  letter-spacing: 0.5px; /* Improved letter spacing */
-  margin-top: 3px; /* Increased spacing */
-  background-color: rgba(0, 0, 0, 0.3); /* Background for better visibility */
-  padding: 0 3px;
-  border-radius: 2px;
-}
-
-/* Variant styles - each with distinct colors and effects */
-.security-badge-security {
-  color: var(--color-entry1, #64ffda);
-  border-color: var(--color-entry1, #64ffda);
-}
-
-.security-badge-terminal {
-  color: var(--color-info, #58a6ff);
-  border-color: var(--color-info, #58a6ff);
-}
-
-/* Status styles - enhanced visuals */
-/* Animation removed - now handled by framer-motion */
-
-.security-badge-verified {
-  font-weight: var(--font-weight-bold);
-}
-
-.security-badge-verified .security-badge-icon {
-  /* Animation removed - now handled by framer-motion */
-  filter: drop-shadow(0 0 5px currentColor); /* Enhanced glow effect */
-}
-
-/* Color variations for verified badges - make these more vibrant/visible */
-.security-badge-verified.security-badge-security {
-  background-color: rgba(0, 0, 0, 0.7); /* Darker background for contrast */
-}
-
-.security-badge-verified.security-badge-security .security-badge-icon {
-  filter: drop-shadow(0 0 8px var(--color-entry1, #64ffda));
-}
-
-.security-badge-verified.security-badge-terminal {
-  background-color: rgba(0, 0, 0, 0.7); /* Darker background for contrast */
-}
-
-.security-badge-verified.security-badge-terminal .security-badge-icon {
-  filter: drop-shadow(0 0 8px var(--color-info, #58a6ff));
-}
-
-/* Color variations based on timeline entry position */
-.timeline-entry:nth-child(5n+1) .security-badge {
-  color: var(--color-entry1);
-  border-color: var(--color-entry1);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5), 0 0 16px rgba(var(--color-entry1-rgb, 100, 255, 218), 0.4);
-}
-
-.timeline-entry:nth-child(5n+2) .security-badge {
-  color: var(--color-entry2);
-  border-color: var(--color-entry2);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5), 0 0 16px rgba(var(--color-entry2-rgb, 255, 157, 0), 0.4);
-}
-
-.timeline-entry:nth-child(5n+3) .security-badge {
-  color: var(--color-entry3);
-  border-color: var(--color-entry3);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5), 0 0 16px rgba(var(--color-entry3-rgb, 255, 94, 120), 0.4);
-}
-
-.timeline-entry:nth-child(5n+4) .security-badge {
-  color: var(--color-entry4);
-  border-color: var(--color-entry4);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5), 0 0 16px rgba(var(--color-entry4-rgb, 167, 139, 250), 0.4);
-}
-
-.timeline-entry:nth-child(5n+5) .security-badge {
-  color: var(--color-entry5);
-  border-color: var(--color-entry5);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5), 0 0 16px rgba(var(--color-entry5-rgb, 45, 212, 191), 0.4);
-}
-
-/* Animation keyframes removed - now handled by framer-motion */
-
-/* Loading icon animation removed - now handled by framer-motion */
-
-/* Hover effect removed - now handled by framer-motion's whileHover */
-
-/* Focus styles */
-.security-badge:focus-visible {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
-}
-
-/* Verification badge with improved readability */
-.security-badge-verified {
-  background-color: rgba(20, 40, 60, 0.95); /* Darker background for better contrast */
-  border-color: rgba(var(--color-success-rgb), 0.8); /* Success color border for verified state */
-}
-
-/* Simple highlight for verified badge */
-.security-badge-verified::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px; /* Top border highlight */
-  background-color: rgba(var(--color-success-rgb), 0.7);
-  opacity: 0.9;
-  pointer-events: none;
-  border-radius: 3px 3px 0 0;
-}
-
-/* Verified badge icon color */
-.security-badge-verified .security-badge-icon {
-  background-color: rgba(var(--color-success-rgb), 0.2); /* Success color background */
-}
-
-/* Verified badge status text */
-.security-badge-verified .security-badge-status {
-  color: var(--color-success); /* Success color text */
-  font-weight: bold;
-}
-
-/* Responsive styles */
-@media (max-width: 768px) {
+/* Responsive adjustments */
+@media (max-width: 480px) {
   .security-badge {
-    top: -10px;
-    right: -10px;
-    font-size: 8px;
-    padding: var(--spacing-1);
+    font-size: var(--font-size-xs);
+    padding: var(--spacing-1) var(--spacing-3);
   }
   
-  .security-badge-icon {
-    width: 12px;
-    height: 12px;
-  }
-  
-  .security-badge-id {
-    font-size: 0.5rem;
+  .security-badge__icon {
+    font-size: var(--font-size-sm);
+    margin-right: var(--spacing-1);
   }
 }

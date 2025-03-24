@@ -1,10 +1,299 @@
+/**
+ * Test Setup File
+ *
+ * This file sets up the testing environment for the Developer Portfolio project.
+ * It includes mocks for various browser APIs, React components, and project-specific utilities.
+ */
+
+// Define animation variants directly to avoid hoisting issues
+// These need to be defined BEFORE imports due to vi.mock() hoisting
+const fadeInVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 0.5 } }
+};
+
+const slideUpVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+};
+
+const scaleVariants = {
+  hidden: { opacity: 0, scale: 0.8 },
+  visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } }
+};
+
+const staggerContainerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.2
+    }
+  }
+};
+
+// Helper functions - also need to be defined before imports
+const getAnimationDelay = (index: number): string => `${index * 0.1}s`;
+const optimizeVariants = (variants: any): any => variants;
+
 import '@testing-library/jest-dom';
 import React from 'react';
 import { render } from '@testing-library/react';
 import { vi, afterEach } from 'vitest';
-import { AnimationContext } from '@utils/AnimationContext';
-import { PortfolioContext } from '@context/PortfolioContext';
-import { slideUpVariants, fadeInVariants, scaleVariants, getAnimationDelay } from '@utils/animations';
+
+// Import the context
+import { AnimationContext } from '../utils/AnimationContext';
+import { PortfolioContext } from '../context/PortfolioContext';
+
+// Mock framer-motion
+vi.mock('framer-motion', () => {
+  const React = require('react');
+  const { vi } = require('vitest');
+  
+  // Create a forwardRef component factory
+  const createMotionComponent = (elementType) => {
+    return React.forwardRef((props, ref) =>
+      React.createElement(elementType, {
+        ref,
+        'data-motion': JSON.stringify(props),
+        ...props
+      })
+    );
+  };
+  
+  // Create motion components
+  const motion = {
+    div: createMotionComponent('div'),
+    article: createMotionComponent('article'),
+    button: createMotionComponent('button'),
+    section: createMotionComponent('section'),
+    span: createMotionComponent('span'),
+    p: createMotionComponent('p'),
+    a: createMotionComponent('a'),
+    ul: createMotionComponent('ul'),
+    li: createMotionComponent('li'),
+    img: createMotionComponent('img'),
+    header: createMotionComponent('header'),
+    footer: createMotionComponent('footer'),
+    main: createMotionComponent('main'),
+    nav: createMotionComponent('nav'),
+    h1: createMotionComponent('h1'),
+    h2: createMotionComponent('h2'),
+    h3: createMotionComponent('h3'),
+    h4: createMotionComponent('h4'),
+    h5: createMotionComponent('h5'),
+    h6: createMotionComponent('h6')
+  };
+  
+  // Animation controls mock
+  const useAnimation = () => ({
+    start: vi.fn(),
+    set: vi.fn(),
+    stop: vi.fn()
+  });
+  
+  // InView hook mock
+  const useInView = () => [vi.fn(), true];
+  
+  return {
+    motion,
+    m: motion, // Alias for motion
+    useAnimation,
+    useInView,
+    AnimatePresence: ({ children }) => children,
+    LazyMotion: ({ children }) => children,
+    domAnimation: {},
+    domMax: {}
+  };
+});
+
+// Mock @context/AnimationContext
+vi.mock('@context/AnimationContext', () => {
+  const React = require('react');
+  const { vi } = require('vitest');
+  
+  // Define animation variants
+  const fadeInVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { duration: 0.5 } }
+  };
+  
+  const slideUpVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+  };
+  
+  const scaleVariants = {
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } }
+  };
+  
+  const staggerContainerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2
+      }
+    }
+  };
+  
+  const getAnimationDelay = (index) => `${index * 0.1}s`;
+  const optimizeVariants = (variants) => variants;
+  
+  // Create the context
+  const AnimationContext = {
+    Provider: ({ children }) => children,
+    Consumer: ({ children }) => children({}),
+  };
+  
+  // Create the hook
+  const useAnimation = vi.fn().mockReturnValue({
+    animationEnabled: true,
+    shouldReduceMotion: false,
+    fadeInVariants,
+    slideUpVariants,
+    scaleVariants,
+    staggerContainerVariants,
+    getAnimationDelay,
+    getOptimizedVariants: optimizeVariants,
+    optimizeVariants,
+    prefersReducedMotion: false,
+    isLowPowerDevice: false,
+    animationStaggerDelay: 0.15
+  });
+  
+  return {
+    AnimationContext,
+    useAnimation
+  };
+});
+// Mock ../utils/AnimationContext
+vi.mock('../utils/AnimationContext', () => {
+  const React = require('react');
+  const { vi } = require('vitest');
+  
+  // Define animation variants
+  const fadeInVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { duration: 0.5 } }
+  };
+  
+  const slideUpVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+  };
+  
+  const scaleVariants = {
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } }
+  };
+  
+  const staggerContainerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2
+      }
+    }
+  };
+  
+  const getAnimationDelay = (index) => `${index * 0.1}s`;
+  const optimizeVariants = (variants) => variants;
+  
+  // Create the context
+  const AnimationContext = {
+    Provider: ({ children }) => children,
+    Consumer: ({ children }) => children({}),
+  };
+  
+  // Create the hook
+  const useAnimation = vi.fn().mockReturnValue({
+    animationEnabled: true,
+    shouldReduceMotion: false,
+    fadeInVariants,
+    slideUpVariants,
+    scaleVariants,
+    staggerContainerVariants,
+    getAnimationDelay,
+    getOptimizedVariants: optimizeVariants,
+    optimizeVariants,
+    prefersReducedMotion: false,
+    isLowPowerDevice: false,
+    animationStaggerDelay: 0.15
+  });
+  
+  // Create the provider component
+  const AnimationProvider = ({ children }) =>
+    React.createElement('div', { 'data-testid': 'animation-provider' }, children);
+  
+  return {
+    AnimationContext,
+    useAnimation,
+    AnimationProvider
+  };
+});
+
+// Mock ../utils/animations
+vi.mock('../utils/animations', () => {
+  const { vi } = require('vitest');
+  
+  // Define animation variants
+  const fadeInVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { duration: 0.5 } }
+  };
+  
+  const slideUpVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+  };
+  
+  const scaleVariants = {
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } }
+  };
+  
+  const staggerContainerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2
+      }
+    }
+  };
+  
+  const getAnimationDelay = (index) => `${index * 0.1}s`;
+  const optimizeVariants = (variants) => variants;
+  const getOptimizedVariants = vi.fn().mockImplementation(optimizeVariants);
+  
+  return {
+    fadeInVariants,
+    slideUpVariants,
+    scaleVariants,
+    staggerContainerVariants,
+    getAnimationDelay: vi.fn().mockImplementation(getAnimationDelay),
+    getOptimizedVariants,
+    optimizeVariants,
+    ANIMATION_CONFIG: {
+      DEFAULT_DURATION: 0.5,
+      DEFAULT_STAGGER: 0.1,
+      DEFAULT_DELAY: 0.2,
+      REDUCED_MOTION_DURATION: 0.2,
+      QUALITY_SETTINGS: {
+        high: { batchSize: 5, throttleMs: 16 },
+        medium: { batchSize: 3, throttleMs: 32 },
+        low: { batchSize: 2, throttleMs: 48 }
+      }
+    }
+  };
+});
 
 // Browser API Mocks
 Object.defineProperty(window, 'matchMedia', {
@@ -34,8 +323,11 @@ const mockStorage = () => {
   };
 };
 
-Object.defineProperty(window, 'localStorage', { value: mockStorage(), writable: true });
-Object.defineProperty(window, 'sessionStorage', { value: mockStorage(), writable: true });
+const localStorageMock = mockStorage();
+const sessionStorageMock = mockStorage();
+
+Object.defineProperty(window, 'localStorage', { value: localStorageMock, writable: true });
+Object.defineProperty(window, 'sessionStorage', { value: sessionStorageMock, writable: true });
 
 // Mock IntersectionObserver
 class MockIntersectionObserver {
@@ -126,48 +418,6 @@ class MockResizeObserver {
 }
 
 global.ResizeObserver = MockResizeObserver as unknown as typeof ResizeObserver;
-
-// Define types for motion components
-type MotionProps = {
-  children?: React.ReactNode;
-  [key: string]: any;
-};
-
-// Mock framer-motion
-vi.mock('framer-motion', () => ({
-  motion: {
-    div: React.forwardRef<HTMLDivElement, MotionProps>(({ children, ...props }, ref) => (
-      React.createElement('div', {
-        ref,
-        'data-motion': JSON.stringify(props),
-        ...props,
-        children
-      })
-    )),
-    article: React.forwardRef<HTMLElement, MotionProps>(({ children, ...props }, ref) => (
-      React.createElement('article', {
-        ref,
-        'data-motion': JSON.stringify(props),
-        ...props,
-        children
-      })
-    )),
-    button: React.forwardRef<HTMLButtonElement, MotionProps>(({ children, ...props }, ref) => (
-      React.createElement('button', {
-        ref,
-        'data-motion': JSON.stringify(props),
-        ...props,
-        children
-      })
-    ))
-  },
-  useAnimation: () => ({
-    start: vi.fn(),
-    set: vi.fn()
-  }),
-  useInView: () => [vi.fn(), true],
-  AnimatePresence: ({ children }: { children: React.ReactNode }) => children
-}));
 
 // Global test data types
 export interface MockSkill {
@@ -262,24 +512,88 @@ interface RenderOptions {
 
 export const renderWithProviders = (
   ui: React.ReactElement,
-  { 
+  {
     animationEnabled = true,
     portfolioData = mockPortfolioData
   }: RenderOptions = {}
 ): ReturnType<typeof render> => {
+  // Create a mock AnimationContext value that matches the AnimationContextType
   const animationValue = {
-    enabled: animationEnabled,
-    reducedMotion: false,
-    quality: 'high' as const,
-    batchSize: 5,
-    throttleMs: 16,
-    setAnimationSettings: vi.fn(),
-    shouldAnimate: () => animationEnabled,
-    getOptimizedVariants: (variants: any) => variants,
+    // Basic animation state
+    inView: true,
+    setInView: vi.fn(),
+    animationEnabled,
+    entryAnimations: {},
+    registerEntryAnimation: vi.fn(),
+    playEntryAnimation: vi.fn(),
+    resetEntryAnimations: vi.fn(),
+    animationStaggerDelay: 0.15,
+    getAnimationDelay,
+    
+    // Framer-motion specific properties
+    controls: {
+      start: vi.fn(),
+      set: vi.fn(),
+      stop: vi.fn()
+    },
+    getVariants: (duration = 0.5, delay = 0) => ({
+      hidden: { opacity: 0 },
+      visible: {
+        opacity: 1,
+        transition: { duration, delay }
+      }
+    }),
+    
+    // Animation variants
     fadeInVariants,
-    scaleVariants,
     slideUpVariants,
-    getAnimationDelay
+    scaleVariants,
+    staggerContainerVariants,
+    pulseVariants: {
+      hidden: { opacity: 0.6 },
+      visible: {
+        opacity: [0.6, 1, 0.6],
+        transition: {
+          repeat: Infinity,
+          duration: 2,
+          ease: "easeInOut"
+        }
+      }
+    },
+    matrixVariants: {
+      hidden: { opacity: 0 },
+      visible: {
+        opacity: 1,
+        transition: {
+          duration: 0.8,
+          staggerChildren: 0.05
+        }
+      }
+    },
+    glitchVariants: {
+      hidden: { opacity: 0 },
+      visible: {
+        opacity: 1,
+        x: [0, -2, 3, -1, 0],
+        transition: {
+          duration: 0.5,
+          x: {
+            repeat: Infinity,
+            repeatType: "reverse",
+            duration: 0.2
+          }
+        }
+      }
+    },
+    
+    // Animation optimization properties
+    prefersReducedMotion: false,
+    isLowPowerDevice: false,
+    optimizeVariants,
+    
+    // Performance monitoring
+    enablePerformanceMonitoring: vi.fn(),
+    disablePerformanceMonitoring: vi.fn()
   };
 
   const portfolioValue = {
@@ -290,10 +604,10 @@ export const renderWithProviders = (
   };
 
   return render(
-    React.createElement(PortfolioContext.Provider, 
+    React.createElement(PortfolioContext.Provider,
       { value: portfolioValue },
-      React.createElement(AnimationContext.Provider, 
-        { value: animationValue }, 
+      React.createElement(AnimationContext.Provider,
+        { value: animationValue as any },
         ui
       )
     )
@@ -307,6 +621,6 @@ export const renderWithAnimation = renderWithProviders;
 afterEach(() => {
   vi.clearAllMocks();
   document.body.innerHTML = '';
-  (window.localStorage as any).clear();
-  (window.sessionStorage as any).clear();
+  localStorageMock.clear();
+  sessionStorageMock.clear();
 });

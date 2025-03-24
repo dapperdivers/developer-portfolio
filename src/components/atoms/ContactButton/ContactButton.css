@@ -1,0 +1,46 @@
+/* ContactButton Component Styles */
+
+.contact-button {
+  display: inline-flex;
+  align-items: center;
+  background: linear-gradient(90deg, var(--color-cyan) 0%, var(--color-primary) 100%);
+  color: var(--color-navy);
+  padding: var(--spacing-2) var(--spacing-5);
+  border-radius: var(--border-radius-full);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-sm);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+  box-shadow: 0 4px 10px rgba(var(--color-cyan-rgb), 0.3);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.contact-button:hover {
+  box-shadow: 0 6px 15px rgba(var(--color-cyan-rgb), 0.4);
+  color: var(--color-navy);
+}
+
+.contact-button:active {
+  box-shadow: 0 3px 8px rgba(var(--color-cyan-rgb), 0.4);
+}
+
+.contact-button__text {
+  margin-right: var(--spacing-2);
+}
+
+.contact-button__icon {
+  font-size: var(--font-size-md);
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .contact-button {
+    font-size: var(--font-size-xs);
+    padding: var(--spacing-2) var(--spacing-4);
+  }
+  
+  .contact-button__icon {
+    font-size: var(--font-size-sm);
+  }
+}

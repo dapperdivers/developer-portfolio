@@ -7,6 +7,11 @@ This document serves as a reference guide to the AI context documentation for th
 - The development server is running at http://localhost:3001
 - Do not attempt to start the development server as it is already running
 
+## Storybook Server
+
+- The storybook server is running at http://localhost:6006
+- Do not attempt to start the storybook server as it is already running
+
 ## AI Context Documentation Structure
 
 The project guidelines and best practices are organized in the following structure:

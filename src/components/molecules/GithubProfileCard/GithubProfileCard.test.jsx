@@ -1,124 +1,110 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import GithubProfileCard from './GithubProfileCard';
-import { vi } from 'vitest';
+import { AnimationProvider } from '@context/AnimationContext';
 
-// Mock the SocialLinks component
-vi.mock('@molecules/SocialLinks', () => ({
-  default: () => <div data-testid="social-links">Social Links</div>
-}));
+// Mock the child components
+jest.mock('@atoms/ProfileAvatar', () => ({ src, alt }) => (
+  <div data-testid="profile-avatar" data-src={src} data-alt={alt}>
+    ProfileAvatar
+  </div>
+));
 
-// Mock the Button component
-vi.mock('@atoms/Button', () => ({
-  default: ({ children, onClick, className }) => (
-    <button 
-      onClick={onClick} 
-      className={className}
-      data-testid="mock-button"
-    >
-      {children}
-    </button>
-  )
-}));
+jest.mock('@molecules/ProfileHeader', () => ({ title, subtitle }) => (
+  <div data-testid="profile-header" data-title={title} data-subtitle={subtitle}>
+    ProfileHeader
+  </div>
+));
 
-// Mock framer-motion to avoid animation issues in tests
-vi.mock('framer-motion', () => ({
-  motion: {
-    div: ({ children, ...props }) => <div {...props}>{children}</div>
-  },
-  AnimatePresence: ({ children }) => <div data-testid="animate-presence">{children}</div>
-}));
+jest.mock('@molecules/ProfileLocation', () => ({ location }) => (
+  <div data-testid="profile-location" data-location={location}>
+    ProfileLocation
+  </div>
+));
 
-// Mock portfolio.js
-vi.mock('@/portfolio', () => ({
+jest.mock('@molecules/ProfileContent', () => ({ email }) => (
+  <div data-testid="profile-content" data-email={email}>
+    ProfileContent
+  </div>
+));
+
+jest.mock('@molecules/ProfileError', () => ({ message, onRetry }) => (
+  <div data-testid="profile-error" data-message={message} onClick={onRetry}>
+    ProfileError
+  </div>
+));
+
+// Mock the portfolio data
+jest.mock('@/portfolio', () => ({
   greetings: {
-    name: "Test User",
-    title: "Software Developer",
-    subTitle: "Web Developer",
-    description: "Passionate developer building web applications."
+    name: 'John Doe',
+    title: 'Hi, I am',
+    subTitle: 'Security Engineer',
+    description: 'I am a security professional with expertise in secure architecture.'
   },
-  securityFacts: [
-    "Always use HTTPS for secure communication",
-    "Implement proper authentication and authorization"
-  ]
+  securityFacts: ['Security fact 1', 'Security fact 2']
 }));
 
-// Mock the MapComponent
-vi.mock('../MapComponent', () => ({
-  default: ({ location }) => <div data-testid="map-component">{location}</div>
-}));
-
-describe('GithubProfileCard Component', () => {
+describe('GithubProfileCard', () => {
   const mockProfile = {
-    login: 'testuser',
     avatar_url: 'https://example.com/avatar.jpg',
-    html_url: 'https://github.com/testuser',
-    name: 'Test User',
-    bio: 'This is a test bio',
-    location: 'Test Location',
-    company: 'Test Company'
+    name: 'John Doe',
+    location: 'San Francisco, CA'
   };
-  
-  it('renders with profile data correctly', () => {
-    render(<GithubProfileCard prof={mockProfile} />);
+
+  const renderWithContext = (ui) => {
+    return render(
+      <AnimationProvider>
+        {ui}
+      </AnimationProvider>
+    );
+  };
+
+  test('renders profile data when provided', () => {
+    renderWithContext(<GithubProfileCard prof={mockProfile} />);
     
-    // Check that the card renders
-    expect(screen.getByTestId('github-profile-card')).toBeInTheDocument();
-    
-    // Check that profile information is displayed 
-    expect(screen.getByAltText('Test User avatar')).toBeInTheDocument();
-    
-    // Check for Security Headquarters heading
-    expect(screen.getByText('Security')).toBeInTheDocument();
-    expect(screen.getByText('Headquarters')).toBeInTheDocument();
-    
-    // Look for part of the description text that should appear
-    expect(screen.getByText(/My inbox is (secure and )?always open!/)).toBeInTheDocument();
-    
-    // Check that social links component is rendered
-    expect(screen.getByTestId('social-links')).toBeInTheDocument();
+    expect(screen.getByTestId('profile-avatar')).toBeInTheDocument();
+    expect(screen.getByTestId('profile-header')).toBeInTheDocument();
+    expect(screen.getByTestId('profile-location')).toBeInTheDocument();
+    expect(screen.getByTestId('profile-content')).toBeInTheDocument();
+    expect(screen.queryByTestId('profile-error')).not.toBeInTheDocument();
   });
-  
-  it('renders error state correctly', () => {
-    const errorMessage = 'GitHub API rate limit exceeded';
-    render(<GithubProfileCard prof={null} error={errorMessage} onRetry={vi.fn()} />);
+
+  test('renders error state when error is provided', () => {
+    const errorMessage = 'API rate limit exceeded';
+    const onRetry = jest.fn();
     
-    // Check that error message is displayed
-    expect(screen.getByText('GitHub Profile Unavailable')).toBeInTheDocument();
-    expect(screen.getByText(errorMessage)).toBeInTheDocument();
+    renderWithContext(
+      <GithubProfileCard 
+        prof={null} 
+        error={errorMessage} 
+        onRetry={onRetry} 
+      />
+    );
     
-    // Check that retry button is rendered
-    expect(screen.getByTestId('mock-button')).toBeInTheDocument();
+    expect(screen.getByTestId('profile-error')).toBeInTheDocument();
+    expect(screen.queryByTestId('profile-avatar')).not.toBeInTheDocument();
+    
+    // Test retry functionality
+    fireEvent.click(screen.getByTestId('profile-error'));
+    expect(onRetry).toHaveBeenCalledTimes(1);
   });
-  
-  it('calls onRetry when retry button is clicked', () => {
-    const mockRetry = vi.fn();
-    render(<GithubProfileCard prof={null} error="Error message" onRetry={mockRetry} />);
+
+  test('renders error state when profile is empty', () => {
+    renderWithContext(<GithubProfileCard prof={{}} error={null} />);
     
-    // Click the retry button
-    fireEvent.click(screen.getByTestId('mock-button'));
-    
-    // Check that onRetry was called
-    expect(mockRetry).toHaveBeenCalledTimes(1);
+    expect(screen.getByTestId('profile-error')).toBeInTheDocument();
+    expect(screen.queryByTestId('profile-avatar')).not.toBeInTheDocument();
   });
-  
-  it('renders the default error message when no error is provided', () => {
-    render(<GithubProfileCard prof={null} />);
-    
-    // Check that the default error message is displayed
-    expect(screen.getByText('Unable to load GitHub profile data. Please try again later.')).toBeInTheDocument();
-  });
-  
-  it('renders profile with minimal data correctly', () => {
-    const minimalProfile = {
-      avatar_url: 'https://example.com/avatar.jpg'
+
+  test('does not render location when location is not provided', () => {
+    const profileWithoutLocation = {
+      ...mockProfile,
+      location: null
     };
     
-    render(<GithubProfileCard prof={minimalProfile} />);
+    renderWithContext(<GithubProfileCard prof={profileWithoutLocation} />);
     
-    // Check that the profile is rendered with avatar but without other fields
-    expect(screen.getByAltText('Profile avatar')).toBeInTheDocument();
-    expect(screen.queryByText('This is a test bio')).not.toBeInTheDocument();
-    expect(screen.queryByText('Test Location')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('profile-location')).not.toBeInTheDocument();
   });
 });

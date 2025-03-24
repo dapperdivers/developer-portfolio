@@ -1,2 +1,1 @@
-import GithubProfileCard from './GithubProfileCard';
-export default GithubProfileCard;
+export { default } from './GithubProfileCard';

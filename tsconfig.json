@@ -142,7 +142,8 @@
   "include": [
     "src/**/*",
     "src/**/*.json",
-    "src/**/*.d.ts"
+    "src/**/*.d.ts",
+    ".storybook/**/*"
   ],
   "exclude": [
     "node_modules",
