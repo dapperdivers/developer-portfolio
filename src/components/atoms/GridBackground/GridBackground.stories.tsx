@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import GridBackground from './GridBackground';
 import { AnimationProvider } from '@context/AnimationContext';
 

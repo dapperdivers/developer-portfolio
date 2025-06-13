@@ -1,6 +1,6 @@
 import React from 'react';
 import FeedbackCard from './FeedbackCard';
-import { within, userEvent, expect } from '@storybook/test';
+import { within, userEvent, expect } from 'storybook/test';
 
 // Sample feedback data for stories
 const mockFeedbackData = {

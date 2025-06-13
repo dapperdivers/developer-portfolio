@@ -1,0 +1,32 @@
+apiVersion: v2
+name: developer-portfolio
+description: A complete Helm chart for deploying Derek Mackley's Developer Portfolio with React app, Storybook component library, and Jekyll documentation
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+home: https://github.com/DapperDivers/developer-portfolio
+icon: https://raw.githubusercontent.com/DapperDivers/developer-portfolio/master/public/favicon.ico
+keywords:
+  - portfolio
+  - react
+  - storybook
+  - jekyll
+  - documentation
+  - frontend
+  - javascript
+maintainers:
+  - name: Derek Mackley
+    email: derek@chelonianlabs.com
+    url: https://github.com/DapperDivers
+sources:
+  - https://github.com/DapperDivers/developer-portfolio
+annotations:
+  category: Application
+  licenses: MIT
+  images: |
+    - name: developer-portfolio
+      image: ghcr.io/dapperdivers/developer-portfolio:latest
+    - name: developer-portfolio-storybook  
+      image: ghcr.io/dapperdivers/developer-portfolio-storybook:latest
+    - name: developer-portfolio-docs
+      image: ghcr.io/dapperdivers/developer-portfolio-docs:latest

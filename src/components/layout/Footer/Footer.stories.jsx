@@ -1,7 +1,7 @@
 import React from 'react';
 import { withPortfolioContext } from '@stories-utils';
 import Footer from './Footer';
-import { within, userEvent, expect } from '@storybook/test';
+import { within, userEvent, expect } from 'storybook/test';
 import PortfolioContext from '@context/PortfolioContext';
 
 // Mock data for PortfolioContext

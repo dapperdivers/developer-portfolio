@@ -3,7 +3,7 @@ import { motion, useInView } from 'framer-motion';
 import { useAnimation } from '@context//AnimationContext';
 import EducationCard from '@molecules/EducationCard';
 import { useEducation } from '@context/PortfolioContext';
-import Section from '@layout/Section';
+import Section from '../../layout/Section';
 import './Education.css';
 
 /**

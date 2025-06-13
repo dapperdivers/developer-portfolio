@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 import SkillCard, { SkillCardExpanded } from '@molecules/SkillCard';
 import SkeletonCard from '@atoms/SkeletonCard';
-import Section from '@layout/Section';
+import Section from '../../layout/Section';
 import useSkills from "@hooks/useSkills";
 import { usePortfolio } from "@context/PortfolioContext";
 import { useAnimation, MotionVariants } from '@context/AnimationContext';

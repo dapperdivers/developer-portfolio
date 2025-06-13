@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
-import { useAnimation, MotionVariants } from '@context//AnimationContext';
+import { useAnimation, MotionVariants } from '@context/AnimationContext';
 import './Card.css';
 
 /**

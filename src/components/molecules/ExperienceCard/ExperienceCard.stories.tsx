@@ -1,5 +1,5 @@
 import ExperienceCard from './ExperienceCard';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 // Sample experience data
 const sampleData = {
@@ -43,17 +43,9 @@ const meta: Meta<typeof ExperienceCard> = {
       control: 'object',
       description: 'Custom color override for the card',
     },
-    showHeader: {
-      control: 'boolean',
-      description: 'Whether to show the card header',
-    },
     shadow: {
       control: 'boolean',
       description: 'Whether to show card shadow',
-    },
-    className: {
-      control: 'text',
-      description: 'Additional CSS classes',
     },
   },
 };
@@ -106,12 +98,12 @@ export const CustomColors: Story = {
 };
 
 /**
- * Story showing a card without header
+ * Story showing a card with shadow enabled
  */
-export const NoHeader: Story = {
+export const WithShadow: Story = {
   args: {
     ...Default.args,
-    showHeader: false,
+    shadow: true,
   },
 };
 
@@ -126,12 +118,15 @@ export const NoShadow: Story = {
 };
 
 /**
- * Story showing a card with custom styling
+ * Story showing a card with custom color override
  */
-export const CustomStyling: Story = {
+export const CustomColor: Story = {
   args: {
     ...Default.args,
-    className: 'custom-card bg-gray-100 p-6',
+    colorOverride: {
+      backgroundColor: '#f0f9ff',
+      borderColor: '#0ea5e9',
+    },
   },
 };
 

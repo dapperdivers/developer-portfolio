@@ -1,0 +1,131 @@
+name: Release Helm Chart
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'k8s/charts/**'
+      - '.github/workflows/helm-release.yml'
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      chart_version:
+        description: 'Chart version to release (leave empty for auto-increment)'
+        required: false
+        default: ''
+
+env:
+  HELM_EXPERIMENTAL_OCI: 1
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configure Git
+        run: |
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+
+      - name: Install Helm
+        uses: azure/setup-helm@v4
+        with:
+          version: '3.13.3'
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Determine Chart Version
+        id: version
+        run: |
+          if [[ "${{ github.event_name }}" == "release" ]]; then
+            # Use release tag, removing 'v' prefix if present
+            VERSION="${{ github.event.release.tag_name }}"
+            VERSION="${VERSION#v}"
+          elif [[ -n "${{ github.event.inputs.chart_version }}" ]]; then
+            # Use manual input
+            VERSION="${{ github.event.inputs.chart_version }}"
+          else
+            # Auto-increment patch version
+            CURRENT_VERSION=$(yq eval '.version' k8s/charts/developer-portfolio/Chart.yaml)
+            VERSION=$(echo $CURRENT_VERSION | awk -F. '{$NF = $NF + 1;} 1' | sed 's/ /./g')
+          fi
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+          echo "Chart version will be: ${VERSION}"
+
+      - name: Update Chart Version
+        run: |
+          yq eval '.version = "${{ steps.version.outputs.version }}"' -i k8s/charts/developer-portfolio/Chart.yaml
+          yq eval '.appVersion = "${{ steps.version.outputs.version }}"' -i k8s/charts/developer-portfolio/Chart.yaml
+
+      - name: Update Chart Dependencies
+        run: |
+          cd k8s/charts/developer-portfolio
+          helm dependency update
+
+      - name: Lint Chart
+        run: |
+          helm lint k8s/charts/developer-portfolio
+
+      - name: Package Chart
+        run: |
+          helm package k8s/charts/developer-portfolio
+
+      - name: Release Chart to OCI Registry
+        uses: bsord/helm-oci-charts-releaser@v0.1.0
+        with:
+          name: developer-portfolio
+          repository: ${{ github.repository }}
+          tag: ${{ steps.version.outputs.version }}
+          path: developer-portfolio-${{ steps.version.outputs.version }}.tgz
+          registry: ghcr.io
+          registry_username: ${{ github.actor }}
+          registry_password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Commit Version Updates
+        if: github.event_name != 'release'
+        run: |
+          git add k8s/charts/developer-portfolio/Chart.yaml
+          git commit -m "chore: bump chart version to ${{ steps.version.outputs.version }}"
+          git push
+
+      - name: Create GitHub Release
+        if: github.event_name != 'release'
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ steps.version.outputs.version }}
+          name: Release v${{ steps.version.outputs.version }}
+          body: |
+            ## Helm Chart Release v${{ steps.version.outputs.version }}
+            
+            ### Installation
+            
+            ```bash
+            helm install developer-portfolio oci://ghcr.io/${{ github.repository }}/developer-portfolio --version ${{ steps.version.outputs.version }}
+            ```
+            
+            ### Changes
+            - Updated Helm chart to version ${{ steps.version.outputs.version }}
+            
+            ### Usage
+            See the [deployment documentation](k8s/README.md) for detailed installation instructions.
+          files: developer-portfolio-${{ steps.version.outputs.version }}.tgz
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -2,11 +2,11 @@ import React, { memo, useMemo, useRef } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import PropTypes from 'prop-types';
 import SkeletonCard from '@atoms/SkeletonCard';
-import Section from '@layout/Section';
+import Section from '../../layout/Section';
 import ConsoleHeader from '@atoms/ConsoleHeader/ConsoleHeader';
 import ExperienceCard from '@molecules/ExperienceCard';
 import { usePortfolio } from "@context/PortfolioContext";
-import { useAnimation } from "@context//AnimationContext";
+import { useAnimation } from "@context/AnimationContext";
 import { experience as experienceData } from '../../../portfolio';
 import './Experience.css';
 
@@ -21,8 +21,9 @@ const Experience = () => {
   // Get portfolio data
   const portfolioData = usePortfolio();
   
-  // Get animation settings from context
-  const { animationEnabled } = useAnimation();
+  // Get animation settings from context - with fallback
+  const animationContext = useAnimation();
+  const animationEnabled = animationContext?.animationEnabled ?? true;
   
   // Reference for scroll animation
   const sectionRef = useRef(null);
@@ -32,12 +33,16 @@ const Experience = () => {
     margin: "0px 0px -100px 0px"
   });
   
-  // Get loading delay from context or use default
-  const loadingDelay = portfolioData?.settings?.loadingDelay || 0;
+  // Check if in Storybook environment and prioritize context data
+  const experience = portfolioData?.experience || experienceData || [];
   
-  // Use the directly imported experience data from portfolio.js
-  // Fallback to context data only if needed
-  const experience = experienceData || portfolioData?.experience || [];
+  // Debug logging to understand data flow
+  console.log('Experience Debug - Data Flow:', {
+    experienceDataLength: experienceData?.length,
+    portfolioDataExperienceLength: portfolioData?.experience?.length,
+    finalExperienceLength: experience?.length,
+    hasData: experience && experience.length > 0
+  });
   
   // Determine section title and subtitle from context if available
   const sectionTitle = portfolioData?.experienceSection?.title || "Professional Experience";
@@ -75,19 +80,6 @@ const Experience = () => {
     }
   };
   
-  const cardVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: (index) => ({
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.4,
-        delay: index * 0.1,
-        ease: "easeOut"
-      }
-    })
-  };
-  
   // Skip rendering the whole section if explicitly disabled in config
   if (portfolioData?.experienceSection?.display === false) {
     return null;
@@ -114,8 +106,6 @@ const Experience = () => {
             {Array.from({ length: skeletonCount }).map((_, i) => (
               <motion.div 
                 key={`skeleton-${i}`}
-                variants={cardVariants}
-                custom={i}
                 data-testid="skeleton-experience-mock"
               >
                 <SkeletonCard 
@@ -182,14 +172,16 @@ const Experience = () => {
             <ExperienceCard
               key={`experience-${index}`}
               data={{
-                role: item.title,
+                role: item.role,
                 company: item.company,
                 date: item.date,
-                desc: item.description,
-                descBullets: item.technologies,
-                companylogo: item.logo
+                desc: item.desc,
+                descBullets: item.descBullets,
+                companylogo: item.companylogo,
+                url: item.url
               }}
               index={index}
+              shadow={true}
               data-testid="experience-card-mock"
             />
           ))}

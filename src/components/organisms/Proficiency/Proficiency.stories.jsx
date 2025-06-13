@@ -1,6 +1,6 @@
 import React from 'react';
 import Proficiency from './Proficiency';
-import { within, expect } from '@storybook/test';
+import { within, expect } from 'storybook/test';
 import { mockPortfolioData, withPortfolioContext, withViewport } from '@stories-utils';
 import PortfolioContext from '@context/PortfolioContext';
 import build from '@assets/animations/lottie/dev-building.json';

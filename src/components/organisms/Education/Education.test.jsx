@@ -99,6 +99,7 @@ describe('Education Container Component', () => {
     // Check that the section has the correct props
     const section = screen.getByTestId('education-section');
     expect(section).toHaveAttribute('id', 'education');
-    expect(section).toHaveAttribute('class', 'education-section');
+    // Allow additional classes; ensure our expected class is present
+    expect(section).toHaveClass('education-section');
   });
 });

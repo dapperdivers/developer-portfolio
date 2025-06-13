@@ -1,6 +1,6 @@
 import React from 'react';
 import LazyImage from './LazyImage';
-import { within, userEvent, expect } from '@storybook/test';
+import { within, userEvent, expect } from 'storybook/test';
 
 const meta = {
   title: 'Atoms/LazyImage',

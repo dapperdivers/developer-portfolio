@@ -3,21 +3,23 @@
 <p align="center">A modern, accessible, and performance-optimized portfolio template for developers.</p>
 
 <p align="center">
-  <img src="https://github.com/DapperDivers/developer-portfolio/blob/master/picture.PNG" alt="Developer Portfolio Screenshot" />
+  <img src="https://github.com/DapperDivers/developer-portfolio/blob/master/screenshot.png" alt="Developer Portfolio Screenshot" />
 </p>
 
 ## 🌟 Features
 
 - **Modern React Architecture** - Built with React hooks, context, and performance monitoring
+- **Storybook Development Environment** - 68+ stories across atomic design components with comprehensive testing
+- **Atomic Design System** - Scalable component architecture with 71+ components organized by complexity
 - **Responsive Design** - Looks great on all devices from mobile to desktop
 - **Optimized Performance** - Lazy loading, code splitting, memoization, and FPS tracking
 - **Accessibility First** - WCAG compliant with keyboard navigation support
 - **Customizable** - Easy to customize with design tokens and a central portfolio data file
-- **Component Library** - Reusable UI components with comprehensive documentation
+- **Component Library** - Reusable UI components with comprehensive Storybook documentation
 - **Enhanced Type Checking** - PropTypes with TypeScript static analysis
 - **Environment Variable Management** - Secure API key handling
-- **Detailed Documentation** - Architecture guides, component patterns, and best practices
-- **Comprehensive Testing** - Unit tests with consistent patterns
+- **Professional Documentation** - Architecture guides, component patterns, and development best practices
+- **Comprehensive Testing** - Unit tests, interaction tests, and visual regression testing
 
 ## 🚀 Quick Start
 
@@ -99,104 +101,96 @@ The project uses CSS variables for theming. Edit the design tokens in `src/asset
 }
 ```
 
-## 🧩 Component Examples
+## 🧩 Component System
 
-### Button Component
+Derek's component library demonstrates advanced React patterns and professional development practices following atomic design methodology:
+
+- **71+ Components** organized by complexity (Atoms, Molecules, Organisms, Layout)
+- **68+ Storybook Stories** with comprehensive examples and interactive testing
+- **Professional Documentation** with accessibility and performance examples
+- **TypeScript Integration** with runtime validation and type safety
+- **Security-Focused Components** with specialized security variants
+
+### Quick Component Examples
 
 ```jsx
-import { Button } from '../components/ui/Button';
-
-// Primary button
-<Button>Click Me</Button>
-
-// Secondary button with icon
-<Button 
-  variant="secondary" 
-  icon="mdi:github"
->
-  View on GitHub
+// Professional Button with variants
+<Button variant="security" icon="mdi:shield-check">
+  Security Verified
 </Button>
 
-// Link button
-<Button
-  variant="link"
-  href="https://example.com"
-  target="_blank"
->
-  External Link
-</Button>
-```
+// Experience showcase with timeline
+<Experience 
+  experiences={portfolioData.experiences}
+  layout="timeline" 
+  variant="professional"
+/>
 
-### Card Component
-
-```jsx
-import { Card } from '../components/ui/Card';
-
-<Card
-  title="Project Title"
-  subtitle="Project Subtitle"
-  hoverable
-  shadow
-  animation={{ 
-    initial: { opacity: 0 },
-    animate: { opacity: 1 },
-    transition: { duration: 0.5 }
-  }}
->
-  <p>Card content goes here</p>
-  
-  {/* With footer */}
-  <div slot="footer">
-    <Button>View Project</Button>
-  </div>
-</Card>
-```
-
-### Section Component
-
-```jsx
-import { Section } from '../components/layout/Section';
-
-<Section
-  id="about"
-  title="About Me"
-  subtitle="Learn more about my background"
-  icon="mdi:account"
-  background="light"
->
-  <p>Section content goes here</p>
-</Section>
-```
-
-### LazyImage Component
-
-```jsx
-import { LazyImage } from '../components/ui/LazyImage';
-
-<LazyImage
-  src="/path/to/image.jpg"
-  alt="Description of image"
-  aspectRatio="16:9"
-  lowResSrc="/path/to/thumbnail.jpg"
+// Performance-optimized images
+<LazyImage 
+  src="/images/project.webp" 
+  alt="Project screenshot"
+  loading="lazy"
 />
 ```
 
-## 🧪 Testing
+### Explore Components Interactively
 
 ```bash
-# Run all tests
+# Launch Storybook development environment
+$ yarn storybook
+
+# View comprehensive component documentation at:
+# http://localhost:6006
+```
+
+For detailed component documentation and examples, see the **[docs directory](docs/README.md)**.
+
+## 📚 Storybook Development Environment
+
+Derek's portfolio features a comprehensive Storybook setup with **68+ interactive stories** demonstrating enterprise-level component development practices.
+
+### Quick Start
+
+```bash
+# Start Storybook development server
+$ yarn storybook
+
+# Build for production
+$ yarn storybook:build
+
+# Run interaction tests
+$ yarn storybook:test
+```
+
+### Architecture Highlights
+
+- **Atomic Design Methodology** - 71+ components organized by complexity
+- **Advanced Configuration** - Professional decorator patterns and mock data
+- **Comprehensive Testing** - Visual regression and interaction testing
+- **Accessibility Compliance** - WCAG 2.1 AA standards built-in
+- **Performance Focus** - Lazy loading and optimization examples
+
+For complete Storybook documentation and component development guides, see the **[docs directory](docs/README.md)**.
+
+## 🧪 Testing & Quality Assurance
+
+Derek's comprehensive testing strategy demonstrates his commitment to software quality:
+
+```bash
+# Unit and integration testing
 $ yarn test
 
-# Run tests with coverage
+# Interactive component testing
+$ yarn storybook:test
+
+# Performance and accessibility testing
 $ yarn test:coverage
 
-# Run tests in watch mode
-$ yarn test:watch
-
-# Type checking
+# Type safety verification
 $ yarn typecheck
 
-# Lint and type check
+# Complete quality verification
 $ yarn verify
 ```
 
@@ -221,18 +215,25 @@ This project prioritizes accessibility with:
 
 ## 📖 Documentation
 
-The project includes comprehensive documentation in the `/docs` directory:
+Derek's portfolio includes comprehensive professional documentation demonstrating his commitment to knowledge sharing and technical excellence.
 
-- **Architecture Guides**: System architecture, project structure, performance optimization
-- **Component Guides**: Detailed information on component patterns and development workflows
-- **Testing Guides**: Best practices for component testing and TypeScript integration
-- **Usage Guides**: How to work with environment variables, type checking, and customization
+### Complete Documentation
 
-Key documents:
-- [System Architecture](docs/architecture/system-architecture.md) - Overall architecture and patterns
-- [Component Development Checklist](docs/component-development-checklist.md) - Guidelines for component creation
-- [Type Checking Guide](docs/guides/type-checking-guide.md) - TypeScript integration approach
-- [Environment Configuration](docs/guides/environment-config-guide.md) - Working with environment variables
+For detailed guides, tutorials, and technical documentation, visit the **[docs directory](docs/README.md)**.
+
+Key documentation includes:
+- **Architecture Guides** - System design and project structure
+- **Component Development** - Professional component creation patterns
+- **Testing Strategies** - Comprehensive testing approaches
+- **Performance Optimization** - Advanced optimization techniques
+- **Customization Guides** - How to adapt the portfolio for your needs
+
+### Interactive Documentation
+
+- **Storybook Component Library**: 68+ interactive stories showcasing all components
+- **Accessibility Examples**: WCAG compliance demonstrations
+- **Performance Optimizations**: Advanced React patterns and best practices
+- **Security Features**: Specialized security-focused component variants
 
 ## 🛠️ Technologies Used
 
@@ -247,38 +248,17 @@ Key documents:
 - [Iconify](https://iconify.design/) - Icon system
 - [Yarn](https://yarnpkg.com/) - Package manager
 
-## 📚 Project Structure
+## 📚 Project Architecture
 
-```
-/
-├── docs/                  # Documentation
-│   ├── architecture/      # Architecture guides
-│   ├── guides/            # Usage guides
-│   ├── testing/           # Testing documentation
-│   └── components/        # Component documentation
-├── public/                # Static assets
-├── src/
-│   ├── assets/            # CSS, images, fonts
-│   │   ├── css/           # CSS files including Tailwind
-│   │   ├── lottie/        # Animation files
-│   │   └── images/        # Image assets
-│   ├── components/        # Reusable components
-│   │   ├── ui/            # Base UI components
-│   │   └── layout/        # Layout components
-│   ├── containers/        # Page section containers
-│   ├── context/           # React context providers
-│   ├── hooks/             # Custom React hooks
-│   ├── stories/           # Storybook stories
-│   ├── types/             # TypeScript type definitions
-│   ├── utils/             # Utility functions
-│   └── portfolio.js       # Portfolio data
-├── scripts/               # Build and generator scripts
-├── memory-bank/           # Development progress tracking
-├── jest.config.cjs        # Jest configuration
-├── tsconfig.json          # TypeScript configuration
-├── tailwind.config.cjs    # Tailwind configuration
-└── package.json           # Dependencies and scripts
-```
+Derek's portfolio demonstrates enterprise-level organization following atomic design principles:
+
+- **Component Library** - 71+ components organized in atoms/molecules/organisms/layout structure
+- **Professional Documentation** - Comprehensive guides in the docs directory
+- **Advanced Tooling** - Storybook, TypeScript, testing, and performance monitoring
+- **Modern Build System** - Vite with optimized production builds
+- **Accessibility First** - WCAG compliance built into all components
+
+For detailed project structure and architectural documentation, see the **[docs directory](docs/README.md)**.
 
 ## 👤 Author
 
@@ -290,29 +270,69 @@ Key documents:
 
 ## 🤝 Contributing
 
-Contributions, issues and feature requests are welcome! This project uses Yarn as the package manager and follows specific development practices:
+Derek welcomes contributions that maintain the high standards of component development and documentation demonstrated in this portfolio. This project follows professional development practices with comprehensive testing and documentation requirements.
 
-1. **Getting Started**:
+### Development Workflow
+
+1. **Environment Setup**:
    - Fork the repository
    - Clone your fork: `git clone https://github.com/your-username/developer-portfolio.git`
    - Install dependencies: `yarn`
+   - Start Storybook: `yarn storybook`
 
-2. **Development Workflow**:
+2. **Component Development Process**:
    - Create a new branch: `git checkout -b feature/your-feature-name`
-   - Follow the [Component Development Checklist](docs/component-development-checklist.md)
-   - Run tests: `yarn test`
-   - Verify code quality: `yarn verify` (runs both lint and type checking)
+   - Follow the [Storybook Development Guide](STORYBOOK_GUIDE.md) for component creation
+   - Implement components using the Atomic Design methodology
+   - Create comprehensive Storybook stories with all variants and states
+   - Ensure accessibility compliance (WCAG 2.1 AA)
+   - Add TypeScript types and PropTypes validation
 
-3. **Submitting Changes**:
-   - Commit your changes: `git commit -m "feat: add your feature description"`
+3. **Quality Assurance**:
+   - Run component tests: `yarn storybook:test`
+   - Execute unit tests: `yarn test`
+   - Verify type safety: `yarn typecheck`
+   - Check code quality: `yarn verify`
+   - Test responsive behavior in Storybook
+   - Validate accessibility features
+
+4. **Documentation Requirements**:
+   - Update component stories with comprehensive examples
+   - Document all props and variants in Storybook
+   - Include accessibility examples and edge cases
+   - Update README.md if adding new features
+   - Follow Derek's documentation standards
+
+5. **Submission Process**:
+   - Commit with descriptive messages: `git commit -m "feat: add security-themed button component"`
    - Push to your fork: `git push origin feature/your-feature-name`
-   - Submit a Pull Request
+   - Submit a Pull Request with:
+     - Clear description of changes
+     - Storybook screenshots if UI changes
+     - Testing evidence (accessibility, responsiveness)
+     - Documentation updates
 
-4. **Code Standards**:
-   - Follow existing code style and patterns
-   - Include tests for new features
-   - Update documentation as needed
-   - Ensure all tests pass and type checking succeeds
+### Professional Standards
+
+Derek's portfolio maintains enterprise-level standards:
+
+- **Component Architecture**: Follow Atomic Design principles
+- **Story Coverage**: Include Default, Variants, States, Accessibility, and Responsive stories
+- **TypeScript Integration**: Full type safety with runtime validation
+- **Accessibility First**: WCAG compliance and keyboard navigation
+- **Performance Focus**: Lazy loading, memoization, and optimization
+- **Security Awareness**: Input validation and XSS prevention
+- **Professional Documentation**: Clear, comprehensive, and actionable
+
+### Code Review Criteria
+
+Pull requests are evaluated on:
+- **Component Quality**: Professional implementation following established patterns
+- **Story Completeness**: Comprehensive Storybook documentation
+- **Accessibility Compliance**: WCAG standards and inclusive design
+- **Performance Optimization**: Efficient React patterns and lazy loading
+- **Type Safety**: Complete TypeScript integration
+- **Documentation Excellence**: Clear, professional documentation standards
 
 ## 📝 License
 

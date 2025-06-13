@@ -108,15 +108,13 @@ function App() {
     // Apply security enhancements
     applySecurityEnhancements();
     
-    // Simulate loading delay for dev testing of the loader
+    // Set loaded immediately after initialization
+    setIsLoaded(true);
+    
+    // Hide loader after transition completes
     const timer = setTimeout(() => {
-      setIsLoaded(true);
-      
-      // Hide loader after transition completes
-      setTimeout(() => {
-        setHideLoader(true);
-      }, 1000);
-    }, 1500);
+      setHideLoader(true);
+    }, 500);
     
     return () => clearTimeout(timer);
   }, []);

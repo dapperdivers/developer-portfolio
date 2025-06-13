@@ -28,45 +28,46 @@ test.describe('Experience Section', () => {
     await expect(subtitle).toBeVisible();
   });
 
-  test('should display experience timeline with correct entries', async ({ page }) => {
-    // Check if the timeline exists
-    const timeline = await page.locator('[data-testid="experience-timeline"]');
-    await expect(timeline).toBeVisible();
-    
-    // Check for connection nodes
-    const startNode = await page.locator('[data-testid="connection-start"]');
-    await expect(startNode).toBeVisible();
-    
-    const endNode = await page.locator('[data-testid="connection-end"]');
-    await expect(endNode).toBeVisible();
+  test('should display experience cards with correct entries', async ({ page }) => {
+    // Check if the experience cards container exists
+    const experienceCards = await page.locator('.experience-cards');
+    await expect(experienceCards).toBeVisible();
     
     // Verify experience entries are present
-    // We expect at least the connection nodes and timeline entries to be displayed
-    const entries = await page.locator('.timeline-entries .timeline-container > *').count();
-    expect(entries).toBeGreaterThan(2); // Connection nodes and at least one entry
+    const cards = await page.locator('.experience-cards .experience-card').count();
+    expect(cards).toBeGreaterThan(0); // At least one experience card
     
     // Check for specific company names from portfolio.js
     const companyNames = ['Traction Tools', 'Ubicquia', 'Starr Companies'];
     
     for (const company of companyNames) {
-      // Use a more specific selector to avoid strict mode violations
-      const companyElement = await page.locator(`.timeline-entries .terminal-title:has-text("${company}")`).first();
+      // Look for company names in the experience cards
+      const companyElement = await page.locator(`.experience-cards:has-text("${company}")`).first();
       await expect(companyElement).toBeVisible();
     }
+    
+    // Check that the console header is present
+    const consoleHeader = await page.locator('.experience-header');
+    await expect(consoleHeader).toBeVisible();
   });
 
-  test('should display security decorative elements in the timeline', async ({ page }) => {
-    // Check for security theme elements
-    const securityDecorations = await page.locator('.security-decorations');
-    await expect(securityDecorations).toBeVisible();
+  test('should display console header with security theme', async ({ page }) => {
+    // Check for the console header with security theme
+    const consoleHeader = await page.locator('.experience-header');
+    await expect(consoleHeader).toBeVisible();
     
-    // Check for binary streams
-    const binaryStream = await page.locator('.binary-stream').first();
-    await expect(binaryStream).toBeVisible();
+    // Check that it contains the security-themed prompt and command
+    const headerText = await consoleHeader.textContent();
+    expect(headerText).toContain('root@security:~$');
+    expect(headerText).toContain('view --secure professional_experience.json');
     
-    // Check for secure connection labels
-    const secureLabels = await page.locator('.secure-label');
-    await expect(secureLabels.first()).toContainText('SECURE CONNECTION');
-    await expect(secureLabels.last()).toContainText('CONNECTION SECURE');
+    // Verify the experience section has the correct structure
+    const experienceSection = await page.locator('[data-testid="experience-section"]');
+    await expect(experienceSection).toBeVisible();
+    
+    // Check that experience cards are properly rendered
+    const experienceCards = await page.locator('.experience-cards .experience-card');
+    const cardCount = await experienceCards.count();
+    expect(cardCount).toBeGreaterThan(0);
   });
 });

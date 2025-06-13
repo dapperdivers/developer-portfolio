@@ -1,4 +1,4 @@
-name: Build and Push Docker Image
+name: Build and Push Docker Images (Reusable)
 
 on:
   workflow_call:
@@ -6,22 +6,37 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
   build-and-push:
-    name: Build and Push Docker
+    name: Build and Push Docker Images
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
+
+    strategy:
+      matrix:
+        include:
+          - name: main-app
+            dockerfile: Dockerfile
+            context: .
+            image: ${{ github.repository }}
+          - name: storybook
+            dockerfile: Dockerfile.storybook
+            context: .
+            image: ${{ github.repository }}-storybook
+          - name: docs
+            dockerfile: docs/Dockerfile
+            context: docs
+            image: ${{ github.repository }}-docs
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
 
       - name: Log in to the Container registry
         uses: docker/login-action@v3
@@ -34,19 +49,25 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          images: ${{ env.REGISTRY }}/${{ matrix.image }}
           tags: |
             type=ref,event=branch
             type=semver,pattern={{version}}
             type=sha,format=short
-            latest
+            type=raw,value=latest,enable={{is_default_branch}}
 
-      - name: Build and push Docker image
+      - name: Build and push Docker image (${{ matrix.name }})
         uses: docker/build-push-action@v5
         with:
-          context: .
+          context: ${{ matrix.context }}
+          file: ${{ matrix.dockerfile }}
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=gha,scope=${{ matrix.name }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.name }}
+          platforms: linux/amd64,linux/arm64
+
+      - name: Image digest
+        run: |
+          echo "Image pushed: ${{ steps.meta.outputs.tags }}"

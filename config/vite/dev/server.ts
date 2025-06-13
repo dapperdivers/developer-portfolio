@@ -29,6 +29,8 @@ export function createDevServerConfig({
   return {
     server: {
       port,
+      // Accept external connections for port forwarding
+      host: true,
       // Only open browser automatically if requested
       open,
       

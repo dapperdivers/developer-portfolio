@@ -1,6 +1,6 @@
 import React from 'react';
 import DisplayLottie from './DisplayLottie';
-import { within, userEvent, expect } from '@storybook/test';
+import { within, userEvent, expect } from 'storybook/test';
 
 // Import lottie animation files from the structured animations directory
 import codingAnimation from '@assets/animations/lottie/dev-coding.json';

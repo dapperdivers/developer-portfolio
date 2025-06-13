@@ -1,6 +1,6 @@
 import React from 'react';
 import EducationCard from './EducationCard';
-import { within, userEvent, expect } from '@storybook/test';
+import { within, userEvent, expect } from 'storybook/test';
 
 // Sample education data for stories
 const mockEducationData = {

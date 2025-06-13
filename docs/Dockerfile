@@ -1,0 +1,45 @@
+# Jekyll Documentation Dockerfile
+FROM ruby:3.1-alpine AS builder
+
+# Install build dependencies
+RUN apk add --no-cache \
+    build-base \
+    linux-headers \
+    git
+
+WORKDIR /docs
+
+# Copy Gemfile and install gems
+COPY Gemfile Gemfile.lock ./
+RUN bundle config --global frozen 1 && \
+    bundle install --without development test
+
+# Copy source files
+COPY . .
+
+# Build the site
+RUN JEKYLL_ENV=production bundle exec jekyll build
+
+# Production stage
+FROM nginx:alpine
+
+# Install curl for healthcheck
+RUN apk --no-cache add curl
+
+# Copy built site to nginx
+COPY --from=builder /docs/_site /usr/share/nginx/html
+
+# Copy custom nginx config
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Create non-root user
+RUN addgroup -S jekyll && adduser -S -G jekyll jekyll
+RUN chown -R jekyll:jekyll /usr/share/nginx/html
+
+EXPOSE 4000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:4000/ || exit 1
+
+CMD ["nginx", "-g", "daemon off;"]

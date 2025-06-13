@@ -1,5 +1,5 @@
 import React from 'react';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 
 /**
  * # Developer Portfolio Storybook Introduction
@@ -108,7 +108,7 @@ const Introduction: React.FC<IntroductionProps> = () => (
       <pre style={{ overflow: 'auto', background: '#f8f8f8', padding: '10px', margin: '0', fontSize: '14px' }}>
 {`import React from 'react';
 import ComponentName from './ComponentName';
-import { within, userEvent, expect } from '@storybook/test';
+import { within, userEvent, expect } from 'storybook/test';
 
 export default {
   title: 'Category/ComponentName',

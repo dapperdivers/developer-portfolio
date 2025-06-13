@@ -7,7 +7,8 @@ import ReactDOM from 'react-dom/client';
 
 // Import the main application
 // App already includes the DebugProvider setup internally
-import App from '@/App';
+// import TestApp from './TestApp.jsx';
+import App from './App.jsx';
 
 // Create root and render application
 ReactDOM.createRoot(document.getElementById('root')).render(

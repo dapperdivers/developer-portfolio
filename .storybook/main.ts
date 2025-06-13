@@ -7,15 +7,12 @@ const config: StorybookConfig = {
     "./templates/*.stories.@(jsx|tsx)",
     "../src/components/**/*.stories.@(jsx|tsx)"
   ],
-  "addons": [
-    "@storybook/addon-links",
-    "@storybook/addon-essentials"
-  ],
+  "addons": ["@storybook/addon-links", '@storybook/addon-docs'],
   "framework": {
     "name": "@storybook/react-vite",
     "options": {
       "builder": {
-        "viteConfigPath": 'vite.config.js',
+        "viteConfigPath": 'vite.config.ts',
       }
     }
   },
@@ -54,7 +51,37 @@ const config: StorybookConfig = {
       '@stories-utils': path.resolve(__dirname, './utils'),
     };
     
-    return config;
+    // TypeScript-safe plugin filtering to remove PWA plugins
+    const filteredPlugins = config.plugins?.filter(plugin => {
+      // Handle case where plugin might be null, undefined, or not an object
+      if (!plugin || typeof plugin !== 'object') {
+        return true; // Keep non-object plugins (they're likely needed)
+      }
+      
+      // Safely check plugin name
+      const pluginName = (plugin as { name?: string }).name || '';
+      
+      // Remove PWA-related plugins that cause Workbox issues in Storybook
+      const unwantedPlugins = [
+        'vite:pwa',
+        'vite-plugin-pwa',
+        'workbox',
+        'pwa-configuration'
+      ];
+      
+      return !unwantedPlugins.includes(pluginName);
+    }) || [];
+    
+    // Increase chunk size warning limit for Storybook's large bundles
+    if (!config.build) {
+      config.build = {};
+    }
+    config.build.chunkSizeWarningLimit = 3000; // 3MB limit for Storybook
+    
+    return {
+      ...config,
+      plugins: filteredPlugins,
+    };
   }
 };
 export default config;

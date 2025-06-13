@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, waitFor, act } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import Projects from '@organisms/Projects';
 import { vi } from 'vitest';
 
@@ -39,6 +39,7 @@ vi.mock('@molecules/ProjectsCard', () => ({
 }));
 
 vi.mock('@layout/Section', () => ({
+  __esModule: true,
   default: ({ children, title, subtitle, id, className }) => (
     <section data-testid="section-mock" id={id} className={className}>
       <h2>{title}</h2>
@@ -233,8 +234,11 @@ describe('Projects Container Integration Tests', () => {
   it('applies correct animation configuration to section', () => {
     render(<Projects />);
     
-    const section = screen.getByTestId('section-mock');
+    // Look for the actual section element by its ID instead of mock testid
+    const section = screen.getByRole('region', { name: 'My Projects' });
     expect(section).toBeInTheDocument();
+    expect(section).toHaveAttribute('id', 'projects');
+    expect(section).toHaveClass('projects-section');
     
     // We're mostly testing that the animation properties are passed without error
     // since we can't directly test the actual animation in JSDOM

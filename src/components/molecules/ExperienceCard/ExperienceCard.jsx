@@ -1,49 +1,31 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
-import Card from '@atoms/Card';
-import { useAnimation } from '@context/AnimationContext';
-import useImageColor from '@hooks/useImageColor';
-import useCallbackHandlers from '@hooks/useCallbackHandlers';
+import './ExperienceCard.css';
 
-const ExperienceCard = ({ data, index, colorOverride, shadow = false, variant = 'default' }) => {
-  const { animationEnabled, getAnimationDelay, slideUpVariants } = useAnimation();
-  const { color, getColorFromImage, rgbToString } = useImageColor();
-  const { handleExternalLink } = useCallbackHandlers();
+const ExperienceCard = ({ data, index = 0, colorOverride, shadow = false, variant = 'default' }) => {
+  // Debug log to check if props are received correctly
+  console.log('ExperienceCard Debug - Props:', {
+    dataReceived: !!data,
+    dataKeys: data ? Object.keys(data) : [],
+    data: data,
+    index,
+    colorOverride,
+    shadow,
+    variant
+  });
 
-  const cardVariants = useMemo(() => ({
-    hidden: { ...slideUpVariants.hidden },
-    visible: {
-      ...slideUpVariants.visible,
-      transition: {
-        ...slideUpVariants.visible.transition,
-        ...getAnimationDelay(index)
-      }
-    }
-  }), [index, getAnimationDelay]);
-
-  const handleImageLoad = (e) => {
-    if (e.target.src) {
-      getColorFromImage(e.target.src);
-    }
-  };
+  // Early return if no data
+  if (!data) {
+    console.warn('ExperienceCard: No data provided');
+    return null;
+  }
 
   const handleClick = () => {
     if (data.url) {
-      handleExternalLink(data.url);
+      window.open(data.url, '_blank', 'noopener,noreferrer');
     }
   };
-
-  const cardStyle = useMemo(() => {
-    const accentColor = colorOverride || color;
-    if (!accentColor) return {};
-
-    const rgbString = colorOverride ? `${accentColor.r}, ${accentColor.g}, ${accentColor.b}` : rgbToString();
-    return {
-      '--card-accent-color': `rgb(${rgbString})`,
-      '--card-accent-color-rgb': rgbString
-    };
-  }, [color, colorOverride, rgbToString]);
 
   const cardClasses = [
     'experience-card',
@@ -51,18 +33,30 @@ const ExperienceCard = ({ data, index, colorOverride, shadow = false, variant = 
     variant && `experience-card--${variant}`
   ].filter(Boolean).join(' ');
 
+  // Simple animation variants
+  const cardVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: {
+        duration: 0.4,
+        delay: index * 0.1,
+        ease: "easeOut"
+      }
+    }
+  };
+
   return (
-    <Card
-      as={motion.div}
-      data-testid="experience-card"
+    <motion.div
       className={cardClasses}
-      style={cardStyle}
-      variants={animationEnabled ? cardVariants : undefined}
+      variants={cardVariants}
       initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true }}
+      animate="visible"
+      whileHover={{ y: -4 }}
       onClick={handleClick}
-      data-variant={variant}
+      data-testid="experience-card"
+      style={{ cursor: data.url ? 'pointer' : 'default' }}
     >
       <div className="experience-card__content">
         {data.companylogo && (
@@ -74,25 +68,35 @@ const ExperienceCard = ({ data, index, colorOverride, shadow = false, variant = 
               loading="lazy"
               width="80"
               height="80"
-              onLoad={handleImageLoad}
+              onError={(e) => {
+                e.target.style.display = 'none';
+                console.warn(`Failed to load company logo: ${data.companylogo}`);
+              }}
             />
           </div>
         )}
+        
         <div className="experience-card__details">
-          <h3>{data.role}</h3>
-          <h4>{data.company}</h4>
-          <p className="date">{data.date}</p>
-          <p className="description">{data.desc}</p>
-          {data.descBullets && (
+          <h3 className="experience-card__role">{data.role}</h3>
+          <h4 className="experience-card__company">{data.company}</h4>
+          <p className="experience-card__date">{data.date}</p>
+          
+          {data.desc && (
+            <p className="experience-card__description">{data.desc}</p>
+          )}
+          
+          {data.descBullets && data.descBullets.length > 0 && (
             <ul className="experience-card__bullets">
               {data.descBullets.map((bullet, i) => (
-                <li key={i} className="experience-card__bullet-item">{bullet}</li>
+                <li key={i} className="experience-card__bullet-item">
+                  {bullet}
+                </li>
               ))}
             </ul>
           )}
         </div>
       </div>
-    </Card>
+    </motion.div>
   );
 };
 
@@ -101,12 +105,12 @@ ExperienceCard.propTypes = {
     company: PropTypes.string.isRequired,
     role: PropTypes.string.isRequired,
     date: PropTypes.string.isRequired,
-    desc: PropTypes.string.isRequired,
+    desc: PropTypes.string,
     companylogo: PropTypes.string,
     descBullets: PropTypes.arrayOf(PropTypes.string),
     url: PropTypes.string
   }).isRequired,
-  index: PropTypes.number.isRequired,
+  index: PropTypes.number,
   colorOverride: PropTypes.shape({
     r: PropTypes.number,
     g: PropTypes.number,

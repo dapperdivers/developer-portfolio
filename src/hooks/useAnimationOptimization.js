@@ -26,9 +26,17 @@ const useAnimationOptimization = () => {
   const disableAnimations = debugFlags?.disableAnimations || false;
 
   useEffect(() => {
-    // Check for prefers-reduced-motion
-    const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setPrefersReducedMotion(motionQuery.matches);
+    // Check for prefers-reduced-motion with error handling
+    let motionQuery;
+    try {
+      motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+      setPrefersReducedMotion(motionQuery.matches);
+    } catch (error) {
+      // If matchMedia is not available or fails, default to false
+      console.warn('matchMedia not supported, defaulting to no reduced motion preference');
+      setPrefersReducedMotion(false);
+      return; // Exit early if matchMedia fails
+    }
     
     const handleMotionChange = (e) => setPrefersReducedMotion(e.matches);
     motionQuery.addEventListener('change', handleMotionChange);

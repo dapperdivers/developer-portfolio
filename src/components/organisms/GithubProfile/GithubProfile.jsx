@@ -5,7 +5,7 @@ import { openSource } from "@/portfolio";
 import axios from 'axios';
 import GithubProfileCard from '@molecules/GithubProfileCard';
 import { motion } from "framer-motion";
-import Section from '@layout/Section';
+import Section from '../../layout/Section';
 import envConfig from '@utils/envConfig';
 import { useAnimation } from "@context/AnimationContext";
 import './GithubProfile.css';

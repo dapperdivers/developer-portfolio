@@ -1,6 +1,6 @@
 import React from 'react';
 import SkipToContent from './SkipToContent';
-import { within, userEvent, expect } from '@storybook/test';
+import { within, userEvent, expect } from 'storybook/test';
 
 export default {
   title: 'Atoms/SkipToContent',

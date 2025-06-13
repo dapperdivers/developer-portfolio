@@ -71,7 +71,7 @@ const ProfileContent = ({
 
 ProfileContent.propTypes = {
   /** Profile description text */
-  description: PropTypes.string.isRequired,
+  description: PropTypes.node.isRequired,
   /** Security fact to display */
   securityFact: PropTypes.string,
   /** Email address for contact button */

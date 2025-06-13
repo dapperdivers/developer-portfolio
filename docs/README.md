@@ -1,62 +1,120 @@
-# Developer Portfolio Documentation
+# Derek Mackley's Technical Portfolio Documentation
 
-This directory contains official documentation for the Developer Portfolio project. It provides guides, best practices, and reference material for anyone working with or extending the portfolio.
+[![Jekyll](https://img.shields.io/badge/Jekyll-CC0000?style=flat&logo=Jekyll&logoColor=white)](https://jekyllrb.com/)
+[![Documentation](https://img.shields.io/badge/docs-live-brightgreen)](https://dapperdiver.github.io/developer-portfolio/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## Purpose
+> **Professional Jekyll documentation site showcasing enterprise-level React development practices**
 
-The `/docs` directory contains **final, polished documentation** focused on usage, integration, and extension. Unlike the `/memory-bank` directory (which tracks implementation progress and decisions), this documentation is intended as a stable reference for both current and future developers.
+This repository contains the Jekyll documentation site that provides an in-depth technical analysis of Derek Mackley's developer portfolio. The documentation demonstrates sophisticated engineering practices, architectural decisions, and security-minded development approaches.
 
-## Documentation Structure
+## 🚀 Quick Start
 
-### Architecture
-Documentation related to system architecture and high-level design decisions:
-- **Project Structure**: Details on codebase organization and conventions
-- **Performance Optimization**: Approaches used to maximize performance
-- **Asset Performance**: Strategies specific to optimizing assets (images, etc.)
+### Prerequisites
+- Ruby 2.7+ 
+- Bundler gem
+- Jekyll 4.3+
 
-### Guides
-Step-by-step guides for common tasks:
-- **Accessibility**: Ensuring components meet accessibility standards
-- **Component CSS Guide**: Working with the CSS architecture
-- **Customization Guide**: How to customize portfolio elements
+### Local Development
+```bash
+# Clone the repository
+git clone https://github.com/DapperDivers/developer-portfolio.git
+cd developer-portfolio/docs
 
-### Components
-Reference documentation for components:
-- **UI Components**: Documentation for all UI components
+# Install Jekyll dependencies
+bundle install
 
-### Testing
-Best practices and patterns for testing:
-- **Component Testing Best Practices**: Guidelines for effective testing
-- **Jest ESM Guide**: Working with ESM modules in Jest tests
+# Start local development server
+bundle exec jekyll serve
 
-### Other Documentation
-- **Context Provider Guide**: Working with React context
-- **Custom Hooks Documentation**: Available hooks and their usage
-- **Storybook Guide**: Using Storybook for component development
-- **Storybook Implementation Summary**: Overview of the Storybook structure
+# Open in browser
+open http://localhost:4000
+```
 
-## Relationship to Memory Bank
+### GitHub Pages Deployment
+This documentation is automatically deployed to GitHub Pages on push to the main branch.
 
-The `/docs` directory and `/memory-bank` work together in complementary ways:
+## 📁 Repository Structure
 
-| Docs Directory (`/docs/`) | Memory Bank (`/memory-bank/`) |
-|--------------------------|-------------------------------|
-| Usage guides | Implementation details |
-| Component API reference | Progress tracking |
-| Best practices | Decision records |
-| Integration examples | Technical context |
-| Final documentation | Work-in-progress notes |
-| Architecture overview | Implementation plans |
+```
+docs/
+├── _config.yml             # Jekyll configuration
+├── Gemfile                 # Ruby dependencies
+├── index.md                # Site homepage
+├── _architecture/          # System architecture docs
+├── _components/            # Component documentation
+├── _guides/                # Development guides
+├── _hooks/                 # Custom hooks reference
+├── _performance/           # Performance optimization
+├── _security/              # Security practices
+└── _testing/               # Testing strategies
+```
 
-For implementation details, active development context, and progress tracking, refer to the Memory Bank. For usage guides and stable reference documentation, use the Docs directory.
+## 🛠️ Development
 
-## Contributing to Documentation
+### Adding New Content
 
-When adding or updating documentation:
+1. **Create collection files** in the appropriate `_collection/` directory
+2. **Add Jekyll front matter** with required fields:
+   ```yaml
+   ---
+   layout: documentation
+   title: "Page Title"
+   description: "Page description"
+   category: "Collection Name"
+   order: 1
+   ---
+   ```
+3. **Follow naming conventions** using kebab-case for filenames
 
-1. **Focus on End Users**: Write with developers who will use your component in mind
-2. **Include Examples**: Provide clear code examples showing usage
-3. **Explain the Why**: Document not just how something works, but why it works that way
-4. **Keep Updated**: Update documentation when components change
-5. **Cross-reference**: Link to related documentation for additional context
-6. **Maintain Consistency**: Follow established documentation formatting and structure
+### Jekyll Collections
+
+The site uses Jekyll collections for organized content:
+
+- `_architecture` - System design and architectural patterns
+- `_components` - Component development and design systems
+- `_guides` - Development guides and best practices
+- `_hooks` - Custom React hooks documentation
+- `_performance` - Performance optimization techniques
+- `_security` - Security implementation and practices
+- `_testing` - Testing strategies and methodologies
+
+### Local Testing
+
+```bash
+# Build site locally
+bundle exec jekyll build
+
+# Serve with live reload
+bundle exec jekyll serve --livereload
+
+# Build for production
+JEKYLL_ENV=production bundle exec jekyll build
+```
+
+## 🎯 Documentation Goals
+
+This documentation site serves as:
+
+- **Technical Showcase** - Demonstrates professional development practices
+- **Knowledge Base** - Comprehensive guides and references
+- **Professional Portfolio** - Evidence of expertise across multiple domains
+- **Learning Resource** - Best practices for modern web development
+
+## 🔗 Related Links
+
+- **[Live Documentation Site](https://dapperdiver.github.io/developer-portfolio/)** - View the deployed documentation
+- **[Portfolio Application](https://derekmackley.com)** - See the live portfolio
+- **[Storybook Documentation](https://storybook.derekmackley.com)** - Interactive component library
+
+## 📝 License
+
+This project is [MIT licensed](https://opensource.org/licenses/MIT).
+
+## 🤝 Contributing
+
+This documentation is part of Derek Mackley's professional portfolio. While primarily for demonstration purposes, suggestions and improvements are welcome through issues and pull requests.
+
+---
+
+*Professional Jekyll documentation showcasing enterprise-level development practices and technical expertise.*

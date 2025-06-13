@@ -1,0 +1,141 @@
+# Jekyll Configuration for Derek Mackley's Portfolio Documentation
+title: "Derek Mackley - Technical Documentation"
+description: "Comprehensive technical documentation showcasing enterprise-level React development, security practices, and architectural expertise"
+author: "Derek Mackley"
+email: "derek@chelonianlabs.com"
+url: "https://dapperdiver.github.io"
+baseurl: "/developer-portfolio"
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+theme: minima
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
+
+# Navigation structure
+nav_sections:
+  - title: "Overview"
+    path: "/"
+  - title: "Architecture"
+    path: "/architecture/"
+  - title: "Security"
+    path: "/security/"
+  - title: "Components"
+    path: "/components/"
+  - title: "Performance"
+    path: "/performance/"
+  - title: "Testing"
+    path: "/testing/"
+  - title: "Guides"
+    path: "/guides/"
+  - title: "Hooks"
+    path: "/hooks/"
+
+# Kramdown settings
+kramdown:
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    css_class: 'highlight'
+    span:
+      line_numbers: false
+    block:
+      line_numbers: true
+
+# Collections for organized content
+collections:
+  architecture:
+    output: true
+    permalink: /:collection/:name/
+  security:
+    output: true
+    permalink: /:collection/:name/
+  components:
+    output: true
+    permalink: /:collection/:name/
+  performance:
+    output: true
+    permalink: /:collection/:name/
+  testing:
+    output: true
+    permalink: /:collection/:name/
+  guides:
+    output: true
+    permalink: /:collection/:name/
+  hooks:
+    output: true
+    permalink: /:collection/:name/
+
+# Default settings for different content types
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+      author: "Derek Mackley"
+  - scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: "page"
+  - scope:
+      path: "_architecture"
+    values:
+      layout: "page"
+      category: "Architecture"
+  - scope:
+      path: "_security"
+    values:
+      layout: "page"
+      category: "Security"
+  - scope:
+      path: "_components"
+    values:
+      layout: "page"
+      category: "Components"
+  - scope:
+      path: "_performance"
+    values:
+      layout: "page"
+      category: "Performance"
+  - scope:
+      path: "_testing"
+    values:
+      layout: "page"
+      category: "Testing"
+  - scope:
+      path: "_guides"
+    values:
+      layout: "page"
+      category: "Guides"
+  - scope:
+      path: "_hooks"
+    values:
+      layout: "page"
+      category: "Hooks"
+
+# SEO and social
+twitter:
+  username: derekmackley
+github:
+  username: DapperDivers
+linkedin:
+  username: dmackley
+
+# Exclude files from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+  - README.md
+
+# Include files
+include:
+  - _pages

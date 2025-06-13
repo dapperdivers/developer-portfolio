@@ -1,6 +1,6 @@
 import React from 'react';
 import Loading from './Loading';
-import { within, userEvent, expect } from '@storybook/test';
+import { within, userEvent, expect } from 'storybook/test';
 
 const meta = {
   title: 'Atoms/Loading',

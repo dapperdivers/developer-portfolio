@@ -2,15 +2,12 @@ import { mergeConfig } from 'vitest/config';
 import baseConfig from './base.config';
 
 /**
- * Storybook test configuration
- * Extends base config with Storybook specific settings
+ * Storybook stories test configuration
+ * Ensures Storybook stories run under Vitest with the correct setup file.
  */
 export default mergeConfig(baseConfig, {
   test: {
-    include: ['**/*.stories.{js,jsx,ts,tsx}', '**/*.story.{js,jsx,ts,tsx}'],
-    setupFiles: [
-      './src/test/setup.ts',
-      './src/test/storybook-setup.ts'
-    ]
-  }
+    include: ['src/**/*.stories.{js,jsx,ts,tsx}'],
+    setupFiles: ['./src/test/storybook-setup.ts'],
+  },
 });

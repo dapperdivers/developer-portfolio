@@ -5,7 +5,7 @@ import { useAnimation } from "@context/AnimationContext";
 
 import DisplayLottie from '@molecules/DisplayLottie';
 import Progress from '@atoms/Progress';
-import Section from '@layout/Section';
+import Section from '../../layout/Section';
 import codingAnimation from '@assets/animations/lottie/dev-coding.json';
 import './Proficiency.css';
 

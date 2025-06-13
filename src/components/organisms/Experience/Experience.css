@@ -90,15 +90,21 @@
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 2rem;
   margin-top: 2rem;
+  position: relative;
+  z-index: 5;
 }
 
-.experience-card {
-  background: var(--color-background);
+/* NOTE: Main experience card styles are in ExperienceCard.css 
+   This is a fallback for any cards not using the molecule component */
+.experience-section .experience-card {
+  background: #ffffff !important;
   border-radius: 12px;
   padding: 2rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
   border: 1px solid rgba(var(--color-primary-rgb), 0.1);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  opacity: 1 !important;
+  z-index: 10;
 }
 
 .experience-card:hover {

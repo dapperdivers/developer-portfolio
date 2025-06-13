@@ -3,39 +3,73 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import GithubProfileCard from './GithubProfileCard';
 import { AnimationProvider } from '@context/AnimationContext';
 
+// Mock AnimationContext to avoid matchMedia issues
+vi.mock('@context/AnimationContext', () => ({
+  useAnimation: () => ({
+    animationEnabled: true,
+    prefersReducedMotion: false,
+    isLowPowerDevice: false,
+    optimizeVariants: (variants) => variants,
+    fadeInVariants: {
+      hidden: { opacity: 0 },
+      visible: { opacity: 1 }
+    },
+    slideUpVariants: {
+      hidden: { opacity: 0, y: 20 },
+      visible: { opacity: 1, y: 0 }
+    }
+  }),
+  AnimationProvider: ({ children }) => <div data-testid="animation-provider">{children}</div>
+}));
+
 // Mock the child components
-jest.mock('@atoms/ProfileAvatar', () => ({ src, alt }) => (
-  <div data-testid="profile-avatar" data-src={src} data-alt={alt}>
-    ProfileAvatar
-  </div>
-));
+vi.mock('@atoms/ProfileAvatar', () => ({
+  __esModule: true,
+  default: ({ src, alt }) => (
+    <div data-testid="profile-avatar" data-src={src} data-alt={alt}>
+      ProfileAvatar
+    </div>
+  ),
+}));
 
-jest.mock('@molecules/ProfileHeader', () => ({ title, subtitle }) => (
-  <div data-testid="profile-header" data-title={title} data-subtitle={subtitle}>
-    ProfileHeader
-  </div>
-));
+vi.mock('@molecules/ProfileHeader', () => ({
+  __esModule: true,
+  default: ({ title, subtitle }) => (
+    <div data-testid="profile-header" data-title={title} data-subtitle={subtitle}>
+      ProfileHeader
+    </div>
+  ),
+}));
 
-jest.mock('@molecules/ProfileLocation', () => ({ location }) => (
-  <div data-testid="profile-location" data-location={location}>
-    ProfileLocation
-  </div>
-));
+vi.mock('@molecules/ProfileLocation', () => ({
+  __esModule: true,
+  default: ({ location }) => (
+    <div data-testid="profile-location" data-location={location}>
+      ProfileLocation
+    </div>
+  ),
+}));
 
-jest.mock('@molecules/ProfileContent', () => ({ email }) => (
-  <div data-testid="profile-content" data-email={email}>
-    ProfileContent
-  </div>
-));
+vi.mock('@molecules/ProfileContent', () => ({
+  __esModule: true,
+  default: ({ email }) => (
+    <div data-testid="profile-content" data-email={email}>
+      ProfileContent
+    </div>
+  ),
+}));
 
-jest.mock('@molecules/ProfileError', () => ({ message, onRetry }) => (
-  <div data-testid="profile-error" data-message={message} onClick={onRetry}>
-    ProfileError
-  </div>
-));
+vi.mock('@molecules/ProfileError', () => ({
+  __esModule: true,
+  default: ({ message, onRetry }) => (
+    <div data-testid="profile-error" data-message={message} onClick={onRetry}>
+      ProfileError
+    </div>
+  ),
+}));
 
 // Mock the portfolio data
-jest.mock('@/portfolio', () => ({
+vi.mock('@/portfolio', () => ({
   greetings: {
     name: 'John Doe',
     title: 'Hi, I am',
@@ -72,7 +106,7 @@ describe('GithubProfileCard', () => {
 
   test('renders error state when error is provided', () => {
     const errorMessage = 'API rate limit exceeded';
-    const onRetry = jest.fn();
+    const onRetry = vi.fn();
     
     renderWithContext(
       <GithubProfileCard 

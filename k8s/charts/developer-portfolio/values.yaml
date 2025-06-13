@@ -1,0 +1,175 @@
+# Global configuration
+global:
+  registry: ghcr.io/dapperdivers
+  pullPolicy: IfNotPresent
+  
+# Main React Application
+mainApp:
+  enabled: true
+  name: main-app
+  image:
+    repository: developer-portfolio
+    tag: latest
+    pullPolicy: IfNotPresent
+  
+  replicaCount: 2
+  
+  service:
+    type: ClusterIP
+    port: 3001
+    targetPort: 3001
+    
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 250m
+      memory: 256Mi
+      
+  env:
+    - name: NODE_ENV
+      value: "production"
+    - name: PORT
+      value: "3001"
+    - name: ALLOWED_DOMAINS
+      value: "https://your-domain.com"
+      
+  healthCheck:
+    enabled: true
+    path: /healthz
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    timeoutSeconds: 5
+    
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 10
+    targetCPUUtilizationPercentage: 70
+
+# Storybook
+storybook:
+  enabled: true
+  name: storybook
+  image:
+    repository: developer-portfolio-storybook
+    tag: latest
+    pullPolicy: IfNotPresent
+    
+  replicaCount: 1
+  
+  service:
+    type: ClusterIP
+    port: 6006
+    targetPort: 6006
+    
+  resources:
+    limits:
+      cpu: 200m
+      memory: 256Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+      
+  healthCheck:
+    enabled: true
+    path: /
+    initialDelaySeconds: 20
+    periodSeconds: 30
+    timeoutSeconds: 5
+    
+  autoscaling:
+    enabled: false
+
+# Jekyll Documentation
+docs:
+  enabled: true
+  name: docs
+  image:
+    repository: developer-portfolio-docs
+    tag: latest
+    pullPolicy: IfNotPresent
+    
+  replicaCount: 1
+  
+  service:
+    type: ClusterIP
+    port: 4000
+    targetPort: 4000
+    
+  resources:
+    limits:
+      cpu: 200m
+      memory: 256Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+      
+  env:
+    - name: JEKYLL_ENV
+      value: "production"
+      
+  healthCheck:
+    enabled: true
+    path: /
+    initialDelaySeconds: 20
+    periodSeconds: 30
+    timeoutSeconds: 5
+    
+  autoscaling:
+    enabled: false
+
+# Ingress configuration
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    
+  hosts:
+    - host: your-domain.com
+      paths:
+        - path: /
+          pathType: Prefix
+          service: main-app
+        - path: /storybook
+          pathType: Prefix  
+          service: storybook
+        - path: /docs
+          pathType: Prefix
+          service: docs
+          
+  tls:
+    - secretName: portfolio-tls
+      hosts:
+        - your-domain.com
+
+# Security
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  fsGroup: 1000
+
+securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+    - ALL
+  readOnlyRootFilesystem: false
+  runAsNonRoot: true
+  runAsUser: 1000
+
+# Node selection
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+# Service Account
+serviceAccount:
+  create: true
+  name: ""
+  annotations: {}

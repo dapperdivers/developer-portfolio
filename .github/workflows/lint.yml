@@ -1,12 +1,8 @@
-name: Lint & Security Scan
+name: Lint & Security Scan (Reusable)
 
 on:
   workflow_call:
   workflow_dispatch:
-  push:
-    branches: [ main, master, develop ]
-  pull_request:
-    branches: [ main, master, develop ]
   schedule:
     - cron: '34 21 * * 0'  # Weekly security scan on Sunday at 9:34 PM
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import type { Preview, StoryContext } from '@storybook/react';
+import type { Preview, StoryContext } from '@storybook/react-vite';
 import { 
   withHelmetProvider, 
   withPortfolioContext,
