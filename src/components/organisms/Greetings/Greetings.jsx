@@ -22,7 +22,7 @@ const Greetings = () => {
   
   const downloadResume = (e) => {
     e.preventDefault();
-    handleDownload('/files/Derek_Mackley_Resume_2025.pdf', 'Derek_Mackley_Resume_2025.pdf');
+    handleDownload('/files/Cybersecurity_2025.pdf', 'Cybersecurity_2025.pdf');
   };
 
   // Variants for coordinated animations

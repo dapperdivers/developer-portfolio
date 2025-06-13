@@ -105,7 +105,7 @@ describe('Footer Component', () => {
     expect(screen.getByText('Experience').closest('a')).toHaveAttribute('href', '#experience');
     expect(screen.getByText('Projects').closest('a')).toHaveAttribute('href', '#projects');
     expect(screen.getByText('Contact').closest('a')).toHaveAttribute('href', '#contact');
-    expect(screen.getByText('Resume').closest('a')).toHaveAttribute('href', '/files/Derek_Mackley_Resume_2025.pdf');
+    expect(screen.getByText('Resume').closest('a')).toHaveAttribute('href', '/files/Cybersecurity_2025.pdf');
     expect(screen.getByText('Contact Card').closest('a')).toHaveAttribute('href', '/contact/Derek_Mackley.vcf');
   });
   

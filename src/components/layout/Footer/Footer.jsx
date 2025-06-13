@@ -115,7 +115,7 @@ const Footer = () => {
             <AnimatePresence>
               {["Home", "Experience", "Projects", "Contact", "Resume", "Contact Card"].map((item, index) => {
                 const href = item === "Home" ? "#main-content" :
-                       item === "Resume" ? "/files/Derek_Mackley_Resume_2025.pdf" :
+                       item === "Resume" ? "/files/Cybersecurity_2025.pdf" :
                        item === "Contact Card" ? "/contact/Derek_Mackley.vcf" :
                        `#${item.toLowerCase()}`;
                 
