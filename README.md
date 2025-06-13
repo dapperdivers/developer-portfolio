@@ -3,7 +3,7 @@
 <p align="center">A modern, accessible, and performance-optimized portfolio template for developers.</p>
 
 <p align="center">
-  <img src="https://github.com/DapperDivers/developer-portfolio/blob/master/picture.PNG" alt="Developer Portfolio Screenshot" />
+  <img src="https://github.com/DapperDivers/developer-portfolio/blob/master/screenshot.png" alt="Developer Portfolio Screenshot" />
 </p>
 
 ## 🌟 Features
