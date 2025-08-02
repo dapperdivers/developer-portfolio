@@ -23,6 +23,11 @@ interface AnalyzerPluginOptions {
  * @returns {Object} Configured PWA plugin or null if disabled
  */
 export function createPwaPlugin({ isProd = false }: PwaPluginOptions = {}) {
+  // Disable PWA for Storybook builds completely
+  if (process.env.STORYBOOK || process.env.SB_BUILD || process.argv.some(arg => arg.includes('storybook'))) {
+    return null;
+  }
+  
   // Only enable PWA in production by default
   if (!isProd && !process.env.ENABLE_PWA_DEV) {
     return null;
@@ -45,6 +50,8 @@ export function createPwaPlugin({ isProd = false }: PwaPluginOptions = {}) {
       ]
     },
     workbox: {
+      // Increase file size limit to handle large Storybook files if needed
+      maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5MB
       // Cache strategies
       runtimeCaching: [
         {
