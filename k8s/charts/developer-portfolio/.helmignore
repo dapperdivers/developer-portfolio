@@ -29,6 +29,31 @@ Thumbs.db
 *_test.yaml
 test/
 tests/
-# Documentation that shouldn't be packaged
-README.md
+# Documentation that shouldn't be packaged (comment out if you want to include)
+# README.md
+# SECURITY.md
 NOTES.md
+
+# OCI and CI/CD related files
+.github/
+.gitignore
+.helmignore
+Dockerfile*
+docker-compose*
+
+# Package manager files
+package.json
+package-lock.json
+yarn.lock
+node_modules/
+
+# Build artifacts
+dist/
+build/
+.next/
+.nuxt/
+target/
+
+# Environment files
+.env*
+!.env.example

@@ -14,6 +14,8 @@ jobs:
     permissions:
       contents: read
       packages: write
+      id-token: write  # For OIDC attestations
+      attestations: write  # For attestations
 
     strategy:
       matrix:
@@ -52,11 +54,21 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ matrix.image }}
           tags: |
             type=ref,event=branch
+            type=ref,event=pr
             type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
             type=sha,format=short
+            type=sha,format=long
             type=raw,value=latest,enable={{is_default_branch}}
+          labels: |
+            org.opencontainers.image.title=${{ matrix.name }}
+            org.opencontainers.image.description=Developer Portfolio - ${{ matrix.name }}
+            org.opencontainers.image.vendor=DapperDivers
+            maintainer=${{ github.actor }}
 
       - name: Build and push Docker image (${{ matrix.name }})
+        id: build
         uses: docker/build-push-action@v5
         with:
           context: ${{ matrix.context }}
@@ -67,7 +79,43 @@ jobs:
           cache-from: type=gha,scope=${{ matrix.name }}
           cache-to: type=gha,mode=max,scope=${{ matrix.name }}
           platforms: linux/amd64,linux/arm64
+          provenance: true
+          sbom: true
+          outputs: type=image,name=${{ env.REGISTRY }}/${{ matrix.image }},push-by-digest=true,name-canonical=true,push=true
 
-      - name: Image digest
+      - name: Export digest
         run: |
-          echo "Image pushed: ${{ steps.meta.outputs.tags }}"
+          mkdir -p /tmp/digests
+          digest="${{ steps.build.outputs.digest }}"
+          touch "/tmp/digests/${digest#sha256:}"
+          echo "Digest: $digest"
+
+      - name: Generate image metadata
+        run: |
+          echo "### ${{ matrix.name }} Image Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Registry:** ${{ env.REGISTRY }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Image:** ${{ matrix.image }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Digest:** ${{ steps.build.outputs.digest }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Tags:**" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          echo "${{ steps.meta.outputs.tags }}" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Pull command:**" >> $GITHUB_STEP_SUMMARY
+          echo '```bash' >> $GITHUB_STEP_SUMMARY
+          echo "docker pull ${{ env.REGISTRY }}/${{ matrix.image }}@${{ steps.build.outputs.digest }}" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+
+      - name: Verify image push
+        run: |
+          echo "Verifying image was pushed successfully..."
+          docker manifest inspect ${{ env.REGISTRY }}/${{ matrix.image }}@${{ steps.build.outputs.digest }}
+          echo "✅ Image verified: ${{ matrix.name }}"
+
+      - name: Generate artifact attestation
+        uses: actions/attest-build-provenance@v1
+        with:
+          subject-name: ${{ env.REGISTRY }}/${{ matrix.image }}
+          subject-digest: ${{ steps.build.outputs.digest }}
+          push-to-registry: true

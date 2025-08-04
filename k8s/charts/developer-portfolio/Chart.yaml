@@ -21,8 +21,25 @@ maintainers:
 sources:
   - https://github.com/DapperDivers/developer-portfolio
 annotations:
+  # Application metadata
   category: Application
   licenses: MIT
+  
+  # OCI Image Spec annotations for better registry compatibility
+  org.opencontainers.image.title: developer-portfolio
+  org.opencontainers.image.description: A complete Helm chart for deploying Derek Mackley's Developer Portfolio with React app, Storybook component library, and Jekyll documentation
+  org.opencontainers.image.version: "0.1.0"
+  org.opencontainers.image.created: "2024-01-01T00:00:00Z"
+  org.opencontainers.image.source: https://github.com/DapperDivers/developer-portfolio
+  org.opencontainers.image.url: https://github.com/DapperDivers/developer-portfolio
+  org.opencontainers.image.documentation: https://github.com/DapperDivers/developer-portfolio/blob/master/README.md
+  org.opencontainers.image.vendor: Derek Mackley
+  org.opencontainers.image.licenses: MIT
+  
+  # Helm-specific annotations
+  helm.sh/chart: developer-portfolio-0.1.0
+  
+  # Application images used by this chart
   images: |
     - name: developer-portfolio
       image: ghcr.io/dapperdivers/developer-portfolio:latest

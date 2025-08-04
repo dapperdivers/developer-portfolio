@@ -1,4 +1,4 @@
-name: Release Helm Chart
+name: Release Helm Chart to OCI Registry
 
 on:
   push:
@@ -15,17 +15,27 @@ on:
         description: 'Chart version to release (leave empty for auto-increment)'
         required: false
         default: ''
+      push_latest:
+        description: 'Also push as latest tag'
+        required: false
+        default: 'true'
+        type: boolean
 
 env:
-  HELM_EXPERIMENTAL_OCI: 1
+  REGISTRY: ghcr.io
+  CHART_NAME: developer-portfolio
 
 jobs:
   release:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
       packages: write
       id-token: write
+
+    outputs:
+      chart-version: ${{ steps.version.outputs.version }}
+      chart-digest: ${{ steps.push.outputs.digest }}
 
     steps:
       - name: Checkout
@@ -41,12 +51,12 @@ jobs:
       - name: Install Helm
         uses: azure/setup-helm@v4
         with:
-          version: '3.13.3'
+          version: '3.14.0'
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
         with:
-          registry: ghcr.io
+          registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
@@ -57,75 +67,161 @@ jobs:
             # Use release tag, removing 'v' prefix if present
             VERSION="${{ github.event.release.tag_name }}"
             VERSION="${VERSION#v}"
+            echo "Using release version: ${VERSION}"
           elif [[ -n "${{ github.event.inputs.chart_version }}" ]]; then
             # Use manual input
             VERSION="${{ github.event.inputs.chart_version }}"
+            echo "Using manual version: ${VERSION}"
           else
-            # Auto-increment patch version
-            CURRENT_VERSION=$(yq eval '.version' k8s/charts/developer-portfolio/Chart.yaml)
-            VERSION=$(echo $CURRENT_VERSION | awk -F. '{$NF = $NF + 1;} 1' | sed 's/ /./g')
+            # Auto-increment patch version based on commits
+            CURRENT_VERSION=$(yq eval '.version' k8s/charts/${{ env.CHART_NAME }}/Chart.yaml)
+            COMMIT_COUNT=$(git rev-list --count HEAD -- k8s/charts/${{ env.CHART_NAME }}/)
+            VERSION=$(echo $CURRENT_VERSION | awk -F. -v cc=$COMMIT_COUNT '{print $1"."$2"."cc}')
+            echo "Auto-generated version: ${VERSION}"
           fi
+          
+          # Validate semantic versioning
+          if [[ ! $VERSION =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?(\+[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?$ ]]; then
+            echo "Error: Version '$VERSION' is not valid semantic versioning"
+            exit 1
+          fi
+          
           echo "version=${VERSION}" >> $GITHUB_OUTPUT
-          echo "Chart version will be: ${VERSION}"
+          echo "Final chart version: ${VERSION}"
 
-      - name: Update Chart Version
+      - name: Update Chart Metadata
         run: |
-          yq eval '.version = "${{ steps.version.outputs.version }}"' -i k8s/charts/developer-portfolio/Chart.yaml
-          yq eval '.appVersion = "${{ steps.version.outputs.version }}"' -i k8s/charts/developer-portfolio/Chart.yaml
+          # Update version and appVersion
+          yq eval '.version = "${{ steps.version.outputs.version }}"' -i k8s/charts/${{ env.CHART_NAME }}/Chart.yaml
+          yq eval '.appVersion = "${{ steps.version.outputs.version }}"' -i k8s/charts/${{ env.CHART_NAME }}/Chart.yaml
+          
+          # Add OCI-specific annotations
+          yq eval '.annotations."org.opencontainers.image.title" = "${{ env.CHART_NAME }}"' -i k8s/charts/${{ env.CHART_NAME }}/Chart.yaml
+          yq eval '.annotations."org.opencontainers.image.description" = .description' -i k8s/charts/${{ env.CHART_NAME }}/Chart.yaml
+          yq eval '.annotations."org.opencontainers.image.version" = "${{ steps.version.outputs.version }}"' -i k8s/charts/${{ env.CHART_NAME }}/Chart.yaml
+          yq eval '.annotations."org.opencontainers.image.created" = now' -i k8s/charts/${{ env.CHART_NAME }}/Chart.yaml
+          yq eval '.annotations."org.opencontainers.image.source" = .home' -i k8s/charts/${{ env.CHART_NAME }}/Chart.yaml
+          
+          echo "Updated Chart.yaml:"
+          cat k8s/charts/${{ env.CHART_NAME }}/Chart.yaml
 
       - name: Update Chart Dependencies
         run: |
-          cd k8s/charts/developer-portfolio
-          helm dependency update
+          cd k8s/charts/${{ env.CHART_NAME }}
+          if [[ -f Chart.lock ]]; then
+            helm dependency update
+          fi
 
-      - name: Lint Chart
+      - name: Validate Chart
         run: |
-          helm lint k8s/charts/developer-portfolio
+          # Lint the chart
+          helm lint k8s/charts/${{ env.CHART_NAME }}
+          
+          # Template the chart to check for syntax errors
+          helm template test-release k8s/charts/${{ env.CHART_NAME }} --dry-run
+          
+          # Validate against Kubernetes schemas (if kubeconform is available)
+          if command -v kubeconform &> /dev/null; then
+            helm template test-release k8s/charts/${{ env.CHART_NAME }} | kubeconform -strict -summary
+          fi
 
-      - name: Package Chart
+      - name: Push Chart to OCI Registry
+        id: push
         run: |
-          helm package k8s/charts/developer-portfolio
+          # Push chart with version tag
+          CHART_REF="${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.CHART_NAME }}"
+          
+          echo "Pushing chart to ${CHART_REF}:${{ steps.version.outputs.version }}"
+          helm push k8s/charts/${{ env.CHART_NAME }} oci://${{ env.REGISTRY }}/${{ github.repository_owner }}
+          
+          # Get the digest of the pushed chart
+          DIGEST=$(helm show chart oci://${CHART_REF}:${{ steps.version.outputs.version }} --version ${{ steps.version.outputs.version }} | yq eval '.digest // ""' -)
+          echo "digest=${DIGEST}" >> $GITHUB_OUTPUT
+          
+          echo "Successfully pushed chart: ${CHART_REF}:${{ steps.version.outputs.version }}"
+          
+          # Push latest tag if requested (for non-prerelease versions)
+          if [[ "${{ github.event.inputs.push_latest }}" == "true" || "${{ github.event_name }}" == "release" ]]; then
+            if [[ ! "${{ steps.version.outputs.version }}" =~ -[0-9A-Za-z-]+ ]]; then
+              echo "Also tagging as latest..."
+              # Note: Helm doesn't support re-tagging, so we need to push again
+              # This is a limitation we'll document
+              echo "Chart pushed with version tag only. Use 'helm pull oci://${CHART_REF}:${{ steps.version.outputs.version }}' to get the latest."
+            else
+              echo "Skipping latest tag for pre-release version"
+            fi
+          fi
 
-      - name: Release Chart to OCI Registry
-        uses: bsord/helm-oci-charts-releaser@v0.1.0
-        with:
-          name: developer-portfolio
-          repository: ${{ github.repository }}
-          tag: ${{ steps.version.outputs.version }}
-          path: developer-portfolio-${{ steps.version.outputs.version }}.tgz
-          registry: ghcr.io
-          registry_username: ${{ github.actor }}
-          registry_password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Commit Version Updates
-        if: github.event_name != 'release'
+      - name: Verify Chart Installation
         run: |
-          git add k8s/charts/developer-portfolio/Chart.yaml
-          git commit -m "chore: bump chart version to ${{ steps.version.outputs.version }}"
-          git push
+          # Pull the chart to verify it was pushed correctly
+          CHART_REF="${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.CHART_NAME }}"
+          helm pull oci://${CHART_REF} --version ${{ steps.version.outputs.version }} --destination /tmp
+          
+          # Verify the downloaded chart
+          tar -tzf /tmp/${{ env.CHART_NAME }}-${{ steps.version.outputs.version }}.tgz | head -10
+          echo "Chart verification successful!"
 
       - name: Create GitHub Release
         if: github.event_name != 'release'
-        uses: softprops/action-gh-release@v1
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: v${{ steps.version.outputs.version }}
-          name: Release v${{ steps.version.outputs.version }}
+          release_name: Chart Release v${{ steps.version.outputs.version }}
           body: |
             ## Helm Chart Release v${{ steps.version.outputs.version }}
             
             ### Installation
-            
             ```bash
-            helm install developer-portfolio oci://ghcr.io/${{ github.repository }}/developer-portfolio --version ${{ steps.version.outputs.version }}
+            helm pull oci://${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.CHART_NAME }} --version ${{ steps.version.outputs.version }}
+            helm install my-portfolio oci://${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.CHART_NAME }} --version ${{ steps.version.outputs.version }}
             ```
             
-            ### Changes
-            - Updated Helm chart to version ${{ steps.version.outputs.version }}
+            ### Chart Information
+            - **Registry**: ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.CHART_NAME }}
+            - **Version**: ${{ steps.version.outputs.version }}
+            - **Digest**: ${{ steps.push.outputs.digest }}
             
-            ### Usage
-            See the [deployment documentation](k8s/README.md) for detailed installation instructions.
-          files: developer-portfolio-${{ steps.version.outputs.version }}.tgz
+            ### Changes
+            See the [commit history](https://github.com/${{ github.repository }}/commits/v${{ steps.version.outputs.version }}) for detailed changes.
           draft: false
-          prerelease: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          prerelease: ${{ contains(steps.version.outputs.version, '-') }}
+
+      - name: Commit Version Updates
+        if: github.event_name != 'release'
+        run: |
+          if git diff --quiet k8s/charts/${{ env.CHART_NAME }}/Chart.yaml; then
+            echo "No changes to commit"
+          else
+            git add k8s/charts/${{ env.CHART_NAME }}/Chart.yaml
+            git commit -m "chore(helm): bump chart version to ${{ steps.version.outputs.version }}
+            
+            - Updated chart version to ${{ steps.version.outputs.version }}
+            - Updated appVersion to ${{ steps.version.outputs.version }}
+            - Added OCI-specific annotations
+            
+            Chart available at: oci://${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.CHART_NAME }}:${{ steps.version.outputs.version }}"
+            git push
+          fi
+
+      - name: Output Summary
+        run: |
+          echo "## 🎉 Chart Release Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Chart Details" >> $GITHUB_STEP_SUMMARY
+          echo "- **Name**: ${{ env.CHART_NAME }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Version**: ${{ steps.version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Registry**: ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.CHART_NAME }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Digest**: ${{ steps.push.outputs.digest }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Installation Commands" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`bash" >> $GITHUB_STEP_SUMMARY
+          echo "# Pull the chart" >> $GITHUB_STEP_SUMMARY
+          echo "helm pull oci://${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.CHART_NAME }} --version ${{ steps.version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "# Install the chart" >> $GITHUB_STEP_SUMMARY
+          echo "helm install my-portfolio oci://${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.CHART_NAME }} --version ${{ steps.version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+
