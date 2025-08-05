@@ -9,7 +9,7 @@ baseurl: "/developer-portfolio"
 # Build settings
 markdown: kramdown
 highlighter: rouge
-theme: minima
+# theme: minima # Using custom cybersecurity theme
 plugins:
   - jekyll-feed
   - jekyll-sitemap
@@ -125,6 +125,9 @@ github:
 linkedin:
   username: dmackley
 
+# 404 page
+permalink: /:title/
+
 # Exclude files from processing
 exclude:
   - Gemfile
@@ -135,6 +138,10 @@ exclude:
   - vendor/gems/
   - vendor/ruby/
   - README.md
+  - Dockerfile
+  - .dockerignore
+  - nginx.conf
+  - .htaccess
 
 # Include files
 include:

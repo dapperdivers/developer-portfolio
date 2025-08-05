@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: home
 title: "Technical Documentation"
 description: "Enterprise-level React development, security practices, and architectural expertise"
 permalink: /

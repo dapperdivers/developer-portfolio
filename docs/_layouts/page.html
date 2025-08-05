@@ -1,0 +1,21 @@
+---
+layout: default
+---
+<article class="page">
+  <header class="page-header">
+    <h1 class="page-title">
+      <span class="title-prefix">~/</span>{{ page.title | escape }}
+      <span class="cursor">_</span>
+    </h1>
+    {%- if page.category -%}
+    <div class="page-meta">
+      <span class="meta-label">CATEGORY:</span>
+      <span class="meta-value">{{ page.category }}</span>
+    </div>
+    {%- endif -%}
+  </header>
+
+  <div class="page-content">
+    {{ content }}
+  </div>
+</article>

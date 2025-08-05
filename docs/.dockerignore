@@ -1,0 +1,31 @@
+# Jekyll build artifacts
+_site/
+.jekyll-cache/
+.jekyll-metadata
+
+# Development files
+.git/
+.gitignore
+README.md
+*.swp
+*.swo
+.DS_Store
+
+# Ruby/Bundler
+vendor/
+.bundle/
+
+# Node modules (if any)
+node_modules/
+
+# Editor files
+.vscode/
+.idea/
+*.iml
+
+# Logs
+*.log
+
+# Temporary files
+tmp/
+temp/

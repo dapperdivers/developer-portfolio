@@ -32,6 +32,11 @@ COPY --from=builder /docs/_site /usr/share/nginx/html
 # Copy custom nginx config
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
+# Remove unnecessary files that shouldn't be served
+RUN rm -f /usr/share/nginx/html/.htaccess \
+    && rm -f /usr/share/nginx/html/Dockerfile \
+    && rm -f /usr/share/nginx/html/nginx.conf
+
 # Create non-root user
 RUN addgroup -S jekyll && adduser -S -G jekyll jekyll
 RUN chown -R jekyll:jekyll /usr/share/nginx/html

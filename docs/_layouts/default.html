@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: "en" }}">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {%- seo -%}
+  <link rel="stylesheet" href="{{ "/assets/css/style.css" | relative_url }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+  {%- feed_meta -%}
+</head>
+<body>
+  <div class="cyber-grid"></div>
+  <div class="scan-line"></div>
+  
+  <header class="site-header">
+    <div class="wrapper">
+      <a class="site-title" href="{{ "/" | relative_url }}">
+        {{ site.title | escape }}
+      </a>
+      <nav class="site-nav">
+        <div class="nav-wrapper">
+          {%- for section in site.nav_sections -%}
+          <a class="nav-link" href="{{ section.path | relative_url }}">
+            {{ section.title }}
+          </a>
+          {%- endfor -%}
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-content" aria-label="Content">
+    <div class="wrapper">
+      <div class="cyber-container">
+        {{ content }}
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrapper">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3 class="footer-heading">
+            <span class="cyber-bracket">[</span>CONTACT<span class="cyber-bracket">]</span>
+          </h3>
+          <p class="footer-text">{{ site.email }}</p>
+        </div>
+        <div class="footer-section">
+          <h3 class="footer-heading">
+            <span class="cyber-bracket">[</span>SOCIAL<span class="cyber-bracket">]</span>
+          </h3>
+          <div class="social-links">
+            {%- if site.github.username -%}
+            <a href="https://github.com/{{ site.github.username }}" class="social-link">GitHub</a>
+            {%- endif -%}
+            {%- if site.linkedin.username -%}
+            <a href="https://linkedin.com/in/{{ site.linkedin.username }}" class="social-link">LinkedIn</a>
+            {%- endif -%}
+            {%- if site.twitter.username -%}
+            <a href="https://twitter.com/{{ site.twitter.username }}" class="social-link">Twitter</a>
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="copyright">&copy; {{ 'now' | date: "%Y" }} {{ site.author }} | Chelonian Labs</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Add terminal cursor effect
+    document.addEventListener('DOMContentLoaded', function() {
+      const codeBlocks = document.querySelectorAll('pre code');
+      codeBlocks.forEach(block => {
+        block.classList.add('terminal-style');
+      });
+    });
+  </script>
+</body>
+</html>
