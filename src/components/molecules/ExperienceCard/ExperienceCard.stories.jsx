@@ -1,6 +1,7 @@
 import React from 'react';
 import ExperienceCard from './ExperienceCard';
-import { within, userEvent, expect } from '@storybook/test';
+import { within, userEvent, expect } from 'storybook/test';
+// Context providers are now handled globally in preview.tsx
 
 // Enhanced sample data with better cybersecurity context
 const securityExperienceData = {
@@ -48,6 +49,7 @@ const shortExperienceData = {
 export default {
   title: 'Molecules/ExperienceCard',
   component: ExperienceCard,
+  tags: ['autodocs'],
   parameters: {
     docs: {
       description: {

@@ -15,10 +15,10 @@ import './DateChip.css';
  */
 const DateChip = ({ date, className = "" }) => {
   // Get animation context values
-  const { animationEnabled, fadeInVariants, shouldReduceMotion } = useAnimation();
+  const { animationEnabled, fadeInVariants, prefersReducedMotion } = useAnimation();
   
   // Only animate if animations are enabled and user doesn't prefer reduced motion
-  const shouldAnimate = animationEnabled && !shouldReduceMotion;
+  const shouldAnimate = animationEnabled && !prefersReducedMotion;
   
   // Define animation variants
   const chipVariants = {

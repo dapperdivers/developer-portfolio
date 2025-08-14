@@ -157,9 +157,4 @@ export const mockStructuredData = {
   }
 };
 
-// Mock data for ThemeContext (if needed)
-export const mockThemeData = {
-  theme: "light",
-  setTheme: () => {},
-  toggleTheme: () => {}
-}; 
+ 

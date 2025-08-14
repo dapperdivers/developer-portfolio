@@ -1,7 +1,6 @@
 import React from 'react';
 import Feedbacks from './Feedbacks';
 import { within, expect } from 'storybook/test';
-import { mockPortfolioData, withPortfolioContext, withViewport } from '@stories-utils';
 import PortfolioContext from '@context/PortfolioContext';
 
 // Helper function to create context with specific feedback data
@@ -18,7 +17,6 @@ export default {
   title: 'Organisms/Feedbacks',
   component: Feedbacks,
   tags: ['autodocs'],
-  decorators: [withPortfolioContext],
   // This component has no direct props, as it gets data from context
   parameters: {
     docs: {

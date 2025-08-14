@@ -4,6 +4,7 @@ import FieldsOfStudy from './FieldsOfStudy';
 export default {
   title: 'Atoms/FieldsOfStudy',
   component: FieldsOfStudy,
+  tags: ['autodocs'],
   parameters: {
     componentSubtitle: 'Display major and minor fields of study with visual hierarchy',
     docs: {

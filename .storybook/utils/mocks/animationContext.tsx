@@ -126,10 +126,10 @@ export const mockAnimationData: AnimationContextType = {
  * };
  */
 export const withAnimationContext: Decorator = (Story) => {
-  return (
-    <AnimationContext.Provider value={mockAnimationData}>
-      <Story />
-    </AnimationContext.Provider>
+  return React.createElement(
+    AnimationContext.Provider,
+    { value: mockAnimationData },
+    React.createElement(Story)
   );
 };
 

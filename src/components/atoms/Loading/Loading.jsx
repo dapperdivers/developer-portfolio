@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
 import './Loading.css';
-import { useAnimation, MotionVariants } from '@context//AnimationContext';
+import { useAnimation, MotionVariants } from '@context/AnimationContext';
 
 /**
  * Loading component with security-themed variants

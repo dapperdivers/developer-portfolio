@@ -1,6 +1,6 @@
 import React, { FC, memo } from 'react';
 import { motion, Variants } from 'framer-motion';
-import { useAnimation } from '@context//AnimationContext';
+import { useAnimation } from '@context/AnimationContext';
 import './SecurityBadge.css';
 
 interface SecurityBadgeProps {

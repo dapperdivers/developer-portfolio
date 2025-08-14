@@ -27,7 +27,7 @@ const Experience = () => {
   // Get animation settings from context with robust fallback
   const animationContext = useAnimation();
   const animationEnabled = animationContext?.animationEnabled ?? true;
-  const shouldReduceMotion = animationContext?.shouldReduceMotion ?? false;
+  const prefersReducedMotion = animationContext?.prefersReducedMotion ?? false;
   
   // State to manage which cards are expanded (first one open by default)
   const [expandedCards, setExpandedCards] = useState(new Set([0]));

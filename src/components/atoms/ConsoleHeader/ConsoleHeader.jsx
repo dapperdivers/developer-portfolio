@@ -34,7 +34,7 @@ const ConsoleHeader = ({
 }) => {
   // State to track if on mobile
   const [isMobile, setIsMobile] = useState(false);
-  const { animationEnabled, shouldReduceMotion } = useAnimation();
+  const { animationEnabled, prefersReducedMotion } = useAnimation();
   
   // Set up mobile detection
   useEffect(() => {
@@ -137,7 +137,7 @@ const ConsoleHeader = ({
             aria-hidden="true"
             variants={cursorVariants}
             initial="visible"
-            animate={animationEnabled && !shouldReduceMotion ? "visible" : "noAnimation"}
+            animate={animationEnabled && !prefersReducedMotion ? "visible" : "noAnimation"}
           ></motion.span>
         )}
       </div>

@@ -48,9 +48,9 @@ if (!('IntersectionObserver' in window)) {
 
 // Canvas getContext stub for jsdom
 if (typeof HTMLCanvasElement !== 'undefined') {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const original = (HTMLCanvasElement.prototype as any).getContext;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   (HTMLCanvasElement.prototype as any).getContext = function getContext(type: string) {
     if (type === '2d') {
       // minimal 2D context stub sufficient for render lifecycle

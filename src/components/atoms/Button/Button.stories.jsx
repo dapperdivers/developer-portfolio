@@ -16,7 +16,7 @@ const meta = {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark', 'link', 'critical', 'high', 'medium', 'low'],
+      options: ['primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark', 'link', 'critical', 'high', 'medium', 'low', 'cyberpunk'],
       description: 'Visual style variant of the button',
       table: {
         type: { summary: 'string' },
@@ -145,6 +145,7 @@ export const SecurityVariants = {
         <Button variant="high">High</Button>
         <Button variant="medium">Medium</Button>
         <Button variant="low">Low</Button>
+        <Button variant="cyberpunk">Cyberpunk</Button>
       </div>
     </ButtonContainer>
   )

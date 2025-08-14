@@ -51,6 +51,5 @@ export {
 export { 
   mockPortfolioData,
   mockGithubProfile,
-  mockStructuredData,
-  mockThemeData
+  mockStructuredData
 } from './mocks/data.js';

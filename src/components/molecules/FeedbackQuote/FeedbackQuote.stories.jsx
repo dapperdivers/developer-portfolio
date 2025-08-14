@@ -4,6 +4,7 @@ import FeedbackQuote from './FeedbackQuote';
 export default {
   title: 'Molecules/FeedbackQuote',
   component: FeedbackQuote,
+  tags: ['autodocs'],
   parameters: {
     docs: {
       description: {

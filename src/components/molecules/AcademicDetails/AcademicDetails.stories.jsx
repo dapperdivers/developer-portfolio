@@ -4,6 +4,7 @@ import AcademicDetails from './AcademicDetails';
 export default {
   title: 'Molecules/AcademicDetails',
   component: AcademicDetails,
+  tags: ['autodocs'],
   parameters: {
     docs: {
       description: {

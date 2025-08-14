@@ -19,7 +19,6 @@ State is organized into logical domains, each with its own context:
 ```javascript
 // Separate contexts for different concerns
 const AuthContext = createContext();
-const ThemeContext = createContext();
 const SecurityContext = createContext();
 const NotificationContext = createContext();
 ```
@@ -30,15 +29,13 @@ Clean provider composition pattern for app-wide state:
 ```javascript
 const AppProviders = ({ children }) => {
   return (
-    <AuthProvider>
+    <PortfolioProvider>
       <SecurityProvider>
-        <ThemeProvider>
-          <NotificationProvider>
-            {children}
-          </NotificationProvider>
-        </ThemeProvider>
+        <NotificationProvider>
+          {children}
+        </NotificationProvider>
       </SecurityProvider>
-    </AuthProvider>
+    </PortfolioProvider>
   );
 };
 ```
@@ -309,23 +306,22 @@ const useSyncedState = (contexts) => {
 Prevent unnecessary re-renders:
 
 ```javascript
-const ThemeProvider = ({ children }) => {
-  const [theme, setTheme] = useState('dark');
-  const [accentColor, setAccentColor] = useState('#00ff88');
+const PortfolioProvider = ({ children }) => {
+  const [portfolioData, setPortfolioData] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
   
   // Memoize the context value
   const value = useMemo(() => ({
-    theme,
-    accentColor,
-    setTheme,
-    setAccentColor,
-    toggleTheme: () => setTheme(t => t === 'dark' ? 'light' : 'dark')
-  }), [theme, accentColor]);
+    portfolioData,
+    isLoading,
+    error
+  }), [portfolioData, isLoading, error]);
   
   return (
-    <ThemeContext.Provider value={value}>
+    <PortfolioContext.Provider value={value}>
       {children}
-    </ThemeContext.Provider>
+    </PortfolioContext.Provider>
   );
 };
 ```

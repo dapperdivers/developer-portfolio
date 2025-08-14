@@ -115,32 +115,8 @@ Code comments follow these guidelines:
 React Context is used for global state management:
 
 ```jsx
-// Create context
-const ThemeContext = React.createContext();
-
-// Provider component
-export const ThemeProvider = ({ children }) => {
-  const [theme, setTheme] = useState('light');
-  
-  const toggleTheme = () => {
-    setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
-  };
-  
-  return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      {children}
-    </ThemeContext.Provider>
-  );
-};
-
-// Custom hook for accessing the context
-export const useTheme = () => {
-  const context = useContext(ThemeContext);
-  if (context === undefined) {
-    throw new Error('useTheme must be used within a ThemeProvider');
-  }
-  return context;
-};
+// Example using PortfolioContext for portfolio state
+// See src/context/PortfolioContext.jsx for implementation
 ```
 
 ### Custom Hooks

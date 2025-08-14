@@ -491,77 +491,45 @@ The portfolio includes support for dark mode. To customize dark mode colors:
 }
 ```
 
-2. To add a manual dark mode toggle, implement a ThemeContext:
+2. The portfolio uses CSS variables for theming. You can extend the theme system by adding custom CSS variables:
 
-```jsx
-// src/context/ThemeContext.jsx
-import React, { createContext, useContext, useState, useEffect } from 'react';
-
-const ThemeContext = createContext();
-
-export function ThemeProvider({ children }) {
-  const [theme, setTheme] = useState('light');
-  
-  // Check system preference on initial load
-  useEffect(() => {
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    setTheme(prefersDark ? 'dark' : 'light');
-  }, []);
-  
-  // Toggle theme function
-  const toggleTheme = () => {
-    setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
-  };
-  
-  // Apply theme class to document
-  useEffect(() => {
-    document.documentElement.className = '';
-    document.documentElement.classList.add(`theme-${theme}`);
-  }, [theme]);
-  
-  return (
-    <ThemeContext.Provider value={% raw %}{{ theme, toggleTheme }}{% endraw %}>
-      {children}
-    </ThemeContext.Provider>
-  );
+```css
+/* Add to your global styles */
+:root {
+  --custom-primary: #your-color;
+  --custom-secondary: #your-color;
 }
 
-export function useTheme() {
-  return useContext(ThemeContext);
+@media (prefers-color-scheme: dark) {
+  :root {
+    --custom-primary: #your-dark-color;
+    --custom-secondary: #your-dark-color;
+  }
 }
 ```
 
-3. Wrap your App with the ThemeProvider:
+3. Use the CSS variables in your components:
 
 ```jsx
-// src/App.jsx
-import { ThemeProvider } from './context/ThemeContext';
-
-function App() {
+// Example component using custom theme variables
+function CustomButton() {
+  
   return (
-    <ThemeProvider>
-      {/* Your app components... */}
-    </ThemeProvider>
+    <button style={{ backgroundColor: 'var(--custom-primary)' }}>
+      Custom Themed Button
+    </button>
   );
 }
 ```
 
-4. Add a theme toggle button in your Navigation component:
+4. For component-level theming, use CSS classes:
 
 ```jsx
-// src/components/Navigation.jsx
-import { useTheme } from '../context/ThemeContext';
-
-function Navigation() {
-  const { theme, toggleTheme } = useTheme();
-  
+function ThemedComponent() {
   return (
-    <nav>
-      {/* Other navigation items */}
-      <button onClick={toggleTheme} aria-label="Toggle dark mode">
-        {theme === 'light' ? 'Dark Mode' : 'Light Mode'}
-      </button>
-    </nav>
+    <div className="themed-container">
+      {/* Content that uses CSS variables for theming */}
+    </div>
   );
 }
 ```

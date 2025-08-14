@@ -4,6 +4,7 @@ import TechBadge from './TechBadge';
 export default {
   title: 'Atoms/TechBadge',
   component: TechBadge,
+  tags: ['autodocs'],
   parameters: {
     componentSubtitle: 'Display technology badges with various styles and security levels',
     docs: {

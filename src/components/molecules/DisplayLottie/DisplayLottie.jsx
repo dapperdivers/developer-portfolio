@@ -34,13 +34,12 @@ const DisplayLottie = ({
     shouldOptimize = true
 }) => {
     const [isPlaying, setIsPlaying] = useState(true);
-    const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
     const [isLowPower, setIsLowPower] = useState(false);
     const [controlsVisible, setControlsVisible] = useState(false);
     const lottieRef = useRef(null);
     
     // Get animation context values
-    const { animationEnabled, fadeInVariants, shouldReduceMotion } = useAnimation();
+    const { animationEnabled, fadeInVariants, prefersReducedMotion } = useAnimation();
     
     // Define size constraints
     const sizeMap = useMemo(() => ({
@@ -89,10 +88,6 @@ const DisplayLottie = ({
     
     // Check device capabilities and user preferences
     useEffect(() => {
-        // Check if user prefers reduced motion
-        // Using the context's shouldReduceMotion instead of managing our own state
-        setPrefersReducedMotion(shouldReduceMotion);
-        
         // Check for battery status to detect low power mode
         if ('getBattery' in navigator) {
             navigator.getBattery().then(battery => {
@@ -114,7 +109,7 @@ const DisplayLottie = ({
                 setIsLowPower(false);
             });
         }
-    }, [shouldReduceMotion]);
+    }, []);
     
     // Toggle play/pause
     const togglePlay = () => {

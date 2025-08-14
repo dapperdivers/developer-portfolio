@@ -2,7 +2,6 @@ import React from 'react';
 import { FaGithub, FaLinkedin, FaTwitter, FaMedium, FaDev, FaStackOverflow, FaYoutube, FaInstagram } from 'react-icons/fa';
 import { within, userEvent, expect } from 'storybook/test';
 import SocialLinks from './SocialLinks';
-import { withPortfolioContext } from '@stories-utils';
 
 // Create a modified version of SocialLinks component for Storybook
 // This allows us to pass socialLinks as a prop instead of importing from portfolio.js
@@ -132,7 +131,7 @@ const sampleLinks = {
 export default {
   title: 'Molecules/SocialLinks',
   component: SocialLinks,
-  decorators: [withPortfolioContext],
+  tags: ['autodocs'],
   parameters: {
     docs: {
       description: {

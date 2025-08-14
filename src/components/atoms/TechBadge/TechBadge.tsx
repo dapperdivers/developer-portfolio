@@ -1,6 +1,6 @@
 import React, { FC, memo } from 'react';
 import { motion, HTMLMotionProps, Variants } from 'framer-motion';
-import { useAnimation } from '@context//AnimationContext';
+import { useAnimation } from '@context/AnimationContext';
 import './TechBadge.css';
 
 interface TechBadgeProps extends Omit<HTMLMotionProps<'div'>, 'size'> {

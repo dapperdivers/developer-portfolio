@@ -56,7 +56,7 @@ const ResponsiveImage = ({
   const [isError, setIsError] = useState(false);
   const [ref, isVisible] = useIntersectionObserver({ threshold });
   const [currentSrc, setCurrentSrc] = useState(placeholderSrc || '');
-  const { animationEnabled, shouldReduceMotion, fadeInVariants } = useAnimation();
+  const { animationEnabled, prefersReducedMotion, fadeInVariants } = useAnimation();
   
   // Image classes
   const imageClasses = [
@@ -147,7 +147,7 @@ const ResponsiveImage = ({
   // Determine which animation to use
   const getAnimationProps = () => {
     // If animations are disabled or reduced motion is preferred, use minimal animation
-    if (!animationEnabled || shouldReduceMotion) {
+    if (!animationEnabled || prefersReducedMotion) {
       return {
         initial: { opacity: isLoaded ? 1 : 0.7 },
         animate: { opacity: isLoaded ? 1 : 0.7 },

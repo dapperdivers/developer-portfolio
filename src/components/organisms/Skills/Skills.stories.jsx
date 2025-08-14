@@ -1,13 +1,11 @@
 import React from 'react';
 import Skills from './Skills';
-import { within, userEvent, expect } from '@storybook/test';
-import { withPortfolioContext } from '@stories-utils';
+import { within, userEvent, expect } from 'storybook/test';
 
 export default {
   title: 'Organisms/Skills',
   component: Skills,
   tags: ['autodocs'],
-  decorators: [withPortfolioContext],
   parameters: {
     docs: {
       description: {

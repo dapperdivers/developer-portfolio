@@ -6,13 +6,35 @@
 
 :root {
   /* Colors - Primary */
-  --color-primary: #0062cc;
-  --color-primary-light: #4d8fe6;
-  --color-primary-dark: #0050a6;
+  --color-primary: #64ffda;
+  --color-primary-light: #a5ffed;
+  --color-primary-dark: #42d7b5;
   --color-secondary: #6c757d;
   --color-secondary-light: #8c959d;
   --color-secondary-dark: #555c64;
-  --color-accent: #fd7e14;
+  --color-accent: #ff4d4d;
+  
+  /* Security Theme Colors */
+  --color-navy: #0a192f;
+  --color-navy-lighter: #162b3d;
+  --color-cyan: #64ffda;
+  --color-bright-red: #ff4d4d;
+  --color-offwhite: #e6f1ff;
+  --color-lime: #00ff00;
+  
+  /* RGB Values for Opacity Variants */
+  --color-navy-rgb: 10, 25, 47;
+  --color-cyan-rgb: 100, 255, 218;
+  --color-offwhite-rgb: 230, 241, 255;
+  --color-lime-rgb: 0, 255, 0;
+  
+  /* Cyberpunk Theme Variables */
+  --cyberpunk-bg: #0a0e1a;
+  --cyberpunk-grid: rgba(100, 255, 218, 0.1);
+  --cyberpunk-primary: #05d5fa;
+  --cyberpunk-primary-glow: rgba(5, 213, 250, 0.5);
+  --cyberpunk-secondary: #ff0055;
+  --cyberpunk-accent: #ffcc00;
   
   /* Colors - Semantic */
   --color-success: #28a745;
@@ -34,14 +56,44 @@
   --color-black: #000000;
   
   /* Colors - Semantic Usage */
-  --color-text: var(--color-gray-900);
-  --color-text-muted: var(--color-gray-600);
+  --color-text: var(--color-white);
+  --color-text-muted: var(--color-gray-400);
   --color-link: var(--color-primary);
   --color-link-hover: var(--color-primary-dark);
-  --color-border: var(--color-gray-300);
-  --color-background: var(--color-white);
-  --color-background-alt: var(--color-gray-100);
-  --color-background-muted: var(--color-gray-200);
+  --color-border: var(--color-gray-700);
+  --color-background: var(--color-navy);
+  --color-background-alt: var(--color-gray-900);
+  --color-background-muted: var(--color-gray-800);
+  
+  /* Font families */
+  --font-family-jetbrains: 'JetBrains Mono', 'Menlo', 'Monaco', 'Cascadia Code', 'Roboto Mono', monospace;
+  --font-family-mono: 'JetBrains Mono', 'Menlo', 'Monaco', 'Cascadia Code', 'Roboto Mono', monospace;
+  --font-family-base: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  
+  /* Spacing and sizing */
+  --spacing-1: 0.25rem;
+  --spacing-2: 0.5rem;
+  --spacing-3: 1rem;
+  --spacing-4: 2rem;
+  --section-padding-y: 5rem;
+  --border-radius-sm: 8px;
+  --border-radius-md: 12px;
+  
+  /* Font sizes */
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-md: 1.125rem;
+  --font-size-lg: 1.25rem;
+  
+  /* Font weights */
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  
+  /* Line heights */
+  --line-height-base: 1.5;
+  --line-height-md: 1.6;
 }
 
 /* Force reapply of typography styles */
@@ -51,3 +103,6 @@ body {
   font-size: var(--font-size-base, 1rem);
   line-height: var(--line-height-base, 1.5);
 }
+
+/* Note: Using official Storybook docs theming via preview.tsx docs.theme parameter
+   Custom styling removed in favor of themes.dark for better compatibility */

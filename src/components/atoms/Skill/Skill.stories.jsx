@@ -4,6 +4,7 @@ import Skill from './Skill';
 export default {
   title: 'Atoms/Skill',
   component: Skill,
+  tags: ['autodocs'],
   parameters: {
     componentSubtitle: 'Display individual skills with icons and tooltips',
     docs: {

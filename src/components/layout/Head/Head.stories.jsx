@@ -4,19 +4,13 @@ import { mockStructuredData } from '@stories-utils';
 import { HelmetProvider } from 'react-helmet-async';
 
 // We need to wrap the Head component in HelmetProvider
-// for it to work properly in Storybook
+// for it to work properly in Storybook (Note: This is now handled globally)
 const helmetContext = {};
-const withHelmetProvider = (Story) => (
-  <HelmetProvider context={helmetContext}>
-    <Story />
-  </HelmetProvider>
-);
 
 const meta = {
   title: 'Layout/Head',
   component: Head,
   tags: ['autodocs'],
-  decorators: [withHelmetProvider],
   argTypes: {
     title: {
       control: 'text',

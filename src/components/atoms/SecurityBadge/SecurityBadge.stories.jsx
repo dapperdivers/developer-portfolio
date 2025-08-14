@@ -1,13 +1,11 @@
 import React from 'react';
 import SecurityBadge from './SecurityBadge';
 import { FaShieldAlt, FaLock, FaUserShield } from 'react-icons/fa';
-import { withAnimationContext } from '@stories-utils';
 
 export default {
   title: 'GitHub Profile/Atoms/Security/SecurityBadge',
   component: SecurityBadge,
   tags: ['autodocs'],
-  decorators: [withAnimationContext],
   parameters: {
     docs: {
       description: {

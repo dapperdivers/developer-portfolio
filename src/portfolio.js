@@ -361,8 +361,9 @@ export const experience = [
 	{
 		role: "Staff Product Security Engineer",
 		company: "Mastery Logistics Systems",
-		companylogo: null,
+		companylogo: "https://ui-avatars.com/api/?name=MLS&background=3563E9&color=fff&bold=true",
 		date: "July 2023 – Present",
+		url: "https://www.masterylogistics.com",
 		desc: "Leading the technical direction of a newly formed product security team, creating and implementing comprehensive vulnerability management programs for the organization.",
 		descBullets: [
 			"Developed organization-wide vulnerability aggregation system combining open-source and commercial security tools",
@@ -375,8 +376,9 @@ export const experience = [
 	{
 		role: "Senior Software Engineering Manager",
 		company: "Mastery Logistics Systems",
-		companylogo: null,
+		companylogo: "https://ui-avatars.com/api/?name=MLS&background=3563E9&color=fff&bold=true",
 		date: "May 2022 – July 2023",
+		url: "https://www.masterylogistics.com",
 		desc: "Led international engineering teams delivering critical integrations with enterprise logistics systems, focusing on secure communication protocols and data protection.",
 		descBullets: [
 			"Managed up to 9 engineering teams working on secure integrations with ITS, Slack, Teams and other platforms",
@@ -391,6 +393,7 @@ export const experience = [
 		company: "Traction Tools",
 		companylogo: TractionToolsLogo,
 		date: "February 2021 – May 2022",
+		url: "https://www.tractiontools.com",
 		desc: "Led engineering initiatives for a SaaS platform providing tooling for businesses running EOS. Implemented comprehensive security improvements while managing the modernization of the application architecture.",
 		descBullets: [
 			"Established secure CI/CD pipelines with integrated security testing gates using Azure DevOps",
@@ -403,8 +406,9 @@ export const experience = [
 	{
 		role: "Senior Software Engineer",
 		company: "Satcom Direct",
-		companylogo: null, 
+		companylogo: "https://ui-avatars.com/api/?name=SD&background=FF4D4D&color=fff&bold=true", 
 		date: "July 2020 – February 2021",
+		url: "https://www.satcomdirect.com",
 		desc: "Developed secure aviation communication software with emphasis on high availability and reliability for mission-critical systems where security failures could have significant safety implications.",
 		descBullets: [
 			"Designed secure microservices architecture for real-time plane communications systems",
@@ -419,6 +423,7 @@ export const experience = [
 		company: "Ubicquia",
 		companylogo: UbiquiaLogo,
 		date: "February 2019 – June 2020",
+		url: "https://www.ubicquia.com",
 		desc: "Led development of enterprise IoT platform for managing cellular-connected smart city devices with emphasis on secure device communication and cloud infrastructure.",
 		descBullets: [
 			"Developed secure PHP Laravel API and Angular frontend with comprehensive authentication system", 
@@ -433,6 +438,7 @@ export const experience = [
 		company: "Medicomp",
 		companylogo: MedicompLogo,
 		date: "May 2018 – February 2019",
+		url: "https://www.medicomp.com",
 		desc: "Led development team for healthcare applications handling sensitive patient data, with focus on modernizing legacy systems while ensuring HIPAA compliance and data protection.",
 		descBullets: [
 			"Improved direct-to-consumer healthcare reporting website for nationwide doctor access", 
@@ -447,6 +453,7 @@ export const experience = [
 		company: "Starr Companies",
 		companylogo: StarrLogo,
 		date: "August 2017 - May 2018",
+		url: "https://www.starrcompanies.com",
 		desc: "Developed secure document management and reporting web portal for insurance applications, focusing on modernization and cloud migration strategies.",
 		descBullets: [
 			"Led rewrite of document management portal from WebForms to ASP.NET MVC 5",
@@ -461,6 +468,7 @@ export const experience = [
 		company: "Starr Companies",
 		companylogo: StarrLogo,
 		date: "March 2016 – August 2017",
+		url: "https://www.starrcompanies.com",
 		desc: "Participated in Global Associates program while working as a developer, gaining comprehensive knowledge of Property and Casualty insurance industry from interactions with industry leaders.",
 		descBullets: [
 			"Created multiple proof-of-concept applications for insurance business cases",
@@ -473,8 +481,9 @@ export const experience = [
 	{
 		role: "Equipment Management Technician",
 		company: "Astreya",
-		companylogo: null,
+		companylogo: "https://ui-avatars.com/api/?name=AST&background=A85C32&color=fff&bold=true",
 		date: "November 2015 – March 2016",
+		url: "https://www.astreya.com",
 		desc: "Managed Google's asset inventory system for the Atlanta area and parts of the Southeast region.",
 		descBullets: [
 			"Maintained accurate inventory of technical assets for Google's regional offices",
@@ -487,8 +496,9 @@ export const experience = [
 	{
 		role: "PADI Divemaster",
 		company: "Sunshine Divers",
-		companylogo: null,
+		companylogo: "https://ui-avatars.com/api/?name=SD&background=FFA500&color=fff&bold=true",
 		date: "March 2015 – August 2015",
+		url: "https://www.facebook.com/sunshinediverskhtao",
 		desc: "Applied management and organizational skills to operate a dive training facility in Koh Tao, Thailand.",
 		descBullets: [
 			"Coordinated and assisted with dive courses for international clients",

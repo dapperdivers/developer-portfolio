@@ -1,7 +1,6 @@
 import React from 'react';
 import Projects from './Projects';
-import { within, userEvent, expect } from '@storybook/test';
-import { mockPortfolioData, withPortfolioContext, withViewport } from '@stories-utils';
+import { within, userEvent, expect } from 'storybook/test';
 import PortfolioContext from '@context/PortfolioContext';
 
 // Helper function to create context with custom projects data
@@ -18,7 +17,6 @@ export default {
   title: 'Organisms/Projects',
   component: Projects,
   tags: ['autodocs'],
-  decorators: [withPortfolioContext],
   parameters: {
     docs: {
       description: {

@@ -20,6 +20,7 @@ const CustomFallback = ({ error }) => (
 export default {
   title: 'Molecules/ErrorBoundary',
   component: ErrorBoundary,
+  tags: ['autodocs'],
   parameters: {
     docs: {
       description: {

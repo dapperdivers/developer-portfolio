@@ -1,5 +1,5 @@
 import React from 'react';
-import type { Preview, StoryContext } from '@storybook/react-vite';
+import type { Preview } from '@storybook/react';
 import { 
   withHelmetProvider, 
   withPortfolioContext,
@@ -32,7 +32,7 @@ const preview: Preview = {
       },
     },
     backgrounds: {
-      default: 'light',
+      default: 'dark',
       values: [
         { name: 'light', value: '#f8fafc' },
         { name: 'dark', value: '#1e293b' },
@@ -44,17 +44,16 @@ const preview: Preview = {
   
   // Global decorators applied to all stories
   decorators: [
-    // Wrap all stories with context providers
-    withHelmetProvider,
-    withPortfolioContext,
-    withAnimationContext,
-    
-    // Add padding around all stories
-    (Story, context: StoryContext) => (
+    // Add padding around all stories first
+    (Story) => (
       <div style={{ padding: '2rem' }}>
         <Story />
       </div>
     ),
+    // Then wrap with context providers in proper order
+    withAnimationContext,
+    withPortfolioContext,
+    withHelmetProvider,
   ],
 };
 

@@ -1,5 +1,4 @@
 import React from 'react';
-import { withPortfolioContext } from '@stories-utils';
 import Footer from './Footer';
 import { within, userEvent, expect } from 'storybook/test';
 import PortfolioContext from '@context/PortfolioContext';
@@ -39,7 +38,7 @@ const createPortfolioDecorator = (data) => (Story) => (
 export default {
   title: 'Layout/Footer',
   component: Footer,
-  decorators: [withPortfolioContext],
+  tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',
     docs: {

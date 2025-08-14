@@ -4,6 +4,7 @@ import TerminalControls from './TerminalControls';
 export default {
   title: 'Atoms/TerminalControls',
   component: TerminalControls,
+  tags: ['autodocs'],
   parameters: {
     componentSubtitle: 'Window control buttons for terminal and console UI components',
     docs: {

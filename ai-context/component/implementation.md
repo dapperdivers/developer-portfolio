@@ -279,43 +279,16 @@ const [state, dispatch] = useReducer(reducer, initialState);
 - Provide a custom hook to access the context
 
 ```jsx
-// Context definition
-const ThemeContext = React.createContext();
+// Example context implementation (using PortfolioContext)
+// For portfolio-specific state management
 
-// Provider component
-export const ThemeProvider = ({ children }) => {
-  const [theme, setTheme] = useState('light');
-  
-  const toggleTheme = () => {
-    setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
-  };
+// Usage in a component with PortfolioContext
+const PortfolioButton = () => {
+  const { portfolioData } = usePortfolio();
   
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      {children}
-    </ThemeContext.Provider>
-  );
-};
-
-// Custom hook for accessing the context
-export const useTheme = () => {
-  const context = useContext(ThemeContext);
-  if (context === undefined) {
-    throw new Error('useTheme must be used within a ThemeProvider');
-  }
-  return context;
-};
-
-// Usage in a component
-const ThemedButton = () => {
-  const { theme, toggleTheme } = useTheme();
-  
-  return (
-    <button 
-      className={`button button--${theme}`}
-      onClick={toggleTheme}
-    >
-      Toggle Theme
+    <button className="portfolio-button">
+      {portfolioData.greetings?.name || 'Portfolio'}
     </button>
   );
 };

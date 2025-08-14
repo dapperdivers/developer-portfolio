@@ -31,7 +31,7 @@ const CodeSnippet = ({
   ...rest
 }) => {
   const codeRef = useRef(null);
-  const { animationEnabled, shouldReduceMotion } = useAnimation();
+  const { animationEnabled, prefersReducedMotion } = useAnimation();
 
   // Define animation variants
   const snippetVariants = {
@@ -54,7 +54,7 @@ const CodeSnippet = ({
       y: [0, 1, -1, 1, 0],
       transition: {
         duration: 0.2,
-        repeat: shouldReduceMotion ? 0 : 2,
+        repeat: prefersReducedMotion ? 0 : 2,
         repeatType: "reverse",
         ease: "easeInOut",
         repeatDelay: 5,
@@ -120,7 +120,7 @@ const CodeSnippet = ({
       initial={animationEnabled ? "hidden" : "visible"}
       animate="visible"
       variants={snippetVariants}
-      whileHover={animationEnabled && !shouldReduceMotion && !isDecorative ? "glitch" : "idle"}
+      whileHover={animationEnabled && !prefersReducedMotion && !isDecorative ? "glitch" : "idle"}
       {...a11yProps}
       {...rest}
     >

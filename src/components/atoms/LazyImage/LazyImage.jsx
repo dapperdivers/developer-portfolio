@@ -44,10 +44,10 @@ const LazyImage = ({
   const imageRef = useRef(null);
   
   // Get animation context values
-  const { animationEnabled, fadeInVariants, shouldReduceMotion } = useAnimation();
+  const { animationEnabled, fadeInVariants, prefersReducedMotion } = useAnimation();
   
   // Determine if animations should run
-  const shouldAnimate = animationEnabled && !shouldReduceMotion;
+  const shouldAnimate = animationEnabled && !prefersReducedMotion;
   
   // Calculate aspect ratio styles if provided
   const aspectRatioStyle = {};

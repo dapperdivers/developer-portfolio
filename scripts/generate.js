@@ -850,7 +850,7 @@ import ${baseComponentName} from './${baseComponentName}';`;
   // Add interaction test imports if needed
   if (hasInteractions) {
     imports += `
-import { userEvent, within, waitFor } from '@storybook/test';`;
+import { userEvent, within, waitFor } from 'storybook/test';`;
   }
 
   // Add context imports if needed
@@ -858,10 +858,6 @@ import { userEvent, within, waitFor } from '@storybook/test';`;
     if (context === 'portfolio') {
       imports += `
 import { PortfolioProvider } from '@context/PortfolioContext';`;
-    } else if (context === 'theme') {
-      imports += `
-import { ThemeProvider } from '@context/ThemeContext';`;
-    }
   }
 
   // Create story configuration
@@ -941,23 +937,6 @@ export const WithPortfolioContext: Story = {
     ),
   ],
 };`;
-    } else if (context === 'theme') {
-      stories += `
-
-// With Theme Context
-export const WithThemeContext: Story = {
-  args: {
-    // Props for theme example
-  },
-  decorators: [
-    (Story) => (
-      <ThemeProvider>
-        <Story />
-      </ThemeProvider>
-    ),
-  ],
-};`;
-    }
   }
 
   // Add detailed documentation sections if requested

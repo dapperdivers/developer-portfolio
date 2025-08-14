@@ -1,12 +1,10 @@
 import React from 'react';
 import ProfileHeader from './ProfileHeader';
-import { withAnimationContext } from '@stories-utils';
 
 export default {
   title: 'GitHub Profile/Molecules/Profile/ProfileHeader',
   component: ProfileHeader,
   tags: ['autodocs'],
-  decorators: [withAnimationContext],
   parameters: {
     docs: {
       description: {

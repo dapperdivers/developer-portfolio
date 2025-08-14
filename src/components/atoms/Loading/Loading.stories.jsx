@@ -14,8 +14,13 @@ const meta = {
     },
     variant: {
       control: 'select',
-      options: ['primary', 'secondary', 'terminal'],
+      options: ['', 'security', 'terminal'],
       description: 'Visual variant',
+    },
+    type: {
+      control: 'select',
+      options: ['spinner', 'pulse', 'dots'],
+      description: 'Loading animation type',
     },
   },
 };
@@ -26,7 +31,8 @@ export default meta;
 export const Default = {
   args: {
     size: 'md',
-    variant: 'primary',
+    variant: '',
+    type: 'spinner',
   },
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
@@ -58,9 +64,19 @@ export const Sizes = {
 export const Variants = {
   render: () => (
     <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
-      <Loading variant="primary" />
-      <Loading variant="secondary" />
+      <Loading variant="" />
+      <Loading variant="security" />
       <Loading variant="terminal" />
+    </div>
+  ),
+};
+
+export const Types = {
+  render: () => (
+    <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
+      <Loading type="spinner" />
+      <Loading type="pulse" />
+      <Loading type="dots" />
     </div>
   ),
 };

@@ -4,6 +4,7 @@ import MapComponent from './MapComponent';
 export default {
   title: 'Molecules/MapComponent',
   component: MapComponent,
+  tags: ['autodocs'],
   parameters: {
     layout: 'padded',
     docs: {

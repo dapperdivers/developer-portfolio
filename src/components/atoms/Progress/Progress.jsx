@@ -34,7 +34,7 @@ const Progress = ({
   size = "",
   ...rest
 }) => {
-  const { animationEnabled, shouldReduceMotion } = useAnimation();
+  const { animationEnabled, prefersReducedMotion } = useAnimation();
   
   // Convert string values to numbers if needed and calculate width as percentage
   const numericValue = typeof value === 'string' ? parseFloat(value) : value;
@@ -109,7 +109,7 @@ const Progress = ({
         initial="initial"
         animate="animate"
         // Apply stripes animation if animated is true and not reduced motion
-        {...(striped && animated && animationEnabled && !shouldReduceMotion ? {
+        {...(striped && animated && animationEnabled && !prefersReducedMotion ? {
           variants: stripesVariants,
           animate: "animated",
         } : striped ? {

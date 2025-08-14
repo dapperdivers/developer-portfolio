@@ -4,6 +4,7 @@ import SkeletonCard from './SkeletonCard';
 export default {
   title: 'Atoms/SkeletonCard',
   component: SkeletonCard,
+  tags: ['autodocs'],
   parameters: {
     componentSubtitle: 'Loading placeholder cards with security-themed variants',
     docs: {

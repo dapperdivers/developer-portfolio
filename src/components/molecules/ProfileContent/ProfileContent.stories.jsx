@@ -1,6 +1,5 @@
 import React from 'react';
 import ProfileContent from './ProfileContent';
-import { withAnimationContext } from '@stories-utils';
 
 // Mock the SocialLinks component
 jest.mock('@molecules/SocialLinks', () => {
@@ -48,7 +47,6 @@ export default {
   title: 'GitHub Profile/Molecules/Profile/ProfileContent',
   component: ProfileContent,
   tags: ['autodocs'],
-  decorators: [withAnimationContext],
   parameters: {
     docs: {
       description: {

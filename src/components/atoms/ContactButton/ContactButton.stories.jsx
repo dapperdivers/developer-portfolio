@@ -1,13 +1,11 @@
 import React from 'react';
 import ContactButton from './ContactButton';
 import { FaRocket, FaEnvelope, FaPaperPlane } from 'react-icons/fa';
-import { withAnimationContext } from '@stories-utils';
 
 export default {
   title: 'GitHub Profile/Atoms/Contact/ContactButton',
   component: ContactButton,
   tags: ['autodocs'],
-  decorators: [withAnimationContext],
   parameters: {
     docs: {
       description: {

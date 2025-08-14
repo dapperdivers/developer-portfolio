@@ -25,7 +25,7 @@ const SkeletonCard = ({
   className = '', 
   style = {} 
 }) => {
-  const { animationEnabled, shouldReduceMotion, animationStaggerDelay } = useAnimation();
+  const { animationEnabled, prefersReducedMotion, animationStaggerDelay } = useAnimation();
   const baseClass = `${type}-card-skeleton`;
   const combinedClassName = [
     baseClass,
@@ -73,7 +73,7 @@ const SkeletonCard = ({
   };
   
   // Animation properties based on context
-  const shouldAnimate = animationEnabled && !shouldReduceMotion;
+  const shouldAnimate = animationEnabled && !prefersReducedMotion;
   
   // Render different skeleton types
   switch (type) {

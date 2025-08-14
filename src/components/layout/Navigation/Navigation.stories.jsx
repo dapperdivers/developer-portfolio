@@ -1,14 +1,12 @@
 import React from 'react';
 import Navigation from './Navigation';
 import { within, userEvent, expect } from 'storybook/test';
-import { withPortfolioContext } from '@stories-utils';
 import PortfolioContext from '@context/PortfolioContext';
 
 export default {
   title: 'Layout/Navigation',
   component: Navigation,
   tags: ['autodocs'],
-  decorators: [withPortfolioContext],
   parameters: {
     docs: {
       description: {

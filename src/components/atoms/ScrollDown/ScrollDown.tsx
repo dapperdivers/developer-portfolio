@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { motion } from 'framer-motion';
-import { useAnimation } from '@context//AnimationContext';
+import { useAnimation } from '@context/AnimationContext';
 import './ScrollDown.css';
 
 /**

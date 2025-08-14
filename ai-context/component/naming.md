@@ -119,7 +119,6 @@ This document outlines the naming conventions used throughout the Developer Port
 - Use **PascalCase** with `Provider` suffix for provider components
 - Examples:
   - `PortfolioContext` and `PortfolioProvider`
-  - `ThemeContext` and `ThemeProvider`
 
 ## Test Naming
 

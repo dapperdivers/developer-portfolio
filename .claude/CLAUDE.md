@@ -6,6 +6,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - This portfolio demonstrates professional React development practices with enterprise-level component architecture, comprehensive testing, and performance optimization.
 - when styling, refrain from using !important, and do your best to use the var(--{variant}) instead of using rgba(x,x,x,x)
 - remember not to start any services manually, always run 'yarn dev:all'
+- the latest version of storybook removed the need for the acorn '@' "@storybook/test"  please import any storybook/* like this "storybook/test";
+
 
 ## Development Commands
 

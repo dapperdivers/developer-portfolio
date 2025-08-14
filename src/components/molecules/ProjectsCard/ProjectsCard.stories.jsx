@@ -1,13 +1,11 @@
 import React from 'react';
 import ProjectsCard from './ProjectsCard';
 import { within, userEvent, expect } from 'storybook/test';
-import { withPortfolioContext } from '@stories-utils';
 
 export default {
   title: 'Molecules/ProjectsCard',
   component: ProjectsCard,
   tags: ['autodocs'],
-  decorators: [withPortfolioContext],
   argTypes: {
     data: {
       control: 'object',

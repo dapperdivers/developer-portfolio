@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useAnimation } from '@context//AnimationContext';
+import { useAnimation } from '@context/AnimationContext';
 import './ScrollToTop.css';
 
 /**

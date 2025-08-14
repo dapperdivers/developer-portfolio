@@ -1,14 +1,12 @@
 import React from 'react';
 import Education from './Education';
-import { expect, within } from '@storybook/test';
-import { mockPortfolioData, withPortfolioContext, withViewport } from '@stories-utils';
+import { expect, within } from 'storybook/test';
 import PortfolioContext from '@context/PortfolioContext';
 
 export default {
   title: 'Organisms/Education',
   component: Education,
   tags: ['autodocs'],
-  decorators: [withPortfolioContext],
   // No direct props since data comes from context
   parameters: {
     docs: {

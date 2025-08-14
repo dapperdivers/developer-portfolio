@@ -11,6 +11,7 @@ const defaultAnimationVariants = {
 export default {
   title: 'Molecules/SkillCardExpanded',
   component: SkillCardExpanded,
+  tags: ['autodocs'],
   parameters: {
     docs: {
       description: {

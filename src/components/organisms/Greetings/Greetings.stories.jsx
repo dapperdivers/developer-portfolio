@@ -1,8 +1,7 @@
 import React from 'react';
 import Greetings from './Greetings';
-import { within, userEvent, expect } from '@storybook/test';
+import { within, userEvent, expect } from 'storybook/test';
 import PortfolioContext from '@context/PortfolioContext';
-import { mockPortfolioData, withPortfolioContext, withViewport } from '@stories-utils';
 import code from '@assets/animations/lottie/dev-coding.json';
 import webdev from '@assets/animations/lottie/dev-webdev.json';
 import build from '@assets/animations/lottie/dev-building.json';
@@ -21,7 +20,6 @@ export default {
   title: 'Organisms/Greetings',
   component: Greetings,
   tags: ['autodocs'],
-  decorators: [withPortfolioContext],
   parameters: {
     docs: {
       description: {

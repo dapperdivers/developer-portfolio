@@ -18,7 +18,8 @@ RUN bundle config --global frozen 1 && \
 COPY . .
 
 # Build the site
-RUN JEKYLL_ENV=production bundle exec jekyll build
+ARG JEKYLL_BASEURL=""
+RUN JEKYLL_ENV=production bundle exec jekyll build ${JEKYLL_BASEURL:+--baseurl "$JEKYLL_BASEURL"}
 
 # Production stage
 FROM nginx:alpine

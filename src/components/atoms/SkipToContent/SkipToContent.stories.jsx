@@ -5,6 +5,7 @@ import { within, userEvent, expect } from 'storybook/test';
 export default {
   title: 'Atoms/SkipToContent',
   component: SkipToContent,
+  tags: ['autodocs'],
   parameters: {
     componentSubtitle: 'Accessibility component for keyboard users to bypass navigation',
     docs: {

@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
 import { Icon } from '@iconify/react';
-import { useAnimation } from '@context//AnimationContext';
+import { useAnimation } from '@context/AnimationContext';
 import '@assets/css/tailwind.css';
 
 /* 

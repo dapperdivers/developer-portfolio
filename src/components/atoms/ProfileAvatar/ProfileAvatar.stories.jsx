@@ -1,12 +1,10 @@
 import React from 'react';
 import ProfileAvatar from './ProfileAvatar';
-import { withAnimationContext } from '@stories-utils';
 
 export default {
   title: 'GitHub Profile/Atoms/UI/ProfileAvatar',
   component: ProfileAvatar,
   tags: ['autodocs'],
-  decorators: [withAnimationContext],
   parameters: {
     docs: {
       description: {

@@ -4,7 +4,7 @@ description: "Comprehensive technical documentation showcasing enterprise-level 
 author: "Derek Mackley"
 email: "derek@chelonianlabs.com"
 url: "https://dapperdiver.github.io"
-baseurl: "/developer-portfolio"
+baseurl: ""
 
 # Build settings
 markdown: kramdown

@@ -6,6 +6,7 @@ import Card from '@atoms/Card';
 export default {
   title: 'Layout/Section',
   component: Section,
+  tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',
     docs: {

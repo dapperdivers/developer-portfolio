@@ -298,8 +298,6 @@ Business logic is implemented using custom hooks:
 Data is managed using the Context API:
 
 - **PortfolioContext**: Provides portfolio data to components
-- **ThemeContext**: Manages theme state
-- **AnimationContext**: Manages animation preferences
 ```
 
 ### Decision Records

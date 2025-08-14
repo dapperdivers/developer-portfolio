@@ -1,13 +1,11 @@
 import React from 'react';
 import SecurityFact from './SecurityFact';
 import { FaTerminal, FaInfoCircle, FaExclamationTriangle } from 'react-icons/fa';
-import { withAnimationContext } from '@stories-utils';
 
 export default {
   title: 'GitHub Profile/Atoms/Security/SecurityFact',
   component: SecurityFact,
   tags: ['autodocs'],
-  decorators: [withAnimationContext],
   parameters: {
     docs: {
       description: {

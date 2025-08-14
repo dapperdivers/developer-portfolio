@@ -8,7 +8,7 @@ import { AnimationProvider } from '@context/AnimationContext';
 vi.mock('@context/AnimationContext', () => ({
   useAnimation: vi.fn().mockReturnValue({
     animationEnabled: true,
-    shouldReduceMotion: false,
+    prefersReducedMotion: false,
     fadeInVariants: {
       hidden: { opacity: 0 },
       visible: { opacity: 1 }

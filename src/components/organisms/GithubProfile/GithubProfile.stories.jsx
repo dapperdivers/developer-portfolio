@@ -1,12 +1,10 @@
 import React from 'react';
 import GithubProfile from './GithubProfile';
-import { mockGithubProfile, withPortfolioContext, withAnimationContext } from '@stories-utils';
 
 export default {
   title: 'GitHub Profile/Organisms/GithubProfile',
   component: GithubProfile,
   tags: ['autodocs'],
-  decorators: [withPortfolioContext, withAnimationContext],
   parameters: {
     docs: {
       description: {

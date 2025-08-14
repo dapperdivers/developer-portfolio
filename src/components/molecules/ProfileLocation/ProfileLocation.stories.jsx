@@ -1,6 +1,5 @@
 import React from 'react';
 import ProfileLocation from './ProfileLocation';
-import { withAnimationContext } from '@stories-utils';
 
 // Mock the MapComponent
 jest.mock('@molecules/MapComponent', () => {
@@ -30,7 +29,6 @@ export default {
   title: 'GitHub Profile/Molecules/Profile/ProfileLocation',
   component: ProfileLocation,
   tags: ['autodocs'],
-  decorators: [withAnimationContext],
   parameters: {
     docs: {
       description: {

@@ -1,6 +1,6 @@
 import React from 'react';
 import Experience from './Experience';
-import { within, userEvent, expect } from '@storybook/test';
+import { within, userEvent, expect } from 'storybook/test';
 import PortfolioContext from '@context/PortfolioContext';
 import { AnimationProvider } from '@context/AnimationContext';
 
@@ -100,8 +100,9 @@ export default {
     },
     layout: 'fullscreen',
     backgrounds: {
-      default: 'dark',
+      default: 'cyberpunk',
       values: [
+        { name: 'cyberpunk', value: '#0a0e1a' },
         { name: 'dark', value: '#0a192f' },
         { name: 'navy', value: '#162b3d' },
       ],

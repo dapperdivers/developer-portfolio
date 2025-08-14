@@ -1,12 +1,10 @@
 import React from 'react';
 import ProfileError from './ProfileError';
-import { withAnimationContext } from '@stories-utils';
 
 export default {
   title: 'GitHub Profile/Molecules/Profile/ProfileError',
   component: ProfileError,
   tags: ['autodocs'],
-  decorators: [withAnimationContext],
   parameters: {
     docs: {
       description: {

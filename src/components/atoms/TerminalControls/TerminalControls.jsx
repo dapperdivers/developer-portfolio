@@ -27,7 +27,7 @@ const TerminalControls = ({
   className = '',
   ...rest
 }) => {
-  const { animationEnabled, shouldReduceMotion } = useAnimation();
+  const { animationEnabled, prefersReducedMotion } = useAnimation();
   
   // Determine class names based on props
   const classes = [
@@ -56,7 +56,7 @@ const TerminalControls = ({
   };
   
   // Only animate if animations are enabled and user doesn't prefer reduced motion
-  const shouldAnimate = animationEnabled && !shouldReduceMotion && interactive;
+  const shouldAnimate = animationEnabled && !prefersReducedMotion && interactive;
 
   return (
     <motion.div 

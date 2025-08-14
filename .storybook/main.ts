@@ -16,6 +16,10 @@ const config: StorybookConfig = {
       }
     }
   },
+  "core": {
+    "disableWhatsNewNotifications": true,
+    "disableTelemetry": true
+  },
   "staticDirs": [
     "../src/assets/images",
     "../src/assets/animations/lottie",
@@ -77,6 +81,17 @@ const config: StorybookConfig = {
       config.build = {};
     }
     config.build.chunkSizeWarningLimit = 3000; // 3MB limit for Storybook
+    
+    // Configure dev server for remote access
+    if (!config.server) {
+      config.server = {};
+    }
+    config.server = {
+      ...config.server,
+      hmr: {
+        clientPort: 6006,
+      },
+    };
     
     return {
       ...config,
