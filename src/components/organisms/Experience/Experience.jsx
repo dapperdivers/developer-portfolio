@@ -1,4 +1,4 @@
-import React, { memo, useMemo, useRef } from "react";
+import React, { memo, useMemo, useRef, useState, useCallback } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import PropTypes from 'prop-types';
 import SkeletonCard from '@atoms/SkeletonCard';
@@ -21,9 +21,16 @@ const Experience = () => {
   // Get portfolio data
   const portfolioData = usePortfolio();
   
-  // Get animation settings from context - with fallback
+  // Check if in Storybook environment and prioritize context data
+  const experience = portfolioData?.experience || experienceData || [];
+  
+  // Get animation settings from context with robust fallback
   const animationContext = useAnimation();
   const animationEnabled = animationContext?.animationEnabled ?? true;
+  const shouldReduceMotion = animationContext?.shouldReduceMotion ?? false;
+  
+  // State to manage which cards are expanded (first one open by default)
+  const [expandedCards, setExpandedCards] = useState(new Set([0]));
   
   // Reference for scroll animation
   const sectionRef = useRef(null);
@@ -33,16 +40,18 @@ const Experience = () => {
     margin: "0px 0px -100px 0px"
   });
   
-  // Check if in Storybook environment and prioritize context data
-  const experience = portfolioData?.experience || experienceData || [];
-  
-  // Debug logging to understand data flow
-  console.log('Experience Debug - Data Flow:', {
-    experienceDataLength: experienceData?.length,
-    portfolioDataExperienceLength: portfolioData?.experience?.length,
-    finalExperienceLength: experience?.length,
-    hasData: experience && experience.length > 0
-  });
+  // Handle card toggle
+  const handleCardToggle = useCallback((index) => {
+    setExpandedCards(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(index)) {
+        newSet.delete(index);
+      } else {
+        newSet.add(index);
+      }
+      return newSet;
+    });
+  }, []);
   
   // Determine section title and subtitle from context if available
   const sectionTitle = portfolioData?.experienceSection?.title || "Professional Experience";
@@ -52,7 +61,7 @@ const Experience = () => {
   const skeletonCount = useMemo(() => 3, []);
   
   // Loading and error state flags
-  const isLoading = !experience || experience.length === 0;
+  const isLoading = false; // We always have data from portfolio.js
   const hasError = false; // We'll always use portfolio.js data as fallback
   
   // Animation variants for framer-motion
@@ -154,7 +163,7 @@ const Experience = () => {
       <motion.div
         ref={sectionRef}
         initial={animationEnabled ? "hidden" : false}
-        animate={animationEnabled && isInView ? "visible" : false}
+        animate="visible"
         variants={sectionVariants}
         className="experience-grid"
       >
@@ -167,7 +176,17 @@ const Experience = () => {
           />
         </motion.div>
         
-        <div className="experience-cards">
+        <motion.div 
+          className="experience-cards"
+          variants={{
+            hidden: {},
+            visible: {
+              transition: {
+                staggerChildren: 0.1
+              }
+            }
+          }}
+        >
           {experience.map((item, index) => (
             <ExperienceCard
               key={`experience-${index}`}
@@ -182,10 +201,13 @@ const Experience = () => {
               }}
               index={index}
               shadow={true}
+              variant="security"
+              isExpanded={expandedCards.has(index)}
+              onToggle={() => handleCardToggle(index)}
               data-testid="experience-card-mock"
             />
           ))}
-        </div>
+        </motion.div>
       </motion.div>
     </Section>
   );

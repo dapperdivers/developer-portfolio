@@ -90,13 +90,14 @@
 
 .console-header-security .console-content {
   background-color: var(--color-navy, #162b3d);
-  border-color: var(--color-primary);
-  box-shadow: inset 0 0 10px rgba(var(--color-primary-rgb), 0.1);
+  border-color: var(--color-cyan);
+  box-shadow: inset 0 0 10px rgba(var(--color-cyan-rgb), 0.1);
+  backdrop-filter: blur(10px);
 }
 
 .console-header-security .console-prompt {
-  color: var(--color-primary);
-  text-shadow: 0 0 5px rgba(var(--color-primary-rgb), 0.5);
+  color: var(--color-cyan);
+  text-shadow: 0 0 5px rgba(var(--color-cyan-rgb), 0.5);
 }
 
 .console-header-security .console-command {
@@ -105,8 +106,8 @@
 }
 
 .console-header-security .console-cursor {
-  background-color: var(--color-primary);
-  box-shadow: 0 0 8px var(--color-primary);
+  background-color: var(--color-cyan);
+  box-shadow: 0 0 8px var(--color-cyan);
 }
 
 .console-header-terminal .console-header-top {

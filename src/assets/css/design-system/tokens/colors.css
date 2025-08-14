@@ -66,4 +66,8 @@
   --color-level-medium-rgb: 255, 204, 0;
   --color-level-low-rgb: 52, 199, 89;
   --color-level-info-rgb: 90, 200, 250;
+  
+  /* Cyberpunk Theme Variables */
+  --cyberpunk-bg: linear-gradient(135deg, rgba(var(--color-navy-rgb), 0.95) 0%, rgba(var(--color-navy-rgb), 0.9) 50%, rgba(var(--color-navy-rgb), 0.95) 100%);
+  --cyberpunk-grid: rgba(var(--color-cyan-rgb), 0.1);
 }

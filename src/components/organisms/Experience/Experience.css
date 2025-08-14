@@ -1,5 +1,5 @@
 /**
- * Experience Section Styles
+ * Experience Section Styles - Cybersecurity Theme
  */
 
 .experience-section {
@@ -7,6 +7,7 @@
   position: relative;
   overflow: hidden;
   color: var(--color-text);
+  background: var(--cyberpunk-bg, rgba(var(--color-navy-rgb), 0.95));
 }
 
 .experience-section::before {
@@ -17,13 +18,32 @@
   right: 0;
   bottom: 0;
   background-image: 
-    linear-gradient(rgba(var(--color-primary-rgb), 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(var(--color-primary-rgb), 0.05) 1px, transparent 1px);
-  background-size: 30px 30px;
-  opacity: 0.15;
+    linear-gradient(var(--cyberpunk-grid, rgba(var(--color-cyan-rgb), 0.1)) 1px, transparent 1px),
+    linear-gradient(90deg, var(--cyberpunk-grid, rgba(var(--color-cyan-rgb), 0.1)) 1px, transparent 1px);
+  background-size: 20px 20px;
+  opacity: 0.4;
   pointer-events: none;
   z-index: 1;
 }
+
+.experience-section::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 50%,
+    rgba(5, 213, 250, 0.02) 50%
+  );
+  background-size: 100% 4px;
+  opacity: 0.3;
+  pointer-events: none;
+  z-index: 2;
+}
+
 
 .experience-loading {
   display: grid;
@@ -32,11 +52,19 @@
   margin: 3rem auto;
   padding: 2rem;
   max-width: 1200px;
-  background: linear-gradient(145deg, rgba(var(--color-primary-rgb), 0.05) 0%, rgba(var(--color-primary-rgb), 0.1) 100%);
+  background: linear-gradient(
+    145deg,
+    rgba(var(--color-navy-rgb), 0.8) 0%,
+    rgba(var(--color-navy-rgb), 0.9) 100%
+  );
   border-radius: 16px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05), inset 0 0 20px rgba(0, 0, 0, 0.02);
-  border: 1px solid rgba(var(--color-primary-rgb), 0.1);
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.3),
+    inset 0 0 20px rgba(var(--color-cyan-rgb), 0.1),
+    0 0 30px rgba(var(--color-cyan-rgb), 0.1);
+  border: 1px solid rgba(var(--color-cyan-rgb), 0.3);
   position: relative;
+  backdrop-filter: blur(10px);
 }
 
 .experience-header {
@@ -44,7 +72,7 @@
   margin: 0 auto 3rem;
   padding: 0 2rem;
   position: relative;
-  z-index: 2;
+  z-index: 5;
   text-align: center;
 }
 
@@ -54,86 +82,139 @@
   top: 50%;
   left: 0;
   right: 0;
-  height: 1px;
+  height: 2px;
   background: linear-gradient(
     to right,
     transparent,
-    rgba(var(--color-primary-rgb), 0.3),
-    rgba(var(--color-primary-rgb), 0.5),
-    rgba(var(--color-primary-rgb), 0.3),
+    rgba(var(--color-cyan-rgb), 0.4),
+    rgba(var(--color-cyan-rgb), 0.8),
+    rgba(var(--color-cyan-rgb), 0.4),
     transparent
   );
+  box-shadow: 0 0 10px rgba(var(--color-cyan-rgb), 0.5);
   z-index: -1;
+  animation: pulse-line 2s ease-in-out infinite alternate;
 }
 
 .experience-header::after {
-  content: '';
+  content: '🛡️';
   position: absolute;
-  top: -10px;
+  top: -15px;
   right: 20px;
   width: 60px;
   height: 60px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230a84ff' stroke-width='1' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z'%3E%3C/path%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: center;
-  opacity: 0.5;
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.7;
+  filter: drop-shadow(0 0 5px rgba(var(--color-cyan-rgb), 0.5));
+  animation: security-pulse 3s ease-in-out infinite;
+}
+
+@keyframes pulse-line {
+  0% { opacity: 0.4; transform: scaleX(1); }
+  100% { opacity: 0.8; transform: scaleX(1.05); }
+}
+
+@keyframes security-pulse {
+  0%, 100% { opacity: 0.7; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.1); }
 }
 
 .experience-grid {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 2rem;
+  position: relative;
 }
 
 .experience-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
   margin-top: 2rem;
   position: relative;
-  z-index: 5;
+  z-index: 10;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* NOTE: Main experience card styles are in ExperienceCard.css 
    This is a fallback for any cards not using the molecule component */
 .experience-section .experience-card {
-  background: #ffffff !important;
+  background: rgba(var(--color-navy-rgb), 0.9);
   border-radius: 12px;
   padding: 2rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
-  border: 1px solid rgba(var(--color-primary-rgb), 0.1);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  opacity: 1 !important;
-  z-index: 10;
+  box-shadow: 
+    0 8px 25px rgba(0, 0, 0, 0.3),
+    0 0 20px rgba(var(--color-cyan-rgb), 0.1),
+    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.1);
+  border: 1px solid rgba(var(--color-cyan-rgb), 0.3);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+}
+
+.experience-section .experience-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(var(--color-cyan-rgb), 0.1),
+    transparent
+  );
+  transition: left 0.5s ease;
+  pointer-events: none;
 }
 
 .experience-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.06);
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 
+    0 15px 35px rgba(0, 0, 0, 0.4),
+    0 0 40px rgba(var(--color-cyan-rgb), 0.2),
+    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.2);
+  border-color: rgba(var(--color-cyan-rgb), 0.6);
+}
+
+.experience-card:hover::before {
+  left: 100%;
 }
 
 .experience-card h3 {
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-bold);
-  color: var(--color-primary);
+  color: var(--color-cyan);
   margin-bottom: 0.5rem;
+  text-shadow: 0 0 10px rgba(var(--color-cyan-rgb), 0.5);
+  font-family: var(--font-family-jetbrains);
 }
 
 .experience-card h4 {
   font-size: var(--font-size-md);
-  color: var(--color-text);
+  color: var(--color-offwhite);
   margin-bottom: 1rem;
+  font-weight: var(--font-weight-medium);
 }
 
 .experience-card .date {
   font-size: var(--font-size-sm);
-  color: var(--color-text-secondary);
+  color: rgba(var(--color-cyan-rgb), 0.8);
   margin-bottom: 1rem;
+  font-style: italic;
+  font-family: var(--font-family-jetbrains);
 }
 
 .experience-card .description {
   font-size: var(--font-size-base);
-  color: var(--color-text);
+  color: rgba(var(--color-offwhite-rgb), 0.9);
   margin-bottom: 1.5rem;
   line-height: 1.6;
 }
@@ -146,17 +227,21 @@
 
 .experience-card .tech-tag {
   font-size: var(--font-size-sm);
-  color: var(--color-primary);
-  background: rgba(var(--color-primary-rgb), 0.1);
+  color: var(--color-cyan);
+  background: rgba(var(--color-cyan-rgb), 0.1);
   padding: 0.25rem 0.75rem;
   border-radius: 16px;
+  border: 1px solid rgba(var(--color-cyan-rgb), 0.3);
   display: inline-block;
+  font-family: var(--font-family-jetbrains);
+  text-shadow: 0 0 5px rgba(var(--color-cyan-rgb), 0.3);
+  transition: all 0.2s ease;
 }
 
-@media (max-width: 991.98px) {
-  .experience-cards {
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  }
+.experience-card .tech-tag:hover {
+  background: rgba(var(--color-cyan-rgb), 0.2);
+  border-color: rgba(var(--color-cyan-rgb), 0.5);
+  box-shadow: 0 0 10px rgba(var(--color-cyan-rgb), 0.3);
 }
 
 @media (max-width: 767.98px) {
@@ -164,16 +249,32 @@
     padding: 4rem 0;
   }
   
+  .experience-section::before {
+    background-size: 15px 15px;
+  }
+  
   .experience-grid {
     padding: 0 1rem;
   }
   
   .experience-cards {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: 1rem;
+    max-width: 100%;
   }
   
-  .experience-card {
-    padding: 1.5rem;
+  .experience-header::after {
+    display: none;
+  }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  .experience-header::before,
+  .experience-header::after {
+    animation: none;
+  }
+  
+  .experience-card:hover {
+    transform: translateY(-2px);
   }
 }

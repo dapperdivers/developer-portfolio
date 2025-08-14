@@ -2,47 +2,51 @@ import React from 'react';
 import Experience from './Experience';
 import { within, userEvent, expect } from '@storybook/test';
 import PortfolioContext from '@context/PortfolioContext';
+import { AnimationProvider } from '@context/AnimationContext';
 
-// Mock experience data for the stories
+// Enhanced mock experience data with cybersecurity theme
 const mockExperienceData = [
   {
-    role: "Principal Software Engineer",
-    company: "TechInnovate",
-    companylogo: "https://ui-avatars.com/api/?name=TI&background=0D8ABC&color=fff",
+    role: "Principal Security Engineer",
+    company: "CyberGuard Systems",
+    companylogo: "https://ui-avatars.com/api/?name=CG&background=64ffda&color=0a192f&bold=true",
     date: "January 2022 – Present",
-    desc: "Leading the frontend development team and implementing enterprise-scale React applications with modern architecture patterns.",
+    desc: "Leading cybersecurity initiatives and implementing enterprise-grade security solutions for cloud infrastructure and applications.",
     descBullets: [
-      "Designed and implemented a component library used across 5 product teams",
-      "Reduced application load time by 40% through code splitting and optimization",
-      "Mentored junior developers and established best practices",
-      "Led migration from class components to functional components with hooks"
-    ]
+      "Architected zero-trust security framework reducing breach risk by 85%",
+      "Implemented automated threat detection using AI/ML algorithms",
+      "Led security audits and penetration testing for 100+ applications",
+      "Mentored security team and established incident response protocols"
+    ],
+    url: "https://cyberguard.com"
   },
   {
-    role: "Senior Frontend Developer",
-    company: "DataSolutions Inc.",
-    companylogo: "https://ui-avatars.com/api/?name=DS&background=2D8A5F&color=fff",
+    role: "Senior Security Developer",
+    company: "SecureCode Solutions",
+    companylogo: "https://ui-avatars.com/api/?name=SC&background=ff4d4d&color=fff&bold=true",
     date: "June 2019 – December 2021",
-    desc: "Developed and maintained multiple React applications with complex state management and API integrations.",
+    desc: "Developed secure applications and implemented security-first development practices across multiple projects.",
     descBullets: [
-      "Built a dashboard analytics platform with real-time data visualization",
-      "Implemented comprehensive testing strategies using Jest and React Testing Library",
-      "Optimized existing applications for better performance and accessibility",
-      "Collaborated with design team to implement consistent UI/UX patterns"
-    ]
+      "Built secure authentication system with multi-factor verification",
+      "Implemented comprehensive security testing using OWASP guidelines", 
+      "Conducted code security reviews and vulnerability assessments",
+      "Collaborated with security team on secure coding standards"
+    ],
+    url: "https://securecode.com"
   },
   {
-    role: "Frontend Developer",
-    company: "WebCreative",
-    companylogo: "https://ui-avatars.com/api/?name=WC&background=A85C32&color=fff",
+    role: "Junior Security Analyst",
+    company: "InfoSec Dynamics",
+    companylogo: "https://ui-avatars.com/api/?name=ID&background=A85C32&color=fff&bold=true",
     date: "March 2017 – May 2019",
-    desc: "Created responsive web applications and collaborated with cross-functional teams to deliver high-quality projects.",
+    desc: "Entry-level security position focused on monitoring, incident response, and learning security fundamentals.",
     descBullets: [
-      "Developed responsive websites using modern CSS frameworks",
-      "Integrated RESTful APIs with frontend applications",
-      "Implemented authentication and authorization systems",
-      "Created reusable components to improve development efficiency"
-    ]
+      "Monitored security alerts and performed initial threat analysis",
+      "Assisted in incident response and forensic investigations",
+      "Created security documentation and standard operating procedures",
+      "Participated in vulnerability assessment and remediation efforts"
+    ],
+    url: "https://infosec-dynamics.com"
   }
 ];
 
@@ -67,9 +71,11 @@ const createMockPortfolioData = (experienceData) => ({
 
 // Context decorator factory to provide different mock data for each story
 const createPortfolioDecorator = (experienceData) => (Story) => (
-  <PortfolioContext.Provider value={createMockPortfolioData(experienceData)}>
-    <Story />
-  </PortfolioContext.Provider>
+  <AnimationProvider>
+    <PortfolioContext.Provider value={createMockPortfolioData(experienceData)}>
+      <Story />
+    </PortfolioContext.Provider>
+  </AnimationProvider>
 );
 
 
@@ -94,7 +100,11 @@ export default {
     },
     layout: 'fullscreen',
     backgrounds: {
-      default: 'light',
+      default: 'dark',
+      values: [
+        { name: 'dark', value: '#0a192f' },
+        { name: 'navy', value: '#162b3d' },
+      ],
     }
   },
 };
@@ -103,14 +113,15 @@ export default {
 // Template for the component with context wrapper
 const Template = ({ experienceData = mockExperienceData }) => (
   <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '2rem' }}>
-    {createPortfolioDecorator(experienceData)(Experience)}
+    <Experience />
   </div>
 );
 
 // Default story with multiple experience items
-export const Default = () => <Template />;
-Default.decorators = [createPortfolioDecorator(mockExperienceData)];
-Default.play = async ({ canvasElement, step }) => {
+export const Default = {
+  render: () => <Template experienceData={mockExperienceData} />,
+  decorators: [createPortfolioDecorator(mockExperienceData)],
+  play: async ({ canvasElement, step }) => {
   const canvas = within(canvasElement);
   
   await step('Initial render check', () => {
@@ -136,35 +147,41 @@ Default.play = async ({ canvasElement, step }) => {
     for (let i = 0; i < 6; i++) {
       await userEvent.tab();
     }
-  });
+  })
+  }
 };
 
 // Story with a single experience item
-export const SingleExperience = () => <Template experienceData={singleExperience} />;
-SingleExperience.decorators = [createPortfolioDecorator(singleExperience)];
-SingleExperience.parameters = {
+export const SingleExperience = {
+  render: () => <Template experienceData={singleExperience} />,
+  decorators: [createPortfolioDecorator(singleExperience)],
+  parameters: {
   docs: {
     description: {
       story: 'Shows how the experience section appears with just a single experience item.'
     }
   }
+  }
 };
 
 // Empty state story
-export const NoExperience = () => <Template experienceData={emptyExperience} />;
-NoExperience.decorators = [createPortfolioDecorator(emptyExperience)];
-NoExperience.parameters = {
+export const NoExperience = {
+  render: () => <Template experienceData={emptyExperience} />,
+  decorators: [createPortfolioDecorator(emptyExperience)],
+  parameters: {
   docs: {
     description: {
       story: 'Displays the section when no experience data is available. This tests the edge case where the user has not entered any work experience yet.'
     }
   }
+  }
 };
 
 // Responsive view
-export const ResponsiveView = () => <Template />;
-ResponsiveView.decorators = [createPortfolioDecorator(mockExperienceData)];
-ResponsiveView.parameters = {
+export const ResponsiveView = {
+  render: () => <Template experienceData={mockExperienceData} />,
+  decorators: [createPortfolioDecorator(mockExperienceData)],
+  parameters: {
   viewport: {
     defaultViewport: 'mobile1'
   },
@@ -172,6 +189,7 @@ ResponsiveView.parameters = {
     description: {
       story: 'Shows how the experience section responds to smaller viewport sizes.'
     }
+  }
   }
 };
 
