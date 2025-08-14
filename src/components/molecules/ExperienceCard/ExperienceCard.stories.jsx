@@ -103,7 +103,7 @@ export const Default = Template.bind({});
 Default.args = {
   data: securityExperienceData,
   index: 0,
-  variant: 'security',
+  variant: 'terminal',
   shadow: true,
   isExpanded: false,
 };
@@ -174,7 +174,7 @@ export const ShortContent = Template.bind({});
 ShortContent.args = {
   data: shortExperienceData,
   index: 0,
-  variant: 'security',
+  variant: 'terminal',
   shadow: true,
   isExpanded: false,
 };
@@ -232,21 +232,21 @@ export const MultipleCards = () => (
     <ExperienceCard
       data={securityExperienceData}
       index={0}
-      variant="security"
+      variant="terminal"
       shadow={true}
       isExpanded={false}
     />
     <ExperienceCard
       data={regularExperienceData}
       index={1}
-      variant="security"
+      variant="terminal"
       shadow={true}
       isExpanded={false}
     />
     <ExperienceCard
       data={shortExperienceData}
       index={2}
-      variant="security"
+      variant="terminal"
       shadow={true}
       isExpanded={false}
     />

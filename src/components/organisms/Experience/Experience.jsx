@@ -201,7 +201,7 @@ const Experience = () => {
               }}
               index={index}
               shadow={true}
-              variant="security"
+              variant="terminal"
               isExpanded={expandedCards.has(index)}
               onToggle={() => handleCardToggle(index)}
               data-testid="experience-card-mock"

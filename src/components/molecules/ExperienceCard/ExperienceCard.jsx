@@ -9,7 +9,7 @@ const ExperienceCard = ({
   index = 0, 
   colorOverride, 
   shadow = false, 
-  variant = 'default',
+  variant = 'terminal',
   isExpanded = false,
   onToggle
 }) => {

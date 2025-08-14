@@ -433,18 +433,66 @@
 
 /* Theming - Terminal variant */
 .experience-card--terminal {
-  background-color: var(--color-card-terminal-bg, rgba(18, 18, 18, 0.9));
-  border: 1px solid var(--color-border-terminal, rgba(80, 80, 80, 0.4));
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-navy-rgb), 0.95) 0%,
+    rgba(var(--color-navy-rgb), 0.9) 50%,
+    rgba(var(--color-navy-rgb), 0.95) 100%
+  );
+  border: 1px solid rgba(var(--color-cyan-rgb), 0.4);
+  backdrop-filter: blur(20px);
+  box-shadow: 
+    0 8px 30px rgba(0, 0, 0, 0.4),
+    0 0 25px rgba(var(--color-cyan-rgb), 0.15),
+    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.1);
+}
+
+.experience-card--terminal:hover {
+  border-color: rgba(var(--color-cyan-rgb), 0.6);
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.5),
+    0 0 40px rgba(var(--color-cyan-rgb), 0.2),
+    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.2);
+}
+
+.experience-card--terminal .experience-card__role {
+  color: var(--color-cyan);
+  font-family: var(--font-family-jetbrains);
+  text-shadow: 0 0 15px rgba(var(--color-cyan-rgb), 0.7);
+}
+
+.experience-card--terminal .experience-card__company {
+  color: var(--color-offwhite);
+  font-weight: var(--font-weight-semibold);
+}
+
+.experience-card--terminal .experience-card__date {
+  color: rgba(var(--color-cyan-rgb), 0.8);
+  font-family: var(--font-family-jetbrains);
 }
 
 .experience-card--terminal .experience-card__description {
-  color: var(--color-text-terminal, rgba(230, 230, 230, 0.9));
-  font-family: var(--font-family-monospace);
+  color: rgba(var(--color-offwhite-rgb), 0.9);
+  font-family: var(--font-family-jetbrains);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
 }
 
 .experience-card--terminal .experience-card__bullet-item {
-  color: var(--color-text-terminal-light, rgba(200, 200, 200, 0.8));
-  font-family: var(--font-family-monospace);
+  color: rgba(var(--color-offwhite-rgb), 0.85);
+  font-family: var(--font-family-jetbrains);
+}
+
+.experience-card--terminal .experience-card__bullet-item::before {
+  color: var(--color-cyan);
+  text-shadow: 0 0 5px rgba(var(--color-cyan-rgb), 0.5);
+}
+
+.experience-card--terminal .experience-card__logo-container {
+  border-color: rgba(var(--color-cyan-rgb), 0.4);
+  box-shadow: 
+    0 4px 15px rgba(0, 0, 0, 0.4),
+    inset 0 0 10px rgba(var(--color-cyan-rgb), 0.1),
+    0 0 15px rgba(var(--color-cyan-rgb), 0.15);
 }
 
 /* Expanded state styling */
