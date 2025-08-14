@@ -11,8 +11,10 @@
   --font-family-ibm-plex: 'IBM Plex Mono', var(--font-family-monospace);
   
   /* Typography - Font Sizes */
-  --font-size-base: 1rem;
+  --font-size-xs: 0.75rem;
   --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-md: 1.125rem;
   --font-size-lg: 1.25rem;
   --font-size-xl: 1.5rem;
   --font-size-h1: 2.5rem;
@@ -32,6 +34,7 @@
   /* Typography - Line Heights */
   --line-height-tight: 1.1; /* Tighter line height for security headings */
   --line-height-code: 1.4;
+  --line-height-md: 1.5;
   --line-height-base: 1.6; /* Slightly looser for better readability of technical content */
   --line-height-loose: 1.8;
   

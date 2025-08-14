@@ -1,6 +1,10 @@
 // Import browser compatibility fixes first
 import '@utils/browserFixes';
 
+// Import CSS files first - order matters for CSS cascade
+import '@assets/css/design-system/index.css';
+import '@assets/css/index.css';
+
 // Import React and ReactDOM directly - using standard named imports
 import React from 'react';
 import ReactDOM from 'react-dom/client';
