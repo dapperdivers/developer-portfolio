@@ -1,0 +1,181 @@
+/**
+ * ExperienceToggle Atom Component Styles
+ * Isolated toggle button for expand/collapse functionality
+ */
+
+.experience-toggle {
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid rgba(var(--color-cyan-rgb), 0.5);
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-navy-rgb), 0.9),
+    rgba(var(--color-navy-rgb), 0.7)
+  );
+  transition: all 0.3s ease;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.experience-toggle:hover {
+  border-color: rgba(var(--color-cyan-rgb), 0.8);
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-cyan-rgb), 0.1),
+    rgba(var(--color-navy-rgb), 0.8)
+  );
+  box-shadow: 0 0 20px rgba(var(--color-cyan-rgb), 0.3);
+}
+
+.experience-toggle--expanded {
+  border-color: rgba(var(--color-cyan-rgb), 0.8);
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-cyan-rgb), 0.1),
+    rgba(var(--color-navy-rgb), 0.8)
+  );
+  box-shadow: 0 0 20px rgba(var(--color-cyan-rgb), 0.4);
+}
+
+/* Toggle icon */
+.experience-toggle__icon {
+  color: var(--color-cyan);
+  font-size: 1rem;
+  line-height: 1;
+  user-select: none;
+  transition: transform 0.3s ease;
+}
+
+.experience-toggle__chevron {
+  font-weight: 700;
+  text-shadow: 0 0 10px rgba(var(--color-cyan-rgb), 0.5);
+}
+
+/* Toggle glow effect */
+.experience-toggle__glow {
+  position: absolute;
+  inset: -4px;
+  background: radial-gradient(
+    circle,
+    rgba(var(--color-cyan-rgb), 0.4),
+    transparent
+  );
+  border-radius: 50%;
+  opacity: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Variant Styles */
+.experience-toggle--secure {
+  border-color: rgba(34, 197, 94, 0.5);
+}
+
+.experience-toggle--secure:hover,
+.experience-toggle--secure.experience-toggle--expanded {
+  border-color: rgba(34, 197, 94, 0.8);
+  box-shadow: 0 0 20px rgba(34, 197, 94, 0.3);
+}
+
+.experience-toggle--secure .experience-toggle__icon {
+  color: var(--color-green-400);
+}
+
+.experience-toggle--secure .experience-toggle__chevron {
+  text-shadow: 0 0 10px rgba(34, 197, 94, 0.5);
+}
+
+.experience-toggle--secure .experience-toggle__glow {
+  background: radial-gradient(
+    circle,
+    rgba(34, 197, 94, 0.4),
+    transparent
+  );
+}
+
+.experience-toggle--breach {
+  border-color: rgba(248, 113, 113, 0.5);
+}
+
+.experience-toggle--breach:hover,
+.experience-toggle--breach.experience-toggle--expanded {
+  border-color: rgba(248, 113, 113, 0.8);
+  box-shadow: 0 0 20px rgba(248, 113, 113, 0.3);
+}
+
+.experience-toggle--breach .experience-toggle__icon {
+  color: var(--color-red-400);
+}
+
+.experience-toggle--breach .experience-toggle__chevron {
+  text-shadow: 0 0 10px rgba(248, 113, 113, 0.5);
+}
+
+.experience-toggle--breach .experience-toggle__glow {
+  background: radial-gradient(
+    circle,
+    rgba(248, 113, 113, 0.4),
+    transparent
+  );
+}
+
+.experience-toggle--critical {
+  border-color: rgba(251, 191, 36, 0.5);
+}
+
+.experience-toggle--critical:hover,
+.experience-toggle--critical.experience-toggle--expanded {
+  border-color: rgba(251, 191, 36, 0.8);
+  box-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
+}
+
+.experience-toggle--critical .experience-toggle__icon {
+  color: var(--color-yellow-400);
+}
+
+.experience-toggle--critical .experience-toggle__chevron {
+  text-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
+}
+
+.experience-toggle--critical .experience-toggle__glow {
+  background: radial-gradient(
+    circle,
+    rgba(251, 191, 36, 0.4),
+    transparent
+  );
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .experience-toggle {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+@media (max-width: 480px) {
+  .experience-toggle {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+/* Accessibility */
+.experience-toggle:focus {
+  outline: 2px solid rgba(var(--color-cyan-rgb), 0.7);
+  outline-offset: 2px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .experience-toggle,
+  .experience-toggle__icon {
+    transition: none;
+  }
+}

@@ -1,0 +1,63 @@
+/**
+ * TerminalCursor Component Styles
+ * Styling for the blinking terminal cursor with enhanced visibility
+ */
+
+/* Base cursor styles */
+.terminal-cursor {
+  display: inline-block;
+  width: 10px;
+  height: 18px;
+  background-color: var(--color-info);
+  vertical-align: middle;
+  margin-left: var(--spacing-1);
+  flex-shrink: 0;
+  transition: var(--transition-fast);
+  box-shadow: 0 0 6px rgba(var(--color-info-rgb), 0.6);
+  border-radius: 1px;
+}
+
+/* Focused state - enhanced visibility */
+.terminal-cursor--focused {
+  background-color: var(--color-cyan);
+  box-shadow: 0 0 10px rgba(var(--color-cyan-rgb), 0.8);
+  width: 12px;
+  height: 20px;
+}
+
+/* Variant styles */
+.terminal-cursor--security {
+  background-color: var(--color-cyan);
+  box-shadow: 0 0 8px var(--color-cyan);
+}
+
+.terminal-cursor--terminal {
+  background-color: var(--color-info);
+  box-shadow: 0 0 6px rgba(var(--color-info-rgb), 0.6);
+}
+
+.terminal-cursor--kitty {
+  background-color: var(--color-cyan);
+  box-shadow: 0 0 8px rgba(var(--color-cyan-rgb), 0.6);
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .terminal-cursor {
+    height: 16px;
+    width: 8px;
+  }
+  
+  .terminal-cursor--focused {
+    height: 18px;
+    width: 10px;
+  }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .terminal-cursor {
+    /* Static cursor when reduced motion is preferred */
+    animation: none;
+  }
+}

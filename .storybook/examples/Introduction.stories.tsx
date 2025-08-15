@@ -41,15 +41,32 @@ import { Meta, StoryObj } from '@storybook/react-vite';
  * - `--detailed`: Add detailed documentation
  * - `--tsx`: Generate TypeScript story
  * 
- * ## Using Atom Components for Theming
+ * ## Atomic Design Structure in Action
+ * 
+ * The Developer Portfolio follows strict atomic design principles. Here's how our 
+ * terminal/console components are properly structured:
+ * 
+ * ### Atoms (Building Blocks)
+ * - **TerminalControls**: Terminal window control buttons
+ * - **TerminalCursor**: Blinking cursor element
+ * - **TerminalPrompt**: Command prompt text
+ * 
+ * ### Molecules (Combined Atoms)
+ * - **TerminalTitleBar**: TerminalControls + title display
+ * - **TerminalCommandLine**: TerminalPrompt + command/input + TerminalCursor
+ * 
+ * ### Organisms (Complete Functional Units)
+ * - **ConsoleHeader**: Complete terminal interface using the above molecules
+ * 
+ * ## Using Components for Theming
  * 
  * The Developer Portfolio includes several specialized components 
  * that can be combined to create immersive, tech-themed backgrounds and UI elements:
  * - **MatrixBackground**: Creates a Matrix-style falling code animation
  * - **BinaryStream**: Displays flowing binary data for a cyber aesthetic
  * - **CodeSnippet**: Shows formatted code blocks with syntax highlighting
- * - **TerminalControls**: Terminal-style UI controls for a command-line feel
- * - **ConsoleHeader**: Header styled like a terminal/console window
+ * - **NetworkBackground**: Animated network node connections
+ * - **GridBackground**: Cyberpunk-style grid overlays
  * 
  * These components can be layered to create dynamic, interactive backgrounds
  * that enhance the tech/hacker aesthetic of the portfolio.
@@ -143,17 +160,45 @@ export const WithInteractions = {
       </pre>
     </div>
     
+    <h2 style={{ marginTop: '24px', color: '#0062cc' }}>Atomic Design Example: Terminal Components</h2>
+    <p>
+      Here's a perfect example of our atomic design structure using terminal components:
+    </p>
+    <div style={{ 
+      background: '#f0f8ff', 
+      padding: '15px', 
+      borderRadius: '5px',
+      marginTop: '15px',
+      borderLeft: '4px solid #0062cc'
+    }}>
+      <h3 style={{ margin: '0 0 10px 0' }}>Proper Atomic Structure</h3>
+      <pre style={{ overflow: 'auto', background: '#f8f8f8', padding: '10px', margin: '0', fontSize: '14px' }}>
+{`// ATOMS (Single purpose, minimal logic)
+import TerminalControls from '@atoms/TerminalControls';
+import TerminalCursor from '@atoms/TerminalCursor';
+import TerminalPrompt from '@atoms/TerminalPrompt';
+
+// MOLECULES (Combination of atoms)
+import TerminalTitleBar from '@molecules/TerminalTitleBar';
+import TerminalCommandLine from '@molecules/TerminalCommandLine';
+
+// ORGANISM (Complete functional unit)
+import ConsoleHeader from '@organisms/ConsoleHeader';`}
+      </pre>
+    </div>
+    
     <h2 style={{ marginTop: '24px', color: '#0062cc' }}>Creating Tech-Themed Backgrounds</h2>
     <p>
-      The portfolio comes with several atom components specifically designed for creating engaging, 
+      The portfolio comes with several components specifically designed for creating engaging, 
       tech-themed backgrounds and UI elements:
     </p>
     <ul style={{ lineHeight: '1.6' }}>
       <li><strong>MatrixBackground</strong> - Creates a Matrix-style raining code effect</li>
       <li><strong>BinaryStream</strong> - Displays animated binary data streams</li>
+      <li><strong>NetworkBackground</strong> - Animated network node connections</li>
+      <li><strong>GridBackground</strong> - Cyberpunk-style grid overlays</li>
       <li><strong>CodeSnippet</strong> - Shows code with syntax highlighting</li>
-      <li><strong>TerminalControls</strong> - Terminal-style UI controls</li>
-      <li><strong>ConsoleHeader</strong> - Headers styled like a terminal window</li>
+      <li><strong>ConsoleHeader</strong> - Complete terminal interface organism</li>
     </ul>
     
     <div style={{ 
@@ -167,19 +212,26 @@ export const WithInteractions = {
       <p style={{ margin: '0 0 10px 0' }}>Here's how you might combine these components:</p>
       <pre style={{ overflow: 'auto', background: '#f8f8f8', padding: '10px', margin: '0', fontSize: '14px' }}>
 {`import React from 'react';
-import MatrixBackground from '@components/decorations/MatrixBackground';
-import ConsoleHeader from '@atoms/ConsoleHeader';
+import MatrixBackground from '@atoms/decorations/MatrixBackground';
+import ConsoleHeader from '@organisms/ConsoleHeader';
 import CodeSnippet from '@atoms/CodeSnippet';
 
 const HackerThemedSection = ({ children }) => (
   <div className="hacker-section">
     <MatrixBackground opacity={0.15} speed={1.5} />
     <div className="content-container">
-      <ConsoleHeader title="Portfolio::MainSection" />
+      <ConsoleHeader 
+        title="Portfolio::MainSection" 
+        interactive={true}
+        variant="security"
+      />
       <div className="content">
         {children}
       </div>
-      <CodeSnippet language="javascript" code="console.log('Portfolio loaded successfully');" />
+      <CodeSnippet 
+        language="javascript" 
+        code="console.log('Portfolio loaded successfully');" 
+      />
     </div>
   </div>
 );`}
@@ -224,4 +276,4 @@ type Story = StoryObj<typeof Introduction>;
 
 export const Main: Story = {
   render: () => <Introduction />
-}; 
+};

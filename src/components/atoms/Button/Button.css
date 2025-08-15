@@ -3,7 +3,7 @@
  * 
  * Styles for the Button component following atomic design principles.
  * Uses design tokens for consistent styling across the application.
- * Updated to align with security-themed design.
+ * Updated with improved readability, enhanced cybersecurity theme, and better contrast.
  */
 
 .btn {
@@ -11,167 +11,352 @@
   align-items: center;
   justify-content: center;
   font-family: var(--font-family-jetbrains);
-  font-weight: var(--font-weight-medium);
-  line-height: 1.5;
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-base);
+  line-height: 1.4;
   text-align: center;
   text-decoration: none;
   white-space: nowrap;
   vertical-align: middle;
   cursor: pointer;
   user-select: none;
-  padding: var(--button-padding-y) var(--button-padding-x);
-  border: var(--border-width-thin) solid transparent;
+  padding: var(--spacing-3) var(--spacing-4);
+  border: 1px solid transparent;
   border-radius: var(--border-radius);
   transition: var(--transition-base);
   position: relative;
   overflow: hidden;
-  letter-spacing: var(--letter-spacing-technical);
+  letter-spacing: var(--letter-spacing-wide);
+  min-height: 44px; /* Better touch target */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Button variants */
+/* Button variants with improved contrast */
 .btn-primary {
-  background-color: var(--color-primary);
+  background: linear-gradient(
+    135deg,
+    var(--color-cyan) 0%,
+    color-mix(in srgb, var(--color-cyan) 90%, var(--color-primary-dark)) 100%
+  );
   color: var(--color-navy);
-  border-color: var(--color-primary);
+  border-color: var(--color-cyan);
+  font-weight: var(--font-weight-bold);
+  text-shadow: 0 1px 2px rgba(var(--color-navy-rgb), 0.3);
+  box-shadow: 
+    0 4px 12px rgba(var(--color-cyan-rgb), 0.3),
+    0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .btn-primary:hover, .btn-primary:focus {
-  background-color: var(--color-primary-dark);
-  border-color: var(--color-primary-dark);
-  box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.2);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-cyan) 85%, white) 0%,
+    var(--color-cyan) 100%
+  );
+  border-color: color-mix(in srgb, var(--color-cyan) 85%, white);
+  box-shadow: 
+    0 6px 16px rgba(var(--color-cyan-rgb), 0.4),
+    0 0 20px rgba(var(--color-cyan-rgb), 0.2),
+    0 4px 8px rgba(0, 0, 0, 0.3);
+  transform: translateY(-1px);
 }
 
 .btn-secondary {
-  background-color: var(--color-navy);
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-navy-rgb), 0.95) 0%,
+    rgba(var(--color-navy-rgb), 0.9) 100%
+  );
   color: var(--color-cyan);
-  border-color: var(--color-cyan);
+  border: 1px solid rgba(var(--color-cyan-rgb), 0.6);
+  font-weight: var(--font-weight-semibold);
+  backdrop-filter: blur(10px);
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.1);
 }
 
 .btn-secondary:hover, .btn-secondary:focus {
-  background-color: var(--color-gray-800);
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-navy-rgb), 0.98) 0%,
+    rgba(var(--color-navy-rgb), 0.95) 100%
+  );
   border-color: var(--color-cyan);
-  box-shadow: 0 0 0 3px rgba(var(--color-cyan-rgb), 0.2);
+  color: color-mix(in srgb, var(--color-cyan) 90%, white);
+  box-shadow: 
+    0 6px 16px rgba(0, 0, 0, 0.4),
+    0 0 20px rgba(var(--color-cyan-rgb), 0.2),
+    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.15);
+  transform: translateY(-1px);
 }
 
 .btn-success {
-  background-color: var(--color-success);
+  background: linear-gradient(
+    135deg,
+    var(--color-level-low) 0%,
+    color-mix(in srgb, var(--color-level-low) 85%, black) 100%
+  );
   color: var(--color-white);
-  border-color: var(--color-success);
+  border-color: var(--color-level-low);
+  font-weight: var(--font-weight-semibold);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  box-shadow: 
+    0 4px 12px rgba(var(--color-level-low-rgb), 0.3),
+    0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .btn-success:hover, .btn-success:focus {
-  background-color: color-mix(in srgb, var(--color-success) 85%, black);
-  border-color: color-mix(in srgb, var(--color-success) 85%, black);
-  box-shadow: 0 0 0 3px rgba(var(--color-success-rgb), 0.2);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-level-low) 90%, white) 0%,
+    var(--color-level-low) 100%
+  );
+  border-color: color-mix(in srgb, var(--color-level-low) 90%, white);
+  box-shadow: 
+    0 6px 16px rgba(var(--color-level-low-rgb), 0.4),
+    0 0 20px rgba(var(--color-level-low-rgb), 0.2),
+    0 4px 8px rgba(0, 0, 0, 0.3);
+  transform: translateY(-1px);
 }
 
 .btn-danger {
-  background-color: var(--color-danger);
+  background: linear-gradient(
+    135deg,
+    var(--color-level-critical) 0%,
+    color-mix(in srgb, var(--color-level-critical) 85%, black) 100%
+  );
   color: var(--color-white);
-  border-color: var(--color-danger);
+  border-color: var(--color-level-critical);
+  font-weight: var(--font-weight-semibold);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  box-shadow: 
+    0 4px 12px rgba(var(--color-level-critical-rgb), 0.3),
+    0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .btn-danger:hover, .btn-danger:focus {
-  background-color: color-mix(in srgb, var(--color-danger) 85%, black);
-  border-color: color-mix(in srgb, var(--color-danger) 85%, black);
-  box-shadow: 0 0 0 3px rgba(var(--color-danger-rgb), 0.2);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-level-critical) 90%, white) 0%,
+    var(--color-level-critical) 100%
+  );
+  border-color: color-mix(in srgb, var(--color-level-critical) 90%, white);
+  box-shadow: 
+    0 6px 16px rgba(var(--color-level-critical-rgb), 0.4),
+    0 0 20px rgba(var(--color-level-critical-rgb), 0.2),
+    0 4px 8px rgba(0, 0, 0, 0.3);
+  transform: translateY(-1px);
 }
 
 .btn-warning {
-  background-color: var(--color-warning);
-  color: var(--color-gray-900);
-  border-color: var(--color-warning);
+  background: linear-gradient(
+    135deg,
+    var(--color-level-medium) 0%,
+    color-mix(in srgb, var(--color-level-medium) 85%, black) 100%
+  );
+  color: var(--color-navy);
+  border-color: var(--color-level-medium);
+  font-weight: var(--font-weight-semibold);
+  text-shadow: 0 1px 2px rgba(var(--color-navy-rgb), 0.3);
+  box-shadow: 
+    0 4px 12px rgba(var(--color-level-medium-rgb), 0.3),
+    0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .btn-warning:hover, .btn-warning:focus {
-  background-color: color-mix(in srgb, var(--color-warning) 85%, black);
-  border-color: color-mix(in srgb, var(--color-warning) 85%, black);
-  box-shadow: 0 0 0 3px rgba(var(--color-warning-rgb), 0.2);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-level-medium) 90%, white) 0%,
+    var(--color-level-medium) 100%
+  );
+  border-color: color-mix(in srgb, var(--color-level-medium) 90%, white);
+  box-shadow: 
+    0 6px 16px rgba(var(--color-level-medium-rgb), 0.4),
+    0 0 20px rgba(var(--color-level-medium-rgb), 0.2),
+    0 4px 8px rgba(0, 0, 0, 0.3);
+  transform: translateY(-1px);
 }
 
 .btn-info {
-  background-color: var(--color-info);
+  background: linear-gradient(
+    135deg,
+    var(--color-level-info) 0%,
+    color-mix(in srgb, var(--color-level-info) 85%, black) 100%
+  );
   color: var(--color-white);
-  border-color: var(--color-info);
+  border-color: var(--color-level-info);
+  font-weight: var(--font-weight-semibold);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  box-shadow: 
+    0 4px 12px rgba(var(--color-level-info-rgb), 0.3),
+    0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .btn-info:hover, .btn-info:focus {
-  background-color: color-mix(in srgb, var(--color-info) 85%, black);
-  border-color: color-mix(in srgb, var(--color-info) 85%, black);
-  box-shadow: 0 0 0 3px rgba(var(--color-info-rgb), 0.2);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-level-info) 90%, white) 0%,
+    var(--color-level-info) 100%
+  );
+  border-color: color-mix(in srgb, var(--color-level-info) 90%, white);
+  box-shadow: 
+    0 6px 16px rgba(var(--color-level-info-rgb), 0.4),
+    0 0 20px rgba(var(--color-level-info-rgb), 0.2),
+    0 4px 8px rgba(0, 0, 0, 0.3);
+  transform: translateY(-1px);
 }
 
-/* Critical, High, Medium, Low variants for security theme */
+/* Security level variants */
 .btn-critical {
-  background-color: var(--color-level-critical);
+  background: linear-gradient(
+    135deg,
+    var(--color-level-critical) 0%,
+    color-mix(in srgb, var(--color-level-critical) 85%, black) 100%
+  );
   color: var(--color-white);
   border-color: var(--color-level-critical);
+  font-weight: var(--font-weight-bold);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
 }
 
 .btn-critical:hover, .btn-critical:focus {
-  background-color: color-mix(in srgb, var(--color-level-critical) 85%, black);
-  border-color: color-mix(in srgb, var(--color-level-critical) 85%, black);
-  box-shadow: 0 0 0 3px rgba(var(--color-level-critical-rgb), 0.2);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-level-critical) 90%, white) 0%,
+    var(--color-level-critical) 100%
+  );
+  border-color: color-mix(in srgb, var(--color-level-critical) 90%, white);
+  box-shadow: 
+    0 6px 16px rgba(var(--color-level-critical-rgb), 0.4),
+    0 0 20px rgba(var(--color-level-critical-rgb), 0.3);
+  transform: translateY(-1px);
 }
 
 .btn-high {
-  background-color: var(--color-level-high);
+  background: linear-gradient(
+    135deg,
+    var(--color-level-high) 0%,
+    color-mix(in srgb, var(--color-level-high) 85%, black) 100%
+  );
   color: var(--color-white);
   border-color: var(--color-level-high);
+  font-weight: var(--font-weight-semibold);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .btn-high:hover, .btn-high:focus {
-  background-color: color-mix(in srgb, var(--color-level-high) 85%, black);
-  border-color: color-mix(in srgb, var(--color-level-high) 85%, black);
-  box-shadow: 0 0 0 3px rgba(var(--color-level-high-rgb), 0.2);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-level-high) 90%, white) 0%,
+    var(--color-level-high) 100%
+  );
+  border-color: color-mix(in srgb, var(--color-level-high) 90%, white);
+  box-shadow: 
+    0 6px 16px rgba(var(--color-level-high-rgb), 0.4),
+    0 0 20px rgba(var(--color-level-high-rgb), 0.2);
+  transform: translateY(-1px);
 }
 
 .btn-medium {
-  background-color: var(--color-level-medium);
-  color: var(--color-gray-900);
+  background: linear-gradient(
+    135deg,
+    var(--color-level-medium) 0%,
+    color-mix(in srgb, var(--color-level-medium) 85%, black) 100%
+  );
+  color: var(--color-navy);
   border-color: var(--color-level-medium);
+  font-weight: var(--font-weight-semibold);
+  text-shadow: 0 1px 2px rgba(var(--color-navy-rgb), 0.3);
 }
 
 .btn-medium:hover, .btn-medium:focus {
-  background-color: color-mix(in srgb, var(--color-level-medium) 85%, black);
-  border-color: color-mix(in srgb, var(--color-level-medium) 85%, black);
-  box-shadow: 0 0 0 3px rgba(var(--color-level-medium-rgb), 0.2);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-level-medium) 90%, white) 0%,
+    var(--color-level-medium) 100%
+  );
+  border-color: color-mix(in srgb, var(--color-level-medium) 90%, white);
+  box-shadow: 
+    0 6px 16px rgba(var(--color-level-medium-rgb), 0.4),
+    0 0 20px rgba(var(--color-level-medium-rgb), 0.2);
+  transform: translateY(-1px);
 }
 
 .btn-low {
-  background-color: var(--color-level-low);
+  background: linear-gradient(
+    135deg,
+    var(--color-level-low) 0%,
+    color-mix(in srgb, var(--color-level-low) 85%, black) 100%
+  );
   color: var(--color-white);
   border-color: var(--color-level-low);
+  font-weight: var(--font-weight-semibold);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .btn-low:hover, .btn-low:focus {
-  background-color: color-mix(in srgb, var(--color-level-low) 85%, black);
-  border-color: color-mix(in srgb, var(--color-level-low) 85%, black);
-  box-shadow: 0 0 0 3px rgba(var(--color-level-low-rgb), 0.2);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-level-low) 90%, white) 0%,
+    var(--color-level-low) 100%
+  );
+  border-color: color-mix(in srgb, var(--color-level-low) 90%, white);
+  box-shadow: 
+    0 6px 16px rgba(var(--color-level-low-rgb), 0.4),
+    0 0 20px rgba(var(--color-level-low-rgb), 0.2);
+  transform: translateY(-1px);
 }
 
 .btn-light {
-  background-color: var(--color-gray-100);
-  color: var(--color-gray-900);
-  border-color: var(--color-gray-200);
+  background: linear-gradient(
+    135deg,
+    var(--color-offwhite) 0%,
+    color-mix(in srgb, var(--color-offwhite) 95%, var(--color-gray-200)) 100%
+  );
+  color: var(--color-navy);
+  border-color: rgba(var(--color-navy-rgb), 0.2);
+  font-weight: var(--font-weight-semibold);
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
 }
 
 .btn-light:hover, .btn-light:focus {
-  background-color: var(--color-gray-200);
-  border-color: var(--color-gray-300);
-  box-shadow: 0 0 0 3px rgba(var(--color-gray-300-rgb, 200, 200, 200), 0.2);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-offwhite) 95%, white) 0%,
+    var(--color-offwhite) 100%
+  );
+  border-color: rgba(var(--color-navy-rgb), 0.3);
+  box-shadow: 
+    0 6px 16px rgba(var(--color-navy-rgb), 0.15),
+    0 2px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
 }
 
 .btn-dark {
-  background-color: var(--color-navy);
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-navy-rgb), 0.98) 0%,
+    rgba(var(--color-navy-rgb), 0.95) 100%
+  );
   color: var(--color-offwhite);
-  border-color: var(--color-gray-800);
+  border: 1px solid rgba(var(--color-offwhite-rgb), 0.3);
+  font-weight: var(--font-weight-semibold);
+  backdrop-filter: blur(10px);
 }
 
 .btn-dark:hover, .btn-dark:focus {
-  background-color: var(--color-gray-900);
-  border-color: var(--color-gray-900);
-  box-shadow: 0 0 0 3px rgba(var(--color-navy-rgb), 0.2);
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-navy-rgb), 1) 0%,
+    rgba(var(--color-navy-rgb), 0.98) 100%
+  );
+  border-color: rgba(var(--color-offwhite-rgb), 0.5);
+  color: var(--color-offwhite);
+  box-shadow: 
+    0 6px 16px rgba(0, 0, 0, 0.4),
+    0 0 20px rgba(var(--color-offwhite-rgb), 0.1);
+  transform: translateY(-1px);
 }
 
 .btn-link {
@@ -181,49 +366,56 @@
   text-decoration: none;
   padding-left: 0;
   padding-right: 0;
-}
-
-.btn-link:hover, .btn-link:focus {
-  color: var(--color-primary-dark);
-  text-decoration: underline;
+  font-weight: var(--font-weight-medium);
   box-shadow: none;
 }
 
-/* Button sizes */
+.btn-link:hover, .btn-link:focus {
+  color: color-mix(in srgb, var(--color-cyan) 85%, white);
+  text-decoration: underline;
+  text-shadow: 0 0 8px rgba(var(--color-cyan-rgb), 0.6);
+  box-shadow: none;
+  transform: none;
+}
+
+/* Button sizes with improved touch targets */
 .btn-sm {
-  padding: calc(var(--button-padding-y) * 0.75) calc(var(--button-padding-x) * 0.75);
+  padding: var(--spacing-2) var(--spacing-3);
   font-size: var(--font-size-sm);
-  border-radius: var(--border-radius-sm);
+  border-radius: calc(var(--border-radius) * 0.8);
+  min-height: 36px;
 }
 
 .btn-lg {
-  padding: calc(var(--button-padding-y) * 1.25) calc(var(--button-padding-x) * 1.25);
+  padding: var(--spacing-4) var(--spacing-6);
   font-size: var(--font-size-lg);
-  border-radius: var(--border-radius-lg);
+  border-radius: calc(var(--border-radius) * 1.2);
+  min-height: 52px;
+  font-weight: var(--font-weight-bold);
 }
 
-/* Icon button */
+/* Icon button with better proportions */
 .btn-icon {
   padding: var(--spacing-2);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: calc(var(--font-size-base) * 2.5);
-  height: calc(var(--font-size-base) * 2.5);
+  width: 44px;
+  height: 44px;
   border-radius: var(--border-radius-circle);
 }
 
 .btn-icon.btn-sm {
-  width: calc(var(--font-size-base) * 2);
-  height: calc(var(--font-size-base) * 2);
+  width: 36px;
+  height: 36px;
 }
 
 .btn-icon.btn-lg {
-  width: calc(var(--font-size-base) * 3);
-  height: calc(var(--font-size-base) * 3);
+  width: 52px;
+  height: 52px;
 }
 
-/* Icon positioning */
+/* Icon positioning with better spacing */
 .btn-icon-left {
   margin-right: var(--spacing-2);
   display: inline-flex;
@@ -236,40 +428,59 @@
   align-items: center;
 }
 
-/* Disabled state */
+/* Disabled state with better contrast */
 .btn.disabled,
 .btn:disabled,
 a.btn[aria-disabled="true"] {
-  opacity: 0.65;
+  opacity: 0.5;
   pointer-events: none;
   box-shadow: none;
+  background: rgba(var(--color-gray-600-rgb, 108, 117, 125), 0.3) !important;
+  color: rgba(var(--color-gray-400-rgb, 206, 212, 218), 0.8) !important;
+  border-color: rgba(var(--color-gray-600-rgb, 108, 117, 125), 0.3) !important;
 }
 
-/* Focus styles */
+/* Focus styles with better visibility */
 .btn:focus {
   outline: 0;
-  box-shadow: var(--box-shadow-focus);
+  box-shadow: 
+    0 0 0 3px rgba(var(--color-cyan-rgb), 0.4),
+    0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 /* Active state */
 .btn:active {
   transform: translateY(1px);
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.3),
+    inset 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 /* Accessibility: Focus visible */
 .btn:focus-visible {
-  outline: 2px solid var(--color-primary);
+  outline: 2px solid var(--color-cyan);
   outline-offset: 2px;
 }
 
-/* Cyberpunk variant */
+/* Enhanced Cyberpunk variant with improved readability */
 .btn-cyberpunk {
   position: relative;
   overflow: hidden;
   transition: all 0.4s ease;
-  background: rgba(5, 213, 250, 0.02);
-  border: 1px solid rgba(5, 213, 250, 0.2);
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-navy-rgb), 0.95) 0%,
+    rgba(var(--color-navy-rgb), 0.9) 50%,
+    rgba(var(--color-navy-rgb), 0.95) 100%
+  );
+  border: 1px solid rgba(var(--color-cyan-rgb), 0.4);
   color: var(--color-cyan);
+  font-weight: var(--font-weight-semibold);
+  backdrop-filter: blur(10px);
+  box-shadow: 
+    0 4px 15px rgba(0, 0, 0, 0.3),
+    0 0 20px rgba(var(--color-cyan-rgb), 0.1),
+    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.1);
 }
 
 /* Subtle border glow effect */
@@ -280,13 +491,13 @@ a.btn[aria-disabled="true"] {
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(5, 213, 250, 0.2),
+    rgba(var(--color-cyan-rgb), 0.3),
     transparent
   );
   opacity: 0;
-  transition: opacity 0.4s ease;
+  transition: opacity 0.4s ease, transform 0.6s ease;
   transform: translateX(-100%);
-  transition: transform 0.6s ease;
+  z-index: 0;
 }
 
 /* Inner highlight */
@@ -294,33 +505,35 @@ a.btn[aria-disabled="true"] {
   content: '';
   position: absolute;
   inset: 1px;
-  background: linear-gradient(
-    180deg,
-    rgba(5, 213, 250, 0.03) 0%,
-    transparent 15%,
-    transparent 85%,
-    rgba(5, 213, 250, 0.03) 100%
-  );
-  opacity: 0;
-  transition: opacity 0.4s ease;
   background: repeating-linear-gradient(
     to bottom,
     transparent,
     transparent 49%,
-    rgba(5, 213, 250, 0.02) 50%,
+    rgba(var(--color-cyan-rgb), 0.03) 50%,
     transparent 51%
   );
   background-size: 100% 4px;
+  opacity: 0;
+  transition: opacity 0.4s ease;
   animation: subtle-scan 8s linear infinite;
+  z-index: 0;
 }
 
 /* Hover states */
 .btn-cyberpunk:hover {
-  background: rgba(5, 213, 250, 0.05);
-  border-color: rgba(5, 213, 250, 0.4);
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-navy-rgb), 0.98) 0%,
+    rgba(var(--color-navy-rgb), 0.95) 50%,
+    rgba(var(--color-navy-rgb), 0.98) 100%
+  );
+  border-color: rgba(var(--color-cyan-rgb), 0.6);
+  color: color-mix(in srgb, var(--color-cyan) 90%, white);
   box-shadow: 
-    0 0 20px rgba(5, 213, 250, 0.1),
-    inset 0 0 15px rgba(5, 213, 250, 0.05);
+    0 6px 20px rgba(0, 0, 0, 0.4),
+    0 0 30px rgba(var(--color-cyan-rgb), 0.2),
+    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.15);
+  transform: translateY(-1px);
 }
 
 .btn-cyberpunk:hover::before,
@@ -333,10 +546,12 @@ a.btn[aria-disabled="true"] {
   animation: subtle-highlight 3s ease infinite;
 }
 
-/* Gentle text glow on hover */
+/* Enhanced text glow on hover */
 .btn-cyberpunk:hover span {
-  text-shadow: 0 0 8px rgba(5, 213, 250, 0.3);
+  text-shadow: 0 0 12px rgba(var(--color-cyan-rgb), 0.6);
   transition: text-shadow 0.4s ease;
+  position: relative;
+  z-index: 1;
 }
 
 /* Animations */
@@ -355,10 +570,10 @@ a.btn[aria-disabled="true"] {
     transform: translateX(-100%);
   }
   20% {
-    opacity: 0.5;
+    opacity: 0.6;
   }
   50% {
-    opacity: 0.2;
+    opacity: 0.3;
   }
   100% {
     opacity: 0;
@@ -371,5 +586,26 @@ a.btn[aria-disabled="true"] {
   .btn-cyberpunk::after,
   .btn-cyberpunk:hover::before {
     animation: none;
+  }
+  
+  .btn:hover,
+  .btn:focus {
+    transform: none;
+  }
+  
+  .btn:active {
+    transform: none;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .btn {
+    border-width: 2px;
+  }
+  
+  .btn:focus {
+    outline: 3px solid;
+    outline-offset: 2px;
   }
 }

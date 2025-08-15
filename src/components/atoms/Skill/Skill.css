@@ -2,22 +2,24 @@
  * Skill Component
  * 
  * Styles for the Skill component following atomic design principles.
- * Updated to align with security-themed design.
+ * Updated with improved readability, dark blue containers, and enhanced cybersecurity theming.
  * Animations now handled by framer-motion.
  */
 
-/* Base skill icon wrapper */
+/* Base skill icon wrapper with improved spacing */
 .skill-icon-wrapper {
   position: relative;
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  margin: 0.5rem;
+  margin: var(--spacing-2);
   cursor: pointer;
-  /* transition removed - now handled by framer-motion */
+  padding: var(--spacing-1);
+  border-radius: 8px;
+  transition: none; /* animations handled by framer-motion */
 }
 
-/* Skill icon container */
+/* Skill icon container with dark blue background */
 .skill-icon {
   display: flex;
   justify-content: center;
@@ -25,140 +27,368 @@
   width: 100%;
   height: 100%;
   border-radius: 8px;
-  background-color: var(--color-background);
-  border: 1px solid var(--color-border);
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-navy-rgb), 0.95) 0%,
+    rgba(var(--color-navy-rgb), 0.9) 100%
+  );
+  border: 1px solid rgba(var(--color-cyan-rgb), 0.3);
   overflow: hidden;
-  /* transition removed - now handled by framer-motion */
+  box-shadow: 
+    0 3px 8px rgba(0, 0, 0, 0.3),
+    0 0 12px rgba(var(--color-cyan-rgb), 0.08),
+    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.1);
+  backdrop-filter: blur(8px);
+  position: relative;
 }
 
-/* Security-themed skill icon */
+/* Enhanced grid pattern for skill icons */
+.skill-icon::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: 
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 1px,
+      rgba(var(--color-cyan-rgb), 0.02) 1px,
+      rgba(var(--color-cyan-rgb), 0.02) 2px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 1px,
+      rgba(var(--color-cyan-rgb), 0.02) 1px,
+      rgba(var(--color-cyan-rgb), 0.02) 2px
+    );
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Enhanced security-themed skill icon */
 .skill-security .skill-icon {
-  background-color: rgba(var(--color-navy-rgb), 0.7);
-  border: 1px solid var(--color-cyan);
-  box-shadow: 0 0 8px rgba(var(--color-cyan-rgb), 0.2);
-  backdrop-filter: blur(2px);
-  /* transform removed - now handled by framer-motion */
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-navy-rgb), 0.98) 0%,
+    rgba(var(--color-navy-rgb), 0.95) 100%
+  );
+  border: 1px solid rgba(var(--color-cyan-rgb), 0.5);
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.4),
+    0 0 15px rgba(var(--color-cyan-rgb), 0.15),
+    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.12);
+  backdrop-filter: blur(10px);
 }
 
-/* Size variants */
+.skill-security .skill-icon::after {
+  background: 
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 1px,
+      rgba(var(--color-cyan-rgb), 0.03) 1px,
+      rgba(var(--color-cyan-rgb), 0.03) 2px
+    );
+  opacity: 0.8;
+}
+
+/* Size variants with improved proportions */
 .skill-icon-sm {
-  width: 2.5rem;
-  height: 2.5rem;
-}
-
-.skill-icon-md {
-  width: 3.5rem;
-  height: 3.5rem;
-}
-
-.skill-icon-lg {
-  width: 5rem;
-  height: 5rem;
-}
-
-/* Security size variants */
-.skill-security.skill-icon-sm {
   width: 2.75rem;
   height: 2.75rem;
 }
 
-.skill-security.skill-icon-md {
+.skill-icon-md {
   width: 3.75rem;
   height: 3.75rem;
 }
 
-.skill-security.skill-icon-lg {
+.skill-icon-lg {
   width: 5.25rem;
   height: 5.25rem;
 }
 
-/* Hover effects removed - now handled by framer-motion */
+/* Security size variants with slightly larger dimensions */
+.skill-security.skill-icon-sm {
+  width: 3rem;
+  height: 3rem;
+}
 
-/* Skill SVG icon */
+.skill-security.skill-icon-md {
+  width: 4rem;
+  height: 4rem;
+}
+
+.skill-security.skill-icon-lg {
+  width: 5.5rem;
+  height: 5.5rem;
+}
+
+/* Enhanced skill SVG icon with better contrast */
 .skill-icon-svg {
-  width: 1.5rem;
-  height: 1.5rem;
-  color: var(--color-text);
+  width: 1.75rem;
+  height: 1.75rem;
+  color: var(--color-cyan);
+  filter: drop-shadow(0 0 3px rgba(var(--color-cyan-rgb), 0.3));
+  position: relative;
+  z-index: 1;
 }
 
 .skill-icon-sm .skill-icon-svg {
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 1.5rem;
+  height: 1.5rem;
 }
 
 .skill-icon-md .skill-icon-svg {
-  width: 1.75rem;
-  height: 1.75rem;
+  width: 2rem;
+  height: 2rem;
 }
 
 .skill-icon-lg .skill-icon-svg {
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2.75rem;
+  height: 2.75rem;
 }
 
-/* Security-themed skill SVG icon */
+/* Enhanced security-themed skill SVG icon */
 .skill-security .skill-icon-svg {
   color: var(--color-cyan);
-  filter: drop-shadow(0 0 2px rgba(var(--color-cyan-rgb), 0.5));
+  filter: drop-shadow(0 0 4px rgba(var(--color-cyan-rgb), 0.6));
+  text-shadow: 0 0 8px rgba(var(--color-cyan-rgb), 0.4);
 }
 
-/* Proficiency level indicator */
+/* Improved proficiency level indicator */
 .skill-level {
   position: absolute;
-  bottom: -5px;
-  right: -5px;
-  width: 1rem;
-  height: 1rem;
+  bottom: -6px;
+  right: -6px;
+  width: 1.2rem;
+  height: 1.2rem;
   border-radius: 50%;
-  background-color: var(--color-primary);
-  border: 2px solid var(--color-background);
+  background: linear-gradient(
+    135deg,
+    var(--color-cyan) 0%,
+    color-mix(in srgb, var(--color-cyan) 85%, var(--color-primary-dark)) 100%
+  );
+  border: 2px solid rgba(var(--color-navy-rgb), 0.9);
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 0.6rem;
-  color: var(--color-white);
-  font-weight: bold;
+  font-size: 0.7rem;
+  color: var(--color-navy);
+  font-weight: var(--font-weight-bold);
+  font-family: var(--font-family-jetbrains);
+  box-shadow: 
+    0 2px 6px rgba(0, 0, 0, 0.3),
+    0 0 8px rgba(var(--color-cyan-rgb), 0.3);
+  text-shadow: 0 1px 1px rgba(var(--color-navy-rgb), 0.3);
+  z-index: 2;
 }
 
-/* Security-themed proficiency levels */
+/* Enhanced security-themed proficiency levels */
 .skill-security .skill-level {
-  bottom: -5px;
-  right: -5px;
-  width: 1.25rem;
-  height: 1.25rem;
-  background-color: var(--color-navy);
-  border: 1px solid var(--color-cyan);
+  bottom: -8px;
+  right: -8px;
+  width: 1.4rem;
+  height: 1.4rem;
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-navy-rgb), 0.95) 0%,
+    rgba(var(--color-navy-rgb), 0.9) 100%
+  );
+  border: 2px solid var(--color-cyan);
+  color: var(--color-cyan);
   font-family: var(--font-family-jetbrains);
+  box-shadow: 
+    0 3px 8px rgba(0, 0, 0, 0.4),
+    0 0 10px rgba(var(--color-cyan-rgb), 0.3),
+    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.1);
+  text-shadow: 0 0 4px rgba(var(--color-cyan-rgb), 0.5);
 }
 
 .skill-security .skill-level.level-1 {
-  background-color: var(--color-level-low);
+  background: linear-gradient(
+    135deg,
+    var(--color-level-low) 0%,
+    color-mix(in srgb, var(--color-level-low) 85%, black) 100%
+  );
+  color: var(--color-white);
+  border-color: var(--color-level-low);
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
 }
 
 .skill-security .skill-level.level-2 {
-  background-color: var(--color-level-medium);
+  background: linear-gradient(
+    135deg,
+    var(--color-level-medium) 0%,
+    color-mix(in srgb, var(--color-level-medium) 85%, black) 100%
+  );
+  color: var(--color-navy);
+  border-color: var(--color-level-medium);
+  text-shadow: 0 1px 1px rgba(var(--color-navy-rgb), 0.3);
 }
 
 .skill-security .skill-level.level-3 {
-  background-color: var(--color-level-high);
+  background: linear-gradient(
+    135deg,
+    var(--color-level-high) 0%,
+    color-mix(in srgb, var(--color-level-high) 85%, black) 100%
+  );
+  color: var(--color-white);
+  border-color: var(--color-level-high);
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
 }
 
 .skill-security .skill-level.level-4 {
-  background-color: var(--color-level-critical);
+  background: linear-gradient(
+    135deg,
+    var(--color-level-critical) 0%,
+    color-mix(in srgb, var(--color-level-critical) 85%, black) 100%
+  );
+  color: var(--color-white);
+  border-color: var(--color-level-critical);
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
+  box-shadow: 
+    0 3px 8px rgba(0, 0, 0, 0.4),
+    0 0 12px rgba(var(--color-level-critical-rgb), 0.4);
 }
 
 .skill-security .skill-level.level-5 {
-  background-color: var(--color-level-critical);
-  box-shadow: 0 0 5px rgba(var(--color-level-critical-rgb), 0.5);
+  background: linear-gradient(
+    135deg,
+    var(--color-level-critical) 0%,
+    color-mix(in srgb, var(--color-level-critical) 90%, white) 100%
+  );
+  color: var(--color-white);
+  border-color: color-mix(in srgb, var(--color-level-critical) 90%, white);
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
+  box-shadow: 
+    0 4px 10px rgba(0, 0, 0, 0.5),
+    0 0 15px rgba(var(--color-level-critical-rgb), 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  animation: critical-pulse 2s ease-in-out infinite alternate;
 }
 
-/* Accessibility: Focus styles */
+@keyframes critical-pulse {
+  0% { 
+    box-shadow: 
+      0 4px 10px rgba(0, 0, 0, 0.5),
+      0 0 15px rgba(var(--color-level-critical-rgb), 0.5);
+  }
+  100% { 
+    box-shadow: 
+      0 4px 10px rgba(0, 0, 0, 0.5),
+      0 0 20px rgba(var(--color-level-critical-rgb), 0.7);
+  }
+}
+
+/* Hover enhancement for skill wrapper */
+.skill-icon-wrapper:hover .skill-icon {
+  border-color: rgba(var(--color-cyan-rgb), 0.5);
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.4),
+    0 0 16px rgba(var(--color-cyan-rgb), 0.15),
+    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.12);
+}
+
+.skill-icon-wrapper:hover .skill-icon-svg {
+  filter: drop-shadow(0 0 5px rgba(var(--color-cyan-rgb), 0.5));
+}
+
+.skill-security .skill-icon-wrapper:hover .skill-icon {
+  border-color: rgba(var(--color-cyan-rgb), 0.7);
+  box-shadow: 
+    0 5px 15px rgba(0, 0, 0, 0.5),
+    0 0 20px rgba(var(--color-cyan-rgb), 0.2),
+    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.15);
+}
+
+.skill-security .skill-icon-wrapper:hover .skill-icon-svg {
+  filter: drop-shadow(0 0 6px rgba(var(--color-cyan-rgb), 0.7));
+}
+
+/* Accessibility: Enhanced focus styles */
 .skill-icon-wrapper:focus-visible {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
+  outline: 2px solid var(--color-cyan);
+  outline-offset: 3px;
+  border-radius: 10px;
 }
 
 .skill-security:focus-visible {
   outline: 2px solid var(--color-cyan);
-  outline-offset: 2px;
+  outline-offset: 3px;
+  box-shadow: 
+    0 0 0 4px rgba(var(--color-cyan-rgb), 0.3),
+    0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .skill-security .skill-level.level-5 {
+    animation: none;
+  }
+  
+  @keyframes critical-pulse {
+    0%, 100% {
+      box-shadow: 
+        0 4px 10px rgba(0, 0, 0, 0.5),
+        0 0 15px rgba(var(--color-level-critical-rgb), 0.5);
+    }
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .skill-icon {
+    border-width: 2px;
+    background: rgba(var(--color-navy-rgb), 0.98);
+  }
+  
+  .skill-icon::after {
+    display: none;
+  }
+  
+  .skill-icon-svg {
+    filter: none;
+    text-shadow: none;
+  }
+  
+  .skill-level {
+    border-width: 3px;
+    font-weight: var(--font-weight-bold);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .skill-icon-wrapper {
+    margin: var(--spacing-1);
+    padding: calc(var(--spacing-1) / 2);
+  }
+  
+  .skill-icon-sm {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+  
+  .skill-icon-md {
+    width: 3.5rem;
+    height: 3.5rem;
+  }
+  
+  .skill-icon-lg {
+    width: 4.75rem;
+    height: 4.75rem;
+  }
+  
+  .skill-level {
+    width: 1.1rem;
+    height: 1.1rem;
+    font-size: 0.65rem;
+  }
+  
+  .skill-security .skill-level {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
 }

@@ -1,39 +1,88 @@
 /**
  * Education Card Component Styles
  * 
- * Enhanced with modern styling for better visual presentation
- * of academic information and integrated certifications.
+ * Enhanced with compact variants and improved readability, dark blue containers, 
+ * and cybersecurity theming for better visual presentation of academic information 
+ * and integrated certifications in a space-efficient layout.
  * 
- * Note: Animations and transitions are now managed by framer-motion
- * through the AnimationContext.
+ * Animations and transitions are managed by framer-motion through the AnimationContext.
  */
 
 .education-card-wrapper {
   position: relative;
   width: 100%;
   margin-bottom: var(--spacing-6);
-  /* Transition removed - now handled by framer-motion */
+}
+
+/* Compact variant for reduced spacing */
+.education-card-wrapper--compact {
+  margin-bottom: var(--spacing-5);
 }
 
 .education-card {
-  background-color: var(--color-card-bg);
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-navy-rgb), 0.95) 0%,
+    rgba(var(--color-navy-rgb), 0.9) 50%,
+    rgba(var(--color-navy-rgb), 0.95) 100%
+  );
+  border: 1px solid rgba(var(--color-cyan-rgb), 0.3);
   overflow: hidden;
   border-radius: var(--border-radius-lg);
+  box-shadow: 
+    0 6px 25px rgba(0, 0, 0, 0.4),
+    0 0 20px rgba(var(--color-cyan-rgb), 0.1),
+    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.1);
+  backdrop-filter: blur(10px);
+}
+
+/* Compact variant with smaller border radius and shadow */
+.education-card--compact {
+  border-radius: var(--border-radius-md);
+  box-shadow: 
+    0 4px 15px rgba(0, 0, 0, 0.3),
+    0 0 15px rgba(var(--color-cyan-rgb), 0.08),
+    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.08);
 }
 
 .education-card-inner {
   display: flex;
   border-radius: var(--border-radius-lg);
   overflow: hidden;
-  /* Box-shadow transition removed - now handled by framer-motion */
+  position: relative;
 }
 
-/* Hover effect removed - now handled by framer-motion variants */
-/* .education-card-inner:hover {
-  box-shadow: var(--shadow-lg);
-} */
+/* Compact variant with smaller border radius */
+.education-card-inner--compact {
+  border-radius: var(--border-radius-md);
+}
 
-/* Left icon column with enhanced styling */
+/* Enhanced grid pattern overlay */
+.education-card-inner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: 
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 1px,
+      rgba(var(--color-cyan-rgb), 0.02) 1px,
+      rgba(var(--color-cyan-rgb), 0.02) 2px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 1px,
+      rgba(var(--color-cyan-rgb), 0.02) 1px,
+      rgba(var(--color-cyan-rgb), 0.02) 2px
+    );
+  opacity: 0.7;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Enhanced left icon column with improved cybersecurity styling */
 .education-card-icon-column {
   flex: 0 0 120px;
   display: flex;
@@ -41,12 +90,20 @@
   align-items: center;
   background: linear-gradient(
     135deg,
-    rgba(100, 255, 218, 0.12),
-    rgba(100, 255, 218, 0.04)
+    rgba(var(--color-cyan-rgb), 0.15) 0%,
+    rgba(var(--color-cyan-rgb), 0.08) 50%,
+    rgba(var(--color-cyan-rgb), 0.04) 100%
   );
-  border-right: 2px solid rgba(100, 255, 218, 0.15);
+  border-right: 2px solid rgba(var(--color-cyan-rgb), 0.3);
   position: relative;
   padding-bottom: var(--spacing-4);
+  z-index: 1;
+}
+
+/* Compact variant with reduced width and padding */
+.education-card-icon-column--compact {
+  flex: 0 0 90px;
+  padding-bottom: var(--spacing-3);
 }
 
 .education-card-icon-column::before {
@@ -56,9 +113,21 @@
   left: 0;
   width: 100%;
   height: 5px;
-  background: linear-gradient(to right, var(--color-primary), transparent);
+  background: linear-gradient(
+    90deg,
+    var(--color-cyan) 0%,
+    rgba(var(--color-cyan-rgb), 0.5) 70%,
+    transparent 100%
+  );
+  box-shadow: 0 0 8px rgba(var(--color-cyan-rgb), 0.4);
 }
 
+/* Compact variant with thinner accent line */
+.education-card-icon-column--compact::before {
+  height: 3px;
+}
+
+/* Enhanced education icon container */
 .education-card-icon {
   display: flex;
   align-items: center;
@@ -67,64 +136,147 @@
   width: 70px;
   height: 70px;
   border-radius: 50%;
-  background-color: rgba(100, 255, 218, 0.08);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  /* Transition removed - now handled by framer-motion */
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-cyan-rgb), 0.12) 0%,
+    rgba(var(--color-cyan-rgb), 0.08) 100%
+  );
+  border: 2px solid rgba(var(--color-cyan-rgb), 0.3);
+  box-shadow: 
+    0 4px 15px rgba(0, 0, 0, 0.3),
+    0 0 15px rgba(var(--color-cyan-rgb), 0.2),
+    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.1);
+  backdrop-filter: blur(8px);
+  position: relative;
+  z-index: 1;
 }
 
-/* Hover effect removed - now handled by framer-motion variants */
-/* .education-card-inner:hover .education-card-icon {
-  transform: scale(1.1) translateY(-5px);
-  background-color: rgba(100, 255, 218, 0.12);
-} */
+/* Compact variant with smaller size and reduced margin */
+.education-card-icon--compact {
+  margin-top: var(--spacing-4);
+  width: 55px;
+  height: 55px;
+  border-width: 1px;
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.2),
+    0 0 10px rgba(var(--color-cyan-rgb), 0.15),
+    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.08);
+}
 
 .education-icon-large {
   font-size: 2.5rem;
-  color: var(--color-primary);
+  color: var(--color-cyan);
+  filter: drop-shadow(0 0 6px rgba(var(--color-cyan-rgb), 0.4));
+  text-shadow: 0 0 8px rgba(var(--color-cyan-rgb), 0.3);
 }
 
-/* Certification count indicator */
+/* Compact variant with smaller icon */
+.education-icon-compact {
+  font-size: 2rem;
+  color: var(--color-cyan);
+  filter: drop-shadow(0 0 4px rgba(var(--color-cyan-rgb), 0.3));
+  text-shadow: 0 0 6px rgba(var(--color-cyan-rgb), 0.2);
+}
+
+/* Enhanced certification count indicator */
 .certifications-indicator {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-top: var(--spacing-4);
   padding: var(--spacing-2);
-  background-color: rgba(100, 255, 218, 0.08);
-  border-radius: var(--border-radius-lg);
-  border: 1px dashed rgba(100, 255, 218, 0.2);
-  /* Transition removed - now handled by framer-motion */
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-cyan-rgb), 0.1) 0%,
+    rgba(var(--color-cyan-rgb), 0.06) 100%
+  );
+  border-radius: var(--border-radius-md);
+  border: 1px solid rgba(var(--color-cyan-rgb), 0.3);
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.2),
+    0 0 10px rgba(var(--color-cyan-rgb), 0.1),
+    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.1);
+  backdrop-filter: blur(6px);
+  position: relative;
+  z-index: 1;
+}
+
+/* Compact variant with reduced spacing and padding */
+.certifications-indicator--compact {
+  margin-top: var(--spacing-3);
+  padding: var(--spacing-2);
+  border-radius: var(--border-radius-sm);
+  box-shadow: 
+    0 1px 4px rgba(0, 0, 0, 0.15),
+    0 0 6px rgba(var(--color-cyan-rgb), 0.08),
+    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.08);
 }
 
 .cert-count {
   font-size: var(--font-size-xl);
   font-weight: var(--font-weight-bold);
-  color: var(--color-primary);
+  color: var(--color-cyan);
   line-height: 1;
+  text-shadow: 0 0 6px rgba(var(--color-cyan-rgb), 0.5);
+  font-family: var(--font-family-jetbrains);
+}
+
+/* Compact variant with smaller font */
+.cert-count--compact {
+  font-size: var(--font-size-lg);
+  text-shadow: 0 0 4px rgba(var(--color-cyan-rgb), 0.4);
 }
 
 .cert-label {
   font-size: var(--font-size-sm);
-  color: var(--color-text-muted);
+  color: rgba(var(--color-offwhite-rgb), 0.8);
   margin-top: 4px;
   text-align: center;
-  letter-spacing: 0.02em;
+  letter-spacing: var(--letter-spacing-wide);
+  font-weight: var(--font-weight-medium);
 }
 
-/* Main content container with improved spacing */
+/* Compact variant with smaller font and tighter spacing */
+.cert-label--compact {
+  font-size: var(--font-size-xs);
+  margin-top: 3px;
+  letter-spacing: var(--letter-spacing-normal);
+}
+
+/* Enhanced main content container */
 .education-content {
   flex: 1;
   display: flex;
   flex-direction: column;
   width: 100%;
   padding: var(--spacing-5) var(--spacing-4);
-  background-color: var(--color-card-bg);
+  background: transparent;
+  position: relative;
+  z-index: 1;
 }
 
-/* School header area */
+/* Compact variant with improved padding for better readability */
+.education-content--compact {
+  padding: var(--spacing-4) var(--spacing-4);
+}
+
+/* Enhanced school header area */
 .education-header {
   margin-bottom: var(--spacing-4);
   position: relative;
+}
+
+/* Compact variant with inline layout and improved margin */
+.education-header--compact {
+  margin-bottom: var(--spacing-3);
+}
+
+.education-header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--spacing-2);
+  flex-wrap: wrap;
 }
 
 .education-header::after {
@@ -132,63 +284,245 @@
   position: absolute;
   bottom: -10px;
   left: 0;
-  width: 40px;
+  width: 50px;
   height: 3px;
-  background-color: var(--color-primary);
-  border-radius: 1.5px;
+  background: linear-gradient(
+    90deg,
+    var(--color-cyan) 0%,
+    rgba(var(--color-cyan-rgb), 0.6) 100%
+  );
+  border-radius: 2px;
+  box-shadow: 0 0 6px rgba(var(--color-cyan-rgb), 0.4);
 }
 
-/* Academic details panel */
+/* Compact variant with smaller decoration line */
+.education-header--compact::after {
+  bottom: -8px;
+  width: 35px;
+  height: 2px;
+}
+
+/* School header compact styling */
+.school-header--compact .school-name {
+  font-size: var(--font-size-lg);
+  margin-bottom: var(--spacing-1);
+}
+
+.school-header--compact .school-header-decoration {
+  display: none; /* Hide decoration in compact mode to save space */
+}
+
+/* Date chip compact styling */
+.graduation-date-chip--compact {
+  font-size: var(--font-size-sm);
+  padding: var(--spacing-1) var(--spacing-2);
+  min-width: auto;
+  white-space: nowrap;
+}
+
+/* Enhanced academic details panel with dark blue container */
 .education-details-panel {
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--spacing-4);
   padding: var(--spacing-4);
-  background-color: rgba(100, 255, 218, 0.03);
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-navy-rgb), 0.98) 0%,
+    rgba(var(--color-navy-rgb), 0.95) 100%
+  );
   border-radius: var(--border-radius-md);
-  border-left: 3px solid var(--color-primary);
+  border: 1px solid rgba(var(--color-cyan-rgb), 0.25);
+  border-left: 3px solid var(--color-cyan);
   margin-top: var(--spacing-3);
+  box-shadow: 
+    0 4px 15px rgba(0, 0, 0, 0.3),
+    0 0 12px rgba(var(--color-cyan-rgb), 0.08),
+    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.08);
+  backdrop-filter: blur(8px);
+  position: relative;
 }
 
-/* Container for degree information */
+/* Compact variant with improved padding for better readability */
+.education-details-panel--compact {
+  gap: var(--spacing-3);
+  padding: var(--spacing-3);
+  margin-top: var(--spacing-3);
+  border-left-width: 2px;
+  border-radius: var(--border-radius-sm);
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.2),
+    0 0 8px rgba(var(--color-cyan-rgb), 0.06),
+    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.06);
+}
+
+.education-details-panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: 
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 1px,
+      rgba(var(--color-cyan-rgb), 0.02) 1px,
+      rgba(var(--color-cyan-rgb), 0.02) 2px
+    );
+  opacity: 0.6;
+  pointer-events: none;
+  border-radius: var(--border-radius-md);
+}
+
+/* Compact variant with lighter pattern */
+.education-details-panel--compact::before {
+  opacity: 0.3;
+  border-radius: var(--border-radius-sm);
+}
+
+/* Academic info row for inline layout in compact mode */
+.academic-info-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-3);
+  align-items: start;
+}
+
+/* Container styling improvements */
 .degree-container {
   margin-bottom: var(--spacing-2);
+  position: relative;
+  z-index: 1;
 }
 
-/* Container for fields of study */
+/* Compact variant with improved margin */
+.degree-container--compact {
+  margin-bottom: var(--spacing-1);
+}
+
 .fields-container {
   margin-bottom: var(--spacing-3);
+  position: relative;
+  z-index: 1;
 }
 
-/* Graduation date container */
-.graduation-date-container {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: var(--spacing-2);
+/* Compact variant with improved margin */
+.fields-container--compact {
+  margin-bottom: var(--spacing-1);
 }
 
-.graduation-date-chip {
-  max-width: 180px;
+/* Compact styling for degree info */
+.degree-info--compact .degree-label {
+  font-size: 0.65rem;
+  margin-bottom: 3px;
 }
 
-/* Integrated certifications panel */
+.degree-info--compact .degree-value {
+  font-size: var(--font-size-sm);
+  padding-left: var(--spacing-2);
+  border-left-width: 2px;
+}
+
+/* Compact styling for fields of study */
+.fields-of-study--compact {
+  margin-bottom: var(--spacing-1);
+  gap: var(--spacing-2);
+}
+
+.fields-of-study--compact .field-label {
+  font-size: 0.65rem;
+  margin-bottom: 3px;
+}
+
+.fields-of-study--compact .major-value,
+.fields-of-study--compact .minor-value {
+  font-size: var(--font-size-sm);
+  padding-left: var(--spacing-2);
+  border-left-width: 2px;
+}
+
+/* Enhanced integrated certifications panel */
 .integrated-certifications-panel {
   margin-top: var(--spacing-5);
   padding: var(--spacing-4);
-  border-top: 1px dashed rgba(100, 255, 218, 0.2);
-  /* Animation removed - now handled by framer-motion */
+  border-top: 2px solid rgba(var(--color-cyan-rgb), 0.2);
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-navy-rgb), 0.96) 0%,
+    rgba(var(--color-navy-rgb), 0.92) 100%
+  );
+  border-radius: var(--border-radius-md);
+  box-shadow: 
+    0 3px 12px rgba(0, 0, 0, 0.25),
+    0 0 10px rgba(var(--color-cyan-rgb), 0.06),
+    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.06);
+  backdrop-filter: blur(6px);
+  position: relative;
+}
+
+/* Compact variant with improved spacing for better readability */
+.integrated-certifications-panel--compact {
+  margin-top: var(--spacing-4);
+  padding: var(--spacing-3);
+  border-top-width: 1px;
+  border-radius: var(--border-radius-sm);
+  box-shadow: 
+    0 2px 6px rgba(0, 0, 0, 0.15),
+    0 0 6px rgba(var(--color-cyan-rgb), 0.04),
+    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.04);
+}
+
+.integrated-certifications-panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--color-cyan) 30%,
+    var(--color-cyan) 70%,
+    transparent 100%
+  );
+  box-shadow: 0 0 6px rgba(var(--color-cyan-rgb), 0.4);
+}
+
+/* Compact variant with thinner accent line */
+.integrated-certifications-panel--compact::before {
+  height: 1px;
+  box-shadow: 0 0 3px rgba(var(--color-cyan-rgb), 0.3);
 }
 
 .certifications-header {
   margin-bottom: var(--spacing-3);
+  position: relative;
+  z-index: 1;
+}
+
+/* Compact variant with improved margin */
+.certifications-header--compact {
+  margin-bottom: var(--spacing-2);
 }
 
 .certifications-title {
   font-size: var(--font-size-lg);
-  color: var(--color-text);
+  color: var(--color-cyan);
+  font-family: var(--font-family-jetbrains);
   position: relative;
   display: inline-block;
   padding-bottom: var(--spacing-1);
+  font-weight: var(--font-weight-semibold);
+  text-shadow: 0 0 6px rgba(var(--color-cyan-rgb), 0.4);
+  letter-spacing: var(--letter-spacing-technical);
+}
+
+/* Compact variant with smaller font and improved spacing */
+.certifications-title--compact {
+  font-size: var(--font-size-md);
+  padding-bottom: 4px;
+  text-shadow: 0 0 4px rgba(var(--color-cyan-rgb), 0.3);
+  margin: 0;
 }
 
 .certifications-title::after {
@@ -196,80 +530,126 @@
   position: absolute;
   bottom: 0;
   left: 0;
-  width: 30px;
+  width: 40px;
   height: 2px;
-  background-color: var(--color-primary);
+  background: linear-gradient(
+    90deg,
+    var(--color-cyan) 0%,
+    rgba(var(--color-cyan-rgb), 0.6) 100%
+  );
   border-radius: 1px;
+  box-shadow: 0 0 4px rgba(var(--color-cyan-rgb), 0.3);
+}
+
+/* Compact variant with smaller decoration line */
+.certifications-title--compact::after {
+  width: 30px;
+  height: 1px;
+  box-shadow: 0 0 2px rgba(var(--color-cyan-rgb), 0.2);
 }
 
 .certifications-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: var(--spacing-3);
+  position: relative;
+  z-index: 1;
+}
+
+/* Compact variant with smaller grid items and improved gap */
+.certifications-list--compact {
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--spacing-2);
 }
 
 .certification-item {
-  /* Transition and animation removed - now handled by framer-motion */
+  position: relative;
 }
 
-/* Hover effect removed - now handled by framer-motion variants */
-/* .certification-item:hover {
-  transform: translateY(-5px);
-} */
-
-/* Animation delays removed - now handled by framer-motion staggerChildren */
-/* .certification-item-0 { animation-delay: 0.1s; }
-.certification-item-1 { animation-delay: 0.2s; }
-.certification-item-2 { animation-delay: 0.3s; }
-.certification-item-3 { animation-delay: 0.4s; }
-.certification-item-4 { animation-delay: 0.5s; } */
-
-/* Keyframes removed - now handled by framer-motion */
-/* @keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
+/* Compact variant for certification items */
+.certification-item--compact {
+  /* Additional compact styling can be added here if needed */
 }
 
-@keyframes slide-in {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-} */
+/* Enhanced text styling for better readability */
+.education-card h1,
+.education-card h2,
+.education-card h3,
+.education-card h4,
+.education-card h5,
+.education-card h6 {
+  color: var(--color-cyan);
+  text-shadow: 0 0 4px rgba(var(--color-cyan-rgb), 0.3);
+}
+
+.education-card p {
+  color: rgba(var(--color-offwhite-rgb), 0.9);
+  line-height: var(--line-height-base);
+}
+
+.education-card small {
+  color: rgba(var(--color-offwhite-rgb), 0.75);
+}
 
 /* Responsive styles */
 @media (max-width: 768px) {
   .education-card-icon-column {
-    flex: 0 0 80px;
+    flex: 0 0 90px;
+  }
+  
+  .education-card-icon-column--compact {
+    flex: 0 0 75px;
   }
   
   .education-card-icon {
-    width: 50px;
-    height: 50px;
+    width: 55px;
+    height: 55px;
     margin-top: var(--spacing-4);
   }
   
+  .education-card-icon--compact {
+    width: 48px;
+    height: 48px;
+    margin-top: var(--spacing-3);
+  }
+  
   .education-icon-large {
-    font-size: 1.8rem;
+    font-size: 2rem;
+  }
+  
+  .education-icon-compact {
+    font-size: 1.6rem;
   }
   
   .education-content {
     padding: var(--spacing-4) var(--spacing-3);
   }
   
+  .education-content--compact {
+    padding: var(--spacing-3) var(--spacing-3);
+  }
+  
   .education-details-panel {
     padding: var(--spacing-3);
   }
   
+  .education-details-panel--compact {
+    padding: var(--spacing-3);
+  }
+  
   .education-header::after {
-    width: 30px;
+    width: 35px;
+  }
+  
+  .education-header--compact::after {
+    width: 28px;
   }
   
   .integrated-certifications-panel {
+    padding: var(--spacing-3);
+  }
+  
+  .integrated-certifications-panel--compact {
     padding: var(--spacing-3);
   }
   
@@ -277,21 +657,113 @@
     grid-template-columns: 1fr;
   }
   
+  .certifications-list--compact {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-2);
+  }
+  
   .certifications-indicator {
-    width: 70px;
+    width: 75px;
+    padding: var(--spacing-1);
+  }
+  
+  .certifications-indicator--compact {
+    width: 68px;
+    padding: var(--spacing-1);
   }
   
   .cert-count {
     font-size: var(--font-size-lg);
   }
   
+  .cert-count--compact {
+    font-size: var(--font-size-md);
+  }
+  
   .cert-label {
+    font-size: 0.7rem;
+  }
+  
+  .cert-label--compact {
     font-size: 0.65rem;
+  }
+  
+  .academic-info-row {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-2);
+  }
+  
+  .education-header-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-1);
   }
 }
 
-/* Reduced motion preference - handled by AnimationContext */
-@media (prefers-reduced-motion: reduce) {
-  /* All animations and transitions are now controlled by AnimationContext
-     which respects the prefers-reduced-motion setting */
+@media (max-width: 480px) {
+  .education-card-icon-column {
+    flex: 0 0 80px;
+  }
+  
+  .education-card-icon-column--compact {
+    flex: 0 0 65px;
+  }
+  
+  .education-card-icon {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .education-card-icon--compact {
+    width: 42px;
+    height: 42px;
+  }
+  
+  .education-icon-large {
+    font-size: 1.8rem;
+  }
+  
+  .education-icon-compact {
+    font-size: 1.4rem;
+  }
+  
+  .education-content {
+    padding: var(--spacing-3) var(--spacing-2);
+  }
+  
+  .education-content--compact {
+    padding: var(--spacing-3) var(--spacing-2);
+  }
+  
+  .certifications-indicator {
+    width: 70px;
+  }
+  
+  .certifications-indicator--compact {
+    width: 60px;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .education-card {
+    border-width: 2px;
+    background: rgba(var(--color-navy-rgb), 0.98);
+  }
+  
+  .education-card-inner::after,
+  .education-details-panel::before {
+    display: none;
+  }
+  
+  .education-icon-large,
+  .education-icon-compact {
+    filter: none;
+    text-shadow: none;
+  }
+  
+  .certifications-title,
+  .certifications-title--compact {
+    text-shadow: none;
+  }
 }

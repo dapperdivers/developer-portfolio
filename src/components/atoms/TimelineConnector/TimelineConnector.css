@@ -1,0 +1,80 @@
+.timeline-connector {
+  /* Base timeline connector styles */
+  position: relative;
+  z-index: 1;
+}
+
+.timeline-connector__line {
+  /* Line segment styles */
+  transition: all 0.3s ease;
+}
+
+.timeline-connector__line--active {
+  /* Active line styles */
+  box-shadow: 0 0 10px rgba(5, 213, 250, 0.4);
+}
+
+.timeline-connector__node {
+  /* Node/dot styles */
+  transition: all 0.2s ease;
+  position: relative;
+  z-index: 10;
+}
+
+.timeline-connector__node--active {
+  /* Active node styles */
+}
+
+.timeline-connector__node:hover {
+  /* Hover state for node */
+  transform: scale(1.1);
+}
+
+.timeline-connector__glow {
+  /* Inner glow element for active state */
+  pointer-events: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .timeline-connector {
+    /* Mobile styles */
+  }
+  
+  .timeline-connector__node {
+    width: 12px;
+    height: 12px;
+  }
+  
+  .timeline-connector__line {
+    width: 1px;
+    height: 24px;
+  }
+}
+
+/* Animation keyframes */
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.1);
+  }
+}
+
+.timeline-connector__glow--animated {
+  animation: pulse-glow 2s infinite ease-in-out;
+}
+
+/* Theme variations */
+.timeline-connector--theme-cyber {
+  /* Cybersecurity theme specific styles */
+}
+
+.timeline-connector--theme-cyber .timeline-connector__node--active {
+  box-shadow: 
+    0 0 10px rgba(5, 213, 250, 0.6),
+    inset 0 0 10px rgba(5, 213, 250, 0.2);
+}

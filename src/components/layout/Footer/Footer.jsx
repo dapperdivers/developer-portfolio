@@ -78,7 +78,7 @@ const Footer = () => {
   
   return (
     <motion.footer 
-      className="text-gray-200 py-6 backdrop-blur-sm bg-black/40 border-t border-gray-800 shadow-lg" 
+      className="text-gray-200 py-6 border-t border-gray-800" 
       role="contentinfo"
       data-testid="footer"
       initial={animationEnabled ? "hidden" : false}

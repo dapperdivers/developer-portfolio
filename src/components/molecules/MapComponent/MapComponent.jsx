@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { getCoordinatesForLocation, formatPopupContent } from '../../../utils/geocodingUtils';
-import { useAnimation, MotionVariants } from '@context//AnimationContext';
+import { useAnimation, MotionVariants } from '@context/AnimationContext';
 import './MapComponent.css';
 
 // Fix Leaflet default icon path issues
@@ -109,7 +109,7 @@ const MapComponent = ({ location }) => {
   const [mapError, setMapError] = useState(null);
   const [locationData, setLocationData] = useState(null);
   const [mapMode, setMapMode] = useState('dark'); // 'dark' or 'satellite'
-  const [showGrid, setShowGrid] = useState(false);
+  const [showGrid, setShowGrid] = useState(true);
   const mapRef = useRef(null);
   const mapInstanceRef = useRef(null);
   const markerRef = useRef(null);
@@ -118,7 +118,7 @@ const MapComponent = ({ location }) => {
   const tileLayerRef = useRef(null);
   
   // Get animation context
-  const { animationEnabled } = useAnimation();
+  const { isAnimationEnabled } = useAnimation();
   
   useEffect(() => {
     // Initialize map
@@ -141,7 +141,7 @@ const MapComponent = ({ location }) => {
             center: [37.7749, -122.4194], // Default to San Francisco
             zoom: 12,
             scrollWheelZoom: false,
-            zoomControl: true,
+            zoomControl: false,
             attributionControl: false, // We'll add a custom one
             minZoom: 2,
             maxZoom: 18
@@ -154,9 +154,10 @@ const MapComponent = ({ location }) => {
             maxZoom: 19
           });
           
-          // Satellite tiles for when the user toggles map mode
-          const satelliteTileLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-            attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
+          // Alternative view tiles for when the user toggles map mode  
+          const satelliteTileLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attributions">CARTO</a>',
+            subdomains: 'abcd',
             maxZoom: 19
           });
           
@@ -187,8 +188,8 @@ const MapComponent = ({ location }) => {
               </div>
             `,
             className: 'custom-map-marker',
-            iconSize: [100, 60],
-            iconAnchor: [50, 30]
+            iconSize: [40, 30],
+            iconAnchor: [20, 15]
           });
           
           // Add concentric circles around the location
@@ -268,8 +269,8 @@ const MapComponent = ({ location }) => {
           const updatedIcon = L.divIcon({
             html: markerHtml,
             className: 'custom-map-marker',
-            iconSize: [120, 60],
-            iconAnchor: [60, 30]
+            iconSize: [40, 30],
+            iconAnchor: [20, 15]
           });
           
           markerRef.current
@@ -364,8 +365,9 @@ const MapComponent = ({ location }) => {
         maxZoom: 19
       }).addTo(mapInstanceRef.current);
     } else {
-      tileLayerRef.current = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-        attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
+      tileLayerRef.current = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attributions">CARTO</a>',
+        subdomains: 'abcd',
         maxZoom: 19
       }).addTo(mapInstanceRef.current);
     }
@@ -395,51 +397,96 @@ const MapComponent = ({ location }) => {
         </motion.div>
       ) : (
         <>
-          <div className="map-controls">
-            <div className="map-label">
-              {mapMode === 'dark' ? 'Standard View' : 'Satellite View'}
-            </div>
-            <div className="map-actions">
-              <button 
-                className="map-action-button" 
-                onClick={handleResetView}
-                aria-label="Reset map view"
-              >
-                <span className="map-action-icon">⟲</span>
-              </button>
-              <button 
-                className={`map-action-button ${mapMode === 'satellite' ? 'active' : ''}`} 
-                onClick={handleToggleMapMode}
-                aria-label="Toggle map mode"
-              >
-                <span className="map-action-icon">{mapMode === 'dark' ? '🗺️' : '🛰️'}</span>
-              </button>
-              <button 
-                className={`map-action-button ${showGrid ? 'active' : ''}`} 
-                onClick={handleToggleGrid}
-                aria-label="Toggle grid"
-              >
-                <span className="map-action-icon">⊞</span>
-              </button>
+          {/* Main Status Bar */}
+          <div className="map-status-bar">
+            <div className="status-left">
+              <span>Location: {locationData ? locationData.name : location}</span>
+              <span className="separator">|</span>
+              <span>{locationData ? formatCoordinates(locationData.lat, locationData.lng) : "00.0000°, 00.0000°"}</span>
+              <span className="separator">|</span>
+              <span className="metric-label">SECURITY LEVEL:</span>
+              <span className="metric-value">STANDARD</span>
+              <span className="separator">|</span>
+              <span className="metric-label">PROTOCOL:</span>
+              <span className="metric-value">TLS 1.3</span>
+              <span className="separator">|</span>
+              <span className="metric-label">ENCRYPTION:</span>
+              <span className="metric-value">AES-256</span>
+              <span className="separator">|</span>
+              <span className="metric-label">STATUS:</span>
+              <span className="metric-value status-online">ONLINE</span>
             </div>
           </div>
-          
-          {/* Location information panel */}
-          {locationData && (
-            <AnimatePresence>
-              <motion.div 
-                className="location-info"
-                variants={locationInfoVariants}
-                initial="hidden"
-                animate="visible"
-              >
-                <div className="location-info-header">
-                  <div className="location-name">{locationData.name}</div>
-                  <div className="location-badge">
-                    <motion.span 
-                      className="blinking-dot small"
+
+          {/* Map Display Container */}
+          <div className="map-display-container">
+            {/* Map container with explicit dimensions */}
+            <div 
+              ref={mapRef} 
+              className="map-container" 
+              style={{ 
+                width: '100%', 
+                height: '400px', 
+                position: 'relative',
+                zIndex: 5,
+                background: 'linear-gradient(135deg, #1a1a2e, #162447)',
+                borderRadius: '0 0 8px 8px',
+                overflow: 'hidden'
+              }} 
+              id="map-container"
+            >
+              {showGrid && (
+                <div className={`map-grid-overlay ${mapMode === 'dark' ? 'grid-dark-mode' : 'grid-light-mode'}`}>
+                  {/* Create 29 horizontal grid lines (30 divisions) */}
+                  {[...Array(29)].map((_, i) => (
+                    <div 
+                      key={`h-${i}`}
+                      className="map-grid-horizontal" 
+                      style={{ top: `${((i + 1) / 30) * 100}%` }}
+                    />
+                  ))}
+                  
+                  {/* Create 29 vertical grid lines (30 divisions) */}
+                  {[...Array(29)].map((_, i) => (
+                    <div 
+                      key={`v-${i}`}
+                      className="map-grid-vertical" 
+                      style={{ left: `${((i + 1) / 30) * 100}%` }}
+                    />
+                  ))}
+                  
+                  {/* Create grid points at intersections */}
+                  {[...Array(29)].flatMap((_, row) => 
+                    [...Array(29)].map((_, col) => (
+                      <div 
+                        key={`p-${row}-${col}`}
+                        className="map-grid-point" 
+                        style={{ 
+                          top: `${((row + 1) / 30) * 100}%`, 
+                          left: `${((col + 1) / 30) * 100}%` 
+                        }}
+                      />
+                    ))
+                  )}
+                </div>
+              )}
+            </div>
+
+            {/* Cybersecurity data overlay */}
+            <div className="map-data-overlay">
+              {locationData && (
+                <motion.div 
+                  className="security-metrics-panel"
+                  variants={locationInfoVariants}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  <div className="metrics-header">
+                    <div className="panel-title">SECURITY METRICS</div>
+                    <motion.div 
+                      className="status-indicator"
                       animate={{ 
-                        opacity: animationEnabled ? [0.4, 1, 0.4] : 0.7
+                        opacity: isAnimationEnabled ? [0.4, 1, 0.4] : 0.7
                       }}
                       transition={{ 
                         duration: 1.5, 
@@ -447,103 +494,109 @@ const MapComponent = ({ location }) => {
                         repeatType: "reverse"
                       }}
                     />
-                    Live
                   </div>
-                </div>
-                <div className="location-coordinates">
-                  {formatCoordinates(locationData.lat, locationData.lng)}
-                </div>
-                <div className="location-metrics">
-                  <div className="metric">
-                    <span className="metric-label">Status</span>
-                    <span className="metric-value status-active">Active</span>
+                  <div className="metrics-grid">
+                    <div className="metric-item">
+                      <span className="metric-label">THREAT LEVEL</span>
+                      <span className="metric-value threat-low">LOW</span>
+                    </div>
+                    <div className="metric-item">
+                      <span className="metric-label">PERIMETER</span>
+                      <span className="metric-value">SECURE</span>
+                    </div>
+                    <div className="metric-item">
+                      <span className="metric-label">UPTIME</span>
+                      <span className="metric-value">99.8%</span>
+                    </div>
                   </div>
-                  <div className="metric">
-                    <span className="metric-label">Security</span>
-                    <span className="metric-value">Level 3</span>
-                  </div>
-                  <div className="metric">
-                    <span className="metric-label">Map Mode</span>
-                    <span className="metric-value map-mode">
-                      {mapMode === 'dark' ? 'Dark' : 'Satellite'}
-                    </span>
-                  </div>
-                </div>
-                <div className="location-data-streams">
-                  <motion.div 
-                    className="data-stream"
-                    variants={dataStreamVariants}
-                    initial="hidden"
-                    animate="visible"
-                    custom={0}
-                  />
-                  <motion.div 
-                    className="data-stream"
-                    variants={dataStreamVariants}
-                    initial="hidden"
-                    animate="visible"
-                    custom={1}
-                  />
-                  <motion.div 
-                    className="data-stream"
-                    variants={dataStreamVariants}
-                    initial="hidden"
-                    animate="visible"
-                    custom={2}
-                  />
-                </div>
-              </motion.div>
-            </AnimatePresence>
-          )}
-          
-          {/* Map container with explicit dimensions */}
-          <div 
-            ref={mapRef} 
-            className="map-container" 
-            style={{ 
-              width: '100%', 
-              height: '400px', 
-              position: 'relative',
-              zIndex: 5,
-              background: 'linear-gradient(135deg, #1a1a2e, #162447)'
-            }} 
-            id="map-container"
-          >
-            {showGrid && (
-              <div className="map-grid-overlay">
-                {/* Create 10 horizontal grid lines */}
-                {[...Array(10)].map((_, i) => (
-                  <div 
-                    key={`h-${i}`}
-                    className="map-grid-horizontal" 
-                    style={{ top: `${(i + 1) * 10}%` }}
-                  />
-                ))}
-                
-                {/* Create 10 vertical grid lines */}
-                {[...Array(10)].map((_, i) => (
-                  <div 
-                    key={`v-${i}`}
-                    className="map-grid-vertical" 
-                    style={{ left: `${(i + 1) * 10}%` }}
-                  />
-                ))}
-                
-                {/* Create grid points at intersections */}
-                {[...Array(9)].flatMap((_, row) => 
-                  [...Array(9)].map((_, col) => (
-                    <div 
-                      key={`p-${row}-${col}`}
-                      className="map-grid-point" 
-                      style={{ 
-                        top: `${(row + 1) * 10}%`, 
-                        left: `${(col + 1) * 10}%` 
-                      }}
+                  <div className="data-streams">
+                    <motion.div 
+                      className="data-stream"
+                      variants={dataStreamVariants}
+                      initial="hidden"
+                      animate="visible"
+                      custom={0}
                     />
-                  ))
-                )}
-              </div>
-            )}
+                    <motion.div 
+                      className="data-stream"
+                      variants={dataStreamVariants}
+                      initial="hidden"
+                      animate="visible"
+                      custom={1}
+                    />
+                    <motion.div 
+                      className="data-stream"
+                      variants={dataStreamVariants}
+                      initial="hidden"
+                      animate="visible"
+                      custom={2}
+                    />
+                  </div>
+                </motion.div>
+              )}
+            </div>
+          </div>
+
+          {/* Control Bar */}
+          <div className="map-controls-bar">
+            <div className="controls-left">
+              <span className="controls-label">Controls:</span>
+              <button 
+                className="control-button zoom-in" 
+                onClick={() => mapInstanceRef.current?.zoomIn()}
+                aria-label="Zoom in"
+              >
+                [+]
+              </button>
+              <button 
+                className="control-button zoom-out" 
+                onClick={() => mapInstanceRef.current?.zoomOut()}
+                aria-label="Zoom out"
+              >
+                [-]
+              </button>
+              <span className="control-text">Zoom</span>
+            </div>
+            <div className="controls-center">
+              <button 
+                className="control-button center-view" 
+                onClick={handleResetView}
+                aria-label="Center view"
+              >
+                [Center]
+              </button>
+              <span className="separator">|</span>
+              <button 
+                className="control-button refresh" 
+                onClick={handleToggleGrid}
+                aria-label="Toggle grid overlay"
+              >
+                [Grid]
+              </button>
+            </div>
+            <div className="controls-right">
+              <motion.button 
+                className="control-button toggle-layers-special" 
+                onClick={handleToggleMapMode}
+                aria-label="Toggle map layers"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                animate={{ 
+                  boxShadow: [
+                    "0 0 8px rgba(var(--color-cyan-rgb), 0.3)",
+                    "0 0 16px rgba(var(--color-cyan-rgb), 0.6)",
+                    "0 0 8px rgba(var(--color-cyan-rgb), 0.3)"
+                  ]
+                }}
+                transition={{ 
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              >
+                🛰️ {mapMode === 'dark' ? 'SATELLITE' : 'STANDARD'}
+              </motion.button>
+            </div>
           </div>
         </>
       )}

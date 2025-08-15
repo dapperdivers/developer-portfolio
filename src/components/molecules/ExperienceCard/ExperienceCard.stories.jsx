@@ -53,7 +53,25 @@ export default {
   parameters: {
     docs: {
       description: {
-        component: 'A card component displaying work experience details with cybersecurity theming. Supports expansion/collapse functionality and multiple visual variants.',
+        component: `
+A refactored ExperienceCard component built with atomic design principles. Now composed of six atomic components:
+
+**Atomic Components Used:**
+- \`ExperienceHeader\` - Company logo, role, company name, and date
+- \`ExperienceToggle\` - Expand/collapse button with glow effects  
+- \`ExperienceContent\` - Description and bullet points section
+- \`SecurityClassification\` - Security banner with animated bars
+- \`TerminalFooter\` - Terminal-style footer with prompt and cursor
+- \`CyberpunkEffects\` - Visual effects (glow, corners, scan lines, data stream)
+
+**Benefits of Atomic Decomposition:**
+- ✅ **Isolated Styling**: Each component has its own CSS scope
+- ✅ **Single Responsibility**: Each atom handles one specific concern
+- ✅ **No Style Conflicts**: Eliminated overlapping selectors
+- ✅ **Easier Maintenance**: Debug and update individual parts
+- ✅ **Better Reusability**: Atoms can be used in other components
+- ✅ **Improved Performance**: Optimized animations per component
+        `,
       },
     },
     layout: 'padded',
@@ -76,7 +94,7 @@ export default {
     },
     variant: {
       control: 'select',
-      options: ['default', 'security', 'terminal'],
+      options: ['default', 'security', 'terminal', 'cyberpunk'],
       description: 'Visual style variant for theming',
     },
     shadow: {
@@ -90,7 +108,7 @@ export default {
   },
   decorators: [
     (Story) => (
-      <div style={{ maxWidth: '800px', margin: '2rem auto', padding: '1rem' }}>
+      <div style={{ maxWidth: '1000px', margin: '2rem auto', padding: '1rem' }}>
         <Story />
       </div>
     ),
@@ -100,14 +118,47 @@ export default {
 // Template for creating stories
 const Template = (args) => <ExperienceCard {...args} />;
 
-// Default story with security theme
+// Default story - showcasing atomic architecture
 export const Default = Template.bind({});
 Default.args = {
   data: securityExperienceData,
   index: 0,
-  variant: 'terminal',
+  variant: 'cyberpunk',
   shadow: true,
   isExpanded: false,
+};
+Default.parameters = {
+  docs: {
+    description: {
+      story: 'Default ExperienceCard built with atomic components. Clean separation of concerns with isolated styling.',
+    },
+  },
+};
+
+// Atomic Architecture Demo
+export const AtomicArchitectureDemo = () => (
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', maxWidth: '1000px', margin: '0 auto' }}>
+    <div style={{ background: 'rgba(100, 255, 218, 0.1)', padding: '1rem', borderRadius: '8px', border: '1px solid rgba(100, 255, 218, 0.3)' }}>
+      <h3 style={{ color: '#64ffda', marginBottom: '1rem', marginTop: 0 }}>🏗️ Atomic Architecture</h3>
+      <p style={{ color: 'rgba(241, 245, 249, 0.8)', margin: 0, fontSize: '0.9rem' }}>
+        This ExperienceCard is now composed of 6 isolated atomic components, eliminating the previous styling conflicts and improving maintainability.
+      </p>
+    </div>
+    <ExperienceCard
+      data={securityExperienceData}
+      index={0}
+      variant="cyberpunk"
+      shadow={true}
+      isExpanded={true}
+    />
+  </div>
+);
+AtomicArchitectureDemo.parameters = {
+  docs: {
+    description: {
+      story: 'Demonstration of the new atomic architecture with expanded state showing all atomic components.',
+    },
+  },
 };
 
 // Security variant story
@@ -122,7 +173,7 @@ SecurityVariant.args = {
 SecurityVariant.parameters = {
   docs: {
     description: {
-      story: 'ExperienceCard with security variant styling, featuring cybersecurity-themed colors and effects.',
+      story: 'Security variant with green cybersecurity theming applied across all atomic components.',
     },
   },
 };
@@ -139,19 +190,26 @@ TerminalVariant.args = {
 TerminalVariant.parameters = {
   docs: {
     description: {
-      story: 'ExperienceCard with terminal variant styling for a more technical, command-line aesthetic.',
+      story: 'Terminal variant with standard cyan cyberpunk theming.',
     },
   },
 };
 
-// Default variant (no specific theme)
-export const DefaultVariant = Template.bind({});
-DefaultVariant.args = {
-  data: regularExperienceData,
+// Cyberpunk variant story
+export const CyberpunkVariant = Template.bind({});
+CyberpunkVariant.args = {
+  data: securityExperienceData,
   index: 0,
-  variant: 'default',
-  shadow: false,
-  isExpanded: false,
+  variant: 'cyberpunk',
+  shadow: true,
+  isExpanded: true,
+};
+CyberpunkVariant.parameters = {
+  docs: {
+    description: {
+      story: 'Cyberpunk variant with enhanced visual effects and grid patterns.',
+    },
+  },
 };
 
 // Expanded state
@@ -159,31 +217,31 @@ export const ExpandedState = Template.bind({});
 ExpandedState.args = {
   data: securityExperienceData,
   index: 0,
-  variant: 'security',
+  variant: 'cyberpunk',
   shadow: true,
   isExpanded: true,
 };
 ExpandedState.parameters = {
   docs: {
     description: {
-      story: 'ExperienceCard in expanded state showing all details and bullet points.',
+      story: 'ExperienceCard in expanded state showing all atomic components working together.',
     },
   },
 };
 
-// Short content example
-export const ShortContent = Template.bind({});
-ShortContent.args = {
-  data: shortExperienceData,
+// Collapsed state
+export const CollapsedState = Template.bind({});
+CollapsedState.args = {
+  data: securityExperienceData,
   index: 0,
-  variant: 'terminal',
+  variant: 'cyberpunk',
   shadow: true,
   isExpanded: false,
 };
-ShortContent.parameters = {
+CollapsedState.parameters = {
   docs: {
     description: {
-      story: 'ExperienceCard with minimal content to show how it handles shorter descriptions.',
+      story: 'ExperienceCard in collapsed state showing only the header atomic components.',
     },
   },
 };
@@ -196,14 +254,14 @@ NoLogo.args = {
     companylogo: undefined,
   },
   index: 0,
-  variant: 'security',
+  variant: 'cyberpunk',
   shadow: true,
   isExpanded: false,
 };
 NoLogo.parameters = {
   docs: {
     description: {
-      story: 'ExperienceCard without a company logo, showing graceful degradation.',
+      story: 'ExperienceCard without a company logo, showing graceful degradation in ExperienceHeader atom.',
     },
   },
 };
@@ -216,25 +274,48 @@ NoBullets.args = {
     descBullets: undefined,
   },
   index: 0,
-  variant: 'security',
+  variant: 'cyberpunk',
   shadow: true,
   isExpanded: true,
 };
 NoBullets.parameters = {
   docs: {
     description: {
-      story: 'ExperienceCard with only description text and no bullet points.',
+      story: 'ExperienceCard with only description text, showing ExperienceContent atom handling missing bullets.',
+    },
+  },
+};
+
+// Short content example
+export const ShortContent = Template.bind({});
+ShortContent.args = {
+  data: shortExperienceData,
+  index: 0,
+  variant: 'terminal',
+  shadow: true,
+  isExpanded: true,
+};
+ShortContent.parameters = {
+  docs: {
+    description: {
+      story: 'ExperienceCard with minimal content showing how atomic components handle shorter data.',
     },
   },
 };
 
 // Multiple cards with staggered animation
 export const MultipleCards = () => (
-  <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', maxWidth: '800px', margin: '0 auto' }}>
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', maxWidth: '1000px', margin: '0 auto' }}>
+    <div style={{ background: 'rgba(100, 255, 218, 0.1)', padding: '1rem', borderRadius: '8px', border: '1px solid rgba(100, 255, 218, 0.3)' }}>
+      <h3 style={{ color: '#64ffda', marginBottom: '0.5rem', marginTop: 0 }}>🎭 Multiple Cards Demo</h3>
+      <p style={{ color: 'rgba(241, 245, 249, 0.8)', margin: 0, fontSize: '0.9rem' }}>
+        Each card is composed of the same atomic components but with isolated styling. No conflicts between cards.
+      </p>
+    </div>
     <ExperienceCard
       data={securityExperienceData}
       index={0}
-      variant="terminal"
+      variant="security"
       shadow={true}
       isExpanded={false}
     />
@@ -248,7 +329,7 @@ export const MultipleCards = () => (
     <ExperienceCard
       data={shortExperienceData}
       index={2}
-      variant="terminal"
+      variant="cyberpunk"
       shadow={true}
       isExpanded={false}
     />
@@ -257,7 +338,7 @@ export const MultipleCards = () => (
 MultipleCards.parameters = {
   docs: {
     description: {
-      story: 'Multiple ExperienceCards showing staggered animation timing.',
+      story: 'Multiple ExperienceCards demonstrating no style conflicts between instances thanks to atomic isolation.',
     },
   },
 };
@@ -267,7 +348,7 @@ export const InteractiveTest = Template.bind({});
 InteractiveTest.args = {
   data: securityExperienceData,
   index: 0,
-  variant: 'security',
+  variant: 'cyberpunk',
   shadow: true,
   isExpanded: false,
 };
@@ -295,13 +376,61 @@ InteractiveTest.play = async ({ canvasElement }) => {
 InteractiveTest.parameters = {
   docs: {
     description: {
-      story: 'Interactive test story that demonstrates the expand/collapse functionality.',
+      story: 'Interactive test demonstrating the expand/collapse functionality with atomic components.',
+    },
+  },
+};
+
+// Playground story
+export const Playground = Template.bind({});
+Playground.args = {
+  data: securityExperienceData,
+  index: 0,
+  variant: 'cyberpunk',
+  shadow: true,
+  isExpanded: false,
+};
+Playground.parameters = {
+  docs: {
+    description: {
+      story: 'Playground for experimenting with different props and seeing how atomic components respond.',
     },
   },
 };
 
 /**
- * ## Component Usage
+ * ## Atomic Architecture Benefits
+ * 
+ * The ExperienceCard has been successfully decomposed into atomic components:
+ * 
+ * ### 🧩 Atomic Components
+ * - **ExperienceHeader**: Logo, role, company, date (isolated header logic)
+ * - **ExperienceToggle**: Expand/collapse button (isolated toggle logic)
+ * - **ExperienceContent**: Description and bullets (isolated content logic)
+ * - **SecurityClassification**: Security banner (isolated banner logic)
+ * - **TerminalFooter**: Terminal prompt (isolated footer logic)
+ * - **CyberpunkEffects**: Visual effects (isolated effects logic)
+ * 
+ * ### ✅ Problems Solved
+ * - **Style Conflicts**: Each atom has isolated CSS scope
+ * - **Maintenance Issues**: Easy to debug and update individual parts
+ * - **Responsibility Overload**: Single responsibility per atom
+ * - **Animation Complexity**: Optimized animations per component
+ * - **Reusability**: Atoms can be used in other molecules/organisms
+ * 
+ * ### 📈 Performance Improvements
+ * - Reduced CSS bundle size through elimination of duplicate styles
+ * - Better animation performance with isolated motion components
+ * - Improved tree-shaking of unused atomic components
+ * - Optimized rendering with contained layout styles
+ * 
+ * ### 🛠️ Developer Experience
+ * - Clear separation of concerns
+ * - Easier testing of individual atoms
+ * - Better TypeScript support with focused PropTypes
+ * - Simplified debugging with isolated components
+ * 
+ * ## Usage
  * 
  * ```jsx
  * import ExperienceCard from '@molecules/ExperienceCard';
@@ -318,24 +447,10 @@ InteractiveTest.parameters = {
  * 
  * <ExperienceCard 
  *   data={experienceData}
- *   variant="security"
+ *   variant="cyberpunk"
  *   shadow={true}
  *   isExpanded={false}
  *   index={0}
  * />
  * ```
- * 
- * ## Props
- * - `data` (required): Object containing experience information
- * - `variant`: Visual style variant ('default', 'security', 'terminal')
- * - `shadow`: Boolean to show/hide card shadow
- * - `isExpanded`: Boolean to control expansion state
- * - `onToggle`: Function called when expand/collapse is triggered
- * - `index`: Number for animation staggering
- * 
- * ## Accessibility
- * - Proper ARIA labels for interactive elements
- * - Keyboard navigation support
- * - Screen reader compatible
- * - Respects reduced motion preferences
  */

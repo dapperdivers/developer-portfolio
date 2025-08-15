@@ -3,7 +3,7 @@
  * 
  * Styles for the Card component following atomic design principles.
  * Uses design tokens for consistent styling across the application.
- * Updated with security-themed variants.
+ * Updated with improved readability, security-themed variants, and darker blue contained styling.
  * Animations now handled by framer-motion.
  */
 
@@ -13,65 +13,108 @@
   flex-direction: column;
   min-width: 0;
   word-wrap: break-word;
-  background-color: var(--color-background);
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-navy-rgb), 0.95) 0%,
+    rgba(var(--color-navy-rgb), 0.9) 50%,
+    rgba(var(--color-navy-rgb), 0.95) 100%
+  );
+  backdrop-filter: blur(10px);
   background-clip: border-box;
   border-radius: var(--border-radius);
   overflow: hidden;
   transition: var(--transition-base);
+  border: 1px solid rgba(var(--color-cyan-rgb), 0.2);
+  box-shadow: 
+    0 4px 20px rgba(0, 0, 0, 0.3),
+    0 0 15px rgba(var(--color-cyan-rgb), 0.08),
+    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.08);
 }
 
 /* Security-themed Card */
 .card-security {
-  background-color: var(--color-navy);
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-navy-rgb), 0.98) 0%,
+    rgba(var(--color-navy-rgb), 0.95) 50%,
+    rgba(var(--color-navy-rgb), 0.98) 100%
+  );
   color: var(--color-offwhite);
+  border: 1px solid rgba(var(--color-cyan-rgb), 0.4);
   border-left: 3px solid var(--color-cyan);
+  box-shadow: 
+    0 6px 25px rgba(0, 0, 0, 0.4),
+    0 0 20px rgba(var(--color-cyan-rgb), 0.12),
+    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.1);
 }
 
 /* Card with border */
 .card-bordered {
-  border: var(--border-width-thin) solid var(--color-border);
+  border: var(--border-width-thin) solid rgba(var(--color-cyan-rgb), 0.3);
 }
 
 /* Security-themed bordered card */
 .card-security.card-bordered {
-  border: var(--border-width-thin) solid var(--color-cyan);
+  border: var(--border-width-thin) solid rgba(var(--color-cyan-rgb), 0.5);
 }
 
 /* Card with shadow */
 .card-shadow {
-  box-shadow: var(--box-shadow);
+  box-shadow: 
+    0 8px 30px rgba(0, 0, 0, 0.4),
+    0 0 20px rgba(var(--color-cyan-rgb), 0.1),
+    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.08);
 }
 
 /* Security-themed shadow card */
 .card-security.card-shadow {
-  box-shadow: 0 4px 14px rgba(var(--color-navy-rgb), 0.5), 0 0 0 1px rgba(var(--color-cyan-rgb), 0.1);
+  box-shadow: 
+    0 10px 35px rgba(0, 0, 0, 0.5),
+    0 0 25px rgba(var(--color-cyan-rgb), 0.15),
+    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.12);
 }
 
 /* Hoverable card - transition handled by framer-motion */
 .card-hoverable:hover {
   transform: translateY(-5px);
-  box-shadow: var(--box-shadow-lg);
+  border-color: rgba(var(--color-cyan-rgb), 0.4);
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.4),
+    0 0 30px rgba(var(--color-cyan-rgb), 0.15),
+    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.12);
 }
 
 /* Security-themed hoverable card */
 .card-security.card-hoverable:hover {
   transform: translateY(-5px);
-  box-shadow: 0 6px 20px rgba(var(--color-navy-rgb), 0.6), 0 0 0 1px rgba(var(--color-cyan-rgb), 0.2);
+  border-color: rgba(var(--color-cyan-rgb), 0.6);
   border-left-color: var(--color-primary);
+  box-shadow: 
+    0 15px 45px rgba(0, 0, 0, 0.5),
+    0 0 35px rgba(var(--color-cyan-rgb), 0.2),
+    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.15);
 }
 
 /* Card header */
 .card-header {
-  padding: var(--card-padding);
+  padding: var(--spacing-4) var(--spacing-4) var(--spacing-3);
   margin-bottom: 0;
-  background-color: var(--color-background);
-  border-bottom: var(--border-width-thin) solid var(--color-border);
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-navy-rgb), 0.98) 0%,
+    rgba(var(--color-navy-rgb), 0.95) 100%
+  );
+  border-bottom: 1px solid rgba(var(--color-cyan-rgb), 0.15);
 }
 
 /* Security-themed card header */
 .card-security .card-header {
-  background-color: rgba(var(--color-navy-rgb), 0.8);
-  border-bottom: var(--border-width-thin) solid rgba(var(--color-cyan-rgb), 0.3);
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-navy-rgb), 1) 0%,
+    rgba(var(--color-navy-rgb), 0.98) 100%
+  );
+  border-bottom: 1px solid rgba(var(--color-cyan-rgb), 0.25);
   font-family: var(--font-family-jetbrains);
   letter-spacing: var(--letter-spacing-technical);
 }
@@ -79,35 +122,45 @@
 /* Card body */
 .card-body {
   flex: 1 1 auto;
-  padding: var(--card-padding);
+  padding: var(--spacing-4);
+  background: transparent;
 }
 
 /* Security-themed card body */
 .card-security .card-body {
-  background-color: var(--color-navy);
+  background: transparent;
 }
 
 /* Card footer */
 .card-footer {
-  padding: var(--card-padding);
-  background-color: var(--color-background);
-  border-top: var(--border-width-thin) solid var(--color-border);
+  padding: var(--spacing-3) var(--spacing-4) var(--spacing-4);
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-navy-rgb), 0.95) 0%,
+    rgba(var(--color-navy-rgb), 0.92) 100%
+  );
+  border-top: 1px solid rgba(var(--color-cyan-rgb), 0.15);
 }
 
 /* Security-themed card footer */
 .card-security .card-footer {
-  background-color: rgba(var(--color-navy-rgb), 0.9);
-  border-top: var(--border-width-thin) solid rgba(var(--color-cyan-rgb), 0.3);
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-navy-rgb), 0.98) 0%,
+    rgba(var(--color-navy-rgb), 0.95) 100%
+  );
+  border-top: 1px solid rgba(var(--color-cyan-rgb), 0.25);
 }
 
-/* Card title */
+/* Card title - improved readability */
 .card-title {
   margin-top: 0;
-  margin-bottom: var(--spacing-2);
+  margin-bottom: var(--spacing-3);
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-bold);
-  color: var(--color-text);
+  color: var(--color-offwhite);
   line-height: var(--line-height-tight);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 /* Security-themed card title */
@@ -115,20 +168,23 @@
   color: var(--color-cyan);
   font-family: var(--font-family-jetbrains);
   letter-spacing: var(--letter-spacing-technical);
+  text-shadow: 0 0 8px rgba(var(--color-cyan-rgb), 0.4);
 }
 
-/* Card subtitle */
+/* Card subtitle - improved readability */
 .card-subtitle {
   margin-top: calc(-1 * var(--spacing-1));
-  margin-bottom: var(--spacing-2);
+  margin-bottom: var(--spacing-3);
   font-size: var(--font-size-base);
-  color: var(--color-text-muted);
+  color: rgba(var(--color-offwhite-rgb), 0.8);
+  line-height: var(--line-height-md);
+  font-weight: var(--font-weight-medium);
 }
 
 /* Security-themed card subtitle */
 .card-security .card-subtitle {
-  color: var(--color-offwhite);
-  opacity: 0.8;
+  color: rgba(var(--color-offwhite-rgb), 0.85);
+  opacity: 1;
 }
 
 /* Media in cards */
@@ -138,96 +194,104 @@
   object-fit: cover;
 }
 
-/* Card link styling */
+/* Card link styling - improved contrast */
 .card a {
-  color: var(--color-link);
+  color: var(--color-cyan);
   text-decoration: none;
+  font-weight: var(--font-weight-medium);
+  transition: all 0.2s ease;
 }
 
 .card a:hover {
-  color: var(--color-link-hover);
+  color: color-mix(in srgb, var(--color-cyan) 85%, white);
   text-decoration: underline;
+  text-shadow: 0 0 5px rgba(var(--color-cyan-rgb), 0.5);
 }
 
 /* Security-themed card links */
 .card-security a {
   color: var(--color-cyan);
   text-decoration: none;
+  font-weight: var(--font-weight-medium);
 }
 
 .card-security a:hover {
   color: color-mix(in srgb, var(--color-cyan) 85%, white);
   text-decoration: underline;
+  text-shadow: 0 0 8px rgba(var(--color-cyan-rgb), 0.6);
 }
 
 /* Terminal-style security card */
 .card-terminal {
-  background-color: var(--color-navy);
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-navy-rgb), 0.98) 0%,
+    rgba(var(--color-navy-rgb), 0.95) 50%,
+    rgba(var(--color-navy-rgb), 0.98) 100%
+  );
   color: var(--color-offwhite);
   font-family: var(--font-family-jetbrains);
   letter-spacing: var(--letter-spacing-technical);
-  border: 1px solid var(--color-cyan);
-  border-radius: 4px;
+  border: 1px solid rgba(var(--color-cyan-rgb), 0.4);
+  border-radius: 6px;
+  box-shadow: 
+    0 6px 25px rgba(0, 0, 0, 0.4),
+    0 0 20px rgba(var(--color-cyan-rgb), 0.1),
+    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.1);
 }
 
 .card-terminal .card-header {
-  background-color: var(--color-cyan);
-  color: var(--color-navy);
-  border-bottom: none;
-  padding: 0.5rem var(--card-padding);
+  background: rgba(var(--color-cyan-rgb), 0.1);
+  color: var(--color-cyan);
+  border-bottom: 1px solid rgba(var(--color-cyan-rgb), 0.3);
+  padding: var(--spacing-3) var(--spacing-4);
   font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-sm);
 }
 
 .card-terminal .card-body {
-  background-color: var(--color-navy);
-  padding: var(--card-padding);
+  background: transparent;
+  padding: var(--spacing-4);
+  color: rgba(var(--color-offwhite-rgb), 0.95);
 }
 
 .card-terminal .card-footer {
-  background-color: rgba(var(--color-navy-rgb), 0.9);
-  border-top: 1px solid rgba(var(--color-cyan-rgb), 0.3);
+  background: rgba(var(--color-navy-rgb), 0.95);
+  border-top: 1px solid rgba(var(--color-cyan-rgb), 0.25);
   font-family: var(--font-family-jetbrains);
 }
 
-/* Dark mode card (optional) */
+/* Dark mode card (optional fallback) */
 .dark-mode .card {
-  background-color: var(--color-gray-800);
-  color: var(--color-gray-200);
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-navy-rgb), 0.95) 0%,
+    rgba(var(--color-navy-rgb), 0.9) 100%
+  );
+  color: var(--color-offwhite);
 }
 
 .dark-mode .card-header,
 .dark-mode .card-footer {
-  background-color: var(--color-gray-800);
-  border-color: var(--color-gray-700);
+  background: rgba(var(--color-navy-rgb), 0.98);
+  border-color: rgba(var(--color-cyan-rgb), 0.2);
 }
 
 .dark-mode .card-bordered {
-  border-color: var(--color-gray-700);
+  border-color: rgba(var(--color-cyan-rgb), 0.3);
 }
 
 .dark-mode .card-title {
-  color: var(--color-white);
+  color: var(--color-offwhite);
 }
 
 .dark-mode .card-subtitle {
-  color: var(--color-gray-400);
+  color: rgba(var(--color-offwhite-rgb), 0.8);
 }
-
-/* Card animations - now handled by framer-motion */
-/* @keyframes cardFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-} */
 
 /* Accessibility: Focus outline */
 .card:focus-within {
-  outline: 2px solid var(--color-primary);
+  outline: 2px solid var(--color-cyan);
   outline-offset: 2px;
 }
 
@@ -235,4 +299,36 @@
 .card-security:focus-within {
   outline: 2px solid var(--color-cyan);
   outline-offset: 2px;
+}
+
+/* Text content styling for better readability */
+.card p {
+  color: rgba(var(--color-offwhite-rgb), 0.9);
+  line-height: var(--line-height-base);
+  margin-bottom: var(--spacing-3);
+}
+
+.card-security p {
+  color: rgba(var(--color-offwhite-rgb), 0.95);
+}
+
+.card ul,
+.card ol {
+  color: rgba(var(--color-offwhite-rgb), 0.9);
+  line-height: var(--line-height-base);
+}
+
+.card-security ul,
+.card-security ol {
+  color: rgba(var(--color-offwhite-rgb), 0.95);
+}
+
+/* Small text improvements */
+.card small {
+  color: rgba(var(--color-offwhite-rgb), 0.75);
+  font-size: var(--font-size-sm);
+}
+
+.card-security small {
+  color: rgba(var(--color-offwhite-rgb), 0.8);
 }

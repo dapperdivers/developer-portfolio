@@ -1,0 +1,285 @@
+/**
+ * ExperienceHeader Atom Component Styles
+ * Isolated header section with logo, role, company, and date information
+ */
+
+.experience-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  width: 100%;
+  padding: 2rem 2rem 1.5rem;
+  cursor: pointer;
+  min-height: 80px;
+  flex-shrink: 0;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.experience-header:hover {
+  background: rgba(var(--color-cyan-rgb), 0.02);
+}
+
+.experience-header--expanded {
+  border-bottom: 1px solid rgba(var(--color-cyan-rgb), 0.2);
+}
+
+/* Header info container */
+.experience-header__info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+/* Logo container */
+.experience-header__logo-container {
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  overflow: hidden;
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-navy-rgb), 0.9),
+    rgba(var(--color-navy-rgb), 0.7)
+  );
+  border: 2px solid rgba(var(--color-cyan-rgb), 0.5);
+  border-radius: 12px;
+  box-shadow: 
+    0 8px 25px rgba(0, 0, 0, 0.4),
+    inset 0 0 20px rgba(var(--color-cyan-rgb), 0.1),
+    0 0 20px rgba(var(--color-cyan-rgb), 0.2);
+  transition: all 0.3s ease;
+}
+
+.experience-header__logo-glow {
+  position: absolute;
+  inset: -3px;
+  background: linear-gradient(
+    45deg,
+    rgba(var(--color-cyan-rgb), 0.6),
+    transparent,
+    rgba(var(--color-cyan-rgb), 0.6)
+  );
+  border-radius: 15px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+}
+
+.experience-header__logo-container:hover .experience-header__logo-glow {
+  opacity: 1;
+}
+
+.experience-header__logo {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  filter: brightness(1.1) contrast(1.1);
+}
+
+/* Role styling */
+.experience-header__role {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-cyan);
+  margin: 0 0 0.5rem 0;
+  font-family: var(--font-family-jetbrains);
+  letter-spacing: 0.5px;
+  position: relative;
+  line-height: 1.3;
+  
+  background: linear-gradient(
+    135deg,
+    var(--color-cyan),
+    rgba(var(--color-cyan-rgb), 0.8)
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Company styling */
+.experience-header__company {
+  font-size: 1rem;
+  color: var(--color-offwhite);
+  margin: 0 0 0.5rem 0;
+  font-weight: 600;
+  opacity: 0.95;
+  line-height: 1.3;
+  font-family: var(--font-family-jetbrains);
+}
+
+/* Company link styling */
+.experience-header__company-link {
+  background: none;
+  border: none;
+  color: inherit;
+  font: inherit;
+  font-weight: inherit;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  position: relative;
+}
+
+.experience-header__company-link:hover {
+  color: var(--color-cyan);
+  text-shadow: 0 0 15px rgba(var(--color-cyan-rgb), 0.6);
+}
+
+.experience-header__link-icon {
+  display: inline-block;
+  font-size: 0.9rem;
+  transition: transform 0.2s ease;
+}
+
+.experience-header__company-link:hover .experience-header__link-icon {
+  transform: translate(2px, -2px);
+}
+
+/* Date styling */
+.experience-header__date {
+  font-size: 0.9rem;
+  color: rgba(var(--color-cyan-rgb), 0.9);
+  margin: 0;
+  font-style: italic;
+  font-family: var(--font-family-jetbrains);
+  letter-spacing: 0.3px;
+  line-height: 1.3;
+  display: flex;
+  align-items: center;
+}
+
+.experience-header__date-prefix {
+  color: rgba(var(--color-cyan-rgb), 0.7);
+  margin-right: 0.5rem;
+  font-size: 1rem;
+  /* REMOVED CSS ANIMATION - replaced with Framer Motion */
+}
+
+/* Variant Styles */
+.experience-header--secure .experience-header__role {
+  color: var(--color-green-400);
+  background: linear-gradient(
+    135deg,
+    var(--color-green-400),
+    rgba(34, 197, 94, 0.8)
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
+.experience-header--breach .experience-header__role {
+  color: var(--color-red-400);
+  background: linear-gradient(
+    135deg,
+    var(--color-red-400),
+    rgba(248, 113, 113, 0.8)
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
+.experience-header--critical .experience-header__role {
+  color: var(--color-yellow-400);
+  background: linear-gradient(
+    135deg,
+    var(--color-yellow-400),
+    rgba(251, 191, 36, 0.8)
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .experience-header {
+    padding: 1.75rem 1.5rem 1.25rem;
+    gap: 1.25rem;
+  }
+  
+  .experience-header__logo-container {
+    width: 55px;
+    height: 55px;
+  }
+}
+
+@media (max-width: 768px) {
+  .experience-header {
+    padding: 1.5rem 1.25rem 1rem;
+    gap: 1rem;
+  }
+  
+  .experience-header__logo-container {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .experience-header__role {
+    font-size: 1.1rem;
+  }
+  
+  .experience-header__company {
+    font-size: 0.9rem;
+  }
+  
+  .experience-header__date {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .experience-header {
+    padding: 1.25rem 1rem 0.75rem;
+    gap: 0.75rem;
+  }
+  
+  .experience-header__logo-container {
+    width: 45px;
+    height: 45px;
+  }
+  
+  .experience-header__role {
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+  }
+  
+  .experience-header__company {
+    font-size: 0.85rem;
+    margin-bottom: 0.25rem;
+  }
+  
+  .experience-header__date {
+    font-size: 0.8rem;
+  }
+}
+
+/* Accessibility */
+.experience-header:focus-within {
+  outline: 2px solid rgba(var(--color-cyan-rgb), 0.7);
+  outline-offset: 2px;
+}
+
+.experience-header__company-link:focus {
+  outline: 2px solid rgba(var(--color-cyan-rgb), 0.7);
+  outline-offset: 2px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .experience-header,
+  .experience-header__logo-container,
+  .experience-header__company-link {
+    transition: none;
+  }
+}

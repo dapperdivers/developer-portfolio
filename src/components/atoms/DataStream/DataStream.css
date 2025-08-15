@@ -1,0 +1,116 @@
+/* DataStream Component Styles */
+@import url('../../../assets/css/design-system/index.css');
+
+.data-stream-container {
+  position: relative;
+  height: 2px;
+  width: 100%;
+  overflow: hidden;
+  border-radius: var(--border-radius-full);
+  background: rgba(var(--color-cyan-rgb), 0.1);
+}
+
+.data-stream {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent, 
+    var(--stream-color, var(--color-cyan)), 
+    transparent
+  );
+  border-radius: var(--border-radius-full);
+  box-shadow: 0 0 4px var(--stream-color, var(--color-cyan));
+}
+
+.data-stream--secondary {
+  height: 50%;
+  top: 25%;
+  opacity: 0.6;
+  box-shadow: 0 0 2px var(--stream-color, var(--color-cyan));
+}
+
+.data-stream--tertiary {
+  height: 25%;
+  top: 37.5%;
+  opacity: 0.4;
+  box-shadow: 0 0 1px var(--stream-color, var(--color-cyan));
+}
+
+/* Intensity variations */
+.data-stream--low {
+  box-shadow: 0 0 2px var(--stream-color, var(--color-cyan));
+}
+
+.data-stream--medium {
+  box-shadow: 0 0 4px var(--stream-color, var(--color-cyan));
+}
+
+.data-stream--high {
+  box-shadow: 0 0 6px var(--stream-color, var(--color-cyan));
+}
+
+/* Security variant styles */
+.data-stream--secure {
+  background: linear-gradient(90deg, 
+    transparent, 
+    var(--color-level-low), 
+    transparent
+  );
+  box-shadow: 0 0 4px var(--color-level-low);
+}
+
+.data-stream-container:has(.data-stream--secure) {
+  background: rgba(var(--color-level-low-rgb), 0.1);
+}
+
+.data-stream--breach {
+  background: linear-gradient(90deg, 
+    transparent, 
+    var(--color-level-medium), 
+    transparent
+  );
+  box-shadow: 0 0 4px var(--color-level-medium);
+}
+
+.data-stream-container:has(.data-stream--breach) {
+  background: rgba(var(--color-level-medium-rgb), 0.1);
+}
+
+.data-stream--critical {
+  background: linear-gradient(90deg, 
+    transparent, 
+    var(--color-level-critical), 
+    transparent
+  );
+  box-shadow: 0 0 4px var(--color-level-critical);
+  animation: critical-pulse 1s ease-in-out infinite alternate;
+}
+
+.data-stream-container:has(.data-stream--critical) {
+  background: rgba(var(--color-level-critical-rgb), 0.1);
+}
+
+/* Critical pulse animation */
+@keyframes critical-pulse {
+  0% {
+    box-shadow: 0 0 4px var(--color-level-critical);
+  }
+  100% {
+    box-shadow: 0 0 8px var(--color-level-critical);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .data-stream-container {
+    height: 1.5px;
+  }
+}
+
+@media (max-width: 480px) {
+  .data-stream-container {
+    height: 1px;
+  }
+}

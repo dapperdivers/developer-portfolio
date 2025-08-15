@@ -12,9 +12,9 @@ import { useAnimation, MotionVariants } from '@context/AnimationContext';
 import './EducationCard.css';
 
 /**
- * Enhanced education card component for displaying educational background.
- * Redesigned to integrate both educational details and certifications
- * in a single, cohesive card layout.
+ * Compact education card component for displaying educational background.
+ * Optimized for space efficiency while maintaining readability and
+ * integrating both educational details and certifications in a single layout.
  * 
  * @component
  * @param {Object} props - Component props
@@ -26,181 +26,149 @@ import './EducationCard.css';
  * @param {string} props.education.duration - Time period of education
  * @param {Array} [props.education.certifications] - Array of certification objects
  * @param {number} [props.index=0] - Index number for staggered animations
- * @returns {React.ReactElement} EducationCard component
+ * @returns {React.ReactElement} Compact EducationCard component
  */
 const EducationCard = ({ education, index = 0 }) => {
   const hasCertifications = education.certifications && education.certifications.length > 0;
-  const { animationEnabled, slideUpVariants, animationStaggerDelay, getAnimationDelay } = useAnimation();
+  const { animationEnabled, slideUpVariants, animationStaggerDelay } = useAnimation();
   
-  // Card wrapper variants
+  // Optimized card wrapper variants for compact design
   const cardWrapperVariants = {
-    hidden: { opacity: 0, y: 50 },
+    hidden: { opacity: 0, y: 30 },
     visible: { 
       opacity: 1, 
       y: 0,
       transition: {
-        duration: 0.5,
+        duration: 0.4,
         ease: [0.175, 0.885, 0.32, 1.275],
         delay: animationStaggerDelay * index
       }
     }
   };
   
-  // Card inner hover variants
-  const cardInnerVariants = {
+  // Simplified hover variants for better performance
+  const cardHoverVariants = {
     initial: { boxShadow: 'var(--shadow-md)' },
     hover: { 
       boxShadow: 'var(--shadow-lg)',
-      transition: { duration: 0.3, ease: 'easeOut' }
+      transition: { duration: 0.2, ease: 'easeOut' }
     }
   };
   
-  // Icon variants
+  // Consolidated icon animation
   const iconVariants = {
-    initial: { 
-      scale: 1, 
-      y: 0, 
-      backgroundColor: 'rgba(100, 255, 218, 0.08)' 
-    },
-    hover: { 
-      scale: 1.1, 
-      y: -5, 
-      backgroundColor: 'rgba(100, 255, 218, 0.12)',
-      transition: { duration: 0.3, ease: 'easeOut' }
-    }
-  };
-  
-  // Certifications indicator variants
-  const certIndicatorVariants = {
     initial: { scale: 1 },
     hover: { 
       scale: 1.05,
-      transition: { duration: 0.3, ease: 'easeOut' }
+      transition: { duration: 0.2, ease: 'easeOut' }
     }
   };
   
-  // Certification item variants with staggered children
+  // Simplified certification list variants
   const certListVariants = {
     hidden: { opacity: 0 },
     visible: { 
       opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
+      transition: { staggerChildren: 0.05 }
     }
   };
   
   const certItemVariants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0, y: 10 },
     visible: { 
       opacity: 1, 
       y: 0,
-      transition: { 
-        duration: 0.5,
-        ease: 'easeOut'
-      }
-    },
-    hover: {
-      y: -5,
       transition: { duration: 0.3, ease: 'easeOut' }
     }
   };
   
   return (
     <motion.div 
-      className="education-card-wrapper" 
+      className="education-card-wrapper education-card-wrapper--compact" 
       data-testid="education-card"
       variants={animationEnabled ? cardWrapperVariants : null}
       initial="hidden"
       animate="visible"
     >
-      <Card className="education-card" shadow>
+      <Card className="education-card education-card--compact" shadow>
         <motion.div 
-          className="education-card-inner"
-          variants={animationEnabled ? cardInnerVariants : null}
+          className="education-card-inner education-card-inner--compact"
+          variants={animationEnabled ? cardHoverVariants : null}
           initial="initial"
           whileHover="hover"
         >
-          {/* Left side - Education Icon with accent background */}
-          <div className="education-card-icon-column">
+          {/* Compact Left side - Education Icon */}
+          <div className="education-card-icon-column education-card-icon-column--compact">
             <motion.div 
-              className="education-card-icon"
+              className="education-card-icon education-card-icon--compact"
               variants={animationEnabled ? iconVariants : null}
               initial="initial"
               whileHover="hover"
             >
-              <EducationIcon className="education-icon-large" />
+              <EducationIcon className="education-icon-compact" />
             </motion.div>
             
-            {/* Certification indicator */}
+            {/* Compact Certification indicator */}
             {hasCertifications && (
-              <motion.div 
-                className="certifications-indicator"
-                variants={animationEnabled ? certIndicatorVariants : null}
-                initial="initial"
-                whileHover="hover"
-              >
-                <span className="cert-count">{education.certifications.length}</span>
-                <span className="cert-label">Certifications</span>
-              </motion.div>
+              <div className="certifications-indicator certifications-indicator--compact">
+                <span className="cert-count cert-count--compact">{education.certifications.length}</span>
+                <span className="cert-label cert-label--compact">Certs</span>
+              </div>
             )}
           </div>
           
-          {/* Right side - Content Container */}
-          <div className="education-content">
-            {/* School/University Header */}
-            <div className="education-header">
-              <SchoolHeader schoolName={education.schoolName} />
-            </div>
-            
-            {/* Academic Information Panel */}
-            <div className="education-details-panel">
-              {/* Degree Information */}
-              <div className="degree-container">
-                <DegreeInfo degree={education.degree} />
-              </div>
-              
-              {/* Fields of Study (Major/Minor) */}
-              <div className="fields-container">
-                <FieldsOfStudy major={education.major} minor={education.minor} />
-              </div>
-              
-              {/* Graduation Date */}
-              <div className="graduation-date-container">
-                <DateChip date={education.duration} className="graduation-date-chip" />
+          {/* Compact Right side - Content Container */}
+          <div className="education-content education-content--compact">
+            {/* Inline School and Date Header */}
+            <div className="education-header education-header--compact">
+              <div className="education-header-content">
+                <SchoolHeader schoolName={education.schoolName} className="school-header--compact" />
+                <DateChip date={education.duration} className="graduation-date-chip graduation-date-chip--compact" />
               </div>
             </div>
             
-            {/* Always visible Certifications Panel */}
+            {/* Compact Academic Information Panel */}
+            <div className="education-details-panel education-details-panel--compact">
+              {/* Inline Degree and Fields */}
+              <div className="academic-info-row">
+                <div className="degree-container degree-container--compact">
+                  <DegreeInfo degree={education.degree} className="degree-info--compact" />
+                </div>
+                <div className="fields-container fields-container--compact">
+                  <FieldsOfStudy major={education.major} minor={education.minor} className="fields-of-study--compact" />
+                </div>
+              </div>
+            </div>
+            
+            {/* Compact Certifications Panel */}
             {hasCertifications && (
               <motion.div 
-                id="certifications-panel" 
-                className="integrated-certifications-panel"
+                className="integrated-certifications-panel integrated-certifications-panel--compact"
                 variants={animationEnabled ? slideUpVariants : null}
                 initial="hidden"
                 animate="visible"
               >
-                <div className="certifications-header">
-                  <h4 className="certifications-title">Professional Certifications</h4>
+                <div className="certifications-header certifications-header--compact">
+                  <h5 className="certifications-title certifications-title--compact">Certifications</h5>
                 </div>
                 <motion.div 
-                  className="certifications-list"
+                  className="certifications-list certifications-list--compact"
                   variants={animationEnabled ? certListVariants : null}
                   initial="hidden"
                   animate="visible"
                 >
                   {education.certifications.map((cert, i) => (
                     <motion.div 
-                      className={`certification-item certification-item-${i}`} 
+                      className="certification-item certification-item--compact" 
                       key={`cert-${i}`}
                       variants={animationEnabled ? certItemVariants : null}
-                      whileHover="hover"
                     >
                       <CertificationBadge 
                         name={cert.name} 
                         issuer={cert.issuer}
                         date={cert.date}
                         credentialId={cert.credentialId}
+                        className="certification-badge--compact"
                       />
                     </motion.div>
                   ))}

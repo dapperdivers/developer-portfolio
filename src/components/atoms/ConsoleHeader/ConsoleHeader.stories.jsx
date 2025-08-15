@@ -78,6 +78,46 @@ const meta = {
         type: { summary: 'string' },
         defaultValue: { summary: 'undefined' },
       }
+    },
+    interactive: {
+      control: 'boolean',
+      description: 'Enable interactive input mode',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      }
+    },
+    placeholder: {
+      control: 'text',
+      description: 'Placeholder text for interactive input',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: '""' },
+      }
+    },
+    showHint: {
+      control: 'boolean',
+      description: 'Show interactive hint on hover',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'true' },
+      }
+    },
+    hintText: {
+      control: 'text',
+      description: 'Custom hint text',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: '"Type a command..."' },
+      }
+    },
+    onCommand: {
+      action: 'command-executed',
+      description: 'Callback function when command is executed',
+      table: {
+        type: { summary: 'function' },
+        defaultValue: { summary: 'undefined' },
+      }
     }
   }
 };
@@ -285,5 +325,158 @@ export const CustomStyling = {
         />
       </ConsoleContainer>
     </div>
+  )
+};
+
+// Interactive Console - New Enhanced Features
+export const InteractiveBasic = {
+  args: {
+    prompt: 'user@portfolio:~$',
+    interactive: true,
+    placeholder: 'Try typing: help, ls, or pwd',
+    variant: 'security',
+    showHint: true,
+    hintText: 'Type a command and press Enter'
+  },
+  render: (args) => (
+    <ConsoleContainer>
+      <div style={{ marginBottom: '1rem' }}>
+        <h4 style={{ color: 'var(--color-text-muted)', marginBottom: '0.5rem' }}>
+          Interactive Console - Hover and Click to Interact
+        </h4>
+        <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.875rem' }}>
+          This console features enhanced hover effects, interactive hints, and responsive cursor animations.
+        </p>
+      </div>
+      <ConsoleHeader {...args} />
+    </ConsoleContainer>
+  )
+};
+
+// Interactive States Showcase
+export const InteractiveStates = {
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+      <div>
+        <h4 style={{ marginBottom: '1rem', color: 'var(--color-text-muted)' }}>
+          Security Variant - Enhanced Glow Effects
+        </h4>
+        <ConsoleContainer>
+          <ConsoleHeader 
+            prompt="security@terminal:~$"
+            interactive={true}
+            placeholder="Enter security command..."
+            variant="security"
+            showHint={true}
+            hintText="Security console ready"
+            onCommand={(cmd) => console.log('Security command:', cmd)}
+          />
+        </ConsoleContainer>
+      </div>
+      
+      <div>
+        <h4 style={{ marginBottom: '1rem', color: 'var(--color-text-muted)' }}>
+          Terminal Variant - Classic Terminal Feel
+        </h4>
+        <ConsoleContainer>
+          <ConsoleHeader 
+            prompt="dev@localhost:~$"
+            interactive={true}
+            placeholder="npm, git, docker commands..."
+            variant="terminal"
+            showHint={true}
+            hintText="Ready for your command"
+            onCommand={(cmd) => console.log('Terminal command:', cmd)}
+          />
+        </ConsoleContainer>
+      </div>
+      
+      <div>
+        <h4 style={{ marginBottom: '1rem', color: 'var(--color-text-muted)' }}>
+          Custom Hint Text Example
+        </h4>
+        <ConsoleContainer>
+          <ConsoleHeader 
+            prompt="admin@server:~#"
+            interactive={true}
+            placeholder="systemctl, service, ps..."
+            variant="security"
+            showHint={true}
+            hintText="Admin commands only"
+            onCommand={(cmd) => console.log('Admin command:', cmd)}
+          />
+        </ConsoleContainer>
+      </div>
+    </div>
+  )
+};
+
+// Hover and Focus Demonstration
+export const HoverFocusDemo = {
+  render: () => (
+    <ConsoleContainer>
+      <div style={{ marginBottom: '2rem' }}>
+        <h4 style={{ color: 'var(--color-text-muted)', marginBottom: '1rem' }}>
+          Enhanced Interaction Feedback
+        </h4>
+        <div style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)', marginBottom: '1rem' }}>
+          <strong>Try these interactions:</strong>
+          <ul style={{ marginTop: '0.5rem', paddingLeft: '1.5rem' }}>
+            <li>Hover over the console to see the breathing effect and hint</li>
+            <li>Click anywhere on the console to focus the input</li>
+            <li>Start typing to see enhanced cursor animations</li>
+            <li>Watch the glow effects when focused vs unfocused</li>
+          </ul>
+        </div>
+      </div>
+      
+      <ConsoleHeader 
+        prompt="demo@interactive:~$"
+        interactive={true}
+        placeholder="Experience the enhanced interactivity..."
+        variant="security"
+        showHint={true}
+        hintText="Click me and start typing!"
+        onCommand={(cmd) => {
+          console.log('Demo command executed:', cmd);
+          alert(`Command executed: ${cmd}`);
+        }}
+      />
+    </ConsoleContainer>
+  )
+};
+
+// Accessibility and Reduced Motion
+export const AccessibilityEnhanced = {
+  render: () => (
+    <ConsoleContainer>
+      <div style={{ marginBottom: '2rem' }}>
+        <h4 style={{ color: 'var(--color-text-muted)', marginBottom: '1rem' }}>
+          Accessibility Features
+        </h4>
+        <div style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)', marginBottom: '1rem' }}>
+          <p><strong>Enhanced Accessibility:</strong></p>
+          <ul style={{ marginTop: '0.5rem', paddingLeft: '1.5rem' }}>
+            <li>Focus outlines for keyboard navigation</li>
+            <li>Screen reader optimized ARIA labels</li>
+            <li>Respects prefers-reduced-motion settings</li>
+            <li>Enhanced focus states for better visibility</li>
+            <li>Semantic HTML structure</li>
+          </ul>
+        </div>
+      </div>
+      
+      <ConsoleHeader 
+        prompt="accessible@terminal:~$"
+        interactive={true}
+        placeholder="Fully accessible console input"
+        variant="security"
+        showHint={true}
+        hintText="Accessible by design"
+        ariaDescription="Enhanced accessible terminal console with interactive input and visual feedback"
+        id="accessible-console"
+        onCommand={(cmd) => console.log('Accessible command:', cmd)}
+      />
+    </ConsoleContainer>
   )
 };

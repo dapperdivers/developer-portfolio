@@ -10,6 +10,57 @@
   border-radius: var(--border-radius-md);
   overflow: hidden;
   margin-bottom: var(--spacing-5);
+  transition: var(--transition-base);
+  position: relative;
+}
+
+/* Subtle breathing animation to draw attention */
+.console-header::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, transparent, rgba(var(--color-cyan-rgb), 0.1), transparent);
+  border-radius: var(--border-radius-md);
+  z-index: -1;
+  opacity: 0;
+  transition: opacity var(--transition-slow);
+}
+
+/* Interactive console styles - FIXED: Removed transform that causes disappearing */
+.console-header-interactive {
+  cursor: text;
+}
+
+.console-header-interactive:hover {
+  /* REMOVED: transform: translateY(-1px); - This was causing the disappearing issue */
+  box-shadow: 0 8px 25px rgba(var(--color-cyan-rgb), 0.15);
+}
+
+.console-header-interactive:hover::before {
+  opacity: 1;
+}
+
+.console-header-interactive .console-content {
+  cursor: text;
+}
+
+/* Hint animation for first-time users */
+.console-header-interactive .console-content {
+  animation: subtle-pulse 3s ease-in-out infinite;
+  animation-delay: 2s;
+}
+
+.console-header-interactive:hover .console-content,
+.console-header-interactive .console-content:focus-within {
+  animation: none;
+}
+
+@keyframes subtle-pulse {
+  0%, 100% { background-color: var(--color-navy); }
+  50% { background-color: rgba(var(--color-cyan-rgb), 0.05); }
 }
 
 /* Terminal header/title bar */
@@ -44,6 +95,25 @@
   white-space: nowrap;
   overflow-x: auto;
   overflow-y: hidden;
+  transition: var(--transition-base);
+  position: relative;
+}
+
+.console-content::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--color-cyan), transparent);
+  opacity: 0;
+  transition: opacity var(--transition-base);
+}
+
+.console-header-interactive .console-content:hover::after,
+.console-header-interactive .console-content:focus-within::after {
+  opacity: 0.6;
 }
 
 /* Prompt styles */
@@ -52,6 +122,7 @@
   margin-right: var(--spacing-2);
   font-weight: var(--font-weight-medium);
   user-select: none;
+  flex-shrink: 0;
 }
 
 /* Command styles */
@@ -60,21 +131,78 @@
   font-weight: var(--font-weight-normal);
 }
 
-/* Cursor styles - Animation now handled by framer-motion */
-.console-cursor {
-  display: inline-block;
-  width: 8px;
-  height: 16px;
-  background-color: var(--color-info);
-  /* animation removed - now handled by framer-motion */
-  vertical-align: middle;
-  margin-left: var(--spacing-1);
+/* Interactive input container */
+.console-input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
 }
 
-/* 
- * Cursor blink animation keyframes removed
- * Blinking is now implemented with framer-motion variants
- */
+/* Interactive input styles */
+.console-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--color-text);
+  font-family: var(--font-family-jetbrains);
+  font-size: inherit;
+  font-weight: var(--font-weight-normal);
+  letter-spacing: inherit;
+  line-height: inherit;
+  flex-grow: 1;
+  min-width: 0;
+  padding: 0;
+  margin: 0;
+  transition: var(--transition-fast);
+}
+
+.console-input::placeholder {
+  color: var(--color-text-secondary);
+  opacity: 0.5;
+  transition: var(--transition-fast);
+}
+
+.console-input:hover::placeholder {
+  opacity: 0.7;
+  color: var(--color-cyan);
+}
+
+.console-input:focus::placeholder {
+  opacity: 0.3;
+  color: var(--color-cyan);
+}
+
+.console-input:focus {
+  text-shadow: 0 0 2px rgba(var(--color-cyan-rgb), 0.3);
+}
+
+/* ENHANCED CURSOR STYLES - Now more visible and refined */
+.console-cursor {
+  display: inline-block;
+  width: 10px; /* Slightly wider for better visibility */
+  height: 18px; /* Slightly taller for better visibility */
+  background-color: var(--color-info);
+  vertical-align: middle;
+  margin-left: var(--spacing-1);
+  flex-shrink: 0;
+  transition: var(--transition-fast);
+  box-shadow: 0 0 6px rgba(var(--color-info-rgb), 0.6); /* Enhanced glow */
+  border-radius: 1px; /* Slight rounding for elegance */
+}
+
+.console-cursor-input {
+  margin-left: 0;
+  margin-right: 2px;
+}
+
+/* Enhanced cursor visibility on focus */
+.console-header-interactive .console-content:focus-within .console-cursor {
+  background-color: var(--color-cyan);
+  box-shadow: 0 0 10px rgba(var(--color-cyan-rgb), 0.8);
+  width: 12px; /* Wider when focused */
+  height: 20px; /* Taller when focused */
+}
 
 /* Visual variants */
 .console-header-security .console-header-top {
@@ -95,14 +223,58 @@
   backdrop-filter: blur(10px);
 }
 
+.console-header-security:hover .console-content {
+  background-color: rgba(var(--color-navy-rgb), 0.9);
+  box-shadow: 
+    inset 0 0 15px rgba(var(--color-cyan-rgb), 0.15),
+    0 0 20px rgba(var(--color-cyan-rgb), 0.1);
+}
+
+.console-header-security .console-content:focus-within {
+  background-color: rgba(var(--color-navy-rgb), 0.85);
+  border-color: var(--color-cyan);
+  box-shadow: 
+    inset 0 0 20px rgba(var(--color-cyan-rgb), 0.2),
+    0 0 25px rgba(var(--color-cyan-rgb), 0.15);
+}
+
 .console-header-security .console-prompt {
   color: var(--color-cyan);
   text-shadow: 0 0 5px rgba(var(--color-cyan-rgb), 0.5);
+  transition: var(--transition-fast);
 }
 
-.console-header-security .console-command {
+.console-header-security:hover .console-prompt {
+  text-shadow: 0 0 8px rgba(var(--color-cyan-rgb), 0.7);
+}
+
+.console-header-security .console-content:focus-within .console-prompt {
+  text-shadow: 0 0 10px rgba(var(--color-cyan-rgb), 0.9);
+}
+
+.console-header-security .console-command,
+.console-header-security .console-input {
   color: var(--color-text);
   text-shadow: 0 0 2px rgba(var(--color-text-rgb), 0.3);
+}
+
+.console-header-security .console-input::placeholder {
+  color: var(--color-text-secondary);
+  text-shadow: none;
+  opacity: 0.5;
+  transition: var(--transition-fast);
+}
+
+.console-header-security .console-input:hover::placeholder {
+  color: var(--color-cyan);
+  opacity: 0.7;
+  text-shadow: 0 0 3px rgba(var(--color-cyan-rgb), 0.3);
+}
+
+.console-header-security .console-input:focus::placeholder {
+  color: var(--color-cyan);
+  opacity: 0.3;
+  text-shadow: 0 0 5px rgba(var(--color-cyan-rgb), 0.5);
 }
 
 .console-header-security .console-cursor {
@@ -124,38 +296,52 @@
   border-color: var(--color-info);
 }
 
+.console-header-terminal:hover .console-content {
+  background-color: rgba(var(--color-info-rgb), 0.02);
+  box-shadow: 0 0 15px rgba(var(--color-info-rgb), 0.1);
+}
+
+.console-header-terminal .console-content:focus-within {
+  background-color: rgba(var(--color-info-rgb), 0.05);
+  border-color: var(--color-info);
+  box-shadow: 0 0 20px rgba(var(--color-info-rgb), 0.15);
+}
+
 .console-header-terminal .console-prompt {
   color: var(--color-info);
+  transition: var(--transition-fast);
+}
+
+.console-header-terminal:hover .console-prompt {
+  text-shadow: 0 0 5px rgba(var(--color-info-rgb), 0.5);
+}
+
+.console-header-terminal .console-content:focus-within .console-prompt {
+  text-shadow: 0 0 8px rgba(var(--color-info-rgb), 0.7);
+}
+
+.console-header-terminal .console-input {
+  color: var(--color-text);
+}
+
+.console-header-terminal .console-input::placeholder {
+  color: var(--color-text-secondary);
+  opacity: 0.5;
+  transition: var(--transition-fast);
+}
+
+.console-header-terminal .console-input:hover::placeholder {
+  color: var(--color-info);
+  opacity: 0.7;
+}
+
+.console-header-terminal .console-input:focus::placeholder {
+  color: var(--color-info);
+  opacity: 0.3;
 }
 
 .console-header-terminal .console-cursor {
   background-color: var(--color-info);
-}
-
-/* Window control dots (macOS style) */
-.terminal-controls {
-  margin-right: var(--spacing-3);
-  display: flex;
-  align-items: center;
-}
-
-.terminal-circle {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  margin-right: 6px;
-}
-
-.terminal-circle.red {
-  background-color: var(--color-danger);
-}
-
-.terminal-circle.yellow {
-  background-color: var(--color-warning);
-}
-
-.terminal-circle.green {
-  background-color: var(--color-success);
 }
 
 /* Responsive styles */
@@ -166,21 +352,94 @@
   }
   
   .console-cursor {
-    height: 14px;
-    width: 7px;
+    height: 16px;
+    width: 8px;
   }
   
-  .terminal-circle {
+  .console-header-interactive .console-content:focus-within .console-cursor {
+    height: 18px;
     width: 10px;
-    height: 10px;
-    margin-right: 4px;
   }
+}
+
+/* Interactive hint for users */
+.console-header-interactive[data-hint]::after {
+  content: attr(data-hint);
+  position: absolute;
+  top: -8px;
+  right: var(--spacing-4);
+  font-size: var(--font-size-xs);
+  color: var(--color-cyan);
+  background: var(--color-navy);
+  padding: var(--spacing-1) var(--spacing-2);
+  border-radius: var(--border-radius-sm);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all var(--transition-slow);
+  pointer-events: none;
+  font-family: var(--font-family-jetbrains);
+  letter-spacing: var(--letter-spacing-wide);
+  z-index: 10;
+  border: 1px solid rgba(var(--color-cyan-rgb), 0.3);
+  box-shadow: 0 2px 8px rgba(var(--color-cyan-rgb), 0.1);
+}
+
+.console-header-interactive:hover::after {
+  opacity: 0.8;
+  transform: translateY(0);
+}
+
+.console-header-interactive .console-content:focus-within + * ~ *::after,
+.console-header-interactive.console-header-active::after {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+/* Loading state indicator */
+.console-header-loading .console-content {
+  position: relative;
+  overflow: hidden;
+}
+
+.console-header-loading .console-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(var(--color-cyan-rgb), 0.1), transparent);
+  animation: loading-sweep 2s infinite;
+}
+
+@keyframes loading-sweep {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+/* Enhanced accessibility for focus states */
+.console-header:focus-within {
+  outline: 2px solid var(--color-cyan);
+  outline-offset: 2px;
 }
 
 /* Reduced motion preferences - No longer needed as handled by AnimationContext */
 @media (prefers-reduced-motion: reduce) {
   .console-cursor {
     /* No CSS animations to disable - framer-motion handles reduced motion preferences */
+  }
+  
+  .console-header-interactive .console-content {
+    animation: none;
+  }
+  
+  .console-header::before,
+  .console-header-interactive::after {
+    transition: none;
+  }
+  
+  .console-header-loading .console-content::before {
+    animation: none;
   }
 }
 

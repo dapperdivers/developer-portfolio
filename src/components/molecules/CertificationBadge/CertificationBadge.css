@@ -1,6 +1,6 @@
 /**
  * Certification Badge Component Styles
- * Enhanced with modern visual styling
+ * Enhanced with modern visual styling and compact variants
  * Animations are now handled by framer-motion through the AnimationContext
  */
 
@@ -20,6 +20,14 @@
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.08);
   position: relative;
   overflow: hidden;
+}
+
+/* Compact variant with reduced padding and smaller border radius */
+.certification-badge--compact {
+  padding: var(--spacing-2) var(--spacing-3);
+  border-radius: var(--border-radius-md);
+  border-left-width: 2px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
 }
 
 .certification-badge::before {
@@ -45,7 +53,13 @@
     rgba(100, 255, 218, 0.05)
   );
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(100, 255, 218, 0.1);
-  border-left-width: a5px;
+  border-left-width: 5px;
+}
+
+/* Compact variant hover with reduced shadow */
+.certification-badge--compact:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(100, 255, 218, 0.08);
+  border-left-width: 3px;
 }
 
 .certification-icon {
@@ -65,15 +79,34 @@
   /* Transition removed - now handled by framer-motion */
 }
 
+/* Compact variant with smaller icon */
+.certification-badge--compact .certification-icon {
+  width: 32px;
+  height: 32px;
+  margin-right: var(--spacing-2);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
+}
+
 .certification-badge:hover .certification-icon {
   /* Transform removed - now handled by framer-motion */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Compact variant hover with reduced shadow */
+.certification-badge--compact:hover .certification-icon {
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
 }
 
 .certification-icon svg {
   width: 18px;
   height: 18px;
   filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.2));
+}
+
+/* Compact variant with smaller icon SVG */
+.certification-badge--compact .certification-icon svg {
+  width: 15px;
+  height: 15px;
 }
 
 .certification-details {
@@ -90,6 +123,12 @@
   transition: color 0.3s ease;
 }
 
+/* Compact variant with smaller font and reduced margin */
+.certification-badge--compact .certification-name {
+  font-size: var(--font-size-sm);
+  margin-bottom: 2px;
+}
+
 .certification-badge:hover .certification-name {
   color: var(--color-primary);
 }
@@ -101,11 +140,22 @@
   margin-top: 0;
 }
 
+/* Compact variant with smaller font and reduced margin */
+.certification-badge--compact .certification-issuer {
+  font-size: var(--font-size-xs);
+  margin-bottom: var(--spacing-1);
+}
+
 .certification-meta {
   display: flex;
   flex-wrap: wrap;
   gap: var(--spacing-2);
   align-items: center;
+}
+
+/* Compact variant with reduced gap */
+.certification-badge--compact .certification-meta {
+  gap: var(--spacing-1);
 }
 
 .certification-date {
@@ -117,6 +167,12 @@
   display: inline-flex;
   align-items: center;
   font-weight: var(--font-weight-medium);
+}
+
+/* Compact variant with smaller padding and font */
+.certification-badge--compact .certification-date {
+  font-size: 0.65rem;
+  padding: 2px 6px;
 }
 
 .certification-id {
@@ -131,6 +187,12 @@
   transition: background-color 0.3s ease;
 }
 
+/* Compact variant with smaller padding and font */
+.certification-badge--compact .certification-id {
+  font-size: 0.65rem;
+  padding: 2px 6px;
+}
+
 .certification-badge:hover .certification-id {
   background-color: rgba(255, 255, 255, 0.1);
 }
@@ -142,9 +204,21 @@
   opacity: 0.8;
 }
 
+/* Compact variant with smaller icon */
+.certification-badge--compact .id-icon {
+  width: 10px;
+  height: 10px;
+  margin-right: 3px;
+}
+
 .id-text {
   letter-spacing: 0.5px;
   font-family: var(--font-family-mono);
+}
+
+/* Compact variant with tighter letter spacing */
+.certification-badge--compact .id-text {
+  letter-spacing: 0.3px;
 }
 
 /* Responsive adjustments */
@@ -153,10 +227,20 @@
     padding: var(--spacing-2) var(--spacing-3);
   }
   
+  .certification-badge--compact {
+    padding: var(--spacing-1) var(--spacing-2);
+  }
+  
   .certification-icon {
     width: 32px;
     height: 32px;
     margin-right: var(--spacing-2);
+  }
+  
+  .certification-badge--compact .certification-icon {
+    width: 28px;
+    height: 28px;
+    margin-right: var(--spacing-1);
   }
   
   .certification-icon svg {
@@ -164,17 +248,61 @@
     height: 16px;
   }
   
+  .certification-badge--compact .certification-icon svg {
+    width: 13px;
+    height: 13px;
+  }
+  
   .certification-name {
     font-size: var(--font-size-sm);
+  }
+  
+  .certification-badge--compact .certification-name {
+    font-size: var(--font-size-xs);
   }
   
   .certification-meta {
     gap: var(--spacing-1);
   }
   
+  .certification-badge--compact .certification-meta {
+    gap: 4px;
+  }
+  
   .certification-date,
   .certification-id {
     padding: 2px 6px;
+  }
+  
+  .certification-badge--compact .certification-date,
+  .certification-badge--compact .certification-id {
+    padding: 1px 4px;
+    font-size: 0.6rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .certification-badge--compact {
+    padding: var(--spacing-1);
+  }
+  
+  .certification-badge--compact .certification-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 6px;
+  }
+  
+  .certification-badge--compact .certification-icon svg {
+    width: 12px;
+    height: 12px;
+  }
+  
+  .certification-badge--compact .certification-name {
+    font-size: 0.75rem;
+  }
+  
+  .certification-badge--compact .certification-issuer {
+    font-size: 0.65rem;
   }
 }
 

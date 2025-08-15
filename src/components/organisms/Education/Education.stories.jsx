@@ -1,34 +1,89 @@
 import React from 'react';
 import Education from './Education';
-import { expect, within } from 'storybook/test';
+import { expect, within } from '@storybook/test';
 import PortfolioContext from '@context/PortfolioContext';
+
+// Mock portfolio data for stories
+const mockEducationData = [
+  {
+    schoolName: "CyberSec University",
+    degree: "Master of Science",
+    major: "Cybersecurity",
+    minor: "Computer Networks",
+    duration: "2020 - 2022",
+    certifications: [
+      {
+        name: "CISSP",
+        issuer: "ISC2",
+        date: "2022",
+        credentialId: "CSP-12345"
+      },
+      {
+        name: "CEH",
+        issuer: "EC-Council",
+        date: "2021",
+        credentialId: "CEH-67890"
+      }
+    ]
+  },
+  {
+    schoolName: "Tech Institute",
+    degree: "Bachelor of Science",
+    major: "Computer Science",
+    minor: "Mathematics",
+    duration: "2016 - 2020",
+    certifications: [
+      {
+        name: "CompTIA Security+",
+        issuer: "CompTIA",
+        date: "2020",
+        credentialId: "COMP-11111"
+      }
+    ]
+  }
+];
 
 export default {
   title: 'Organisms/Education',
   component: Education,
   tags: ['autodocs'],
-  // No direct props since data comes from context
   parameters: {
     docs: {
       description: {
-        component: 'Education section that displays educational background and qualifications. Gets data from PortfolioContext and renders a grid of EducationCard components within a Section layout.',
+        component: 'Cybersecurity-themed Education section that displays educational background and professional credentials. Features terminal aesthetics, animated cyber grid backgrounds, and security status indicators.',
       },
     },
     a11y: {
       config: {
         rules: [
           { id: 'heading-order', enabled: true },
-          { id: 'landmark-unique', enabled: true }
+          { id: 'landmark-unique', enabled: true },
+          { id: 'color-contrast', enabled: true }
         ],
       },
     },
+    layout: 'fullscreen',
   },
+  decorators: [
+    (Story) => (
+      <div style={{ minHeight: '100vh', background: 'var(--color-navy)' }}>
+        <Story />
+      </div>
+    ),
+  ],
 };
-
 
 // Helper function to create a context with specific education data
 const createContextWithEducation = (educationData) => {
-  const customContext = { ...mockPortfolioData, educationInfo: educationData };
+  const customContext = { 
+    educationInfo: educationData,
+    // Add other required context properties with defaults
+    personalInfo: {},
+    experience: [],
+    projects: [],
+    skills: {},
+    contact: {}
+  };
   return (Story) => (
     <PortfolioContext.Provider value={customContext}>
       <Story />
@@ -39,126 +94,194 @@ const createContextWithEducation = (educationData) => {
 // Basic template
 const Template = () => <Education />;
 
-// Default story with multiple education items
-export const WithMultipleItems = Template.bind({});
-WithMultipleItems.decorators = [createContextWithEducation(mockPortfolioData.educationInfo)];
-WithMultipleItems.play = async ({ canvasElement, step }) => {
+/**
+ * Default story showcasing the cybersecurity-themed education section
+ * with multiple education items and certifications
+ */
+export const CybersecurityTheme = Template.bind({});
+CybersecurityTheme.decorators = [createContextWithEducation(mockEducationData)];
+CybersecurityTheme.parameters = {
+  docs: {
+    description: {
+      story: 'The main cybersecurity-themed education section with terminal aesthetics, animated cyber grid background, security status indicator, and terminal output simulation.',
+    }
+  }
+};
+CybersecurityTheme.play = async ({ canvasElement, step }) => {
   const canvas = within(canvasElement);
   
-  await step('Check section title', () => {
-    expect(canvas.getByText('Education')).toBeInTheDocument();
+  await step('Check section title and cybersecurity theme', () => {
+    expect(canvas.getByText('Education & Certifications')).toBeInTheDocument();
+    expect(canvas.getByText(/Academic foundation and professional credentials/)).toBeInTheDocument();
+  });
+  
+  await step('Check security status indicator', () => {
+    expect(canvas.getByText('CREDENTIALS VERIFIED')).toBeInTheDocument();
   });
   
   await step('Check education cards', () => {
-    // Should have all education items from mockData
-    expect(canvas.getAllByText(/University of|Coding Academy|Online University/i).length).toBeGreaterThan(0);
+    expect(canvas.getByText('CyberSec University')).toBeInTheDocument();
+    expect(canvas.getByText('Tech Institute')).toBeInTheDocument();
+  });
+  
+  await step('Check terminal output simulation', () => {
+    expect(canvas.getByText('validate_credentials --all')).toBeInTheDocument();
+    expect(canvas.getByText('Academic credentials: VALID')).toBeInTheDocument();
+    expect(canvas.getByText('Security clearance: VERIFIED')).toBeInTheDocument();
   });
 };
 
 /**
- * This story demonstrates how the Education component appears when there's only
- * a single education item. The grid layout should adapt appropriately.
+ * Story demonstrating the education section with a single education item
  */
-export const WithSingleItem = Template.bind({});
-WithSingleItem.decorators = [
-  createContextWithEducation([mockPortfolioData.educationInfo[0]])
+export const SingleEducation = Template.bind({});
+SingleEducation.decorators = [
+  createContextWithEducation([mockEducationData[0]])
 ];
-WithSingleItem.play = async ({ canvasElement, step }) => {
+SingleEducation.parameters = {
+  docs: {
+    description: {
+      story: 'Shows how the cybersecurity-themed layout adapts when there\'s only one education item. The grid layout adjusts appropriately while maintaining the professional cyber aesthetic.',
+    }
+  }
+};
+SingleEducation.play = async ({ canvasElement, step }) => {
   const canvas = within(canvasElement);
   
   await step('Check single education item', () => {
-    expect(canvas.getByText('University of Technology')).toBeInTheDocument();
-    expect(canvas.queryByText('Coding Academy')).not.toBeInTheDocument();
+    expect(canvas.getByText('CyberSec University')).toBeInTheDocument();
+    expect(canvas.queryByText('Tech Institute')).not.toBeInTheDocument();
   });
-};
-
-/**
- * This story demonstrates how the Education component handles an empty state
- * when no education data is available.
- */
-export const EmptyState = Template.bind({});
-EmptyState.decorators = [createContextWithEducation([])];
-EmptyState.play = async ({ canvasElement, step }) => {
-  const canvas = within(canvasElement);
   
-  await step('Check empty state', () => {
-    // The section title should still be visible
-    expect(canvas.getByText('Education')).toBeInTheDocument();
-    
-    // But no education cards should be rendered
-    expect(canvas.queryByText('University of Technology')).not.toBeInTheDocument();
+  await step('Check certifications are displayed', () => {
+    expect(canvas.getByText('CISSP')).toBeInTheDocument();
+    expect(canvas.getByText('CEH')).toBeInTheDocument();
   });
 };
 
 /**
- * ## Component Usage
- * 
- * ```jsx
- * import Education from 'containers/Education';
- * import PortfolioContext from 'context/PortfolioContext';
- * 
- * function App() {
- *   const portfolioData = {
- *     educationInfo: [
- *       {
- *         schoolName: "University Name",
- *         subHeader: "Degree",
- *         duration: "2015 - 2019",
- *         desc: "Description",
- *         descBullets: ["Achievement 1", "Achievement 2"]
- *       }
- *     ]
- *   };
- *   
- *   return (
- *     <PortfolioContext.Provider value={portfolioData}>
- *       <Education />
- *     </PortfolioContext.Provider>
- *   );
- * }
- * ```
- * 
- * ## Context Requirements
- * 
- * This component requires the following data in PortfolioContext:
- * 
- * | Context Path | Type | Description |
- * |------|------|-------------|
- * | educationInfo | array | Array of education items with schoolName, subHeader, duration, desc, and descBullets |
- * 
- * ## Accessibility
- * 
- * This component follows these accessibility best practices:
- * - Uses semantic heading hierarchy
- * - Provides visible section title
- * - Uses appropriate landmark regions
- * - Ensures proper keyboard navigation through education items
+ * Story showing the empty state with terminal-style error display
  */
-
-// Mobile view to demonstrate responsive behavior
-export const Mobile = Template.bind({});
-Mobile.decorators = [
-  createContextWithEducation(mockPortfolioData.educationInfo),
-  withViewport('mobile')
-];
-Mobile.parameters = {
+export const EmptyStateTerminal = Template.bind({});
+EmptyStateTerminal.decorators = [createContextWithEducation([])];
+EmptyStateTerminal.parameters = {
   docs: {
     description: {
-      story: 'The Education section in mobile view, showing how the layout adapts to smaller screens.'
+      story: 'Demonstrates the cybersecurity-themed empty state when no education data is available. Features a terminal window with realistic command-line interface showing an error state.',
+    }
+  }
+};
+EmptyStateTerminal.play = async ({ canvasElement, step }) => {
+  const canvas = within(canvasElement);
+  
+  await step('Check empty state terminal', () => {
+    // The section title should still be visible
+    expect(canvas.getByText('Education & Certifications')).toBeInTheDocument();
+    
+    // Check for terminal window elements
+    expect(canvas.getByText('education_data.log')).toBeInTheDocument();
+    expect(canvas.getByText('ls -la education/')).toBeInTheDocument();
+    expect(canvas.getByText('No education data found')).toBeInTheDocument();
+  });
+  
+  await step('Check terminal controls', () => {
+    // Check for terminal window controls (dots)
+    const terminalWindow = canvas.getByText('education_data.log').closest('.terminal-window');
+    expect(terminalWindow).toBeInTheDocument();
+  });
+};
+
+/**
+ * Story showcasing education without certifications
+ */
+export const WithoutCertifications = Template.bind({});
+WithoutCertifications.decorators = [
+  createContextWithEducation([
+    {
+      schoolName: "Basic University",
+      degree: "Bachelor of Arts",
+      major: "Liberal Arts",
+      duration: "2015 - 2019"
+      // No certifications
+    }
+  ])
+];
+WithoutCertifications.parameters = {
+  docs: {
+    description: {
+      story: 'Shows how the education cards adapt when there are no professional certifications, focusing purely on academic credentials.',
     }
   }
 };
 
-// Tablet view
-export const Tablet = Template.bind({});
-Tablet.decorators = [
-  createContextWithEducation(mockPortfolioData.educationInfo),
-  withViewport('tablet')
+/**
+ * Story demonstrating multiple education items for testing layout
+ */
+export const MultipleEducationItems = Template.bind({});
+MultipleEducationItems.decorators = [
+  createContextWithEducation([
+    ...mockEducationData,
+    {
+      schoolName: "Advanced Cyber Academy",
+      degree: "Certificate",
+      major: "Penetration Testing",
+      duration: "2023",
+      certifications: [
+        {
+          name: "OSCP",
+          issuer: "Offensive Security",
+          date: "2023",
+          credentialId: "OS-54321"
+        }
+      ]
+    }
+  ])
 ];
-Tablet.parameters = {
+MultipleEducationItems.parameters = {
   docs: {
     description: {
-      story: 'The Education section in tablet view, showing the responsive grid layout.'
+      story: 'Tests the grid layout with multiple education items to ensure proper spacing and responsive behavior.',
     }
+  }
+};
+
+/**
+ * Performance testing story with reduced animations
+ */
+export const ReducedMotion = Template.bind({});
+ReducedMotion.decorators = [createContextWithEducation(mockEducationData)];
+ReducedMotion.parameters = {
+  docs: {
+    description: {
+      story: 'Tests the component with reduced motion preferences, ensuring accessibility compliance.',
+    }
+  },
+  css: `
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  `
+};
+
+/**
+ * Dark theme variant (already the default, but explicitly documented)
+ */
+export const DarkCyberTheme = Template.bind({});
+DarkCyberTheme.decorators = [createContextWithEducation(mockEducationData)];
+DarkCyberTheme.parameters = {
+  docs: {
+    description: {
+      story: 'The primary dark cybersecurity theme with navy blue backgrounds, cyan accents, and terminal aesthetics.',
+    }
+  },
+  backgrounds: {
+    default: 'dark',
+    values: [
+      { name: 'dark', value: '#0a192f' }
+    ]
   }
 };

@@ -206,7 +206,7 @@ const Skills = () => {
         id="skills"
         title="Skills"
         icon="simple-icons:apachespark"
-        className={`skills-section bg-gray-900 text-white ${!shouldAnimate ? 'reduced-motion' : ''}`}
+        className={`skills-section text-white ${!shouldAnimate ? 'reduced-motion' : ''}`}
       >
         <div className="flex flex-wrap -mx-4 items-center">
           <div className="w-full px-4 lg:w-6/12">

@@ -1,10 +1,14 @@
 /**
- * DateChip Component Styles
+ * DateChip Component Styles - Cybersecurity Theme
  * 
- * This file contains styles for the DateChip component
- * which displays dates in a stylized chip format.
+ * Professional cybersecurity-themed styling with:
+ * - Dark navy backgrounds with cyan accents
+ * - Technical typography using JetBrains Mono
+ * - Subtle grid patterns and tech-inspired effects
+ * - Enhanced readability and contrast
+ * - Professional appearance with hover animations
  * 
- * Note: Animations and transitions are now managed by framer-motion
+ * Note: Animations and transitions are managed by framer-motion
  * through the AnimationContext.
  */
 
@@ -13,99 +17,310 @@
   margin-bottom: var(--spacing-3);
   position: relative;
   z-index: 1;
-  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
 }
 
 .date-chip-inner {
-  background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary));
+  /* Cybersecurity navy background with subtle gradient */
+  background: linear-gradient(
+    135deg, 
+    rgba(var(--color-navy-rgb), 0.95) 0%, 
+    rgba(var(--color-navy-rgb), 0.9) 50%, 
+    rgba(var(--color-navy-rgb), 0.95) 100%
+  );
+  backdrop-filter: blur(15px);
   border-radius: var(--border-radius-pill);
-  padding: var(--spacing-1) var(--spacing-3);
+  padding: var(--spacing-2) var(--spacing-4);
   position: relative;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 32px;
-  /* transition removed - now handled by framer-motion */
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  /* box-shadow is now managed by framer-motion variants */
+  min-height: 36px;
+  
+  /* Professional cybersecurity border with cyan accent */
+  border: 1px solid rgba(var(--color-cyan-rgb), 0.3);
+  
+  /* Enhanced shadow with cyan glow */
+  box-shadow: 
+    0 4px 15px rgba(0, 0, 0, 0.3),
+    0 0 20px rgba(var(--color-cyan-rgb), 0.1),
+    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.1);
+}
+
+/* Subtle tech grid pattern overlay */
+.date-chip-inner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 1px,
+      rgba(var(--color-cyan-rgb), 0.02) 1px,
+      rgba(var(--color-cyan-rgb), 0.02) 2px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 1px,
+      rgba(var(--color-cyan-rgb), 0.02) 1px,
+      rgba(var(--color-cyan-rgb), 0.02) 2px
+    );
+  opacity: 0.6;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Animated scan line effect */
+.date-chip-inner::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(var(--color-cyan-rgb), 0.1),
+    transparent
+  );
+  transition: left 0.6s ease;
+  pointer-events: none;
+  z-index: 2;
 }
 
 .date-chip-text {
-  color: #000;
-  background-color: rgba(255, 255, 255, 0.85);
+  /* Professional cybersecurity text styling */
+  color: var(--color-cyan);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-bold);
+  font-family: var(--font-family-jetbrains);
   text-transform: uppercase;
   letter-spacing: 0.8px;
   position: relative;
-  z-index: 2;
-  text-shadow: none;
-  padding: 2px 10px;
-  border-radius: 3px;
+  z-index: 3;
+  text-shadow: 0 0 10px rgba(var(--color-cyan-rgb), 0.5);
+  
+  /* Subtle background for better readability */
+  background: rgba(var(--color-navy-rgb), 0.7);
+  padding: 4px 12px;
+  border-radius: 4px;
+  border: 1px solid rgba(var(--color-cyan-rgb), 0.2);
+  backdrop-filter: blur(10px);
 }
 
-/* Glowing effect */
+/* Cybersecurity glow effect */
 .date-chip-glow {
   position: absolute;
   top: -50%;
   left: -50%;
   width: 200%;
   height: 200%;
-  background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0) 70%);
-  /* opacity is now controlled by framer-motion */
-  /* transition removed - now handled by framer-motion */
+  background: radial-gradient(
+    ellipse at center, 
+    rgba(var(--color-cyan-rgb), 0.15) 0%, 
+    rgba(var(--color-cyan-rgb), 0.05) 40%,
+    transparent 70%
+  );
   pointer-events: none;
   z-index: 1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
-/* Hover effects now managed by framer-motion */
-/* .date-chip:hover .date-chip-inner {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+/* Hover effects for enhanced interactivity */
+.date-chip:hover .date-chip-inner {
+  border-color: rgba(var(--color-cyan-rgb), 0.6);
+  box-shadow: 
+    0 8px 25px rgba(0, 0, 0, 0.4),
+    0 0 30px rgba(var(--color-cyan-rgb), 0.2),
+    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.2);
+}
+
+.date-chip:hover .date-chip-inner::before {
+  background: 
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 1px,
+      rgba(var(--color-cyan-rgb), 0.06) 1px,
+      rgba(var(--color-cyan-rgb), 0.06) 2px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 1px,
+      rgba(var(--color-cyan-rgb), 0.06) 1px,
+      rgba(var(--color-cyan-rgb), 0.06) 2px
+    );
+}
+
+.date-chip:hover .date-chip-inner::after {
+  left: 100%;
+}
+
+.date-chip:hover .date-chip-text {
+  border-color: rgba(var(--color-cyan-rgb), 0.4);
+  text-shadow: 0 0 15px rgba(var(--color-cyan-rgb), 0.8);
+  background: rgba(var(--color-navy-rgb), 0.8);
 }
 
 .date-chip:hover .date-chip-glow {
   opacity: 0.8;
-  animation: rotate 2s linear infinite;
-} */
-
-/* Keyframes removed - animation now handled by framer-motion */
-/* @keyframes rotate {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-} */
+}
 
 /* Focus styles for accessibility */
 .date-chip:focus-within .date-chip-inner {
-  box-shadow: 0 0 0 2px rgba(100, 255, 218, 0.5);
   outline: none;
+  border-color: rgba(var(--color-cyan-rgb), 0.8);
+  box-shadow: 
+    0 0 0 2px rgba(var(--color-cyan-rgb), 0.3),
+    0 8px 25px rgba(0, 0, 0, 0.4),
+    0 0 30px rgba(var(--color-cyan-rgb), 0.2);
+}
+
+/* Security variant - enhanced styling */
+.date-chip--secure .date-chip-inner {
+  border: 2px solid rgba(var(--color-cyan-rgb), 0.5);
+  box-shadow: 
+    0 6px 20px rgba(0, 0, 0, 0.4),
+    0 0 25px rgba(var(--color-cyan-rgb), 0.15),
+    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.15);
+}
+
+.date-chip--secure .date-chip-text {
+  color: var(--color-cyan);
+  text-shadow: 0 0 15px rgba(var(--color-cyan-rgb), 0.8);
+  animation: secure-pulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes secure-pulse {
+  0% { text-shadow: 0 0 15px rgba(var(--color-cyan-rgb), 0.8); }
+  100% { text-shadow: 0 0 20px rgba(var(--color-cyan-rgb), 1); }
+}
+
+/* Breach variant - warning styling */
+.date-chip--breach .date-chip-inner {
+  background: linear-gradient(
+    135deg, 
+    rgba(var(--color-level-medium-rgb), 0.1) 0%, 
+    rgba(var(--color-navy-rgb), 0.9) 50%, 
+    rgba(var(--color-level-medium-rgb), 0.1) 100%
+  );
+  border: 2px solid rgba(var(--color-level-medium-rgb), 0.4);
+  box-shadow: 
+    0 6px 20px rgba(0, 0, 0, 0.4),
+    0 0 25px rgba(var(--color-level-medium-rgb), 0.15);
+}
+
+.date-chip--breach .date-chip-text {
+  color: var(--color-level-medium);
+  text-shadow: 0 0 10px rgba(var(--color-level-medium-rgb), 0.6);
+}
+
+/* Critical variant - critical styling */
+.date-chip--critical .date-chip-inner {
+  background: linear-gradient(
+    135deg, 
+    rgba(var(--color-level-critical-rgb), 0.1) 0%, 
+    rgba(var(--color-navy-rgb), 0.9) 50%, 
+    rgba(var(--color-level-critical-rgb), 0.1) 100%
+  );
+  border: 2px solid rgba(var(--color-level-critical-rgb), 0.5);
+  box-shadow: 
+    0 6px 20px rgba(0, 0, 0, 0.4),
+    0 0 25px rgba(var(--color-level-critical-rgb), 0.2);
+}
+
+.date-chip--critical .date-chip-text {
+  color: var(--color-level-critical);
+  text-shadow: 0 0 15px rgba(var(--color-level-critical-rgb), 0.8);
+  animation: critical-blink 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes critical-blink {
+  0% { 
+    text-shadow: 0 0 15px rgba(var(--color-level-critical-rgb), 0.8);
+    opacity: 1;
+  }
+  100% { 
+    text-shadow: 0 0 25px rgba(var(--color-level-critical-rgb), 1);
+    opacity: 0.8;
+  }
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .date-chip-inner {
-    padding: var(--spacing-1) var(--spacing-2);
-    height: 24px;
+    padding: var(--spacing-1) var(--spacing-3);
+    min-height: 28px;
   }
   
   .date-chip-text {
     font-size: var(--font-size-xs);
+    padding: 2px 8px;
+    letter-spacing: 0.5px;
   }
 }
 
-/* Reduced motion preferences are now handled by the AnimationContext */
-/* @media (prefers-reduced-motion: reduce) {
-  .date-chip:hover .date-chip-inner {
-    transform: none;
+@media (max-width: 480px) {
+  .date-chip-inner {
+    padding: var(--spacing-1) var(--spacing-2);
+    min-height: 24px;
+  }
+  
+  .date-chip-text {
+    font-size: var(--font-size-xs);
+    padding: 2px 6px;
+    letter-spacing: 0.3px;
+  }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .date-chip-inner::after {
+    display: none;
+  }
+  
+  .date-chip--secure .date-chip-text {
+    animation: none;
+    text-shadow: 0 0 15px rgba(var(--color-cyan-rgb), 0.8);
+  }
+  
+  .date-chip--critical .date-chip-text {
+    animation: none;
+    text-shadow: 0 0 15px rgba(var(--color-level-critical-rgb), 0.8);
+  }
+  
+  .date-chip-glow {
+    opacity: 0.5;
   }
   
   .date-chip:hover .date-chip-glow {
-    animation: none;
-    opacity: 0.5;
+    opacity: 0.8;
   }
-} */
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .date-chip-inner {
+    border-width: 2px;
+    border-color: var(--color-cyan);
+  }
+  
+  .date-chip-text {
+    border-width: 2px;
+    border-color: var(--color-cyan);
+    background: var(--color-navy);
+  }
+  
+  .date-chip-inner::before {
+    display: none;
+  }
+}

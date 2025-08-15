@@ -1,90 +1,236 @@
 /**
- * Education Styles
+ * Education Organism Styles
+ * Professional cybersecurity-themed education section with clean aesthetics
  */
 
+/* Base section styling - no background overrides */
 .education-section {
-  padding: var(--section-padding-y) 0;
   position: relative;
-  overflow: hidden;
-}
-
-.education-content {
   width: 100%;
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: var(--spacing-6) var(--spacing-4);
+  /* Removed background overrides to respect base site background */
+}
+
+/* Main content wrapper - ensures full width */
+.education-content-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  padding: var(--spacing-8) var(--spacing-4);
+  z-index: 10;
+}
+
+/* Security status indicator */
+.education-security-status {
   display: flex;
-  flex-direction: column;
-  gap: var(--spacing-8);
-}
-
-.education-main {
-  position: relative;
-  margin-bottom: var(--spacing-2);
-}
-
-.certifications-section {
-  position: relative;
-  margin-top: var(--spacing-6);
-}
-
-.education-section-header {
-  text-align: center;
+  justify-content: center;
   margin-bottom: var(--spacing-8);
-  position: relative;
 }
 
-.education-section-title {
-  font-size: var(--font-size-h2);
-  color: var(--color-text-primary);
-  margin-bottom: var(--spacing-4);
-  position: relative;
-  display: inline-block;
-}
-
-.education-section-title::after {
-  content: '';
-  position: absolute;
-  bottom: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 80px;
-  height: 4px;
-  background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+.security-indicator {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  padding: var(--spacing-3) var(--spacing-6);
+  background: rgba(var(--color-navy-rgb), 0.8);
+  border: 1px solid rgba(var(--color-cyan-rgb), 0.3);
   border-radius: var(--border-radius-pill);
+  backdrop-filter: blur(10px);
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.15),
+    0 0 8px rgba(var(--color-cyan-rgb), 0.1);
 }
 
-.education-section-subtitle {
-  color: var(--color-text-secondary);
-  font-size: var(--font-size-lg);
-  max-width: 700px;
-  margin: 0 auto;
+.security-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-cyan);
+  box-shadow: 0 0 6px rgba(var(--color-cyan-rgb), 0.6);
+  animation: security-pulse 3s ease-in-out infinite;
 }
 
+.security-text {
+  font-family: var(--font-family-jetbrains, 'JetBrains Mono', monospace);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-cyan);
+  text-shadow: 0 0 4px rgba(var(--color-cyan-rgb), 0.3);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+@keyframes security-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+/* Education cards container - full width grid */
 .education-cards-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: var(--spacing-6);
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  gap: var(--spacing-8);
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: var(--spacing-8);
+  perspective: 1000px;
 }
 
+/* Education card wrapper - ensures full width */
 .education-card-wrapper {
+  position: relative;
   width: 100%;
+  max-width: 100%;
+  min-height: 300px;
+  transform-style: preserve-3d;
+}
+
+/* Subtle card glow effect */
+.education-card-glow {
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(
+    45deg,
+    rgba(var(--color-cyan-rgb), 0.1),
+    rgba(var(--color-cyan-rgb), 0.05),
+    rgba(var(--color-cyan-rgb), 0.1)
+  );
+  border-radius: var(--border-radius-lg);
+  filter: blur(4px);
+  opacity: 0;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Empty state styling */
+.education-empty-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+}
+
+.empty-state-content {
+  text-align: center;
+  max-width: 400px;
+  padding: var(--spacing-8);
+  background: rgba(var(--color-navy-rgb), 0.6);
+  border: 1px solid rgba(var(--color-cyan-rgb), 0.2);
+  border-radius: var(--border-radius-lg);
+  backdrop-filter: blur(10px);
+}
+
+.empty-state-icon {
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--spacing-4);
+  color: var(--color-cyan);
+  opacity: 0.7;
+}
+
+.empty-state-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-offwhite);
+  margin-bottom: var(--spacing-3);
+}
+
+.empty-state-description {
+  font-size: var(--font-size-base);
+  color: rgba(var(--color-offwhite-rgb), 0.8);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Responsive design */
+@media (max-width: 1024px) {
+  .education-cards-container {
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: var(--spacing-6);
+  }
 }
 
 @media (max-width: 768px) {
-  .education-section {
-    padding: var(--spacing-8) 0;
-  }
-  
-  .education-content {
-    padding: var(--spacing-4) var(--spacing-3);
-  }
-  
-  .education-section-header {
-    margin-bottom: var(--spacing-6);
+  .education-content-wrapper {
+    padding: var(--spacing-6) var(--spacing-3);
   }
   
   .education-cards-container {
     grid-template-columns: 1fr;
+    gap: var(--spacing-6);
   }
-} 
+  
+  .security-indicator {
+    padding: var(--spacing-2) var(--spacing-4);
+  }
+  
+  .security-text {
+    font-size: var(--font-size-xs);
+  }
+}
+
+@media (max-width: 480px) {
+  .education-content-wrapper {
+    padding: var(--spacing-4) var(--spacing-2);
+  }
+  
+  .education-cards-container {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-4);
+  }
+  
+  .security-indicator {
+    flex-direction: column;
+    text-align: center;
+    gap: var(--spacing-2);
+  }
+  
+  .empty-state-content {
+    margin: 0 var(--spacing-2);
+    padding: var(--spacing-6);
+  }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .security-dot {
+    animation: none;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .security-indicator {
+    border-width: 2px;
+  }
+  
+  .empty-state-content {
+    border-width: 2px;
+  }
+}
+
+/* Print styles */
+@media print {
+  .education-card-glow {
+    display: none;
+  }
+  
+  .education-section {
+    background: white;
+    color: black;
+  }
+  
+  .security-indicator,
+  .empty-state-content {
+    background: white;
+    border-color: black;
+  }
+}

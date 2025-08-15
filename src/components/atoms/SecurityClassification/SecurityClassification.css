@@ -1,0 +1,123 @@
+/**
+ * SecurityClassification Atom Component Styles
+ * Isolated security classification banner with animated bars
+ */
+
+.security-classification {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  margin: 0 -2rem 1.5rem;
+  background: linear-gradient(
+    90deg,
+    rgba(var(--color-cyan-rgb), 0.1),
+    rgba(var(--color-cyan-rgb), 0.05),
+    rgba(var(--color-cyan-rgb), 0.1)
+  );
+  border-top: 1px solid rgba(var(--color-cyan-rgb), 0.3);
+  border-bottom: 1px solid rgba(var(--color-cyan-rgb), 0.3);
+  font-family: var(--font-family-jetbrains);
+}
+
+.security-classification__label {
+  color: var(--color-cyan);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-shadow: 0 0 8px rgba(var(--color-cyan-rgb), 0.5);
+}
+
+.security-classification__bars {
+  display: flex;
+  gap: 2px;
+}
+
+.security-classification__bar {
+  width: 3px;
+  height: 16px;
+  background: rgba(var(--color-cyan-rgb), 0.6);
+  border-radius: 1px;
+}
+
+/* Variant Styles */
+.security-classification--secure {
+  background: linear-gradient(
+    90deg,
+    rgba(34, 197, 94, 0.1),
+    rgba(34, 197, 94, 0.05),
+    rgba(34, 197, 94, 0.1)
+  );
+  border-top-color: rgba(34, 197, 94, 0.3);
+  border-bottom-color: rgba(34, 197, 94, 0.3);
+}
+
+.security-classification--secure .security-classification__label {
+  color: var(--color-green-400);
+  text-shadow: 0 0 8px rgba(34, 197, 94, 0.5);
+}
+
+.security-classification--secure .security-classification__bar {
+  background: rgba(34, 197, 94, 0.6);
+}
+
+.security-classification--breach {
+  background: linear-gradient(
+    90deg,
+    rgba(248, 113, 113, 0.1),
+    rgba(248, 113, 113, 0.05),
+    rgba(248, 113, 113, 0.1)
+  );
+  border-top-color: rgba(248, 113, 113, 0.3);
+  border-bottom-color: rgba(248, 113, 113, 0.3);
+}
+
+.security-classification--breach .security-classification__label {
+  color: var(--color-red-400);
+  text-shadow: 0 0 8px rgba(248, 113, 113, 0.5);
+}
+
+.security-classification--breach .security-classification__bar {
+  background: rgba(248, 113, 113, 0.6);
+}
+
+.security-classification--critical {
+  background: linear-gradient(
+    90deg,
+    rgba(251, 191, 36, 0.1),
+    rgba(251, 191, 36, 0.05),
+    rgba(251, 191, 36, 0.1)
+  );
+  border-top-color: rgba(251, 191, 36, 0.3);
+  border-bottom-color: rgba(251, 191, 36, 0.3);
+}
+
+.security-classification--critical .security-classification__label {
+  color: var(--color-yellow-400);
+  text-shadow: 0 0 8px rgba(251, 191, 36, 0.5);
+}
+
+.security-classification--critical .security-classification__bar {
+  background: rgba(251, 191, 36, 0.6);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .security-classification {
+    margin: 0 -1.25rem 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .security-classification {
+    margin: 0 -1rem 1rem;
+    padding: 0.5rem 0.75rem;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .security-classification__bar {
+    animation: none;
+  }
+}

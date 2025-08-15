@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - when styling, refrain from using !important, and do your best to use the var(--{variant}) instead of using rgba(x,x,x,x)
 - remember not to start any services manually, always run 'yarn dev:all'
 - the latest version of storybook removed the need for the acorn '@' "@storybook/test"  please import any storybook/* like this "storybook/test";
-
+- always add a *.story.tsx and *.css when creating new components
 
 ## Development Commands
 

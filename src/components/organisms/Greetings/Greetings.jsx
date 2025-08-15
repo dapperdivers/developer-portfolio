@@ -98,7 +98,7 @@ const Greetings = () => {
           variants={containerVariants}
           initial="hidden"
           animate={animationEnabled ? "visible" : "hidden"}
-          className="text-center backdrop-blur-sm bg-theme-navy/80 p-card rounded-lg border border-theme-cyan/30 shadow-lg relative overflow-hidden"
+          className="text-center p-card relative overflow-hidden"
         >
           {/* Cyberpunk decorative elements - Hide on very small screens */}
           <div className="hidden sm:block absolute top-0 left-0 w-16 md:w-20 h-16 md:h-20 pointer-events-none opacity-60">

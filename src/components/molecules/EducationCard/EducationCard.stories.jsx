@@ -2,40 +2,82 @@ import React from 'react';
 import EducationCard from './EducationCard';
 import { within, userEvent, expect } from 'storybook/test';
 
-// Sample education data for stories
+// Sample education data for stories using the correct structure
 const mockEducationData = {
   complete: {
     schoolName: "Stanford University",
-    subHeader: "Master of Computer Science",
+    degree: "Master of Computer Science",
+    major: "Artificial Intelligence",
+    minor: "Mathematics",
     duration: "2018 - 2020",
-    desc: "Specialized in Artificial Intelligence and Machine Learning. Graduated with honors and participated in multiple research projects.",
-    descBullets: [
-      "Thesis on Deep Learning applications in healthcare",
-      "Received Outstanding Graduate Student Award",
-      "Teaching Assistant for Algorithms course",
-      "Published 2 papers in peer-reviewed journals"
+    certifications: [
+      {
+        name: "AWS Certified Solutions Architect",
+        issuer: "Amazon Web Services",
+        date: "2020",
+        credentialId: "AWS-SAA-123456"
+      },
+      {
+        name: "Google Cloud Professional",
+        issuer: "Google Cloud",
+        date: "2019",
+        credentialId: "GCP-PCA-789012"
+      }
     ]
   },
   minimal: {
     schoolName: "MIT",
-    subHeader: "Bachelor of Science in Computer Engineering",
+    degree: "Bachelor of Science",
+    major: "Computer Engineering",
     duration: "2014 - 2018"
   },
   longNames: {
-    schoolName: "Massachusetts Institute of Technology School of Engineering and Computer Science",
-    subHeader: "Bachelor of Science in Computer Engineering with Specialization in Robotics and Embedded Systems",
-    duration: "2014 - 2018",
-    desc: "Graduated with honors. Focused on embedded systems and robotics."
+    schoolName: "Massachusetts Institute of Technology School of Engineering",
+    degree: "Bachelor of Science in Computer Engineering with Specialization",
+    major: "Robotics and Embedded Systems with Advanced Machine Learning",
+    minor: "Applied Mathematics and Statistics",
+    duration: "2014 - 2018"
   },
   certificate: {
     schoolName: "Udacity",
-    subHeader: "Nanodegree in Front End Web Development",
+    degree: "Nanodegree",
+    major: "Front End Web Development",
     duration: "2021",
-    desc: "Completed a 6-month intensive program on modern front-end technologies and best practices.",
-    descBullets: [
-      "Built a weather app using React and OpenWeather API",
-      "Developed a restaurant review application with offline capabilities",
-      "Created a travel planning dashboard using Redux and Google Maps API"
+    certifications: [
+      {
+        name: "React Developer Certification",
+        issuer: "Meta",
+        date: "2021",
+        credentialId: "META-RDC-345678"
+      }
+    ]
+  },
+  // Data specifically for compact variant testing
+  compact: {
+    schoolName: "Georgia Institute of Technology",
+    degree: "Master of Science",
+    major: "Cybersecurity",
+    minor: "Information Systems",
+    duration: "2019 - 2021",
+    certifications: [
+      {
+        name: "CISSP",
+        issuer: "ISC2",
+        date: "2021",
+        credentialId: "CISSP-567890"
+      },
+      {
+        name: "CEH",
+        issuer: "EC-Council",
+        date: "2020",
+        credentialId: "CEH-234567"
+      },
+      {
+        name: "OSCP",
+        issuer: "Offensive Security",
+        date: "2021",
+        credentialId: "OSCP-890123"
+      }
     ]
   }
 };
@@ -58,7 +100,7 @@ export default {
   parameters: {
     docs: {
       description: {
-        component: 'Education card component for displaying educational background information including school name, degree, duration, and additional details.',
+        component: 'Compact education card component for displaying educational background information including school name, degree, major/minor fields, duration, and certifications in a space-efficient layout.',
       },
     },
     a11y: {
@@ -74,20 +116,19 @@ export default {
   },
 };
 
-
 // Template for the component
 const Template = (args) => (
-  <div style={{ maxWidth: '400px', margin: '0 auto' }}>
+  <div style={{ maxWidth: '500px', margin: '0 auto' }}>
     <EducationCard {...args} />
   </div>
 );
 
-// Complete example with all fields
+// Complete example with all fields (now uses compact styling by default)
 export const Complete = {
   args: {
-  education: mockEducationData.complete,
-  index: 0
-}
+    education: mockEducationData.complete,
+    index: 0
+  }
 };
 Complete.play = async ({ canvasElement, step }) => {
   const canvas = within(canvasElement);
@@ -97,84 +138,85 @@ Complete.play = async ({ canvasElement, step }) => {
     await expect(canvas.getByText('Stanford University')).toBeInTheDocument();
     await expect(canvas.getByText('Master of Computer Science')).toBeInTheDocument();
     await expect(canvas.getByText('2018 - 2020')).toBeInTheDocument();
-    
-    // Check that description text is displayed
-    await expect(canvas.getByText(/Specialized in Artificial Intelligence/)).toBeInTheDocument();
-    
-    // Check that bullet points are displayed
-    await expect(canvas.getByText('Thesis on Deep Learning applications in healthcare')).toBeInTheDocument();
+    await expect(canvas.getByText('Artificial Intelligence')).toBeInTheDocument();
+    await expect(canvas.getByText('Mathematics')).toBeInTheDocument();
   });
   
-  await step('Keyboard navigation test', async () => {
-    // Tab to focusable elements in the component
-    await userEvent.tab(); // Focus school name
-    await expect(canvas.getByText('Stanford University')).toHaveFocus();
-    
-    await userEvent.tab(); // Focus degree
-    await expect(canvas.getByText('Master of Computer Science')).toHaveFocus();
-    
-    await userEvent.tab(); // Focus description
-    await expect(canvas.getByText(/Specialized in Artificial Intelligence/)).toHaveFocus();
-    
-    // Tab through bullet points
-    for (let i = 0; i < mockEducationData.complete.descBullets.length; i++) {
-      await userEvent.tab();
-      await expect(canvas.getByText(mockEducationData.complete.descBullets[i])).toHaveFocus();
-    }
+  await step('Certifications check', async () => {
+    // Check that certifications are displayed
+    await expect(canvas.getByText('Certifications')).toBeInTheDocument();
+    await expect(canvas.getByText('AWS Certified Solutions Architect')).toBeInTheDocument();
+    await expect(canvas.getByText('Google Cloud Professional')).toBeInTheDocument();
   });
 };
 
 // Minimal example with only required fields
 export const Minimal = {
   args: {
-  education: mockEducationData.minimal,
-  index: 1
-}
+    education: mockEducationData.minimal,
+    index: 1
+  }
 };
 Minimal.parameters = {
   docs: {
     description: {
-      story: 'Shows an education card with only the required fields: school name, degree, and duration.'
+      story: 'Shows an education card with only the required fields: school name, degree, major, and duration.'
     }
   }
 };
 
-// Example with long text to test text wrapping and truncation
+// Example with long text to test text wrapping and space efficiency
 export const LongTextHandling = {
   args: {
-  education: mockEducationData.longNames,
-  index: 2
-}
+    education: mockEducationData.longNames,
+    index: 2
+  }
 };
 LongTextHandling.parameters = {
   docs: {
     description: {
-      story: 'Demonstrates how the component handles very long school names and degree titles with proper text wrapping and truncation when necessary.'
+      story: 'Demonstrates how the compact component handles very long school names and degree titles with proper text wrapping while maintaining space efficiency.'
     }
   }
 };
 
-// Example of an online certificate/nanodegree
+// Example of an online certificate/nanodegree with compact design
 export const OnlineCertificate = {
   args: {
-  education: mockEducationData.certificate,
-  index: 3
-}
+    education: mockEducationData.certificate,
+    index: 3
+  }
 };
 OnlineCertificate.parameters = {
   docs: {
     description: {
-      story: 'Shows how the component can be used to display online certificates, nanodegrees, or other non-traditional education.'
+      story: 'Shows how the compact component displays online certificates, nanodegrees, or other non-traditional education with associated certifications.'
     }
   }
 };
 
-// Multiple cards to show animation sequence
+// Compact variant with multiple certifications
+export const CompactWithMultipleCertifications = {
+  args: {
+    education: mockEducationData.compact,
+    index: 0
+  }
+};
+CompactWithMultipleCertifications.parameters = {
+  docs: {
+    description: {
+      story: 'Demonstrates the compact design with multiple certifications. Note the reduced spacing, smaller fonts, and efficient use of screen space while maintaining readability.'
+    }
+  }
+};
+
+// Multiple cards to show animation sequence and space efficiency
 export const AnimationSequence = () => (
   <div style={{ maxWidth: '600px', margin: '0 auto' }}>
     {[
       mockEducationData.complete,
       mockEducationData.minimal,
+      mockEducationData.compact,
       mockEducationData.certificate
     ].map((education, index) => (
       <EducationCard 
@@ -188,10 +230,31 @@ export const AnimationSequence = () => (
 AnimationSequence.parameters = {
   docs: {
     description: {
-      story: 'Demonstrates the staggered animation of multiple education cards in sequence.'
+      story: 'Demonstrates the staggered animation of multiple compact education cards in sequence. Notice how the compact design allows more cards to fit in the same space.'
     }
   },
   chromatic: { delay: 500 } // Delay for capturing animations
+};
+
+// Side-by-side comparison for space efficiency demonstration
+export const SpaceEfficiencyComparison = () => (
+  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', maxWidth: '1000px', margin: '0 auto' }}>
+    <div>
+      <h4 style={{ color: 'var(--color-cyan)', marginBottom: '16px', textAlign: 'center' }}>Compact Design</h4>
+      <EducationCard education={mockEducationData.compact} index={0} />
+    </div>
+    <div>
+      <h4 style={{ color: 'var(--color-cyan)', marginBottom: '16px', textAlign: 'center' }}>With Certifications</h4>
+      <EducationCard education={mockEducationData.complete} index={1} />
+    </div>
+  </div>
+);
+SpaceEfficiencyComparison.parameters = {
+  docs: {
+    description: {
+      story: 'Side-by-side comparison showing the space efficiency of the compact design with different certification loads.'
+    }
+  }
 };
 
 /**
@@ -204,12 +267,17 @@ AnimationSequence.parameters = {
  *   const educationData = [
  *     {
  *       schoolName: "Stanford University",
- *       subHeader: "Master of Computer Science",
+ *       degree: "Master of Computer Science",
+ *       major: "Artificial Intelligence",
+ *       minor: "Mathematics",
  *       duration: "2018 - 2020",
- *       desc: "Specialized in AI and ML",
- *       descBullets: [
- *         "Thesis on Deep Learning applications",
- *         "Teaching Assistant for Algorithms"
+ *       certifications: [
+ *         {
+ *           name: "AWS Certified Solutions Architect",
+ *           issuer: "Amazon Web Services",
+ *           date: "2020",
+ *           credentialId: "AWS-SAA-123456"
+ *         }
  *       ]
  *     },
  *     // More education items...
@@ -235,37 +303,47 @@ AnimationSequence.parameters = {
  * |------|------|---------|-------------|
  * | education | Object | required | Education data object |
  * | education.schoolName | string | required | Name of the school or institution |
- * | education.subHeader | string | required | Degree or certification title |
+ * | education.degree | string | required | Degree or certification title |
+ * | education.major | string | required | Major field of study |
+ * | education.minor | string | optional | Minor field of study |
  * | education.duration | string | required | Time period of education |
- * | education.desc | string | undefined | Description or details |
- * | education.descBullets | Array<string> | undefined | Array of bullet points for additional details |
+ * | education.certifications | Array | optional | Array of certification objects |
  * | index | number | 0 | Index number for staggered animations |
+ * 
+ * ## Compact Design Features
+ * 
+ * The compact design includes several space-saving optimizations:
+ * - Reduced padding and margins throughout
+ * - Smaller icon sizes and compact certification indicators
+ * - Inline layout for school name and date
+ * - Side-by-side degree and major/minor information
+ * - Condensed certification badges with smaller fonts
+ * - Optimized responsive breakpoints for mobile devices
  * 
  * ## Accessibility Features
  * 
- * This component follows these accessibility best practices:
- * - Proper heading hierarchy (h5 for school name, h6 for degree)
- * - Semantic HTML with correct list markup for bullet points
- * - ARIA labels for duration badge and bullet points list
- * - Keyboard navigation with tabIndex on all interactive elements
- * - Appropriate color contrast for all text elements
- * - Proper text overflow handling for long content
+ * This component maintains accessibility while being compact:
+ * - Proper heading hierarchy and semantic HTML
+ * - Adequate color contrast ratios maintained
+ * - Keyboard navigation preserved
+ * - Screen reader friendly structure
+ * - Responsive design that works on all devices
  * 
- * ## Animation Details
+ * ## Animation Performance
  * 
- * The card animates into view when it enters the viewport:
- * - Uses intersection observer for efficient scroll-based animations
- * - Slides in from left with fade-in effect
- * - Staggered timing based on index prop
- * - Subtle animation that doesn't interfere with readability
+ * Optimized animations for the compact design:
+ * - Reduced animation complexity for better performance
+ * - Consolidated motion variants
+ * - Efficient viewport-based animations
+ * - Respect for user motion preferences
  */
 
 // Mobile view for responsive testing
 export const MobileView = {
   args: {
-  education: mockEducationData.complete,
-  index: 0
-}
+    education: mockEducationData.compact,
+    index: 0
+  }
 };
 MobileView.parameters = {
   viewport: {
@@ -273,7 +351,22 @@ MobileView.parameters = {
   },
   docs: {
     description: {
-      story: 'Shows how the education card appears on mobile devices. Note that the graduation cap icon is hidden on mobile to conserve space.'
+      story: 'Shows how the compact education card appears on mobile devices. Note the further reduced spacing and reorganized layout for optimal mobile viewing.'
+    }
+  }
+};
+
+// Playground for interactive testing
+export const Playground = {
+  args: {
+    education: mockEducationData.complete,
+    index: 0
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Interactive playground to test different education data configurations. Modify the education object to see how the compact design adapts.'
+      }
     }
   }
 };

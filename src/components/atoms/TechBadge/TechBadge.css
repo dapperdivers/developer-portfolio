@@ -1,182 +1,394 @@
 /**
  * TechBadge Component Styles
- * Styling for the TechBadge component with level variants
- * Animations now handled by framer-motion
+ * Styling for the TechBadge component with improved readability and cybersecurity theming
+ * Enhanced with darker blue containers and better contrast for accessibility
  */
 
-/* Base styles with improved readability */
+/* Base styles with improved readability and dark blue container */
 .tech-badge {
-  background: rgba(var(--color-primary-rgb), 0.15); /* Slightly more visible background */
-  color: var(--color-primary);
-  font-size: 0.85rem; /* Larger font size for better readability */
-  padding: 0.5rem 0.85rem; /* Increased padding for better visibility */
-  border-radius: 6px; /* More rounded corners */
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-navy-rgb), 0.95) 0%,
+    rgba(var(--color-navy-rgb), 0.9) 100%
+  );
+  color: var(--color-cyan);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  padding: var(--spacing-2) var(--spacing-3);
+  border-radius: 6px;
   font-family: var(--font-family-jetbrains);
   white-space: nowrap;
   display: inline-block;
-  /* transition removed - now handled by framer-motion */
-  border: 1px solid rgba(var(--color-primary-rgb), 0.4); /* More visible border */
+  border: 1px solid rgba(var(--color-cyan-rgb), 0.4);
   will-change: transform, background-color;
-  font-weight: var(--font-weight-medium);
-  text-shadow: 0 0 2px rgba(var(--color-primary-rgb), 0.3); /* Reduced glow for better readability */
+  text-shadow: 0 0 4px rgba(var(--color-cyan-rgb), 0.4);
   position: relative;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+  box-shadow: 
+    0 3px 8px rgba(0, 0, 0, 0.3),
+    0 0 12px rgba(var(--color-cyan-rgb), 0.1),
+    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.1);
   overflow: hidden;
-  letter-spacing: 0.3px; /* Slightly increased letter spacing */
+  letter-spacing: var(--letter-spacing-wide);
+  backdrop-filter: blur(8px);
+  min-height: 28px;
+  line-height: 1.2;
 }
 
-/* Simplified decoration for badges - just a top border highlight */
+/* Enhanced decoration with subtle grid pattern */
 .tech-badge::after {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: 2px;
-  background-color: rgba(var(--color-primary-rgb), 0.6);
+  bottom: 0;
+  background: 
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 1px,
+      rgba(var(--color-cyan-rgb), 0.02) 1px,
+      rgba(var(--color-cyan-rgb), 0.02) 2px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 1px,
+      rgba(var(--color-cyan-rgb), 0.02) 1px,
+      rgba(var(--color-cyan-rgb), 0.02) 2px
+    );
   opacity: 0.7;
   pointer-events: none;
-  z-index: 1;
+  z-index: 0;
 }
 
-/* Size variants - fix class naming to match component */
-.tech-badge--sm {
-  font-size: calc(var(--font-size-xs) * 0.85);
-  padding: calc(var(--spacing-1) * 0.75) var(--spacing-1);
-}
-
-.tech-badge--md {
-  font-size: var(--font-size-xs);
-  padding: var(--spacing-1) var(--spacing-2);
-}
-
-.tech-badge--lg {
-  font-size: var(--font-size-sm);
-  padding: var(--spacing-1) var(--spacing-3);
-}
-
-/* Visual variants */
-.tech-badge--security {
-  background: rgba(var(--color-primary-rgb), 0.1);
-  color: var(--color-primary);
-  border-color: rgba(var(--color-primary-rgb), 0.3);
-}
-
-.tech-badge--terminal {
-  background: rgba(var(--color-info-rgb), 0.1);
-  color: var(--color-info);
-  border-color: rgba(var(--color-info-rgb), 0.3);
-}
-
-/* Security level variations */
-.tech-badge--low {
-  background: rgba(var(--color-level-low-rgb), 0.15);
-  color: var(--color-level-low);
-  border-color: rgba(var(--color-level-low-rgb), 0.4);
-}
-
-.tech-badge--medium {
-  background: rgba(var(--color-level-medium-rgb), 0.15);
-  color: var(--color-level-medium);
-  border-color: rgba(var(--color-level-medium-rgb), 0.4);
-}
-
-.tech-badge--high {
-  background: rgba(var(--color-level-high-rgb), 0.15);
-  color: var(--color-level-high);
-  border-color: rgba(var(--color-level-high-rgb), 0.4);
-}
-
-.tech-badge--critical {
-  background: rgba(var(--color-danger-rgb), 0.15);
-  color: var(--color-danger);
-  border-color: rgba(var(--color-danger-rgb), 0.4);
-}
-
-/* Tech stack colors in compact view */
-.compact-tech-stack .tech-badge {
-  margin-right: 0.5rem;
-  margin-bottom: 0.5rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-  border-width: 1px;
-}
-
-/* Specific colors based on entry position */
-.timeline-entry:nth-child(5n+1) .tech-badge {
-  color: var(--color-entry1);
-  border-color: var(--color-entry1);
-  background-color: rgba(var(--color-entry1-rgb, 100, 255, 218), 0.1);
-  text-shadow: 0 0 3px rgba(var(--color-entry1-rgb), 0.3);
-}
-
-.timeline-entry:nth-child(5n+2) .tech-badge {
-  color: var(--color-entry2);
-  border-color: var(--color-entry2);
-  background-color: rgba(var(--color-entry2-rgb, 255, 157, 0), 0.1);
-  text-shadow: 0 0 3px rgba(var(--color-entry2-rgb), 0.3);
-}
-
-.timeline-entry:nth-child(5n+3) .tech-badge {
-  color: var(--color-entry3);
-  border-color: var(--color-entry3);
-  background-color: rgba(var(--color-entry3-rgb, 255, 94, 120), 0.1);
-  text-shadow: 0 0 3px rgba(var(--color-entry3-rgb), 0.3);
-}
-
-.timeline-entry:nth-child(5n+4) .tech-badge {
-  color: var(--color-entry4);
-  border-color: var(--color-entry4);
-  background-color: rgba(var(--color-entry4-rgb, 167, 139, 250), 0.1);
-  text-shadow: 0 0 3px rgba(var(--color-entry4-rgb), 0.3);
-}
-
-.timeline-entry:nth-child(5n+5) .tech-badge {
-  color: var(--color-entry5);
-  border-color: var(--color-entry5);
-  background-color: rgba(var(--color-entry5-rgb, 45, 212, 191), 0.1);
-  text-shadow: 0 0 3px rgba(var(--color-entry5-rgb), 0.3);
-}
-
-/* Hover and interaction states now handled by framer-motion */
-
-/* Clickable state */
-.tech-badge--interactive {
-  cursor: pointer;
-}
-
-/* Badge labels */
+/* Badge label with proper z-index */
 .tech-badge__label {
   display: inline-block;
   vertical-align: middle;
+  position: relative;
+  z-index: 1;
 }
 
-/* Focus styles */
+/* Size variants with improved proportions */
+.tech-badge--sm {
+  font-size: var(--font-size-xs);
+  padding: var(--spacing-1) var(--spacing-2);
+  min-height: 24px;
+  border-radius: 4px;
+}
+
+.tech-badge--md {
+  font-size: var(--font-size-sm);
+  padding: var(--spacing-2) var(--spacing-3);
+  min-height: 28px;
+  border-radius: 6px;
+}
+
+.tech-badge--lg {
+  font-size: var(--font-size-base);
+  padding: var(--spacing-3) var(--spacing-4);
+  min-height: 32px;
+  border-radius: 8px;
+  font-weight: var(--font-weight-bold);
+}
+
+/* Enhanced security variant */
+.tech-badge--security {
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-navy-rgb), 0.98) 0%,
+    rgba(var(--color-navy-rgb), 0.95) 100%
+  );
+  color: var(--color-cyan);
+  border: 1px solid rgba(var(--color-cyan-rgb), 0.5);
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.4),
+    0 0 15px rgba(var(--color-cyan-rgb), 0.15),
+    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.12);
+  text-shadow: 0 0 6px rgba(var(--color-cyan-rgb), 0.5);
+}
+
+.tech-badge--security::after {
+  background: 
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 1px,
+      rgba(var(--color-cyan-rgb), 0.03) 1px,
+      rgba(var(--color-cyan-rgb), 0.03) 2px
+    );
+}
+
+/* Terminal variant with enhanced styling */
+.tech-badge--terminal {
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-navy-rgb), 0.96) 0%,
+    rgba(var(--color-navy-rgb), 0.92) 100%
+  );
+  color: var(--color-level-info);
+  border: 1px solid rgba(var(--color-level-info-rgb), 0.4);
+  box-shadow: 
+    0 3px 10px rgba(0, 0, 0, 0.3),
+    0 0 12px rgba(var(--color-level-info-rgb), 0.1),
+    inset 0 1px 0 rgba(var(--color-level-info-rgb), 0.1);
+  text-shadow: 0 0 4px rgba(var(--color-level-info-rgb), 0.4);
+}
+
+/* Security level variations with improved contrast */
+.tech-badge--low {
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-navy-rgb), 0.95) 0%,
+    rgba(var(--color-navy-rgb), 0.9) 100%
+  );
+  color: var(--color-level-low);
+  border: 1px solid rgba(var(--color-level-low-rgb), 0.5);
+  box-shadow: 
+    0 3px 8px rgba(0, 0, 0, 0.3),
+    0 0 12px rgba(var(--color-level-low-rgb), 0.15),
+    inset 0 1px 0 rgba(var(--color-level-low-rgb), 0.1);
+  text-shadow: 0 0 4px rgba(var(--color-level-low-rgb), 0.4);
+}
+
+.tech-badge--medium {
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-navy-rgb), 0.95) 0%,
+    rgba(var(--color-navy-rgb), 0.9) 100%
+  );
+  color: var(--color-level-medium);
+  border: 1px solid rgba(var(--color-level-medium-rgb), 0.5);
+  box-shadow: 
+    0 3px 8px rgba(0, 0, 0, 0.3),
+    0 0 12px rgba(var(--color-level-medium-rgb), 0.15),
+    inset 0 1px 0 rgba(var(--color-level-medium-rgb), 0.1);
+  text-shadow: 0 0 4px rgba(var(--color-level-medium-rgb), 0.4);
+}
+
+.tech-badge--high {
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-navy-rgb), 0.95) 0%,
+    rgba(var(--color-navy-rgb), 0.9) 100%
+  );
+  color: var(--color-level-high);
+  border: 1px solid rgba(var(--color-level-high-rgb), 0.5);
+  box-shadow: 
+    0 3px 8px rgba(0, 0, 0, 0.3),
+    0 0 12px rgba(var(--color-level-high-rgb), 0.15),
+    inset 0 1px 0 rgba(var(--color-level-high-rgb), 0.1);
+  text-shadow: 0 0 4px rgba(var(--color-level-high-rgb), 0.4);
+}
+
+.tech-badge--critical {
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-navy-rgb), 0.95) 0%,
+    rgba(var(--color-navy-rgb), 0.9) 100%
+  );
+  color: var(--color-level-critical);
+  border: 1px solid rgba(var(--color-level-critical-rgb), 0.5);
+  box-shadow: 
+    0 4px 10px rgba(0, 0, 0, 0.4),
+    0 0 15px rgba(var(--color-level-critical-rgb), 0.2),
+    inset 0 1px 0 rgba(var(--color-level-critical-rgb), 0.12);
+  text-shadow: 0 0 6px rgba(var(--color-level-critical-rgb), 0.5);
+  font-weight: var(--font-weight-bold);
+}
+
+.tech-badge--critical::after {
+  background: 
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 1px,
+      rgba(var(--color-level-critical-rgb), 0.04) 1px,
+      rgba(var(--color-level-critical-rgb), 0.04) 2px
+    );
+}
+
+/* Interactive state */
+.tech-badge--interactive {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tech-badge--interactive:hover {
+  transform: translateY(-1px);
+  border-color: rgba(var(--color-cyan-rgb), 0.6);
+  box-shadow: 
+    0 5px 15px rgba(0, 0, 0, 0.4),
+    0 0 20px rgba(var(--color-cyan-rgb), 0.2),
+    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.15);
+}
+
+.tech-badge--interactive:active {
+  transform: translateY(0);
+}
+
+/* Tech stack colors in compact view with improved styling */
+.compact-tech-stack .tech-badge {
+  margin-right: var(--spacing-2);
+  margin-bottom: var(--spacing-2);
+  box-shadow: 
+    0 2px 6px rgba(0, 0, 0, 0.3),
+    0 0 8px rgba(var(--color-cyan-rgb), 0.08);
+  border-width: 1px;
+}
+
+/* Enhanced color variations for timeline entries */
+.timeline-entry:nth-child(5n+1) .tech-badge {
+  color: var(--color-entry1, var(--color-cyan));
+  border-color: rgba(var(--color-entry1-rgb, 100, 255, 218), 0.5);
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-navy-rgb), 0.95) 0%,
+    rgba(var(--color-navy-rgb), 0.9) 100%
+  );
+  text-shadow: 0 0 4px rgba(var(--color-entry1-rgb, 100, 255, 218), 0.4);
+  box-shadow: 
+    0 3px 8px rgba(0, 0, 0, 0.3),
+    0 0 12px rgba(var(--color-entry1-rgb, 100, 255, 218), 0.1);
+}
+
+.timeline-entry:nth-child(5n+2) .tech-badge {
+  color: var(--color-entry2, var(--color-level-high));
+  border-color: rgba(var(--color-entry2-rgb, 255, 157, 0), 0.5);
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-navy-rgb), 0.95) 0%,
+    rgba(var(--color-navy-rgb), 0.9) 100%
+  );
+  text-shadow: 0 0 4px rgba(var(--color-entry2-rgb, 255, 157, 0), 0.4);
+  box-shadow: 
+    0 3px 8px rgba(0, 0, 0, 0.3),
+    0 0 12px rgba(var(--color-entry2-rgb, 255, 157, 0), 0.1);
+}
+
+.timeline-entry:nth-child(5n+3) .tech-badge {
+  color: var(--color-entry3, var(--color-level-critical));
+  border-color: rgba(var(--color-entry3-rgb, 255, 94, 120), 0.5);
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-navy-rgb), 0.95) 0%,
+    rgba(var(--color-navy-rgb), 0.9) 100%
+  );
+  text-shadow: 0 0 4px rgba(var(--color-entry3-rgb, 255, 94, 120), 0.4);
+  box-shadow: 
+    0 3px 8px rgba(0, 0, 0, 0.3),
+    0 0 12px rgba(var(--color-entry3-rgb, 255, 94, 120), 0.1);
+}
+
+.timeline-entry:nth-child(5n+4) .tech-badge {
+  color: var(--color-entry4, var(--color-level-info));
+  border-color: rgba(var(--color-entry4-rgb, 167, 139, 250), 0.5);
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-navy-rgb), 0.95) 0%,
+    rgba(var(--color-navy-rgb), 0.9) 100%
+  );
+  text-shadow: 0 0 4px rgba(var(--color-entry4-rgb, 167, 139, 250), 0.4);
+  box-shadow: 
+    0 3px 8px rgba(0, 0, 0, 0.3),
+    0 0 12px rgba(var(--color-entry4-rgb, 167, 139, 250), 0.1);
+}
+
+.timeline-entry:nth-child(5n+5) .tech-badge {
+  color: var(--color-entry5, var(--color-level-low));
+  border-color: rgba(var(--color-entry5-rgb, 45, 212, 191), 0.5);
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-navy-rgb), 0.95) 0%,
+    rgba(var(--color-navy-rgb), 0.9) 100%
+  );
+  text-shadow: 0 0 4px rgba(var(--color-entry5-rgb, 45, 212, 191), 0.4);
+  box-shadow: 
+    0 3px 8px rgba(0, 0, 0, 0.3),
+    0 0 12px rgba(var(--color-entry5-rgb, 45, 212, 191), 0.1);
+}
+
+/* Focus styles with enhanced visibility */
 .tech-badge:focus-visible {
-  outline: 2px solid var(--color-primary);
+  outline: 2px solid var(--color-cyan);
   outline-offset: 2px;
+  box-shadow: 
+    0 0 0 4px rgba(var(--color-cyan-rgb), 0.3),
+    0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
 .tech-badge--security:focus-visible {
-  outline-color: var(--color-primary);
+  outline-color: var(--color-cyan);
+  box-shadow: 
+    0 0 0 4px rgba(var(--color-cyan-rgb), 0.4),
+    0 4px 15px rgba(0, 0, 0, 0.5);
 }
 
 .tech-badge--terminal:focus-visible {
-  outline-color: var(--color-info);
+  outline-color: var(--color-level-info);
+  box-shadow: 
+    0 0 0 4px rgba(var(--color-level-info-rgb), 0.3),
+    0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
-/* Responsive styles */
+/* Responsive styles with improved readability */
 @media (max-width: 768px) {
   .tech-badge {
-    font-size: calc(var(--font-size-xs) * 0.9);
-    padding: calc(var(--spacing-1) * 0.9) calc(var(--spacing-2) * 0.9);
+    font-size: var(--font-size-sm);
+    padding: var(--spacing-2) calc(var(--spacing-2) + 2px);
+    min-height: 26px;
+  }
+  
+  .tech-badge--sm {
+    font-size: var(--font-size-xs);
+    padding: var(--spacing-1) var(--spacing-2);
+    min-height: 22px;
   }
   
   .tech-badge--lg {
-    font-size: calc(var(--font-size-sm) * 0.9);
+    font-size: var(--font-size-base);
+    padding: var(--spacing-2) var(--spacing-3);
+    min-height: 30px;
   }
   
   .compact-tech-stack .tech-badge {
-    font-size: calc(var(--font-size-xs) * 0.8);
-    padding: calc(var(--spacing-1) * 0.7);
+    font-size: calc(var(--font-size-xs) + 1px);
+    padding: calc(var(--spacing-1) + 1px) var(--spacing-2);
+    margin-right: var(--spacing-1);
+    margin-bottom: var(--spacing-1);
+  }
+}
+
+/* Improved contrast for small screens */
+@media (max-width: 480px) {
+  .tech-badge {
+    border-width: 1.5px;
+    text-shadow: 0 0 6px rgba(var(--color-cyan-rgb), 0.5);
+  }
+  
+  .tech-badge--security,
+  .tech-badge--critical {
+    font-weight: var(--font-weight-bold);
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .tech-badge {
+    border-width: 2px;
+    background: rgba(var(--color-navy-rgb), 0.98);
+    text-shadow: none;
+  }
+  
+  .tech-badge::after {
+    display: none;
+  }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .tech-badge--interactive:hover {
+    transform: none;
   }
 }

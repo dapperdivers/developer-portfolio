@@ -6,11 +6,11 @@ import './TerminalControls.css';
 
 /**
  * TerminalControls atom component for rendering terminal window controls
- * Updated to use framer-motion for animations
+ * Updated to use framer-motion for animations and support kitty terminal style
  * 
  * @component
  * @param {Object} props - Component props
- * @param {string} [props.variant='macos'] - Visual variant ('macos', 'windows', 'linux')
+ * @param {string} [props.variant='kitty'] - Visual variant ('macos', 'windows', 'linux', 'kitty')
  * @param {boolean} [props.interactive=false] - Whether controls are clickable
  * @param {React.MouseEventHandler<HTMLButtonElement>} [props.onCloseClick] - Callback for close button click
  * @param {React.MouseEventHandler<HTMLButtonElement>} [props.onMinimizeClick] - Callback for minimize button click
@@ -19,7 +19,7 @@ import './TerminalControls.css';
  * @returns {React.ReactElement} TerminalControls component
  */
 const TerminalControls = ({ 
-  variant = 'macos',
+  variant = 'kitty',
   interactive = false,
   onCloseClick,
   onMinimizeClick,
@@ -46,11 +46,11 @@ const TerminalControls = ({
   const buttonVariants = {
     initial: { scale: 1 },
     hover: { 
-      scale: interactive ? 1.1 : 1,
-      transition: { duration: 0.2 } 
+      scale: interactive ? 1.15 : 1,
+      transition: { duration: 0.2, ease: "easeOut" } 
     },
     tap: { 
-      scale: interactive ? 0.95 : 1,
+      scale: interactive ? 0.9 : 1,
       transition: { duration: 0.1 } 
     }
   };
@@ -62,7 +62,7 @@ const TerminalControls = ({
     <motion.div 
       className={classes}
       aria-hidden={!interactive}
-      initial={{ opacity: 0.9 }}
+      initial={{ opacity: 0.95 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3 }}
       {...rest}
@@ -105,7 +105,7 @@ const TerminalControls = ({
 };
 
 TerminalControls.propTypes = {
-  variant: PropTypes.oneOf(['macos', 'windows', 'linux']),
+  variant: PropTypes.oneOf(['macos', 'windows', 'linux', 'kitty']),
   interactive: PropTypes.bool,
   onCloseClick: PropTypes.func, /* React.MouseEventHandler<HTMLButtonElement> */
   onMinimizeClick: PropTypes.func, /* React.MouseEventHandler<HTMLButtonElement> */

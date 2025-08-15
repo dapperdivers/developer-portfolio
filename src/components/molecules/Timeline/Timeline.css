@@ -1,0 +1,478 @@
+/* Timeline Component Styles - Molecule Level */
+/* Minimal styles with NO width constraints */
+
+/* TIMELINE-CYBERPUNK LAYOUT */
+.timeline-cyberpunk {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  padding: 2rem 0;
+  overflow: hidden;
+}
+
+/* Central timeline backbone */
+.timeline-cyberpunk__backbone {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    rgba(var(--color-cyan-rgb), 0.2),
+    rgba(var(--color-cyan-rgb), 0.6),
+    rgba(var(--color-cyan-rgb), 0.8),
+    rgba(var(--color-cyan-rgb), 0.6),
+    rgba(var(--color-cyan-rgb), 0.2)
+  );
+  z-index: 2;
+  box-shadow: 
+    0 0 20px rgba(var(--color-cyan-rgb), 0.4),
+    inset 0 0 10px rgba(var(--color-cyan-rgb), 0.3);
+  border-radius: 2px;
+}
+
+/* Data flow particles along the backbone */
+.timeline-cyberpunk__data-flow {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 12px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(var(--color-cyan-rgb), 1),
+    transparent
+  );
+  border-radius: 3px;
+  box-shadow: 0 0 15px rgba(var(--color-cyan-rgb), 0.8);
+  z-index: 3;
+}
+
+.timeline-cyberpunk__data-flow--delayed {
+  width: 4px;
+  height: 8px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(var(--color-green-400-rgb), 0.8),
+    transparent
+  );
+  box-shadow: 0 0 10px rgba(var(--color-green-400-rgb), 0.6);
+}
+
+/* Background cybersecurity effects */
+.timeline-cyberpunk__effects {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.timeline-cyberpunk__security-scan {
+  position: absolute;
+  top: 10%;
+  width: 2px;
+  height: 80%;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(var(--color-cyan-rgb), 0.6),
+    transparent
+  );
+  box-shadow: 0 0 25px rgba(var(--color-cyan-rgb), 0.5);
+  filter: blur(1px);
+}
+
+.timeline-cyberpunk__grid-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 60px,
+      rgba(var(--color-cyan-rgb), 0.03) 60px,
+      rgba(var(--color-cyan-rgb), 0.03) 61px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 60px,
+      rgba(var(--color-cyan-rgb), 0.03) 60px,
+      rgba(var(--color-cyan-rgb), 0.03) 61px
+    );
+}
+
+/* Timeline entries container - NO max-width constraints */
+.timeline-cyberpunk__entries {
+  position: relative;
+  z-index: 4;
+  padding: 2rem 0;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Individual timeline entry - CSS Grid layout */
+.timeline-cyberpunk__entry {
+  position: relative;
+  width: 100%;
+  margin-bottom: 4rem;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  grid-template-areas: "content connector empty";
+  align-items: center;
+  gap: 2rem;
+  min-height: 120px;
+}
+
+.timeline-cyberpunk__entry--left {
+  grid-template-areas: "content connector empty";
+}
+
+.timeline-cyberpunk__entry--left .timeline-cyberpunk__content {
+  grid-area: content;
+  grid-column: 1 / span 2; /* Span across content and connector columns */
+  justify-self: start;
+  width: calc(100% + 2rem); /* Add back the gap */
+  margin-right: -2rem; /* Negative margin to extend into gap */
+}
+
+.timeline-cyberpunk__entry--right {
+  grid-template-areas: "empty connector content";
+}
+
+.timeline-cyberpunk__entry--right .timeline-cyberpunk__content {
+  grid-area: content;
+  grid-column: 2 / span 2; /* Span across connector and content columns */
+  justify-self: end;
+  width: calc(100% + 2rem); /* Add back the gap */
+  margin-left: -2rem; /* Negative margin to extend into gap */
+}
+
+/* Timeline connector positioning */
+.timeline-cyberpunk__connector {
+  grid-area: connector;
+  justify-self: center;
+  z-index: 10;
+}
+
+/* Content area - NO max-width constraints */
+.timeline-cyberpunk__content {
+  position: relative;
+  width: 100%;
+  /* REMOVED: max-width constraints */
+}
+
+/* Enhanced card styling */
+.timeline-cyberpunk__card {
+  position: relative;
+  width: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.3s ease;
+}
+
+.timeline-cyberpunk__card--active {
+  z-index: 15;
+}
+
+/* Card glow effect */
+.timeline-cyberpunk__card-glow {
+  position: absolute;
+  inset: -15px;
+  background: radial-gradient(
+    circle at center,
+    rgba(var(--color-cyan-rgb), 0.2),
+    rgba(var(--color-cyan-rgb), 0.1),
+    transparent
+  );
+  border-radius: 20px;
+  filter: blur(15px);
+  opacity: 0;
+  z-index: -1;
+}
+
+.timeline-cyberpunk__card--active .timeline-cyberpunk__card-glow {
+  opacity: 0.8;
+}
+
+/* Security classification badge */
+.timeline-cyberpunk__security-badge {
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-green-400-rgb), 0.9),
+    rgba(var(--color-green-400-rgb), 0.7)
+  );
+  border: 2px solid rgba(var(--color-green-400-rgb), 1);
+  border-radius: 20px;
+  color: var(--color-navy);
+  font-family: var(--font-family-jetbrains);
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  z-index: 20;
+  box-shadow: 
+    0 4px 15px rgba(var(--color-green-400-rgb), 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.security-badge__icon {
+  font-size: 0.8rem;
+}
+
+.security-badge__text {
+  text-shadow: none;
+}
+
+/* Card content container - HIGHER z-index than card to appear above animations */
+.timeline-cyberpunk__card-content {
+  position: relative;
+  z-index: 20;
+  width: 100%;
+}
+
+/* Default content styling */
+.timeline-cyberpunk__default-content {
+  padding: 2rem;
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-navy-rgb), 0.95) 0%,
+    rgba(var(--color-navy-rgb), 0.9) 100%
+  );
+  border: 1px solid rgba(var(--color-cyan-rgb), 0.3);
+  border-radius: 12px;
+  backdrop-filter: blur(20px);
+  box-shadow: 
+    0 10px 30px rgba(0, 0, 0, 0.4),
+    0 0 25px rgba(var(--color-cyan-rgb), 0.15),
+    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.1);
+}
+
+.timeline-cyberpunk__title {
+  color: var(--color-cyan);
+  font-family: var(--font-family-jetbrains);
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 0 15px rgba(var(--color-cyan-rgb), 0.6);
+}
+
+.timeline-cyberpunk__company {
+  color: rgba(var(--color-offwhite-rgb), 0.9);
+  font-family: var(--font-family-jetbrains);
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.timeline-cyberpunk__description {
+  color: rgba(var(--color-offwhite-rgb), 0.9);
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.timeline-cyberpunk__date {
+  color: rgba(var(--color-cyan-rgb), 0.8);
+  font-family: var(--font-family-jetbrains);
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+/* Holographic border effect */
+.timeline-cyberpunk__holo-border {
+  position: absolute;
+  inset: 0;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  background: linear-gradient(
+    45deg,
+    rgba(var(--color-cyan-rgb), 0.4),
+    transparent,
+    rgba(var(--color-cyan-rgb), 0.4),
+    transparent,
+    rgba(var(--color-cyan-rgb), 0.4)
+  );
+  background-size: 400% 400%;
+  animation: holoBorder 3s ease-in-out infinite;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: xor;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+}
+
+.timeline-cyberpunk__card:hover .timeline-cyberpunk__holo-border {
+  opacity: 1;
+}
+
+@keyframes holoBorder {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Data stream particles for active cards */
+.timeline-cyberpunk__data-stream {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.data-particle {
+  position: absolute;
+  width: 2px;
+  height: 6px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(var(--color-cyan-rgb), 0.8),
+    transparent
+  );
+  border-radius: 1px;
+}
+
+.data-particle--1 {
+  left: 10%;
+}
+
+.data-particle--2 {
+  left: 50%;
+}
+
+.data-particle--3 {
+  right: 10%;
+}
+
+/* Connection beams to center timeline */
+.timeline-cyberpunk__beam {
+  position: absolute;
+  top: 50%;
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    rgba(var(--color-green-400-rgb), 0.8),
+    rgba(var(--color-green-400-rgb), 0.4),
+    transparent
+  );
+  z-index: 3;
+}
+
+.timeline-cyberpunk__beam--left {
+  right: -2rem;
+  width: 2rem;
+  transform: translateY(-50%);
+}
+
+.timeline-cyberpunk__beam--right {
+  left: -2rem;
+  width: 2rem;
+  transform: translateY(-50%) scaleX(-1);
+}
+
+/* Network connection overlay SVG */
+.timeline-cyberpunk__connections {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.4;
+}
+
+/* Responsive - maintain NO max-width constraints */
+@media (max-width: 1024px) {
+  .timeline-cyberpunk__entries {
+    /* REMOVED: max-width constraints */
+    padding: 0 0.75rem;
+  }
+  
+  .timeline-cyberpunk__entry {
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+  }
+  
+  .timeline-cyberpunk__content {
+    /* REMOVED: max-width constraints */
+  }
+}
+
+@media (max-width: 768px) {
+  .timeline-cyberpunk {
+    padding: 1rem 0;
+  }
+  
+  .timeline-cyberpunk__entries {
+    padding: 1rem 0.5rem;
+  }
+  
+  .timeline-cyberpunk__entry {
+    grid-template-columns: 1fr;
+    grid-template-areas: 
+      "connector"
+      "content";
+    justify-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  
+  .timeline-cyberpunk__entry--left,
+  .timeline-cyberpunk__entry--right {
+    grid-template-areas: 
+      "connector"
+      "content";
+  }
+  
+  .timeline-cyberpunk__content {
+    grid-area: content;
+    justify-self: stretch;
+    width: 100%;
+    /* REMOVED: max-width constraints */
+  }
+  
+  .timeline-cyberpunk__connector {
+    grid-area: connector;
+    justify-self: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .timeline-cyberpunk__entries {
+    padding: 0 0.25rem;
+  }
+  
+  .timeline-cyberpunk__entry {
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
+/* Performance optimizations */
+.timeline-cyberpunk {
+  transform: translateZ(0);
+  contain: layout style;
+}

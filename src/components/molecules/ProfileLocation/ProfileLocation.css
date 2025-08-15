@@ -1,22 +1,350 @@
-/* ProfileLocation Component Styles */
+/* ProfileLocation Terminal Component Styles */
+@import url('../../../assets/css/design-system/index.css');
 
 .profile-location {
   width: 100%;
+  background: var(--color-dark);
+  border: 2px solid var(--color-cyan);
+  border-radius: 0;
+  padding: 0;
   margin-bottom: var(--spacing-8);
-  border-radius: var(--border-radius-lg);
+  position: relative;
+  font-family: 'Courier New', 'Monaco', monospace;
+  font-size: 14px;
+  line-height: 1.2;
+  color: var(--color-cyan);
   overflow: hidden;
-  box-shadow: var(--shadow-md);
+  box-shadow: 
+    0 0 20px rgba(var(--color-cyan-rgb), 0.3),
+    inset 0 0 20px rgba(var(--color-cyan-rgb), 0.1);
 }
 
-/* Responsive adjustments */
+/* System Status Bar */
+.profile-location__system-status {
+  background: var(--color-navy);
+  border-bottom: 1px solid var(--color-cyan);
+  padding: 8px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.system-label {
+  color: var(--color-cyan);
+  margin-right: 8px;
+}
+
+.system-status {
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.system-status--default {
+  color: var(--color-cyan);
+}
+
+.system-status--secure {
+  color: var(--color-success);
+}
+
+.system-status--breach {
+  color: var(--color-warning);
+  animation: breach-blink 2s infinite;
+}
+
+.system-status--critical {
+  color: var(--color-danger);
+  animation: critical-blink 1s infinite;
+}
+
+.status-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.status-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.separator {
+  color: var(--color-cyan);
+  opacity: 0.7;
+}
+
+.live-indicator {
+  color: var(--color-gray-400);
+  font-weight: bold;
+}
+
+.live-indicator.active {
+  color: var(--color-success);
+  animation: blink 1.5s infinite;
+}
+
+.refresh-btn {
+  background: transparent;
+  border: 1px solid var(--color-cyan);
+  color: var(--color-cyan);
+  padding: 2px 6px;
+  font-family: inherit;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.refresh-btn:hover {
+  background: rgba(var(--color-cyan-rgb), 0.1);
+  box-shadow: 0 0 5px rgba(var(--color-cyan-rgb), 0.5);
+}
+
+/* Map Wrapper */
+.profile-location__map-wrapper {
+  position: relative;
+  /* Remove any padding/margin so MapComponent fills the space properly */
+}
+
+/* Ensure MapComponent integrates seamlessly */
+.profile-location__map-wrapper .map-container-wrapper {
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* Security Footer */
+.profile-location__security-footer {
+  background: var(--color-navy);
+  border-top: 1px solid var(--color-cyan);
+  padding: 8px 16px;
+  font-size: 12px;
+}
+
+.security-metrics {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.metric {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.metric-label {
+  color: var(--color-gray-400);
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.metric-value {
+  color: var(--color-cyan);
+  font-weight: bold;
+  font-size: 11px;
+}
+
+.metric-value--default {
+  color: var(--color-cyan);
+}
+
+.metric-value--secure {
+  color: var(--color-success);
+}
+
+.metric-value--breach {
+  color: var(--color-warning);
+}
+
+.metric-value--critical {
+  color: var(--color-danger);
+}
+
+.status-online {
+  color: var(--color-success);
+}
+
+.status-offline {
+  color: var(--color-gray-400);
+}
+
+/* Security Variants */
+.profile-location--secure {
+  border-color: var(--color-success);
+  box-shadow: 
+    0 0 20px rgba(var(--color-success-rgb), 0.3),
+    inset 0 0 20px rgba(var(--color-success-rgb), 0.1);
+}
+
+.profile-location--secure .profile-location__system-status {
+  background: rgba(var(--color-success-rgb), 0.1);
+}
+
+.profile-location--breach {
+  border-color: var(--color-warning);
+  box-shadow: 
+    0 0 20px rgba(var(--color-warning-rgb), 0.3),
+    inset 0 0 20px rgba(var(--color-warning-rgb), 0.1);
+  animation: breach-pulse 3s ease-in-out infinite;
+}
+
+.profile-location--breach .profile-location__system-status {
+  background: rgba(var(--color-warning-rgb), 0.1);
+}
+
+.profile-location--critical {
+  border-color: var(--color-danger);
+  box-shadow: 
+    0 0 20px rgba(var(--color-danger-rgb), 0.3),
+    inset 0 0 20px rgba(var(--color-danger-rgb), 0.1);
+  animation: critical-alert 2s ease-in-out infinite;
+}
+
+.profile-location--critical .profile-location__system-status {
+  background: rgba(var(--color-danger-rgb), 0.1);
+}
+
+/* Animations */
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0.3; }
+}
+
+@keyframes breach-blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0.5; }
+}
+
+@keyframes critical-blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0.2; }
+}
+
+@keyframes breach-pulse {
+  0%, 100% {
+    box-shadow: 
+      0 0 20px rgba(var(--color-warning-rgb), 0.3),
+      inset 0 0 20px rgba(var(--color-warning-rgb), 0.1);
+  }
+  50% {
+    box-shadow: 
+      0 0 30px rgba(var(--color-warning-rgb), 0.5),
+      inset 0 0 30px rgba(var(--color-warning-rgb), 0.2);
+  }
+}
+
+@keyframes critical-alert {
+  0%, 100% {
+    box-shadow: 
+      0 0 25px rgba(var(--color-danger-rgb), 0.4),
+      inset 0 0 25px rgba(var(--color-danger-rgb), 0.1);
+    border-color: var(--color-danger);
+  }
+  50% {
+    box-shadow: 
+      0 0 40px rgba(var(--color-danger-rgb), 0.7),
+      inset 0 0 40px rgba(var(--color-danger-rgb), 0.2);
+    border-color: rgba(var(--color-danger-rgb), 0.8);
+  }
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
   .profile-location {
-    margin-bottom: var(--spacing-6);
+    font-size: 12px;
+  }
+
+  .profile-location__system-status,
+  .profile-location__security-footer {
+    padding: 6px 12px;
+    font-size: 11px;
+  }
+
+  .system-label,
+  .metric-label {
+    font-size: 10px;
+  }
+
+  .metric-value {
+    font-size: 10px;
+  }
+
+  .security-metrics {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .status-left {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .refresh-btn {
+    padding: 2px 4px;
+    font-size: 10px;
   }
 }
 
 @media (max-width: 480px) {
   .profile-location {
+    font-size: 11px;
     margin-bottom: var(--spacing-4);
+  }
+
+  .profile-location__system-status,
+  .profile-location__security-footer {
+    padding: 4px 8px;
+    font-size: 10px;
+  }
+
+  .system-label,
+  .metric-label {
+    font-size: 9px;
+  }
+
+  .metric-value {
+    font-size: 9px;
+  }
+
+  .security-metrics {
+    gap: 2px;
+  }
+
+  .refresh-btn {
+    padding: 1px 3px;
+    font-size: 9px;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .profile-location {
+    border-width: 3px;
+  }
+  
+  .refresh-btn {
+    border-width: 2px;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .live-indicator,
+  .system-status--breach,
+  .system-status--critical,
+  .profile-location--breach,
+  .profile-location--critical {
+    animation: none;
+  }
+  
+  .refresh-btn {
+    transition: none;
   }
 }

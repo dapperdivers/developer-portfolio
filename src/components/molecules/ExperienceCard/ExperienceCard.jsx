@@ -2,6 +2,12 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAnimation } from '@context/AnimationContext';
+import ExperienceHeader from '@atoms/ExperienceHeader';
+import ExperienceToggle from '@atoms/ExperienceToggle';
+import ExperienceContent from '@atoms/ExperienceContent';
+import SecurityClassification from '@atoms/SecurityClassification';
+import TerminalFooter from '@atoms/TerminalFooter';
+import CyberpunkEffects from '@atoms/CyberpunkEffects';
 import './ExperienceCard.css';
 
 const ExperienceCard = ({ 
@@ -9,26 +15,19 @@ const ExperienceCard = ({
   index = 0, 
   colorOverride, 
   shadow = false, 
-  variant = 'terminal',
+  variant = 'cyberpunk',
   isExpanded = false,
   onToggle
 }) => {
   // Get animation context with fallbacks
   const animationContext = useAnimation();
   const { 
-    slideUpVariants = {
-      hidden: { opacity: 0, y: 20 },
-      visible: { opacity: 1, y: 0 }
-    }, 
-    fadeInVariants = {
-      hidden: { opacity: 0 },
-      visible: { opacity: 1 }
-    },
     animationEnabled = true
   } = animationContext || {};
   
   // Internal state for animation
   const [internalExpanded, setInternalExpanded] = useState(isExpanded);
+  const [isHovered, setIsHovered] = useState(false);
   
   // Use controlled or uncontrolled state
   const expanded = onToggle ? isExpanded : internalExpanded;
@@ -57,20 +56,28 @@ const ExperienceCard = ({
 
   const cardClasses = [
     'experience-card',
+    !expanded && 'experience-card--collapsed',
     shadow && 'experience-card--shadow',
     variant && `experience-card--${variant}`,
-    expanded && 'experience-card--expanded'
+    expanded && 'experience-card--expanded',
+    isHovered && 'experience-card--hovered'
   ].filter(Boolean).join(' ');
 
-  // Enhanced animation variants using design system
+  // Enhanced animation variants for dramatic effect
   const cardVariants = {
-    hidden: { opacity: 0, y: 20, scale: 0.95 },
+    hidden: { 
+      opacity: 0, 
+      y: 40, 
+      scale: 0.9,
+      rotateX: -15
+    },
     visible: { 
       opacity: 1, 
       y: 0,
       scale: 1,
+      rotateX: 0,
       transition: {
-        duration: 0.4,
+        duration: 0.6,
         delay: index * 0.1,
         ease: "easeOut"
       }
@@ -80,28 +87,27 @@ const ExperienceCard = ({
   const expandedVariants = {
     collapsed: { 
       height: 'auto',
-      transition: { duration: 0.3, ease: "easeInOut" }
+      transition: { duration: 0.4, ease: "easeInOut" }
     },
     expanded: { 
       height: 'auto',
-      transition: { duration: 0.3, ease: "easeInOut" }
+      transition: { duration: 0.4, ease: "easeInOut" }
     }
   };
-  
-  const contentVariants = {
-    collapsed: { 
-      opacity: 0, 
-      height: 0, 
-      marginTop: 0,
-      transition: { duration: 0.2, ease: "easeInOut" }
-    },
-    expanded: { 
-      opacity: 1, 
-      height: 'auto',
-      marginTop: 16,
-      transition: { duration: 0.3, delay: 0.1, ease: "easeInOut" }
+
+  // Map variant to security variants for atomic components
+  const getSecurityVariant = () => {
+    switch (variant) {
+      case 'security':
+        return 'secure';
+      case 'cyberpunk':
+      case 'terminal':
+      default:
+        return 'default';
     }
   };
+
+  const securityVariant = getSecurityVariant();
 
   return (
     <motion.div
@@ -109,105 +115,89 @@ const ExperienceCard = ({
       variants={cardVariants}
       initial={animationEnabled ? "hidden" : false}
       animate={animationEnabled ? "visible" : false}
-      whileHover={animationEnabled ? { y: -4, scale: expanded ? 1 : 1.02 } : {}}
+      whileHover={animationEnabled ? { 
+        y: -8, 
+        scale: 1.02,
+        rotateX: 2,
+        transition: { duration: 0.3 }
+      } : {}}
       onClick={handleCardClick}
+      onHoverStart={() => setIsHovered(true)}
+      onHoverEnd={() => setIsHovered(false)}
       data-testid="experience-card"
-      style={{ cursor: 'pointer' }}
+      style={{ 
+        cursor: 'pointer',
+        transformStyle: 'preserve-3d',
+        perspective: '1000px'
+      }}
     >
-      <div className="experience-card__content">
+      {/* Cyberpunk Effects */}
+      <CyberpunkEffects
+        expanded={expanded}
+        isHovered={isHovered}
+        variant={securityVariant}
+      />
+
+      {/* Main card content */}
+      <motion.div 
+        className="experience-card__content"
+        variants={expandedVariants}
+        animate={expanded ? "expanded" : "collapsed"}
+      >
+        {/* Header Section */}
         <div className="experience-card__header">
-          {data.companylogo && (
-            <div className="experience-card__logo-container">
-              <img
-                src={data.companylogo}
-                alt={`${data.company} logo`}
-                className="experience-card__logo"
-                loading="lazy"
-                width="80"
-                height="80"
-                onError={(e) => {
-                  e.target.style.display = 'none';
-                  console.warn(`Failed to load company logo: ${data.companylogo}`);
-                }}
-              />
-            </div>
-          )}
+          <ExperienceHeader
+            logo={data.companylogo}
+            role={data.role}
+            company={data.company}
+            date={data.date}
+            url={data.url}
+            variant={securityVariant}
+            expanded={expanded}
+            onLinkClick={handleLinkClick}
+          />
           
-          <div className="experience-card__header-info">
-            <h3 className="experience-card__role">{data.role}</h3>
-            <h4 className="experience-card__company">
-              {data.url ? (
-                <button 
-                  className="experience-card__company-link"
-                  onClick={handleLinkClick}
-                  aria-label={`Visit ${data.company} website`}
-                >
-                  {data.company} ↗
-                </button>
-              ) : (
-                data.company
-              )}
-            </h4>
-            <p className="experience-card__date">{data.date}</p>
-          </div>
-          
-          <div className="experience-card__toggle">
-            <motion.div
-              className="experience-card__toggle-icon"
-              animate={{ rotate: expanded ? 180 : 0 }}
-              transition={{ duration: 0.2 }}
-            >
-              ▼
-            </motion.div>
-          </div>
+          <ExperienceToggle
+            expanded={expanded}
+            onClick={toggleExpanded}
+            variant={securityVariant}
+          />
         </div>
         
-        <AnimatePresence>
+        <AnimatePresence mode="wait">
           {expanded && (
             <motion.div 
               className="experience-card__details"
-              variants={contentVariants}
-              initial="collapsed"
-              animate="expanded"
-              exit="collapsed"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
             >
-              {data.desc && (
-                <motion.p 
-                  className="experience-card__description"
-                  variants={fadeInVariants}
-                >
-                  {data.desc}
-                </motion.p>
-              )}
-              
-              {data.descBullets && data.descBullets.length > 0 && (
-                <motion.ul 
-                  className="experience-card__bullets"
-                  variants={{
-                    expanded: {
-                      transition: {
-                        staggerChildren: 0.1
-                      }
-                    }
-                  }}
-                  initial="collapsed"
-                  animate="expanded"
-                >
-                  {data.descBullets.map((bullet, i) => (
-                    <motion.li 
-                      key={i} 
-                      className="experience-card__bullet-item"
-                      variants={slideUpVariants}
-                    >
-                      {bullet}
-                    </motion.li>
-                  ))}
-                </motion.ul>
-              )}
+              {/* Security classification banner */}
+              <SecurityClassification
+                label="DECLASSIFIED"
+                variant={securityVariant}
+                expanded={expanded}
+              />
+
+              {/* Main content */}
+              <ExperienceContent
+                description={data.desc}
+                bullets={data.descBullets}
+                variant={securityVariant}
+                expanded={expanded}
+              />
+
+              {/* Terminal-style footer */}
+              <TerminalFooter
+                prompt="user@portfolio:~$"
+                variant={securityVariant}
+                expanded={expanded}
+              />
             </motion.div>
           )}
         </AnimatePresence>
-      </div>
+      </motion.div>
     </motion.div>
   );
 };
@@ -229,7 +219,7 @@ ExperienceCard.propTypes = {
     b: PropTypes.number
   }),
   shadow: PropTypes.bool,
-  variant: PropTypes.string,
+  variant: PropTypes.oneOf(['default', 'terminal', 'cyberpunk', 'security']),
   isExpanded: PropTypes.bool,
   onToggle: PropTypes.func
 };

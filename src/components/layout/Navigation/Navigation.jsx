@@ -64,7 +64,7 @@ const Navigation = () => {
 
   return (
     <motion.header 
-      className="fixed top-0 left-0 right-0 z-50 bg-gray-900/95 backdrop-blur-md pt-4 pb-2"
+      className="fixed top-0 left-0 right-0 z-50 pt-4 pb-2"
       role="banner"
       initial={{ y: -100 }}
       animate={{ y: isVisible ? 0 : -100 }}
