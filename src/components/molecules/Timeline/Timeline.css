@@ -116,46 +116,47 @@
 .timeline-cyberpunk__entries {
   position: relative;
   z-index: 4;
-  padding: 2rem 0;
+  padding: 2.5rem 0;
   width: 100%;
   margin: 0 auto;
+  /* Ensure hover animations stay within container bounds */
+  overflow: visible;
 }
 
-/* Individual timeline entry - CSS Grid layout */
+/* Individual timeline entry - Clean CSS Grid layout */
 .timeline-cyberpunk__entry {
   position: relative;
   width: 100%;
   margin-bottom: 4rem;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
-  grid-template-areas: "content connector empty";
   align-items: center;
   gap: 2rem;
   min-height: 120px;
+  /* Add padding to accommodate hover animations */
+  padding: 6px 0;
 }
 
+/* Left-aligned entries (even indexes) */
 .timeline-cyberpunk__entry--left {
   grid-template-areas: "content connector empty";
 }
 
 .timeline-cyberpunk__entry--left .timeline-cyberpunk__content {
   grid-area: content;
-  grid-column: 1 / span 2; /* Span across content and connector columns */
-  justify-self: start;
-  width: calc(100% + 2rem); /* Add back the gap */
-  margin-right: -2rem; /* Negative margin to extend into gap */
+  justify-self: end;
+  width: 100%;
 }
 
+/* Right-aligned entries (odd indexes) */
 .timeline-cyberpunk__entry--right {
   grid-template-areas: "empty connector content";
 }
 
 .timeline-cyberpunk__entry--right .timeline-cyberpunk__content {
   grid-area: content;
-  grid-column: 2 / span 2; /* Span across connector and content columns */
-  justify-self: end;
-  width: calc(100% + 2rem); /* Add back the gap */
-  margin-left: -2rem; /* Negative margin to extend into gap */
+  justify-self: start;
+  width: 100%;
 }
 
 /* Timeline connector positioning */
@@ -165,11 +166,11 @@
   z-index: 10;
 }
 
-/* Content area - NO max-width constraints */
+/* Content area - Balanced width constraints for proper timeline layout */
 .timeline-cyberpunk__content {
   position: relative;
   width: 100%;
-  /* REMOVED: max-width constraints */
+  /* Allow reasonable max-width for timeline readability but not too constraining */
 }
 
 /* Enhanced card styling */

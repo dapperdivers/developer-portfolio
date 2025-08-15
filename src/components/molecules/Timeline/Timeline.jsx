@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
 import TimelineConnector from '@atoms/TimelineConnector';
-import TimelineItem from '@atoms/TimelineItem';
+import TimelineExperienceCard from '@molecules/TimelineExperienceCard';
 import './Timeline.css';
 
 /**
@@ -158,106 +158,28 @@ const Timeline = ({
                   />
                 </div>
 
-                {/* Card content wrapper using TimelineItem for positioning */}
+                {/* Unified Timeline Experience Card - eliminates layering conflicts */}
                 <div className="timeline-cyberpunk__content">
-                  <TimelineItem
-                    isLeft={isLeft}
-                    isActive={isActive}
-                    variant={isActive ? 'secure' : 'default'}
-                    isScanning={isActive}
-                    hasGlow={isActive}
-                    className="timeline-cyberpunk__item-wrapper"
-                  >
-                    <motion.div 
-                      className={`timeline-cyberpunk__card ${isActive ? 'timeline-cyberpunk__card--active' : ''}`}
-                      whileHover={{ 
-                        y: -4,
-                        transition: { duration: 0.2 }
+                  {renderItem ? renderItem(item, index, { isLeft, isActive, variant: isActive ? 'secure' : 'cyberpunk' }) : (
+                    <TimelineExperienceCard
+                      data={{
+                        company: item.company,
+                        role: item.title,
+                        date: item.date,
+                        desc: item.description,
+                        url: item.url,
+                        companylogo: item.logo
                       }}
-                    >
-                      {/* Cyberpunk glow effect */}
-                      <motion.div 
-                        className="timeline-cyberpunk__card-glow"
-                        animate={isActive ? {
-                          opacity: [0.3, 0.7, 0.3],
-                          scale: [1, 1.02, 1]
-                        } : {}}
-                        transition={{
-                          duration: 2,
-                          repeat: Infinity,
-                          ease: "easeInOut"
-                        }}
-                      />
-                      
-                      {/* Security classification badge for active cards */}
-                      {isActive && (
-                        <motion.div 
-                          className="timeline-cyberpunk__security-badge"
-                          initial={{ scale: 0, rotate: -180 }}
-                          animate={{ scale: 1, rotate: 0 }}
-                          transition={{ delay: 0.5, duration: 0.5 }}
-                        >
-                          <span className="security-badge__icon">🔐</span>
-                          <span className="security-badge__text">ACTIVE</span>
-                        </motion.div>
-                      )}
-                      
-                      {/* Card content - renders ExperienceCard or default content */}
-                      <div className="timeline-cyberpunk__card-content">
-                        {renderItem ? renderItem(item, index) : (
-                          <div className="timeline-cyberpunk__default-content">
-                            <h3 className="timeline-cyberpunk__title">{item.title}</h3>
-                            <h4 className="timeline-cyberpunk__company">{item.company}</h4>
-                            <p className="timeline-cyberpunk__description">{item.description}</p>
-                            {item.date && (
-                              <span className="timeline-cyberpunk__date">{item.date}</span>
-                            )}
-                          </div>
-                        )}
-                      </div>
-                      
-                      {/* Holographic border effect */}
-                      <div className="timeline-cyberpunk__holo-border"></div>
-                      
-                      {/* Data stream particles for expanded cards */}
-                      {isActive && (
-                        <motion.div 
-                          className="timeline-cyberpunk__data-stream"
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          exit={{ opacity: 0 }}
-                        >
-                          {[...Array(3)].map((_, i) => (
-                            <motion.div
-                              key={i}
-                              className={`data-particle data-particle--${i + 1}`}
-                              animate={{
-                                y: ['-10px', '110%'],
-                                opacity: [0, 1, 0]
-                              }}
-                              transition={{
-                                duration: 2.5,
-                                delay: i * 0.4,
-                                repeat: Infinity,
-                                ease: "linear"
-                              }}
-                            />
-                          ))}
-                        </motion.div>
-                      )}
-                    </motion.div>
-                  </TimelineItem>
+                      index={index}
+                      isLeft={isLeft}
+                      isActive={isActive}
+                      variant={isActive ? 'secure' : 'cyberpunk'}
+                      isExpanded={item.isExpanded || false}
+                      className="timeline-cyberpunk__item-wrapper"
+                    />
+                  )}
                 </div>
 
-                {/* Connection beam to center timeline */}
-                {isActive && (
-                  <motion.div 
-                    className={`timeline-cyberpunk__beam ${isLeft ? 'timeline-cyberpunk__beam--left' : 'timeline-cyberpunk__beam--right'}`}
-                    initial={{ scaleX: 0 }}
-                    animate={{ scaleX: 1 }}
-                    transition={{ delay: 0.8, duration: 0.6 }}
-                  />
-                )}
               </motion.div>
             );
           })}

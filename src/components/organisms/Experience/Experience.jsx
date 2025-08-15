@@ -1,6 +1,6 @@
 import React, { memo, useRef, useState, useCallback } from "react";
 import { motion, useInView } from "framer-motion";
-import ExperienceCard from '@molecules/ExperienceCard';
+import TimelineExperienceCard from '@molecules/TimelineExperienceCard';
 import Timeline from '@molecules/Timeline';
 import Section from '../../layout/Section';
 import ConsoleHeader from '@organisms/ConsoleHeader';
@@ -236,8 +236,6 @@ const Experience = () => {
         variants={containerVariants}
         className="experience-container"
         style={{ 
-          border: '8px solid #00ff00',
-          backgroundColor: 'rgba(0, 255, 0, 0.1)',
           width: '100%'
         }}
       >
@@ -332,8 +330,6 @@ const Experience = () => {
           variants={cardContainerVariants}
           className="experience-cards-container"
           style={{ 
-            border: '6px solid #ff6600',
-            backgroundColor: 'rgba(255, 102, 0, 0.1)',
             width: '100%'
           }}
         >
@@ -350,12 +346,14 @@ const Experience = () => {
               isActive: expandedCards.has(index),
               data: item
             }))}
-            renderItem={(item, index) => (
-              <ExperienceCard
+            renderItem={(item, index, { isLeft, isActive, variant }) => (
+              <TimelineExperienceCard
                 key={`exp-card-${index}`}
                 data={item.data}
                 index={index}
-                variant="cyberpunk"
+                isLeft={isLeft}
+                isActive={isActive}
+                variant={variant || "cyberpunk"}
                 isExpanded={expandedCards.has(index)}
                 onToggle={() => handleCardToggle(index)}
               />
