@@ -70,8 +70,11 @@ export const AnimatePresence = ({children}) => (
 
 // Export any other Framer Motion utilities used in the app
 export const useAnimation = () => ({
-  start: vi.fn(),
-  stop: vi.fn()
+  start: vi.fn().mockResolvedValue(undefined),
+  stop: vi.fn(),
+  set: vi.fn(),
+  mount: vi.fn(),
+  unmount: vi.fn()
 });
 
 export const useInView = (ref, options) => {

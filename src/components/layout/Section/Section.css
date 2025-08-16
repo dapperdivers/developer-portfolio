@@ -8,7 +8,7 @@
 .section {
   position: relative;
   padding: 6rem 0;
-  background-color: var(--cyberpunk-bg);
+  background: transparent;
   min-height: 50vh;
   overflow: hidden;
 }

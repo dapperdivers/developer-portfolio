@@ -6,14 +6,33 @@ import EducationCard from './EducationCard';
 import { vi } from 'vitest';
 
 // Mock framer-motion
-vi.mock('framer-motion', () => ({
-  motion: {
-    article: ({ children, ...props }) => <article {...props}>{children}</article>,
-    header: ({ children, ...props }) => <header {...props}>{children}</header>,
-    div: ({ children, ...props }) => <div {...props}>{children}</div>,
-    h3: ({ children, ...props }) => <h3 {...props}>{children}</h3>
-  }
-}));
+vi.mock('framer-motion', () => {
+  const filterMotionProps = (props) => {
+    const {
+      initial, animate, exit, transition, whileHover, whileTap, whileFocus, whileInView,
+      variants, viewport, drag, dragConstraints, dragElastic, dragMomentum,
+      onDragStart, onDrag, onDragEnd, layout, layoutId, ...filteredProps
+    } = props;
+    return filteredProps;
+  };
+
+  return {
+    motion: {
+      article: ({ children, ...props }) => <article {...filterMotionProps(props)}>{children}</article>,
+      header: ({ children, ...props }) => <header {...filterMotionProps(props)}>{children}</header>,
+      div: ({ children, ...props }) => <div {...filterMotionProps(props)}>{children}</div>,
+      h3: ({ children, ...props }) => <h3 {...filterMotionProps(props)}>{children}</h3>
+    },
+    useAnimation: () => ({
+      start: vi.fn().mockResolvedValue(undefined),
+      stop: vi.fn(),
+      set: vi.fn(),
+      mount: vi.fn(),
+      unmount: vi.fn()
+    }),
+    AnimatePresence: ({ children }) => <div data-testid="animate-presence">{children}</div>
+  };
+});
 
 // Mock react-icons
 vi.mock('react-icons/fa', () => ({
@@ -137,7 +156,7 @@ describe('EducationCard Component', () => {
         <EducationCard education={mockEducation} variant="breach" />
       </TestWrapper>
     );
-    expect(screen.getByTestId('certificate-icon')).toBeInTheDocument();
+    expect(screen.getAllByTestId('certificate-icon')).toHaveLength(2); // Main icon + cert badge
     
     // Test critical variant
     rerender(
