@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FaTerminal } from 'react-icons/fa';
 import { motion } from 'framer-motion';
+import { useAnimation } from '@context/AnimationContext';
 import './SecurityFact.css';
 
 /**
@@ -11,7 +12,6 @@ import './SecurityFact.css';
  * @param {Object} props - Component props
  * @param {string} props.text - Fact text content
  * @param {Object} [props.icon] - Custom icon component (defaults to FaTerminal)
- * @param {Object} [props.variants] - Framer motion animation variants
  * @param {boolean} [props.animate=true] - Whether to animate the component
  * @param {string} [props.className] - Additional CSS classes
  * @returns {React.ReactElement} SecurityFact component
@@ -19,14 +19,21 @@ import './SecurityFact.css';
 const SecurityFact = ({ 
   text, 
   icon: Icon = FaTerminal, 
-  variants,
   animate = true,
   className = ''
 }) => {
+  const { animationEnabled, slideUpVariants } = useAnimation();
+  
+  // Use animation only if both component prop and context allow it
+  const shouldAnimate = animate && animationEnabled;
+
   return (
     <motion.div 
       className={`security-fact ${className}`}
-      variants={animate ? variants : undefined}
+      variants={shouldAnimate ? slideUpVariants : undefined}
+      initial={shouldAnimate ? "hidden" : "visible"}
+      animate={shouldAnimate ? "visible" : "visible"}
+      viewport={{ once: true }}
     >
       <Icon className="security-fact__icon" />
       <p className="security-fact__text">{text}</p>
@@ -39,8 +46,6 @@ SecurityFact.propTypes = {
   text: PropTypes.string.isRequired,
   /** Custom icon component */
   icon: PropTypes.elementType,
-  /** Framer motion animation variants */
-  variants: PropTypes.object,
   /** Whether to animate the component */
   animate: PropTypes.bool,
   /** Additional CSS classes */
