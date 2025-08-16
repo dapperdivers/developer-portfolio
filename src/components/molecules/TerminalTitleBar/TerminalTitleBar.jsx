@@ -37,7 +37,7 @@ const TerminalTitleBar = ({
   const baseTitle = title || (
     variant === 'security' ? 'SEC-TERMINAL-7.4.1' : 
     variant === 'hacker' ? 'H4CK3R-T3RM1N4L-v3.14' : 
-    variant === 'terminal' ? 'CYBER-CONSOLE-2.0' :
+    variant === 'terminal' ? 'kitty' :
     'kitty'
   );
   

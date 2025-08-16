@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 
 import SkillCard, { SkillCardExpanded } from '@molecules/SkillCard';
 import SkeletonCard from '@atoms/SkeletonCard';
+import TerminalTitleBar from '@molecules/TerminalTitleBar';
 import Section from '../../layout/Section';
 import useSkills from "@hooks/useSkills";
 import { usePortfolio } from "@context/PortfolioContext";
@@ -249,14 +250,11 @@ const Skills = () => {
       <div className="skills-content-wrapper">
         {/* Terminal Section - Core Capabilities */}
         <div className="terminal-container">
-          <div className="terminal-header">
-            <span className="terminal-title">Core Capabilities</span>
-            <div className="terminal-buttons">
-              <span className="terminal-button"></span>
-              <span className="terminal-button"></span>
-              <span className="terminal-button"></span>
-            </div>
-          </div>
+          <TerminalTitleBar
+            title="Core Capabilities"
+            variant="kitty"
+            interactive={false}
+          />
           <motion.div 
             className="terminal-content"
             initial="hidden"

@@ -20,7 +20,7 @@ import './ConsoleHeader.css';
  * @param {function} [props.onCommand] - Callback when command is executed
  * @param {boolean} [props.showCursor=true] - Whether to show the blinking cursor
  * @param {string} [props.className=''] - Additional CSS classes
- * @param {string} [props.variant='terminal'] - Visual variant ('terminal', 'security', 'hacker')
+ * @param {string} [props.variant='kitty'] - Visual variant ('kitty', 'terminal', 'security', 'hacker')
  * @param {boolean} [props.shadow=true] - Whether to show a shadow
  * @param {string} [props.id] - Unique ID for ARIA relationships
  * @param {string} [props.ariaDescription] - Description for screen readers
@@ -41,7 +41,7 @@ const ConsoleHeader = ({
   onCommand,
   showCursor = true,
   className = '',
-  variant = 'terminal',
+  variant = 'kitty',
   shadow = true,
   id,
   ariaDescription,
@@ -165,7 +165,7 @@ ConsoleHeader.propTypes = {
   onCommand: PropTypes.func,
   showCursor: PropTypes.bool,
   className: PropTypes.string,
-  variant: PropTypes.oneOf(['terminal', 'security', 'hacker']),
+  variant: PropTypes.oneOf(['kitty', 'terminal', 'security', 'hacker']),
   shadow: PropTypes.bool,
   id: PropTypes.string,
   ariaDescription: PropTypes.string,
