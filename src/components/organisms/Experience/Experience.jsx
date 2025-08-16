@@ -252,7 +252,7 @@ const Experience = () => {
             placeholder="Type 'help' for commands or 'ls la' to expand all experiences..."
             interactive={true}
             onCommand={handleConsoleCommand}
-            variant="kitty"
+            variant="terminal"
             className="mb-4"
             ariaDescription="Interactive console for navigating experience section"
           />

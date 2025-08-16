@@ -92,6 +92,14 @@
   border-bottom: 1px solid var(--color-cyan);
 }
 
+.terminal-title {
+  color: var(--color-navy);
+  font-weight: bold;
+  font-size: 0.875rem;
+  letter-spacing: var(--letter-spacing-technical);
+  text-transform: uppercase;
+}
+
 .terminal-buttons {
   display: flex;
   gap: 0.5rem;

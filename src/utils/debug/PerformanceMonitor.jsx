@@ -37,12 +37,12 @@ const PerformanceMonitor = ({
   const [monitorConfig, setConfig] = useState({
     longTaskThreshold: 100, // Increased from 50ms to 100ms
     fpsWarningThreshold: 30,
-    showComponentTimings: true,
-    showStackTraces: true,
-    logToConsole: true,
+    showComponentTimings: false, // Changed from true to false for better performance
+    showStackTraces: false, // Changed from true to false for better performance
+    logToConsole: false, // Changed from true to false for better performance
     componentFilter: [],
-    monitorScriptExecution: true,
-    monitorNetworkActivity: true,
+    monitorScriptExecution: false, // Changed from true to false for better performance
+    monitorNetworkActivity: false, // Changed from true to false for better performance
     minReportInterval: 5000, // New: minimum time between console reports
     ignoreFramerMotionBatches: true, // New: ignore normal Framer Motion render batches
     ...config
@@ -1298,14 +1298,14 @@ export function SimplePerformanceMonitor({
 
   // Configure the monitor
   const config = {
-    longTaskThreshold: 50,
+    longTaskThreshold: 100, // Increased from 50ms to 100ms for better performance
     fpsWarningThreshold: 30,
-    showComponentTimings: true,
-    showStackTraces: true,
-    logToConsole: true,
+    showComponentTimings: false, // Changed from true to false for better performance
+    showStackTraces: false, // Changed from true to false for better performance
+    logToConsole: false, // Changed from true to false for better performance
     componentFilter: trackComponents,
-    monitorScriptExecution: true,
-    monitorNetworkActivity: true
+    monitorScriptExecution: false, // Changed from true to false for better performance
+    monitorNetworkActivity: false // Changed from true to false for better performance
   };
 
   return (
