@@ -3,10 +3,6 @@ import { render, screen } from '@testing-library/react';
 import { AnimationProvider } from '@context/AnimationContext';
 import { PortfolioProvider } from '@context/PortfolioContext';
 import EducationCard from './EducationCard';
-import { render, screen } from '@testing-library/react';
-import { AnimationProvider } from '@context/AnimationContext';
-import { PortfolioProvider } from '@context/PortfolioContext';
-import EducationCard from './EducationCard';
 import { vi } from 'vitest';
 
 // Mock framer-motion
@@ -54,14 +50,6 @@ const TestWrapper = ({ children }) => (
     </PortfolioProvider>
   </AnimationProvider>
 );
-// Test wrapper component
-const TestWrapper = ({ children }) => (
-  <AnimationProvider>
-    <PortfolioProvider>
-      {children}
-    </PortfolioProvider>
-  </AnimationProvider>
-);
 
 describe('EducationCard Component', () => {
   const mockEducation = {
@@ -70,19 +58,6 @@ describe('EducationCard Component', () => {
     major: 'Artificial Intelligence',
     minor: 'Data Science',
     duration: '2018 - 2020',
-    certifications: [
-      {
-        name: 'AWS Certified Solutions Architect',
-        issuer: 'Amazon Web Services',
-        date: '2020',
-        credentialId: 'AWS-SAA-123456'
-      },
-      {
-        name: 'Google Cloud Professional',
-        issuer: 'Google Cloud',
-        date: '2019',
-        credentialId: 'GCP-PCA-789012'
-      }
     certifications: [
       {
         name: 'AWS Certified Solutions Architect',
@@ -112,11 +87,6 @@ describe('EducationCard Component', () => {
         <EducationCard education={mockEducation} />
       </TestWrapper>
     );
-    render(
-      <TestWrapper>
-        <EducationCard education={mockEducation} />
-      </TestWrapper>
-    );
     
     // Check that the card renders
     expect(screen.getByTestId('education-card')).toBeInTheDocument();
@@ -124,14 +94,6 @@ describe('EducationCard Component', () => {
     // Check for school name
     expect(screen.getByText('Stanford University')).toBeInTheDocument();
     
-    // Check for degree
-    expect(screen.getByText('Master of Computer Science')).toBeInTheDocument();
-    
-    // Check for major
-    expect(screen.getByText('Artificial Intelligence')).toBeInTheDocument();
-    
-    // Check for minor
-    expect(screen.getByText('Data Science')).toBeInTheDocument();
     // Check for degree
     expect(screen.getByText('Master of Computer Science')).toBeInTheDocument();
     
@@ -148,18 +110,8 @@ describe('EducationCard Component', () => {
     expect(screen.getByText('Certifications')).toBeInTheDocument();
     expect(screen.getByText('AWS Certified Solutions Architect')).toBeInTheDocument();
     expect(screen.getByText('Google Cloud Professional')).toBeInTheDocument();
-    // Check for certifications
-    expect(screen.getByText('Certifications')).toBeInTheDocument();
-    expect(screen.getByText('AWS Certified Solutions Architect')).toBeInTheDocument();
-    expect(screen.getByText('Google Cloud Professional')).toBeInTheDocument();
   });
 
-  it('renders with minimal education info (no certifications or minor)', () => {
-    render(
-      <TestWrapper>
-        <EducationCard education={minimalEducation} />
-      </TestWrapper>
-    );
   it('renders with minimal education info (no certifications or minor)', () => {
     render(
       <TestWrapper>
@@ -169,8 +121,6 @@ describe('EducationCard Component', () => {
     
     // Check that the essential fields are rendered
     expect(screen.getByText('MIT')).toBeInTheDocument();
-    expect(screen.getByText('Bachelor of Science')).toBeInTheDocument();
-    expect(screen.getByText('Computer Science')).toBeInTheDocument();
     expect(screen.getByText('Bachelor of Science')).toBeInTheDocument();
     expect(screen.getByText('Computer Science')).toBeInTheDocument();
     expect(screen.getByText('2014 - 2018')).toBeInTheDocument();
@@ -332,12 +282,6 @@ describe('EducationCard Component', () => {
         <EducationCard education={minimalEducation} index={0} />
       </TestWrapper>
     );
-  it('accepts different index props for animations', () => {
-    const { rerender } = render(
-      <TestWrapper>
-        <EducationCard education={minimalEducation} index={0} />
-      </TestWrapper>
-    );
     
     // Rerender with different index
     rerender(
@@ -345,31 +289,11 @@ describe('EducationCard Component', () => {
         <EducationCard education={minimalEducation} index={2} />
       </TestWrapper>
     );
-    rerender(
-      <TestWrapper>
-        <EducationCard education={minimalEducation} index={2} />
-      </TestWrapper>
-    );
     
-    // Should render without errors
     // Should render without errors
     expect(screen.getByTestId('education-card')).toBeInTheDocument();
   });
 
-  it('forwards additional props to the root element', () => {
-    render(
-      <TestWrapper>
-        <EducationCard 
-          education={minimalEducation} 
-          data-custom="test-value"
-          id="custom-id"
-        />
-      </TestWrapper>
-    );
-    
-    const card = screen.getByTestId('education-card');
-    expect(card).toHaveAttribute('data-custom', 'test-value');
-    expect(card).toHaveAttribute('id', 'custom-id');
   it('forwards additional props to the root element', () => {
     render(
       <TestWrapper>
