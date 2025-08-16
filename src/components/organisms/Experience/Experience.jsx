@@ -1,6 +1,5 @@
 import React, { memo, useRef, useState, useCallback } from "react";
 import { motion, useInView } from "framer-motion";
-import TimelineExperienceCard from '@molecules/TimelineExperienceCard';
 import Timeline from '@molecules/Timeline';
 import Section from '../../layout/Section';
 import ConsoleHeader from '@organisms/ConsoleHeader';
@@ -11,8 +10,8 @@ import './Experience.css';
 
 /**
  * Experience section component displaying professional work history.
- * Now using the hybrid timeline-cyberpunk layout that combines traditional timeline structure
- * with enhanced cyberpunk card effects for the best of both approaches.
+ * Features an interactive terminal interface for navigation and a simplified
+ * timeline component that displays 3 experiences with expansion capabilities.
  * 
  * @component
  * @returns {React.ReactElement} Experience section component
@@ -30,6 +29,7 @@ const Experience = () => {
   const [lastCommand, setLastCommand] = useState('');
   const [feedbackMessage, setFeedbackMessage] = useState('');
   const [hasUserTyped, setHasUserTyped] = useState(true);
+  const [terminalCommandTrigger, setTerminalCommandTrigger] = useState(0);
   
   const containerRef = useRef(null);
   const isInView = useInView(containerRef, { 
@@ -93,6 +93,9 @@ const Experience = () => {
     setLastCommand(command);
     setFeedbackMessage('');
     setHasUserTyped(true);
+    
+    // Trigger easter egg reset in Timeline component
+    setTerminalCommandTrigger(prev => prev + 1);
     
     // Handle ls commands
     if (cmd.startsWith('ls')) {
@@ -217,7 +220,7 @@ const Experience = () => {
     return null;
   }
   
-  // Transform experience data for the hybrid timeline-cyberpunk layout
+  // Transform experience data for the timeline
   const visibleExperience = experience.slice(0, visibleCount);
 
   return (
@@ -319,47 +322,27 @@ const Experience = () => {
                 </div>
               </div>
               <div className="console-help__examples">
-                <strong>Examples:</strong> Try <code>ls la</code>, <code>cat microsoft</code>, <code>clear</code>, or <code>help</code> to toggle this menu
+                <strong>Examples:</strong> Try <code>ls la</code>, <code>cat mastery</code>, <code>clear</code>, or <code>help</code> to toggle this menu
               </div>
             </motion.div>
           )}
         </motion.div>
 
-        {/* NEW: Hybrid Timeline-Cyberpunk Layout */}
+        {/* New Simplified Timeline */}
         <motion.div
           variants={cardContainerVariants}
-          className="experience-cards-container"
+          className="experience-timeline-container"
           style={{ 
             width: '100%'
           }}
         >
           <Timeline 
-            items={visibleExperience.map((item, index) => ({
-              id: `exp-${index}`,
-              title: item.role,
-              company: item.company,
-              date: item.date,
-              description: item.desc,
-              descBullets: item.descBullets,
-              companylogo: item.companylogo,
-              url: item.url,
-              isActive: expandedCards.has(index),
-              data: item
-            }))}
-            renderItem={(item, index, { isLeft, isActive, variant }) => (
-              <TimelineExperienceCard
-                key={`exp-card-${index}`}
-                data={item.data}
-                index={index}
-                isLeft={isLeft}
-                isActive={isActive}
-                variant={variant || "cyberpunk"}
-                isExpanded={expandedCards.has(index)}
-                onToggle={() => handleCardToggle(index)}
-              />
-            )}
-            layout="timeline-cyberpunk"
+            experiences={visibleExperience}
+            expandedCards={expandedCards}
+            onCardToggle={handleCardToggle}
+            variant="default"
             className="experience-timeline"
+            onTerminalCommand={terminalCommandTrigger}
           />
         </motion.div>
 
