@@ -1,0 +1,97 @@
+# Docker Compose Example for Multi-Site Deployment
+# Demonstrates how to deploy all three sites with cross-site navigation
+
+version: '3.8'
+
+services:
+  # Main Portfolio Site
+  portfolio-main:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    ports:
+      - "3000:80"
+    environment:
+      - VITE_SITE_MAIN_URL=https://derekmackley.com
+      - VITE_SITE_STORYBOOK_URL=https://storybook.derekmackley.com  
+      - VITE_SITE_DOCS_URL=https://docs.derekmackley.com
+      - VITE_SITE_NAVIGATOR_ENABLED=true
+    networks:
+      - portfolio-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.portfolio-main.rule=Host(`derekmackley.com`)"
+      - "traefik.http.routers.portfolio-main.tls=true"
+      - "traefik.http.routers.portfolio-main.tls.certresolver=letsencrypt"
+
+  # Storybook Component Library
+  portfolio-storybook:
+    build:
+      context: .
+      dockerfile: Dockerfile.storybook
+      target: production
+    ports:
+      - "3001:80"
+    environment:
+      - VITE_SITE_MAIN_URL=https://derekmackley.com
+      - VITE_SITE_STORYBOOK_URL=https://storybook.derekmackley.com
+      - VITE_SITE_DOCS_URL=https://docs.derekmackley.com
+      - VITE_SITE_NAVIGATOR_ENABLED=true
+    networks:
+      - portfolio-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.portfolio-storybook.rule=Host(`storybook.derekmackley.com`)"
+      - "traefik.http.routers.portfolio-storybook.tls=true"
+      - "traefik.http.routers.portfolio-storybook.tls.certresolver=letsencrypt"
+
+  # Documentation Site
+  portfolio-docs:
+    build:
+      context: ./docs
+      dockerfile: Dockerfile
+      target: production
+    ports:
+      - "3002:80"
+    environment:
+      - VITE_SITE_MAIN_URL=https://derekmackley.com
+      - VITE_SITE_STORYBOOK_URL=https://storybook.derekmackley.com
+      - VITE_SITE_DOCS_URL=https://docs.derekmackley.com
+      - VITE_SITE_NAVIGATOR_ENABLED=true
+    networks:
+      - portfolio-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.portfolio-docs.rule=Host(`docs.derekmackley.com`)"
+      - "traefik.http.routers.portfolio-docs.tls=true"
+      - "traefik.http.routers.portfolio-docs.tls.certresolver=letsencrypt"
+
+  # Reverse Proxy (Optional - for local development)
+  traefik:
+    image: traefik:v2.10
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.letsencrypt.acme.tlschallenge=true"
+      - "--certificatesresolvers.letsencrypt.acme.email=your-email@example.com"
+      - "--certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"  # Traefik dashboard
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - letsencrypt:/letsencrypt
+    networks:
+      - portfolio-network
+
+networks:
+  portfolio-network:
+    driver: bridge
+
+volumes:
+  letsencrypt:

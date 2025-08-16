@@ -20,9 +20,9 @@ const Greetings = () => {
     }
   };
   
-  const downloadResume = (e) => {
+  const downloadResume = async (e) => {
     e.preventDefault();
-    handleDownload('/files/Cybersecurity_2025.pdf', 'Cybersecurity_2025.pdf');
+    await handleDownload('/files/Cybersecurity_2025.pdf', 'Cybersecurity_2025.pdf');
   };
 
   // Variants for coordinated animations

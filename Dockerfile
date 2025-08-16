@@ -7,6 +7,11 @@ WORKDIR /app
 # Set build-time environment variables
 ARG PORT=3001
 ARG ALLOWED_DOMAINS=http://localhost:${PORT}
+ARG VITE_SITE_MAIN_URL
+ARG VITE_SITE_STORYBOOK_URL
+ARG VITE_SITE_DOCS_URL
+ARG VITE_SITE_NAVIGATOR_ENABLED=true
+
 ENV NODE_ENV=production
 ENV PORT=${PORT}
 ENV ALLOWED_DOMAINS=${ALLOWED_DOMAINS}
@@ -14,12 +19,21 @@ ENV REACT_APP_PORT=${PORT}
 ENV REACT_APP_NODE_ENV=${NODE_ENV}
 ENV GENERATE_SOURCEMAP=false
 
+# Site Navigator environment variables
+ENV VITE_SITE_MAIN_URL=${VITE_SITE_MAIN_URL}
+ENV VITE_SITE_STORYBOOK_URL=${VITE_SITE_STORYBOOK_URL}
+ENV VITE_SITE_DOCS_URL=${VITE_SITE_DOCS_URL}
+ENV VITE_SITE_NAVIGATOR_ENABLED=${VITE_SITE_NAVIGATOR_ENABLED}
+
 # Install dependencies first (better layer caching)
 COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile --production=false --network-timeout 600000
 
 # Copy source code
 COPY . .
+
+# Build the site navigator with environment variables
+RUN yarn build:site-navigator
 
 # Build the application
 RUN yarn build

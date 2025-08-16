@@ -3,12 +3,26 @@ FROM node:22-slim AS builder
 
 WORKDIR /app
 
+# Site Navigator environment variables
+ARG VITE_SITE_MAIN_URL
+ARG VITE_SITE_STORYBOOK_URL
+ARG VITE_SITE_DOCS_URL
+ARG VITE_SITE_NAVIGATOR_ENABLED=true
+
+ENV VITE_SITE_MAIN_URL=${VITE_SITE_MAIN_URL}
+ENV VITE_SITE_STORYBOOK_URL=${VITE_SITE_STORYBOOK_URL}
+ENV VITE_SITE_DOCS_URL=${VITE_SITE_DOCS_URL}
+ENV VITE_SITE_NAVIGATOR_ENABLED=${VITE_SITE_NAVIGATOR_ENABLED}
+
 # Install dependencies
 COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile --network-timeout 600000
 
 # Copy source files
 COPY . .
+
+# Build the site navigator with environment variables
+RUN yarn build:site-navigator
 
 # Build Storybook
 RUN yarn storybook:build

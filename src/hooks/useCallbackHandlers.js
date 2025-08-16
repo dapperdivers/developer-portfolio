@@ -125,27 +125,55 @@ const useCallbackHandlers = () => {
    * @param {string} filePath - Path to file
    * @param {string} [fileName] - Custom filename for download
    */
-  const handleDownload = useCallback((filePath, fileName) => {
+  const handleDownload = useCallback(async (filePath, fileName) => {
     if (!filePath) return;
     
-    // Create anchor element to trigger download
-    const link = document.createElement('a');
-    link.href = filePath;
-    if (fileName) {
-      link.download = fileName;
-    }
-    
-    // Append to document, click, and remove
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    
-    // Analytics tracking if implemented
-    if (window.gtag) {
-      window.gtag('event', 'download', {
-        event_category: 'Resources',
-        event_label: fileName || filePath
-      });
+    try {
+      // Fetch the file as a blob to ensure proper binary handling
+      const response = await fetch(filePath);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const blob = await response.blob();
+      
+      // Create object URL for the blob
+      const url = window.URL.createObjectURL(blob);
+      
+      // Create anchor element to trigger download
+      const link = document.createElement('a');
+      link.href = url;
+      if (fileName) {
+        link.download = fileName;
+      }
+      
+      // Append to document, click, and remove
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      // Clean up the object URL
+      window.URL.revokeObjectURL(url);
+      
+      // Analytics tracking if implemented
+      if (window.gtag) {
+        window.gtag('event', 'download', {
+          event_category: 'Resources',
+          event_label: fileName || filePath
+        });
+      }
+    } catch (error) {
+      console.error('Download failed:', error);
+      
+      // Fallback to simple link approach
+      const link = document.createElement('a');
+      link.href = filePath;
+      if (fileName) {
+        link.download = fileName;
+      }
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     }
   }, []);
 
