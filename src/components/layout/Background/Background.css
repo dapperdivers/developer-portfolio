@@ -22,7 +22,7 @@ html, body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  background-color: var(--cyberpunk-bg);
+  background-color: var(--color-background);
 }
 
 /* Main background container - fill entire viewport */
@@ -31,7 +31,7 @@ html, body {
   width: 100%;
   min-height: 100vh;
   overflow: hidden;
-  background-color: var(--cyberpunk-bg);
+  background-color: var(--color-background);
   z-index: 0;
   /* Apply will-change judiciously */
   will-change: opacity;

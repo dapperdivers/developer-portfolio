@@ -141,8 +141,51 @@ export const usePortfolio = () => {
   return context;
 };
 
+// Section-specific hooks for more targeted data access
+export const useGreetings = () => {
+  const { greetings } = usePortfolio();
+  return greetings;
+};
+
+export const useSkills = () => {
+  const { skillsSection, skillBars } = usePortfolio();
+  return { skillsSection, skillBars };
+};
+
+export const useEducation = () => {
+  const { educationInfo } = usePortfolio();
+  return educationInfo;
+};
+
+export const useExperience = () => {
+  const { experienceSection } = usePortfolio();
+  return experienceSection;
+};
+
+export const useProjects = () => {
+  const { projectsSection } = usePortfolio();
+  return projectsSection;
+};
+
+export const useFeedback = () => {
+  const { feedbackSection } = usePortfolio();
+  return feedbackSection;
+};
+
+export const useSocialLinks = () => {
+  const { socialLinks } = usePortfolio();
+  return socialLinks;
+};
+
 export default {
   PortfolioContext,
   PortfolioProvider,
-  usePortfolio
+  usePortfolio,
+  useGreetings,
+  useSkills,
+  useEducation,
+  useExperience,
+  useProjects,
+  useFeedback,
+  useSocialLinks
 };

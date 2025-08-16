@@ -3,17 +3,40 @@ import { render, screen } from '@testing-library/react';
 import { AnimationProvider } from '@context/AnimationContext';
 import { PortfolioProvider } from '@context/PortfolioContext';
 import EducationCard from './EducationCard';
+import { render, screen } from '@testing-library/react';
+import { AnimationProvider } from '@context/AnimationContext';
+import { PortfolioProvider } from '@context/PortfolioContext';
+import EducationCard from './EducationCard';
 import { vi } from 'vitest';
 
 // Mock framer-motion
-vi.mock('framer-motion', () => ({
-  motion: {
-    article: ({ children, ...props }) => <article {...props}>{children}</article>,
-    header: ({ children, ...props }) => <header {...props}>{children}</header>,
-    div: ({ children, ...props }) => <div {...props}>{children}</div>,
-    h3: ({ children, ...props }) => <h3 {...props}>{children}</h3>
-  }
-}));
+vi.mock('framer-motion', () => {
+  const filterMotionProps = (props) => {
+    const {
+      initial, animate, exit, transition, whileHover, whileTap, whileFocus, whileInView,
+      variants, viewport, drag, dragConstraints, dragElastic, dragMomentum,
+      onDragStart, onDrag, onDragEnd, layout, layoutId, ...filteredProps
+    } = props;
+    return filteredProps;
+  };
+
+  return {
+    motion: {
+      article: ({ children, ...props }) => <article {...filterMotionProps(props)}>{children}</article>,
+      header: ({ children, ...props }) => <header {...filterMotionProps(props)}>{children}</header>,
+      div: ({ children, ...props }) => <div {...filterMotionProps(props)}>{children}</div>,
+      h3: ({ children, ...props }) => <h3 {...filterMotionProps(props)}>{children}</h3>
+    },
+    useAnimation: () => ({
+      start: vi.fn().mockResolvedValue(undefined),
+      stop: vi.fn(),
+      set: vi.fn(),
+      mount: vi.fn(),
+      unmount: vi.fn()
+    }),
+    AnimatePresence: ({ children }) => <div data-testid="animate-presence">{children}</div>
+  };
+});
 
 // Mock react-icons
 vi.mock('react-icons/fa', () => ({
@@ -23,6 +46,14 @@ vi.mock('react-icons/fa', () => ({
   FaUniversity: () => <div data-testid="university-icon">🏛️</div>
 }));
 
+// Test wrapper component
+const TestWrapper = ({ children }) => (
+  <AnimationProvider>
+    <PortfolioProvider>
+      {children}
+    </PortfolioProvider>
+  </AnimationProvider>
+);
 // Test wrapper component
 const TestWrapper = ({ children }) => (
   <AnimationProvider>
@@ -52,6 +83,19 @@ describe('EducationCard Component', () => {
         date: '2019',
         credentialId: 'GCP-PCA-789012'
       }
+    certifications: [
+      {
+        name: 'AWS Certified Solutions Architect',
+        issuer: 'Amazon Web Services',
+        date: '2020',
+        credentialId: 'AWS-SAA-123456'
+      },
+      {
+        name: 'Google Cloud Professional',
+        issuer: 'Google Cloud',
+        date: '2019',
+        credentialId: 'GCP-PCA-789012'
+      }
     ]
   };
 
@@ -63,6 +107,11 @@ describe('EducationCard Component', () => {
   };
 
   it('renders all education information correctly', () => {
+    render(
+      <TestWrapper>
+        <EducationCard education={mockEducation} />
+      </TestWrapper>
+    );
     render(
       <TestWrapper>
         <EducationCard education={mockEducation} />
@@ -83,10 +132,22 @@ describe('EducationCard Component', () => {
     
     // Check for minor
     expect(screen.getByText('Data Science')).toBeInTheDocument();
+    // Check for degree
+    expect(screen.getByText('Master of Computer Science')).toBeInTheDocument();
+    
+    // Check for major
+    expect(screen.getByText('Artificial Intelligence')).toBeInTheDocument();
+    
+    // Check for minor
+    expect(screen.getByText('Data Science')).toBeInTheDocument();
     
     // Check for duration
     expect(screen.getByText('2018 - 2020')).toBeInTheDocument();
     
+    // Check for certifications
+    expect(screen.getByText('Certifications')).toBeInTheDocument();
+    expect(screen.getByText('AWS Certified Solutions Architect')).toBeInTheDocument();
+    expect(screen.getByText('Google Cloud Professional')).toBeInTheDocument();
     // Check for certifications
     expect(screen.getByText('Certifications')).toBeInTheDocument();
     expect(screen.getByText('AWS Certified Solutions Architect')).toBeInTheDocument();
@@ -99,9 +160,17 @@ describe('EducationCard Component', () => {
         <EducationCard education={minimalEducation} />
       </TestWrapper>
     );
+  it('renders with minimal education info (no certifications or minor)', () => {
+    render(
+      <TestWrapper>
+        <EducationCard education={minimalEducation} />
+      </TestWrapper>
+    );
     
     // Check that the essential fields are rendered
     expect(screen.getByText('MIT')).toBeInTheDocument();
+    expect(screen.getByText('Bachelor of Science')).toBeInTheDocument();
+    expect(screen.getByText('Computer Science')).toBeInTheDocument();
     expect(screen.getByText('Bachelor of Science')).toBeInTheDocument();
     expect(screen.getByText('Computer Science')).toBeInTheDocument();
     expect(screen.getByText('2014 - 2018')).toBeInTheDocument();
@@ -137,7 +206,7 @@ describe('EducationCard Component', () => {
         <EducationCard education={mockEducation} variant="breach" />
       </TestWrapper>
     );
-    expect(screen.getByTestId('certificate-icon')).toBeInTheDocument();
+    expect(screen.getAllByTestId('certificate-icon')).toHaveLength(2); // Main icon + cert badge
     
     // Test critical variant
     rerender(
@@ -293,6 +362,12 @@ describe('EducationCard Component', () => {
         <EducationCard education={minimalEducation} index={0} />
       </TestWrapper>
     );
+  it('accepts different index props for animations', () => {
+    const { rerender } = render(
+      <TestWrapper>
+        <EducationCard education={minimalEducation} index={0} />
+      </TestWrapper>
+    );
     
     // Rerender with different index
     rerender(
@@ -300,11 +375,31 @@ describe('EducationCard Component', () => {
         <EducationCard education={minimalEducation} index={2} />
       </TestWrapper>
     );
+    rerender(
+      <TestWrapper>
+        <EducationCard education={minimalEducation} index={2} />
+      </TestWrapper>
+    );
     
+    // Should render without errors
     // Should render without errors
     expect(screen.getByTestId('education-card')).toBeInTheDocument();
   });
 
+  it('forwards additional props to the root element', () => {
+    render(
+      <TestWrapper>
+        <EducationCard 
+          education={minimalEducation} 
+          data-custom="test-value"
+          id="custom-id"
+        />
+      </TestWrapper>
+    );
+    
+    const card = screen.getByTestId('education-card');
+    expect(card).toHaveAttribute('data-custom', 'test-value');
+    expect(card).toHaveAttribute('id', 'custom-id');
   it('forwards additional props to the root element', () => {
     render(
       <TestWrapper>

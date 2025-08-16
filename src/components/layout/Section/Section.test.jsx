@@ -77,14 +77,7 @@ describe('Section Component', () => {
     expect(screen.getByText('Section content').closest('.container')).not.toBeInTheDocument();
   });
 
-  test('applies background class when background prop is provided', () => {
-    render(
-      <Section background="primary">
-        <p>Section content</p>
-      </Section>
-    );
-    expect(screen.getByText('Section content').closest('section')).toHaveClass('bg-primary');
-  });
+  // Note: background prop support was removed in favor of global background styling
 
   test('applies custom className', () => {
     render(

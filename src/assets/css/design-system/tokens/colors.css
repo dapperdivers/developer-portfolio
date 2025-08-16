@@ -51,7 +51,7 @@
   --color-link: var(--color-primary);
   --color-link-hover: var(--color-primary-dark);
   --color-border: var(--color-gray-700);
-  --color-background: var(--color-navy); /* Using security theme navy color for background */
+  --color-background: #2a2a2a; /* Much lighter gray to test visibility */
   --color-background-alt: var(--color-gray-900); /* Dark alt background */
   --color-background-muted: var(--color-gray-800); /* Dark muted background */
   
@@ -78,6 +78,5 @@
   --color-yellow-400-rgb: 251, 191, 36;
   
   /* Cyberpunk Theme Variables */
-  --cyberpunk-bg: linear-gradient(135deg, rgba(var(--color-navy-rgb), 0.95) 0%, rgba(var(--color-navy-rgb), 0.9) 50%, rgba(var(--color-navy-rgb), 0.95) 100%);
   --cyberpunk-grid: rgba(var(--color-cyan-rgb), 0.1);
 }
