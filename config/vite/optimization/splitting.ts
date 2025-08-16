@@ -43,13 +43,13 @@ export function createChunkStrategy() {
     manualChunks: (id: string) => {
       // Vendor chunks - dependencies
       if (id.includes('node_modules')) {
-        // React and related core packages - explicitly include react-is
-        if (id.includes('react') || id.includes('react-dom') || id.includes('scheduler') || id.includes('react-is') || id.includes('prop-types')) {
+        // React and related core packages - explicitly include react-is and framer-motion
+        if (id.includes('react') || id.includes('react-dom') || id.includes('scheduler') || id.includes('react-is') || id.includes('prop-types') || id.includes('framer-motion')) {
           return 'vendor-react';
         }
         
-        // Animation libraries
-        if (id.includes('framer-motion') || id.includes('lottie')) {
+        // Other animation libraries (excluding framer-motion which is now in vendor-react)
+        if (id.includes('lottie')) {
           return 'vendor-animation';
         }
         

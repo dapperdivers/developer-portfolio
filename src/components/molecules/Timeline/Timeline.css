@@ -1,479 +1,663 @@
-/* Timeline Component Styles - Molecule Level */
-/* Minimal styles with NO width constraints */
+/* Enhanced Timeline Component - Cybersecurity themed vertical timeline with visual flare and easter eggs */
 
-/* TIMELINE-CYBERPUNK LAYOUT */
-.timeline-cyberpunk {
-  position: relative;
-  width: 100%;
-  min-height: 100vh;
-  padding: 2rem 0;
+.timeline {
+  @apply relative w-full;
+  min-height: 400px;
+  transition: all 0.3s ease;
+}
+
+.timeline--empty {
+  @apply flex items-center justify-center h-40;
+}
+
+.timeline__empty-message {
+  @apply text-gray-400 text-lg;
+}
+
+/* Easter egg mode styles */
+.timeline--matrix {
+  background: radial-gradient(ellipse at center, rgba(0, 255, 0, 0.02) 0%, transparent 70%);
+}
+
+.timeline--glitch {
+  animation: glitchEffect 0.3s infinite;
+}
+
+.timeline--hack {
+  background: linear-gradient(45deg, rgba(100, 255, 218, 0.02), rgba(239, 68, 68, 0.02));
+}
+
+.timeline--shake {
+  animation: screenShake 0.5s ease-in-out;
+}
+
+/* Time-based effects */
+.timeline--night-mode {
+  filter: hue-rotate(240deg) saturate(120%);
+}
+
+.timeline--lunch-break {
+  filter: sepia(20%) hue-rotate(30deg);
+}
+
+.timeline--work-hours {
+  filter: brightness(110%) contrast(105%);
+}
+
+/* Keyframe animations */
+@keyframes glitchEffect {
+  0%, 100% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(-2px, -2px); }
+  60% { transform: translate(2px, 2px); }
+  80% { transform: translate(2px, -2px); }
+}
+
+@keyframes screenShake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+  20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+@keyframes borderScan {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 5px rgba(100, 255, 218, 0.3); }
+  50% { box-shadow: 0 0 20px rgba(100, 255, 218, 0.8), 0 0 30px rgba(100, 255, 218, 0.4); }
+}
+
+/* Secret message overlay */
+.timeline__secret-message {
+  @apply fixed top-20 left-1/2 transform -translate-x-1/2 z-50 bg-gray-900 border border-theme-cyan text-theme-cyan px-6 py-3 rounded-lg font-mono text-sm font-bold;
+  box-shadow: 0 0 20px rgba(100, 255, 218, 0.5);
+  backdrop-filter: blur(10px);
+  background: linear-gradient(135deg, rgba(31, 41, 55, 0.95), rgba(17, 24, 39, 0.95));
+}
+
+/* Achievement notifications */
+.timeline__achievement {
+  @apply fixed right-4 z-50 bg-green-500 text-white px-4 py-2 rounded-lg font-bold text-sm;
+  box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4);
+  backdrop-filter: blur(10px);
+  max-width: 300px;
+}
+
+/* Central timeline line with enhanced effects */
+.timeline__line {
+  @apply absolute left-1/2 top-0 bottom-0 w-0.5 transform -translate-x-1/2;
+  background: linear-gradient(
+    to bottom,
+    rgba(100, 255, 218, 0.8) 0%,
+    rgba(100, 255, 218, 0.4) 50%,
+    rgba(100, 255, 218, 0.8) 100%
+  );
+  box-shadow: 0 0 10px rgba(100, 255, 218, 0.5);
+  transform-origin: top;
+  animation: pulseGlow 3s ease-in-out infinite;
+}
+
+/* Enhanced data particles */
+.timeline__particle {
+  @apply absolute w-1 h-4 rounded-full;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(to bottom, transparent, #64ffda, transparent);
+  box-shadow: 0 0 8px #64ffda;
+}
+
+.timeline__particle--1 {
+  @apply opacity-70;
+}
+
+.timeline__particle--2 {
+  @apply opacity-50;
+  left: 52%;
+}
+
+.timeline__particle--3 {
+  @apply opacity-60;
+  left: 48%;
+}
+
+/* Matrix mode particles */
+.timeline__matrix-particle {
+  @apply absolute text-green-400 font-mono font-bold pointer-events-none;
+  text-shadow: 0 0 5px #00ff00;
+}
+
+/* Timeline entries container */
+.timeline__entries {
+  @apply relative space-y-16 py-8;
+}
+
+/* Individual timeline entry */
+.timeline__entry {
+  @apply relative flex items-center;
+  min-height: 200px;
+}
+
+.timeline__entry--left {
+  @apply justify-start;
+}
+
+.timeline__entry--right {
+  @apply justify-end;
+}
+
+.timeline__entry--expanded {
+  @apply z-10;
+}
+
+/* Timeline connector with enhanced effects */
+.timeline__connector {
+  @apply absolute left-1/2 transform -translate-x-1/2 z-20;
+}
+
+.timeline__node {
+  @apply w-6 h-6 rounded-full border-2 border-theme-cyan bg-gray-900;
+  box-shadow: 0 0 0 4px rgba(100, 255, 218, 0.2);
+  transition: all 0.3s ease;
+}
+
+.timeline__node--active {
+  @apply bg-theme-cyan border-theme-cyan;
+  box-shadow: 
+    0 0 0 4px rgba(100, 255, 218, 0.4),
+    0 0 20px rgba(100, 255, 218, 0.6);
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+
+/* Pulse rings for active nodes */
+.timeline__pulse-ring {
+  @apply absolute inset-0 rounded-full border-2 border-theme-cyan;
+  pointer-events: none;
+}
+
+/* Enhanced experience card */
+.timeline__card {
+  @apply relative bg-gray-900 border border-gray-700 rounded-lg p-6 max-w-md;
+  background: linear-gradient(135deg, rgba(31, 41, 55, 0.95), rgba(17, 24, 39, 0.95));
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
   overflow: hidden;
 }
 
-/* Central timeline backbone */
-.timeline-cyberpunk__backbone {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 3px;
-  height: 100%;
-  background: linear-gradient(
-    to bottom,
-    rgba(var(--color-cyan-rgb), 0.2),
-    rgba(var(--color-cyan-rgb), 0.6),
-    rgba(var(--color-cyan-rgb), 0.8),
-    rgba(var(--color-cyan-rgb), 0.6),
-    rgba(var(--color-cyan-rgb), 0.2)
-  );
-  z-index: 2;
+.timeline__entry--left .timeline__card {
+  @apply mr-auto;
+  margin-right: calc(50% + 2rem);
+}
+
+.timeline__entry--right .timeline__card {
+  @apply ml-auto;
+  margin-left: calc(50% + 2rem);
+}
+
+/* Full width override for expanded cards */
+.timeline__entry--left .timeline__card--expanded,
+.timeline__entry--right .timeline__card--expanded {
+  @apply mx-auto;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.timeline__card--expanded {
+  @apply border-theme-cyan/30;
+  max-width: calc(100vw - 8rem);
+  width: 100%;
+  z-index: 30; /* Higher than timeline line */
   box-shadow: 
-    0 0 20px rgba(var(--color-cyan-rgb), 0.4),
-    inset 0 0 10px rgba(var(--color-cyan-rgb), 0.3);
-  border-radius: 2px;
+    0 10px 40px rgba(0, 0, 0, 0.3),
+    0 0 20px rgba(100, 255, 218, 0.2);
+  background: linear-gradient(135deg, rgba(31, 41, 55, 0.98), rgba(17, 24, 39, 0.98));
 }
 
-/* Data flow particles along the backbone */
-.timeline-cyberpunk__data-flow {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 6px;
-  height: 12px;
-  background: linear-gradient(
-    to bottom,
-    transparent,
-    rgba(var(--color-cyan-rgb), 1),
-    transparent
-  );
-  border-radius: 3px;
-  box-shadow: 0 0 15px rgba(var(--color-cyan-rgb), 0.8);
-  z-index: 3;
+.timeline__card--clicked {
+  border-color: rgba(239, 68, 68, 0.5);
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
 }
 
-.timeline-cyberpunk__data-flow--delayed {
-  width: 4px;
-  height: 8px;
-  background: linear-gradient(
-    to bottom,
-    transparent,
-    rgba(var(--color-green-400-rgb), 0.8),
-    transparent
-  );
-  box-shadow: 0 0 10px rgba(var(--color-green-400-rgb), 0.6);
+/* Holographic overlay for hack modes */
+.timeline__hologram {
+  @apply absolute inset-0 rounded-lg pointer-events-none;
+  background: linear-gradient(45deg, transparent, rgba(100, 255, 218, 0.1), transparent);
+  background-size: 200% 200%;
 }
 
-/* Background cybersecurity effects */
-.timeline-cyberpunk__effects {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  pointer-events: none;
-  z-index: 1;
+/* Enhanced security badge */
+.timeline__security-badge {
+  @apply absolute top-2 right-2 bg-theme-cyan text-gray-900 rounded-full px-3 py-1 flex items-center gap-1 text-sm font-bold z-10;
+  box-shadow: 0 0 15px rgba(100, 255, 218, 0.5);
+  transition: all 0.3s ease;
 }
 
-.timeline-cyberpunk__security-scan {
-  position: absolute;
-  top: 10%;
-  width: 2px;
-  height: 80%;
-  background: linear-gradient(
-    to bottom,
-    transparent,
-    rgba(var(--color-cyan-rgb), 0.6),
-    transparent
-  );
-  box-shadow: 0 0 25px rgba(var(--color-cyan-rgb), 0.5);
-  filter: blur(1px);
+.timeline__badge-icon {
+  @apply text-xs;
 }
 
-.timeline-cyberpunk__grid-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 60px,
-      rgba(var(--color-cyan-rgb), 0.03) 60px,
-      rgba(var(--color-cyan-rgb), 0.03) 61px
-    ),
-    repeating-linear-gradient(
-      90deg,
-      transparent,
-      transparent 60px,
-      rgba(var(--color-cyan-rgb), 0.03) 60px,
-      rgba(var(--color-cyan-rgb), 0.03) 61px
-    );
+.timeline__badge-text {
+  @apply text-xs;
 }
 
-/* Timeline entries container - NO max-width constraints */
-.timeline-cyberpunk__entries {
-  position: relative;
-  z-index: 4;
-  padding: 2.5rem 0;
-  width: 100%;
-  margin: 0 auto;
-  /* Ensure hover animations stay within container bounds */
-  overflow: visible;
+/* Company logo with enhanced effects */
+.timeline__logo {
+  @apply mb-4 flex justify-center;
 }
 
-/* Individual timeline entry - Clean CSS Grid layout */
-.timeline-cyberpunk__entry {
-  position: relative;
-  width: 100%;
-  margin-bottom: 4rem;
+.timeline__logo-image {
+  @apply w-12 h-12 rounded-lg object-contain;
+  transition: all 0.3s ease;
+}
+
+/* Card header */
+.timeline__header {
+  @apply mb-4;
+}
+
+.timeline__role {
+  @apply text-white text-lg font-bold mb-2;
+  transition: color 0.3s ease;
+}
+
+.timeline__company-info {
+  @apply flex flex-col gap-1;
+}
+
+.timeline__company {
+  @apply text-theme-cyan font-semibold;
+}
+
+.timeline__date {
+  @apply text-gray-400 text-sm;
+}
+
+/* Improved layout for expanded cards */
+.timeline__card--expanded .timeline__header {
+  @apply text-center mb-6;
+}
+
+.timeline__card--expanded .timeline__role {
+  @apply text-xl;
+}
+
+.timeline__card--expanded .timeline__company-info {
+  @apply items-center;
+}
+
+/* Expandable content */
+.timeline__content {
+  @apply border-t border-gray-700 pt-4 mt-4;
+  perspective: 1000px;
+}
+
+.timeline__classification {
+  @apply mb-4 pb-2 border-b border-red-500/30;
+  transition: background-color 0.3s ease;
+}
+
+.timeline__classification-label {
+  @apply bg-red-500 text-white px-2 py-1 rounded text-xs font-bold;
+  transition: all 0.3s ease;
+}
+
+.timeline__description {
+  @apply text-gray-300 mb-4 leading-relaxed;
+  transition: text-shadow 0.3s ease;
+}
+
+.timeline__bullets {
+  @apply list-none space-y-2 mb-4;
+}
+
+.timeline__bullet {
+  @apply text-gray-300 text-sm relative pl-6;
+  transition: all 0.3s ease;
+}
+
+/* Improved content layout for expanded cards */
+.timeline__card--expanded .timeline__content {
+  @apply pt-6 mt-6;
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
+  grid-template-columns: 1fr 1fr;
   gap: 2rem;
-  min-height: 120px;
-  /* Add padding to accommodate hover animations */
-  padding: 6px 0;
+  align-items: start;
 }
 
-/* Left-aligned entries (even indexes) */
-.timeline-cyberpunk__entry--left {
-  grid-template-areas: "content connector empty";
+.timeline__card--expanded .timeline__classification {
+  @apply col-span-2 text-center mb-6 pb-4;
 }
 
-.timeline-cyberpunk__entry--left .timeline-cyberpunk__content {
-  grid-area: content;
-  justify-self: end;
-  width: 100%;
+.timeline__card--expanded .timeline__description {
+  @apply text-base leading-relaxed mt-4 text-center;
+  /* Description is now structurally inside classification */
 }
 
-/* Right-aligned entries (odd indexes) */
-.timeline-cyberpunk__entry--right {
-  grid-template-areas: "empty connector content";
+.timeline__card--expanded .timeline__bullets {
+  @apply space-y-3 col-span-2;
+  /* Bullets now span both columns and use CSS Grid */
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem 2rem;
+  align-items: start;
 }
 
-.timeline-cyberpunk__entry--right .timeline-cyberpunk__content {
-  grid-area: content;
-  justify-self: start;
-  width: 100%;
+.timeline__card--expanded .timeline__bullet {
+  @apply text-base;
+  /* Each bullet takes one column */
+  break-inside: avoid;
 }
 
-/* Timeline connector positioning */
-.timeline-cyberpunk__connector {
-  grid-area: connector;
-  justify-self: center;
-  z-index: 10;
+.timeline__card--expanded .timeline__terminal {
+  @apply col-span-2 mt-6;
 }
 
-/* Content area - Balanced width constraints for proper timeline layout */
-.timeline-cyberpunk__content {
-  position: relative;
-  width: 100%;
-  /* Allow reasonable max-width for timeline readability but not too constraining */
+.timeline__bullet::before {
+  content: "▸";
+  @apply absolute left-0 text-theme-cyan font-bold;
 }
 
-/* Enhanced card styling */
-.timeline-cyberpunk__card {
-  position: relative;
-  width: 100%;
-  transform-style: preserve-3d;
-  transition: transform 0.3s ease;
+/* Enhanced terminal footer */
+.timeline__terminal {
+  @apply bg-gray-800 rounded p-3 font-mono text-sm flex items-center gap-2 mt-4;
+  transition: box-shadow 0.3s ease;
 }
 
-.timeline-cyberpunk__card--active {
-  z-index: 15;
+.timeline__prompt {
+  @apply text-green-400;
 }
 
-/* Card glow effect */
-.timeline-cyberpunk__card-glow {
-  position: absolute;
-  inset: -15px;
-  background: radial-gradient(
-    circle at center,
-    rgba(var(--color-cyan-rgb), 0.2),
-    rgba(var(--color-cyan-rgb), 0.1),
-    transparent
-  );
-  border-radius: 20px;
-  filter: blur(15px);
-  opacity: 0;
-  z-index: -1;
+.timeline__cursor {
+  @apply text-white animate-pulse;
 }
 
-.timeline-cyberpunk__card--active .timeline-cyberpunk__card-glow {
-  opacity: 0.8;
+.timeline__hack-text {
+  @apply text-red-400 font-bold;
+  animation: typewriter 2s steps(30) infinite;
 }
 
-/* Security classification badge */
-.timeline-cyberpunk__security-badge {
-  position: absolute;
-  top: -12px;
-  right: -12px;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  background: linear-gradient(
-    135deg,
-    rgba(var(--color-green-400-rgb), 0.9),
-    rgba(var(--color-green-400-rgb), 0.7)
-  );
-  border: 2px solid rgba(var(--color-green-400-rgb), 1);
-  border-radius: 20px;
-  color: var(--color-navy);
-  font-family: var(--font-family-jetbrains);
-  font-size: 0.7rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  z-index: 20;
-  box-shadow: 
-    0 4px 15px rgba(var(--color-green-400-rgb), 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+@keyframes typewriter {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
 }
 
-.security-badge__icon {
-  font-size: 0.8rem;
-}
-
-.security-badge__text {
-  text-shadow: none;
-}
-
-/* Card content container - HIGHER z-index than card to appear above animations */
-.timeline-cyberpunk__card-content {
-  position: relative;
-  z-index: 20;
-  width: 100%;
-}
-
-/* Default content styling */
-.timeline-cyberpunk__default-content {
-  padding: 2rem;
-  background: linear-gradient(
-    135deg,
-    rgba(var(--color-navy-rgb), 0.95) 0%,
-    rgba(var(--color-navy-rgb), 0.9) 100%
-  );
-  border: 1px solid rgba(var(--color-cyan-rgb), 0.3);
-  border-radius: 12px;
-  backdrop-filter: blur(20px);
-  box-shadow: 
-    0 10px 30px rgba(0, 0, 0, 0.4),
-    0 0 25px rgba(var(--color-cyan-rgb), 0.15),
-    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.1);
-}
-
-.timeline-cyberpunk__title {
-  color: var(--color-cyan);
-  font-family: var(--font-family-jetbrains);
-  font-size: 1.3rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-  text-shadow: 0 0 15px rgba(var(--color-cyan-rgb), 0.6);
-}
-
-.timeline-cyberpunk__company {
-  color: rgba(var(--color-offwhite-rgb), 0.9);
-  font-family: var(--font-family-jetbrains);
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin-bottom: 0.75rem;
-}
-
-.timeline-cyberpunk__description {
-  color: rgba(var(--color-offwhite-rgb), 0.9);
-  font-size: 1rem;
-  line-height: 1.6;
-  margin-bottom: 1rem;
-}
-
-.timeline-cyberpunk__date {
-  color: rgba(var(--color-cyan-rgb), 0.8);
-  font-family: var(--font-family-jetbrains);
-  font-size: 0.9rem;
-  font-style: italic;
-}
-
-/* Holographic border effect */
-.timeline-cyberpunk__holo-border {
-  position: absolute;
-  inset: 0;
-  border: 2px solid transparent;
-  border-radius: 12px;
+/* Enhanced border effects */
+.timeline__border-effect {
+  @apply absolute inset-0 rounded-lg pointer-events-none;
   background: linear-gradient(
     45deg,
-    rgba(var(--color-cyan-rgb), 0.4),
-    transparent,
-    rgba(var(--color-cyan-rgb), 0.4),
-    transparent,
-    rgba(var(--color-cyan-rgb), 0.4)
+    transparent 30%,
+    rgba(100, 255, 218, 0.1) 50%,
+    transparent 70%
   );
-  background-size: 400% 400%;
-  animation: holoBorder 3s ease-in-out infinite;
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask-composite: xor;
-  pointer-events: none;
-  z-index: 1;
-  opacity: 0;
+  background-size: 200% 200%;
+  animation: borderScan 3s ease-in-out infinite;
 }
 
-.timeline-cyberpunk__card:hover .timeline-cyberpunk__holo-border {
-  opacity: 1;
+/* Enhanced data streams */
+.timeline__data-streams {
+  @apply absolute inset-0 pointer-events-none overflow-hidden rounded-lg;
 }
 
-@keyframes holoBorder {
-  0%, 100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
+.timeline__data-stream {
+  @apply absolute w-0.5 h-4 rounded-full;
+  background: linear-gradient(to bottom, transparent, #64ffda, transparent);
+  box-shadow: 0 0 6px #64ffda;
 }
 
-/* Data stream particles for active cards */
-.timeline-cyberpunk__data-stream {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 2;
-  overflow: hidden;
-  border-radius: 12px;
+.timeline__data-stream--1 {
+  @apply left-4;
 }
 
-.data-particle {
-  position: absolute;
-  width: 2px;
-  height: 6px;
+.timeline__data-stream--2 {
+  @apply right-4;
+}
+
+.timeline__data-stream--3 {
+  @apply left-1/2 transform -translate-x-1/2;
+}
+
+/* Glitch overlay */
+.timeline__glitch-overlay {
+  @apply absolute inset-0 bg-red-500 mix-blend-multiply rounded-lg pointer-events-none;
+  opacity: 0.1;
+}
+
+/* Enhanced background effects */
+.timeline__background-effects {
+  @apply absolute inset-0 pointer-events-none overflow-hidden;
+}
+
+.timeline__security-scan {
+  @apply absolute top-1/2 h-0.5 w-full;
   background: linear-gradient(
-    to bottom,
+    90deg,
     transparent,
-    rgba(var(--color-cyan-rgb), 0.8),
+    rgba(100, 255, 218, 0.8),
+    rgba(100, 255, 218, 0.4),
+    rgba(100, 255, 218, 0.8),
     transparent
   );
-  border-radius: 1px;
-}
-
-.data-particle--1 {
-  left: 10%;
-}
-
-.data-particle--2 {
-  left: 50%;
-}
-
-.data-particle--3 {
-  right: 10%;
-}
-
-/* Connection beams to center timeline */
-.timeline-cyberpunk__beam {
-  position: absolute;
-  top: 50%;
-  height: 2px;
-  background: linear-gradient(
-    to right,
-    rgba(var(--color-green-400-rgb), 0.8),
-    rgba(var(--color-green-400-rgb), 0.4),
-    transparent
-  );
-  z-index: 3;
-}
-
-.timeline-cyberpunk__beam--left {
-  right: -2rem;
-  width: 2rem;
+  box-shadow: 0 0 10px rgba(100, 255, 218, 0.5);
   transform: translateY(-50%);
 }
 
-.timeline-cyberpunk__beam--right {
-  left: -2rem;
-  width: 2rem;
-  transform: translateY(-50%) scaleX(-1);
+.timeline__grid-overlay {
+  @apply absolute inset-0;
+  background-image: 
+    linear-gradient(rgba(100, 255, 218, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(100, 255, 218, 0.05) 1px, transparent 1px);
+  background-size: 20px 20px;
 }
 
-/* Network connection overlay SVG */
-.timeline-cyberpunk__connections {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+/* Hack mode specific effects */
+.timeline__hack-scanline {
+  @apply absolute left-0 w-full h-0.5 bg-red-400;
+  box-shadow: 0 0 10px #ef4444;
+  opacity: 0.7;
+}
+
+.timeline__radar-sweep {
+  @apply absolute top-1/2 left-1/2 w-32 h-32 transform -translate-x-1/2 -translate-y-1/2;
+  background: conic-gradient(from 0deg, transparent 0deg, rgba(100, 255, 218, 0.3) 30deg, transparent 60deg);
+  border-radius: 50%;
   pointer-events: none;
+}
+
+/* Matrix rain effect */
+.timeline__matrix-rain {
+  @apply absolute inset-0 pointer-events-none overflow-hidden;
   z-index: 1;
-  opacity: 0.4;
 }
 
-/* Responsive - maintain NO max-width constraints */
-@media (max-width: 1024px) {
-  .timeline-cyberpunk__entries {
-    /* REMOVED: max-width constraints */
-    padding: 0 0.75rem;
-  }
-  
-  .timeline-cyberpunk__entry {
-    gap: 1.5rem;
-    margin-bottom: 3rem;
-  }
-  
-  .timeline-cyberpunk__content {
-    /* REMOVED: max-width constraints */
-  }
+.timeline__matrix-column {
+  @apply absolute top-0 text-green-400 font-mono text-xs opacity-70;
+  writing-mode: vertical-lr;
+  text-orientation: upright;
+  letter-spacing: 2px;
+  text-shadow: 0 0 5px #00ff00;
+  animation: matrixFlicker 2s infinite;
 }
 
+@keyframes matrixFlicker {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 0.3; }
+}
+
+/* Mouse trail effects */
+.timeline__mouse-trail {
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Responsive design */
 @media (max-width: 768px) {
-  .timeline-cyberpunk {
-    padding: 1rem 0;
+  .timeline__entries {
+    @apply space-y-12;
   }
-  
-  .timeline-cyberpunk__entries {
-    padding: 1rem 0.5rem;
+
+  .timeline__entry {
+    @apply justify-center;
   }
-  
-  .timeline-cyberpunk__entry {
-    grid-template-columns: 1fr;
-    grid-template-areas: 
-      "connector"
-      "content";
-    justify-items: center;
-    gap: 1rem;
-    margin-bottom: 2rem;
+
+  .timeline__entry--left .timeline__card,
+  .timeline__entry--right .timeline__card {
+    @apply mx-auto max-w-sm;
+    margin-left: auto;
+    margin-right: auto;
   }
-  
-  .timeline-cyberpunk__entry--left,
-  .timeline-cyberpunk__entry--right {
-    grid-template-areas: 
-      "connector"
-      "content";
+
+  .timeline__card {
+    @apply max-w-sm;
   }
-  
-  .timeline-cyberpunk__content {
-    grid-area: content;
-    justify-self: stretch;
-    width: 100%;
-    /* REMOVED: max-width constraints */
+
+  .timeline__card--expanded {
+    max-width: calc(100vw - 4rem);
+    width: calc(100vw - 4rem);
   }
-  
-  .timeline-cyberpunk__connector {
-    grid-area: connector;
-    justify-self: center;
+
+  .timeline__line {
+    @apply left-8;
+  }
+
+  .timeline__connector {
+    @apply left-8;
+  }
+
+  .timeline__secret-message {
+    @apply max-w-xs px-4 py-2 text-xs;
+  }
+
+  .timeline__achievement {
+    @apply text-xs px-3 py-1 max-w-64;
+  }
+
+  /* Mobile layout for expanded cards */
+  .timeline__card--expanded .timeline__content {
+    display: block;
+    gap: 0;
+  }
+
+  .timeline__card--expanded .timeline__classification {
+    @apply col-span-1 mb-4;
+  }
+
+  .timeline__card--expanded .timeline__bullets {
+    @apply col-span-1;
+    display: block;
+    gap: 0;
+  }
+
+  .timeline__card--expanded .timeline__terminal {
+    @apply col-span-1 mt-4;
   }
 }
 
-@media (max-width: 480px) {
-  .timeline-cyberpunk__entries {
-    padding: 0 0.25rem;
-  }
-  
-  .timeline-cyberpunk__entry {
-    gap: 0.75rem;
-    margin-bottom: 1.5rem;
-  }
+/* Variants with enhanced effects */
+.timeline--secure .timeline__line {
+  background: linear-gradient(
+    to bottom,
+    rgba(34, 197, 94, 0.8) 0%,
+    rgba(34, 197, 94, 0.4) 50%,
+    rgba(34, 197, 94, 0.8) 100%
+  );
+  box-shadow: 0 0 10px rgba(34, 197, 94, 0.5);
+}
+
+.timeline--secure .timeline__node--active {
+  @apply bg-green-400 border-green-400;
+  box-shadow: 
+    0 0 0 4px rgba(34, 197, 94, 0.4),
+    0 0 20px rgba(34, 197, 94, 0.6);
+}
+
+.timeline--secure .timeline__particle {
+  background: linear-gradient(to bottom, transparent, #22c55e, transparent);
+  box-shadow: 0 0 8px #22c55e;
+}
+
+.timeline--breach .timeline__line {
+  background: linear-gradient(
+    to bottom,
+    rgba(239, 68, 68, 0.8) 0%,
+    rgba(239, 68, 68, 0.4) 50%,
+    rgba(239, 68, 68, 0.8) 100%
+  );
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
+  animation: pulseGlow 1s ease-in-out infinite;
+}
+
+.timeline--breach .timeline__node--active {
+  @apply bg-red-400 border-red-400;
+  box-shadow: 
+    0 0 0 4px rgba(239, 68, 68, 0.4),
+    0 0 20px rgba(239, 68, 68, 0.6);
+}
+
+.timeline--breach .timeline__particle {
+  background: linear-gradient(to bottom, transparent, #ef4444, transparent);
+  box-shadow: 0 0 8px #ef4444;
+}
+
+.timeline--breach .timeline__security-scan {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(239, 68, 68, 0.8),
+    rgba(239, 68, 68, 0.4),
+    rgba(239, 68, 68, 0.8),
+    transparent
+  );
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
+}
+
+.timeline--critical .timeline__line {
+  background: linear-gradient(
+    to bottom,
+    rgba(251, 191, 36, 0.8) 0%,
+    rgba(251, 191, 36, 0.4) 50%,
+    rgba(251, 191, 36, 0.8) 100%
+  );
+  box-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
+  animation: pulseGlow 1.5s ease-in-out infinite;
+}
+
+.timeline--critical .timeline__node--active {
+  @apply bg-yellow-400 border-yellow-400;
+  box-shadow: 
+    0 0 0 4px rgba(251, 191, 36, 0.4),
+    0 0 20px rgba(251, 191, 36, 0.6);
+}
+
+.timeline--critical .timeline__particle {
+  background: linear-gradient(to bottom, transparent, #fbbf24, transparent);
+  box-shadow: 0 0 8px #fbbf24;
+}
+
+.timeline--critical .timeline__security-scan {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(251, 191, 36, 0.8),
+    rgba(251, 191, 36, 0.4),
+    rgba(251, 191, 36, 0.8),
+    transparent
+  );
+  box-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
 }
 
 /* Performance optimizations */
-.timeline-cyberpunk {
-  transform: translateZ(0);
-  contain: layout style;
+.timeline * {
+  will-change: transform;
+}
+
+.timeline__card {
+  contain: layout style paint;
+}
+
+.timeline__data-stream,
+.timeline__particle,
+.timeline__matrix-particle {
+  contain: strict;
 }

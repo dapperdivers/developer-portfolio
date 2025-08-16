@@ -1,65 +1,259 @@
 /**
- * Education Card Component Styles
+ * EducationCard Component Styles
  * 
- * Enhanced with compact variants and improved readability, dark blue containers, 
- * and cybersecurity theming for better visual presentation of academic information 
- * and integrated certifications in a space-efficient layout.
- * 
- * Animations and transitions are managed by framer-motion through the AnimationContext.
+ * Clean, modern design with cybersecurity theming and optimized animations.
+ * Follows BEM methodology for maintainable CSS structure.
  */
 
-.education-card-wrapper {
-  position: relative;
-  width: 100%;
-  margin-bottom: var(--spacing-6);
-}
-
-/* Compact variant for reduced spacing */
-.education-card-wrapper--compact {
-  margin-bottom: var(--spacing-5);
-}
-
+/* Base Card Styles */
 .education-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: var(--spacing-6);
+  margin-bottom: var(--spacing-5);
   background: linear-gradient(
     135deg,
     rgba(var(--color-navy-rgb), 0.95) 0%,
-    rgba(var(--color-navy-rgb), 0.9) 50%,
-    rgba(var(--color-navy-rgb), 0.95) 100%
+    rgba(var(--color-navy-rgb), 0.92) 100%
   );
-  border: 1px solid rgba(var(--color-cyan-rgb), 0.3);
-  overflow: hidden;
+  border: 1px solid rgba(var(--color-cyan-rgb), 0.2);
   border-radius: var(--border-radius-lg);
   box-shadow: 
-    0 6px 25px rgba(0, 0, 0, 0.4),
-    0 0 20px rgba(var(--color-cyan-rgb), 0.1),
-    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.1);
+    0 4px 12px rgba(0, 0, 0, 0.15),
+    0 0 20px rgba(var(--color-cyan-rgb), 0.05);
   backdrop-filter: blur(10px);
-}
-
-/* Compact variant with smaller border radius and shadow */
-.education-card--compact {
-  border-radius: var(--border-radius-md);
-  box-shadow: 
-    0 4px 15px rgba(0, 0, 0, 0.3),
-    0 0 15px rgba(var(--color-cyan-rgb), 0.08),
-    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.08);
-}
-
-.education-card-inner {
-  display: flex;
-  border-radius: var(--border-radius-lg);
   overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+/* Variant Styles */
+.education-card--secure {
+  border-color: rgba(var(--color-green-400-rgb), 0.3);
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.15),
+    0 0 20px rgba(var(--color-green-400-rgb), 0.1);
+}
+
+.education-card--breach {
+  border-color: rgba(var(--color-red-400-rgb), 0.3);
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.15),
+    0 0 20px rgba(var(--color-red-400-rgb), 0.1);
+}
+
+.education-card--critical {
+  border-color: rgba(var(--color-yellow-400-rgb), 0.3);
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.15),
+    0 0 20px rgba(var(--color-yellow-400-rgb), 0.1);
+}
+
+/* Header Section */
+.education-card__header {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-4);
+  margin-bottom: var(--spacing-5);
   position: relative;
+  z-index: 2;
 }
 
-/* Compact variant with smaller border radius */
-.education-card-inner--compact {
+.education-card__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  background: rgba(var(--color-cyan-rgb), 0.1);
+  border: 2px solid rgba(var(--color-cyan-rgb), 0.2);
+  border-radius: 50%;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+
+.education-card__title-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.education-card__school {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-cyan);
+  margin: 0;
+  line-height: 1.3;
+  text-shadow: 0 0 8px rgba(var(--color-cyan-rgb), 0.3);
+}
+
+.education-card__duration {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  font-size: var(--font-size-sm);
+  color: rgba(var(--color-offwhite-rgb), 0.8);
+  font-weight: var(--font-weight-medium);
+}
+
+.education-card__duration-icon {
+  font-size: 0.875rem;
+  color: var(--color-cyan);
+}
+
+.education-card__cert-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-1);
+  padding: var(--spacing-2);
+  background: rgba(var(--color-cyan-rgb), 0.1);
+  border: 1px solid rgba(var(--color-cyan-rgb), 0.2);
   border-radius: var(--border-radius-md);
+  font-size: var(--font-size-sm);
+  color: var(--color-cyan);
+  font-weight: var(--font-weight-semibold);
+  min-width: 50px;
+  text-align: center;
 }
 
-/* Enhanced grid pattern overlay */
-.education-card-inner::after {
-  content: '';
+/* Content Section */
+.education-card__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  position: relative;
+  z-index: 2;
+}
+
+.education-card__academic-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--spacing-3);
+  padding: var(--spacing-4);
+  background: rgba(var(--color-navy-rgb), 0.8);
+  border: 1px solid rgba(var(--color-cyan-rgb), 0.15);
+  border-radius: var(--border-radius-md);
+  border-left: 3px solid var(--color-cyan);
+}
+
+.education-card__degree,
+.education-card__field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+}
+
+.education-card__label {
+  font-size: var(--font-size-xs);
+  color: rgba(var(--color-offwhite-rgb), 0.6);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+  font-weight: var(--font-weight-medium);
+}
+
+.education-card__value {
+  font-size: var(--font-size-md);
+  color: var(--color-offwhite);
+  font-weight: var(--font-weight-semibold);
+  line-height: 1.4;
+}
+
+/* Certifications Section */
+.education-card__certifications {
+  padding: var(--spacing-4);
+  background: rgba(var(--color-navy-rgb), 0.6);
+  border: 1px solid rgba(var(--color-cyan-rgb), 0.1);
+  border-radius: var(--border-radius-md);
+  border-top: 2px solid rgba(var(--color-cyan-rgb), 0.3);
+}
+
+.education-card__cert-title {
+  font-size: var(--font-size-md);
+  color: var(--color-cyan);
+  margin: 0 0 var(--spacing-3) 0;
+  font-weight: var(--font-weight-semibold);
+  text-shadow: 0 0 6px rgba(var(--color-cyan-rgb), 0.3);
+}
+
+.education-card__cert-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: var(--spacing-3);
+}
+
+.education-card__cert-item {
+  padding: var(--spacing-3);
+  background: rgba(var(--color-cyan-rgb), 0.05);
+  border: 1px solid rgba(var(--color-cyan-rgb), 0.15);
+  border-radius: var(--border-radius-sm);
+  transition: all 0.3s ease;
+}
+
+.education-card__cert-item:hover {
+  background: rgba(var(--color-cyan-rgb), 0.08);
+  border-color: rgba(var(--color-cyan-rgb), 0.25);
+  transform: translateY(-1px);
+}
+
+.education-card__cert-name {
+  font-size: var(--font-size-sm);
+  color: var(--color-offwhite);
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: var(--spacing-1);
+  line-height: 1.3;
+}
+
+.education-card__cert-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-2);
+  font-size: var(--font-size-xs);
+  color: rgba(var(--color-offwhite-rgb), 0.7);
+}
+
+.education-card__cert-issuer::after {
+  content: '•';
+  margin-left: var(--spacing-2);
+  color: rgba(var(--color-cyan-rgb), 0.5);
+}
+
+.education-card__cert-issuer:last-child::after {
+  display: none;
+}
+
+.education-card__cert-date::after {
+  content: '•';
+  margin-left: var(--spacing-2);
+  color: rgba(var(--color-cyan-rgb), 0.5);
+}
+
+.education-card__cert-date:last-child::after {
+  display: none;
+}
+
+.education-card__cert-id {
+  color: rgba(var(--color-cyan-rgb), 0.8);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  padding: var(--spacing-1) var(--spacing-2);
+  background: rgba(var(--color-cyan-rgb), 0.1);
+  border-radius: var(--border-radius-sm);
+  border: 1px solid rgba(var(--color-cyan-rgb), 0.2);
+}
+
+/* Decorative Elements */
+.education-card__decoration {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.education-card__grid-overlay {
   position: absolute;
   inset: 0;
   background: 
@@ -77,402 +271,10 @@
       rgba(var(--color-cyan-rgb), 0.02) 1px,
       rgba(var(--color-cyan-rgb), 0.02) 2px
     );
-  opacity: 0.7;
-  pointer-events: none;
-  z-index: 0;
+  opacity: 0.5;
 }
 
-/* Enhanced left icon column with improved cybersecurity styling */
-.education-card-icon-column {
-  flex: 0 0 120px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: linear-gradient(
-    135deg,
-    rgba(var(--color-cyan-rgb), 0.15) 0%,
-    rgba(var(--color-cyan-rgb), 0.08) 50%,
-    rgba(var(--color-cyan-rgb), 0.04) 100%
-  );
-  border-right: 2px solid rgba(var(--color-cyan-rgb), 0.3);
-  position: relative;
-  padding-bottom: var(--spacing-4);
-  z-index: 1;
-}
-
-/* Compact variant with reduced width and padding */
-.education-card-icon-column--compact {
-  flex: 0 0 90px;
-  padding-bottom: var(--spacing-3);
-}
-
-.education-card-icon-column::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 5px;
-  background: linear-gradient(
-    90deg,
-    var(--color-cyan) 0%,
-    rgba(var(--color-cyan-rgb), 0.5) 70%,
-    transparent 100%
-  );
-  box-shadow: 0 0 8px rgba(var(--color-cyan-rgb), 0.4);
-}
-
-/* Compact variant with thinner accent line */
-.education-card-icon-column--compact::before {
-  height: 3px;
-}
-
-/* Enhanced education icon container */
-.education-card-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: var(--spacing-6);
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  background: linear-gradient(
-    135deg,
-    rgba(var(--color-cyan-rgb), 0.12) 0%,
-    rgba(var(--color-cyan-rgb), 0.08) 100%
-  );
-  border: 2px solid rgba(var(--color-cyan-rgb), 0.3);
-  box-shadow: 
-    0 4px 15px rgba(0, 0, 0, 0.3),
-    0 0 15px rgba(var(--color-cyan-rgb), 0.2),
-    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.1);
-  backdrop-filter: blur(8px);
-  position: relative;
-  z-index: 1;
-}
-
-/* Compact variant with smaller size and reduced margin */
-.education-card-icon--compact {
-  margin-top: var(--spacing-4);
-  width: 55px;
-  height: 55px;
-  border-width: 1px;
-  box-shadow: 
-    0 2px 8px rgba(0, 0, 0, 0.2),
-    0 0 10px rgba(var(--color-cyan-rgb), 0.15),
-    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.08);
-}
-
-.education-icon-large {
-  font-size: 2.5rem;
-  color: var(--color-cyan);
-  filter: drop-shadow(0 0 6px rgba(var(--color-cyan-rgb), 0.4));
-  text-shadow: 0 0 8px rgba(var(--color-cyan-rgb), 0.3);
-}
-
-/* Compact variant with smaller icon */
-.education-icon-compact {
-  font-size: 2rem;
-  color: var(--color-cyan);
-  filter: drop-shadow(0 0 4px rgba(var(--color-cyan-rgb), 0.3));
-  text-shadow: 0 0 6px rgba(var(--color-cyan-rgb), 0.2);
-}
-
-/* Enhanced certification count indicator */
-.certifications-indicator {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: var(--spacing-4);
-  padding: var(--spacing-2);
-  background: linear-gradient(
-    135deg,
-    rgba(var(--color-cyan-rgb), 0.1) 0%,
-    rgba(var(--color-cyan-rgb), 0.06) 100%
-  );
-  border-radius: var(--border-radius-md);
-  border: 1px solid rgba(var(--color-cyan-rgb), 0.3);
-  box-shadow: 
-    0 2px 8px rgba(0, 0, 0, 0.2),
-    0 0 10px rgba(var(--color-cyan-rgb), 0.1),
-    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.1);
-  backdrop-filter: blur(6px);
-  position: relative;
-  z-index: 1;
-}
-
-/* Compact variant with reduced spacing and padding */
-.certifications-indicator--compact {
-  margin-top: var(--spacing-3);
-  padding: var(--spacing-2);
-  border-radius: var(--border-radius-sm);
-  box-shadow: 
-    0 1px 4px rgba(0, 0, 0, 0.15),
-    0 0 6px rgba(var(--color-cyan-rgb), 0.08),
-    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.08);
-}
-
-.cert-count {
-  font-size: var(--font-size-xl);
-  font-weight: var(--font-weight-bold);
-  color: var(--color-cyan);
-  line-height: 1;
-  text-shadow: 0 0 6px rgba(var(--color-cyan-rgb), 0.5);
-  font-family: var(--font-family-jetbrains);
-}
-
-/* Compact variant with smaller font */
-.cert-count--compact {
-  font-size: var(--font-size-lg);
-  text-shadow: 0 0 4px rgba(var(--color-cyan-rgb), 0.4);
-}
-
-.cert-label {
-  font-size: var(--font-size-sm);
-  color: rgba(var(--color-offwhite-rgb), 0.8);
-  margin-top: 4px;
-  text-align: center;
-  letter-spacing: var(--letter-spacing-wide);
-  font-weight: var(--font-weight-medium);
-}
-
-/* Compact variant with smaller font and tighter spacing */
-.cert-label--compact {
-  font-size: var(--font-size-xs);
-  margin-top: 3px;
-  letter-spacing: var(--letter-spacing-normal);
-}
-
-/* Enhanced main content container */
-.education-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  padding: var(--spacing-5) var(--spacing-4);
-  background: transparent;
-  position: relative;
-  z-index: 1;
-}
-
-/* Compact variant with improved padding for better readability */
-.education-content--compact {
-  padding: var(--spacing-4) var(--spacing-4);
-}
-
-/* Enhanced school header area */
-.education-header {
-  margin-bottom: var(--spacing-4);
-  position: relative;
-}
-
-/* Compact variant with inline layout and improved margin */
-.education-header--compact {
-  margin-bottom: var(--spacing-3);
-}
-
-.education-header-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: var(--spacing-2);
-  flex-wrap: wrap;
-}
-
-.education-header::after {
-  content: '';
-  position: absolute;
-  bottom: -10px;
-  left: 0;
-  width: 50px;
-  height: 3px;
-  background: linear-gradient(
-    90deg,
-    var(--color-cyan) 0%,
-    rgba(var(--color-cyan-rgb), 0.6) 100%
-  );
-  border-radius: 2px;
-  box-shadow: 0 0 6px rgba(var(--color-cyan-rgb), 0.4);
-}
-
-/* Compact variant with smaller decoration line */
-.education-header--compact::after {
-  bottom: -8px;
-  width: 35px;
-  height: 2px;
-}
-
-/* School header compact styling */
-.school-header--compact .school-name {
-  font-size: var(--font-size-lg);
-  margin-bottom: var(--spacing-1);
-}
-
-.school-header--compact .school-header-decoration {
-  display: none; /* Hide decoration in compact mode to save space */
-}
-
-/* Date chip compact styling */
-.graduation-date-chip--compact {
-  font-size: var(--font-size-sm);
-  padding: var(--spacing-1) var(--spacing-2);
-  min-width: auto;
-  white-space: nowrap;
-}
-
-/* Enhanced academic details panel with dark blue container */
-.education-details-panel {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--spacing-4);
-  padding: var(--spacing-4);
-  background: linear-gradient(
-    135deg,
-    rgba(var(--color-navy-rgb), 0.98) 0%,
-    rgba(var(--color-navy-rgb), 0.95) 100%
-  );
-  border-radius: var(--border-radius-md);
-  border: 1px solid rgba(var(--color-cyan-rgb), 0.25);
-  border-left: 3px solid var(--color-cyan);
-  margin-top: var(--spacing-3);
-  box-shadow: 
-    0 4px 15px rgba(0, 0, 0, 0.3),
-    0 0 12px rgba(var(--color-cyan-rgb), 0.08),
-    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.08);
-  backdrop-filter: blur(8px);
-  position: relative;
-}
-
-/* Compact variant with improved padding for better readability */
-.education-details-panel--compact {
-  gap: var(--spacing-3);
-  padding: var(--spacing-3);
-  margin-top: var(--spacing-3);
-  border-left-width: 2px;
-  border-radius: var(--border-radius-sm);
-  box-shadow: 
-    0 2px 8px rgba(0, 0, 0, 0.2),
-    0 0 8px rgba(var(--color-cyan-rgb), 0.06),
-    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.06);
-}
-
-.education-details-panel::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: 
-    repeating-linear-gradient(
-      45deg,
-      transparent,
-      transparent 1px,
-      rgba(var(--color-cyan-rgb), 0.02) 1px,
-      rgba(var(--color-cyan-rgb), 0.02) 2px
-    );
-  opacity: 0.6;
-  pointer-events: none;
-  border-radius: var(--border-radius-md);
-}
-
-/* Compact variant with lighter pattern */
-.education-details-panel--compact::before {
-  opacity: 0.3;
-  border-radius: var(--border-radius-sm);
-}
-
-/* Academic info row for inline layout in compact mode */
-.academic-info-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--spacing-3);
-  align-items: start;
-}
-
-/* Container styling improvements */
-.degree-container {
-  margin-bottom: var(--spacing-2);
-  position: relative;
-  z-index: 1;
-}
-
-/* Compact variant with improved margin */
-.degree-container--compact {
-  margin-bottom: var(--spacing-1);
-}
-
-.fields-container {
-  margin-bottom: var(--spacing-3);
-  position: relative;
-  z-index: 1;
-}
-
-/* Compact variant with improved margin */
-.fields-container--compact {
-  margin-bottom: var(--spacing-1);
-}
-
-/* Compact styling for degree info */
-.degree-info--compact .degree-label {
-  font-size: 0.65rem;
-  margin-bottom: 3px;
-}
-
-.degree-info--compact .degree-value {
-  font-size: var(--font-size-sm);
-  padding-left: var(--spacing-2);
-  border-left-width: 2px;
-}
-
-/* Compact styling for fields of study */
-.fields-of-study--compact {
-  margin-bottom: var(--spacing-1);
-  gap: var(--spacing-2);
-}
-
-.fields-of-study--compact .field-label {
-  font-size: 0.65rem;
-  margin-bottom: 3px;
-}
-
-.fields-of-study--compact .major-value,
-.fields-of-study--compact .minor-value {
-  font-size: var(--font-size-sm);
-  padding-left: var(--spacing-2);
-  border-left-width: 2px;
-}
-
-/* Enhanced integrated certifications panel */
-.integrated-certifications-panel {
-  margin-top: var(--spacing-5);
-  padding: var(--spacing-4);
-  border-top: 2px solid rgba(var(--color-cyan-rgb), 0.2);
-  background: linear-gradient(
-    135deg,
-    rgba(var(--color-navy-rgb), 0.96) 0%,
-    rgba(var(--color-navy-rgb), 0.92) 100%
-  );
-  border-radius: var(--border-radius-md);
-  box-shadow: 
-    0 3px 12px rgba(0, 0, 0, 0.25),
-    0 0 10px rgba(var(--color-cyan-rgb), 0.06),
-    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.06);
-  backdrop-filter: blur(6px);
-  position: relative;
-}
-
-/* Compact variant with improved spacing for better readability */
-.integrated-certifications-panel--compact {
-  margin-top: var(--spacing-4);
-  padding: var(--spacing-3);
-  border-top-width: 1px;
-  border-radius: var(--border-radius-sm);
-  box-shadow: 
-    0 2px 6px rgba(0, 0, 0, 0.15),
-    0 0 6px rgba(var(--color-cyan-rgb), 0.04),
-    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.04);
-}
-
-.integrated-certifications-panel::before {
-  content: '';
+.education-card__accent-line {
   position: absolute;
   top: 0;
   left: 0;
@@ -481,289 +283,134 @@
   background: linear-gradient(
     90deg,
     transparent 0%,
-    var(--color-cyan) 30%,
-    var(--color-cyan) 70%,
+    var(--color-cyan) 20%,
+    var(--color-cyan) 80%,
     transparent 100%
   );
-  box-shadow: 0 0 6px rgba(var(--color-cyan-rgb), 0.4);
+  box-shadow: 0 0 8px rgba(var(--color-cyan-rgb), 0.5);
 }
 
-/* Compact variant with thinner accent line */
-.integrated-certifications-panel--compact::before {
-  height: 1px;
-  box-shadow: 0 0 3px rgba(var(--color-cyan-rgb), 0.3);
-}
-
-.certifications-header {
-  margin-bottom: var(--spacing-3);
-  position: relative;
-  z-index: 1;
-}
-
-/* Compact variant with improved margin */
-.certifications-header--compact {
-  margin-bottom: var(--spacing-2);
-}
-
-.certifications-title {
-  font-size: var(--font-size-lg);
-  color: var(--color-cyan);
-  font-family: var(--font-family-jetbrains);
-  position: relative;
-  display: inline-block;
-  padding-bottom: var(--spacing-1);
-  font-weight: var(--font-weight-semibold);
-  text-shadow: 0 0 6px rgba(var(--color-cyan-rgb), 0.4);
-  letter-spacing: var(--letter-spacing-technical);
-}
-
-/* Compact variant with smaller font and improved spacing */
-.certifications-title--compact {
-  font-size: var(--font-size-md);
-  padding-bottom: 4px;
-  text-shadow: 0 0 4px rgba(var(--color-cyan-rgb), 0.3);
-  margin: 0;
-}
-
-.certifications-title::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 40px;
-  height: 2px;
+/* Variant-specific accent lines */
+.education-card--secure .education-card__accent-line {
   background: linear-gradient(
     90deg,
-    var(--color-cyan) 0%,
-    rgba(var(--color-cyan-rgb), 0.6) 100%
+    transparent 0%,
+    var(--color-green-400) 20%,
+    var(--color-green-400) 80%,
+    transparent 100%
   );
-  border-radius: 1px;
-  box-shadow: 0 0 4px rgba(var(--color-cyan-rgb), 0.3);
+  box-shadow: 0 0 8px rgba(var(--color-green-400-rgb), 0.5);
 }
 
-/* Compact variant with smaller decoration line */
-.certifications-title--compact::after {
-  width: 30px;
-  height: 1px;
-  box-shadow: 0 0 2px rgba(var(--color-cyan-rgb), 0.2);
+.education-card--breach .education-card__accent-line {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--color-red-400) 20%,
+    var(--color-red-400) 80%,
+    transparent 100%
+  );
+  box-shadow: 0 0 8px rgba(var(--color-red-400-rgb), 0.5);
 }
 
-.certifications-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: var(--spacing-3);
-  position: relative;
-  z-index: 1;
+.education-card--critical .education-card__accent-line {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--color-yellow-400) 20%,
+    var(--color-yellow-400) 80%,
+    transparent 100%
+  );
+  box-shadow: 0 0 8px rgba(var(--color-yellow-400-rgb), 0.5);
 }
 
-/* Compact variant with smaller grid items and improved gap */
-.certifications-list--compact {
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: var(--spacing-2);
-}
-
-.certification-item {
-  position: relative;
-}
-
-/* Compact variant for certification items */
-.certification-item--compact {
-  /* Additional compact styling can be added here if needed */
-}
-
-/* Enhanced text styling for better readability */
-.education-card h1,
-.education-card h2,
-.education-card h3,
-.education-card h4,
-.education-card h5,
-.education-card h6 {
-  color: var(--color-cyan);
-  text-shadow: 0 0 4px rgba(var(--color-cyan-rgb), 0.3);
-}
-
-.education-card p {
-  color: rgba(var(--color-offwhite-rgb), 0.9);
-  line-height: var(--line-height-base);
-}
-
-.education-card small {
-  color: rgba(var(--color-offwhite-rgb), 0.75);
-}
-
-/* Responsive styles */
+/* Responsive Design */
 @media (max-width: 768px) {
-  .education-card-icon-column {
-    flex: 0 0 90px;
+  .education-card {
+    padding: var(--spacing-4);
+    margin-bottom: var(--spacing-4);
   }
-  
-  .education-card-icon-column--compact {
-    flex: 0 0 75px;
+
+  .education-card__header {
+    gap: var(--spacing-3);
+    margin-bottom: var(--spacing-4);
   }
-  
-  .education-card-icon {
-    width: 55px;
-    height: 55px;
-    margin-top: var(--spacing-4);
+
+  .education-card__icon {
+    width: 50px;
+    height: 50px;
+    font-size: 1.25rem;
   }
-  
-  .education-card-icon--compact {
-    width: 48px;
-    height: 48px;
-    margin-top: var(--spacing-3);
-  }
-  
-  .education-icon-large {
-    font-size: 2rem;
-  }
-  
-  .education-icon-compact {
-    font-size: 1.6rem;
-  }
-  
-  .education-content {
-    padding: var(--spacing-4) var(--spacing-3);
-  }
-  
-  .education-content--compact {
-    padding: var(--spacing-3) var(--spacing-3);
-  }
-  
-  .education-details-panel {
-    padding: var(--spacing-3);
-  }
-  
-  .education-details-panel--compact {
-    padding: var(--spacing-3);
-  }
-  
-  .education-header::after {
-    width: 35px;
-  }
-  
-  .education-header--compact::after {
-    width: 28px;
-  }
-  
-  .integrated-certifications-panel {
-    padding: var(--spacing-3);
-  }
-  
-  .integrated-certifications-panel--compact {
-    padding: var(--spacing-3);
-  }
-  
-  .certifications-list {
-    grid-template-columns: 1fr;
-  }
-  
-  .certifications-list--compact {
-    grid-template-columns: 1fr;
-    gap: var(--spacing-2);
-  }
-  
-  .certifications-indicator {
-    width: 75px;
-    padding: var(--spacing-1);
-  }
-  
-  .certifications-indicator--compact {
-    width: 68px;
-    padding: var(--spacing-1);
-  }
-  
-  .cert-count {
+
+  .education-card__school {
     font-size: var(--font-size-lg);
   }
-  
-  .cert-count--compact {
-    font-size: var(--font-size-md);
+
+  .education-card__academic-info {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-2);
+    padding: var(--spacing-3);
   }
-  
-  .cert-label {
-    font-size: 0.7rem;
-  }
-  
-  .cert-label--compact {
-    font-size: 0.65rem;
-  }
-  
-  .academic-info-row {
+
+  .education-card__cert-list {
     grid-template-columns: 1fr;
     gap: var(--spacing-2);
   }
-  
-  .education-header-content {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--spacing-1);
+
+  .education-card__certifications {
+    padding: var(--spacing-3);
   }
 }
 
 @media (max-width: 480px) {
-  .education-card-icon-column {
-    flex: 0 0 80px;
+  .education-card {
+    padding: var(--spacing-3);
   }
-  
-  .education-card-icon-column--compact {
-    flex: 0 0 65px;
+
+  .education-card__header {
+    flex-direction: column;
+    gap: var(--spacing-2);
+    text-align: center;
   }
-  
-  .education-card-icon {
-    width: 50px;
-    height: 50px;
+
+  .education-card__icon {
+    align-self: center;
   }
-  
-  .education-card-icon--compact {
-    width: 42px;
-    height: 42px;
-  }
-  
-  .education-icon-large {
-    font-size: 1.8rem;
-  }
-  
-  .education-icon-compact {
-    font-size: 1.4rem;
-  }
-  
-  .education-content {
-    padding: var(--spacing-3) var(--spacing-2);
-  }
-  
-  .education-content--compact {
-    padding: var(--spacing-3) var(--spacing-2);
-  }
-  
-  .certifications-indicator {
-    width: 70px;
-  }
-  
-  .certifications-indicator--compact {
-    width: 60px;
+
+  .education-card__cert-badge {
+    align-self: center;
+    flex-direction: row;
+    gap: var(--spacing-2);
+    padding: var(--spacing-2) var(--spacing-3);
   }
 }
 
-/* High contrast mode support */
+/* High Contrast Mode Support */
 @media (prefers-contrast: high) {
   .education-card {
     border-width: 2px;
     background: rgba(var(--color-navy-rgb), 0.98);
   }
-  
-  .education-card-inner::after,
-  .education-details-panel::before {
+
+  .education-card__grid-overlay {
     display: none;
   }
-  
-  .education-icon-large,
-  .education-icon-compact {
-    filter: none;
+
+  .education-card__school,
+  .education-card__cert-title {
     text-shadow: none;
   }
-  
-  .certifications-title,
-  .certifications-title--compact {
-    text-shadow: none;
+
+  .education-card__accent-line {
+    box-shadow: none;
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  .education-card,
+  .education-card__icon,
+  .education-card__cert-item {
+    transition: none;
   }
 }

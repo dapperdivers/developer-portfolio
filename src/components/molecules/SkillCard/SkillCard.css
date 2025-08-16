@@ -1,12 +1,12 @@
 /**
- * SkillCard Molecule Styles
+ * SkillCard Molecule Styles - Enhanced Edition
  *
- * Enhanced styling for the SkillCard component with improved readability,
- * dark blue containers, and cybersecurity theming.
- * Animations now handled by framer-motion.
+ * Highly interactive and readable skill cards with premium cybersecurity theming.
+ * Features enhanced clickability indicators, improved typography, and polished animations.
+ * Optimized for user experience and accessibility.
  */
 
-/* Enhanced Skill Card Styles with dark blue container */
+/* Base Skill Card - Enhanced for Clickability */
 .skill-card {
   display: flex;
   flex-direction: column;
@@ -15,25 +15,30 @@
   background: linear-gradient(
     135deg,
     rgba(var(--color-navy-rgb), 0.95) 0%,
-    rgba(var(--color-navy-rgb), 0.9) 50%,
+    rgba(var(--color-navy-rgb), 0.88) 35%,
+    rgba(var(--color-navy-rgb), 0.92) 65%,
     rgba(var(--color-navy-rgb), 0.95) 100%
   );
-  border: 1px solid rgba(var(--color-cyan-rgb), 0.3);
+  border: 1px solid rgba(var(--color-cyan-rgb), 0.35);
   border-radius: var(--border-radius-md);
   box-shadow: 
-    0 4px 15px rgba(0, 0, 0, 0.3),
-    0 0 12px rgba(var(--color-cyan-rgb), 0.08),
-    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.1);
-  backdrop-filter: blur(10px);
+    0 4px 15px rgba(0, 0, 0, 0.35),
+    0 0 12px rgba(var(--color-cyan-rgb), 0.1),
+    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.12),
+    inset 0 -1px 0 rgba(var(--color-cyan-rgb), 0.05);
+  backdrop-filter: blur(12px);
   height: 100%;
   position: relative;
   cursor: pointer;
   overflow: hidden;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   min-height: 200px;
+  /* Enhanced clickability indicator */
+  user-select: none;
+  -webkit-tap-highlight-color: rgba(var(--color-cyan-rgb), 0.2);
 }
 
-/* Enhanced grid pattern overlay */
+/* Subtle grid pattern with enhanced visibility */
 .skill-card::before {
   content: '';
   position: absolute;
@@ -43,43 +48,74 @@
       0deg,
       transparent,
       transparent 1px,
-      rgba(var(--color-cyan-rgb), 0.02) 1px,
-      rgba(var(--color-cyan-rgb), 0.02) 2px
+      rgba(var(--color-cyan-rgb), 0.03) 1px,
+      rgba(var(--color-cyan-rgb), 0.03) 2px
     ),
     repeating-linear-gradient(
       90deg,
       transparent,
       transparent 1px,
-      rgba(var(--color-cyan-rgb), 0.02) 1px,
-      rgba(var(--color-cyan-rgb), 0.02) 2px
+      rgba(var(--color-cyan-rgb), 0.03) 1px,
+      rgba(var(--color-cyan-rgb), 0.03) 2px
     );
-  opacity: 0.6;
+  opacity: 0.7;
   pointer-events: none;
   border-radius: var(--border-radius-md);
+  transition: opacity 0.3s ease;
 }
 
-/* Hover effects */
+/* Enhanced clickability indicator - subtle glow */
+.skill-card::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(
+    45deg,
+    transparent,
+    rgba(var(--color-cyan-rgb), 0.08),
+    transparent,
+    rgba(var(--color-cyan-rgb), 0.05),
+    transparent
+  );
+  border-radius: var(--border-radius-md);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Premium hover effects with clear interaction feedback */
 .skill-card:hover {
-  border-color: rgba(var(--color-cyan-rgb), 0.5);
+  border-color: rgba(var(--color-cyan-rgb), 0.55);
   box-shadow: 
-    0 6px 20px rgba(0, 0, 0, 0.4),
-    0 0 16px rgba(var(--color-cyan-rgb), 0.12),
-    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.12);
-  transform: translateY(-2px);
+    0 8px 25px rgba(0, 0, 0, 0.45),
+    0 0 20px rgba(var(--color-cyan-rgb), 0.15),
+    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.15),
+    inset 0 -1px 0 rgba(var(--color-cyan-rgb), 0.08);
+  transform: translateY(-3px) scale(1.02);
 }
 
 .skill-card:hover::before {
-  opacity: 0.8;
+  opacity: 0.9;
 }
 
+.skill-card:hover::after {
+  opacity: 1;
+}
+
+/* Icon container with enhanced positioning */
 .skill-card-icon {
   margin-bottom: var(--spacing-3);
   position: relative;
   z-index: 1;
-  /* Icon styling handled by Skill component */
+  transition: transform 0.3s ease;
 }
 
-/* Enhanced skill card name with better typography */
+.skill-card:hover .skill-card-icon {
+  transform: scale(1.05);
+}
+
+/* Premium typography for skill name - Enhanced readability */
 .skill-card-name {
   font-family: var(--font-family-jetbrains);
   color: var(--color-cyan);
@@ -89,17 +125,29 @@
   letter-spacing: var(--letter-spacing-technical);
   line-height: var(--line-height-tight);
   margin-bottom: var(--spacing-3);
-  text-shadow: 0 0 6px rgba(var(--color-cyan-rgb), 0.4);
+  text-shadow: 
+    0 0 8px rgba(var(--color-cyan-rgb), 0.5),
+    0 1px 2px rgba(0, 0, 0, 0.4);
   position: relative;
   z-index: 1;
   word-wrap: break-word;
   hyphens: auto;
+  transition: all 0.3s ease;
+  /* Enhanced contrast for readability */
+  filter: drop-shadow(0 0 4px rgba(var(--color-cyan-rgb), 0.3));
 }
 
-/* Enhanced description with better readability */
+.skill-card:hover .skill-card-name {
+  text-shadow: 
+    0 0 12px rgba(var(--color-cyan-rgb), 0.7),
+    0 1px 3px rgba(0, 0, 0, 0.5);
+  filter: drop-shadow(0 0 6px rgba(var(--color-cyan-rgb), 0.4));
+}
+
+/* Enhanced description with superior readability */
 .skill-card-desc {
   font-size: var(--font-size-sm);
-  color: rgba(var(--color-offwhite-rgb), 0.85);
+  color: rgba(var(--color-offwhite-rgb), 0.9);
   text-align: center;
   line-height: var(--line-height-base);
   overflow: hidden;
@@ -110,18 +158,30 @@
   position: relative;
   z-index: 1;
   font-weight: var(--font-weight-normal);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  text-shadow: 
+    0 1px 3px rgba(0, 0, 0, 0.4),
+    0 0 8px rgba(0, 0, 0, 0.2);
+  transition: color 0.3s ease;
+  /* Enhanced readability with better contrast */
+  filter: contrast(1.1);
 }
 
-/* Enhanced read more indicator */
+.skill-card:hover .skill-card-desc {
+  color: rgba(var(--color-offwhite-rgb), 0.95);
+  text-shadow: 
+    0 1px 4px rgba(0, 0, 0, 0.5),
+    0 0 10px rgba(0, 0, 0, 0.25);
+}
+
+/* Enhanced "Click to Expand" indicator with animation */
 .skill-card-read-more {
   position: absolute;
   bottom: var(--spacing-2);
   right: var(--spacing-2);
   font-size: var(--font-size-xs);
   color: var(--color-cyan);
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -129,42 +189,68 @@
   background: linear-gradient(
     135deg,
     rgba(var(--color-navy-rgb), 0.9) 0%,
-    rgba(var(--color-navy-rgb), 0.8) 100%
+    rgba(var(--color-navy-rgb), 0.8) 50%,
+    rgba(var(--color-navy-rgb), 0.9) 100%
   );
   border: 1px solid rgba(var(--color-cyan-rgb), 0.5);
   box-shadow: 
-    0 2px 6px rgba(0, 0, 0, 0.3),
-    0 0 6px rgba(var(--color-cyan-rgb), 0.2);
-  backdrop-filter: blur(4px);
+    0 2px 8px rgba(0, 0, 0, 0.4),
+    0 0 8px rgba(var(--color-cyan-rgb), 0.25),
+    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.1);
+  backdrop-filter: blur(6px);
   z-index: 2;
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  /* Subtle pulse animation to draw attention */
+  animation: pulse-expand 2s ease-in-out infinite;
+}
+
+/* Pulse animation for the expand button */
+@keyframes pulse-expand {
+  0%, 100% {
+    box-shadow: 
+      0 2px 8px rgba(0, 0, 0, 0.4),
+      0 0 8px rgba(var(--color-cyan-rgb), 0.25),
+      inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.1);
+  }
+  50% {
+    box-shadow: 
+      0 2px 8px rgba(0, 0, 0, 0.4),
+      0 0 12px rgba(var(--color-cyan-rgb), 0.35),
+      inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.15);
+  }
 }
 
 .skill-card:hover .skill-card-read-more {
   background: linear-gradient(
     135deg,
-    rgba(var(--color-cyan-rgb), 0.1) 0%,
-    rgba(var(--color-navy-rgb), 0.9) 100%
+    rgba(var(--color-cyan-rgb), 0.15) 0%,
+    rgba(var(--color-navy-rgb), 0.9) 50%,
+    rgba(var(--color-cyan-rgb), 0.1) 100%
   );
-  border-color: rgba(var(--color-cyan-rgb), 0.7);
+  border-color: rgba(var(--color-cyan-rgb), 0.8);
   box-shadow: 
-    0 3px 8px rgba(0, 0, 0, 0.4),
-    0 0 8px rgba(var(--color-cyan-rgb), 0.3);
+    0 4px 12px rgba(0, 0, 0, 0.5),
+    0 0 16px rgba(var(--color-cyan-rgb), 0.4),
+    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.2);
+  transform: scale(1.1);
+  animation: none; /* Stop pulse on hover for cleaner interaction */
 }
 
-/* Security variant */
+/* Security variant with enhanced styling */
 .skill-card--security {
   background: linear-gradient(
     135deg,
     rgba(var(--color-navy-rgb), 0.98) 0%,
-    rgba(var(--color-navy-rgb), 0.95) 50%,
+    rgba(var(--color-navy-rgb), 0.92) 35%,
+    rgba(var(--color-navy-rgb), 0.95) 65%,
     rgba(var(--color-navy-rgb), 0.98) 100%
   );
-  border-color: rgba(var(--color-cyan-rgb), 0.4);
+  border-color: rgba(var(--color-cyan-rgb), 0.45);
   box-shadow: 
-    0 5px 18px rgba(0, 0, 0, 0.4),
-    0 0 15px rgba(var(--color-cyan-rgb), 0.1),
-    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.12);
+    0 6px 20px rgba(0, 0, 0, 0.4),
+    0 0 18px rgba(var(--color-cyan-rgb), 0.12),
+    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.15),
+    inset 0 -1px 0 rgba(var(--color-cyan-rgb), 0.08);
 }
 
 .skill-card--security::before {
@@ -173,46 +259,56 @@
       45deg,
       transparent,
       transparent 1px,
-      rgba(var(--color-cyan-rgb), 0.03) 1px,
-      rgba(var(--color-cyan-rgb), 0.03) 2px
+      rgba(var(--color-cyan-rgb), 0.04) 1px,
+      rgba(var(--color-cyan-rgb), 0.04) 2px
     );
+  opacity: 0.8;
 }
 
 .skill-card--security:hover {
-  border-color: rgba(var(--color-cyan-rgb), 0.6);
+  border-color: rgba(var(--color-cyan-rgb), 0.7);
   box-shadow: 
-    0 8px 25px rgba(0, 0, 0, 0.5),
-    0 0 20px rgba(var(--color-cyan-rgb), 0.15),
-    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.15);
+    0 10px 30px rgba(0, 0, 0, 0.55),
+    0 0 25px rgba(var(--color-cyan-rgb), 0.18),
+    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.18),
+    inset 0 -1px 0 rgba(var(--color-cyan-rgb), 0.1);
+  transform: translateY(-4px) scale(1.03);
 }
 
 .skill-card--security .skill-card-name {
-  text-shadow: 0 0 8px rgba(var(--color-cyan-rgb), 0.5);
+  text-shadow: 
+    0 0 10px rgba(var(--color-cyan-rgb), 0.6),
+    0 1px 3px rgba(0, 0, 0, 0.5);
+  filter: drop-shadow(0 0 6px rgba(var(--color-cyan-rgb), 0.4));
 }
 
 /* Enhanced focus state for accessibility */
 .skill-card:focus-visible {
-  outline: 2px solid var(--color-cyan);
-  outline-offset: 3px;
+  outline: 3px solid var(--color-cyan);
+  outline-offset: 4px;
   box-shadow: 
-    0 0 0 4px rgba(var(--color-cyan-rgb), 0.3),
-    0 6px 20px rgba(0, 0, 0, 0.4);
+    0 0 0 6px rgba(var(--color-cyan-rgb), 0.35),
+    0 8px 25px rgba(0, 0, 0, 0.5),
+    0 0 20px rgba(var(--color-cyan-rgb), 0.15);
+  transform: translateY(-2px);
 }
 
 .skill-card--security:focus-visible {
-  outline: 2px solid var(--color-cyan);
+  outline: 3px solid var(--color-cyan);
   box-shadow: 
-    0 0 0 4px rgba(var(--color-cyan-rgb), 0.4),
-    0 8px 25px rgba(0, 0, 0, 0.5);
+    0 0 0 6px rgba(var(--color-cyan-rgb), 0.4),
+    0 10px 30px rgba(0, 0, 0, 0.6),
+    0 0 25px rgba(var(--color-cyan-rgb), 0.18);
 }
 
-/* Active state */
+/* Enhanced active state with tactile feedback */
 .skill-card:active {
-  transform: translateY(0);
+  transform: translateY(-1px) scale(1.01);
   box-shadow: 
-    0 3px 12px rgba(0, 0, 0, 0.4),
-    0 0 10px rgba(var(--color-cyan-rgb), 0.1),
-    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.08);
+    0 4px 15px rgba(0, 0, 0, 0.5),
+    0 0 12px rgba(var(--color-cyan-rgb), 0.12),
+    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.1);
+  transition-duration: 0.1s;
 }
 
 /* Media queries for responsive design */
@@ -234,10 +330,14 @@
   }
   
   .skill-card-read-more {
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
     bottom: var(--spacing-1);
     right: var(--spacing-1);
+  }
+  
+  .skill-card:hover {
+    transform: translateY(-2px) scale(1.01);
   }
 }
 
@@ -258,8 +358,12 @@
   }
   
   .skill-card-read-more {
-    width: 16px;
-    height: 16px;
+    width: 18px;
+    height: 18px;
+  }
+  
+  .skill-card:hover {
+    transform: translateY(-1px) scale(1.005);
   }
 }
 
@@ -270,20 +374,207 @@
     background: rgba(var(--color-navy-rgb), 0.98);
   }
   
-  .skill-card::before {
+  .skill-card::before,
+  .skill-card::after {
     display: none;
   }
   
   .skill-card-name {
     text-shadow: none;
+    filter: none;
   }
   
   .skill-card-desc {
     text-shadow: none;
+    filter: none;
+    color: var(--color-offwhite);
   }
   
   .skill-card-read-more {
     border-width: 2px;
+    background: var(--color-navy);
+  }
+}
+
+/* Expandable Skill Card - Properly centered modal */
+.skill-card-expanded {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-navy-rgb), 0.98) 0%,
+    rgba(var(--color-navy-rgb), 0.95) 50%,
+    rgba(var(--color-navy-rgb), 0.98) 100%
+  );
+  border: 2px solid var(--color-cyan);
+  border-radius: var(--border-radius-lg);
+  box-shadow: 
+    0 0 40px rgba(var(--color-cyan-rgb), 0.6),
+    0 15px 50px rgba(0, 0, 0, 0.7),
+    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.2);
+  padding: var(--spacing-6);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  backdrop-filter: blur(20px);
+  /* Ensure modal escapes any parent stacking contexts */
+  isolation: isolate;
+}
+
+.skill-card-expanded-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-4);
+  border-bottom: 1px solid rgba(var(--color-cyan-rgb), 0.3);
+  padding-bottom: var(--spacing-3);
+}
+
+.skill-card-expanded-title {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4);
+}
+
+.skill-card-expanded-title h3 {
+  font-family: var(--font-family-jetbrains);
+  color: var(--color-cyan);
+  font-size: var(--font-size-xl);
+  letter-spacing: var(--letter-spacing-technical);
+  margin: 0;
+  text-shadow: 0 0 10px rgba(var(--color-cyan-rgb), 0.5);
+}
+
+.skill-card-expanded-close {
+  background: none;
+  border: none;
+  color: var(--color-gray-300);
+  font-size: var(--font-size-xl);
+  cursor: pointer;
+  padding: var(--spacing-1);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.skill-card-expanded-close:hover {
+  color: var(--color-cyan);
+  background-color: rgba(var(--color-cyan-rgb), 0.15);
+  transform: scale(1.1);
+}
+
+.skill-card-expanded-content {
+  font-size: var(--font-size-base);
+  color: rgba(var(--color-offwhite-rgb), 0.9);
+  line-height: var(--line-height-relaxed);
+  margin-bottom: var(--spacing-4);
+}
+
+.skill-card-expanded-level {
+  margin-top: var(--spacing-4);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+}
+
+.skill-card-expanded-level-label {
+  font-family: var(--font-family-jetbrains);
+  color: var(--color-gray-400);
+  font-size: var(--font-size-sm);
+}
+
+.skill-level-indicator {
+  display: flex;
+  gap: 4px;
+}
+
+.skill-level-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: rgba(var(--color-cyan-rgb), 0.2);
+  border: 1px solid rgba(var(--color-cyan-rgb), 0.3);
+  transition: all 0.3s ease;
+}
+
+.skill-level-dot.active {
+  background-color: var(--color-cyan);
+  box-shadow: 0 0 8px rgba(var(--color-cyan-rgb), 0.5);
+}
+
+.skill-domain-badge {
+  display: inline-block;
+  padding: var(--spacing-1) var(--spacing-3);
+  border-radius: var(--border-radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  font-family: var(--font-family-jetbrains);
+  margin-top: var(--spacing-4);
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-cyan-rgb), 0.2) 0%,
+    rgba(var(--color-cyan-rgb), 0.1) 100%
+  );
+  border: 1px solid rgba(var(--color-cyan-rgb), 0.3);
+  color: var(--color-cyan);
+}
+
+/* Enhanced modal backdrop - Full viewport coverage */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.85);
+  z-index: 9998;
+  backdrop-filter: blur(8px);
+  /* Ensure backdrop covers entire viewport */
+  isolation: isolate;
+  margin: 0;
+  padding: 0;
+}
+
+/* Responsive design for expanded card */
+@media (max-width: 768px) {
+  .skill-card-expanded {
+    width: 95%;
+    max-height: 85vh;
+    padding: var(--spacing-4);
+  }
+  
+  .skill-card-expanded-title h3 {
+    font-size: var(--font-size-lg);
+  }
+  
+  .skill-card-expanded-content {
+    font-size: var(--font-size-sm);
+  }
+}
+
+@media (max-width: 480px) {
+  .skill-card-expanded {
+    width: 98%;
+    max-height: 90vh;
+    padding: var(--spacing-3);
+  }
+  
+  .skill-card-expanded-title {
+    gap: var(--spacing-2);
+  }
+  
+  .skill-card-expanded-title h3 {
+    font-size: var(--font-size-base);
   }
 }
 
@@ -299,5 +590,101 @@
   
   .skill-card:active {
     transform: none;
+  }
+  
+  .skill-card-expanded-close {
+    transition: none;
+  }
+  
+  .skill-card-read-more {
+    animation: none;
+  }
+  
+  .skill-card-icon {
+    transition: none;
+  }
+  
+  .skill-card-name {
+    transition: none;
+  }
+  
+  .skill-card-desc {
+    transition: none;
+  }
+}
+
+/* Skill card expanded modal wrapper styles */
+.skill-card-expanded-modal {
+  /* Additional styling for the modal wrapper if needed */
+}
+
+.skill-card-expanded-content-wrapper {
+  color: var(--color-offwhite);
+  font-family: var(--font-family-inter);
+}
+
+/* Ensure modal content inherits proper styling */
+.skill-card-expanded-content-wrapper .skill-card-expanded-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-4);
+  border-bottom: 1px solid rgba(var(--color-cyan-rgb), 0.3);
+  padding-bottom: var(--spacing-3);
+}
+
+.skill-card-expanded-content-wrapper .skill-card-expanded-title {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4);
+}
+
+.skill-card-expanded-content-wrapper .skill-card-expanded-title h3 {
+  font-family: var(--font-family-jetbrains);
+  color: var(--color-cyan);
+  font-size: var(--font-size-xl);
+  letter-spacing: var(--letter-spacing-technical);
+  margin: 0;
+  text-shadow: 0 0 10px rgba(var(--color-cyan-rgb), 0.5);
+}
+
+.skill-card-expanded-content-wrapper .skill-card-expanded-content {
+  font-size: var(--font-size-base);
+  color: rgba(var(--color-offwhite-rgb), 0.9);
+  line-height: var(--line-height-relaxed);
+  margin-bottom: var(--spacing-4);
+}
+
+.skill-card-expanded-content-wrapper .skill-card-expanded-level {
+  margin-top: var(--spacing-4);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+}
+
+.skill-card-expanded-content-wrapper .skill-card-expanded-level-label {
+  font-family: var(--font-family-jetbrains);
+  color: var(--color-gray-400);
+  font-size: var(--font-size-sm);
+}
+
+/* Responsive styles for modal content */
+@media (max-width: 768px) {
+  .skill-card-expanded-content-wrapper .skill-card-expanded-title h3 {
+    font-size: var(--font-size-lg);
+  }
+  
+  .skill-card-expanded-content-wrapper .skill-card-expanded-content {
+    font-size: var(--font-size-sm);
+  }
+}
+
+@media (max-width: 480px) {
+  .skill-card-expanded-content-wrapper .skill-card-expanded-title {
+    gap: var(--spacing-2);
+  }
+  
+  .skill-card-expanded-content-wrapper .skill-card-expanded-title h3 {
+    font-size: var(--font-size-base);
   }
 }

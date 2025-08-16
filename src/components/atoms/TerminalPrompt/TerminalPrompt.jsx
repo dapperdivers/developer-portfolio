@@ -44,7 +44,7 @@ const TerminalPrompt = ({
 
 TerminalPrompt.propTypes = {
   text: PropTypes.string,
-  variant: PropTypes.oneOf(['default', 'security', 'terminal']),
+  variant: PropTypes.oneOf(['default', 'security', 'terminal','kitty']),
   mobile: PropTypes.bool,
   className: PropTypes.string,
 };

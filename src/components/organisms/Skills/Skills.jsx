@@ -1,12 +1,13 @@
 import React, { memo, useMemo, useState, useEffect } from 'react';
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 import SkillCard, { SkillCardExpanded } from '@molecules/SkillCard';
 import SkeletonCard from '@atoms/SkeletonCard';
+import TerminalTitleBar from '@molecules/TerminalTitleBar';
 import Section from '../../layout/Section';
 import useSkills from "@hooks/useSkills";
 import { usePortfolio } from "@context/PortfolioContext";
-import { useAnimation, MotionVariants } from '@context/AnimationContext';
+import { useAnimation } from '@context/AnimationContext';
 import '@assets/css/tailwind.css';
 import './Skills.css';
 
@@ -158,24 +159,6 @@ const Skills = () => {
     return grouped;
   }, [skillsSection.softwareSkills]);
   
-  // Modal animations - use standard patterns from context when appropriate
-  const modalVariants = useMemo(() => ({
-    hidden: { opacity: 0, scale: 0.8 },
-    visible: { 
-      opacity: 1, 
-      scale: 1,
-      transition: { type: "spring", damping: 25, stiffness: 500 }
-    },
-    exit: {
-      opacity: 0,
-      scale: 0.8,
-      transition: { duration: 0.2 }
-    }
-  }), []);
-  
-  // Background overlay animations - simplified from context
-  const overlayVariants = useMemo(() => MotionVariants.fadeIn, []);
-  
   // Handle skill card click
   const handleSkillClick = (skill) => {
     setExpandedSkill(skill);
@@ -189,6 +172,7 @@ const Skills = () => {
   // Prevent background scrolling when modal is open
   useEffect(() => {
     if (expandedSkill) {
+      // Prevent background scrolling
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
@@ -266,14 +250,11 @@ const Skills = () => {
       <div className="skills-content-wrapper">
         {/* Terminal Section - Core Capabilities */}
         <div className="terminal-container">
-          <div className="terminal-header">
-            <span className="terminal-title">Core Capabilities</span>
-            <div className="terminal-buttons">
-              <span className="terminal-button"></span>
-              <span className="terminal-button"></span>
-              <span className="terminal-button"></span>
-            </div>
-          </div>
+          <TerminalTitleBar
+            title="Core Capabilities"
+            variant="kitty"
+            interactive={false}
+          />
           <motion.div 
             className="terminal-content"
             initial="hidden"
@@ -322,25 +303,13 @@ const Skills = () => {
       </div>
       
       {/* Expanded Skill Modal */}
-      <AnimatePresence>
-        {expandedSkill && (
-          <>
-            <motion.div 
-              className="modal-backdrop"
-              initial="hidden"
-              animate="visible"
-              exit="exit"
-              variants={overlayVariants}
-              onClick={closeExpandedSkill}
-            />
-            <SkillCardExpanded
-              skill={expandedSkill}
-              onClose={closeExpandedSkill}
-              animationVariants={modalVariants}
-            />
-          </>
-        )}
-      </AnimatePresence>
+      {expandedSkill && (
+        <SkillCardExpanded
+          skill={expandedSkill}
+          onClose={closeExpandedSkill}
+          isVisible={true}
+        />
+      )}
     </Section>
   );
 };

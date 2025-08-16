@@ -24,7 +24,7 @@ const ProfileContent = ({
   email,
   animate = true
 }) => {
-  const { animationEnabled, itemVariants } = useAnimation();
+  const { animationEnabled, slideUpVariants } = useAnimation();
   
   // Only use animations if both props are enabled
   const shouldAnimate = animate && animationEnabled;
@@ -33,7 +33,10 @@ const ProfileContent = ({
     <div className="profile-content">
       <motion.p 
         className="profile-content__description"
-        variants={shouldAnimate ? itemVariants : undefined}
+        variants={shouldAnimate ? slideUpVariants : undefined}
+        initial={shouldAnimate ? "hidden" : "visible"}
+        animate={shouldAnimate ? "visible" : "visible"}
+        viewport={{ once: true }}
       >
         {description}
       </motion.p>
@@ -41,7 +44,10 @@ const ProfileContent = ({
       {securityFact && (
         <motion.div 
           className="profile-content__fact-container"
-          variants={shouldAnimate ? itemVariants : undefined}
+          variants={shouldAnimate ? slideUpVariants : undefined}
+          initial={shouldAnimate ? "hidden" : "visible"}
+          animate={shouldAnimate ? "visible" : "visible"}
+          viewport={{ once: true }}
         >
           <SecurityFact 
             text={securityFact} 
@@ -52,7 +58,10 @@ const ProfileContent = ({
       
       <motion.div 
         className="profile-content__contact"
-        variants={shouldAnimate ? itemVariants : undefined}
+        variants={shouldAnimate ? slideUpVariants : undefined}
+        initial={shouldAnimate ? "hidden" : "visible"}
+        animate={shouldAnimate ? "visible" : "visible"}
+        viewport={{ once: true }}
       >
         <SocialLinks 
           className="profile-content__social" 

@@ -37,28 +37,28 @@ export interface DebugConfig {
   };
 }
 
-// Default configuration
+// Default configuration - optimized for production deployment
 const DEFAULT_CONFIG: DebugConfig = {
   enabled: import.meta.env.DEV,
   components: {},
   features: {
     profiling: false,
-    backgroundEffects: true,
-    animations: true,
+    backgroundEffects: false, // Changed from true to false for better performance
+    animations: false, // Changed from true to false for better performance
     scrollDebugging: false,
     layoutMonitoring: false,
     renderVisualizer: false,
-    showFPS: false
+    showFPS: true // Changed from false to true as requested
   },
   performance: {
-    longTaskThreshold: 50,
+    longTaskThreshold: 100, // Increased from 50 to 100ms for fewer false positives
     fpsWarningThreshold: 30,
-    showComponentTimings: true,
-    showStackTraces: true,
-    logToConsole: true,
+    showComponentTimings: false, // Changed from true to false for better performance
+    showStackTraces: false, // Changed from true to false for better performance
+    logToConsole: false, // Changed from true to false for better performance
     componentFilter: [],
-    monitorScriptExecution: true,
-    monitorNetworkActivity: true
+    monitorScriptExecution: false, // Changed from true to false for better performance
+    monitorNetworkActivity: false // Changed from true to false for better performance
   }
 };
 
@@ -216,7 +216,7 @@ export function DebugProvider({ children, initialConfig = {} }: DebugProviderPro
         ...prev,
         components: {
           ...prev.components,
-          [componentName]: true
+          [componentName]: false // Default to disabled for performance
         }
       }));
     }

@@ -77,14 +77,14 @@ const initialDebugConfig = {
     Footer: false
   },
   features: {
-    // Features to enable by default
-    profiling: true,
-    backgroundEffects: true,
-    animations: true,
+    // Features to enable by default - optimized for production performance
+    profiling: false, // Changed from true to false for better performance
+    backgroundEffects: false, // Changed from true to false for better performance
+    animations: false, // Changed from true to false for better performance
     scrollDebugging: false,
     layoutMonitoring: false,
     renderVisualizer: false,
-    showFPS: true
+    showFPS: true // Keep FPS display enabled as requested
   }
 };
 
