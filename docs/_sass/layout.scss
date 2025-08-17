@@ -61,6 +61,26 @@
     &:after {
       display: none;
     }
+    
+    &.home-link {
+      background: rgba($cyber-primary, 0.1);
+      border: 1px solid $cyber-primary;
+      border-radius: 4px;
+      padding: 0.4em 0.8em;
+      color: $cyber-primary;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      
+      .home-icon {
+        margin-right: 0.3em;
+      }
+      
+      &:hover {
+        background: rgba($cyber-primary, 0.2);
+        box-shadow: 0 0 8px rgba($cyber-primary, 0.3);
+        transform: translateY(-1px);
+      }
+    }
   }
   
   .nav-indicator {

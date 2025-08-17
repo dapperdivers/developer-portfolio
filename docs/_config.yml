@@ -6,6 +6,9 @@ email: "derek@chelonianlabs.com"
 url: "https://dapperdiver.github.io"
 baseurl: ""
 
+# Main site URL for navigation
+main_site_url: "{{ ENV['VITE_SITE_MAIN_URL'] | default: 'https://derekmackley.com' }}"
+
 # Build settings
 markdown: kramdown
 highlighter: rouge
