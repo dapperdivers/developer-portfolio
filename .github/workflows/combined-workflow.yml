@@ -9,17 +9,10 @@ on:
 
 # Default permissions for all jobs
 permissions:
-  contents: write  # Upgraded to write to allow docs deployment
+  contents: read
   actions: read
   security-events: write
   packages: write
-  pages: write
-  id-token: write
-
-# Allow only one concurrent deployment for GitHub Pages
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
 
 jobs:
   # Step 1: Run tests
@@ -135,7 +128,7 @@ jobs:
       - name: Verify TypeScript types
         run: yarn typecheck
   
-  # Step 3: Build and push Docker image if on master branch
+  # Step 3: Build and push Docker images if on master branch
   deploy-docker:
     name: Deploy Docker Image
     needs: [test, lint]
@@ -202,48 +195,3 @@ jobs:
         run: |
           echo "Image pushed: ${{ steps.meta.outputs.tags }}"
   
-  # Step 4: Deploy documentation if the docs folder changed
-  deploy-docs:
-    name: Deploy Documentation
-    needs: [test, lint]
-    if: success() && github.event_name == 'push' && github.ref == 'refs/heads/master'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    defaults:
-      run:
-        working-directory: docs
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.1'
-          bundler-cache: true
-          working-directory: docs
-          
-      - name: Setup Pages
-        id: pages
-        uses: actions/configure-pages@v4
-        
-      - name: Build Jekyll site
-        run: bundle exec jekyll build ${JEKYLL_BASEURL:+--baseurl "$JEKYLL_BASEURL"}
-        env:
-          JEKYLL_ENV: production
-          JEKYLL_BASEURL: "${{ steps.pages.outputs.base_path }}"
-          
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: docs/_site
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4

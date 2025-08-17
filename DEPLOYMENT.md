@@ -7,9 +7,9 @@ This guide covers deploying the Derek Mackley Portfolio across three separate Do
 The portfolio consists of three separate applications:
 - **Main Portfolio**: React application with the main website
 - **Storybook**: Component library documentation
-- **Documentation**: Jekyll-based technical documentation
+- **Documentation**: Jekyll-based technical documentation (Docker image built but not deployed)
 
-Each can be built and deployed independently with cross-site navigation support.
+The main portfolio and Storybook are deployed, while the docs image is built for potential future use.
 
 ## Environment Variables
 
@@ -54,16 +54,16 @@ docker build \
 ### 3. Documentation
 
 ```bash
-# Build from project root
+# Build from docs directory context
 docker build \
   -f docs/Dockerfile \
   --build-arg VITE_SITE_MAIN_URL=https://derekmackley.com \
-  --build-arg VITE_SITE_STORYBOOK_URL=https://storybook.derekmackley.com \
-  --build-arg VITE_SITE_DOCS_URL=https://docs.derekmackley.com \
-  -t portfolio-docs .
+  -t portfolio-docs docs/
 ```
 
 **Port**: 4000
+
+**Note**: While the Docker image is built, the documentation site is not currently deployed to production. The image is available for development or future deployment needs.
 
 ## Kubernetes Deployment
 
@@ -184,62 +184,8 @@ spec:
   type: ClusterIP
 ```
 
-#### 3. Documentation Deployment
 
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: portfolio-docs
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: portfolio-docs
-  template:
-    metadata:
-      labels:
-        app: portfolio-docs
-    spec:
-      containers:
-      - name: portfolio-docs
-        image: portfolio-docs:latest
-        ports:
-        - containerPort: 4000
-        resources:
-          requests:
-            memory: "64Mi"
-            cpu: "25m"
-          limits:
-            memory: "128Mi"
-            cpu: "50m"
-        livenessProbe:
-          httpGet:
-            path: /
-            port: 4000
-          initialDelaySeconds: 30
-          periodSeconds: 10
-        readinessProbe:
-          httpGet:
-            path: /
-            port: 4000
-          initialDelaySeconds: 5
-          periodSeconds: 5
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: portfolio-docs-service
-spec:
-  selector:
-    app: portfolio-docs
-  ports:
-  - port: 80
-    targetPort: 4000
-  type: ClusterIP
-```
-
-#### 4. Ingress Configuration
+#### 3. Ingress Configuration
 
 ```yaml
 apiVersion: networking.k8s.io/v1
@@ -254,7 +200,6 @@ spec:
   - hosts:
     - derekmackley.com
     - storybook.derekmackley.com
-    - docs.derekmackley.com
     secretName: portfolio-tls
   rules:
   - host: derekmackley.com
@@ -277,27 +222,17 @@ spec:
             name: portfolio-storybook-service
             port:
               number: 80
-  - host: docs.derekmackley.com
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: portfolio-docs-service
-            port:
-              number: 80
 ```
 
-## Site Navigator Features
+## Navigation Features
 
-Each deployment includes a cross-site navigation component that:
+The main portfolio site includes navigation to the Storybook component library. The cross-site navigation component:
 
-- Automatically detects the current site
-- Provides navigation to other sites
+- Automatically detects the current site  
+- Provides navigation between main site and Storybook
 - Positions itself on the left middle of the viewport
 - Supports keyboard navigation and accessibility
-- Works across all three different tech stacks (React, Storybook, Jekyll)
+- Works across both deployments (React main site, Storybook)
 
 ### Disabling Site Navigator
 
@@ -321,8 +256,7 @@ All containers include:
 
 Each service exposes health check endpoints:
 - **Main Portfolio**: `/healthz` on port 3001
-- **Storybook**: `/` on port 6006  
-- **Documentation**: `/` on port 4000
+- **Storybook**: `/` on port 6006
 
 ## Development vs Production
 
@@ -370,9 +304,7 @@ jobs:
           docker build \
             -f docs/Dockerfile \
             --build-arg VITE_SITE_MAIN_URL=${{ secrets.MAIN_URL }} \
-            --build-arg VITE_SITE_STORYBOOK_URL=${{ secrets.STORYBOOK_URL }} \
-            --build-arg VITE_SITE_DOCS_URL=${{ secrets.DOCS_URL }} \
-            -t ${{ secrets.REGISTRY }}/portfolio-docs:${{ github.sha }} .
+            -t ${{ secrets.REGISTRY }}/portfolio-docs:${{ github.sha }} docs/
         fi
 ```
 
@@ -389,6 +321,5 @@ jobs:
 Check application logs for each service:
 ```bash
 kubectl logs -f deployment/portfolio-main
-kubectl logs -f deployment/portfolio-storybook  
-kubectl logs -f deployment/portfolio-docs
+kubectl logs -f deployment/portfolio-storybook
 ```
