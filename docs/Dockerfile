@@ -1,4 +1,7 @@
 # Jekyll Documentation Dockerfile
+# NOTE: This Dockerfile should be built from the project root directory:
+# docker build -f docs/Dockerfile -t portfolio-docs .
+
 FROM ruby:3.1-alpine AS builder
 
 # Site Navigator environment variables
@@ -20,23 +23,33 @@ RUN apk add --no-cache \
     nodejs \
     npm
 
-WORKDIR /docs
+# Set up workspace
+WORKDIR /app
 
-# Copy Gemfile and install gems
-COPY Gemfile Gemfile.lock ./
+# Copy package.json and build scripts from root
+COPY package.json ./
+COPY scripts/build-site-navigator.js ./scripts/
+COPY src/components/shared/SiteNavigator.js ./src/components/shared/
+
+# Build the site navigator with environment variables
+RUN node scripts/build-site-navigator.js
+
+# Set up docs workspace  
+WORKDIR /app/docs
+
+# Copy docs files
+COPY docs/Gemfile docs/Gemfile.lock ./
 RUN bundle config --global frozen 1 && \
     bundle install --without development test
 
-# Copy source files and build scripts
-COPY . .
-COPY ../src/components/shared/SiteNavigator.js ../src/components/shared/
-COPY ../scripts/build-site-navigator.js ../scripts/
-COPY ../package.json ../
+# Copy docs source files
+COPY docs/ ./
 
-# Build the site navigator with environment variables
-RUN cd .. && node scripts/build-site-navigator.js
+# Copy the built site navigator to docs assets
+RUN mkdir -p assets/js && \
+    cp /app/public/site-navigator.js assets/js/
 
-# Build the site
+# Build the Jekyll site
 ARG JEKYLL_BASEURL=""
 RUN JEKYLL_ENV=production bundle exec jekyll build ${JEKYLL_BASEURL:+--baseurl "$JEKYLL_BASEURL"}
 
@@ -46,12 +59,11 @@ FROM nginx:alpine
 # Install curl for healthcheck
 RUN apk --no-cache add curl
 
-# Copy built site and site navigator to nginx
-COPY --from=builder /docs/_site /usr/share/nginx/html
-COPY --from=builder /public/site-navigator.js /usr/share/nginx/html/assets/js/
+# Copy built site to nginx (site navigator is already included)
+COPY --from=builder /app/docs/_site /usr/share/nginx/html
 
 # Copy custom nginx config
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY docs/nginx.conf /etc/nginx/conf.d/default.conf
 
 # Remove unnecessary files that shouldn't be served
 RUN rm -f /usr/share/nginx/html/.htaccess \
