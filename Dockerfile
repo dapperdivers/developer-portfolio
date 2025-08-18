@@ -24,13 +24,13 @@ COPY src/ ./src/
 COPY public/ ./public/
 COPY scripts/ ./scripts/
 COPY .storybook/ ./.storybook/
+COPY config/ ./config/
 COPY server.js index.html vite.config.ts tsconfig.json ./
 
-# Run all builds in parallel for maximum speed
-RUN yarn build:site-navigator & \
-    yarn storybook:build & \
-    yarn build & \
-    wait
+# Build components with memory optimization
+RUN NODE_OPTIONS="--max-old-space-size=2048" yarn build:site-navigator
+RUN NODE_OPTIONS="--max-old-space-size=4096" yarn build
+RUN NODE_OPTIONS="--max-old-space-size=2048" yarn storybook:build
 
 # Clean up node_modules to reduce size
 RUN rm -rf node_modules
