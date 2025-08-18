@@ -291,10 +291,19 @@ app.get('/docs/*', (req, res) => {
   
   // Try each path until we find an existing file
   for (const filePath of possiblePaths) {
-    if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
-      console.log('Serving Jekyll docs file from:', filePath);
+    // Security: Validate that the resolved path is within the docs directory
+    const resolvedPath = path.resolve(filePath);
+    const resolvedDocsPath = path.resolve(docsBasePath);
+    
+    if (!resolvedPath.startsWith(resolvedDocsPath)) {
+      console.warn('Path traversal attempt blocked:', requestPath);
+      return res.status(403).send('Access denied');
+    }
+    
+    if (fs.existsSync(resolvedPath) && fs.statSync(resolvedPath).isFile()) {
+      console.log('Serving Jekyll docs file from:', resolvedPath);
       res.setHeader('Content-Type', 'text/html');
-      return res.sendFile(filePath, (err) => {
+      return res.sendFile(resolvedPath, (err) => {
         if (err) {
           console.error('Error sending Jekyll docs file:', err);
           res.status(500).send('Error loading documentation');

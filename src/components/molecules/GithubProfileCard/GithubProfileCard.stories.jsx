@@ -1,5 +1,6 @@
 import React from 'react';
 import GithubProfileCard from './GithubProfileCard';
+import { mockGithubProfile } from '@data/mockPortfolioData';
 
 export default {
   title: 'GitHub Profile/Molecules/Profile/GithubProfileCard',

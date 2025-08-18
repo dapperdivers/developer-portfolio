@@ -1,5 +1,6 @@
 import React from 'react';
 import GithubProfile from './GithubProfile';
+import { mockGithubProfile } from '@data/mockPortfolioData';
 
 export default {
   title: 'GitHub Profile/Organisms/GithubProfile',

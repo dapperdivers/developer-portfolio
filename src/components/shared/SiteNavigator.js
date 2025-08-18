@@ -14,6 +14,8 @@
  * <site-navigator></site-navigator>
  */
 
+/* global HTMLElement, customElements */
+
 class SiteNavigator extends HTMLElement {
   constructor() {
     super();
