@@ -112,6 +112,29 @@ app.use(express.static(path.join(__dirname, 'build'), {
   }
 }));
 
+// Serve Storybook static files at /storybook path
+app.use('/storybook', express.static(path.join(__dirname, 'storybook-static'), {
+  maxAge: '1y',
+  etag: true,
+  lastModified: true,
+  setHeaders: (res, filePath) => {
+    res.set('X-Content-Type-Options', 'nosniff');
+    res.set('X-Frame-Options', 'SAMEORIGIN'); // Allow Storybook to be embedded in iframes
+    res.set('X-XSS-Protection', '1; mode=block');
+    
+    // Set proper MIME types for Storybook assets
+    if (filePath.endsWith('.css')) {
+      res.set('Content-Type', 'text/css');
+    } else if (filePath.endsWith('.js')) {
+      res.set('Content-Type', 'application/javascript');
+    } else if (filePath.endsWith('.json')) {
+      res.set('Content-Type', 'application/json');
+    }
+    
+    res.set('Cache-Control', 'public, max-age=31536000');
+  }
+}));
+
 // Health check endpoint with basic system info
 app.get('/healthz', (req, res) => {
   res.status(200).json({
@@ -214,7 +237,20 @@ app.get('/api/geocode', async (req, res) => {
   }
 });
 
-// Serve React app
+// Serve Storybook index.html for all /storybook/* routes (SPA routing)
+app.get('/storybook/*', (req, res) => {
+  const storybookIndexPath = path.join(__dirname, 'storybook-static', 'index.html');
+  console.log('Serving Storybook index.html from:', storybookIndexPath);
+  res.setHeader('Content-Type', 'text/html');
+  res.sendFile(storybookIndexPath, (err) => {
+    if (err) {
+      console.error('Error sending Storybook index.html:', err);
+      res.status(500).send('Error loading Storybook');
+    }
+  });
+});
+
+// Serve React app (catch-all for main portfolio)
 app.get('*', (req, res) => {
   const indexPath = path.join(__dirname, 'build', 'index.html');
   console.log('Serving index.html from:', indexPath);

@@ -96,6 +96,7 @@ const config: StorybookConfig = {
     return {
       ...config,
       plugins: filteredPlugins,
+      base: '/storybook/',
     };
   }
 };
