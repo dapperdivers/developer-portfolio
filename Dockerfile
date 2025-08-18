@@ -37,6 +37,7 @@ COPY src/ ./src/
 COPY public/ ./public/
 COPY config/ ./config/
 COPY scripts/ ./scripts/
+COPY .storybook/ ./.storybook/
 COPY server.js index.html vite.config.ts tsconfig.json ./
 
 # Build the site navigator with environment variables (optional based on VITE_SITE_NAVIGATOR_ENABLED)
@@ -102,9 +103,10 @@ FROM node:22-alpine AS production
 # Set runtime environment variables with defaults
 ARG PORT=3001
 ARG ALLOWED_DOMAINS=http://localhost:3001
+ARG NODE_MAX_MEMORY=512
 ENV PORT=${PORT}
 ENV ALLOWED_DOMAINS=${ALLOWED_DOMAINS}
-ENV NODE_OPTIONS="--max-old-space-size=${NODE_MAX_MEMORY:-512}"
+ENV NODE_OPTIONS="--max-old-space-size=${NODE_MAX_MEMORY}"
 ENV NODE_ENV=production
 
 # Create non-root user with better security
