@@ -7,6 +7,8 @@ dist
 .cache
 .parcel-cache
 tmp
+.yarn/cache
+.yarn/install-state.gz
 
 # Docker files
 .dockerignore
@@ -42,13 +44,22 @@ docs/node_modules
 
 # Test and development files
 *.test.js
+*.test.jsx
+*.test.ts
+*.test.tsx
 *.spec.js
+*.spec.jsx
+*.spec.ts
+*.spec.tsx
 __tests__
 .nyc_output
 coverage
 test-results
 playwright-report
 e2e/test-results
+vitest.config.ts
+jest.config.*
+cypress.config.*
 
 # CI/CD files
 .github
@@ -68,14 +79,16 @@ yarn-error.log*
 *.dmg
 *.iso
 
-# Context-specific exclusions (commented for reference)
-# For main app builds - exclude storybook files:
-# .storybook
-# storybook-static
+# Development config files not needed in production
+.editorconfig
+.gitattributes
+README.md
+CHANGELOG.md
+LICENSE
+*.md
 
-# For storybook builds - exclude main build:
-# build
-
-# For docs builds - exclude app builds:
-# build
-# storybook-static
+# Optimization - exclude unused config during build
+config/dev*
+config/test*
+scripts/dev*
+scripts/test*

@@ -15,37 +15,25 @@ ENV REACT_APP_PORT=${PORT}
 ENV REACT_APP_NODE_ENV=${NODE_ENV}
 ENV GENERATE_SOURCEMAP=false
 
-# Add build dependencies only when needed (for native modules)
-RUN apk add --no-cache --virtual .build-deps \
-    python3 \
-    make \
-    g++ \
-    && ln -sf python3 /usr/bin/python
-
-# Install dependencies first (better layer caching)
+# Install dependencies first (optimal layer caching) - only add build deps if needed
 COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile --production=false --network-timeout 600000 --silent
+RUN yarn install --frozen-lockfile --production=false --network-timeout 300000 --silent --prefer-offline
 
-# Copy only necessary files for build (better layer caching)
+# Copy only necessary files for build (optimal layer caching)
 COPY src/ ./src/
 COPY public/ ./public/
-COPY config/ ./config/
 COPY scripts/ ./scripts/
 COPY .storybook/ ./.storybook/
 COPY server.js index.html vite.config.ts tsconfig.json ./
 
-# Build the site navigator for unified server
-RUN yarn build:site-navigator
+# Run all builds in parallel for maximum speed
+RUN yarn build:site-navigator & \
+    yarn storybook:build & \
+    yarn build & \
+    wait
 
-# Build Storybook (for integration into Express server)
-RUN yarn storybook:build
-
-# Build the application
-RUN yarn build
-
-# Clean up build dependencies and node_modules
-RUN apk del .build-deps && \
-    rm -rf node_modules
+# Clean up node_modules to reduce size
+RUN rm -rf node_modules
 
 # Stage 2: Jekyll build
 FROM ruby:3.1-alpine AS jekyll-builder
@@ -60,24 +48,22 @@ RUN apk add --no-cache --virtual .build-deps \
 
 WORKDIR /docs
 
-# Copy and install gems first (better layer caching)
+# Copy and install gems first (optimal layer caching)
 COPY docs/Gemfile docs/Gemfile.lock ./
 RUN bundle config --global frozen 1 && \
     bundle config --global silence_root_warning 1 && \
-    bundle install --without development test --jobs $(nproc) --retry 3 --quiet
+    bundle install --without development test --jobs $(nproc) --retry 1 --quiet
 
-# Copy docs source files
+# Copy docs source files and site navigator in one layer
 COPY docs/ ./
-
-# Copy built site navigator from Node stage
 COPY --from=builder /app/public/site-navigator.js ./assets/js/
 
-# Build Jekyll site with optimizations
+# Build Jekyll site with optimizations and cleanup in single layer
 ARG JEKYLL_BASEURL=""
 ARG JEKYLL_ENV=production
 RUN JEKYLL_ENV=${JEKYLL_ENV} bundle exec jekyll build ${JEKYLL_BASEURL:+--baseurl "$JEKYLL_BASEURL"} && \
-    # Cleanup build dependencies
-    apk del .build-deps
+    apk del .build-deps && \
+    rm -rf /var/cache/apk/* /tmp/*
 
 # Stage 3: Production
 FROM node:22-alpine AS production
@@ -91,33 +77,28 @@ ENV ALLOWED_DOMAINS=${ALLOWED_DOMAINS}
 ENV NODE_OPTIONS="--max-old-space-size=${NODE_MAX_MEMORY}"
 ENV NODE_ENV=production
 
-# Create non-root user with better security
-RUN addgroup -g 1001 -S nodeapp && \
-    adduser -u 1001 -S -G nodeapp -s /sbin/nologin -h /app nodeapp
-
 WORKDIR /app
 
-# Security upgrade and cleanup (wget is already available in alpine)
-RUN apk upgrade --no-cache && \
-    rm -rf /var/cache/apk/* /tmp/* /var/tmp/*
-
-# Install only production dependencies
+# Install production dependencies in parallel with user creation and security setup
 COPY --from=builder /app/package.json /app/yarn.lock ./
-RUN yarn install --production --frozen-lockfile --network-timeout 600000 --silent \
-    && yarn cache clean
+RUN addgroup -g 1001 -S nodeapp && \
+    adduser -u 1001 -S -G nodeapp -s /sbin/nologin -h /app nodeapp & \
+    apk upgrade --no-cache && \
+    rm -rf /var/cache/apk/* /tmp/* /var/tmp/* & \
+    yarn install --production --frozen-lockfile --network-timeout 300000 --silent --prefer-offline && \
+    yarn cache clean && \
+    wait
 
-# Copy built assets 
+# Copy all assets and setup in minimal layers
 COPY --from=builder /app/build ./build
 COPY --from=builder /app/storybook-static ./storybook-static
 COPY --from=jekyll-builder /docs/_site ./docs-static
 COPY --from=builder /app/server.js ./server.js
-
-# Copy runtime entrypoint script
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
-# Change ownership
-RUN chown -R nodeapp:nodeapp /app
+# Final setup in single layer
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh && \
+    chown -R nodeapp:nodeapp /app
 
 # Add healthcheck with wget (more efficient)
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
