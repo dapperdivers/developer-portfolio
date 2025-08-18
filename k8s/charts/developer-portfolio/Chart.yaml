@@ -1,6 +1,6 @@
 apiVersion: v2
 name: developer-portfolio
-description: A complete Helm chart for deploying Derek Mackley's Developer Portfolio with React app, Storybook component library, and Jekyll documentation
+description: A complete Helm chart for deploying Derek Mackley's unified Developer Portfolio (React app, Storybook, and Jekyll docs served from single Express server)
 type: application
 version: 0.1.0
 appVersion: "0.1.0"
@@ -27,7 +27,7 @@ annotations:
   
   # OCI Image Spec annotations for better registry compatibility
   org.opencontainers.image.title: developer-portfolio
-  org.opencontainers.image.description: A complete Helm chart for deploying Derek Mackley's Developer Portfolio with React app, Storybook component library, and Jekyll documentation
+  org.opencontainers.image.description: A complete Helm chart for deploying Derek Mackley's unified Developer Portfolio (React app, Storybook, and Jekyll docs served from single Express server)
   org.opencontainers.image.version: "0.1.0"
   org.opencontainers.image.created: "2024-01-01T00:00:00Z"
   org.opencontainers.image.source: https://github.com/DapperDivers/developer-portfolio
@@ -43,7 +43,3 @@ annotations:
   images: |
     - name: developer-portfolio
       image: ghcr.io/dapperdivers/developer-portfolio:latest
-    - name: developer-portfolio-storybook  
-      image: ghcr.io/dapperdivers/developer-portfolio-storybook:latest
-    - name: developer-portfolio-docs
-      image: ghcr.io/dapperdivers/developer-portfolio-docs:latest
