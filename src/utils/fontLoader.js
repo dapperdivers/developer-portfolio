@@ -47,7 +47,7 @@ class FontLoader {
 
     try {
       // Use Font Loading API if available
-      if ('FontFace' in window) {
+      if (typeof window !== 'undefined' && 'FontFace' in window) {
         return await this.loadFontWithAPI(fontFamily, fontUrl, {
           weight, style, display, onLoad, onError
         });
@@ -77,6 +77,7 @@ class FontLoader {
   async loadFontWithAPI(fontFamily, fontUrl, options) {
     const { weight, style, display, onLoad, onError } = options;
     
+    // eslint-disable-next-line no-undef
     const font = new FontFace(fontFamily, `url(${fontUrl})`, {
       weight,
       style,
