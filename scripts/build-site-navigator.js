@@ -1,9 +1,7 @@
 /**
  * Build script for the Site Navigator Web Component
  * 
- * This script creates a standalone JavaScript file that can be included
- * in any of the three sites (main, storybook, docs) to provide cross-site navigation.
- * Supports environment variable injection for dynamic URL configuration.
+ * Simplified version for unified Express server deployment.
  */
 
 import fs from 'fs';
@@ -19,71 +17,11 @@ const OUTPUT_DIR = path.join(ROOT_DIR, 'public');
 const OUTPUT_FILE = path.join(OUTPUT_DIR, 'site-navigator.js');
 
 /**
- * Generate environment configuration injection code
- */
-function generateEnvInjection() {
-  const config = {
-    sites: {
-      main: {
-        name: 'Portfolio',
-        icon: '🏠',
-        url: process.env.VITE_SITE_MAIN_URL || null,
-        description: 'Main Portfolio Site',
-        shortName: 'HOME'
-      },
-      storybook: {
-        name: 'Components',
-        icon: '📚',
-        url: process.env.VITE_SITE_STORYBOOK_URL || null,
-        description: 'Component Library',
-        shortName: 'COMP'
-      },
-      docs: {
-        name: 'Documentation',
-        icon: '📋',
-        url: process.env.VITE_SITE_DOCS_URL || null,
-        description: 'Technical Documentation',
-        shortName: 'DOCS'
-      }
-    },
-    enabled: process.env.VITE_SITE_NAVIGATOR_ENABLED !== 'false'
-  };
-
-  // Filter out null URLs to use defaults
-  Object.keys(config.sites).forEach(key => {
-    if (!config.sites[key].url) {
-      delete config.sites[key].url;
-    }
-  });
-
-  return `
-  // Environment Configuration Injection
-  if (typeof window !== 'undefined') {
-    window.__SITE_NAVIGATOR_CONFIG__ = ${JSON.stringify(config, null, 2)};
-  }
-`;
-}
-
-/**
  * Build the standalone site navigator component
  */
 async function buildSiteNavigator() {
   try {
-    console.log('🚀 Building Site Navigator component...');
-    
-    // Log environment variables being used
-    const envVars = [
-      'VITE_SITE_MAIN_URL',
-      'VITE_SITE_STORYBOOK_URL', 
-      'VITE_SITE_DOCS_URL',
-      'VITE_SITE_NAVIGATOR_ENABLED'
-    ];
-    
-    console.log('📊 Environment variables:');
-    envVars.forEach(varName => {
-      const value = process.env[varName];
-      console.log(`   ${varName}: ${value || '(using default)'}`);
-    });
+    console.log('🚀 Building Site Navigator for unified Express server...');
     
     // Ensure output directory exists
     if (!fs.existsSync(OUTPUT_DIR)) {
@@ -93,41 +31,23 @@ async function buildSiteNavigator() {
     // Read the source file
     const sourceContent = fs.readFileSync(SOURCE_FILE, 'utf8');
     
-    // Generate environment injection code
-    const envInjection = generateEnvInjection();
-    
-    // Create the standalone version with IIFE wrapper for better compatibility
-    const standaloneContent = `
-/**
- * Site Navigator Web Component - Standalone Version
+    // Create the standalone version optimized for unified server
+    const standaloneContent = `/**
+ * Site Navigator Web Component - Optimized for Unified Express Server
  * Generated on: ${new Date().toISOString()}
  * 
- * Cross-site navigation component for Derek Mackley's Portfolio
- * Works across Main Site, Storybook, and Documentation sites
- * 
- * Environment Configuration:
- * - VITE_SITE_MAIN_URL: ${process.env.VITE_SITE_MAIN_URL || '(default)'}
- * - VITE_SITE_STORYBOOK_URL: ${process.env.VITE_SITE_STORYBOOK_URL || '(default)'}
- * - VITE_SITE_DOCS_URL: ${process.env.VITE_SITE_DOCS_URL || '(default)'}
- * - VITE_SITE_NAVIGATOR_ENABLED: ${process.env.VITE_SITE_NAVIGATOR_ENABLED || 'true'}
+ * Simplified navigation for apps served from same domain:
+ * - Main Portfolio: /
+ * - Storybook: /storybook/
+ * - Documentation: /docs/
  */
 
 (function() {
   'use strict';
-  
-  ${envInjection}
-  
+
   ${sourceContent}
-  
-  // Auto-initialize with configuration detection
-  if (typeof window !== 'undefined') {
-    console.log('🎯 Site Navigator loaded and ready');
-    
-    // Log configuration being used
-    if (window.__SITE_NAVIGATOR_CONFIG__) {
-      console.log('📊 Site Navigator Configuration:', window.__SITE_NAVIGATOR_CONFIG__);
-    }
-  }
+
+  console.log('🎯 Optimized Site Navigator loaded for unified Express server');
 })();
 `;
     

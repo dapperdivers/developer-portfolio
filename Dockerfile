@@ -15,12 +15,6 @@ ENV REACT_APP_PORT=${PORT}
 ENV REACT_APP_NODE_ENV=${NODE_ENV}
 ENV GENERATE_SOURCEMAP=false
 
-# Site Navigator environment variables - set at runtime
-ENV VITE_SITE_MAIN_URL=""
-ENV VITE_SITE_STORYBOOK_URL=""
-ENV VITE_SITE_DOCS_URL=""
-ENV VITE_SITE_NAVIGATOR_ENABLED="true"
-
 # Add build dependencies only when needed (for native modules)
 RUN apk add --no-cache --virtual .build-deps \
     python3 \
@@ -40,8 +34,8 @@ COPY scripts/ ./scripts/
 COPY .storybook/ ./.storybook/
 COPY server.js index.html vite.config.ts tsconfig.json ./
 
-# Build the site navigator with environment variables (optional based on VITE_SITE_NAVIGATOR_ENABLED)
-RUN if [ "${VITE_SITE_NAVIGATOR_ENABLED}" = "true" ]; then yarn build:site-navigator; fi
+# Build the site navigator for unified server
+RUN yarn build:site-navigator
 
 # Build Storybook (for integration into Express server)
 RUN yarn storybook:build
@@ -85,19 +79,7 @@ RUN JEKYLL_ENV=${JEKYLL_ENV} bundle exec jekyll build ${JEKYLL_BASEURL:+--baseur
     # Cleanup build dependencies
     apk del .build-deps
 
-# Stage 3: Dependencies
-FROM node:22-alpine AS deps
-
-WORKDIR /app
-
-# Copy package files
-COPY --from=builder /app/package.json /app/yarn.lock ./
-
-# Install only production dependencies
-RUN yarn install --production --frozen-lockfile --network-timeout 600000 --silent \
-    && yarn cache clean
-
-# Stage 4: Production
+# Stage 3: Production
 FROM node:22-alpine AS production
 
 # Set runtime environment variables with defaults
@@ -119,11 +101,15 @@ WORKDIR /app
 RUN apk upgrade --no-cache && \
     rm -rf /var/cache/apk/* /tmp/* /var/tmp/*
 
-# Copy built assets and production dependencies
+# Install only production dependencies
+COPY --from=builder /app/package.json /app/yarn.lock ./
+RUN yarn install --production --frozen-lockfile --network-timeout 600000 --silent \
+    && yarn cache clean
+
+# Copy built assets 
 COPY --from=builder /app/build ./build
 COPY --from=builder /app/storybook-static ./storybook-static
 COPY --from=jekyll-builder /docs/_site ./docs-static
-COPY --from=deps /app/node_modules ./node_modules
 COPY --from=builder /app/server.js ./server.js
 
 # Copy runtime entrypoint script

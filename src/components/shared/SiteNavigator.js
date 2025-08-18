@@ -24,159 +24,51 @@ class SiteNavigator extends HTMLElement {
   }
 
   /**
-   * Detect which site we're currently on based on URL patterns
+   * Detect current site based on pathname (simplified for unified server)
    */
   detectCurrentSite() {
-    const url = window.location.href;
     const pathname = window.location.pathname;
-    const hostname = window.location.hostname;
-
-    // Check for Storybook
-    if (url.includes('storybook') || pathname.includes('storybook') || hostname.includes('storybook')) {
+    
+    if (pathname.startsWith('/storybook')) {
       return 'storybook';
-    }
-    
-    // Check for Docs
-    if (url.includes('docs') || pathname.includes('docs') || hostname.includes('docs')) {
+    } else if (pathname.startsWith('/docs')) {
       return 'docs';
+    } else {
+      return 'main';
     }
-    
-    // Default to main site
-    return 'main';
   }
 
   /**
-   * Get site configuration including URLs from environment variables
-   * This supports dynamic configuration for different Docker deployments
+   * Get simplified site configuration for unified server
    */
   getSiteConfiguration() {
-    // Try to get configuration from global window object (injected at runtime)
-    const envConfig = window.__SITE_NAVIGATOR_CONFIG__;
+    const baseUrl = `${window.location.protocol}//${window.location.host}`;
     
-    if (envConfig && envConfig.sites) {
-      return envConfig.sites;
-    }
-    
-    // Try to get from meta tags (injected by server at runtime)
-    const mainUrl = this.getMetaContent('site-main-url');
-    const storybookUrl = this.getMetaContent('site-storybook-url');
-    const docsUrl = this.getMetaContent('site-docs-url');
-    
-    if (mainUrl || storybookUrl || docsUrl) {
-      return {
-        main: {
-          name: 'Portfolio',
-          icon: '🏠',
-          url: mainUrl || this.getDefaultMainUrl(),
-          description: 'Main Portfolio Site',
-          shortName: 'HOME'
-        },
-        storybook: {
-          name: 'Components',
-          icon: '📚',
-          url: storybookUrl || this.getDefaultStorybookUrl(),
-          description: 'Component Library',
-          shortName: 'COMP'
-        },
-        docs: {
-          name: 'Documentation',
-          icon: '📋',
-          url: docsUrl || this.getDefaultDocsUrl(),
-          description: 'Technical Documentation',
-          shortName: 'DOCS'
-        }
-      };
-    }
-    
-    return this.getDefaultConfiguration();
-  }
-
-  /**
-   * Get content from meta tag
-   */
-  getMetaContent(name) {
-    const meta = document.querySelector(`meta[name="${name}"]`);
-    return meta ? meta.getAttribute('content') : null;
-  }
-
-  /**
-   * Get default configuration when environment variables are not available
-   */
-  getDefaultConfiguration() {
     return {
       main: {
         name: 'Portfolio',
         icon: '🏠',
-        url: this.getDefaultMainUrl(),
+        url: baseUrl + '/',
         description: 'Main Portfolio Site',
         shortName: 'HOME'
       },
       storybook: {
         name: 'Components',
         icon: '📚',
-        url: this.getDefaultStorybookUrl(),
+        url: baseUrl + '/storybook/',
         description: 'Component Library',
         shortName: 'COMP'
       },
       docs: {
         name: 'Documentation',
         icon: '📋',
-        url: this.getDefaultDocsUrl(),
+        url: baseUrl + '/docs/',
         description: 'Technical Documentation',
         shortName: 'DOCS'
       }
     };
   }
 
-  /**
-   * Get default main URL for the current environment
-   */
-  getDefaultMainUrl() {
-    // In development (Express server runs on 3001/3002)
-    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-      // Determine the port - default to 3001, but detect if we're on a different port
-      const currentPort = window.location.port || (window.location.protocol === 'https:' ? '443' : '80');
-      const expressPort = currentPort === '6006' || currentPort === '4000' ? '3001' : currentPort;
-      return `${window.location.protocol}//${window.location.hostname}:${expressPort}`;
-    }
-    
-    // In production - everything served from same domain
-    return `${window.location.protocol}//${window.location.hostname}`;
-  }
-
-  /**
-   * Get default Storybook URL based on current environment
-   */
-  getDefaultStorybookUrl() {
-    const { protocol, hostname } = window.location;
-    
-    // Development - Storybook now served from Express server at /storybook/
-    if (hostname === 'localhost' || hostname === '127.0.0.1') {
-      const currentPort = window.location.port || (protocol === 'https:' ? '443' : '80');
-      const expressPort = currentPort === '6006' || currentPort === '4000' ? '3001' : currentPort;
-      return `${protocol}//${hostname}:${expressPort}/storybook/`;
-    }
-    
-    // Production - served from same domain at /storybook/ path
-    return `${protocol}//${hostname}/storybook/`;
-  }
-
-  /**
-   * Get default docs URL based on current environment
-   */
-  getDefaultDocsUrl() {
-    const { protocol, hostname } = window.location;
-    
-    // Development - Docs now served from Express server at /docs/
-    if (hostname === 'localhost' || hostname === '127.0.0.1') {
-      const currentPort = window.location.port || (protocol === 'https:' ? '443' : '80');
-      const expressPort = currentPort === '6006' || currentPort === '4000' ? '3001' : currentPort;
-      return `${protocol}//${hostname}:${expressPort}/docs/`;
-    }
-    
-    // Production - served from same domain at /docs/ path
-    return `${protocol}//${hostname}/docs/`;
-  }
 
   /**
    * Component lifecycle - called when element is added to DOM
@@ -232,7 +124,7 @@ class SiteNavigator extends HTMLElement {
   }
 
   /**
-   * Navigate to a specific site
+   * Navigate to a specific site (simplified for same-origin navigation)
    */
   navigateToSite(siteKey) {
     const site = this.siteConfig[siteKey];
@@ -240,10 +132,8 @@ class SiteNavigator extends HTMLElement {
       // Add loading state
       this.shadowRoot.querySelector('.navigator').classList.add('loading');
       
-      // Small delay for visual feedback
-      setTimeout(() => {
-        window.open(site.url, '_self');
-      }, 150);
+      // Navigate directly (same origin, no CORS issues)
+      window.location.href = site.url;
     }
   }
 
