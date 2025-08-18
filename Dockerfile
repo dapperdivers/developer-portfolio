@@ -1,5 +1,5 @@
 # Stage 1: Build
-FROM node:22-slim AS builder
+FROM node:22-alpine AS builder
 
 # Set working directory
 WORKDIR /app
@@ -21,12 +21,23 @@ ENV VITE_SITE_STORYBOOK_URL=""
 ENV VITE_SITE_DOCS_URL=""
 ENV VITE_SITE_NAVIGATOR_ENABLED="true"
 
+# Add build dependencies only when needed (for native modules)
+RUN apk add --no-cache --virtual .build-deps \
+    python3 \
+    make \
+    g++ \
+    && ln -sf python3 /usr/bin/python
+
 # Install dependencies first (better layer caching)
 COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile --production=false --network-timeout 600000 --silent
 
-# Copy source code
-COPY . .
+# Copy only necessary files for build (better layer caching)
+COPY src/ ./src/
+COPY public/ ./public/
+COPY config/ ./config/
+COPY scripts/ ./scripts/
+COPY server.js index.html vite.config.ts tsconfig.json ./
 
 # Build the site navigator with environment variables (optional based on VITE_SITE_NAVIGATOR_ENABLED)
 RUN if [ "${VITE_SITE_NAVIGATOR_ENABLED}" = "true" ]; then yarn build:site-navigator; fi
@@ -34,8 +45,9 @@ RUN if [ "${VITE_SITE_NAVIGATOR_ENABLED}" = "true" ]; then yarn build:site-navig
 # Build the application
 RUN yarn build
 
-# Clean up node_modules to start fresh
-RUN rm -rf node_modules
+# Clean up build dependencies and node_modules
+RUN apk del .build-deps && \
+    rm -rf node_modules
 
 # Stage 2: Dependencies
 FROM node:22-alpine AS deps
@@ -57,20 +69,21 @@ ARG PORT=3001
 ARG ALLOWED_DOMAINS=http://localhost:3001
 ENV PORT=${PORT}
 ENV ALLOWED_DOMAINS=${ALLOWED_DOMAINS}
-ENV NODE_OPTIONS="--max-old-space-size=512"
+ENV NODE_OPTIONS="--max-old-space-size=${NODE_MAX_MEMORY:-512}"
 ENV NODE_ENV=production
 
-# Create non-root user
-RUN addgroup -S nodeapp && adduser -S -G nodeapp nodeapp
+# Create non-root user with better security
+RUN addgroup -g 1001 -S nodeapp && \
+    adduser -u 1001 -S -G nodeapp -s /sbin/nologin -h /app nodeapp
 
 WORKDIR /app
 
-# Install only curl for healthcheck
-RUN apk --no-cache add curl
+# Security upgrade and cleanup (wget is already available in alpine)
+RUN apk upgrade --no-cache && \
+    rm -rf /var/cache/apk/* /tmp/* /var/tmp/*
 
 # Copy built assets and production dependencies
 COPY --from=builder /app/build ./build
-COPY --from=builder /app/files ./files
 COPY --from=deps /app/node_modules ./node_modules
 COPY --from=builder /app/server.js ./server.js
 
@@ -81,9 +94,13 @@ RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 # Change ownership
 RUN chown -R nodeapp:nodeapp /app
 
-# Add healthcheck
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:${PORT}/healthz || exit 1
+# Add healthcheck with wget (more efficient)
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+    CMD wget --no-verbose --tries=1 --spider http://localhost:${PORT}/healthz || exit 1
+
+# Add security labels
+LABEL security.non-root=true \
+      security.user=nodeapp
 
 # Expose port (IPv4 only)
 EXPOSE ${PORT}/tcp

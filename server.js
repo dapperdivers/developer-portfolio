@@ -132,10 +132,10 @@ app.get('/resume/:filename', (req, res) => {
   }
   
   // Create a safe path with validated filename
-  const filePath = path.join(__dirname, 'files', filename);
+  const filePath = path.join(__dirname, 'build', 'files', filename);
   
   // Additional path safety check - ensure we're still in the files directory
-  const filesDir = path.join(__dirname, 'files');
+  const filesDir = path.join(__dirname, 'build', 'files');
   if (!filePath.startsWith(filesDir)) {
     console.error('Path traversal attempt detected:', filePath);
     return res.status(403).send('Forbidden');
@@ -163,10 +163,10 @@ app.get('/contact/:filename', (req, res) => {
   }
   
   // Create a safe path with validated filename
-  const filePath = path.join(__dirname, 'files', filename);
+  const filePath = path.join(__dirname, 'build', 'files', filename);
   
   // Additional path safety check - ensure we're still in the files directory
-  const filesDir = path.join(__dirname, 'files');
+  const filesDir = path.join(__dirname, 'build', 'files');
   if (!filePath.startsWith(filesDir)) {
     console.error('Path traversal attempt detected:', filePath);
     return res.status(403).send('Forbidden');

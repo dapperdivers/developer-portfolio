@@ -22,7 +22,7 @@ const Greetings = () => {
   
   const downloadResume = async (e) => {
     e.preventDefault();
-    await handleDownload('/files/Cybersecurity_2025.pdf', 'Cybersecurity_2025.pdf');
+    await handleDownload('/resume/Cybersecurity_2025.pdf', 'Cybersecurity_2025.pdf');
   };
 
   // Variants for coordinated animations
