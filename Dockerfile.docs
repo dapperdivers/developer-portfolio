@@ -1,0 +1,86 @@
+# Jekyll Documentation Dockerfile
+FROM ruby:3.1-alpine AS builder
+
+# Site Navigator environment variables - set at runtime
+ENV VITE_SITE_MAIN_URL=""
+ENV VITE_SITE_STORYBOOK_URL=""
+ENV VITE_SITE_DOCS_URL=""
+ENV VITE_SITE_NAVIGATOR_ENABLED="true"
+
+# Install build dependencies
+RUN apk add --no-cache \
+    build-base \
+    linux-headers \
+    git \
+    nodejs \
+    npm
+
+WORKDIR /docs
+
+# Copy Gemfile and install gems (better layer caching)
+COPY docs/Gemfile docs/Gemfile.lock ./
+RUN bundle config --global frozen 1 && \
+    bundle config --global silence_root_warning 1 && \
+    bundle install --without development test --jobs 4 --retry 3 --quiet
+
+# Copy docs source files
+COPY docs/ ./
+
+# Copy necessary files for site navigator build
+COPY package.json ../
+COPY scripts/build-site-navigator.js ../scripts/
+COPY src/components/shared/SiteNavigator.js ../src/components/shared/
+
+# Build the site navigator with environment variables
+RUN cd .. && node scripts/build-site-navigator.js
+
+# Copy built site navigator to docs assets
+RUN mkdir -p assets/js && \
+    cp ../public/site-navigator.js assets/js/
+
+# Build the Jekyll site
+ARG JEKYLL_BASEURL=""
+RUN JEKYLL_ENV=production bundle exec jekyll build ${JEKYLL_BASEURL:+--baseurl "$JEKYLL_BASEURL"}
+
+# Production stage
+FROM nginx:alpine
+
+# Install curl for healthcheck
+RUN apk --no-cache add curl
+
+# Copy built site to nginx
+COPY --from=builder /docs/_site /usr/share/nginx/html
+
+# Copy custom nginx config and entrypoint script
+COPY docs/nginx.conf /etc/nginx/conf.d/default.conf
+COPY docs/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
+# Remove unnecessary files that shouldn't be served
+RUN rm -f /usr/share/nginx/html/.htaccess \
+    && rm -f /usr/share/nginx/html/Dockerfile \
+    && rm -f /usr/share/nginx/html/nginx.conf \
+    && rm -f /usr/share/nginx/html/Gemfile* \
+    && rm -rf /usr/share/nginx/html/vendor
+
+# Create non-root user and set permissions
+RUN addgroup -S jekyll && adduser -S -G jekyll jekyll \
+    && chown -R jekyll:jekyll /usr/share/nginx/html \
+    && chown -R jekyll:jekyll /var/cache/nginx \
+    && chown -R jekyll:jekyll /var/log/nginx \
+    && chown -R jekyll:jekyll /etc/nginx/conf.d \
+    && touch /var/run/nginx.pid \
+    && chown -R jekyll:jekyll /var/run/nginx.pid
+
+EXPOSE 4000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:4000/ || exit 1
+
+# Switch to non-root user
+USER jekyll
+
+# Start nginx as non-root user with runtime config injection
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
+CMD ["nginx", "-g", "daemon off;"]

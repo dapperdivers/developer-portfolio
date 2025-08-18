@@ -5,6 +5,17 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   {%- seo -%}
+  
+  <!-- Site Navigator Configuration - injected at runtime -->
+  {% if site.site_main_url %}
+  <meta name="site-main-url" content="{{ site.site_main_url }}">
+  {% endif %}
+  {% if site.site_storybook_url %}
+  <meta name="site-storybook-url" content="{{ site.site_storybook_url }}">
+  {% endif %}
+  {% if site.site_docs_url %}
+  <meta name="site-docs-url" content="{{ site.site_docs_url }}">
+  {% endif %}
   <link rel="stylesheet" href="{{ "/assets/css/style.css" | relative_url }}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,9 +33,6 @@
       </a>
       <nav class="site-nav">
         <div class="nav-wrapper">
-          <a class="nav-link home-link" href="{{ site.main_site_url | default: 'https://derekmackley.com' }}">
-            <span class="home-icon">🏠</span> Portfolio
-          </a>
           {%- for section in site.nav_sections -%}
           <a class="nav-link" href="{{ section.path | relative_url }}">
             {{ section.title }}
@@ -85,5 +93,7 @@
     });
   </script>
   
+  <!-- Site Navigator - Cross-platform navigation component -->
+  <script src="{{ '/assets/js/site-navigator.js' | relative_url }}" defer></script>
 </body>
 </html>

@@ -7,10 +7,6 @@ WORKDIR /app
 # Set build-time environment variables
 ARG PORT=3001
 ARG ALLOWED_DOMAINS=http://localhost:${PORT}
-ARG VITE_SITE_MAIN_URL
-ARG VITE_SITE_STORYBOOK_URL
-ARG VITE_SITE_DOCS_URL
-ARG VITE_SITE_NAVIGATOR_ENABLED=true
 
 ENV NODE_ENV=production
 ENV PORT=${PORT}
@@ -19,21 +15,21 @@ ENV REACT_APP_PORT=${PORT}
 ENV REACT_APP_NODE_ENV=${NODE_ENV}
 ENV GENERATE_SOURCEMAP=false
 
-# Site Navigator environment variables
-ENV VITE_SITE_MAIN_URL=${VITE_SITE_MAIN_URL}
-ENV VITE_SITE_STORYBOOK_URL=${VITE_SITE_STORYBOOK_URL}
-ENV VITE_SITE_DOCS_URL=${VITE_SITE_DOCS_URL}
-ENV VITE_SITE_NAVIGATOR_ENABLED=${VITE_SITE_NAVIGATOR_ENABLED}
+# Site Navigator environment variables - set at runtime
+ENV VITE_SITE_MAIN_URL=""
+ENV VITE_SITE_STORYBOOK_URL=""
+ENV VITE_SITE_DOCS_URL=""
+ENV VITE_SITE_NAVIGATOR_ENABLED="true"
 
 # Install dependencies first (better layer caching)
 COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile --production=false --network-timeout 600000
+RUN yarn install --frozen-lockfile --production=false --network-timeout 600000 --silent
 
 # Copy source code
 COPY . .
 
-# Build the site navigator with environment variables
-RUN yarn build:site-navigator
+# Build the site navigator with environment variables (optional based on VITE_SITE_NAVIGATOR_ENABLED)
+RUN if [ "${VITE_SITE_NAVIGATOR_ENABLED}" = "true" ]; then yarn build:site-navigator; fi
 
 # Build the application
 RUN yarn build
@@ -50,7 +46,7 @@ WORKDIR /app
 COPY --from=builder /app/package.json /app/yarn.lock ./
 
 # Install only production dependencies
-RUN yarn install --production --frozen-lockfile --network-timeout 600000 \
+RUN yarn install --production --frozen-lockfile --network-timeout 600000 --silent \
     && yarn cache clean
 
 # Stage 3: Production
@@ -78,6 +74,10 @@ COPY --from=builder /app/files ./files
 COPY --from=deps /app/node_modules ./node_modules
 COPY --from=builder /app/server.js ./server.js
 
+# Copy runtime entrypoint script
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
 # Change ownership
 RUN chown -R nodeapp:nodeapp /app
 
@@ -91,5 +91,6 @@ EXPOSE ${PORT}/tcp
 # Switch to non-root user
 USER nodeapp
 
-# Start secure express server
+# Start secure express server with runtime configuration
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD ["node", "server.js"]

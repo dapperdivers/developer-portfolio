@@ -150,8 +150,8 @@ jobs:
             context: .
             image: ${{ github.repository }}-storybook
           - name: docs
-            dockerfile: docs/Dockerfile
-            context: docs
+            dockerfile: Dockerfile.docs
+            context: .
             image: ${{ github.repository }}-docs
 
     steps:
@@ -190,6 +190,7 @@ jobs:
           cache-from: type=gha,scope=${{ matrix.name }}
           cache-to: type=gha,mode=max,scope=${{ matrix.name }}
           platforms: linux/amd64,linux/arm64
+          # No build args needed - using runtime environment variables
 
       - name: Image digest
         run: |

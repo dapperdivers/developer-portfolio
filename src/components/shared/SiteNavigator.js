@@ -50,23 +50,64 @@ class SiteNavigator extends HTMLElement {
    * This supports dynamic configuration for different Docker deployments
    */
   getSiteConfiguration() {
-    // Try to get configuration from global window object (injected during build)
-    const envConfig = window.__SITE_NAVIGATOR_CONFIG__ || this.getDefaultConfiguration();
+    // Try to get configuration from global window object (injected at runtime)
+    const envConfig = window.__SITE_NAVIGATOR_CONFIG__;
     
-    return envConfig.sites || this.getDefaultConfiguration();
+    if (envConfig && envConfig.sites) {
+      return envConfig.sites;
+    }
+    
+    // Try to get from meta tags (injected by server at runtime)
+    const mainUrl = this.getMetaContent('site-main-url');
+    const storybookUrl = this.getMetaContent('site-storybook-url');
+    const docsUrl = this.getMetaContent('site-docs-url');
+    
+    if (mainUrl || storybookUrl || docsUrl) {
+      return {
+        main: {
+          name: 'Portfolio',
+          icon: '🏠',
+          url: mainUrl || this.getDefaultMainUrl(),
+          description: 'Main Portfolio Site',
+          shortName: 'HOME'
+        },
+        storybook: {
+          name: 'Components',
+          icon: '📚',
+          url: storybookUrl || this.getDefaultStorybookUrl(),
+          description: 'Component Library',
+          shortName: 'COMP'
+        },
+        docs: {
+          name: 'Documentation',
+          icon: '📋',
+          url: docsUrl || this.getDefaultDocsUrl(),
+          description: 'Technical Documentation',
+          shortName: 'DOCS'
+        }
+      };
+    }
+    
+    return this.getDefaultConfiguration();
+  }
+
+  /**
+   * Get content from meta tag
+   */
+  getMetaContent(name) {
+    const meta = document.querySelector(`meta[name="${name}"]`);
+    return meta ? meta.getAttribute('content') : null;
   }
 
   /**
    * Get default configuration when environment variables are not available
    */
   getDefaultConfiguration() {
-    const baseUrl = this.getBaseUrl();
-    
     return {
       main: {
         name: 'Portfolio',
         icon: '🏠',
-        url: baseUrl,
+        url: this.getDefaultMainUrl(),
         description: 'Main Portfolio Site',
         shortName: 'HOME'
       },
@@ -88,9 +129,9 @@ class SiteNavigator extends HTMLElement {
   }
 
   /**
-   * Get base URL for the current environment
+   * Get default main URL for the current environment
    */
-  getBaseUrl() {
+  getDefaultMainUrl() {
     // In development
     if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
       return `${window.location.protocol}//${window.location.hostname}:3002`;

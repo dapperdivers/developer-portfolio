@@ -29,8 +29,8 @@ jobs:
             context: .
             image: ${{ github.repository }}-storybook
           - name: docs
-            dockerfile: docs/Dockerfile
-            context: docs
+            dockerfile: Dockerfile.docs
+            context: .
             image: ${{ github.repository }}-docs
 
     steps:

@@ -54,11 +54,11 @@ docker build \
 ### 3. Documentation
 
 ```bash
-# Build from docs directory context
+# Build from project root
 docker build \
-  -f docs/Dockerfile \
+  -f Dockerfile.docs \
   --build-arg VITE_SITE_MAIN_URL=https://derekmackley.com \
-  -t portfolio-docs docs/
+  -t portfolio-docs .
 ```
 
 **Port**: 4000
@@ -302,9 +302,9 @@ jobs:
             -t ${{ secrets.REGISTRY }}/portfolio-storybook:${{ github.sha }} .
         else
           docker build \
-            -f docs/Dockerfile \
+            -f Dockerfile.docs \
             --build-arg VITE_SITE_MAIN_URL=${{ secrets.MAIN_URL }} \
-            -t ${{ secrets.REGISTRY }}/portfolio-docs:${{ github.sha }} docs/
+            -t ${{ secrets.REGISTRY }}/portfolio-docs:${{ github.sha }} .
         fi
 ```
 

@@ -1,20 +1,43 @@
+# Dependencies and builds
 node_modules
 build
+storybook-static
+coverage
+
+# Docker files
 .dockerignore
-Dockerfile
-Dockerfile.prod
+Dockerfile*
+
+# Version control
 .git
 .gitignore
-README.md
-.env
-.env.local
-.env.development
-.env.test
-.env.production
+
+# Environment files
+.env*
 *.log
+
+# IDE and OS files  
 .DS_Store
 .vscode
-coverage
+*.swp
+*.swo
+
+# Documentation that doesn't need to be in main/storybook builds
+docs/_site
+docs/vendor
+
+# Large files that shouldn't be copied
+*.tar.gz
+*.zip
+*.dmg
+*.iso
+
+# Test files
+test-results
+playwright-report
+e2e/test-results
+
+# Build artifacts
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
