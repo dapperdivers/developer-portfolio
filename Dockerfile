@@ -42,6 +42,9 @@ COPY server.js index.html vite.config.ts tsconfig.json ./
 # Build the site navigator with environment variables (optional based on VITE_SITE_NAVIGATOR_ENABLED)
 RUN if [ "${VITE_SITE_NAVIGATOR_ENABLED}" = "true" ]; then yarn build:site-navigator; fi
 
+# Build Storybook (for integration into Express server)
+RUN yarn storybook:build
+
 # Build the application
 RUN yarn build
 
@@ -49,7 +52,39 @@ RUN yarn build
 RUN apk del .build-deps && \
     rm -rf node_modules
 
-# Stage 2: Dependencies
+# Stage 2: Jekyll build
+FROM ruby:3.1-alpine AS jekyll-builder
+
+# Install build dependencies efficiently
+RUN apk add --no-cache --virtual .build-deps \
+    build-base \
+    linux-headers \
+    git \
+    && apk add --no-cache \
+    nodejs
+
+WORKDIR /docs
+
+# Copy and install gems first (better layer caching)
+COPY docs/Gemfile docs/Gemfile.lock ./
+RUN bundle config --global frozen 1 && \
+    bundle config --global silence_root_warning 1 && \
+    bundle install --without development test --jobs $(nproc) --retry 3 --quiet
+
+# Copy docs source files
+COPY docs/ ./
+
+# Copy built site navigator from Node stage
+COPY --from=builder /app/public/site-navigator.js ./assets/js/
+
+# Build Jekyll site with optimizations
+ARG JEKYLL_BASEURL=""
+ARG JEKYLL_ENV=production
+RUN JEKYLL_ENV=${JEKYLL_ENV} bundle exec jekyll build ${JEKYLL_BASEURL:+--baseurl "$JEKYLL_BASEURL"} && \
+    # Cleanup build dependencies
+    apk del .build-deps
+
+# Stage 3: Dependencies
 FROM node:22-alpine AS deps
 
 WORKDIR /app
@@ -61,7 +96,7 @@ COPY --from=builder /app/package.json /app/yarn.lock ./
 RUN yarn install --production --frozen-lockfile --network-timeout 600000 --silent \
     && yarn cache clean
 
-# Stage 3: Production
+# Stage 4: Production
 FROM node:22-alpine AS production
 
 # Set runtime environment variables with defaults
@@ -84,6 +119,8 @@ RUN apk upgrade --no-cache && \
 
 # Copy built assets and production dependencies
 COPY --from=builder /app/build ./build
+COPY --from=builder /app/storybook-static ./storybook-static
+COPY --from=jekyll-builder /docs/_site ./docs-static
 COPY --from=deps /app/node_modules ./node_modules
 COPY --from=builder /app/server.js ./server.js
 

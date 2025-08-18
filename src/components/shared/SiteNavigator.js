@@ -132,12 +132,15 @@ class SiteNavigator extends HTMLElement {
    * Get default main URL for the current environment
    */
   getDefaultMainUrl() {
-    // In development
+    // In development (Express server runs on 3001/3002)
     if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-      return `${window.location.protocol}//${window.location.hostname}:3002`;
+      // Determine the port - default to 3001, but detect if we're on a different port
+      const currentPort = window.location.port || (window.location.protocol === 'https:' ? '443' : '80');
+      const expressPort = currentPort === '6006' || currentPort === '4000' ? '3001' : currentPort;
+      return `${window.location.protocol}//${window.location.hostname}:${expressPort}`;
     }
     
-    // In production - adjust these URLs based on your deployment setup
+    // In production - everything served from same domain
     return `${window.location.protocol}//${window.location.hostname}`;
   }
 
@@ -147,17 +150,15 @@ class SiteNavigator extends HTMLElement {
   getDefaultStorybookUrl() {
     const { protocol, hostname } = window.location;
     
-    // Development
+    // Development - Storybook now served from Express server at /storybook/
     if (hostname === 'localhost' || hostname === '127.0.0.1') {
-      return `${protocol}//${hostname}:6006`;
+      const currentPort = window.location.port || (protocol === 'https:' ? '443' : '80');
+      const expressPort = currentPort === '6006' || currentPort === '4000' ? '3001' : currentPort;
+      return `${protocol}//${hostname}:${expressPort}/storybook/`;
     }
     
-    // Production - common patterns: subdomain or path-based
-    if (hostname.includes('storybook')) {
-      return `${protocol}//${hostname}`;
-    }
-    
-    return `${protocol}//storybook.${hostname.replace(/^(www\.)?/, '')}`;
+    // Production - served from same domain at /storybook/ path
+    return `${protocol}//${hostname}/storybook/`;
   }
 
   /**
@@ -166,17 +167,15 @@ class SiteNavigator extends HTMLElement {
   getDefaultDocsUrl() {
     const { protocol, hostname } = window.location;
     
-    // Development
+    // Development - Docs now served from Express server at /docs/
     if (hostname === 'localhost' || hostname === '127.0.0.1') {
-      return `${protocol}//${hostname}:4000`;
+      const currentPort = window.location.port || (protocol === 'https:' ? '443' : '80');
+      const expressPort = currentPort === '6006' || currentPort === '4000' ? '3001' : currentPort;
+      return `${protocol}//${hostname}:${expressPort}/docs/`;
     }
     
-    // Production - common patterns: subdomain or path-based
-    if (hostname.includes('docs')) {
-      return `${protocol}//${hostname}`;
-    }
-    
-    return `${protocol}//docs.${hostname.replace(/^(www\.)?/, '')}`;
+    // Production - served from same domain at /docs/ path
+    return `${protocol}//${hostname}/docs/`;
   }
 
   /**

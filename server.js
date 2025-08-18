@@ -1,5 +1,6 @@
 import express from 'express';
 import path from 'path';
+import fs from 'fs';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import { fileURLToPath } from 'url';
@@ -135,6 +136,31 @@ app.use('/storybook', express.static(path.join(__dirname, 'storybook-static'), {
   }
 }));
 
+// Serve Jekyll docs static files at /docs path
+app.use('/docs', express.static(path.join(__dirname, 'docs-static'), {
+  maxAge: '1y',
+  etag: true,
+  lastModified: true,
+  setHeaders: (res, filePath) => {
+    res.set('X-Content-Type-Options', 'nosniff');
+    res.set('X-Frame-Options', 'SAMEORIGIN'); // Allow docs to be embedded in iframes
+    res.set('X-XSS-Protection', '1; mode=block');
+    
+    // Set proper MIME types for Jekyll assets
+    if (filePath.endsWith('.css')) {
+      res.set('Content-Type', 'text/css');
+    } else if (filePath.endsWith('.js')) {
+      res.set('Content-Type', 'application/javascript');
+    } else if (filePath.endsWith('.json')) {
+      res.set('Content-Type', 'application/json');
+    } else if (filePath.endsWith('.xml')) {
+      res.set('Content-Type', 'application/xml');
+    }
+    
+    res.set('Cache-Control', 'public, max-age=31536000');
+  }
+}));
+
 // Health check endpoint with basic system info
 app.get('/healthz', (req, res) => {
   res.status(200).json({
@@ -248,6 +274,44 @@ app.get('/storybook/*', (req, res) => {
       res.status(500).send('Error loading Storybook');
     }
   });
+});
+
+// Serve Jekyll docs with clean URL support (like Jekyll's try_files)
+app.get('/docs/*', (req, res) => {
+  const requestPath = req.path.replace('/docs', '');
+  const docsBasePath = path.join(__dirname, 'docs-static');
+  
+  // List of possible file paths to try (Jekyll clean URL pattern)
+  const possiblePaths = [
+    path.join(docsBasePath, requestPath),
+    path.join(docsBasePath, requestPath, 'index.html'),
+    path.join(docsBasePath, requestPath + '.html'),
+    path.join(docsBasePath, requestPath + '/index.html')
+  ];
+  
+  // Try each path until we find an existing file
+  for (const filePath of possiblePaths) {
+    if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
+      console.log('Serving Jekyll docs file from:', filePath);
+      res.setHeader('Content-Type', 'text/html');
+      return res.sendFile(filePath, (err) => {
+        if (err) {
+          console.error('Error sending Jekyll docs file:', err);
+          res.status(500).send('Error loading documentation');
+        }
+      });
+    }
+  }
+  
+  // If no file found, serve Jekyll 404 page
+  const notFoundPath = path.join(docsBasePath, '404.html');
+  if (fs.existsSync(notFoundPath)) {
+    console.log('Serving Jekyll 404 page from:', notFoundPath);
+    res.status(404).setHeader('Content-Type', 'text/html');
+    res.sendFile(notFoundPath);
+  } else {
+    res.status(404).send('Documentation not found');
+  }
 });
 
 // Serve React app (catch-all for main portfolio)

@@ -1,14 +1,49 @@
 
 /**
  * Site Navigator Web Component - Standalone Version
- * Generated on: 2025-08-16T22:32:29.884Z
+ * Generated on: 2025-08-18T20:00:07.875Z
  * 
  * Cross-site navigation component for Derek Mackley's Portfolio
  * Works across Main Site, Storybook, and Documentation sites
+ * 
+ * Environment Configuration:
+ * - VITE_SITE_MAIN_URL: (default)
+ * - VITE_SITE_STORYBOOK_URL: (default)
+ * - VITE_SITE_DOCS_URL: (default)
+ * - VITE_SITE_NAVIGATOR_ENABLED: true
  */
 
 (function() {
   'use strict';
+  
+  
+  // Environment Configuration Injection
+  if (typeof window !== 'undefined') {
+    window.__SITE_NAVIGATOR_CONFIG__ = {
+  "sites": {
+    "main": {
+      "name": "Portfolio",
+      "icon": "🏠",
+      "description": "Main Portfolio Site",
+      "shortName": "HOME"
+    },
+    "storybook": {
+      "name": "Components",
+      "icon": "📚",
+      "description": "Component Library",
+      "shortName": "COMP"
+    },
+    "docs": {
+      "name": "Documentation",
+      "icon": "📋",
+      "description": "Technical Documentation",
+      "shortName": "DOCS"
+    }
+  },
+  "enabled": true
+};
+  }
+
   
   /**
  * Cross-Site Navigator Web Component
@@ -58,31 +93,82 @@ class SiteNavigator extends HTMLElement {
   }
 
   /**
-   * Get site configuration including URLs
-   * This can be customized based on deployment setup
+   * Get site configuration including URLs from environment variables
+   * This supports dynamic configuration for different Docker deployments
    */
   getSiteConfiguration() {
-    const baseUrl = this.getBaseUrl();
+    // Try to get configuration from global window object (injected at runtime)
+    const envConfig = window.__SITE_NAVIGATOR_CONFIG__;
     
+    if (envConfig && envConfig.sites) {
+      return envConfig.sites;
+    }
+    
+    // Try to get from meta tags (injected by server at runtime)
+    const mainUrl = this.getMetaContent('site-main-url');
+    const storybookUrl = this.getMetaContent('site-storybook-url');
+    const docsUrl = this.getMetaContent('site-docs-url');
+    
+    if (mainUrl || storybookUrl || docsUrl) {
+      return {
+        main: {
+          name: 'Portfolio',
+          icon: '🏠',
+          url: mainUrl || this.getDefaultMainUrl(),
+          description: 'Main Portfolio Site',
+          shortName: 'HOME'
+        },
+        storybook: {
+          name: 'Components',
+          icon: '📚',
+          url: storybookUrl || this.getDefaultStorybookUrl(),
+          description: 'Component Library',
+          shortName: 'COMP'
+        },
+        docs: {
+          name: 'Documentation',
+          icon: '📋',
+          url: docsUrl || this.getDefaultDocsUrl(),
+          description: 'Technical Documentation',
+          shortName: 'DOCS'
+        }
+      };
+    }
+    
+    return this.getDefaultConfiguration();
+  }
+
+  /**
+   * Get content from meta tag
+   */
+  getMetaContent(name) {
+    const meta = document.querySelector(`meta[name="${name}"]`);
+    return meta ? meta.getAttribute('content') : null;
+  }
+
+  /**
+   * Get default configuration when environment variables are not available
+   */
+  getDefaultConfiguration() {
     return {
       main: {
         name: 'Portfolio',
         icon: '🏠',
-        url: baseUrl,
+        url: this.getDefaultMainUrl(),
         description: 'Main Portfolio Site',
         shortName: 'HOME'
       },
       storybook: {
         name: 'Components',
         icon: '📚',
-        url: `${baseUrl}:6006/`, // Development URL, adjust for production
+        url: this.getDefaultStorybookUrl(),
         description: 'Component Library',
         shortName: 'COMP'
       },
       docs: {
         name: 'Documentation',
         icon: '📋',
-        url: `${baseUrl}/docs/`, // Adjust based on deployment
+        url: this.getDefaultDocsUrl(),
         description: 'Technical Documentation',
         shortName: 'DOCS'
       }
@@ -90,16 +176,53 @@ class SiteNavigator extends HTMLElement {
   }
 
   /**
-   * Get base URL for the current environment
+   * Get default main URL for the current environment
    */
-  getBaseUrl() {
-    // In development
+  getDefaultMainUrl() {
+    // In development (Express server runs on 3001/3002)
     if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-      return `${window.location.protocol}//${window.location.hostname}:3002`;
+      // Determine the port - default to 3001, but detect if we're on a different port
+      const currentPort = window.location.port || (window.location.protocol === 'https:' ? '443' : '80');
+      const expressPort = currentPort === '6006' || currentPort === '4000' ? '3001' : currentPort;
+      return `${window.location.protocol}//${window.location.hostname}:${expressPort}`;
     }
     
-    // In production - adjust these URLs based on your deployment setup
+    // In production - everything served from same domain
     return `${window.location.protocol}//${window.location.hostname}`;
+  }
+
+  /**
+   * Get default Storybook URL based on current environment
+   */
+  getDefaultStorybookUrl() {
+    const { protocol, hostname } = window.location;
+    
+    // Development - Storybook now served from Express server at /storybook/
+    if (hostname === 'localhost' || hostname === '127.0.0.1') {
+      const currentPort = window.location.port || (protocol === 'https:' ? '443' : '80');
+      const expressPort = currentPort === '6006' || currentPort === '4000' ? '3001' : currentPort;
+      return `${protocol}//${hostname}:${expressPort}/storybook/`;
+    }
+    
+    // Production - served from same domain at /storybook/ path
+    return `${protocol}//${hostname}/storybook/`;
+  }
+
+  /**
+   * Get default docs URL based on current environment
+   */
+  getDefaultDocsUrl() {
+    const { protocol, hostname } = window.location;
+    
+    // Development - Docs now served from Express server at /docs/
+    if (hostname === 'localhost' || hostname === '127.0.0.1') {
+      const currentPort = window.location.port || (protocol === 'https:' ? '443' : '80');
+      const expressPort = currentPort === '6006' || currentPort === '4000' ? '3001' : currentPort;
+      return `${protocol}//${hostname}:${expressPort}/docs/`;
+    }
+    
+    // Production - served from same domain at /docs/ path
+    return `${protocol}//${hostname}/docs/`;
   }
 
   /**
@@ -506,5 +629,10 @@ if (typeof module !== 'undefined' && module.exports) {
   // Auto-initialize with configuration detection
   if (typeof window !== 'undefined') {
     console.log('🎯 Site Navigator loaded and ready');
+    
+    // Log configuration being used
+    if (window.__SITE_NAVIGATOR_CONFIG__) {
+      console.log('📊 Site Navigator Configuration:', window.__SITE_NAVIGATOR_CONFIG__);
+    }
   }
 })();

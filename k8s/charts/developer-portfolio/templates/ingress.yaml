@@ -37,7 +37,7 @@ spec:
               service:
                 name: {{ .service }}
                 port:
-                  number: {{ if eq .service "main-app" }}{{ $.Values.mainApp.service.port }}{{ else if eq .service "storybook" }}{{ $.Values.storybook.service.port }}{{ else if eq .service "docs" }}{{ $.Values.docs.service.port }}{{ end }}
+                  number: {{ $.Values.mainApp.service.port }}
           {{- end }}
     {{- end }}
 {{- end }}

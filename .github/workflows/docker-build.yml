@@ -20,18 +20,10 @@ jobs:
     strategy:
       matrix:
         include:
-          - name: main-app
+          - name: portfolio
             dockerfile: Dockerfile
             context: .
             image: ${{ github.repository }}
-          - name: storybook
-            dockerfile: Dockerfile.storybook
-            context: .
-            image: ${{ github.repository }}-storybook
-          - name: docs
-            dockerfile: Dockerfile.docs
-            context: .
-            image: ${{ github.repository }}-docs
 
     steps:
       - name: Checkout repository

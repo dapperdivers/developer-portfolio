@@ -18,48 +18,4 @@ spec:
   selector:
     app: {{ .Values.mainApp.name }}
     release: {{ .Release.Name }}
----
-{{- end }}
-{{- if .Values.storybook.enabled }}
-apiVersion: v1
-kind: Service
-metadata:
-  name: {{ .Values.storybook.name }}
-  labels:
-    app: {{ .Values.storybook.name }}
-    chart: {{ include "developer-portfolio.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
-spec:
-  type: {{ .Values.storybook.service.type }}
-  ports:
-    - port: {{ .Values.storybook.service.port }}
-      targetPort: {{ .Values.storybook.service.targetPort }}
-      protocol: TCP
-      name: http
-  selector:
-    app: {{ .Values.storybook.name }}
-    release: {{ .Release.Name }}
----
-{{- end }}
-{{- if .Values.docs.enabled }}
-apiVersion: v1
-kind: Service
-metadata:
-  name: {{ .Values.docs.name }}
-  labels:
-    app: {{ .Values.docs.name }}
-    chart: {{ include "developer-portfolio.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
-spec:
-  type: {{ .Values.docs.service.type }}
-  ports:
-    - port: {{ .Values.docs.service.port }}
-      targetPort: {{ .Values.docs.service.targetPort }}
-      protocol: TCP
-      name: http
-  selector:
-    app: {{ .Values.docs.name }}
-    release: {{ .Release.Name }}
 {{- end }}

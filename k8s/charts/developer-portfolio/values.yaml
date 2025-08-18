@@ -48,77 +48,8 @@ mainApp:
     maxReplicas: 10
     targetCPUUtilizationPercentage: 70
 
-# Storybook
-storybook:
-  enabled: true
-  name: storybook
-  image:
-    repository: developer-portfolio-storybook
-    tag: latest
-    pullPolicy: IfNotPresent
-    
-  replicaCount: 1
-  
-  service:
-    type: ClusterIP
-    port: 6006
-    targetPort: 6006
-    
-  resources:
-    limits:
-      cpu: 200m
-      memory: 256Mi
-    requests:
-      cpu: 100m
-      memory: 128Mi
-      
-  healthCheck:
-    enabled: true
-    path: /
-    initialDelaySeconds: 20
-    periodSeconds: 30
-    timeoutSeconds: 5
-    
-  autoscaling:
-    enabled: false
-
-# Jekyll Documentation
-docs:
-  enabled: true
-  name: docs
-  image:
-    repository: developer-portfolio-docs
-    tag: latest
-    pullPolicy: IfNotPresent
-    
-  replicaCount: 1
-  
-  service:
-    type: ClusterIP
-    port: 4000
-    targetPort: 4000
-    
-  resources:
-    limits:
-      cpu: 200m
-      memory: 256Mi
-    requests:
-      cpu: 100m
-      memory: 128Mi
-      
-  env:
-    - name: JEKYLL_ENV
-      value: "production"
-      
-  healthCheck:
-    enabled: true
-    path: /
-    initialDelaySeconds: 20
-    periodSeconds: 30
-    timeoutSeconds: 5
-    
-  autoscaling:
-    enabled: false
+# Note: Storybook and Docs are now served from the main Express server
+# at /storybook/ and /docs/ paths respectively
 
 # Ingress configuration
 ingress:
@@ -136,12 +67,6 @@ ingress:
         - path: /
           pathType: Prefix
           service: main-app
-        - path: /storybook
-          pathType: Prefix  
-          service: storybook
-        - path: /docs
-          pathType: Prefix
-          service: docs
           
   tls:
     - secretName: portfolio-tls
