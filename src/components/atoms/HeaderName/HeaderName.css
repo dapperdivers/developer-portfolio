@@ -27,23 +27,7 @@
   }
 }
 
-/* Base styles */
-@font-face {
-  font-family: 'Agustina';
-  src: url('/fonts/agustina/Agustina.otf') format('opentype');
-  font-display: swap;
-  font-weight: 400;
-  font-style: normal;
-  font-feature-settings: normal; /* Disable problematic font features */
-}
-
-/* Define the font-agustina class */
-.font-agustina {
-  font-family: 'Agustina', 'Brush Script MT', 'Lucida Handwriting', cursive;
-  letter-spacing: 0.05em;
-  font-feature-settings: normal; /* Disable problematic font features */
-  font-kerning: none; /* Disable kerning to avoid kern table issues */
-}
+/* Font styles are now centralized in src/assets/css/fonts.css */
 
 /* Canvas container styles */
 .canvas-container {

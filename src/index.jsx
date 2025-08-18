@@ -1,6 +1,9 @@
 // Import browser compatibility fixes first
 import '@utils/browserFixes';
 
+// Import font loader for better font loading experience
+import '@utils/fontLoader';
+
 // Import CSS files first - order matters for CSS cascade
 import '@assets/css/design-system/index.css';
 import '@assets/css/index.css';

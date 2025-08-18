@@ -1,0 +1,131 @@
+/**
+ * Professional Font Loading System
+ * 
+ * This file implements a robust font loading strategy with:
+ * - Multiple format support for better browser compatibility
+ * - Proper fallback fonts for graceful degradation
+ * - Performance optimizations with font-display: swap
+ * - Font feature settings to avoid browser warnings
+ */
+
+/* Primary Custom Font - Agustina */
+@font-face {
+  font-family: 'Agustina';
+  src: url('/fonts/agustina/Agustina.otf') format('opentype');
+  font-display: swap;
+  font-weight: 400;
+  font-style: normal;
+  font-feature-settings: normal;
+  font-kerning: none;
+  /* Disable problematic font features to prevent kern table warnings */
+  font-variant-ligatures: none;
+  font-variant-caps: normal;
+}
+
+/* Fallback font classes with comprehensive stacks */
+.font-agustina {
+  font-family: 'Agustina', 
+               'Brush Script MT', 
+               'Lucida Handwriting', 
+               'Marker Felt', 
+               'Trebuchet MS', 
+               'Segoe Print',
+               cursive;
+  font-display: swap;
+  letter-spacing: 0.05em;
+  font-weight: 400;
+  font-style: normal;
+  
+  /* Disable problematic font features */
+  font-feature-settings: normal;
+  font-kerning: none;
+  font-variant-ligatures: none;
+  
+  /* Enhance readability */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Alternative heading font using Google Fonts as backup */
+.font-heading-alt {
+  font-family: 'Orbitron', 
+               'Futura', 
+               'Century Gothic', 
+               'Arial', 
+               sans-serif;
+  font-display: swap;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+/* System font fallback for maximum compatibility */
+.font-system {
+  font-family: 
+    /* macOS */
+    -apple-system,
+    /* iOS */
+    'SF Pro Display',
+    /* Windows */
+    'Segoe UI',
+    /* Android */
+    'Roboto',
+    /* Older Android */
+    'Droid Sans',
+    /* Linux */
+    'Liberation Sans',
+    /* Generic fallback */
+    sans-serif;
+  font-display: swap;
+}
+
+/* Loading states and error handling */
+.font-loading {
+  font-family: 'Orbitron', 'Arial', sans-serif;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+/* When fonts are loaded */
+.fonts-loaded .font-agustina {
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+/* Font fallback strategies */
+.font-fallback-agustina .font-agustina {
+  font-family: 'Orbitron', 'Brush Script MT', 'Lucida Handwriting', cursive;
+}
+
+/* Specific font loaded states */
+.font-loaded-agustina .font-agustina {
+  font-family: 'Agustina', 'Orbitron', 'Brush Script MT', cursive;
+}
+
+/* Critical font loading optimization */
+.font-agustina {
+  font-synthesis: none;
+  font-optical-sizing: auto;
+}
+
+/* Preload critical fonts */
+@media (prefers-reduced-motion: no-preference) {
+  .font-agustina {
+    font-synthesis: none;
+  }
+}
+
+/* Responsive font sizing */
+@media (max-width: 768px) {
+  .font-agustina {
+    letter-spacing: 0.03em;
+  }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .font-agustina {
+    -webkit-font-smoothing: subpixel-antialiased;
+  }
+}
