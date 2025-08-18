@@ -59,9 +59,9 @@ COPY docs/ ./
 COPY --from=builder /app/public/site-navigator.js ./assets/js/
 
 # Build Jekyll site with optimizations and cleanup in single layer
-ARG JEKYLL_BASEURL=""
+ARG JEKYLL_BASEURL="/docs"
 ARG JEKYLL_ENV=production
-RUN JEKYLL_ENV=${JEKYLL_ENV} bundle exec jekyll build ${JEKYLL_BASEURL:+--baseurl "$JEKYLL_BASEURL"} && \
+RUN JEKYLL_ENV=${JEKYLL_ENV} bundle exec jekyll build --baseurl "$JEKYLL_BASEURL" && \
     apk del .build-deps && \
     rm -rf /var/cache/apk/* /tmp/*
 

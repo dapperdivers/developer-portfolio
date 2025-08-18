@@ -41,6 +41,10 @@ inject_meta_tags() {
 
 echo "🚀 Starting application with runtime configuration..."
 
+# Debug: Check what directories exist
+echo "📁 Available directories in /app:"
+ls -la /app/ | grep ^d
+
 # Inject into main React app if it exists
 inject_meta_tags "$INDEX_FILE"
 
