@@ -42,20 +42,64 @@ class SiteNavigator extends HTMLElement {
   detectCurrentSite() {
     const pathname = window.location.pathname;
     
+    let detectedSite;
     if (pathname.startsWith('/storybook')) {
-      return 'storybook';
+      detectedSite = 'storybook';
     } else if (pathname.startsWith('/docs')) {
-      return 'docs';
+      detectedSite = 'docs';
     } else {
-      return 'main';
+      detectedSite = 'main';
     }
+    
+    console.log('🎯 Site Navigator: Site detection', { 
+      pathname, 
+      detectedSite,
+      fullUrl: window.location.href 
+    });
+    
+    return detectedSite;
   }
 
   /**
-   * Get simplified site configuration for unified server
+   * Get site configuration with intelligent server detection
    */
   getSiteConfiguration() {
-    const baseUrl = `${window.location.protocol}//${window.location.host}`;
+    const currentHost = window.location.host;
+    const currentProtocol = window.location.protocol;
+    
+    // Detect if we're on Vite dev server (port 3000) or Express server (port 3001)
+    const isViteDevServer = currentHost.includes(':3000');
+    const isExpressServer = currentHost.includes(':3001');
+    
+    // For Vite dev server, redirect to Express server for docs and storybook
+    // For Express server, use same server for all routes
+    let baseUrl, storybookUrl, docsUrl;
+    
+    if (isViteDevServer) {
+      // From Vite dev server, redirect to Express server for docs and storybook
+      baseUrl = `${currentProtocol}//localhost:3000`;
+      storybookUrl = `${currentProtocol}//localhost:3001/storybook/`;
+      docsUrl = `${currentProtocol}//localhost:3001/docs/`;
+    } else if (isExpressServer) {
+      // On Express server, use same server for all routes
+      baseUrl = `${currentProtocol}//${currentHost}`;
+      storybookUrl = baseUrl + '/storybook/';
+      docsUrl = baseUrl + '/docs/';
+    } else {
+      // Production or other environments - use same server
+      baseUrl = `${currentProtocol}//${currentHost}`;
+      storybookUrl = baseUrl + '/storybook/';
+      docsUrl = baseUrl + '/docs/';
+    }
+    
+    console.log('🎯 Site Navigator: Configuration', { 
+      currentHost, 
+      isViteDevServer, 
+      isExpressServer,
+      baseUrl, 
+      storybookUrl, 
+      docsUrl 
+    });
     
     return {
       main: {
@@ -68,14 +112,14 @@ class SiteNavigator extends HTMLElement {
       storybook: {
         name: 'Components',
         icon: '📚',
-        url: baseUrl + '/storybook/',
+        url: storybookUrl,
         description: 'Component Library',
         shortName: 'COMP'
       },
       docs: {
         name: 'Documentation',
         icon: '📋',
-        url: baseUrl + '/docs/',
+        url: docsUrl,
         description: 'Technical Documentation',
         shortName: 'DOCS'
       }
@@ -141,12 +185,25 @@ class SiteNavigator extends HTMLElement {
    */
   navigateToSite(siteKey) {
     const site = this.siteConfig[siteKey];
+    console.log('🎯 Site Navigator: Attempting to navigate', { 
+      siteKey, 
+      site, 
+      currentSite: this.currentSite,
+      currentUrl: window.location.href
+    });
+    
     if (site && siteKey !== this.currentSite) {
       // Add loading state
       this.shadowRoot.querySelector('.navigator').classList.add('loading');
       
+      console.log('🎯 Site Navigator: Navigating to:', site.url);
+      
       // Navigate directly (same origin, no CORS issues)
       window.location.href = site.url;
+    } else if (siteKey === this.currentSite) {
+      console.log('🎯 Site Navigator: Already on target site, no navigation needed');
+    } else {
+      console.log('🎯 Site Navigator: Invalid site or site not found');
     }
   }
 

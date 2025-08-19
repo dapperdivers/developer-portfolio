@@ -1,6 +1,5 @@
 import express from 'express';
 import path from 'path';
-import fs from 'fs';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import { fileURLToPath } from 'url';
@@ -113,11 +112,18 @@ app.use(express.static(path.join(__dirname, 'build'), {
   }
 }));
 
+// Debug middleware for /storybook requests
+app.use('/storybook', (req, res, next) => {
+  console.log('🎯 EXPRESS: Storybook middleware hit for:', req.path, req.url);
+  next();
+});
+
 // Serve Storybook static files at /storybook path
 app.use('/storybook', express.static(path.join(__dirname, 'storybook-static'), {
   maxAge: '1y',
   etag: true,
   lastModified: true,
+  index: 'index.html', // Enable serving index.html for directory requests
   setHeaders: (res, filePath) => {
     res.set('X-Content-Type-Options', 'nosniff');
     res.set('X-Frame-Options', 'SAMEORIGIN'); // Allow Storybook to be embedded in iframes
@@ -141,6 +147,7 @@ app.use('/docs', express.static(path.join(__dirname, 'docs-static'), {
   maxAge: '1y',
   etag: true,
   lastModified: true,
+  index: 'index.html', // Enable serving index.html for directory requests
   setHeaders: (res, filePath) => {
     res.set('X-Content-Type-Options', 'nosniff');
     res.set('X-Frame-Options', 'SAMEORIGIN'); // Allow docs to be embedded in iframes
@@ -263,70 +270,17 @@ app.get('/api/geocode', async (req, res) => {
   }
 });
 
-// Serve Storybook index.html for all /storybook/* routes (SPA routing)
-app.get('/storybook/*', (req, res) => {
-  const storybookIndexPath = path.join(__dirname, 'storybook-static', 'index.html');
-  console.log('Serving Storybook index.html from:', storybookIndexPath);
-  res.setHeader('Content-Type', 'text/html');
-  res.sendFile(storybookIndexPath, (err) => {
-    if (err) {
-      console.error('Error sending Storybook index.html:', err);
-      res.status(500).send('Error loading Storybook');
-    }
-  });
-});
+// Note: Storybook is now served entirely by the static middleware above
+// This provides better performance and simpler configuration
 
-// Serve Jekyll docs with clean URL support (like Jekyll's try_files)
-app.get('/docs/*', (req, res) => {
-  const requestPath = req.path.replace('/docs', '');
-  const docsBasePath = path.join(__dirname, 'docs-static');
-  
-  // List of possible file paths to try (Jekyll clean URL pattern)
-  const possiblePaths = [
-    path.join(docsBasePath, requestPath),
-    path.join(docsBasePath, requestPath, 'index.html'),
-    path.join(docsBasePath, requestPath + '.html'),
-    path.join(docsBasePath, requestPath + '/index.html')
-  ];
-  
-  // Try each path until we find an existing file
-  for (const filePath of possiblePaths) {
-    // Security: Validate that the resolved path is within the docs directory
-    const resolvedPath = path.resolve(filePath);
-    const resolvedDocsPath = path.resolve(docsBasePath);
-    
-    if (!resolvedPath.startsWith(resolvedDocsPath)) {
-      console.warn('Path traversal attempt blocked:', requestPath);
-      return res.status(403).send('Access denied');
-    }
-    
-    if (fs.existsSync(resolvedPath) && fs.statSync(resolvedPath).isFile()) {
-      console.log('Serving Jekyll docs file from:', resolvedPath);
-      res.setHeader('Content-Type', 'text/html');
-      return res.sendFile(resolvedPath, (err) => {
-        if (err) {
-          console.error('Error sending Jekyll docs file:', err);
-          res.status(500).send('Error loading documentation');
-        }
-      });
-    }
-  }
-  
-  // If no file found, serve Jekyll 404 page
-  const notFoundPath = path.join(docsBasePath, '404.html');
-  if (fs.existsSync(notFoundPath)) {
-    console.log('Serving Jekyll 404 page from:', notFoundPath);
-    res.status(404).setHeader('Content-Type', 'text/html');
-    res.sendFile(notFoundPath);
-  } else {
-    res.status(404).send('Documentation not found');
-  }
-});
+// Note: Jekyll docs are now served entirely by the static middleware above
+// This provides better performance and simpler configuration
 
 // Serve React app (catch-all for main portfolio)
 app.get('*', (req, res) => {
+  console.log('🎯 EXPRESS: Catch-all route hit for path:', req.path);
   const indexPath = path.join(__dirname, 'build', 'index.html');
-  console.log('Serving index.html from:', indexPath);
+  console.log('🎯 EXPRESS: Serving index.html from:', indexPath);
   res.sendFile(indexPath, (err) => {
     if (err) {
       console.error('Error sending index.html:', err);
