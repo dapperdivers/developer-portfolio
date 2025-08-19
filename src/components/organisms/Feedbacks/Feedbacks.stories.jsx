@@ -3,7 +3,6 @@ import Feedbacks from './Feedbacks';
 import { within, expect } from 'storybook/test';
 import PortfolioContext from '@context/PortfolioContext';
 import { mockPortfolioData } from '@data/mockPortfolioData';
-import { withViewport } from '@storybook/addon-viewport';
 
 // Helper function to create context with specific feedback data
 const createContextWithFeedbacks = (feedbackData) => {

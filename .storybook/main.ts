@@ -52,6 +52,7 @@ const config: StorybookConfig = {
       '@utils': path.resolve(__dirname, '../src/utils'),
       '@hooks': path.resolve(__dirname, '../src/hooks'),
       '@context': path.resolve(__dirname, '../src/context'),
+      '@data': path.resolve(__dirname, '../src/data'),
       '@stories-utils': path.resolve(__dirname, './utils'),
     };
     
