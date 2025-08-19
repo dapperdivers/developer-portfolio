@@ -51,6 +51,12 @@ export default defineConfig(({ command, mode }) => {
     // Base URL for assets
     base: '/',
     
+    // Public directory for static assets
+    publicDir: 'public',
+    
+    // Include additional asset types (exclude node_modules to avoid conflicts)
+    assetsInclude: ['src/**/*.json', 'public/**/*.json', '**/*.svg', '**/*.png', '**/*.jpg', '**/*.webp'],
+    
     // Environment configuration
     ...envConfig.getEnvConfig(),
     
@@ -112,7 +118,6 @@ export default defineConfig(({ command, mode }) => {
         'react', 
         'react-dom',
         'framer-motion',
-        'lottie-react',
         '@iconify/react',
         'prop-types',
         'react-is', // Explicitly include react-is to prevent tree-shaking issues

@@ -48,10 +48,6 @@ export function createChunkStrategy() {
           return 'vendor-react';
         }
         
-        // Other animation libraries (excluding framer-motion which is now in vendor-react)
-        if (id.includes('lottie')) {
-          return 'vendor-animation';
-        }
         
         // UI component libraries
         if (id.includes('iconify') || id.includes('react-icons')) {

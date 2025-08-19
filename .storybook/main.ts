@@ -22,7 +22,6 @@ const config: StorybookConfig = {
   },
   "staticDirs": [
     "../src/assets/images",
-    "../src/assets/animations/lottie",
     "../src/assets/fonts",
     "../src/assets/css",
     "./assets"
@@ -82,6 +81,9 @@ const config: StorybookConfig = {
       config.build = {};
     }
     config.build.chunkSizeWarningLimit = 3000; // 3MB limit for Storybook
+    
+    // Include additional asset types (exclude node_modules to avoid conflicts)
+    config.assetsInclude = ['src/**/*.json', 'public/**/*.json', '**/*.svg', '**/*.png', '**/*.jpg', '**/*.webp'];
     
     // Configure dev server for remote access
     if (!config.server) {

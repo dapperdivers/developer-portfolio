@@ -80,9 +80,6 @@
       "@atoms/SkipToContent/*": [
         "src/components/atoms/SkipToContent/*"
       ],
-      "@molecules/DisplayLottie/*": [
-        "src/components/molecules/DisplayLottie/*"
-      ],
       "@molecules/EducationCard/*": [
         "src/components/molecules/EducationCard/*"
       ],

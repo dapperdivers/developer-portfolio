@@ -3,10 +3,8 @@ import { SkillBars } from "@/portfolio";
 import { motion, useInView } from "framer-motion";
 import { useAnimation } from "@context/AnimationContext";
 
-import DisplayLottie from '@molecules/DisplayLottie';
 import Progress from '@atoms/Progress';
 import Section from '../../layout/Section';
-import codingAnimation from '@assets/animations/lottie/dev-coding.json';
 import './Proficiency.css';
 
 const ProgressBar = ({ skill, index }) => {
@@ -61,7 +59,7 @@ const ProgressBar = ({ skill, index }) => {
 };
 
 const Proficiency = () => {
-    const { animationEnabled, slideUpVariants } = useAnimation();
+    const { animationEnabled } = useAnimation();
 
     return ( 
         <Section
@@ -69,8 +67,8 @@ const Proficiency = () => {
             title="Proficiency"
             className="proficiency-section"
         >
-            <div className="flex flex-wrap -mx-4 items-center">
-                <div className="w-full px-4 lg:w-6/12">
+            <div className="flex justify-center">
+                <div className="w-full px-4 lg:w-8/12">
                     <motion.div 
                         className="space-y-4"
                         initial={animationEnabled ? "hidden" : "visible"}
@@ -89,16 +87,6 @@ const Proficiency = () => {
                         {SkillBars.map((skill, index) => (
                             <ProgressBar key={skill.Stack} skill={skill} index={index} />
                         ))}
-                    </motion.div>
-                </div>
-                <div className="w-full px-4 lg:w-6/12">
-                    <motion.div 
-                        className="proficiency-animation"
-                        variants={slideUpVariants}
-                        initial={animationEnabled ? "hidden" : "visible"}
-                        animate="visible"
-                    >
-                        <DisplayLottie animationData={codingAnimation} />
                     </motion.div>
                 </div>
             </div>

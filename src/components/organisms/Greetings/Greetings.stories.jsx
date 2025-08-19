@@ -3,9 +3,6 @@ import Greetings from './Greetings';
 import { within, userEvent, expect } from 'storybook/test';
 import PortfolioContext from '@context/PortfolioContext';
 import { mockPortfolioData } from '@data/mockPortfolioData';
-import code from '@assets/animations/lottie/dev-coding.json';
-import webdev from '@assets/animations/lottie/dev-webdev.json';
-import build from '@assets/animations/lottie/dev-building.json';
 
 // Helper function to create context with custom greeting data
 const createContextWithGreetings = (greetingsData) => {

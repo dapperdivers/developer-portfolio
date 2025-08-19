@@ -76,7 +76,6 @@ export function createAliases() {
     '@atoms/SkeletonCard': path.resolve(componentDirs.atoms, 'SkeletonCard'),
     '@atoms/Skill': path.resolve(componentDirs.atoms, 'Skill'),
     '@atoms/SkipToContent': path.resolve(componentDirs.atoms, 'SkipToContent'),
-    '@molecules/DisplayLottie': path.resolve(componentDirs.molecules, 'DisplayLottie'),
     '@molecules/EducationCard': path.resolve(componentDirs.molecules, 'EducationCard'),
     '@molecules/ErrorBoundary': path.resolve(componentDirs.molecules, 'ErrorBoundary'),
     '@molecules/ExperienceCard': path.resolve(componentDirs.molecules, 'ExperienceCard'),
@@ -127,7 +126,6 @@ export const getTestAliases = () => {
     // Mock implementations for common dependencies
     'framer-motion': path.resolve(dirs.src, '__mocks__/framerMotionMock.jsx'),
     '@iconify/react': path.resolve(dirs.src, '__mocks__/iconifyMock.jsx'),
-    'lottie-react': path.resolve(dirs.src, '__mocks__/lottieMock.jsx'),
     
     // Include all standard aliases
     ...createAliases()

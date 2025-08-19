@@ -232,23 +232,6 @@
     }
   }
   
-  /* DisplayLottie Component */
-  .lottie-container {
-    @apply relative w-full h-full min-h-80 overflow-hidden;
-  }
-  
-  .animation-controls {
-    @apply absolute bottom-2 right-2 flex items-center bg-black/60 p-1 px-2 rounded opacity-0 transition-opacity duration-200 z-10;
-  }
-  
-  .lottie-container:hover .animation-controls,
-  .lottie-container.controls-visible .animation-controls {
-    @apply opacity-100;
-  }
-  
-  .animation-control-button {
-    @apply bg-primary text-white border-none rounded-full w-10 h-10 mr-2 flex items-center justify-center cursor-pointer transition-colors duration-200 hover:bg-primary-dark focus:outline focus:outline-2 focus:outline-white focus:outline-offset-2;
-  }
   
   .animation-status {
     @apply text-sm text-white ml-1;
@@ -1291,10 +1274,6 @@
     background: linear-gradient(to right, var(--primary), var(--accent));
   }
   
-  /* Lottie animation container */
-  .proficiency-animation {
-    @apply max-w-full h-auto flex justify-center items-center;
-  }
   
   /* Responsive adjustments */
   @media (max-width: 768px) {
