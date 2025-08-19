@@ -276,6 +276,32 @@ app.get('/api/geocode', async (req, res) => {
 // Note: Jekyll docs are now served entirely by the static middleware above
 // This provides better performance and simpler configuration
 
+// Explicit fallback for docs routes that don't match static files
+app.get('/docs/*', (req, res) => {
+  console.log('🎯 EXPRESS: Docs fallback route hit for path:', req.path);
+  const indexPath = path.join(__dirname, 'docs-static', 'index.html');
+  console.log('🎯 EXPRESS: Serving docs index.html from:', indexPath);
+  res.sendFile(indexPath, (err) => {
+    if (err) {
+      console.error('Error sending docs index.html:', err);
+      res.status(500).send('Error loading docs');
+    }
+  });
+});
+
+// Explicit fallback for storybook routes that don't match static files  
+app.get('/storybook/*', (req, res) => {
+  console.log('🎯 EXPRESS: Storybook fallback route hit for path:', req.path);
+  const indexPath = path.join(__dirname, 'storybook-static', 'index.html');
+  console.log('🎯 EXPRESS: Serving storybook index.html from:', indexPath);
+  res.sendFile(indexPath, (err) => {
+    if (err) {
+      console.error('Error sending storybook index.html:', err);
+      res.status(500).send('Error loading storybook');
+    }
+  });
+});
+
 // Serve React app (catch-all for main portfolio)
 app.get('*', (req, res) => {
   console.log('🎯 EXPRESS: Catch-all route hit for path:', req.path);
