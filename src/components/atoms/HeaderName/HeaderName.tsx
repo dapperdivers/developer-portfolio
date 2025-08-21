@@ -35,7 +35,7 @@ const HeaderName: React.FC<HeaderNameProps> = ({
       onHoverEnd={() => controls.start('initial')}
     >
       <h2 
-        className="font-agustina text-4xl text-cyan-400 relative tracking-wide flex items-center"
+        className="font-agustina text-6xl text-cyan-400 relative tracking-wide flex items-center"
         data-content={name}
         aria-label={name}
       >
