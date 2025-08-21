@@ -28,12 +28,13 @@
 /* Display/heading font class */
 .font-display,
 .font-heading,
+.font-dancing-script,
 .font-orbitron {
   font-family: var(--font-family-heading);
   font-display: swap;
-  font-weight: var(--font-weight-bold);
-  letter-spacing: var(--letter-spacing-wide);
-  text-transform: uppercase;
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--letter-spacing-normal);
+  text-transform: none;
   
   /* Enhanced rendering for display fonts */
   -webkit-font-smoothing: antialiased;
@@ -62,7 +63,7 @@
   font-display: swap;
 }
 
-/* Legacy class support - now using Orbitron via CSS variables */
+/* Legacy class support - now using Dancing Script via CSS variables */
 .font-agustina {
   font-family: var(--font-family-heading);
   font-display: swap;

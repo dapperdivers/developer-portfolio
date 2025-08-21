@@ -72,17 +72,14 @@ class FontLoader {
   }
 
   /**
-   * Load font using Font Loading API
+   * Load font using Font Loading API  
    */
   async loadFontWithAPI(fontFamily, fontUrl, options) {
     const { weight, style, display, onLoad, onError } = options;
     
-    // eslint-disable-next-line no-undef
-    const font = new FontFace(fontFamily, `url(${fontUrl})`, {
-      weight,
-      style,
-      display
-    });
+    // For Google Fonts CSS URLs, we need to use CSS loading method
+    // FontFace API is for individual font files, not CSS stylesheets
+    return await this.loadFontWithCSS(fontFamily, fontUrl, options);
 
     // Add timeout
     const timeoutPromise = new Promise((_, reject) => {
@@ -106,42 +103,41 @@ class FontLoader {
   }
 
   /**
-   * Load font using CSS method (fallback)
+   * Load font using CSS method (for Google Fonts CSS URLs)
    */
   async loadFontWithCSS(fontFamily, fontUrl, options) {
     const { weight, style, display, onLoad, onError } = options;
     
     return new Promise((resolve, reject) => {
-      const style_element = document.createElement('style');
-      style_element.textContent = `
-        @font-face {
-          font-family: '${fontFamily}';
-          src: url('${fontUrl}');
-          font-weight: ${weight};
-          font-style: ${style};
-          font-display: ${display};
-        }
-      `;
+      // For Google Fonts CSS URLs, use link element instead of @font-face
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = fontUrl;
+      link.crossOrigin = 'anonymous';
       
-      document.head.appendChild(style_element);
+      link.onload = () => {
+        this.loadedFonts.add(fontFamily);
+        this.addFontLoadedClass(fontFamily);
+        onLoad && onLoad(fontFamily);
+        resolve(true);
+      };
       
-      // Test if font loaded
-      const timeout = setTimeout(() => {
+      link.onerror = () => {
         this.failedFonts.add(fontFamily);
-        onError && onError(fontFamily, new Error('CSS loading timeout'));
-        reject(new Error('Font loading timeout'));
-      }, this.timeout);
+        onError && onError(fontFamily, new Error('CSS loading failed'));
+        reject(new Error('Font loading failed'));
+      };
       
-      // Simple load test
+      document.head.appendChild(link);
+      
+      // Add timeout as backup
       setTimeout(() => {
-        if (this.checkFontAvailability(fontFamily)) {
-          clearTimeout(timeout);
-          this.loadedFonts.add(fontFamily);
-          this.addFontLoadedClass(fontFamily);
-          onLoad && onLoad(fontFamily);
-          resolve(true);
+        if (!this.loadedFonts.has(fontFamily) && !this.failedFonts.has(fontFamily)) {
+          this.failedFonts.add(fontFamily);
+          onError && onError(fontFamily, new Error('CSS loading timeout'));
+          reject(new Error('Font loading timeout'));
         }
-      }, 100);
+      }, this.timeout);
     });
   }
 
@@ -186,7 +182,9 @@ class FontLoader {
    * Add font loaded class for styling
    */
   addFontLoadedClass(fontFamily) {
-    document.documentElement.classList.add(`font-loaded-${fontFamily.toLowerCase()}`);
+    // Convert font name to valid CSS class name (remove spaces, special chars)
+    const validClassName = fontFamily.toLowerCase().replace(/[^a-z0-9]/g, '-');
+    document.documentElement.classList.add(`font-loaded-${validClassName}`);
     document.documentElement.classList.add('fonts-loaded');
   }
 
@@ -217,12 +215,12 @@ class FontLoader {
         onError: (fontFamily, error) => console.warn(`⚠️ Failed to load ${fontFamily}:`, error)
       },
       {
-        family: 'Orbitron',
-        url: 'https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&display=swap',
-        weight: '400-900',
+        family: 'Dancing Script',
+        url: 'https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&display=swap',
+        weight: '400-700',
         style: 'normal',
         display: 'swap',
-        fallback: 'Impact, "Arial Black", sans-serif',
+        fallback: 'cursive, "Brush Script MT", "Lucida Handwriting", fantasy',
         onLoad: (fontFamily) => console.log(`✅ ${fontFamily} loaded successfully`),
         onError: (fontFamily, error) => console.warn(`⚠️ Failed to load ${fontFamily}:`, error)
       }
