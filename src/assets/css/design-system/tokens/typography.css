@@ -1,14 +1,27 @@
 :root {
-  /* Typography - Font Families */
-  --font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-family-heading: 'JetBrains Mono', var(--font-family-monospace);
+  /* Typography - Core Font Families */
+  /* Inter - Primary body/base font */
+  --font-family-base: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  
+  /* Orbitron - Display/heading font for tech/cybersecurity branding */
+  --font-family-heading: 'Orbitron', Impact, "Arial Black", "Trebuchet MS", sans-serif;
+  
+  /* JetBrains Mono - Monospace font for code/terminal */
   --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   
-  /* Specialized Font Families */
+  /* Consistent Font Family Aliases */
   --font-family-jetbrains: 'JetBrains Mono', var(--font-family-monospace);
   --font-family-inter: 'Inter', var(--font-family-base);
-  --font-family-fira-code: 'Fira Code', var(--font-family-monospace);
-  --font-family-ibm-plex: 'IBM Plex Mono', var(--font-family-monospace);
+  --font-family-display: var(--font-family-heading);
+  --font-family-orbitron: var(--font-family-heading);
+  
+  /* Legacy aliases for backward compatibility */
+  --font-family-code: var(--font-family-jetbrains);
+  --font-family-terminal: var(--font-family-jetbrains);
+  --font-family-mono: var(--font-family-monospace);
+  
+  /* System font stack for fallback scenarios */
+  --font-family-system: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   
   /* Typography - Font Sizes */
   --font-size-xs: 0.75rem;

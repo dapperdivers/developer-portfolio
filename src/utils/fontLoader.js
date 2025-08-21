@@ -194,25 +194,59 @@ class FontLoader {
    * Load all fonts for the application
    */
   async loadAllFonts() {
+    // Centralized font management with Google Fonts API
     const fonts = [
       {
-        family: 'Agustina',
-        url: '/fonts/agustina/Agustina.otf',
-        fallback: 'Orbitron, Brush Script MT, cursive',
-        onLoad: () => console.log('✅ Agustina font loaded successfully'),
-        onError: (family, error) => console.warn(`⚠️ Agustina font failed to load, using fallback:`, error)
+        family: 'Inter',
+        url: 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap',
+        weight: '300-700',
+        style: 'normal',
+        display: 'swap',
+        fallback: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+        onLoad: (fontFamily) => console.log(`✅ ${fontFamily} loaded successfully`),
+        onError: (fontFamily, error) => console.warn(`⚠️ Failed to load ${fontFamily}:`, error)
+      },
+      {
+        family: 'JetBrains Mono',
+        url: 'https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap',
+        weight: '400-700',
+        style: 'normal',
+        display: 'swap',
+        fallback: 'SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+        onLoad: (fontFamily) => console.log(`✅ ${fontFamily} loaded successfully`),
+        onError: (fontFamily, error) => console.warn(`⚠️ Failed to load ${fontFamily}:`, error)
+      },
+      {
+        family: 'Orbitron',
+        url: 'https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&display=swap',
+        weight: '400-900',
+        style: 'normal',
+        display: 'swap',
+        fallback: 'Impact, "Arial Black", sans-serif',
+        onLoad: (fontFamily) => console.log(`✅ ${fontFamily} loaded successfully`),
+        onError: (fontFamily, error) => console.warn(`⚠️ Failed to load ${fontFamily}:`, error)
       }
     ];
+
+    console.log('🎨 Starting font loading process...');
 
     const results = await Promise.allSettled(
       fonts.map(font => this.loadFont(font.family, font.url, font))
     );
 
-    // Log results
+    // Log results with detailed information
     const loaded = results.filter(r => r.status === 'fulfilled' && r.value).length;
     const failed = results.length - loaded;
     
     console.log(`🎨 Font loading complete: ${loaded} loaded, ${failed} failed`);
+    
+    if (loaded === fonts.length) {
+      console.log('✅ All fonts loaded successfully!');
+      document.documentElement.classList.add('all-fonts-loaded');
+    } else if (failed > 0) {
+      console.warn(`⚠️ ${failed} fonts failed to load - using fallbacks`);
+      document.documentElement.classList.add('fonts-partial-failure');
+    }
     
     return { loaded, failed, total: results.length };
   }

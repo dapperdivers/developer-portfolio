@@ -1,130 +1,152 @@
 /**
- * Professional Font Loading System
+ * Professional Font System
  * 
- * This file implements a robust font loading strategy with:
- * - Multiple format support for better browser compatibility
- * - Proper fallback fonts for graceful degradation
- * - Performance optimizations with font-display: swap
- * - Font feature settings to avoid browser warnings
+ * This file implements a centralized font loading strategy using CSS variables
+ * from the design system typography tokens. Fonts are loaded via fontLoader.js
+ * with proper fallbacks and performance optimizations.
+ * 
+ * Font Stack:
+ * - Inter: Base/body text font
+ * - JetBrains Mono: Monospace/terminal/code font  
+ * - Orbitron: Display/heading/tech accent font
  */
 
-/* Primary Custom Font - Agustina */
-@font-face {
-  font-family: 'Agustina';
-  src: url('/fonts/agustina/Agustina.otf') format('opentype');
-  font-display: swap;
-  font-weight: 400;
-  font-style: normal;
-  font-feature-settings: normal;
-  font-kerning: none;
-  /* Disable problematic font features to prevent kern table warnings */
-  font-variant-ligatures: none;
-  font-variant-caps: normal;
-}
+/* Base Font Classes Using Design System Variables */
 
-/* Fallback font classes with comprehensive stacks */
-.font-agustina {
-  font-family: 'Agustina', 
-               'Brush Script MT', 
-               'Lucida Handwriting', 
-               'Marker Felt', 
-               'Trebuchet MS', 
-               'Segoe Print',
-               cursive;
+/* Primary body font class */
+.font-base,
+.font-inter {
+  font-family: var(--font-family-base);
   font-display: swap;
-  letter-spacing: 0.05em;
-  font-weight: 400;
-  font-style: normal;
   
-  /* Disable problematic font features */
-  font-feature-settings: normal;
-  font-kerning: none;
-  font-variant-ligatures: none;
-  
-  /* Enhance readability */
+  /* Modern font rendering optimizations */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
 
-/* Alternative heading font using Google Fonts as backup */
-.font-heading-alt {
-  font-family: 'Orbitron', 
-               'Futura', 
-               'Century Gothic', 
-               'Arial', 
-               sans-serif;
+/* Display/heading font class */
+.font-display,
+.font-heading,
+.font-orbitron {
+  font-family: var(--font-family-heading);
   font-display: swap;
-  font-weight: 700;
-  letter-spacing: 0.02em;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--letter-spacing-wide);
   text-transform: uppercase;
+  
+  /* Enhanced rendering for display fonts */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Monospace font class for code/terminal */
+.font-mono,
+.font-code,
+.font-terminal,
+.font-jetbrains {
+  font-family: var(--font-family-jetbrains);
+  font-display: swap;
+  letter-spacing: var(--letter-spacing-technical);
+  
+  /* Monospace-specific optimizations */
+  -webkit-font-smoothing: auto;
+  -moz-osx-font-smoothing: auto;
+  text-rendering: optimizeSpeed;
 }
 
 /* System font fallback for maximum compatibility */
 .font-system {
-  font-family: 
-    /* macOS */
-    -apple-system,
-    /* iOS */
-    'SF Pro Display',
-    /* Windows */
-    'Segoe UI',
-    /* Android */
-    'Roboto',
-    /* Older Android */
-    'Droid Sans',
-    /* Linux */
-    'Liberation Sans',
-    /* Generic fallback */
-    sans-serif;
+  font-family: var(--font-family-base);
   font-display: swap;
 }
 
-/* Loading states and error handling */
+/* Legacy class support - now using Orbitron via CSS variables */
+.font-agustina {
+  font-family: var(--font-family-heading);
+  font-display: swap;
+  letter-spacing: 0.05em;
+  font-weight: var(--font-weight-semibold);
+  
+  /* Modern font rendering optimizations */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Font Loading State Classes */
+
+/* Loading state */
 .font-loading {
-  font-family: 'Orbitron', 'Arial', sans-serif;
+  font-family: var(--font-family-base);
   opacity: 0.7;
   transition: opacity 0.3s ease;
 }
 
-/* When fonts are loaded */
-.fonts-loaded .font-agustina {
+/* Successful font loading states */
+.fonts-loaded .font-base,
+.fonts-loaded .font-agustina,
+.fonts-loaded .font-display {
   opacity: 1;
   transition: opacity 0.3s ease;
 }
 
-/* Font fallback strategies */
-.font-fallback-agustina .font-agustina {
-  font-family: 'Orbitron', 'Brush Script MT', 'Lucida Handwriting', cursive;
+.all-fonts-loaded body {
+  font-family: var(--font-family-base);
 }
 
-/* Specific font loaded states */
-.font-loaded-agustina .font-agustina {
-  font-family: 'Agustina', 'Orbitron', 'Brush Script MT', cursive;
+/* Partial failure state - use system fonts */
+.fonts-partial-failure .font-base {
+  font-family: system-ui, -apple-system, sans-serif;
 }
 
-/* Critical font loading optimization */
+.fonts-partial-failure .font-mono {
+  font-family: 'Courier New', monospace;
+}
+
+.fonts-partial-failure .font-display {
+  font-family: Impact, 'Arial Black', sans-serif;
+}
+
+/* Font Optimization Settings */
+
+/* Disable font synthesis for better performance */
+.font-base,
+.font-display,
+.font-mono,
 .font-agustina {
   font-synthesis: none;
   font-optical-sizing: auto;
 }
 
-/* Preload critical fonts */
+/* Performance optimizations */
 @media (prefers-reduced-motion: no-preference) {
-  .font-agustina {
+  .font-base,
+  .font-display,
+  .font-mono {
     font-synthesis: none;
   }
 }
 
-/* Responsive font sizing */
+/* Responsive Typography Adjustments */
+
+/* Mobile optimizations */
 @media (max-width: 768px) {
+  .font-display,
   .font-agustina {
     letter-spacing: 0.03em;
   }
+  
+  .font-mono {
+    letter-spacing: 0.02em;
+  }
 }
 
-/* High DPI displays */
+/* High DPI display optimizations */
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .font-base,
+  .font-display,
   .font-agustina {
     -webkit-font-smoothing: subpixel-antialiased;
   }
