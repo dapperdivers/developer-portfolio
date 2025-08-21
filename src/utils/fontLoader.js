@@ -215,9 +215,9 @@ class FontLoader {
         onError: (fontFamily, error) => console.warn(`⚠️ Failed to load ${fontFamily}:`, error)
       },
       {
-        family: 'Dancing Script',
-        url: 'https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&display=swap',
-        weight: '400-700',
+        family: 'Luxurious Script',
+        url: 'https://fonts.googleapis.com/css2?family=Luxurious+Script&display=swap',
+        weight: '400',
         style: 'normal',
         display: 'swap',
         fallback: 'cursive, "Brush Script MT", "Lucida Handwriting", fantasy',

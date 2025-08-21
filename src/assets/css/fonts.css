@@ -28,7 +28,7 @@
 /* Display/heading font class */
 .font-display,
 .font-heading,
-.font-dancing-script,
+.font-luxurious-script,
 .font-orbitron {
   font-family: var(--font-family-heading);
   font-display: swap;
@@ -63,7 +63,7 @@
   font-display: swap;
 }
 
-/* Legacy class support - now using Dancing Script via CSS variables */
+/* Legacy class support - now using Luxurious Script via CSS variables */
 .font-agustina {
   font-family: var(--font-family-heading);
   font-display: swap;
