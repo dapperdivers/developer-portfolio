@@ -15,7 +15,7 @@ import envConfig from './base/env';
 import getCorePlugins from './plugins/core';
 import getPwaPlugins from './plugins/pwa';
 import getCodeSplittingConfig from './optimization/splitting';
-import getDevConfig from './dev/server';
+import getViteDevConfig from './dev/vite';
 
 // Initialize environment variables
 const { initEnv, getClientEnv, isProd, isDev, getNodeEnv } = envConfig;
@@ -44,8 +44,8 @@ export default defineConfig(({ command, mode }) => {
     ...getPwaPlugins({ isProd: isProd(), analyze: isAnalyze }),
   ].filter(Boolean); // Remove any false/undefined entries
   
-  // Development server configuration
-  const devConfig = getDevConfig();
+  // Vite development server configuration
+  const viteDevConfig = getViteDevConfig();
   
   return {
     // Base URL for assets
@@ -90,6 +90,9 @@ export default defineConfig(({ command, mode }) => {
       // Increase warning limit for chunks
       chunkSizeWarningLimit: 1600,
       
+      // Disable CSS code splitting to include all CSS (including lazy-loaded components) in main CSS file
+      cssCodeSplit: false,
+      
       // Apply Rollup options from splitting.js
       ...rollupOptions,
       
@@ -109,8 +112,8 @@ export default defineConfig(({ command, mode }) => {
       } : undefined
     },
     
-    // Development server configuration (from dev/server.js)
-    ...devConfig,
+    // Vite development server configuration
+    ...viteDevConfig,
     
     // Dependency optimization
     optimizeDeps: {

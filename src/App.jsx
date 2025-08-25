@@ -94,26 +94,35 @@ const initialDebugConfig = {
  * The root component for the portfolio application
  */
 function App() {
+  console.log('[DEBUG] App component rendering...');
+  
   const [isLoaded, setIsLoaded] = useState(false);
   const [hideLoader, setHideLoader] = useState(false);
   
   // Handle initial loading
   useEffect(() => {
+    console.log('[DEBUG] App useEffect starting initialization...');
+    
     // Apply runtime fixes for browser compatibility
     applyRuntimeFixes();
+    console.log('[DEBUG] Runtime fixes applied');
     
     // Initialize image optimization
     initImageOptimization();
+    console.log('[DEBUG] Image optimization initialized');
     
     // Apply security enhancements
     applySecurityEnhancements();
+    console.log('[DEBUG] Security enhancements applied');
     
     // Set loaded immediately after initialization
     setIsLoaded(true);
+    console.log('[DEBUG] App marked as loaded');
     
     // Hide loader after transition completes
     const timer = setTimeout(() => {
       setHideLoader(true);
+      console.log('[DEBUG] Loader hidden');
     }, 500);
     
     return () => clearTimeout(timer);

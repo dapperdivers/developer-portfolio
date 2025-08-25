@@ -51,6 +51,42 @@ $ yarn
 $ yarn dev
 ```
 
+## 🚀 Production Deployment
+
+For production deployment, the project uses an Express server with enhanced security features, rate limiting, and multi-app routing.
+
+### Production Build & Start
+
+```bash
+# Build and start production server (builds automatically)
+$ yarn start:prod
+
+# Or build first, then start
+$ yarn build:prod
+$ yarn start
+
+# The server will run on http://localhost:8080
+```
+
+### Production Features
+
+- **Enhanced Security**: Helmet.js security headers, CSP policies, XSS protection
+- **Rate Limiting**: Built-in request rate limiting and IP protection  
+- **Multi-App Support**: Serves main portfolio, Storybook, and documentation
+- **Health Checks**: Comprehensive health monitoring endpoints
+- **API Proxying**: Geocoding and other API proxy services
+- **Performance**: Optimized static file serving with caching headers
+
+### Environment Variables
+
+Create a `.env` file for production configuration:
+
+```bash
+NODE_ENV=production
+PORT=8080
+ALLOWED_DOMAINS=https://yourdomain.com,https://www.yourdomain.com
+```
+
 ## 📋 Sections
 
 - About Me & Summary

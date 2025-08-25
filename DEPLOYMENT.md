@@ -20,7 +20,6 @@ All three applications support these environment variables for dynamic URL confi
 | `VITE_SITE_MAIN_URL` | URL for the main portfolio site | `https://derekmackley.com` |
 | `VITE_SITE_STORYBOOK_URL` | URL for the Storybook site | `https://storybook.derekmackley.com` |
 | `VITE_SITE_DOCS_URL` | URL for the documentation site | `https://docs.derekmackley.com` |
-| `VITE_SITE_NAVIGATOR_ENABLED` | Enable/disable site navigator | `true` (default) |
 
 ## Building Docker Images
 
@@ -234,13 +233,6 @@ The main portfolio site includes navigation to the Storybook component library. 
 - Supports keyboard navigation and accessibility
 - Works across both deployments (React main site, Storybook)
 
-### Disabling Site Navigator
-
-To disable the site navigator for any deployment:
-
-```bash
-docker build --build-arg VITE_SITE_NAVIGATOR_ENABLED=false ...
-```
 
 ## Security Features
 
@@ -260,9 +252,7 @@ Each service exposes health check endpoints:
 
 ## Development vs Production
 
-The site navigator automatically detects the environment:
-- **Development**: Uses localhost with different ports
-- **Production**: Uses the configured environment variable URLs
+Services run on dedicated ports in development and can be deployed independently in production.
 
 ## CI/CD Integration
 

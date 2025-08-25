@@ -109,13 +109,30 @@ class FontLoader {
     const { weight, style, display, onLoad, onError } = options;
     
     return new Promise((resolve, reject) => {
+      // Check if we're in a restricted network environment (Docker)
+      const isRestricted = typeof window !== 'undefined' && window.location.hostname === 'localhost';
+      
       // For Google Fonts CSS URLs, use link element instead of @font-face
       const link = document.createElement('link');
       link.rel = 'stylesheet';
       link.href = fontUrl;
       link.crossOrigin = 'anonymous';
       
+      // Add preconnect for faster loading
+      const preconnect = document.createElement('link');
+      preconnect.rel = 'preconnect';
+      preconnect.href = 'https://fonts.googleapis.com';
+      preconnect.crossOrigin = 'anonymous';
+      document.head.appendChild(preconnect);
+      
+      const preconnectStatic = document.createElement('link');
+      preconnectStatic.rel = 'preconnect';
+      preconnectStatic.href = 'https://fonts.gstatic.com';
+      preconnectStatic.crossOrigin = 'anonymous';
+      document.head.appendChild(preconnectStatic);
+      
       link.onload = () => {
+        console.log(`[DEBUG] Font loaded via CSS: ${fontFamily}`);
         this.loadedFonts.add(fontFamily);
         this.addFontLoadedClass(fontFamily);
         onLoad && onLoad(fontFamily);
@@ -123,21 +140,26 @@ class FontLoader {
       };
       
       link.onerror = () => {
+        console.warn(`[DEBUG] Font CSS loading failed: ${fontFamily}`);
         this.failedFonts.add(fontFamily);
         onError && onError(fontFamily, new Error('CSS loading failed'));
-        reject(new Error('Font loading failed'));
+        // Don't reject - resolve false to allow graceful fallback
+        resolve(false);
       };
       
       document.head.appendChild(link);
       
-      // Add timeout as backup
+      // Add timeout as backup - increased timeout for Docker networks
+      const timeout = isRestricted ? 6000 : this.timeout;
       setTimeout(() => {
         if (!this.loadedFonts.has(fontFamily) && !this.failedFonts.has(fontFamily)) {
+          console.warn(`[DEBUG] Font CSS loading timeout: ${fontFamily} (${timeout}ms)`);
           this.failedFonts.add(fontFamily);
           onError && onError(fontFamily, new Error('CSS loading timeout'));
-          reject(new Error('Font loading timeout'));
+          // Don't reject - resolve false to allow graceful fallback
+          resolve(false);
         }
-      }, this.timeout);
+      }, timeout);
     });
   }
 
@@ -189,9 +211,68 @@ class FontLoader {
   }
 
   /**
+   * Detect if we're in a network-restricted environment
+   */
+  detectRestrictedEnvironment() {
+    // Check common indicators of restricted environments
+    const isDocker = typeof window !== 'undefined' && (
+      window.location.hostname === 'localhost' ||
+      window.location.hostname === '127.0.0.1' ||
+      window.location.hostname.includes('docker') ||
+      navigator.userAgent.includes('Docker')
+    );
+    
+    const isOffline = typeof navigator !== 'undefined' && !navigator.onLine;
+    
+    return isDocker || isOffline;
+  }
+
+  /**
+   * Apply CSS-based font fallbacks immediately
+   */
+  applyImmediateFallbacks() {
+    const fallbackCSS = `
+      :root {
+        --font-family-primary: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        --font-family-mono: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        --font-family-script: cursive, "Brush Script MT", "Lucida Handwriting", fantasy;
+      }
+      
+      body {
+        font-family: var(--font-family-primary) !important;
+      }
+      
+      .font-fallback-active {
+        font-family: var(--font-family-primary) !important;
+      }
+      
+      .font-mono, .font-jetbrains, code, pre {
+        font-family: var(--font-family-mono) !important;
+      }
+      
+      .font-script, .font-luxurious {
+        font-family: var(--font-family-script) !important;
+      }
+    `;
+    
+    const style = document.createElement('style');
+    style.textContent = fallbackCSS;
+    document.head.appendChild(style);
+    document.documentElement.classList.add('font-fallback-active');
+    console.log('[DEBUG] Applied immediate font fallbacks');
+  }
+
+  /**
    * Load all fonts for the application
    */
   async loadAllFonts() {
+    const isRestricted = this.detectRestrictedEnvironment();
+    
+    if (isRestricted) {
+      console.log('[DEBUG] Restricted environment detected - applying fallbacks immediately');
+      this.applyImmediateFallbacks();
+    }
+    
     // Centralized font management with Google Fonts API
     const fonts = [
       {
@@ -226,7 +307,12 @@ class FontLoader {
       }
     ];
 
-    console.log('🎨 Starting font loading process...');
+    console.log('[DEBUG] Starting font loading process...');
+
+    // In restricted environments, try loading with shorter timeout
+    if (isRestricted) {
+      this.timeout = 2000; // Reduce timeout for Docker environments
+    }
 
     const results = await Promise.allSettled(
       fonts.map(font => this.loadFont(font.family, font.url, font))
@@ -236,13 +322,14 @@ class FontLoader {
     const loaded = results.filter(r => r.status === 'fulfilled' && r.value).length;
     const failed = results.length - loaded;
     
-    console.log(`🎨 Font loading complete: ${loaded} loaded, ${failed} failed`);
+    console.log(`[DEBUG] Font loading complete: ${loaded} loaded, ${failed} failed`);
     
     if (loaded === fonts.length) {
-      console.log('✅ All fonts loaded successfully!');
+      console.log('[DEBUG] All fonts loaded successfully!');
       document.documentElement.classList.add('all-fonts-loaded');
+      document.documentElement.classList.remove('font-fallback-active');
     } else if (failed > 0) {
-      console.warn(`⚠️ ${failed} fonts failed to load - using fallbacks`);
+      console.warn(`[DEBUG] ${failed} fonts failed to load - keeping fallbacks active`);
       document.documentElement.classList.add('fonts-partial-failure');
     }
     
@@ -253,11 +340,25 @@ class FontLoader {
 // Create global instance
 const fontLoader = new FontLoader();
 
-// Auto-load fonts when DOM is ready
+// Auto-load fonts when DOM is ready - NON-BLOCKING for React hydration
+const loadFontsAsync = async () => {
+  try {
+    console.log('[DEBUG] Starting async font loading...');
+    await fontLoader.loadAllFonts();
+    console.log('[DEBUG] Font loading completed');
+  } catch (error) {
+    console.warn('[DEBUG] Font loading failed, continuing with fallbacks:', error);
+    // Don't block React hydration even if fonts fail
+  }
+};
+
+// Use setTimeout to ensure this doesn't block React hydration
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => fontLoader.loadAllFonts());
+  document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(loadFontsAsync, 0); // Defer to next tick
+  });
 } else {
-  fontLoader.loadAllFonts();
+  setTimeout(loadFontsAsync, 0); // Defer to next tick
 }
 
 export default fontLoader;

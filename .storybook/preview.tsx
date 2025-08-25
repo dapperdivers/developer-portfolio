@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import type { Preview } from '@storybook/react';
 import { 
   withHelmetProvider, 
@@ -18,38 +18,7 @@ import '../src/assets/css/global.css';
 // and don't need to be imported here. This follows the co-location principle
 // where each component imports its own CSS file.
 
-/**
- * Site Navigator decorator for cross-site navigation
- */
-const withSiteNavigator = (Story: any) => {
-  useEffect(() => {
-    // Load the site navigator script if not already loaded
-    if (!document.querySelector('script[src*="site-navigator"]') && !window.customElements?.get('site-navigator')) {
-      const script = document.createElement('script');
-      script.src = '/site-navigator.js';
-      script.defer = true;
-      document.head.appendChild(script);
-    }
-    
-    // Ensure the site navigator component is added to DOM
-    const ensureNavigator = () => {
-      if (!document.querySelector('site-navigator') && window.customElements?.get('site-navigator')) {
-        const navigator = document.createElement('site-navigator');
-        document.body.appendChild(navigator);
-      }
-    };
-    
-    // Try immediately and also after a short delay
-    ensureNavigator();
-    const timeout = setTimeout(ensureNavigator, 500);
-    
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, []);
-
-  return <Story />;
-};
+// Note: Site Navigator removed from Storybook for cleaner component development experience
 
 /**
  * Default Storybook preview configuration
@@ -83,9 +52,7 @@ const preview: Preview = {
         <Story />
       </div>
     ),
-    // Site navigator for cross-site navigation
-    withSiteNavigator,
-    // Then wrap with context providers in proper order
+    // Wrap with context providers in proper order
     withAnimationContext,
     withPortfolioContext,
     withHelmetProvider,

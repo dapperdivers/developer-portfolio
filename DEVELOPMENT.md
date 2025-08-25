@@ -140,11 +140,10 @@ rm -rf node_modules/.cache
 ## Configuration
 
 ### Customizing Services
-The development environment is configured in `dev.config.js`. You can modify:
-- Service ports
-- Command arguments
-- Colors and names
-- Service combinations
+The development environment is configured in `/config/vite/dev/server.js` and package.json scripts. You can modify:
+- Server configuration (ports, middleware, etc.)
+- Package scripts for different development modes
+- Service combinations in package.json
 
 ### Environment Variables
 Services respect these environment variables:

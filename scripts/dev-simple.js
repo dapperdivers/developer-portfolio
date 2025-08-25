@@ -17,9 +17,87 @@ function killProcessesOnPorts() {
   
   console.log('\x1b[33m🧹 Checking for existing services...\x1b[0m');
   
+  // Check for Docker containers using our ports
+  try {
+    const dockerResult = spawnSync('docker', ['ps', '--format', 'table {{.Names}}\t{{.Ports}}'], {
+      stdio: 'pipe',
+      encoding: 'utf8'
+    });
+    
+    if (dockerResult.stdout) {
+      const lines = dockerResult.stdout.split('\n');
+      lines.forEach(line => {
+        if (line.includes(':3001->') || line.includes(':5173->') || line.includes(':6006->') || line.includes(':4000->')) {
+          const containerName = line.split('\t')[0];
+          if (containerName && containerName !== 'NAMES') {
+            console.log(`\x1b[90m   Stopping Docker container: ${containerName}\x1b[0m`);
+            try {
+              spawnSync('docker', ['stop', containerName], { stdio: 'pipe' });
+            } catch (e) {
+              // Container might already be stopped
+            }
+          }
+        }
+      });
+    }
+  } catch (e) {
+    // Docker might not be available
+  }
+  
+  // First, try to kill any known process patterns
+  const patterns = [
+    'node config/vite/dev/server.js',
+    'PORT=3001',
+    'vite.*5173',
+    'storybook.*6006',
+    'jekyll.*4000'
+  ];
+  
+  patterns.forEach(pattern => {
+    try {
+      const result = spawnSync('pkill', ['-f', pattern], { stdio: 'pipe' });
+      if (result.status === 0) {
+        console.log(`\x1b[90m   Killed processes matching: ${pattern}\x1b[0m`);
+      }
+    } catch (e) {
+      // pkill might not be available or no matches
+    }
+  });
+  
+  // Wait a moment for processes to die
+  const start = Date.now();
+  while (Date.now() - start < 1000) {
+    // Wait 1 second
+  }
+  
   ports.forEach(port => {
     try {
-      // Find processes using the port
+      // Try to get PID using ss with extended info
+      const ssResult = spawnSync('ss', ['-tlpn'], { 
+        stdio: 'pipe',
+        encoding: 'utf8'
+      });
+      
+      if (ssResult.stdout) {
+        const lines = ssResult.stdout.split('\n');
+        const portLines = lines.filter(line => line.includes(`:${port} `));
+        
+        portLines.forEach(line => {
+          // Extract PID from ss output like "users:(("node",pid=123456,fd=19))"
+          const pidMatch = line.match(/pid=(\d+)/);
+          if (pidMatch) {
+            const pid = pidMatch[1];
+            console.log(`\x1b[90m   Killing process ${pid} on port ${port}\x1b[0m`);
+            try {
+              spawnSync('kill', ['-9', pid], { stdio: 'pipe' });
+            } catch (e) {
+              // Process might already be dead
+            }
+          }
+        });
+      }
+      
+      // Also try lsof as fallback
       const lsofResult = spawnSync('lsof', ['-ti', `:${port}`], { 
         stdio: 'pipe',
         encoding: 'utf8'
@@ -29,7 +107,7 @@ function killProcessesOnPorts() {
         const pids = lsofResult.stdout.trim().split('\n');
         pids.forEach(pid => {
           if (pid && pid.trim()) {
-            console.log(`\x1b[90m   Killing process ${pid} on port ${port}\x1b[0m`);
+            console.log(`\x1b[90m   Killing process ${pid} on port ${port} (lsof)\x1b[0m`);
             try {
               spawnSync('kill', ['-9', pid.trim()], { stdio: 'pipe' });
             } catch (e) {
@@ -39,11 +117,17 @@ function killProcessesOnPorts() {
         });
       }
     } catch (e) {
-      // lsof might not be available or port not in use
+      // Commands might not be available
     }
   });
   
   console.log('\x1b[32m✅ Service cleanup complete\x1b[0m\n');
+  
+  // Wait another moment for cleanup to complete
+  const start2 = Date.now();
+  while (Date.now() - start2 < 500) {
+    // Wait 0.5 seconds
+  }
 }
 
 // Check if bundler is available
@@ -73,7 +157,7 @@ function getAvailableServices() {
     },
     {
       name: 'server',
-      command: 'PORT=3001 node server.js',
+      command: 'PORT=3001 node config/vite/dev/server.js',
       color: 'green'
     }
   ];

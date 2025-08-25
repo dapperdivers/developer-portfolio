@@ -1,6 +1,6 @@
 import React from 'react';
 import Education from './Education';
-import { expect, within } from '@storybook/test';
+import { expect, within } from 'storybook/test';
 import PortfolioContext from '@context/PortfolioContext';
 
 // Mock portfolio data for stories
