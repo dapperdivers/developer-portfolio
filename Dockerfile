@@ -43,14 +43,14 @@ RUN yarn install --frozen-lockfile --production=false \
 # Copy source code and configuration
 COPY . .
 
-# Build all three sites
+# Build all three sites with proper error handling and resource management
 RUN echo "Building main portfolio with NODE_ENV=${NODE_ENV}..." \
     && yarn build:prod \
     && echo "Main portfolio build completed successfully" \
     && ls -la build/
 
 RUN echo "Building Storybook..." \
-    && yarn storybook:build \
+    && NODE_OPTIONS="--max-old-space-size=4096" yarn storybook:build \
     && echo "Storybook build completed successfully" \
     && ls -la storybook-static/
 
