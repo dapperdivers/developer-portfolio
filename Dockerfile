@@ -1,16 +1,20 @@
-# Production Dockerfile for Derek Mackley Developer Portfolio
-# Multi-stage build optimized for production deployment
+# Production Dockerfile for Derek Mackley Developer Portfolio  
+# Optimized 3-builder multi-stage build with parallel compilation
 
-# Build Stage
-FROM node:22-alpine AS builder
+# syntax=docker/dockerfile:1
 
-# Set build arguments for configuration
+# Build arguments shared across stages
 ARG NODE_ENV=production
 ARG VITE_SITE_MAIN_URL=https://derekmackley.com
 ARG VITE_SITE_STORYBOOK_URL=https://storybook.derekmackley.com
 ARG VITE_SITE_DOCS_URL=https://docs.derekmackley.com
 
-# Set environment variables
+# ============================================================================
+# Base Node.js Builder - Common dependencies for React and Storybook
+# ============================================================================
+FROM node:22-alpine AS node-base
+
+# Set environment variables  
 ENV NODE_ENV=${NODE_ENV}
 ENV VITE_SITE_MAIN_URL=${VITE_SITE_MAIN_URL}
 ENV VITE_SITE_STORYBOOK_URL=${VITE_SITE_STORYBOOK_URL}
@@ -18,62 +22,77 @@ ENV VITE_SITE_DOCS_URL=${VITE_SITE_DOCS_URL}
 ENV CI=true
 ENV FORCE_COLOR=3
 
-# Install build dependencies including Ruby for Jekyll
+# Install Node.js build dependencies
 RUN apk add --no-cache \
     git \
     python3 \
     make \
     g++ \
-    ruby \
-    ruby-dev \
-    ruby-bundler \
-    build-base \
-    libffi-dev \
     && rm -rf /var/cache/apk/*
 
-# Set working directory
 WORKDIR /app
 
-# Copy package files for dependency installation
+# Copy and install Node.js dependencies 
 COPY package.json yarn.lock ./
-
-# Install dependencies with frozen lockfile
 RUN yarn install --frozen-lockfile --production=false \
     && yarn cache clean
 
-# Copy source code and configuration
+# Copy source code
 COPY . .
 
-# Build all three sites with proper error handling and resource management
-RUN echo "Building main portfolio with NODE_ENV=${NODE_ENV}..." \
-    && yarn build:prod \
-    && echo "Main portfolio build completed successfully" \
-    && ls -la build/
+# ============================================================================
+# Builder 1: React Portfolio Site
+# ============================================================================
+FROM node-base AS react-builder
 
-RUN echo "Building Storybook..." \
-    && NODE_OPTIONS="--max-old-space-size=4096" yarn storybook:build \
-    && echo "Storybook build completed successfully" \
-    && ls -la storybook-static/
+# Build main portfolio site
+RUN yarn build:prod
 
-RUN echo "Building Jekyll docs..." \
-    && cd docs \
+# Verify build artifacts exist
+RUN test -f build/index.html && test -d build/assets
+
+# ============================================================================
+# Builder 2: Storybook Component Library  
+# ============================================================================
+FROM node-base AS storybook-builder
+
+# Build Storybook with increased memory limit
+RUN NODE_OPTIONS="--max-old-space-size=4096" yarn storybook:build
+
+# Verify Storybook build artifacts exist
+RUN test -f storybook-static/index.html
+
+# ============================================================================
+# Builder 3: Jekyll Documentation Site
+# ============================================================================
+FROM ruby:3.2-alpine AS jekyll-builder
+
+# Install Jekyll build dependencies
+RUN apk add --no-cache \
+    build-base \
+    libffi-dev \
+    git \
+    && rm -rf /var/cache/apk/*
+
+WORKDIR /app
+
+# Copy only docs directory and Gemfile
+COPY docs/ ./docs/
+
+# Build Jekyll documentation
+RUN cd docs \
     && bundle install \
-    && bundle exec jekyll build --destination ../docs-static \
-    && cd .. \
-    && echo "Jekyll docs build completed successfully" \
-    && ls -la docs-static/
+    && bundle exec jekyll build --destination ../docs-static
 
-# Verify critical build artifacts exist for all three sites
-RUN test -f build/index.html || (echo "ERROR: build/index.html not found" && exit 1) \
-    && test -d build/assets || (echo "ERROR: build/assets directory not found" && exit 1) \
-    && test -f storybook-static/index.html || (echo "ERROR: storybook-static/index.html not found" && exit 1) \
-    && test -f docs-static/index.html || (echo "ERROR: docs-static/index.html not found" && exit 1) \
-    && echo "All builds verification passed"
+# Verify Jekyll build artifacts exist  
+RUN test -f docs-static/index.html
 
-# Production Stage
+# ============================================================================
+# Production Runtime Stage - Minimal Node.js server
+# ============================================================================
 FROM node:22-alpine AS production
 
-# Install runtime dependencies
+# Install minimal runtime dependencies
 RUN apk add --no-cache \
     dumb-init \
     && rm -rf /var/cache/apk/*
@@ -82,26 +101,24 @@ RUN apk add --no-cache \
 RUN addgroup -g 1001 -S nodejs \
     && adduser -S nextjs -u 1001 -G nodejs
 
-# Set working directory
 WORKDIR /app
 
 # Copy package files for production dependencies only
 COPY package.json yarn.lock ./
 
-# Install only production dependencies
+# Install only production Node.js dependencies  
 RUN yarn install --frozen-lockfile --production=true \
     && yarn cache clean \
     && chown -R nextjs:nodejs node_modules
 
-# Copy all built applications from builder stage
-COPY --from=builder --chown=nextjs:nodejs /app/build ./build
-COPY --from=builder --chown=nextjs:nodejs /app/storybook-static ./storybook-static  
-COPY --from=builder --chown=nextjs:nodejs /app/docs-static ./docs-static
-COPY --from=builder --chown=nextjs:nodejs /app/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/config ./config
+# Copy built sites from their respective builders
+COPY --from=react-builder --chown=nextjs:nodejs /app/build ./build
+COPY --from=storybook-builder --chown=nextjs:nodejs /app/storybook-static ./storybook-static  
+COPY --from=jekyll-builder --chown=nextjs:nodejs /app/docs-static ./docs-static
 
-# Copy production server configuration
-COPY --chown=nextjs:nodejs config/vite/prod/server.js ./server.js
+# Copy additional assets and server configuration
+COPY --from=react-builder --chown=nextjs:nodejs /app/public ./public
+COPY --chown=nextjs:nodejs config ./config
 
 # Create logs directory with proper permissions
 RUN mkdir -p /app/logs \
@@ -122,22 +139,24 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
 # Expose port
 EXPOSE 8080
 
-# Set environment variables for production
+# Set production environment variables
 ENV NODE_ENV=production
-ENV PORT=8080
+ENV PORT=8080  
 ENV HOST=0.0.0.0
 
 # Use dumb-init to properly handle signals
 ENTRYPOINT ["dumb-init", "--"]
 
-# Start the production server using the config
+# Start the production server
 CMD ["node", "config/vite/prod/server.js"]
 
 # Metadata labels
 LABEL org.opencontainers.image.title="Derek Mackley Developer Portfolio"
-LABEL org.opencontainers.image.description="Full Stack Developer Portfolio with React, Storybook, Jekyll docs, Node.js and security-focused architecture"
+LABEL org.opencontainers.image.description="Multi-builder optimized portfolio with React, Storybook, Jekyll docs"
 LABEL org.opencontainers.image.vendor="Derek Mackley"
 LABEL org.opencontainers.image.authors="Derek Mackley <contact@derekmackley.com>"
+LABEL build.architecture="multi-stage-parallel"
+LABEL build.builders="react,storybook,jekyll"
 LABEL deployment.type="nodejs-express"
 LABEL deployment.framework="vite-react"
 LABEL security.non-root="true"
