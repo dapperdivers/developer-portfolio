@@ -213,67 +213,56 @@ export const AnimationProvider = ({ children }: AnimationProviderProps): ReactEl
   
   // Add performance monitoring (dev only)
   const enablePerformanceMonitoring = (options: Partial<PerformanceMonitorOptions> = {}) => {
-    // Check for development using import.meta.env.DEV for Vite compatibility
-    const isDev = import.meta.env?.DEV || (process.env.NODE_ENV !== 'production');
-    
-    if (isDev) {
-      // Using dynamic import
-      const importPromise = import('../../scripts/monitor-animation-performance');
-      importPromise.then(module => {
-        try {
-          const monitor = module.default;
-          
-          // Check if browser supports required features
-          if (typeof window !== 'undefined' && 
-              typeof window.PerformanceObserver !== 'undefined') {
+    if (import.meta.env.DEV && typeof window !== 'undefined') {
+      // Use dynamic import only in development
+      import('@scripts/monitor-animation-performance')
+        .then(module => {
+          try {
+            const monitor = module.default;
             
-            monitor.start({
-              threshold: 16, 
-              reportingInterval: 3000, 
-              // Enable debug in development for better error reporting
-              debug: true,
-              ...options
-            });
-          } else {
-            // Provide a helpful message but don't fail
-            console.info('Animation performance monitoring is not fully supported in this browser. Some features will be limited.');
-            
-            // Try to start with limited functionality
-            monitor.start({
-              threshold: 16, 
-              reportingInterval: 3000, 
-              debug: true, // Force debug mode to see what's happening
-              ...options
-            });
+            // Check if browser supports required features
+            if (typeof window.PerformanceObserver !== 'undefined') {
+              monitor.start({
+                threshold: 16, 
+                reportingInterval: 3000, 
+                debug: true,
+                ...options
+              });
+            } else {
+              console.info('Animation performance monitoring is not fully supported in this browser. Some features will be limited.');
+              monitor.start({
+                threshold: 16, 
+                reportingInterval: 3000, 
+                debug: true,
+                ...options
+              });
+            }
+          } catch (error) {
+            console.error('Error initializing animation performance monitoring:', error);
+            console.info('Animation performance monitoring will be disabled. This will not affect the application functionality.');
           }
-        } catch (error) {
-          // More detailed error information
-          console.error('Error initializing animation performance monitoring:', error);
-          console.info('Animation performance monitoring will be disabled. This will not affect the application functionality.');
-        }
-      }).catch(err => {
-        console.error('Failed to load animation performance monitor:', err);
-      });
+        })
+        .catch(err => {
+          console.warn('Failed to load animation performance monitor:', err.message);
+        });
     }
   };
   
   const disablePerformanceMonitoring = () => {
-    // Check for development using import.meta.env.DEV for Vite compatibility
-    const isDev = import.meta.env?.DEV || (process.env.NODE_ENV !== 'production');
-    
-    if (isDev) {
-      // Using dynamic import
-      const importPromise = import('../../scripts/monitor-animation-performance');
-      importPromise.then(module => {
-        try {
-          const monitor = module.default;
-          monitor.stop();
-        } catch (error) {
-          console.error('Error stopping animation performance monitor:', error);
-        }
-      }).catch(err => {
-        console.error('Failed to load animation performance monitor:', err);
-      });
+    if (import.meta.env.DEV && typeof window !== 'undefined') {
+      // Use dynamic import only in development
+      import('@scripts/monitor-animation-performance')
+        .then(module => {
+          try {
+            const monitor = module.default;
+            monitor.stop();
+          } catch (error) {
+            console.error('Error stopping animation performance monitor:', error);
+          }
+        })
+        .catch(err => {
+          console.warn('Failed to load animation performance monitor:', err.message);
+        });
     }
   };
 

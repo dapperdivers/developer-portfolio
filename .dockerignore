@@ -1,0 +1,138 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+
+# Build outputs
+build/
+dist/
+storybook-static/
+docs-static/
+coverage/
+
+# Development files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Testing
+test-results/
+playwright-report/
+tests/browser/artifacts/
+tests/browser/reports/
+tests/browser/screenshots/
+tests/browser/videos/
+e2e/results/
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Cache directories
+.cache/
+.parcel-cache/
+.next/
+.nuxt/
+
+# Git
+.git/
+.gitignore
+
+# Documentation
+*.md
+!README.md
+docs/
+ai-context/
+
+# Development scripts
+scripts/dev-*
+scripts/generate*
+scripts/analyze*
+scripts/optimize*
+scripts/validate*
+scripts/monitor*
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Editor files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Backup files
+*.bak
+*.backup
+
+# Archive files
+*.tar
+*.tar.gz
+*.rar
+*.zip
+
+# Screenshots and recordings
+screenshot.png
+*.mov
+*.mp4
+
+# Storybook
+.storybook/
+*.stories.*
+
+# Jekyll (docs)
+docs/_site/
+docs/.sass-cache/
+docs/vendor/
+
+# Package manager lockfiles (keep yarn.lock)
+package-lock.json
+
+# Other build tools
+.vite/
+.rollup.cache/
+.turbo/
+
+# Local development
+.env.development
+.env.development.local
+
+# AI context and documentation
+DEVELOPMENT.md
+DEPLOYMENT.md
+SECURITY.md
+CLAUDE.md

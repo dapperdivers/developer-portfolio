@@ -149,8 +149,67 @@ export function createBaseServer(config = {}) {
     }
   }));
 
-  // Note: Storybook and docs are served on dedicated ports (6006 and 4000)
-  // Express server only handles file serving (resume, contact cards) and built portfolio
+  // Path-based routing for docs and storybook
+  // Serve documentation at /docs route
+  app.use('/docs', express.static(docsPath, {
+    ...getStaticHeaders(),
+    index: 'index.html',
+    setHeaders: (res, filePath) => {
+      res.set('X-Content-Type-Options', 'nosniff');
+      res.set('X-Frame-Options', 'SAMEORIGIN'); // Allow docs to be embedded
+      res.set('X-XSS-Protection', '1; mode=block');
+      res.set('Cache-Control', `public, max-age=${cacheMaxAge === '1y' ? '31536000' : cacheMaxAge}`);
+    }
+  }));
+
+  // Serve Storybook at /storybook route
+  app.use('/storybook', express.static(storybookPath, {
+    ...getStaticHeaders(),
+    index: 'index.html',
+    setHeaders: (res, filePath) => {
+      res.set('X-Content-Type-Options', 'nosniff');
+      res.set('X-Frame-Options', 'SAMEORIGIN'); // Allow storybook to be embedded
+      res.set('X-XSS-Protection', '1; mode=block');
+      res.set('Cache-Control', `public, max-age=${cacheMaxAge === '1y' ? '31536000' : cacheMaxAge}`);
+    }
+  }));
+
+  // Handle /docs/* and /storybook/* fallback routes (for SPA routing within each app)
+  app.get('/docs/*', (req, res) => {
+    console.log('🎯 EXPRESS: Docs fallback route hit for path:', req.path);
+    const docsIndexPath = path.join(docsPath, 'index.html');
+    
+    if (existsSync(docsIndexPath)) {
+      console.log('🎯 EXPRESS: Serving docs index.html from:', docsIndexPath);
+      res.sendFile(docsIndexPath, (err) => {
+        if (err) {
+          console.error('Error sending docs index.html:', err);
+          res.status(500).send('Error loading docs');
+        }
+      });
+    } else {
+      console.error('📂 EXPRESS: Docs index.html not found at:', docsIndexPath);
+      res.status(404).send('Documentation not available');
+    }
+  });
+
+  app.get('/storybook/*', (req, res) => {
+    console.log('🎯 EXPRESS: Storybook fallback route hit for path:', req.path);
+    const storybookIndexPath = path.join(storybookPath, 'index.html');
+    
+    if (existsSync(storybookIndexPath)) {
+      console.log('🎯 EXPRESS: Serving storybook index.html from:', storybookIndexPath);
+      res.sendFile(storybookIndexPath, (err) => {
+        if (err) {
+          console.error('Error sending storybook index.html:', err);
+          res.status(500).send('Error loading storybook');
+        }
+      });
+    } else {
+      console.error('📂 EXPRESS: Storybook index.html not found at:', storybookIndexPath);
+      res.status(404).send('Storybook not available');
+    }
+  });
 
   // Health check endpoints
   app.get('/healthz', (req, res) => {

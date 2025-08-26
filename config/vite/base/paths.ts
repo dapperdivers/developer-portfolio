@@ -58,6 +58,7 @@ export function createAliases() {
     
     // Utility directories
     '@utils': path.resolve(dirs.src, 'utils'),
+    '@scripts': path.resolve(rootDir, 'scripts'),
     
     // Data and state directories
     '@hooks': path.resolve(dirs.src, 'hooks'),

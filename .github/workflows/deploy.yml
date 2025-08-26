@@ -27,11 +27,26 @@ jobs:
           node-version: 22
           cache: 'yarn'
 
+      - name: Set up Ruby for Jekyll
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.0
+          bundler-cache: true
+          working-directory: docs
+
       - name: Install dependencies
         run: yarn install --frozen-lockfile --ignore-engines
 
-      - name: Validate build will work
-        run: yarn build && ls -la build/
+      - name: Validate all builds will work
+        run: |
+          echo "Building main portfolio..."
+          yarn build:prod && ls -la build/
+          echo "Building Storybook..."
+          yarn storybook:build && ls -la storybook-static/
+          echo "Building Jekyll docs..."
+          cd docs && bundle exec jekyll build --destination ../docs-static && cd ..
+          ls -la docs-static/
+          echo "All builds completed successfully"
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -67,7 +82,7 @@ jobs:
             org.opencontainers.image.revision=${{ github.sha }}
             org.opencontainers.image.created=${{ github.event.head_commit.timestamp }}
             maintainer=${{ github.actor }}
-            deployment.type=nginx-static
+            deployment.type=nodejs-express
             deployment.environment=production
 
       - name: Build and push Docker image
@@ -84,6 +99,11 @@ jobs:
           cache-to: type=gha,mode=max
           provenance: true
           sbom: true
+          build-args: |
+            NODE_ENV=production
+            VITE_SITE_MAIN_URL=https://derekmackley.com
+            VITE_SITE_STORYBOOK_URL=https://storybook.derekmackley.com
+            VITE_SITE_DOCS_URL=https://docs.derekmackley.com
           outputs: type=image,name=ghcr.io/${{ github.repository }},push-by-digest=true,name-canonical=true,push=true
 
       - name: Export digest
