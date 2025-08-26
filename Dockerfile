@@ -50,9 +50,14 @@ RUN echo "Building main portfolio with NODE_ENV=${NODE_ENV}..." \
     && ls -la build/
 
 RUN echo "Building Storybook..." \
+    && echo "Node version: $(node --version)" \
+    && echo "TypeScript version: $(npx tsc --version)" \
+    && echo "Verifying Vite config exists: $(ls -la vite.config.ts)" \
+    && echo "Verifying Storybook config exists: $(ls -la .storybook/main.ts)" \
     && NODE_OPTIONS="--max-old-space-size=4096" yarn storybook:build \
     && echo "Storybook build completed successfully" \
-    && ls -la storybook-static/
+    && ls -la storybook-static/ \
+    && test -f storybook-static/index.html || (echo "ERROR: Storybook index.html not found" && exit 1)
 
 RUN echo "Building Jekyll docs..." \
     && cd docs \
