@@ -18,7 +18,7 @@ ENV VITE_SITE_DOCS_URL=${VITE_SITE_DOCS_URL}
 ENV CI=true
 ENV FORCE_COLOR=3
 
-# Install build dependencies including Ruby for Jekyll and additional packages for Storybook
+# Install build dependencies including Ruby for Jekyll
 RUN apk add --no-cache \
     git \
     python3 \
@@ -28,9 +28,6 @@ RUN apk add --no-cache \
     ruby-dev \
     ruby-bundler \
     build-base \
-    bash \
-    coreutils \
-    findutils \
     && rm -rf /var/cache/apk/*
 
 # Set working directory
@@ -43,9 +40,6 @@ COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile --production=false \
     && yarn cache clean
 
-# Ensure TypeScript is available for build (use locally installed version)
-# No global installation to avoid yarn config conflicts
-
 # Copy source code and configuration
 COPY . .
 
@@ -55,26 +49,10 @@ RUN echo "Building main portfolio with NODE_ENV=${NODE_ENV}..." \
     && echo "Main portfolio build completed successfully" \
     && ls -la build/
 
-# Debug environment info
-RUN echo "=== Storybook Build Debug Info ===" \
-    && echo "Node version: $(node --version)" \
-    && echo "TypeScript version: $(npx tsc --version || echo 'TypeScript not available')" \
-    && echo "Yarn version: $(yarn --version)" \
-    && echo "Available memory: $(cat /proc/meminfo | grep MemTotal)" \
-    && echo "Free disk space: $(df -h /)" \
-    && echo "Working directory: $(pwd)" \
-    && echo "Vite config: $(ls -la vite.config.ts 2>/dev/null || echo 'Missing')" \
-    && echo "Storybook config: $(ls -la .storybook/main.ts 2>/dev/null || echo 'Missing')"
-
-# Build Storybook with optimized settings
-RUN echo "=== Starting Storybook Build ===" \
-    && export NODE_OPTIONS="--max-old-space-size=8192" \
-    && export STORYBOOK_DISABLE_TELEMETRY=1 \
-    && export CI=true \
-    && yarn storybook:build \
-    && echo "Storybook build completed" \
-    && ls -la storybook-static/ \
-    && test -f storybook-static/index.html || (echo "ERROR: Missing storybook-static/index.html" && exit 1)
+RUN echo "Building Storybook..." \
+    && NODE_OPTIONS="--max-old-space-size=4096" yarn storybook:build \
+    && echo "Storybook build completed successfully" \
+    && ls -la storybook-static/
 
 RUN echo "Building Jekyll docs..." \
     && cd docs \
@@ -109,16 +87,10 @@ WORKDIR /app
 # Copy package files for production dependencies only
 COPY package.json yarn.lock ./
 
-# Install only production dependencies with debugging
-RUN echo "Installing production dependencies..." \
-    && echo "Yarn version: $(yarn --version)" \
-    && echo "Node version: $(node --version)" \
-    && echo "Package.json exists: $(ls -la package.json)" \
-    && echo "Yarn.lock exists: $(ls -la yarn.lock)" \
-    && yarn install --frozen-lockfile --production=true --verbose \
+# Install only production dependencies
+RUN yarn install --frozen-lockfile --production=true \
     && yarn cache clean \
-    && chown -R nextjs:nodejs node_modules \
-    && echo "Production dependencies installed successfully"
+    && chown -R nextjs:nodejs node_modules
 
 # Copy all built applications from builder stage
 COPY --from=builder --chown=nextjs:nodejs /app/build ./build
