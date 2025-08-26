@@ -18,7 +18,7 @@ ENV VITE_SITE_DOCS_URL=${VITE_SITE_DOCS_URL}
 ENV CI=true
 ENV FORCE_COLOR=3
 
-# Install build dependencies including Ruby for Jekyll
+# Install build dependencies including Ruby for Jekyll and additional packages for Storybook
 RUN apk add --no-cache \
     git \
     python3 \
@@ -28,6 +28,9 @@ RUN apk add --no-cache \
     ruby-dev \
     ruby-bundler \
     build-base \
+    bash \
+    coreutils \
+    findutils \
     && rm -rf /var/cache/apk/*
 
 # Set working directory
@@ -40,6 +43,9 @@ COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile --production=false \
     && yarn cache clean
 
+# Install TypeScript globally for Docker builds
+RUN yarn global add typescript@latest
+
 # Copy source code and configuration
 COPY . .
 
@@ -51,10 +57,13 @@ RUN echo "Building main portfolio with NODE_ENV=${NODE_ENV}..." \
 
 RUN echo "Building Storybook..." \
     && echo "Node version: $(node --version)" \
-    && echo "TypeScript version: $(npx tsc --version)" \
+    && echo "TypeScript version: $(yarn tsc --version || npx tsc --version)" \
+    && echo "Yarn version: $(yarn --version)" \
     && echo "Verifying Vite config exists: $(ls -la vite.config.ts)" \
     && echo "Verifying Storybook config exists: $(ls -la .storybook/main.ts)" \
-    && NODE_OPTIONS="--max-old-space-size=4096" yarn storybook:build \
+    && echo "Working directory: $(pwd)" \
+    && echo "Available memory: $(cat /proc/meminfo | grep MemTotal)" \
+    && NODE_OPTIONS="--max-old-space-size=4096" timeout 300s yarn storybook:build \
     && echo "Storybook build completed successfully" \
     && ls -la storybook-static/ \
     && test -f storybook-static/index.html || (echo "ERROR: Storybook index.html not found" && exit 1)
