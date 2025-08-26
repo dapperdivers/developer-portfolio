@@ -43,8 +43,8 @@ COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile --production=false \
     && yarn cache clean
 
-# Install TypeScript globally for Docker builds
-RUN yarn global add typescript@latest
+# Ensure TypeScript is available for build (use locally installed version)
+# No global installation to avoid yarn config conflicts
 
 # Copy source code and configuration
 COPY . .
@@ -57,7 +57,7 @@ RUN echo "Building main portfolio with NODE_ENV=${NODE_ENV}..." \
 
 RUN echo "Building Storybook..." \
     && echo "Node version: $(node --version)" \
-    && echo "TypeScript version: $(yarn tsc --version || npx tsc --version)" \
+    && echo "TypeScript version: $(tsc --version || npx tsc --version || echo 'TypeScript not found')" \
     && echo "Yarn version: $(yarn --version)" \
     && echo "Verifying Vite config exists: $(ls -la vite.config.ts)" \
     && echo "Verifying Storybook config exists: $(ls -la .storybook/main.ts)" \
@@ -101,10 +101,16 @@ WORKDIR /app
 # Copy package files for production dependencies only
 COPY package.json yarn.lock ./
 
-# Install only production dependencies
-RUN yarn install --frozen-lockfile --production=true \
+# Install only production dependencies with debugging
+RUN echo "Installing production dependencies..." \
+    && echo "Yarn version: $(yarn --version)" \
+    && echo "Node version: $(node --version)" \
+    && echo "Package.json exists: $(ls -la package.json)" \
+    && echo "Yarn.lock exists: $(ls -la yarn.lock)" \
+    && yarn install --frozen-lockfile --production=true --verbose \
     && yarn cache clean \
-    && chown -R nextjs:nodejs node_modules
+    && chown -R nextjs:nodejs node_modules \
+    && echo "Production dependencies installed successfully"
 
 # Copy all built applications from builder stage
 COPY --from=builder --chown=nextjs:nodejs /app/build ./build
