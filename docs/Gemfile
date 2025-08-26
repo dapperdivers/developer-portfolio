@@ -19,5 +19,9 @@ gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 # Performance-booster for watching directories on Windows
 gem "wdm", "~> 0.1.1", :platforms => [:mingw, :mswin, :x64_mingw]
 
+# Required for Ruby 3.4+ compatibility
+gem "csv"
+gem "logger"
+
 # Lock http_parser.rb gem to v0.6.x on JRuby builds since newer versions
 gem "http_parser.rb", "~> 0.6.0", :platforms => [:jruby]

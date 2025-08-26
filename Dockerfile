@@ -56,7 +56,7 @@ RUN echo "Building Storybook..." \
 
 RUN echo "Building Jekyll docs..." \
     && cd docs \
-    && bundle install --deployment \
+    && bundle install \
     && bundle exec jekyll build --destination ../docs-static \
     && cd .. \
     && echo "Jekyll docs build completed successfully" \

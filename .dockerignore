@@ -73,7 +73,7 @@ e2e/results/
 # Documentation
 *.md
 !README.md
-docs/
+# docs/ - NEED THIS FOR DOCKER BUILD
 ai-context/
 
 # Development scripts
@@ -110,9 +110,9 @@ screenshot.png
 *.mov
 *.mp4
 
-# Storybook
-.storybook/
-*.stories.*
+# Storybook build output (but keep source files for Docker build)
+# .storybook/ - NEED THIS FOR DOCKER BUILD
+# *.stories.* - NEED THESE FOR DOCKER BUILD
 
 # Jekyll (docs)
 docs/_site/

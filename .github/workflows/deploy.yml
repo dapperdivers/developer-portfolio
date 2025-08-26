@@ -1,4 +1,4 @@
-name: Deploy to Production
+name: Publish Docker Image to GitHub Container Registry
 
 on:
   push:
@@ -13,7 +13,7 @@ permissions:
 
 jobs:
   deploy:
-    name: Deploy to Production
+    name: Publish Docker Image to GitHub Container Registry
     runs-on: ubuntu-latest
     if: success() && github.ref == 'refs/heads/master'
 
@@ -30,7 +30,7 @@ jobs:
       - name: Set up Ruby for Jekyll
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.0
+          ruby-version: 3.2
           bundler-cache: true
           working-directory: docs
 
