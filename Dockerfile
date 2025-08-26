@@ -57,16 +57,18 @@ RUN echo "Building main portfolio with NODE_ENV=${NODE_ENV}..." \
 
 RUN echo "Building Storybook..." \
     && echo "Node version: $(node --version)" \
-    && echo "TypeScript version: $(tsc --version || npx tsc --version || echo 'TypeScript not found')" \
+    && echo "TypeScript version: $(npx tsc --version || echo 'TypeScript not found')" \
     && echo "Yarn version: $(yarn --version)" \
     && echo "Verifying Vite config exists: $(ls -la vite.config.ts)" \
     && echo "Verifying Storybook config exists: $(ls -la .storybook/main.ts)" \
     && echo "Working directory: $(pwd)" \
     && echo "Available memory: $(cat /proc/meminfo | grep MemTotal)" \
-    && NODE_OPTIONS="--max-old-space-size=4096" timeout 300s yarn storybook:build \
+    && echo "Free disk space: $(df -h /)" \
+    && echo "Starting Storybook build (no timeout)..." \
+    && NODE_OPTIONS="--max-old-space-size=4096" yarn storybook:build || (echo "Storybook build failed with exit code $?" && exit 1) \
     && echo "Storybook build completed successfully" \
     && ls -la storybook-static/ \
-    && test -f storybook-static/index.html || (echo "ERROR: Storybook index.html not found" && exit 1)
+    && test -f storybook-static/index.html || (echo "ERROR: Storybook index.html not found after build" && exit 1)
 
 RUN echo "Building Jekyll docs..." \
     && cd docs \
