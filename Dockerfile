@@ -28,6 +28,7 @@ RUN apk add --no-cache \
     ruby-dev \
     ruby-bundler \
     build-base \
+    libffi-dev \
     && rm -rf /var/cache/apk/*
 
 # Set working directory
