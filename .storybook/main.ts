@@ -18,7 +18,6 @@ const config: StorybookConfig = {
   },
   "staticDirs": [
     "../src/assets/images",
-    "../src/assets/fonts",
     "../src/assets/css",
     "./assets"
   ],
