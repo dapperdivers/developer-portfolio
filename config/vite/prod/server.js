@@ -9,7 +9,7 @@ const __dirname = path.dirname(__filename);
 
 // Production-specific configuration
 const prodConfig = {
-  port: process.env.PORT || 8080,
+  port: parseInt(process.env.PORT) || 8080,
   allowedDomains: (process.env.ALLOWED_DOMAINS || 'http://localhost:8080').split(','),
   buildPath: path.join(__dirname, '../../../build'),
   storybookPath: path.join(__dirname, '../../../storybook-static'),

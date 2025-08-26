@@ -127,22 +127,36 @@ RUN mkdir -p /app/logs \
 # Switch to non-root user
 USER nextjs
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+# Comprehensive health check using Vite server endpoints
+HEALTHCHECK --interval=30s --timeout=15s --start-period=10s --retries=3 \
     CMD node -e "const http = require('http'); \
-    const req = http.request({hostname: 'localhost', port: process.env.PORT || 8080, path: '/healthz', timeout: 5000}, \
-    (res) => { res.statusCode === 200 ? process.exit(0) : process.exit(1); }); \
-    req.on('error', () => process.exit(1)); \
-    req.on('timeout', () => { req.destroy(); process.exit(1); }); \
+    const req = http.request({hostname: 'localhost', port: process.env.PORT || 8080, path: '/health/comprehensive', timeout: 10000}, \
+    (res) => { \
+        let data = ''; \
+        res.on('data', chunk => data += chunk); \
+        res.on('end', () => { \
+            try { \
+                const health = JSON.parse(data); \
+                const isHealthy = res.statusCode === 200 && health.status === 'OK'; \
+                console.log('Health status:', health.status); \
+                process.exit(isHealthy ? 0 : 1); \
+            } catch(e) { \
+                console.log('Health check parse error:', e.message); \
+                process.exit(1); \
+            } \
+        }); \
+    }); \
+    req.on('error', (e) => { console.log('Health check error:', e.message); process.exit(1); }); \
+    req.on('timeout', () => { req.destroy(); console.log('Health check timeout'); process.exit(1); }); \
     req.end();"
-
-# Expose port
-EXPOSE 8080
 
 # Set production environment variables
 ENV NODE_ENV=production
 ENV PORT=8080  
 ENV HOST=0.0.0.0
+
+# Expose the correct port
+EXPOSE 8080
 
 # Use dumb-init to properly handle signals
 ENTRYPOINT ["dumb-init", "--"]
