@@ -86,6 +86,7 @@ export const greetings = {
         "A Staff Product Security Engineer with a long web development career spanning many languages and frameworks. Specializing in securing applications throughout the development lifecycle. Extensive experience with .NET / C# / Python / JavaScript / React / Node.js / Angular / Docker / Azure while implementing robust security measures across applications."
     ),
     resumeLink: validateUrl("https://www.derekmackley.com/resume/Cybersecurity_2025.pdf"),
+    emailAddress: sanitizeText("contact@derekmackley.com"),
 };
 
 // New section for security facts for the profile card
