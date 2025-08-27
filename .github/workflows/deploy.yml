@@ -81,16 +81,17 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          platforms: linux/amd64,linux/arm64
+          # Focus on AMD64 for reliability - ARM64 can be added later if needed
+          platforms: linux/amd64
           cache-from: type=gha
           cache-to: type=gha,mode=max
           provenance: true
           sbom: true
+          # Network timeout configuration for better reliability
           build-args: |
             NODE_ENV=production
             VITE_SITE_MAIN_URL=https://derekmackley.com
-            VITE_SITE_STORYBOOK_URL=https://storybook.derekmackley.com
-            VITE_SITE_DOCS_URL=https://docs.derekmackley.com
+            YARN_NETWORK_TIMEOUT=300000
           outputs: type=image,name=ghcr.io/${{ github.repository }},push-by-digest=true,name-canonical=true,push=true
 
       - name: Export digest

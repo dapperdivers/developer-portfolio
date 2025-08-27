@@ -6,19 +6,19 @@
 # Build arguments shared across stages
 ARG NODE_ENV=production
 ARG VITE_SITE_MAIN_URL=https://derekmackley.com
-ARG VITE_SITE_STORYBOOK_URL=https://storybook.derekmackley.com
-ARG VITE_SITE_DOCS_URL=https://docs.derekmackley.com
 
 # ============================================================================
 # Base Node.js Builder - Common dependencies for React and Storybook
 # ============================================================================
 FROM node:22-alpine AS node-base
 
+# Re-declare ARG variables for this stage
+ARG NODE_ENV=production
+ARG VITE_SITE_MAIN_URL=https://derekmackley.com
+
 # Set environment variables  
 ENV NODE_ENV=${NODE_ENV}
 ENV VITE_SITE_MAIN_URL=${VITE_SITE_MAIN_URL}
-ENV VITE_SITE_STORYBOOK_URL=${VITE_SITE_STORYBOOK_URL}
-ENV VITE_SITE_DOCS_URL=${VITE_SITE_DOCS_URL}
 ENV CI=true
 ENV FORCE_COLOR=3
 
@@ -32,9 +32,10 @@ RUN apk add --no-cache \
 
 WORKDIR /app
 
-# Copy and install Node.js dependencies 
+# Copy and install Node.js dependencies with extended timeout
 COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile --production=false \
+RUN yarn config set network-timeout 300000 \
+    && yarn install --frozen-lockfile --production=false \
     && yarn cache clean
 
 # Copy source code
@@ -106,8 +107,9 @@ WORKDIR /app
 # Copy package files for production dependencies only
 COPY package.json yarn.lock ./
 
-# Install only production Node.js dependencies  
-RUN yarn install --frozen-lockfile --production=true \
+# Install only production Node.js dependencies with extended timeout
+RUN yarn config set network-timeout 300000 \
+    && yarn install --frozen-lockfile --production=true \
     && yarn cache clean \
     && chown -R nextjs:nodejs node_modules
 
