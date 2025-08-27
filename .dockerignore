@@ -119,6 +119,7 @@ screenshot.png
 docs/_site/
 docs/.sass-cache/
 docs/vendor/
+docs/docker-entrypoint.sh
 
 # Package manager lockfiles (keep yarn.lock)
 package-lock.json
