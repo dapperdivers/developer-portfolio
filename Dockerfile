@@ -5,7 +5,6 @@
 
 # Build arguments shared across stages
 ARG NODE_ENV=production
-ARG VITE_SITE_MAIN_URL=https://derekmackley.com
 
 # ============================================================================
 # Base Node.js Builder - Common dependencies for React and Storybook
@@ -14,11 +13,9 @@ FROM node:22-alpine AS node-base
 
 # Re-declare ARG variables for this stage
 ARG NODE_ENV=production
-ARG VITE_SITE_MAIN_URL=https://derekmackley.com
 
 # Set environment variables  
 ENV NODE_ENV=${NODE_ENV}
-ENV VITE_SITE_MAIN_URL=${VITE_SITE_MAIN_URL}
 ENV CI=true
 ENV FORCE_COLOR=3
 

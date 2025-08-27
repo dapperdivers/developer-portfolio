@@ -27,10 +27,8 @@ else
     touch "$TEMP_CONFIG"
 fi
 
-# Inject environment variables if they exist
-append_config "VITE_SITE_MAIN_URL" "site_main_url"
-append_config "VITE_SITE_STORYBOOK_URL" "site_storybook_url" 
-append_config "VITE_SITE_DOCS_URL" "site_docs_url"
+# Note: Jekyll docs now use hardcoded URLs since they're static
+# No runtime environment injection needed
 
 # Replace the original config if we have runtime values
 if [ -f "$TEMP_CONFIG" ]; then
