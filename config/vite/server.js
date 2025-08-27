@@ -138,18 +138,7 @@ export function createBaseServer(config = {}) {
     }
   });
 
-  // Serve main static files
-  app.use(express.static(buildPath, {
-    ...getStaticHeaders(),
-    setHeaders: (res) => {
-      res.set('X-Content-Type-Options', 'nosniff');
-      res.set('X-Frame-Options', 'DENY');
-      res.set('X-XSS-Protection', '1; mode=block');
-      res.set('Cache-Control', `public, max-age=${cacheMaxAge === '1y' ? '31536000' : cacheMaxAge}`);
-    }
-  }));
-
-  // Path-based routing for docs and storybook
+  // Path-based routing for docs and storybook MUST come before general static serving
   // Serve documentation at /docs route
   app.use('/docs', express.static(docsPath, {
     ...getStaticHeaders(),
@@ -169,6 +158,17 @@ export function createBaseServer(config = {}) {
     setHeaders: (res, filePath) => {
       res.set('X-Content-Type-Options', 'nosniff');
       res.set('X-Frame-Options', 'SAMEORIGIN'); // Allow storybook to be embedded
+      res.set('X-XSS-Protection', '1; mode=block');
+      res.set('Cache-Control', `public, max-age=${cacheMaxAge === '1y' ? '31536000' : cacheMaxAge}`);
+    }
+  }));
+
+  // Serve main static files AFTER specific routes to avoid conflicts
+  app.use(express.static(buildPath, {
+    ...getStaticHeaders(),
+    setHeaders: (res) => {
+      res.set('X-Content-Type-Options', 'nosniff');
+      res.set('X-Frame-Options', 'DENY');
       res.set('X-XSS-Protection', '1; mode=block');
       res.set('Cache-Control', `public, max-age=${cacheMaxAge === '1y' ? '31536000' : cacheMaxAge}`);
     }
