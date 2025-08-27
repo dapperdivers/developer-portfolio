@@ -13,6 +13,10 @@ group :jekyll_plugins do
   gem "jekyll-seo-tag"
 end
 
+# Sass processing
+gem "jekyll-sass-converter", "~> 3.0"
+gem "sass-embedded", "~> 1.0"
+
 # Windows and JRuby does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
