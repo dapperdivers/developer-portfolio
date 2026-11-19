@@ -20,7 +20,6 @@ This document details the custom React hooks available in the developer portfoli
   - [useFeedback](#usefeedback)
 - [UI Hooks](#ui-hooks)
   - [useIntersectionObserver](#useintersectionobserver)
-  - [useImageColor](#useimagecolor)
 - [Utility Hooks](#utility-hooks)
   - [useCallbackHandlers](#usecallbackhandlers)
   - [useMemoValues](#usememoValues)
@@ -222,38 +221,6 @@ function AnimatedSection() {
 - Array containing:
   - `ref`: Reference to attach to the observed element
   - `isVisible`: Boolean indicating if the element is visible
-
-### useImageColor
-
-Extracts dominant color from an image for dynamic theming.
-
-```jsx
-// Import
-import { useImageColor } from '../hooks/useImageColor';
-
-// Usage
-function ProjectCard({ image }) {
-  const [colorRef, dominantColor] = useImageColor();
-  
-  return (
-    <div style={% raw %}{{ backgroundColor: dominantColor }}{% endraw %}>
-      <img 
-        ref={colorRef}
-        src={image} 
-        alt="Project screenshot" 
-      />
-    </div>
-  );
-}
-```
-
-**Parameters:**
-- None
-
-**Returns:**
-- Array containing:
-  - `ref`: Reference to attach to an image element
-  - `dominantColor`: String with CSS color value of dominant color
 
 ## Utility Hooks
 
