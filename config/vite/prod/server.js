@@ -19,9 +19,11 @@ const prodConfig = {
   cacheMaxAge: '1y' // Aggressive caching in production
 };
 
-// Create the production server
-const app = createBaseServer(prodConfig);
+// Create the production server. Health routes are registered through the
+// base server so they are mounted before its SPA catch-all route.
+const app = createBaseServer({ ...prodConfig, registerRoutes: registerHealthRoutes });
 
+function registerHealthRoutes(app) {
 // Production-specific comprehensive health check
 app.get('/health/comprehensive', async (req, res) => {
   const healthReport = {
@@ -259,6 +261,7 @@ app.get('/health/assets', async (req, res) => {
 
   res.status(200).json(assetReport);
 });
+}
 
 // Start the production server
 if (import.meta.url === `file://${process.argv[1]}`) {
