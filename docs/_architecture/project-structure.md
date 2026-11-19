@@ -150,7 +150,7 @@ Our testing approach covers different levels:
    - Test accessibility and responsive behavior
    - Names with `.enhanced.test.jsx` suffix
 
-See [Component Testing Best Practices](/docs/testing/component-testing-best-practices.md) for more details.
+See [Component Testing Best Practices](/docs/testing/component-testing-best-practices/) for more details.
 
 ## Styling Approach
 

@@ -3,8 +3,8 @@ title: "Derek Mackley - Technical Documentation"
 description: "Comprehensive technical documentation showcasing enterprise-level React development, security practices, and architectural expertise"
 author: "Derek Mackley"
 email: "derek@chelonianlabs.com"
-url: "https://dapperdiver.github.io"
-baseurl: ""
+url: "https://www.derekmackley.com"
+baseurl: "/docs"
 
 # Main site URL for navigation (hardcoded since it's a static site)
 main_site_url: "https://derekmackley.com"

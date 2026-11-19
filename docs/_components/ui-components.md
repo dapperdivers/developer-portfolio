@@ -302,6 +302,5 @@ For theming options, see the design tokens documentation.
 
 ## Additional Resources
 
-- [Component Testing Documentation](/docs/testing/component-testing-best-practices.md)
-- [Accessibility Guidelines](/docs/guides/accessibility.md)
-- [Design Tokens](/docs/architecture/design-tokens.md)
+- [Component Testing Documentation](/docs/testing/component-testing-best-practices/)
+- [Accessibility Guidelines](/docs/guides/accessibility/)
