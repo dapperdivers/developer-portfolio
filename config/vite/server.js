@@ -104,12 +104,11 @@ export function createBaseServer(config = {}) {
   // Rate limiting
   const limiter = rateLimit({
     windowMs: rateLimitWindow,
-    max: rateLimitMax,
+    limit: rateLimitMax,
     standardHeaders: true,
     legacyHeaders: false,
     message: 'Too many requests from this IP, please try again later.',
-    skipSuccessfulRequests: false,
-    trustProxy: true
+    skipSuccessfulRequests: false
   });
   app.use(limiter);
 
@@ -185,7 +184,7 @@ export function createBaseServer(config = {}) {
   }));
 
   // Handle /docs/* and /storybook/* fallback routes (for SPA routing within each app)
-  app.get('/docs/*', (req, res) => {
+  app.get('/docs/{*splat}', (req, res) => {
     console.log('🎯 EXPRESS: Docs fallback route hit for path:', req.path);
     const docsIndexPath = path.join(docsPath, 'index.html');
     
@@ -203,7 +202,7 @@ export function createBaseServer(config = {}) {
     }
   });
 
-  app.get('/storybook/*', (req, res) => {
+  app.get('/storybook/{*splat}', (req, res) => {
     console.log('🎯 EXPRESS: Storybook fallback route hit for path:', req.path);
     const storybookIndexPath = path.join(storybookPath, 'index.html');
     
@@ -337,7 +336,7 @@ export function createBaseServer(config = {}) {
   }
 
   // Catch-all for React app
-  app.get('*', (req, res) => {
+  app.get('/{*splat}', (req, res) => {
     console.log('🎯 EXPRESS: Catch-all route hit for path:', req.path);
     const indexPath = path.join(buildPath, 'index.html');
     console.log('🎯 EXPRESS: Serving index.html from:', indexPath);
