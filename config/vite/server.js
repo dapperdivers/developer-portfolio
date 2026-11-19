@@ -332,6 +332,12 @@ export function createBaseServer(config = {}) {
 
   // Note: No fallback routes needed - each service runs on its own port
 
+  // Environment-specific routes (e.g. production health checks) must be
+  // mounted before the catch-all below, or the SPA shell answers for them.
+  if (typeof config.registerRoutes === 'function') {
+    config.registerRoutes(app);
+  }
+
   // Catch-all for React app
   app.get('*', (req, res) => {
     console.log('🎯 EXPRESS: Catch-all route hit for path:', req.path);
