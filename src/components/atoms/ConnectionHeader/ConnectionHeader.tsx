@@ -49,7 +49,7 @@ const ConnectionHeader: FC<ConnectionHeaderProps> = ({
       transition: {
         repeat: Infinity,
         duration: 2,
-        ease: "easeInOut"
+        ease: "easeInOut" as const
       }
     }
   };
@@ -63,7 +63,7 @@ const ConnectionHeader: FC<ConnectionHeaderProps> = ({
       transition: {
         repeat: Infinity,
         duration: 3,
-        ease: "linear",
+        ease: "linear" as const,
         times: [0, 0.2, 0.8, 1]
       }
     }

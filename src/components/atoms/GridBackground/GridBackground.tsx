@@ -39,11 +39,11 @@ const GridBackground = (props: GridBackgroundProps) => {
     initial: { opacity: 0 },
     animate: { 
       opacity: 1,
-      transition: { duration: 0.8, ease: "easeOut" }
+      transition: { duration: 0.8, ease: "easeOut" as const }
     },
     exit: {
       opacity: 0,
-      transition: { duration: 0.5, ease: "easeIn" }
+      transition: { duration: 0.5, ease: "easeIn" as const }
     }
   }), []);
   
