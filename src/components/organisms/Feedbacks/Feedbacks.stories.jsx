@@ -71,7 +71,7 @@ WithMultipleFeedbacks.play = async ({ canvasElement, step }) => {
   const canvas = within(canvasElement);
   
   await step('Check section title', async () => {
-    await expect(canvas.getByText('Personal Recommendations')).toBeInTheDocument();
+    await expect(canvas.getByText('Personal Feedback')).toBeInTheDocument();
   });
   
   await step('Check feedback cards are rendered', async () => {

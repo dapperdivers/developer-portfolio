@@ -1,5 +1,5 @@
 import React from "react";
-import { greetings } from "@/portfolio";
+import { useGreetings } from '@context/PortfolioContext';
 import { motion, AnimatePresence } from "framer-motion";
 import { FaDownload } from 'react-icons/fa';
 import Button from '@atoms/Button';
@@ -10,6 +10,7 @@ import { useAnimation, MotionVariants } from '@context//AnimationContext';
 import './Greetings.css';
 
 const Greetings = () => {
+  const greetings = useGreetings();
   const { handleDownload } = useCallbackHandlers();
   const { animationEnabled, fadeInVariants, slideUpVariants } = useAnimation();
   

@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ExperienceCard from './ExperienceCard';
-import { within, userEvent, expect } from 'storybook/test';
+import { within, userEvent, expect, fn } from 'storybook/test';
 // Context providers are now handled globally in preview.tsx
 
 // Enhanced sample data with better cybersecurity context
@@ -83,6 +83,9 @@ A refactored ExperienceCard component built with atomic design principles. Now c
       ],
     },
   },
+  args: {
+    onToggle: fn(),
+  },
   argTypes: {
     data: {
       control: 'object',
@@ -116,7 +119,23 @@ A refactored ExperienceCard component built with atomic design principles. Now c
 };
 
 // Template for creating stories
-const Template = (args) => <ExperienceCard {...args} />;
+const Template = ({ isExpanded: initiallyExpanded = false, onToggle, ...args }) => {
+  const [expanded, setExpanded] = useState(initiallyExpanded);
+
+  // Follow the control when it is changed from the Storybook panel
+  useEffect(() => setExpanded(initiallyExpanded), [initiallyExpanded]);
+
+  return (
+    <ExperienceCard
+      {...args}
+      isExpanded={expanded}
+      onToggle={() => {
+        setExpanded((value) => !value);
+        onToggle?.();
+      }}
+    />
+  );
+};
 
 // Default story - showcasing atomic architecture
 export const Default = Template.bind({});

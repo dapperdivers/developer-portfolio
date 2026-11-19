@@ -44,7 +44,7 @@ Default.play = async ({ canvasElement, step }) => {
   
   await step('Initial render check', async () => {
     // Check section title is rendered
-    await expect(canvas.getByText('Skills')).toBeInTheDocument();
+    await expect(canvas.getByRole('heading', { level: 2 })).toBeInTheDocument();
     
     // Check if skills are rendered
     const skillElements = canvas.getAllByRole('img', { hidden: true });

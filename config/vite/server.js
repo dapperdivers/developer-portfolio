@@ -113,6 +113,16 @@ export function createBaseServer(config = {}) {
   });
   app.use(limiter);
 
+  // Only build output with a content hash in its name is safe to cache for a
+  // long time. Everything else (HTML, the service worker, manifests) must be
+  // revalidated on each load, or returning visitors keep an old release until
+  // their cached copy expires.
+  const HASHED_ASSET = /[\\/]assets[\\/].+-[A-Za-z0-9_-]{8}\.[a-z0-9]+$/;
+  const cacheControlFor = (filePath) =>
+    HASHED_ASSET.test(filePath)
+      ? `public, max-age=${cacheMaxAge === '1y' ? '31536000' : cacheMaxAge}, immutable`
+      : 'no-cache';
+
   // Common static file headers
   const getStaticHeaders = (secure = false) => ({
     maxAge: cacheMaxAge,
@@ -134,7 +144,7 @@ export function createBaseServer(config = {}) {
         res.set('Content-Type', 'application/xml');
       }
       
-      res.set('Cache-Control', `public, max-age=${cacheMaxAge === '1y' ? '31536000' : cacheMaxAge}`);
+      res.set('Cache-Control', cacheControlFor(filePath));
     }
   });
 
@@ -147,7 +157,7 @@ export function createBaseServer(config = {}) {
       res.set('X-Content-Type-Options', 'nosniff');
       res.set('X-Frame-Options', 'SAMEORIGIN'); // Allow docs to be embedded
       res.set('X-XSS-Protection', '1; mode=block');
-      res.set('Cache-Control', `public, max-age=${cacheMaxAge === '1y' ? '31536000' : cacheMaxAge}`);
+      res.set('Cache-Control', cacheControlFor(filePath));
     }
   }));
 
@@ -159,18 +169,18 @@ export function createBaseServer(config = {}) {
       res.set('X-Content-Type-Options', 'nosniff');
       res.set('X-Frame-Options', 'SAMEORIGIN'); // Allow storybook to be embedded
       res.set('X-XSS-Protection', '1; mode=block');
-      res.set('Cache-Control', `public, max-age=${cacheMaxAge === '1y' ? '31536000' : cacheMaxAge}`);
+      res.set('Cache-Control', cacheControlFor(filePath));
     }
   }));
 
   // Serve main static files AFTER specific routes to avoid conflicts
   app.use(express.static(buildPath, {
     ...getStaticHeaders(),
-    setHeaders: (res) => {
+    setHeaders: (res, filePath) => {
       res.set('X-Content-Type-Options', 'nosniff');
       res.set('X-Frame-Options', 'DENY');
       res.set('X-XSS-Protection', '1; mode=block');
-      res.set('Cache-Control', `public, max-age=${cacheMaxAge === '1y' ? '31536000' : cacheMaxAge}`);
+      res.set('Cache-Control', cacheControlFor(filePath));
     }
   }));
 
