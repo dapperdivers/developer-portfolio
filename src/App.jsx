@@ -10,10 +10,10 @@ import Background from "@/components/layout/Background";
 // Use single import for all debugging
 import { DebugProvider, RegisterDebugComponents } from "@utils/debug";
 
-// Enable debug tools if not set
-if (localStorage.getItem('debug_tools_enabled') === null) {
-  localStorage.setItem('debug_tools_enabled', 'true');
-}
+// Debug tools are a development aid. Production builds never show them by
+// default; Ctrl+Shift+D still toggles them for the current page view.
+const debugToolsEnabled =
+  import.meta.env.DEV && localStorage.getItem('debug_tools_enabled') !== 'false';
 
 // Import Iconify icon collections - this ensures icons are available offline
 import '@iconify-json/logos';
@@ -63,7 +63,7 @@ const componentsToDebug = {
 
 // Initial debug configuration - THIS IS THE ONLY PLACE WE NEED TO EDIT FOR DEBUGGING
 const initialDebugConfig = {
-  enabled: localStorage.getItem('debug_tools_enabled') === 'true',
+  enabled: debugToolsEnabled,
   components: {
     // Components to debug by default
     Background: true,

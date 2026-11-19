@@ -255,6 +255,9 @@ export function DebugProvider({ children, initialConfig = {} }: DebugProviderPro
 
   // Initialize debug settings from localStorage
   useEffect(() => {
+    // A stored preference only applies in development; production visitors
+    // must never get the debug UI from a stale localStorage value.
+    if (!import.meta.env.DEV) return;
     const savedDebugEnabled = localStorage.getItem('debug_tools_enabled');
     if (savedDebugEnabled !== null) {
       setConfig(prev => ({

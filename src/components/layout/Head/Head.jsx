@@ -2,10 +2,10 @@ import React from 'react';
 import { Helmet } from 'react-helmet-async';
 
 const Head = ({ 
-  title = "Derek Mackley | Full Stack Developer",
-  description = "Derek Mackley - Full Stack Developer and Security Expert with experience in .NET, C#, Python, JavaScript, React, Node.js, Angular, Docker and Azure",
+  title = "Derek Mackley | Principal Security Engineer",
+  description = "Derek Mackley - Principal Security Engineer working across product security, Kubernetes platform engineering and AI agent security",
   imageUrl = "",
-  imageAlt = "Derek Mackley - Full Stack Developer",
+  imageAlt = "Derek Mackley - Principal Security Engineer",
   canonicalUrl = "",
   structuredData = null
 }) => {
@@ -15,14 +15,14 @@ const Head = ({
     "@type": "Person",
     "name": "Derek Mackley",
     "url": canonicalUrl || window.location.href,
-    "jobTitle": "Full Stack Developer",
+    "jobTitle": "Principal Security Engineer",
     "worksFor": {
       "@type": "Organization",
-      "name": "Traction Tools"
+      "name": "Mastery Logistics Systems"
     },
     "description": description,
     "knowsAbout": [
-      "JavaScript", "React", "Node.js", "Angular", ".NET", "C#", "Python", "Docker", "Azure"
+      "Product Security", "Application Security", "Vulnerability Management", "DevSecOps", "Kubernetes", "AI Agent Security", "Python", "C#"
     ],
     "sameAs": [
       "https://github.com/DapperDivers",

@@ -214,7 +214,9 @@ const Education = () => {
               variants={testimonialCardVariants}
               custom={0}
             >
-              <h3 className="testimonials-title">Professional Testimonials</h3>
+              <h3 className="testimonials-title">
+                {feedbacksData.length === 1 ? 'Professional Recommendation' : 'Professional Testimonials'}
+              </h3>
               <p className="testimonials-subtitle">
                 What colleagues say about working with me
               </p>

@@ -150,11 +150,9 @@
   color: rgba(var(--color-offwhite-rgb), 0.9);
   text-align: center;
   line-height: var(--line-height-base);
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 4;
-  -webkit-box-orient: vertical;
   flex-grow: 1;
+  /* Leave room for the expand indicator in the corner */
+  margin-bottom: var(--spacing-4);
   position: relative;
   z-index: 1;
   font-weight: var(--font-weight-normal);
@@ -171,6 +169,15 @@
   text-shadow: 
     0 1px 4px rgba(0, 0, 0, 0.5),
     0 0 10px rgba(0, 0, 0, 0.25);
+}
+
+/* The clamp lives on the inner element: the paragraph is a flex item, which
+   blockifies it and disables -webkit-line-clamp. */
+.skill-card-desc__text {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow: hidden;
 }
 
 /* Enhanced "Click to Expand" indicator with animation */
@@ -325,8 +332,11 @@
   
   .skill-card-desc {
     font-size: var(--font-size-xs);
-    -webkit-line-clamp: 3;
     line-height: var(--line-height-md);
+  }
+
+  .skill-card-desc__text {
+    -webkit-line-clamp: 3;
   }
   
   .skill-card-read-more {
@@ -354,7 +364,10 @@
   
   .skill-card-desc {
     font-size: var(--font-size-xs);
-    -webkit-line-clamp: 2;
+  }
+
+  .skill-card-desc__text {
+    -webkit-line-clamp: 3;
   }
   
   .skill-card-read-more {

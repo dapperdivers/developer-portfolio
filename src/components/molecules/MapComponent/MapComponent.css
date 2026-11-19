@@ -1002,3 +1002,24 @@
     transition: none;
   }
 }
+
+/* Dark map theme: standard OpenStreetMap tiles, recoloured to sit on the
+   site's dark background. */
+.map-tiles--dark {
+  filter: invert(1) hue-rotate(180deg) brightness(0.85) contrast(0.9) saturate(0.6);
+}
+
+/* On phones the metrics panel covers most of the map, so leave it out. */
+@media (max-width: 640px) {
+  .security-metrics-panel {
+    display: none;
+  }
+
+  /* Keep just the coordinates; the decorative readouts wrap into a tall
+     column at this width. */
+  .map-status-bar .metric-label,
+  .map-status-bar .metric-value,
+  .map-status-bar .separator {
+    display: none;
+  }
+}

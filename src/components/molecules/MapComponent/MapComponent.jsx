@@ -97,6 +97,24 @@ const dataStreamVariants = {
 };
 
 /**
+ * Build the base tile layer. Tiles come from OpenStreetMap, which needs no API
+ * key; the dark theme is the same tiles with a CSS filter applied (see
+ * .map-tiles--dark) rather than a second provider.
+ *
+ * @param {'dark'|'satellite'} mode - Map mode
+ * @returns {L.TileLayer} Leaflet tile layer
+ */
+const createTileLayer = (mode) => L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+  subdomains: 'abc',
+  maxZoom: 19,
+  // The page-wide referrer policy is same-origin, but OpenStreetMap's tile
+  // usage policy requires a Referer, so send the origin for tile requests.
+  referrerPolicy: 'strict-origin-when-cross-origin',
+  className: mode === 'dark' ? 'map-tiles--dark' : 'map-tiles--light'
+});
+
+/**
  * An interactive map component that displays a location with animation.
  * Uses Leaflet.js for the mapping functionality.
  * 
@@ -147,23 +165,8 @@ const MapComponent = ({ location }) => {
             maxZoom: 18
           });
           
-          // Use CartoDB dark theme map tiles which look great with the site's design
-          const darkTileLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attributions">CARTO</a>',
-            subdomains: 'abcd',
-            maxZoom: 19
-          });
-          
-          // Alternative view tiles for when the user toggles map mode  
-          const satelliteTileLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attributions">CARTO</a>',
-            subdomains: 'abcd',
-            maxZoom: 19
-          });
-          
           // Start with dark mode
-          tileLayerRef.current = darkTileLayer;
-          darkTileLayer.addTo(mapInstanceRef.current);
+          tileLayerRef.current = createTileLayer('dark').addTo(mapInstanceRef.current);
           
           // Add custom attribution control
           L.control.attribution({
@@ -276,8 +279,9 @@ const MapComponent = ({ location }) => {
           markerRef.current
             .setIcon(updatedIcon)
             .setLatLng([locData.lat, locData.lng])
-            .bindPopup(formatPopupContent(locData.name))
-            .openPopup();
+            // Bound but not opened: the marker already carries a label, and an
+            // open popup covers it (and most of the map on small screens).
+            .bindPopup(formatPopupContent(locData.name));
             
           // Add or update concentric circles around the new location
           if (locationCircle1Ref.current) {
@@ -358,19 +362,7 @@ const MapComponent = ({ location }) => {
     setMapMode(newMode);
     
     // Add new tile layer based on selected mode
-    if (newMode === 'dark') {
-      tileLayerRef.current = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attributions">CARTO</a>',
-        subdomains: 'abcd',
-        maxZoom: 19
-      }).addTo(mapInstanceRef.current);
-    } else {
-      tileLayerRef.current = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attributions">CARTO</a>',
-        subdomains: 'abcd',
-        maxZoom: 19
-      }).addTo(mapInstanceRef.current);
-    }
+    tileLayerRef.current = createTileLayer(newMode).addTo(mapInstanceRef.current);
   };
   
   // Toggle the grid overlay
@@ -400,8 +392,6 @@ const MapComponent = ({ location }) => {
           {/* Main Status Bar */}
           <div className="map-status-bar">
             <div className="status-left">
-              <span>Location: {locationData ? locationData.name : location}</span>
-              <span className="separator">|</span>
               <span>{locationData ? formatCoordinates(locationData.lat, locationData.lng) : "00.0000°, 00.0000°"}</span>
               <span className="separator">|</span>
               <span className="metric-label">SECURITY LEVEL:</span>

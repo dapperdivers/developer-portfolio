@@ -158,6 +158,11 @@
   width: 100%;
 }
 
+.testimonials-grid:has(> :only-child) {
+  grid-template-columns: minmax(0, 640px);
+  justify-content: center;
+}
+
 .testimonial-card-compact {
   position: relative;
   background: rgba(var(--color-navy-rgb), 0.4);

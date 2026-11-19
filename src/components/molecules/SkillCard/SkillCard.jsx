@@ -108,7 +108,9 @@ const SkillCard = ({
         />
       </div>
       <h4 className="skill-card-name">{skill.skillName}</h4>
-      <p className="skill-card-desc">{skill.description}</p>
+      <p className="skill-card-desc">
+        <span className="skill-card-desc__text">{skill.description}</span>
+      </p>
       <span className="skill-card-read-more" aria-hidden="true">+</span>
     </motion.div>
   );
