@@ -35,15 +35,17 @@ export default {
 // Default story
 export const Default = {
   args: {
-    // Add default props here
+    schoolName: 'Georgia State University',
+    degree: 'Bachelor of Business Administration',
+    major: 'Computer Information Systems',
+    minor: 'Information Security',
+    graduationDate: 'January 2015',
   }
 };
 
 // Responsive behavior example
 export const Responsive = {
-  args: {
-    // Props for demonstrating responsive behavior
-  },
+  args: Default.args,
   parameters: {
     viewport: {
       defaultViewport: 'mobile1',

@@ -35,15 +35,20 @@ export default {
 // Default story
 export const Default = {
   args: {
-    // Add default props here
+    schoolName: 'Georgia State University',
+    subHeader: 'Bachelor of Business Administration in Computer Information Systems',
+    duration: 'January 2015',
+    desc: 'J. Mack Robinson College of Business',
+    descBullets: ['Minor in Information Security'],
+    certifications: [
+      { name: 'Practical Network Penetration Tester', issuer: 'TCM Security', date: 'Apr 2022' },
+    ],
   }
 };
 
 // Responsive behavior example
 export const Responsive = {
-  args: {
-    // Props for demonstrating responsive behavior
-  },
+  args: Default.args,
   parameters: {
     viewport: {
       defaultViewport: 'mobile1',

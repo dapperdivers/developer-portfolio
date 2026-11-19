@@ -3,6 +3,7 @@ import Projects from './Projects';
 import { within, userEvent, expect } from 'storybook/test';
 import PortfolioContext from '@context/PortfolioContext';
 import { mockPortfolioData } from '@data/mockPortfolioData';
+import { withViewport } from '@stories-utils';
 
 // Helper function to create context with custom projects data
 const createContextWithProjects = (projectsData) => {
