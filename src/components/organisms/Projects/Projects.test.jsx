@@ -232,15 +232,17 @@ describe('Projects Container Integration Tests', () => {
 
   // Test for correct animation configuration
   it('applies correct animation configuration to section', () => {
+    mockUsePortfolio.mockReturnValueOnce({
+      projectsSection: { title: 'My Projects', display: true }
+    });
+    mockUseProjects.mockReturnValueOnce(mockProjects);
+
     render(<Projects />);
-    
-    // Look for the actual section element by its ID instead of mock testid
-    const section = screen.getByRole('region', { name: 'My Projects' });
+
+    // Section is mocked above, so query the mock rather than an ARIA region
+    const section = screen.getByTestId('section-mock');
     expect(section).toBeInTheDocument();
     expect(section).toHaveAttribute('id', 'projects');
     expect(section).toHaveClass('projects-section');
-    
-    // We're mostly testing that the animation properties are passed without error
-    // since we can't directly test the actual animation in JSDOM
   });
 });

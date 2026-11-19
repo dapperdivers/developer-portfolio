@@ -41,6 +41,9 @@
       "@utils/*": [
         "src/utils/*"
       ],
+      "@scripts/*": [
+        "scripts/*"
+      ],
       "@hooks/*": [
         "src/hooks/*"
       ],
