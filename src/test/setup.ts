@@ -4,7 +4,7 @@
  * - Polyfills commonly-missing browser APIs in jsdom
  * - Stubs canvas context used by decoration components
  */
-import '@testing-library/jest-dom';
+import '@testing-library/jest-dom/vitest';
 
 // matchMedia polyfill used by components checking media queries
 // Always provide a robust polyfill to handle cases where matchMedia exists but is not properly implemented
