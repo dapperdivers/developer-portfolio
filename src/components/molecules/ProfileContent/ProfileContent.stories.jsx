@@ -1,48 +1,6 @@
 import React from 'react';
 import ProfileContent from './ProfileContent';
 
-// Mock the SocialLinks component
-jest.mock('@molecules/SocialLinks', () => {
-  return function MockSocialLinks({ className }) {
-    return (
-      <div 
-        className={className}
-        style={{ 
-          display: 'flex',
-          gap: '10px'
-        }}
-      >
-        <div style={{ 
-          width: '40px', 
-          height: '40px', 
-          borderRadius: '50%', 
-          background: '#4fd1c5',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: '#0a2e38',
-          fontWeight: 'bold'
-        }}>
-          GH
-        </div>
-        <div style={{ 
-          width: '40px', 
-          height: '40px', 
-          borderRadius: '50%', 
-          background: '#4fd1c5',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: '#0a2e38',
-          fontWeight: 'bold'
-        }}>
-          LI
-        </div>
-      </div>
-    );
-  };
-});
-
 export default {
   title: 'GitHub Profile/Molecules/Profile/ProfileContent',
   component: ProfileContent,

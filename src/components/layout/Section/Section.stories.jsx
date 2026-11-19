@@ -199,6 +199,7 @@ export const EducationSection = {
   subtitle: 'My educational background',
   id: 'education',
   background: 'light',
+  children: <p style={{ padding: '20px' }}>Section content goes here.</p>,
 }
 };
 
@@ -209,6 +210,7 @@ export const ExperienceSection = {
   subtitle: 'My professional journey',
   id: 'experience',
   background: 'gray',
+  children: <p style={{ padding: '20px' }}>Section content goes here.</p>,
 }
 };
 
@@ -219,6 +221,7 @@ export const ProjectsSection = {
   subtitle: 'Some of my recent work',
   id: 'projects',
   background: 'light',
+  children: <p style={{ padding: '20px' }}>Section content goes here.</p>,
 }
 };
 
@@ -259,6 +262,7 @@ export const DarkSection = {
   subtitle: 'Get in touch with me',
   id: 'contact',
   background: 'dark',
+  children: <p style={{ padding: '20px' }}>Section content goes here.</p>,
 }
 };
 
@@ -290,5 +294,6 @@ export const FluidSection = {
   background: 'primary',
   container: true,
   fluid: true,
+  children: <p style={{ padding: '20px' }}>Section content goes here.</p>,
 }
 };

@@ -35,15 +35,15 @@ export default {
 // Default story
 export const Default = {
   args: {
-    // Add default props here
+    name: 'Alex Example',
+    role: 'Director of Software Development',
+    avatar: 'https://ui-avatars.com/api/?name=AE&background=3563E9&color=fff&bold=true',
   }
 };
 
 // Responsive behavior example
 export const Responsive = {
-  args: {
-    // Props for demonstrating responsive behavior
-  },
+  args: Default.args,
   parameters: {
     viewport: {
       defaultViewport: 'mobile1',

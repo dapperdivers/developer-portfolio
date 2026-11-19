@@ -1,3 +1,4 @@
+import { fn } from 'storybook/test';
 import React from 'react';
 import ErrorBoundary from './ErrorBoundary';
 
@@ -27,6 +28,10 @@ export default {
         component: 'A component that catches JavaScript errors in child components and displays a fallback UI.',
       },
     },
+  },
+  args: {
+    // Called during render when a child throws, so it needs an explicit spy
+    onError: fn(),
   },
   argTypes: {
     fallback: {
