@@ -1,5 +1,5 @@
 import React, { FC, memo } from 'react';
-import { motion, Variants } from 'framer-motion';
+import { motion, MotionStyle, Variants } from 'framer-motion';
 import { useAnimation } from '@context/AnimationContext';
 import './SecurityBadge.css';
 
@@ -15,7 +15,7 @@ interface SecurityBadgeProps {
   /** Custom animation variants */
   animation?: Variants;
   /** Additional inline styles */
-  style?: React.CSSProperties;
+  style?: MotionStyle;
   /** Whether animations are enabled for this instance */
   animated?: boolean;
   /** Whether to show the hover effect */

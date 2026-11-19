@@ -1,3 +1,5 @@
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { Linter } from 'eslint';
 import typescriptPlugin from '@typescript-eslint/eslint-plugin';
 import typescriptParser from '@typescript-eslint/parser';
@@ -106,7 +108,7 @@ const config: ESLintFlatConfig[] = [
           jsx: true
         },
         project: "./tsconfig.json",
-        tsconfigRootDir: "."
+        tsconfigRootDir: path.dirname(fileURLToPath(import.meta.url))
       }
     },
     plugins: {
