@@ -49,7 +49,7 @@ const ScrollDown = ({
       transition: {
         repeat: Infinity,
         duration: 2,
-        ease: "linear",
+        ease: "linear" as const,
         times: [0, 0.5, 1]
       }
     }
@@ -61,7 +61,7 @@ const ScrollDown = ({
       transition: {
         repeat: Infinity,
         duration: 2,
-        ease: "linear"
+        ease: "linear" as const
       }
     }
   };

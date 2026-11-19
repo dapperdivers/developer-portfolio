@@ -32,7 +32,7 @@ const defaultPulse = {
     transition: {
       repeat: Infinity,
       duration: 2,
-      ease: "easeInOut"
+      ease: "easeInOut" as const
     }
   }
 };

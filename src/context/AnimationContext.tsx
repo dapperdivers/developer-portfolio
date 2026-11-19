@@ -2,8 +2,11 @@
 import { useState, useCallback, useEffect, useMemo, ReactElement, useRef } from 'react';
 import type { ReactNode, Dispatch, SetStateAction } from 'react';
 import { createTypedContext } from '@utils/contextUtils';
-import { useAnimation as useFramerAnimation, AnimationControls, Variants } from 'framer-motion';
+import { useAnimation as useFramerAnimation, Variants } from 'framer-motion';
 import useAnimationOptimization from '@hooks/useAnimationOptimization';
+
+// framer-motion 14 no longer exports AnimationControls
+type AnimationControls = ReturnType<typeof useFramerAnimation>;
 
 // Add process env declaration for TypeScript
 declare const process: {
