@@ -1,6 +1,6 @@
 import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
-import path from 'path';
+import { createAliases } from '../vite/base/paths';
 
 /**
  * Base Vitest configuration
@@ -45,17 +45,7 @@ export default defineConfig({
     ]
   },
   resolve: {
-    alias: {
-      '@': path.resolve(__dirname, '../../src'),
-      '@components': path.resolve(__dirname, '../../src/components'),
-      '@atoms': path.resolve(__dirname, '../../src/components/atoms'),
-      '@molecules': path.resolve(__dirname, '../../src/components/molecules'),
-      '@organisms': path.resolve(__dirname, '../../src/components/organisms'),
-      '@utils': path.resolve(__dirname, '../../src/utils'),
-      '@hooks': path.resolve(__dirname, '../../src/hooks'),
-      '@context': path.resolve(__dirname, '../../src/context'),
-      '@assets': path.resolve(__dirname, '../../src/assets'),
-      '@styles': path.resolve(__dirname, '../../src/styles')
-    }
+    // Single source of truth for aliases, shared with the Vite build
+    alias: createAliases()
   }
 });
