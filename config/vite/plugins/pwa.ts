@@ -52,6 +52,17 @@ export function createPwaPlugin({ isProd = false }: PwaPluginOptions = {}) {
     workbox: {
       // Increase file size limit to handle large Storybook files if needed
       maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5MB
+      // The service worker answers page navigations with the app's index.html.
+      // These paths are served by the server itself (Storybook, the docs site,
+      // downloadable files, health checks), so they must reach the network.
+      navigateFallbackDenylist: [
+        /^\/storybook(\/|$)/,
+        /^\/docs(\/|$)/,
+        /^\/resume\//,
+        /^\/contact\//,
+        /^\/files\//,
+        /^\/health(z|\/|$)/,
+      ],
       // Cache strategies
       runtimeCaching: [
         {
