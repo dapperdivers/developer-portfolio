@@ -62,8 +62,10 @@ const GithubProfileCard = ({ prof, error, onRetry }) => {
   // Pick a random security fact from the portfolio
   const randomFact = securityFacts[Math.floor(Math.random() * securityFacts.length)];
   
-  // Generate email address from name
-  const emailAddress = `contact@${greetings.name.replace(/\s+/g, '').toLowerCase()}.com`;
+  // Contact address and location come from the site data; the GitHub profile
+  // location is only a fallback so the map does not depend on the API.
+  const emailAddress = greetings.emailAddress;
+  const location = greetings.location || prof?.location;
   
   // Format description for display
   const formatDescription = () => {
@@ -123,7 +125,7 @@ const GithubProfileCard = ({ prof, error, onRetry }) => {
               <div className="github-profile-card__header-section">
                 <ProfileHeader 
                   title="Headquarters"
-                  subtitle={greetings.subTitle || "Staff Security Engineer"}
+                  subtitle={greetings.jobTitle || "Security Engineer"}
                   highlightText="Security"
                   animate={animationEnabled}
                 />
@@ -131,9 +133,9 @@ const GithubProfileCard = ({ prof, error, onRetry }) => {
               
               {/* Map component */}
               <div className="github-profile-card__map-section">
-                {prof.location && (
+                {location && (
                   <ProfileLocation 
-                    location={prof.location}
+                    location={location}
                     animate={animationEnabled}
                   />
                 )}

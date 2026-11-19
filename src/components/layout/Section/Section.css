@@ -200,6 +200,12 @@
   }
 }
 
+@media (max-width: 768px) {
+  .section .section-content {
+    padding: 1.5rem 0;
+  }
+}
+
 /* Accessibility focus styles */
 .section:focus {
   outline: none;

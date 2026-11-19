@@ -341,7 +341,9 @@ const Experience = () => {
             expandedCards={expandedCards}
             onCardToggle={handleCardToggle}
             variant="default"
-            className="experience-timeline"
+            // Not "experience-timeline": a legacy global rule with that name
+            // hides the element below 1024px.
+            className="experience-timeline-view"
             onTerminalCommand={terminalCommandTrigger}
           />
         </motion.div>

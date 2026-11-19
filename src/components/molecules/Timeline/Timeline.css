@@ -335,12 +335,18 @@
 }
 
 .timeline__card--expanded .timeline__bullets {
-  @apply space-y-3 col-span-2;
+  @apply col-span-2;
   /* Bullets now span both columns and use CSS Grid */
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem 2rem;
   align-items: start;
+}
+
+/* Grid gap handles the spacing; the stacked-list margins would push every
+   bullet after the first down and misalign the two columns. */
+.timeline__card--expanded .timeline__bullets > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 0;
 }
 
 .timeline__card--expanded .timeline__bullet {
@@ -521,8 +527,10 @@
     @apply left-8;
   }
 
+  /* Cards are full width here, so the node would sit on top of the card
+     title. The line alone carries the timeline on small screens. */
   .timeline__connector {
-    @apply left-8;
+    display: none;
   }
 
   .timeline__secret-message {

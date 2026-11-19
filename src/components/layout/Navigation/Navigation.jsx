@@ -16,6 +16,7 @@ const Navigation = () => {
   // Use custom hook for navigation behavior and data
   const { 
     isVisible, 
+    isScrolled,
     greetings
   } = useNavigation();
   
@@ -24,7 +25,11 @@ const Navigation = () => {
 
   return (
     <motion.header 
-      className="fixed top-0 left-0 right-0 z-50 pt-4 pb-2"
+      // Transparent over the hero; once the page scrolls the header gets a
+      // backdrop so it stays readable on top of section content.
+      className={`fixed top-0 left-0 right-0 z-50 pt-4 pb-2 transition-colors duration-300 ${
+        isScrolled ? 'bg-gray-900/85 backdrop-blur-md shadow-lg' : 'bg-transparent'
+      }`}
       role="banner"
       initial={{ y: -100 }}
       animate={{ y: isVisible ? 0 : -100 }}

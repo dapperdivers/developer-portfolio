@@ -27,14 +27,14 @@ const terminalVariants = {
  * 
  * @component
  * @param {Object} props - Component props
- * @param {string} props.location - Location string (e.g., "Warrior, AL")
+ * @param {string} props.location - Location string (e.g., "Canton, GA")
  * @param {string} [props.variant='default'] - Security variant theme
  * @param {boolean} [props.animate=true] - Whether to animate the component
  * @param {string} [props.className=''] - Additional CSS classes
  * @returns {React.ReactElement} ProfileLocation component
  */
 const ProfileLocation = ({ 
-  location = "Warrior, AL", 
+  location = "Canton, GA",
   variant = 'default',
   animate = true,
   className = '',

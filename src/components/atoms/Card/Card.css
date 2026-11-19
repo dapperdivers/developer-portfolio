@@ -195,14 +195,21 @@
 }
 
 /* Card link styling - improved contrast */
-.card a {
+/* A legacy global .btn-primary rule sets white text, which is unreadable on
+   the cyan button background. */
+.card a.btn-primary {
+  color: var(--color-navy);
+}
+
+/* Buttons rendered as links keep their own colours */
+.card a:not(.btn) {
   color: var(--color-cyan);
   text-decoration: none;
   font-weight: var(--font-weight-medium);
   transition: all 0.2s ease;
 }
 
-.card a:hover {
+.card a:not(.btn):hover {
   color: color-mix(in srgb, var(--color-cyan) 85%, white);
   text-decoration: underline;
   text-shadow: 0 0 5px rgba(var(--color-cyan-rgb), 0.5);

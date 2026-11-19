@@ -51,7 +51,8 @@ describe('Footer Component', () => {
     currentYear: 2025,
     scrollToTop: vi.fn(),
     greetings: {
-      name: 'Derek Mackley'
+      name: 'Derek Mackley',
+      resumeLink: 'https://example.com/resume.pdf'
     }
   };
   
@@ -105,7 +106,7 @@ describe('Footer Component', () => {
     expect(screen.getByText('Experience').closest('a')).toHaveAttribute('href', '#experience');
     expect(screen.getByText('Projects').closest('a')).toHaveAttribute('href', '#projects');
     expect(screen.getByText('Contact').closest('a')).toHaveAttribute('href', '#contact');
-    expect(screen.getByText('Resume').closest('a')).toHaveAttribute('href', '/files/Cybersecurity_2025.pdf');
+    expect(screen.getByText('Resume').closest('a')).toHaveAttribute('href', 'https://example.com/resume.pdf');
     expect(screen.getByText('Contact Card').closest('a')).toHaveAttribute('href', '/contact/Derek_Mackley.vcf');
   });
   

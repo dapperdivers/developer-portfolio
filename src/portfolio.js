@@ -9,7 +9,9 @@ const SECURITY_DOMAINS = {
   DEVSECOPS: "DevSecOps",
   COMPLIANCE: "Compliance & Governance",
   CRYPTO: "Cryptography & PKI",
-  CONTAINER: "Container Security"
+  CONTAINER: "Container Security",
+  AI_SECURITY: "AI & Agent Security",
+  PLATFORM: "Platform Engineering"
 };
 
 // Security level constants (1-5 scale)
@@ -82,8 +84,12 @@ const sanitizeText = (text) => {
 export const greetings = {
     name: sanitizeText("Derek Mackley"),
     title: sanitizeText("Hi There, I'm Derek Mackley"),
+    jobTitle: sanitizeText("Principal Security Engineer"),
+    location: sanitizeText("Canton, GA"),
+    // The contact card reuses the first sentence on its own, so keep it
+    // self-contained and free of full stops (no ".NET" in sentence one).
     description: sanitizeText(
-        "A Staff Product Security Engineer with a long web development career spanning many languages and frameworks. Specializing in securing applications throughout the development lifecycle. Extensive experience with .NET / C# / Python / JavaScript / React / Node.js / Angular / Docker / Azure while implementing robust security measures across applications."
+        "I'm a Principal Security Engineer who builds security programs the way I used to build software: automated, measurable and easy for developers to live with. I lead product security across a logistics software company and set the guardrails for how its engineers put AI agents to work. Before security I spent years shipping code and leading engineering teams, and at home I run a GitOps-managed Kubernetes cluster that is increasingly operated by agents of my own."
     ),
     resumeLink: validateUrl("https://www.derekmackley.com/resume/Cybersecurity_2025.pdf"),
     emailAddress: sanitizeText("contact@chelonianlabs.com"),
@@ -119,192 +125,177 @@ export const socialLinks = {
 export const skillsSection = {
 	title: "What I do",
 	subTitle:
-		"STAFF PRODUCT SECURITY ENGINEER WITH EXTENSIVE DEVELOPMENT EXPERIENCE",
+		"PRINCIPAL SECURITY ENGINEER: PRODUCT SECURITY, PLATFORM ENGINEERING AND AI AGENTS",
 	skills: [
-		"Lead application security initiatives and implement secure-by-design principles throughout the SDLC",
-		"Conduct security architecture reviews, threat modeling, and vulnerability assessments",
-		"Develop and maintain secure web applications across multiple languages and frameworks",
-		"Implement robust security controls and automation to ensure product and infrastructure security",
-		"Stay current with emerging security threats and mitigation techniques across the technology landscape",
+		"Build and run product security programs: vulnerability management, AppSec and a secure SDLC",
+		"Automate security into CI/CD so the secure path is also the easy path for developers",
+		"Lead safe AI agent adoption: guardrails, scoped identity and controlled tool access",
+		"Design and operate Kubernetes platforms with GitOps, policy as code and deep observability",
+		"Translate risk for engineers and executives, drawing on years as a developer and engineering manager",
 	],
 
 	// Skills section displays icons from Iconify - https://iconify.design/
 	// You can use any icon from Iconify by specifying the icon name
 	softwareSkills: [
-		// Application Security Skills
+		// Application Security
 		{
-			skillName: "OWASP Top 10",
-			iconName: "simple-icons:owasp",
-			securityDomain: SECURITY_DOMAINS.APP_SECURITY,
-			level: SECURITY_LEVELS.EXPERT,
-			description: "Expert-level implementation of OWASP Top 10 security controls in application design and development. Regularly conduct code reviews and security assessments to ensure compliance with these critical security standards."
-		},
-		{
-			skillName: "Secure Coding",
+			skillName: "Vulnerability Management",
 			iconName: "carbon:security",
 			securityDomain: SECURITY_DOMAINS.APP_SECURITY,
 			level: SECURITY_LEVELS.EXPERT,
-			description: "Extensive expertise in secure coding practices across multiple languages and frameworks. Lead secure code reviews, develop security standards, and train development teams on defensive programming techniques."
+			description: "Built a company-wide vulnerability management program from scratch: scanner aggregation, exploit-aware triage against known-exploited vulnerabilities, ownership mapping and risk reporting that leadership actually reads."
 		},
 		{
-			skillName: "Static & Dynamic Analysis",
+			skillName: "SAST, DAST & SCA",
 			iconName: "tabler:bug",
 			securityDomain: SECURITY_DOMAINS.APP_SECURITY,
 			level: SECURITY_LEVELS.EXPERT,
-			description: "Advanced experience with SAST, DAST, and IAST tools including Checkmarx, SonarQube, and Burp Suite. Implement and maintain automated security scanning across CI/CD pipelines."
+			description: "Selected, rolled out and tuned static, dynamic and dependency scanning across an engineering organization, with tools including SonarQube, Trivy and Burp Suite, and made the results land with the team that owns the code."
 		},
 		{
-			skillName: "Penetration Testing",
-			iconName: "mdi:security-network",
+			skillName: "Secure Code Review",
+			iconName: "mdi:code-braces",
 			securityDomain: SECURITY_DOMAINS.APP_SECURITY,
 			level: SECURITY_LEVELS.ADVANCED,
-			description: "Advanced application security testing experience, including developing custom exploits for business logic flaws and conducting thorough penetration tests on critical applications."
+			description: "Years of writing production code before moving into security. I review for security in C#, Python and JavaScript, and I run secure coding tournaments and training for development teams."
 		},
 		{
 			skillName: "Threat Modeling",
 			iconName: "carbon:data-vis-4",
 			securityDomain: SECURITY_DOMAINS.APP_SECURITY,
-			level: SECURITY_LEVELS.EXPERT,
-			description: "Lead STRIDE and DREAD threat modeling sessions for complex applications and systems. Develop threat models that guide security architecture and implementation decisions."
-		},
-		
-		// Cloud Security Skills
-		{
-			skillName: "AWS Security",
-			iconName: "logos:aws",
-			securityDomain: SECURITY_DOMAINS.CLOUD_SECURITY,
 			level: SECURITY_LEVELS.ADVANCED,
-			description: "Deep expertise securing AWS environments including IAM, Security Groups, GuardDuty, CloudTrail, and implementing secure architecture patterns for multi-tier applications."
+			description: "Architecture and design reviews for new systems and features, with threat models that turn into concrete engineering work rather than a document nobody opens again."
 		},
 		{
-			skillName: "Azure Security",
-			iconName: "logos:microsoft-azure",
-			securityDomain: SECURITY_DOMAINS.CLOUD_SECURITY,
-			level: SECURITY_LEVELS.EXPERT,
-			description: "Lead implementation of Azure Security Center, Azure Sentinel, Key Vault, and secure networking configurations. Expert in securing Azure-hosted applications and infrastructure."
-		},
-		{
-			skillName: "GCP Security",
-			iconName: "logos:google-cloud",
-			securityDomain: SECURITY_DOMAINS.CLOUD_SECURITY,
+			skillName: "Penetration Testing",
+			iconName: "mdi:security-network",
+			securityDomain: SECURITY_DOMAINS.APP_SECURITY,
 			level: SECURITY_LEVELS.INTERMEDIATE,
-			description: "Implementation of GCP security controls including IAM, VPC Service Controls, Cloud Security Scanner, and Binary Authorization. Experience securing applications in GCP environments."
+			description: "PNPT certified. I scope and manage external penetration tests, validate findings and demonstrate real exploitability in test environments so the critical issues get prioritized."
 		},
-		
-		// DevSecOps Skills
+
+		// AI & Agent Security
 		{
-			skillName: "Docker Security",
+			skillName: "AI Agent Guardrails",
+			iconName: "mdi:robot-outline",
+			securityDomain: SECURITY_DOMAINS.AI_SECURITY,
+			level: SECURITY_LEVELS.EXPERT,
+			description: "Lead AI security for an engineering organization: rolling out AI coding agents with guardrails enforced in the tooling itself, sandboxed execution and risk assessments for new AI use cases."
+		},
+		{
+			skillName: "Agent Identity & Tool Access",
+			iconName: "material-symbols:shield-lock-outline",
+			securityDomain: SECURITY_DOMAINS.AI_SECURITY,
+			level: SECURITY_LEVELS.ADVANCED,
+			description: "Designing how autonomous agents authenticate and what they can reach: scoped credentials, gateway patterns for Model Context Protocol tools and audit trails, instead of agents borrowing a human's access."
+		},
+		{
+			skillName: "Agent Platforms",
+			iconName: "carbon:machine-learning-model",
+			securityDomain: SECURITY_DOMAINS.AI_SECURITY,
+			level: SECURITY_LEVELS.ADVANCED,
+			description: "Build and operate agent platforms on Kubernetes: containerized harnesses, scheduled and event-driven agents, egress allowlists and local model serving alongside hosted models."
+		},
+
+		// DevSecOps
+		{
+			skillName: "CI/CD Security",
+			iconName: "logos:github-actions",
+			securityDomain: SECURITY_DOMAINS.DEVSECOPS,
+			level: SECURITY_LEVELS.EXPERT,
+			description: "Organization-wide security checks in GitHub Actions: secrets, vulnerable dependencies, container images and end-of-life base images checked on every pull request and release."
+		},
+		{
+			skillName: "Container Security",
 			iconName: "logos:docker-icon",
 			securityDomain: SECURITY_DOMAINS.DEVSECOPS,
 			level: SECURITY_LEVELS.EXPERT,
-			description: "Expert in container security, including implementing least privilege, image scanning, runtime protection, and secure orchestration. Develop and enforce security policies for containerized environments."
+			description: "Image scanning in the pipeline and in the cluster, least-privilege runtime configuration, and tooling that traces a running workload back to the repository and team that owns it."
 		},
 		{
-			skillName: "Kubernetes Security",
+			skillName: "Security Automation",
+			iconName: "carbon:script",
+			securityDomain: SECURITY_DOMAINS.DEVSECOPS,
+			level: SECURITY_LEVELS.EXPERT,
+			description: "I write the tooling a security team needs instead of waiting for a vendor: multi-threaded Python CLIs, API integrations and reporting pipelines that replace manual triage."
+		},
+
+		// Platform Engineering
+		{
+			skillName: "Kubernetes",
 			iconName: "logos:kubernetes",
-			securityDomain: SECURITY_DOMAINS.CONTAINER,
-			level: SECURITY_LEVELS.ADVANCED,
-			description: "Advanced implementation of Kubernetes security patterns including network policies, RBAC, pod security policies, and secure deployment configurations. Experience with tools like Falco, Trivy, and OPA/Gatekeeper."
-		},
-		{
-			skillName: "CI/CD Security",
-			iconName: "cib:jenkins",
-			securityDomain: SECURITY_DOMAINS.DEVSECOPS,
+			securityDomain: SECURITY_DOMAINS.PLATFORM,
 			level: SECURITY_LEVELS.EXPERT,
-			description: "Design and implementation of secure CI/CD pipelines with integrated security testing, secret management, and policy enforcement. Experience with GitHub Actions, Jenkins, CircleCI, and Azure DevOps."
+			description: "Run a multi-node Talos Linux cluster end to end: Cilium networking, Gateway API, Rook-Ceph storage, admission policy with Kyverno, and upgrades automated through pull requests."
 		},
 		{
-			skillName: "Infrastructure as Code",
-			iconName: "logos:terraform-icon",
-			securityDomain: SECURITY_DOMAINS.DEVSECOPS,
-			level: SECURITY_LEVELS.ADVANCED,
-			description: "Writing secure Terraform, CloudFormation, and Ansible code with embedded security checks and compliance validation. Implement security guardrails for infrastructure automation."
-		},
-		
-		// Identity & Access Management
-		{
-			skillName: "OAuth 2.0 / OIDC",
-			iconName: "simple-icons:auth0",
-			securityDomain: SECURITY_DOMAINS.IDENTITY,
+			skillName: "GitOps & IaC",
+			iconName: "logos:flux",
+			securityDomain: SECURITY_DOMAINS.PLATFORM,
 			level: SECURITY_LEVELS.EXPERT,
-			description: "Expert implementation of OAuth 2.0 and OpenID Connect protocols, including secure token handling, proper grant type selection, and secure identity provider integration."
+			description: "Everything declared in Git and reconciled by Flux, with encrypted secrets, automated dependency updates and policy checks in CI. Earlier work includes Terraform and Ansible for cloud infrastructure."
 		},
 		{
-			skillName: "Zero Trust",
-			iconName: "material-symbols:shield-lock-outline",
-			securityDomain: SECURITY_DOMAINS.IDENTITY,
+			skillName: "Observability",
+			iconName: "logos:prometheus",
+			securityDomain: SECURITY_DOMAINS.PLATFORM,
 			level: SECURITY_LEVELS.ADVANCED,
-			description: "Designing and implementing Zero Trust architectures with continuous verification, least privilege access, and micro-segmentation across applications and infrastructure."
+			description: "Prometheus, Grafana and centralized logging, with alerting designed around what a human needs to act on. The same stack carries security scan results as metrics."
 		},
 		{
-			skillName: "SSO & MFA",
+			skillName: "Cloud Security",
+			iconName: "logos:microsoft-azure",
+			securityDomain: SECURITY_DOMAINS.PLATFORM,
+			level: SECURITY_LEVELS.ADVANCED,
+			description: "Securing workloads in Azure day to day, with earlier hands-on platform work in AWS and GCP, including a cloud migration that cut annual spend by $500K."
+		},
+
+		// Identity & Network
+		{
+			skillName: "SSO, OAuth 2.0 & OIDC",
 			iconName: "carbon:two-factor-authentication",
 			securityDomain: SECURITY_DOMAINS.IDENTITY,
-			level: SECURITY_LEVELS.EXPERT,
-			description: "Design and implementation of enterprise single sign-on solutions with strong multi-factor authentication. Experience with SAML, FIDO2/WebAuthn, and passwordless authentication."
+			level: SECURITY_LEVELS.ADVANCED,
+			description: "Single sign-on in front of everything: OIDC and forward-auth integration, group-based access, and identity-backed access to the Kubernetes API itself."
 		},
-		
-		// Network Security
 		{
-			skillName: "Firewall Management",
-			iconName: "tabler:firewall",
+			skillName: "Network Security",
+			iconName: "mdi:lan",
 			securityDomain: SECURITY_DOMAINS.NETWORK_SECURITY,
-			level: SECURITY_LEVELS.INTERMEDIATE,
-			description: "Configuration and management of firewall rules, network segmentation, and traffic filtering. Experience with both traditional and next-generation firewalls."
+			level: SECURITY_LEVELS.ADVANCED,
+			description: "Segmented networks, firewall policy, Kubernetes network policies and intrusion detection, on an estate that runs from enterprise switches to the cluster's own networking layer."
 		},
 		{
-			skillName: "TLS/SSL",
+			skillName: "TLS & PKI",
 			iconName: "mdi:certificate",
 			securityDomain: SECURITY_DOMAINS.NETWORK_SECURITY,
-			level: SECURITY_LEVELS.EXPERT,
-			description: "Expert implementation of TLS/SSL best practices, including proper cipher suite selection, certificate management, and secure protocol configuration. Experience with PKI and certificate authorities."
+			level: SECURITY_LEVELS.ADVANCED,
+			description: "Automated certificate issuance and rotation and TLS everywhere, with expiry monitored before it becomes an outage."
 		},
-		{
-			skillName: "API Security",
-			iconName: "carbon:api",
-			securityDomain: SECURITY_DOMAINS.NETWORK_SECURITY,
-			level: SECURITY_LEVELS.EXPERT,
-			description: "Design and implementation of secure API gateways, authentication, authorization, rate limiting, and input validation. Experience with OWASP API Security Top 10."
-		},
-		
+
 		// Development Skills
-		{
-			skillName: "HTML5",
-			iconName: "vscode-icons:file-type-html",
-			description: "Expert-level HTML5 development with focus on semantic markup, accessibility, and security best practices including XSS prevention and CSP implementation."
-		},
-		{
-			skillName: "CSS3",
-			iconName: "vscode-icons:file-type-css",
-			description: "Advanced CSS3 development with experience in responsive design, CSS frameworks, preprocessors, and implementing UI component security patterns."
-		},
-		{
-			skillName: "JavaScript",
-			iconName: "logos:javascript",
-			description: "Expert JavaScript development with deep understanding of secure coding patterns, frontend security controls, and modern frameworks including React, Angular, and Vue."
-		},
 		{
 			skillName: "Python",
 			iconName: "logos:python",
-			description: "Advanced Python development for web applications, security tooling, and automation. Experience with Django, Flask, FastAPI, and implementing secure coding practices."
+			description: "My main language today: security tooling, automation, APIs and data pipelines."
 		},
 		{
-			skillName: "C#/.NET",
+			skillName: "C# / .NET",
 			iconName: "vscode-icons:file-type-csharp",
-			description: "Extensive experience developing secure .NET applications, API services, and implementing security patterns for both .NET Framework and .NET Core."
+			description: "Years of production services and APIs on .NET Framework and .NET Core, including migrating a monolith to microservices."
 		},
 		{
-			skillName: "Node.js",
-			iconName: "logos:nodejs-icon",
-			description: "Expert Node.js development with focus on secure architecture, dependency management, and implementing security controls for server-side JavaScript applications."
+			skillName: "JavaScript & React",
+			iconName: "logos:javascript",
+			description: "Front ends in React and Angular and services in Node.js. This site is React, with its components documented in Storybook."
 		},
 		{
 			skillName: "Git & DevOps",
 			iconName: "logos:git-icon",
-			description: "Advanced Git workflow management, CI/CD pipeline implementation, and securing development operations with policy as code and automated security controls."
+			description: "Pull-request workflows, CI/CD pipelines and release automation as the default way of changing anything."
 		},
 	],
-	
+
 	// This structure allows for adding actual certifications in the future
 	certifications: [],
 };
@@ -360,18 +351,33 @@ export const educationInfo = [
 
 export const experience = [
 	{
+		role: "Principal Security Engineer",
+		company: "Mastery Logistics Systems",
+		companylogo: "https://ui-avatars.com/api/?name=MLS&background=3563E9&color=fff&bold=true",
+		date: "November 2026 – Present",
+		url: "https://www.masterylogistics.com",
+		desc: "Own product security across the company and lead how its engineering organization adopts AI agents safely, with scope now extending into security operations and endpoint hardening.",
+		descBullets: [
+			"Lead AI security for engineering: rolled out AI coding agents with guardrails enforced in the tooling rather than in a policy document, and run risk assessments for new AI use cases",
+			"Designed identity, access and tool-gateway patterns so autonomous agents get scoped, auditable access instead of borrowing a human's credentials",
+			"Built a containerized agent harness to prove agentic workflows can run inside controlled, observable sandboxes",
+			"Took on security operations and endpoint hardening for the company's Apple fleet alongside the product security program"
+		]
+	},
+	{
 		role: "Staff Product Security Engineer",
 		company: "Mastery Logistics Systems",
 		companylogo: "https://ui-avatars.com/api/?name=MLS&background=3563E9&color=fff&bold=true",
-		date: "July 2023 – Present",
+		date: "July 2023 – October 2026",
 		url: "https://www.masterylogistics.com",
-		desc: "Leading the technical direction of a newly formed product security team, creating and implementing comprehensive vulnerability management programs for the organization.",
+		desc: "Founding technical lead of a new product security team. Built the program from scratch: vulnerability management, pipeline security, testing and developer education.",
 		descBullets: [
-			"Developed organization-wide vulnerability aggregation system combining open-source and commercial security tools",
-			"Built Power BI dashboards for security metrics and vulnerability visualization to improve visibility of security posture",
-			"Created security automation with GitHub Actions to check PRs for secrets, vulnerable packages, and outdated base images",
-			"Developed custom tool to associate Kubernetes resources to GitHub repos for accurate vulnerability tracking",
-			"Led active security enumeration in test environments to demonstrate real risk of critical vulnerabilities"
+			"Built the vulnerability management lifecycle end to end: scanner aggregation, exploit-aware triage against known-exploited vulnerabilities, and Power BI risk reporting for leadership",
+			"Shipped organization-wide checks in GitHub Actions that test every pull request and release for secrets, vulnerable packages, vulnerable images and end-of-life base images",
+			"Wrote the team's multi-threaded Python CLI, which maps running Kubernetes workloads back to their GitHub repositories so findings reach the team that owns the code",
+			"Deployed in-cluster image scanning with metrics and dashboards, and selected and rolled out dynamic application security testing",
+			"Selected and managed penetration testing vendors, and demonstrated real exploitability of critical vulnerabilities in test environments to drive prioritization",
+			"Trained junior security engineers and ran secure coding tournaments for development teams several times a year"
 		]
 	},
 	{
@@ -513,24 +519,33 @@ export const experience = [
 
 export const projects = [
 	{
-		name: "Homelab & Security Testing Environment",
-		desc: "Welcome - you're on it! This site is hosted from my home lab. I believe that to excel in this field, you need passion and hands-on experience. My lab serves as both a hosting environment and a security testing playground, featuring multiple servers with around 240TB of storage."
+		name: "Dapper Cluster: Kubernetes Homelab",
+		desc: "Welcome, you're on it! This site is served from a multi-node Talos Linux cluster in my garage. Everything is declared in Git and reconciled by Flux, with Cilium networking, Rook-Ceph storage, single sign-on in front of every app, encrypted secrets and dependency updates that merge themselves once CI is green.",
+		github: "https://github.com/DapperDivers/dapper-cluster",
+		stack: ["Talos Linux", "Kubernetes", "Flux", "Cilium", "Rook-Ceph"]
 	},
 	{
-		name: "Tinkering with RFID",
-		desc: "I started playing with rfid tags a few years ago, and am in the process of \"removing keys\" from my life.  Ask me about it!"
+		name: "Agents That Run the Cluster",
+		desc: "The cluster is increasingly operated by AI agents: an overnight chain that triages alerts and opens its own fix pull requests, a morning briefing, and a reading pipeline that sorts and summarizes my feeds. Each agent runs sandboxed in Kubernetes with an explicit tool list and an egress allowlist, which makes it a working lab for the agent security problems I deal with professionally.",
+		stack: ["Claude", "Model Context Protocol", "Local LLMs", "NATS"]
 	},
 	{
-		name: "3D Printing",
-		desc: "I love turning digital ideas into physical objects! Currently operating 4 printers and finding great joy in customizing them for optimal performance.",
+		name: "Security Lab",
+		desc: "Policy as code at admission, a segmented network behind my own firewall with intrusion detection, and alerting designed to an industrial alarm-management standard so that a page always means something. It is where I test tools and ideas before recommending them at work.",
+		stack: ["Kyverno", "OPNsense", "Suricata", "Prometheus", "Grafana"]
 	},
 	{
-		name: "Home Automation & Security",
-		desc: "Running a comprehensive Home Assistant setup integrated with various systems including 3D printing, brewing, environmental controls, and security monitoring. Everything is configured with security best practices in mind.",
+		name: "Home Automation",
+		desc: "Home Assistant, Node-RED and a Zigbee mesh running on the cluster, with appliance state machines, camera-based detection and wall switches whose LED bars double as a notification system.",
+		stack: ["Home Assistant", "Node-RED", "Zigbee2MQTT", "Frigate"]
+	},
+	{
+		name: "3D Printing & RFID",
+		desc: "I like turning digital ideas into physical objects and run a small fleet of customized printers. I'm also slowly removing keys from my life with RFID. Ask me about it!",
 	},
 	{
 		name: "Scuba Diving",
-		desc: "Passionate scuba diver exploring the underwater world. This hobby combines my love for technology with adventure, often incorporating underwater photography and diving computers.",
+		desc: "PADI Divemaster. I spent a season working at a dive school on Koh Tao, Thailand, and still get underwater whenever I can.",
 	},
 ];
 
@@ -542,25 +557,7 @@ export const feedbacks = [
             "Derek Mackley reported directly to me at Ubicquia in Melboure Florida and was an invaluable asset to the team, myself and the company. Derek was a dependable developer that always accomplished the task assigned even in the midst of changing business requirements and priorities. He was quick to learn new technologies, such as languages, servers, cloud platforms, orchestration systems, and the like. This was despite Derek being from a .NET Windows development environment. He was able to learn PHP Laravel, Python, Debian Linux systems and IOT devices in short order. Derek was an asset to my team. He was always self-motivated and willing to assist with any project. Along with being a top notch developer, he had strong communication and interpersonal skills. While working with Derek I assigned him many tasks with different scopes and technologies and he was able to learn what was needed and produce a working solution in a minimal timeframe. I enjoyed working with him and would happily work with him in the future. He has my highest recommendation."
         ),
         highlight: "He has my highest recommendation.",
-        designation: "Director of Software Development",
-        rating: 5
-    },
-    {
-        name: sanitizeText("Jennifer Chen"),
-        feedback: sanitizeText(
-            "Working with Derek on our security infrastructure transformation was a game-changing experience. His deep expertise in both development and security allowed him to bridge gaps that typically exist between these teams. Derek implemented security controls that were both robust and developer-friendly, which significantly increased adoption across our engineering organization. His ability to explain complex security concepts in accessible terms helped elevate our entire team's security awareness. The automated security testing pipeline he built has caught numerous critical vulnerabilities before deployment and has become an essential part of our development process."
-        ),
-        highlight: "His deep expertise in both development and security allowed him to bridge gaps that typically exist between these teams.",
-        designation: "VP of Engineering",
-        rating: 5
-    },
-    {
-        name: sanitizeText("Marcus Johnson"),
-        feedback: sanitizeText(
-            "Derek's contributions to our API security initiative were outstanding. He performed a comprehensive assessment of our existing architecture, identified several critical vulnerabilities, and implemented a robust authentication and authorization framework that dramatically improved our security posture. I was particularly impressed by his ability to maintain backward compatibility while implementing these security enhancements. Derek also created excellent documentation and conducted training sessions that helped our team understand and maintain the new security controls. His work has become the gold standard for secure API development in our organization."
-        ),
-        highlight: "Derek's contributions to our API security initiative were outstanding.",
-        designation: "Senior Security Architect",
+        designation: "Director of Software Development, Ubicquia",
         rating: 5
     }
 ];

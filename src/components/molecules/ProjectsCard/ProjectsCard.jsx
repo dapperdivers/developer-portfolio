@@ -93,9 +93,9 @@ const ProjectsCard = ({ data, index = 0 }) => {
             <div className="project-links">
               {data.github && (
                 <Button
-                  className="project-button github-button"
+                  className="project-button"
                   href={data.github}
-                  variant="light"
+                  variant="primary"
                   size="sm"
                   icon="simple-icons:github"
                   ariaLabel={`View ${data.name} source code on GitHub`}

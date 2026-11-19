@@ -93,7 +93,7 @@ const Greetings = () => {
 
   return (
     <div id="greetings-section" className="min-h-screen text-text flex flex-col justify-center items-center relative">
-      <div className="container mx-auto px-container-x py-8 md:py-section-y">
+      <div className="container mx-auto px-container-x pt-24 pb-8 md:py-section-y">
         <motion.div
           variants={containerVariants}
           initial="hidden"

@@ -25,6 +25,8 @@ export const KNOWN_LOCATIONS = {
   "boston": { lat: 42.3601, lng: -71.0589, zoom: 12 },
   "denver": { lat: 39.7392, lng: -104.9903, zoom: 12 },
   "atlanta": { lat: 33.7490, lng: -84.3880, zoom: 12 },
+  // City-centre coordinates (downtown Canton), not a street address
+  "canton, ga": { lat: 34.2368, lng: -84.4908, zoom: 10 },
   "dallas": { lat: 32.7767, lng: -96.7970, zoom: 11 }
 };
 

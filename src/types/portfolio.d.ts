@@ -7,6 +7,9 @@ export interface Greeting {
   title: string;
   subtitle: string;
   resumeLink?: string;
+  jobTitle?: string;
+  location?: string;
+  emailAddress?: string;
 }
 
 export interface Skill {

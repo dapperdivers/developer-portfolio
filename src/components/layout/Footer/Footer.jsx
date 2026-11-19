@@ -115,7 +115,7 @@ const Footer = () => {
             <AnimatePresence>
               {["Home", "Experience", "Projects", "Contact", "Resume", "Contact Card"].map((item, index) => {
                 const href = item === "Home" ? "#main-content" :
-                       item === "Resume" ? "/files/Cybersecurity_2025.pdf" :
+                       item === "Resume" ? (greetings.resumeLink || "/files/Cybersecurity_2025.pdf") :
                        item === "Contact Card" ? "/contact/Derek_Mackley.vcf" :
                        `#${item.toLowerCase()}`;
                 
@@ -125,7 +125,7 @@ const Footer = () => {
                   <motion.a 
                     key={item}
                     href={href} 
-                    className="text-gray-400 hover:text-white text-sm mx-2"
+                    className="text-gray-400 hover:text-white text-sm mx-2 my-1 inline-block whitespace-nowrap"
                     onClick={handleClick}
                     whileHover={animationEnabled ? linkHoverVariants.hover : false}
                     variants={itemVariants}
