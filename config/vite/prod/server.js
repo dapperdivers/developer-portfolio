@@ -174,7 +174,12 @@ app.get('/health/comprehensive', async (req, res) => {
     overallStatus = 200; // Warning is still OK for service
   }
 
-  res.status(overallStatus).json(healthReport);
+  // The full report names files, sizes and the runtime version, so it stays
+  // in the server log. Callers only get the overall status.
+  if (healthReport.status !== 'OK') {
+    console.warn('Health check not OK:', JSON.stringify(healthReport));
+  }
+  res.status(overallStatus).json({ status: healthReport.status });
 });
 
 // Asset-specific health check
@@ -254,12 +259,12 @@ app.get('/health/assets', async (req, res) => {
     };
 
   } catch (error) {
-    assetReport.status = 'ERROR';
-    assetReport.error = error.message;
-    return res.status(503).json(assetReport);
+    console.error('Asset health check failed:', error);
+    return res.status(503).json({ status: 'ERROR' });
   }
 
-  res.status(200).json(assetReport);
+  // Asset inventory is not exposed; only the overall status is returned.
+  res.status(200).json({ status: assetReport.status });
 });
 }
 

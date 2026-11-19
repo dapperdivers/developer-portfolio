@@ -212,37 +212,25 @@ export function createBaseServer(config = {}) {
   });
 
   // Health check endpoints
+  // Liveness/readiness endpoints return a bare status: they are reachable
+  // from the internet, so no uptime, timestamps or failure reasons.
   app.get('/healthz', (req, res) => {
-    res.status(200).json({
-      status: 'OK',
-      timestamp: new Date().toISOString(),
-      uptime: process.uptime()
-    });
+    res.status(200).json({ status: 'OK' });
   });
 
   app.get('/ready', (req, res) => {
     const indexExists = existsSync(path.join(buildPath, 'index.html'));
-    
+
     if (indexExists) {
-      res.status(200).json({
-        status: 'ready',
-        timestamp: new Date().toISOString()
-      });
+      res.status(200).json({ status: 'ready' });
     } else {
-      res.status(503).json({
-        status: 'not_ready',
-        reason: 'Critical files missing',
-        timestamp: new Date().toISOString()
-      });
+      console.error('Readiness check failed: build/index.html is missing');
+      res.status(503).json({ status: 'not_ready' });
     }
   });
 
   app.get('/live', (req, res) => {
-    res.status(200).json({
-      status: 'alive',
-      timestamp: new Date().toISOString(),
-      uptime: process.uptime()
-    });
+    res.status(200).json({ status: 'alive' });
   });
 
   // File serving endpoints
