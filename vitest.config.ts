@@ -1,16 +1,16 @@
-import { defineConfig } from 'vitest/config';
-import baseConfig from './config/test/base.config';
+import { mergeConfig } from 'vitest/config';
+import unitConfig from './config/test/unit.config';
 
 /**
  * Root Vitest configuration
- * 
- * This configuration serves as the default test setup.
- * For workspace-specific configurations, see config/test/*.config.ts
+ *
+ * Runs the unit/component tests under src/. Shared settings (jsdom, globals,
+ * setup file, aliases) live in config/test/base.config.ts.
+ * Browser end-to-end tests live in e2e/ and run with Playwright.
  */
-export default defineConfig({
+export default mergeConfig(unitConfig, {
   test: {
-    include: ['**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
-    exclude: ['**/node_modules/**', '**/dist/**', '**/.{idea,git,cache}/**'],
+    name: 'unit',
     root: './src'
   }
 });

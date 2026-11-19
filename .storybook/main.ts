@@ -1,5 +1,9 @@
 import type { StorybookConfig } from '@storybook/react-vite';
-import path from 'path';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+// Storybook 10 loads this file as ESM, where __dirname does not exist
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const config: StorybookConfig = {
   "stories": [
