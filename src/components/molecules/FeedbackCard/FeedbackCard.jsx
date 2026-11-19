@@ -129,7 +129,7 @@ const FeedbackCard = ({ data, index = 0, animated = true }) => {
       whileHover={shouldAnimate ? "hover" : ""}
       variants={shouldAnimate ? cardVariants : {}}
     >
-      <Card className="feedback-card" padded elevated>
+      <Card className="feedback-card" shadow>
         {/* Decorative elements */}
         <motion.div 
           className="feedback-decoration-top"

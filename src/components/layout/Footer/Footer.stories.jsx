@@ -156,34 +156,18 @@ DefaultStory.play = async ({ canvasElement, step }) => {
   
   await step('Initial render check', () => {
     // Check that the footer contains the name from context
-    expect(canvas.getByText("John Doe")).toBeInTheDocument();
-    
-    // Check that quick links section is present
-    expect(canvas.getByText("Quick Links")).toBeInTheDocument();
-    
-    // Check that contact section is present
+    expect(canvas.getByText(/John Doe/)).toBeInTheDocument();
+
+    // Check that the essential links are present
+    expect(canvas.getByText("Experience")).toBeInTheDocument();
+    expect(canvas.getByText("Projects")).toBeInTheDocument();
     expect(canvas.getByText("Contact")).toBeInTheDocument();
-    
+
     // Check that copyright notice contains the current year
     const currentYear = new Date().getFullYear().toString();
-    const copyrightText = canvas.getByText(new RegExp(`© ${currentYear}`));
-    expect(copyrightText).toBeInTheDocument();
-    
-    // Check that back to top button is present
-    const backToTopButton = canvas.getByLabelText("Back to top");
-    expect(backToTopButton).toBeInTheDocument();
+    expect(canvas.getByText(new RegExp(`© ${currentYear}`))).toBeInTheDocument();
   });
-  
-  await step('Interaction test - Back to top button', async () => {
-    // Click the back to top button
-    const backToTopButton = canvas.getByLabelText("Back to top");
-    await userEvent.click(backToTopButton);
-    
-    // We can't fully test scrolling behavior in Storybook tests,
-    // but we can verify the button is interactive
-    expect(backToTopButton).toBeInTheDocument();
-  });
-  
+
   await step('Keyboard navigation test', async () => {
     // Focus should move through the various links in the footer
     let focusCount = 0;

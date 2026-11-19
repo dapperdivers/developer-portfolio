@@ -33,14 +33,11 @@ import Background from './Background';
  * 
  * // Custom configuration
  * <Background 
- *   enableMatrix={true}
- *   enableBinaryStreams={true} 
  *   enableCircuitGrid={true}
  *   enableScanlines={false}
  *   enableGlitch={true}
  *   enableColorPulse={true}
  *   enableNoise={true}
- *   matrixCharCount={150}
  * >
  *   <div>Your site content goes here</div>
  * </Background>
@@ -56,22 +53,6 @@ export default {
   component: Background,
   tags: ['autodocs'],
   argTypes: {
-    enableMatrix: {
-      control: 'boolean',
-      description: 'Enable/disable the matrix effect',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: true },
-      }
-    },
-    enableBinaryStreams: {
-      control: 'boolean',
-      description: 'Enable/disable the binary streams',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: true },
-      }
-    },
     enableCircuitGrid: {
       control: 'boolean',
       description: 'Enable/disable the circuit grid overlay',
@@ -110,14 +91,6 @@ export default {
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: true },
-      }
-    },
-    matrixCharCount: {
-      control: { type: 'number', min: 10, max: 500, step: 10 },
-      description: 'Number of matrix characters to display',
-      table: {
-        type: { summary: 'number' },
-        defaultValue: { summary: 100 },
       }
     },
   },
@@ -176,37 +149,9 @@ export const Default = {
   )
 };
 
-// Matrix Only
-export const MatrixOnly = {
-  args: {
-    enableMatrix: true,
-    enableBinaryStreams: false,
-    enableCircuitGrid: false,
-    enableScanlines: false,
-    enableGlitch: false,
-    enableColorPulse: false,
-    enableNoise: false,
-  }
-};
-
-// With Binary Streams
-export const WithBinaryStreams = {
-  args: {
-    enableMatrix: false,
-    enableBinaryStreams: true,
-    enableCircuitGrid: false,
-    enableScanlines: false,
-    enableGlitch: false,
-    enableColorPulse: false,
-    enableNoise: false,
-  }
-};
-
 // With Circuit Grid
 export const WithCircuitGrid = {
   args: {
-    enableMatrix: false,
-    enableBinaryStreams: false,
     enableCircuitGrid: true,
     enableScanlines: false,
     enableGlitch: false,
@@ -218,8 +163,6 @@ export const WithCircuitGrid = {
 // With Scanlines
 export const WithScanlines = {
   args: {
-    enableMatrix: false,
-    enableBinaryStreams: false,
     enableCircuitGrid: false,
     enableScanlines: true,
     enableGlitch: false,
@@ -231,8 +174,6 @@ export const WithScanlines = {
 // With Glitch Effect
 export const WithGlitchEffect = {
   args: {
-    enableMatrix: false,
-    enableBinaryStreams: false,
     enableCircuitGrid: false,
     enableScanlines: false,
     enableGlitch: true,
@@ -244,8 +185,6 @@ export const WithGlitchEffect = {
 // With Color Pulse
 export const WithColorPulse = {
   args: {
-    enableMatrix: false,
-    enableBinaryStreams: false,
     enableCircuitGrid: false,
     enableScanlines: false,
     enableGlitch: false,
@@ -257,40 +196,21 @@ export const WithColorPulse = {
 // With Noise Texture
 export const WithNoiseTexture = {
   args: {
-    enableMatrix: false,
-    enableBinaryStreams: false,
     enableCircuitGrid: false,
     enableScanlines: false,
     enableGlitch: false,
     enableColorPulse: false,
     enableNoise: true,
-  }
-};
-
-// High Density Matrix
-export const HighDensityMatrix = {
-  args: {
-    enableMatrix: true,
-    enableBinaryStreams: false,
-    enableCircuitGrid: false,
-    enableScanlines: false,
-    enableGlitch: false,
-    enableColorPulse: false,
-    enableNoise: false,
-    matrixCharCount: 300,
   }
 };
 
 // Full Cyberpunk Theme
 export const FullCyberpunkTheme = {
   args: {
-    enableMatrix: true,
-    enableBinaryStreams: true,
     enableCircuitGrid: true,
     enableScanlines: true,
     enableGlitch: true,
     enableColorPulse: true,
     enableNoise: true,
-    matrixCharCount: 150,
   }
 };

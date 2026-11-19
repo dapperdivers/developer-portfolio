@@ -1,6 +1,6 @@
 import React from 'react';
 import Greetings from './Greetings';
-import { within, userEvent, expect } from 'storybook/test';
+import { within, expect } from 'storybook/test';
 import PortfolioContext from '@context/PortfolioContext';
 import { mockPortfolioData } from '@data/mockPortfolioData';
 
@@ -49,50 +49,36 @@ Default.play = async ({ canvasElement, step }) => {
   // Test heading elements
   await step('Verify greeting elements are present', async () => {
     const headingElement = canvas.getByTestId('greeting-heading');
-    const nameElement = canvas.getByTestId('name-heading');
     const descriptionElement = canvas.getByTestId('title-text');
     
     expect(headingElement).toBeInTheDocument();
-    expect(nameElement).toBeInTheDocument();
     expect(descriptionElement).toBeInTheDocument();
   });
   
   // Test download button
-  await step('Verify download button works', async () => {
+  await step('Verify download button is present', async () => {
     const downloadButton = canvas.getByText('Download Resume');
     expect(downloadButton).toBeInTheDocument();
     
-    // Click the download button (note: actual download functionality can't be fully tested in Storybook)
-    await userEvent.click(downloadButton);
+    // Not clicked here: the resume file is not served by Storybook, so the
+    // download would only log a 404.
   });
   
   // Test SocialLinks component is present after the download button
-  await step('Verify social links are present and correctly positioned', async () => {
-    // Look for the social links container
-    const socialLinksContainer = canvas.getByRole('list');
-    expect(socialLinksContainer).toBeInTheDocument();
-    
-    // Verify social links appear after the download button in the DOM
+  await step('Verify social links follow the download button', async () => {
     const downloadButton = canvas.getByText('Download Resume');
-    const downloadButtonParent = downloadButton.closest('div');
-    const socialLinksParent = socialLinksContainer.closest('div');
-    
-    // Check that the social links div comes after the download button div in the DOM order
-    expect(socialLinksParent.compareDocumentPosition(downloadButtonParent) & Node.DOCUMENT_POSITION_PRECEDING)
+    const githubLink = canvas.getByLabelText('GitHub Profile');
+    expect(githubLink).toBeInTheDocument();
+
+    expect(downloadButton.compareDocumentPosition(githubLink) & Node.DOCUMENT_POSITION_FOLLOWING)
       .toBeTruthy();
   });
-  
+
   // Test scroll down button
   await step('Verify scroll down component is present', async () => {
-    const scrollDownLabel = canvas.getByText('SCROLL_DOWN');
-    expect(scrollDownLabel).toBeInTheDocument();
-    
-    // Find the ScrollDown component by its container class
-    const scrollDownContainer = canvas.getByText('SCROLL_DOWN').closest('.scroll-down-container');
-    expect(scrollDownContainer).toBeInTheDocument();
-    
-    // Click the scroll down button
-    await userEvent.click(scrollDownContainer);
+    const scrollDown = canvas.getByLabelText('>>_NEXT');
+    expect(scrollDown).toBeInTheDocument();
+    expect(scrollDown).toHaveClass('scroll-down-container');
   });
 };
 

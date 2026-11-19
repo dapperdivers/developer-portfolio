@@ -170,7 +170,7 @@ PartialRating.play = async ({ canvasElement, step }) => {
     
     // Check that exactly 3 stars are colored (the filled ones)
     const coloredStars = stars.filter(star => 
-      window.getComputedStyle(star).color !== 'rgb(224, 224, 224)' // #e0e0e0
+      window.getComputedStyle(star).color === 'rgb(100, 255, 218)' // filled: #64ffda
     );
     await expect(coloredStars.length).toBe(3);
   });

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
 import { useAnimation } from '@context/AnimationContext';
 import { FaGithub, FaLinkedin, FaAddressCard } from 'react-icons/fa';
-import { socialLinks, contact } from "@/portfolio";
+import { socialLinks as siteSocialLinks, contact } from "@/portfolio";
 import useCallbackHandlers from '@/hooks/useCallbackHandlers';
 import './SocialLinks.css';
 
@@ -15,9 +15,11 @@ import './SocialLinks.css';
  * @param {Object} props - Component props
  * @param {string} props.className - Additional CSS classes
  * @param {boolean} [props.animated=true] - Whether to animate the component
+ * @param {Object} [props.links] - Social link URLs; defaults to the site data
  * @returns {React.ReactElement} SocialLinks component
  */
-const SocialLinks = ({ className = '', animated = true }) => {
+const SocialLinks = ({ className = '', animated = true, links }) => {
+    const socialLinks = links || siteSocialLinks;
     const { handleDownload } = useCallbackHandlers();
     const { animationEnabled } = useAnimation();
     
@@ -129,7 +131,12 @@ SocialLinks.propTypes = {
     /** Additional CSS classes */
     className: PropTypes.string,
     /** Whether to animate the component */
-    animated: PropTypes.bool
+    animated: PropTypes.bool,
+    /** Social link URLs; defaults to the site data */
+    links: PropTypes.shape({
+        github: PropTypes.string,
+        linkedin: PropTypes.string
+    })
 };
 
 export default SocialLinks;

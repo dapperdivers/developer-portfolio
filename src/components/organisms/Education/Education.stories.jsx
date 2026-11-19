@@ -124,11 +124,6 @@ CybersecurityTheme.play = async ({ canvasElement, step }) => {
     expect(canvas.getByText('Tech Institute')).toBeInTheDocument();
   });
   
-  await step('Check terminal output simulation', () => {
-    expect(canvas.getByText('validate_credentials --all')).toBeInTheDocument();
-    expect(canvas.getByText('Academic credentials: VALID')).toBeInTheDocument();
-    expect(canvas.getByText('Security clearance: VERIFIED')).toBeInTheDocument();
-  });
 };
 
 /**
@@ -167,7 +162,7 @@ EmptyStateTerminal.decorators = [createContextWithEducation([])];
 EmptyStateTerminal.parameters = {
   docs: {
     description: {
-      story: 'Demonstrates the cybersecurity-themed empty state when no education data is available. Features a terminal window with realistic command-line interface showing an error state.',
+      story: 'Demonstrates the empty state shown when no education data is available.',
     }
   }
 };
@@ -178,16 +173,9 @@ EmptyStateTerminal.play = async ({ canvasElement, step }) => {
     // The section title should still be visible
     expect(canvas.getByText('Education & Certifications')).toBeInTheDocument();
     
-    // Check for terminal window elements
-    expect(canvas.getByText('education_data.log')).toBeInTheDocument();
-    expect(canvas.getByText('ls -la education/')).toBeInTheDocument();
-    expect(canvas.getByText('No education data found')).toBeInTheDocument();
-  });
-  
-  await step('Check terminal controls', () => {
-    // Check for terminal window controls (dots)
-    const terminalWindow = canvas.getByText('education_data.log').closest('.terminal-window');
-    expect(terminalWindow).toBeInTheDocument();
+    // The empty state explains that there is nothing to show yet
+    expect(canvas.getByText('No Education Data Available')).toBeInTheDocument();
+    expect(canvas.getByText(/will be displayed here when available/)).toBeInTheDocument();
   });
 };
 
