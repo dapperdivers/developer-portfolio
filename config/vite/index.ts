@@ -7,7 +7,6 @@
  */
 
 import { defineConfig } from 'vite';
-import nodePolyfills from 'vite-plugin-node-stdlib-browser';
 
 // Import configuration components
 import paths from './base/paths';
@@ -35,8 +34,6 @@ export default defineConfig(({ command, mode }) => {
   const rollupOptions = getCodeSplittingConfig();
   // Get all plugins
   const allPlugins = [
-    // Node.js built-in modules plugin
-    nodePolyfills(),
     // Core essential plugins
     ...getCorePlugins({ isProd: isProd() }),
     

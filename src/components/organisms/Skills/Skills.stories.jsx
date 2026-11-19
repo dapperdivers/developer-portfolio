@@ -1,6 +1,7 @@
 import React from 'react';
 import Skills from './Skills';
 import { within, userEvent, expect } from 'storybook/test';
+import { mockPortfolioData } from '@stories-utils/mocks/data';
 
 export default {
   title: 'Organisms/Skills',
@@ -127,7 +128,7 @@ export const ManySkills = Template.bind({});
 ManySkills.decorators = [
   (Story) => {
     // Deep clone the mock data to avoid mutations
-    const extendedData = JSON.parse(JSON.stringify(require('../utils/mockData').mockPortfolioData));
+    const extendedData = JSON.parse(JSON.stringify(mockPortfolioData));
     
     // Add more skills
     const additionalSkills = [

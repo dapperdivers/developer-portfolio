@@ -37,8 +37,8 @@ export default {
 
 // Helper for simulating window scroll
 const simulateScroll = (y = 100) => {
-  global.window.scrollY = y;
-  global.window.dispatchEvent(new Event('scroll'));
+  window.scrollY = y;
+  window.dispatchEvent(new Event('scroll'));
 };
 
 // Background decorator to make the navigation visible against a dark background
@@ -113,8 +113,8 @@ Hidden.decorators = [
       simulateScroll(300);
       // Simulate scroll movement to hide nav
       const scrollEvent = new Event('scroll');
-      global.window.scrollY = 400;
-      global.window.dispatchEvent(scrollEvent);
+      window.scrollY = 400;
+      window.dispatchEvent(scrollEvent);
       
       return () => simulateScroll(0);
     }, []);
