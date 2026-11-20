@@ -48,7 +48,7 @@ export const LongQuote = {
 export const CustomStyling = {
   args: {
     text: 'A beautifully styled quote!',
-    className: 'bg-gray-100 p-6 rounded-lg shadow-md',
+    className: 'bg-gray-900 border border-gray-700 p-6 rounded-lg shadow-md',
   },
 };
 

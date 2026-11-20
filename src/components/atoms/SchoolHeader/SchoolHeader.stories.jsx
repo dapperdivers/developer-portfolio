@@ -55,11 +55,12 @@ export const WithContainer = () => (
   <div style={{ 
     maxWidth: '600px', 
     padding: '2rem',
-    backgroundColor: '#f8f9fa',
-    borderRadius: '8px'
+    backgroundColor: 'var(--color-background-alt)',
+    border: '1px solid var(--color-border)',
+    borderRadius: 'var(--border-radius-lg)'
   }}>
     <SchoolHeader schoolName="Oxford University" />
-    <p style={{ marginTop: '1rem' }}>
+    <p style={{ marginTop: '1rem', color: 'var(--color-text-muted)' }}>
       Founded in 1096, Oxford University is one of the oldest and most prestigious universities in the world.
     </p>
   </div>

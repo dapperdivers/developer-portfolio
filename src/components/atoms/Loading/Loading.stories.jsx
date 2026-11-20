@@ -154,7 +154,7 @@ export const FullPageLoading = () => (
     left: 0, 
     right: 0, 
     bottom: 0,
-    backgroundColor: '#f8f9fa',
+    backgroundColor: 'var(--color-background)',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -162,7 +162,7 @@ export const FullPageLoading = () => (
     gap: '1rem'
   }}>
     <Loading />
-    <p style={{ color: '#555', fontWeight: 500 }}>Loading application...</p>
+    <p style={{ color: 'var(--color-text-muted)', fontWeight: 500 }}>Loading application...</p>
   </div>
 );
 FullPageLoading.parameters = {
