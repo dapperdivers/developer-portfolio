@@ -14,10 +14,9 @@ This guide provides best practices for writing tests with Jest in an ES Modules 
 
 Our testing environment has been configured to handle ES Modules properly:
 
-1. **Babel Configuration**: Custom Babel settings in `babel.config.cjs` ensure proper transpilation.
-2. **Jest Configuration**: The `jest.config.cjs` file includes settings for ESM compatibility.
-3. **Test Setup**: Enhanced test setup in `setupTests.minimal.js` and `setupJest.js`.
-4. **Mock Implementations**: Standardized mock implementations in `src/__mocks__/mockImplementation.js`.
+1. **Jest Configuration**: The `jest.config.cjs` file includes settings for ESM compatibility.
+2. **Test Setup**: Enhanced test setup in `setupTests.minimal.js` and `setupJest.js`.
+3. **Mock Implementations**: Standardized mock implementations in `src/__mocks__/mockImplementation.js`.
 
 ## Common ESM Testing Issues
 
