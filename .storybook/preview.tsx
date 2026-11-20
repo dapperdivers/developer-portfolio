@@ -6,7 +6,7 @@ import {
   withAnimationContext
 } from './utils';
 
-// Load the same fonts and global stylesheets, in the same order, as src/index.jsx,
+// Load the same fonts and global stylesheets, in the same order, as src/index.tsx,
 // so a component looks the same here as it does on the site.
 import '../src/utils/fontLoader';
 import '../src/assets/css/design-system/index.css';

@@ -10,7 +10,7 @@ import './ScrollDown.css';
  * @param {Object} props - Component props
  * @returns {React.ReactElement} ScrollDown component
  */
-interface ScrollDownProps {
+export interface ScrollDownProps {
   /** Click handler for the scroll down action */
   onClick?: () => void;
   /** Custom label (defaults to ">>_NEXT") */

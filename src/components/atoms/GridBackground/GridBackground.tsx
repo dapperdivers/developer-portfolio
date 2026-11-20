@@ -1,5 +1,5 @@
 import React, { memo, useMemo } from 'react';
-import { LazyMotion, domAnimation, m } from 'framer-motion';
+import { LazyMotion, domAnimation, m, HTMLMotionProps } from 'framer-motion';
 import { useMotionEnabled } from '@utils/motion';
 import './GridBackground.css';
 
@@ -10,7 +10,7 @@ import './GridBackground.css';
  * @param {Object} props - Component props
  * @returns {React.ReactElement} GridBackground component
  */
-interface GridBackgroundProps {
+export interface GridBackgroundProps extends HTMLMotionProps<'div'> {
   /** Additional CSS class names */
   className?: string;
   /** Grid cell size in pixels (default: 30) */
@@ -21,7 +21,6 @@ interface GridBackgroundProps {
   backgroundColor?: string;
   /** Fade the grid in on mount (default: true) */
   animated?: boolean;
-  [key: string]: any;
 }
 
 const GridBackground = (props: GridBackgroundProps) => {

@@ -1,9 +1,9 @@
 import React, { memo, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
+import { motion, HTMLMotionProps } from 'framer-motion';
 import { useMotionEnabled } from '@utils/motion';
 import './BinaryStream.css';
 
-export interface BinaryStreamProps {
+export interface BinaryStreamProps extends Omit<HTMLMotionProps<'div'>, 'color'> {
   /** Text color for the binary stream (default: #0F0) */
   color?: string;
   /** Font size for the characters (default: 20) */
@@ -22,7 +22,6 @@ export interface BinaryStreamProps {
   isBackground?: boolean;
   /** Run the canvas animation (default: true) */
   animated?: boolean;
-  [key: string]: any;
 }
 
 const BinaryStream = (props: BinaryStreamProps) => {

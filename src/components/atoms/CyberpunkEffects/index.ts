@@ -1,0 +1,3 @@
+import CyberpunkEffects from './CyberpunkEffects';
+export default CyberpunkEffects;
+export type { CyberpunkEffectsProps } from './CyberpunkEffects';

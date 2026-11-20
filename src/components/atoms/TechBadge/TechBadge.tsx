@@ -3,7 +3,7 @@ import { motion, HTMLMotionProps, Variants } from 'framer-motion';
 import { useMotionEnabled } from '@utils/motion';
 import './TechBadge.css';
 
-interface TechBadgeProps extends Omit<HTMLMotionProps<'div'>, 'size'> {
+export interface TechBadgeProps extends Omit<HTMLMotionProps<'div'>, 'size'> {
   /** Badge label text */
   label: string;
   /** Badge size variant */
