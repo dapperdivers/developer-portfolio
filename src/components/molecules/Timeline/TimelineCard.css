@@ -8,6 +8,8 @@
 /* Enhanced experience card */
 .timeline__card {
   @apply relative bg-gray-900 border border-gray-700 rounded-lg p-6 max-w-md;
+  /* Padding is capped by the viewport so large text keeps a readable column */
+  padding: min(2rem, 8.3vw);
   background: linear-gradient(135deg, rgba(31, 41, 55, 0.95), rgba(17, 24, 39, 0.95));
   backdrop-filter: blur(10px);
   transition: all 0.3s ease;
@@ -34,7 +36,7 @@
 
 .timeline__card--expanded {
   @apply border-theme-cyan/30;
-  max-width: calc(100vw - 8rem);
+  max-width: calc(100vw - min(8rem, 33vw));
   width: 100%;
   z-index: 30; /* Higher than timeline line */
   box-shadow: 
@@ -86,7 +88,7 @@
   align-items: center;
   justify-content: center;
   min-width: 3rem;
-  height: 3rem;
+  min-height: 3rem;
   padding: 0 var(--spacing-2);
   border: 1px solid rgba(100, 255, 218, 0.4);
   border-radius: 0.5rem;
@@ -105,6 +107,7 @@
 
 .timeline__role {
   @apply text-white text-lg font-bold mb-2;
+  font-size: min(1.25rem, 6.4vw);
   transition: color 0.3s ease;
 }
 
@@ -123,10 +126,12 @@
 /* Improved layout for expanded cards */
 .timeline__card--expanded .timeline__header {
   @apply text-center mb-6;
+  margin-bottom: min(2rem, 8.3vw);
 }
 
 .timeline__card--expanded .timeline__role {
   @apply text-xl;
+  font-size: min(1.5rem, 7vw);
 }
 
 .timeline__card--expanded .timeline__company-info {
@@ -151,6 +156,7 @@
 
 .timeline__description {
   @apply text-gray-300 mb-4 leading-relaxed;
+  margin-bottom: min(1rem, 4.2vw);
   transition: text-shadow 0.3s ease;
 }
 
@@ -166,20 +172,27 @@
 
 .timeline__bullet {
   @apply text-gray-300 text-sm relative pl-6;
+  padding-left: min(2rem, 8.3vw);
   transition: all 0.3s ease;
 }
 
 /* Improved content layout for expanded cards */
 .timeline__card--expanded .timeline__content {
   @apply pt-6 mt-6;
+  padding-top: min(2rem, 8.3vw);
+  margin-top: min(2rem, 8.3vw);
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  /* Two columns while there is room, one as soon as text grows */
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, max(18rem, calc(50% - 2rem))), 1fr));
   gap: 2rem;
   align-items: start;
 }
 
 .timeline__card--expanded .timeline__classification {
-  @apply col-span-2 text-center mb-6 pb-4;
+  @apply text-center mb-6 pb-4;
+  margin-bottom: min(2rem, 8.3vw);
+  padding-bottom: min(1rem, 4.2vw);
+  grid-column: 1 / -1;
 }
 
 .timeline__card--expanded .timeline__description {
@@ -188,10 +201,9 @@
 }
 
 .timeline__card--expanded .timeline__bullets {
-  @apply col-span-2;
-  /* Bullets now span both columns and use CSS Grid */
+  grid-column: 1 / -1;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, max(18rem, calc(50% - 2rem))), 1fr));
   gap: 1rem 2rem;
   align-items: start;
 }
@@ -209,7 +221,8 @@
 }
 
 .timeline__card--expanded .timeline__terminal {
-  @apply col-span-2 mt-6;
+  @apply mt-6;
+  grid-column: 1 / -1;
 }
 
 .timeline__bullet::before {
@@ -217,9 +230,40 @@
   @apply absolute left-0 text-theme-cyan font-bold;
 }
 
+/* Large text (the viewport is under 24 text-widths): give the reading column
+   back its width and tighten leading */
+@media (max-width: 24rem) {
+  .timeline__card {
+    padding: min(2rem, 4vw);
+  }
+
+  .timeline__card--expanded,
+  .timeline__entry--left .timeline__card--expanded,
+  .timeline__entry--right .timeline__card--expanded {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .timeline__card--expanded .timeline__bullets {
+    padding-left: 0;
+  }
+
+  .timeline__card .timeline__bullet {
+    padding-left: min(2rem, 5vw);
+  }
+
+  .timeline__card .timeline__description,
+  .timeline__card .timeline__bullet {
+    line-height: 1.45;
+  }
+}
+
 /* Enhanced terminal footer */
 .timeline__terminal {
   @apply bg-gray-800 rounded p-3 font-mono text-sm flex items-center gap-2 mt-4;
+  flex-wrap: wrap;
+  min-width: 0;
+  overflow-wrap: anywhere;
   transition: box-shadow 0.3s ease;
 }
 
@@ -297,28 +341,24 @@
   }
 
   .timeline__card--expanded {
-    max-width: calc(100vw - 4rem);
-    width: calc(100vw - 4rem);
+    max-width: calc(100vw - min(4rem, 16.5vw));
+    width: calc(100vw - min(4rem, 16.5vw));
   }
 
-  /* Mobile layout for expanded cards */
   .timeline__card--expanded .timeline__content {
-    display: block;
     gap: 0;
   }
 
   .timeline__card--expanded .timeline__classification {
-    @apply col-span-1 mb-4;
+    @apply mb-4;
   }
 
   .timeline__card--expanded .timeline__bullets {
-    @apply col-span-1;
-    display: block;
-    gap: 0;
+    gap: 0.5rem 0;
   }
 
   .timeline__card--expanded .timeline__terminal {
-    @apply col-span-1 mt-4;
+    @apply mt-4;
   }
 }
 

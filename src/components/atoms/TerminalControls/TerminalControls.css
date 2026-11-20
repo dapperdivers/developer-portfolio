@@ -25,6 +25,9 @@
 .terminal-circle {
   width: 12px;
   height: 12px;
+  /* Decorative size: the touch-target minimum in browser-fixes.css must not inflate them */
+  min-width: 0;
+  min-height: 0;
   border-radius: 50%;
   margin-right: 6px;
   position: relative;

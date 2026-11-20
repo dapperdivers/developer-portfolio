@@ -57,7 +57,7 @@ a:hover {
 
 /* Better list styling */
 ul, ol {
-  padding-left: 1.5rem;
+  padding-left: min(1.5rem, 6.2vw);
   margin-bottom: 1.25rem;
 }
 

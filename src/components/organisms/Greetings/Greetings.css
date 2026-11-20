@@ -4,7 +4,7 @@
  */
 
 .greetings {
-  --greetings-nav-clearance: 7.5rem;
+  --greetings-nav-clearance: min(7.5rem, 31vw);
   position: relative;
   display: flex;
   flex-direction: column;
@@ -13,7 +13,7 @@
   min-height: 100vh;
   min-height: 100svh;
   box-sizing: border-box;
-  padding: var(--greetings-nav-clearance) var(--spacing-4) var(--spacing-5);
+  padding: var(--greetings-nav-clearance) min(var(--spacing-4), 4.2vw) min(var(--spacing-5), 6.2vw);
 }
 
 .greetings__inner {
@@ -34,11 +34,11 @@
 .greetings__actions {
   display: flex;
   justify-content: center;
-  margin-top: var(--spacing-5);
+  margin-top: min(var(--spacing-5), 6.2vw);
 }
 
 @media (min-width: 768px) {
   .greetings {
-    --greetings-nav-clearance: 8rem;
+    --greetings-nav-clearance: min(8rem, 31vw);
   }
 }

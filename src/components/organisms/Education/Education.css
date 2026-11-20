@@ -12,7 +12,7 @@
   position: relative;
   width: 100%;
   max-width: 100%;
-  padding: var(--spacing-8) var(--spacing-4);
+  padding: var(--spacing-8) min(var(--spacing-4), 4.2vw);
   z-index: 10;
 }
 
@@ -72,17 +72,17 @@
 
 @media (max-width: 768px) {
   .education-content-wrapper {
-    padding: var(--spacing-6) var(--spacing-3);
+    padding: var(--spacing-6) min(var(--spacing-3), 3.1vw);
   }
 }
 
 @media (max-width: 480px) {
   .education-content-wrapper {
-    padding: var(--spacing-4) var(--spacing-2);
+    padding: var(--spacing-4) min(var(--spacing-2), 2.1vw);
   }
 
   .empty-state-content {
-    margin: 0 var(--spacing-2);
-    padding: var(--spacing-6);
+    margin: 0 min(var(--spacing-2), 2.1vw);
+    padding: var(--spacing-6) min(var(--spacing-6), 8.3vw);
   }
 }

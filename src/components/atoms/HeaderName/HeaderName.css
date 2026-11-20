@@ -129,8 +129,8 @@ noscript ~ * .cursor {
 /* Brand mark before the name */
 .header-name__logo {
   flex: none;
-  width: 2.25rem;
-  height: 2.25rem;
+  width: min(2.25rem, 36px);
+  height: min(2.25rem, 36px);
   border-radius: 50%;
   border: 1px solid var(--surface-border-strong);
   object-fit: cover;
@@ -138,8 +138,27 @@ noscript ~ * .cursor {
 
 @media (min-width: 1024px) {
   .header-name__logo {
-    width: 2.75rem;
-    height: 2.75rem;
+    width: min(2.75rem, 44px);
+    height: min(2.75rem, 44px);
+  }
+}
+
+/* Signature: one line, sized by the viewport so large text cannot wrap it */
+.header-name__title {
+  font-size: min(1.75rem, 8vw);
+  line-height: 1.1;
+  white-space: nowrap;
+}
+
+@media (min-width: 640px) {
+  .header-name__title {
+    font-size: min(2rem, 7vw);
+  }
+}
+
+@media (min-width: 1024px) {
+  .header-name__title {
+    font-size: min(2.5rem, 6vw);
   }
 }
 

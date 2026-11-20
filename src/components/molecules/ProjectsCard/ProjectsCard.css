@@ -41,7 +41,7 @@ div.project-card .project-image-container {
 div.project-card .card-body {
   display: flex;
   flex-direction: column;
-  padding: var(--spacing-5);
+  padding: min(var(--spacing-5), 6.2vw);
 }
 
 /* Title: Inter semibold, no decorative underline */
@@ -50,7 +50,7 @@ div.project-card .project-title {
   padding: 0;
   color: var(--color-text);
   font-family: var(--font-family-base);
-  font-size: var(--font-size-lg);
+  font-size: min(var(--font-size-lg), 6.2vw);
   font-weight: var(--font-weight-semibold);
   line-height: var(--line-height-tight);
 }
@@ -114,11 +114,22 @@ div.project-card .project-links {
 
 @media (max-width: 768px) {
   div.project-card .card-body {
-    padding: var(--spacing-4);
+    padding: min(var(--spacing-4), 4.2vw);
   }
 
   div.project-card .project-image-container {
     height: 150px;
+  }
+}
+
+/* Large text: tighter leading and a wider reading column */
+@media (max-width: 24rem) {
+  div.project-card .project-description {
+    line-height: 1.45;
+  }
+
+  div.project-card .card-body {
+    padding: min(var(--spacing-4), 3vw);
   }
 }
 

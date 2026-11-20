@@ -13,7 +13,7 @@
 
 .profile-header__title {
   font-family: var(--font-family-base);
-  font-size: var(--font-size-3xl);
+  font-size: min(var(--font-size-3xl), 8.3vw);
   font-weight: var(--font-weight-semibold);
   margin-bottom: var(--spacing-2);
   color: var(--color-text);
@@ -26,7 +26,7 @@
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .profile-header__title {
-    font-size: var(--font-size-2xl);
+    font-size: min(var(--font-size-2xl), 7.3vw);
   }
 }
 
@@ -40,6 +40,6 @@
   }
   
   .profile-header__title {
-    font-size: var(--font-size-xl);
+    font-size: min(var(--font-size-xl), 6.2vw);
   }
 }

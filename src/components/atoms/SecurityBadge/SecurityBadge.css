@@ -14,7 +14,7 @@
   gap: var(--spacing-2);
   box-sizing: border-box;
   min-height: 1.75rem;
-  padding: 0 var(--spacing-3);
+  padding: 0 min(var(--spacing-3), 3.1vw);
   font-family: var(--font-family-jetbrains);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-medium);
@@ -32,7 +32,8 @@
 }
 
 .security-badge__text {
-  white-space: nowrap;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 /* Levels */

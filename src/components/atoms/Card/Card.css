@@ -45,17 +45,17 @@
 
 /* Header, body, footer */
 .card-header {
-  padding: var(--spacing-4) var(--spacing-4) var(--spacing-3);
+  padding: min(var(--spacing-4), 4.2vw) min(var(--spacing-4), 4.2vw) min(var(--spacing-3), 3.1vw);
   border-bottom: 1px solid var(--surface-divider);
 }
 
 .card-body {
   flex: 1 1 auto;
-  padding: var(--spacing-4);
+  padding: min(var(--spacing-4), 4.2vw);
 }
 
 .card-footer {
-  padding: var(--spacing-3) var(--spacing-4);
+  padding: min(var(--spacing-3), 3.1vw) min(var(--spacing-4), 4.2vw);
   border-top: 1px solid var(--surface-divider);
   background: var(--surface-inset);
 }
