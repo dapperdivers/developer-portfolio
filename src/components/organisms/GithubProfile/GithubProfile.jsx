@@ -11,7 +11,7 @@ import { useAnimation } from "@context/AnimationContext";
 import './GithubProfile.css';
 
 // Create axios instance with base configuration
-const githubApi = axios.create({
+export const githubApi = axios.create({
   baseURL: 'https://api.github.com',
   timeout: 5000,
   headers: {

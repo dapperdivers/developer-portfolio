@@ -1,6 +1,9 @@
 import React from 'react';
-import GithubProfile from './GithubProfile';
+import { within, expect, waitFor } from 'storybook/test';
+import axios from 'axios';
+import GithubProfile, { githubApi } from './GithubProfile';
 import { mockGithubProfile } from '@data/mockPortfolioData';
+import { openSource } from '@/portfolio';
 
 export default {
   title: 'GitHub Profile/Organisms/GithubProfile',
@@ -24,59 +27,114 @@ export default {
   },
 };
 
+// Stories never reach the network: each one swaps the axios adapter of the
+// module-level githubApi instance and starts from a known localStorage state.
+const CACHE_KEY = `github-profile-${openSource.githubUserName}`;
+const FALLBACK_AVATAR = `https://github.com/${openSource.githubUserName}.png`;
+
+// Avatar that needs no network
+const SAMPLE_AVATAR = 'data:image/svg+xml,' + encodeURIComponent(
+  '<svg xmlns="http://www.w3.org/2000/svg" width="150" height="150"><rect width="150" height="150" fill="#0a192f"/><circle cx="75" cy="60" r="28" fill="#64ffda"/></svg>'
+);
+const sampleProfile = { ...mockGithubProfile, avatar_url: SAMPLE_AVATAR };
+
+const okResponse = (config) => ({
+  data: sampleProfile,
+  status: 200,
+  statusText: 'OK',
+  headers: {},
+  config,
+  request: {}
+});
+
+const rateLimited = (config) => new axios.AxiosError(
+  'Request failed with status code 403',
+  axios.AxiosError.ERR_BAD_REQUEST,
+  config,
+  {},
+  {
+    data: { message: 'API rate limit exceeded' },
+    status: 403,
+    statusText: 'Forbidden',
+    headers: {},
+    config,
+    request: {}
+  }
+);
+
+// Builds a story-level beforeEach that installs the adapter and the localStorage
+// state, and restores both in the returned cleanup.
+const withApi = ({ adapter, cache }) => () => {
+  const previousAdapter = githubApi.defaults.adapter;
+  githubApi.defaults.adapter = adapter;
+  localStorage.removeItem(CACHE_KEY);
+  if (cache) localStorage.setItem(CACHE_KEY, JSON.stringify(cache));
+  return () => {
+    githubApi.defaults.adapter = previousAdapter;
+    localStorage.removeItem(CACHE_KEY);
+  };
+};
+
 // Template for the component
 const Template = () => <GithubProfile />;
 
+const expectCardContent = async (canvas) => {
+  const card = await canvas.findByTestId('github-profile-card');
+  await expect(card).toBeInTheDocument();
+  await expect(canvas.queryByText(/Unable to load|rate limit/i)).not.toBeInTheDocument();
+  return card;
+};
+
 /**
  * Default story shows the GitHub profile with a successful API response.
+ * The adapter resolves immediately with a sample profile (inline SVG avatar).
+ * Starts with an empty cache.
  */
 export const Success = Template.bind({});
-Success.parameters = {
-  mockData: [
-    {
-      url: 'https://api.github.com/users/*',
-      method: 'GET',
-      status: 200,
-      response: mockGithubProfile
-    }
-  ]
+Success.beforeEach = withApi({
+  adapter: (config) => Promise.resolve(okResponse(config))
+});
+Success.play = async ({ canvasElement }) => {
+  const canvas = within(canvasElement);
+  const card = await expectCardContent(canvas);
+  await waitFor(() => {
+    expect(within(card).getByRole('img', { name: /avatar/i })).toHaveAttribute('src', SAMPLE_AVATAR);
+  });
 };
 
 /**
  * Slow API: the card is shown immediately with the fallback avatar while the
- * GitHub API response is pending.
+ * GitHub API response is pending; the sample avatar replaces it after about 3 seconds.
+ * Starts with an empty cache.
  */
 export const SlowApi = Template.bind({});
-SlowApi.parameters = {
-  mockData: [
-    {
-      url: 'https://api.github.com/users/*',
-      method: 'GET',
-      delay: 10000 // Long delay to ensure loading state is shown
-    }
-  ]
-};
+SlowApi.beforeEach = withApi({
+  adapter: (config) => new Promise((resolve) => {
+    setTimeout(() => resolve(okResponse(config)), 3000);
+  })
+});
 
 /**
  * API failed: the API is rate limited (403) but the card still renders in full
  * with the fallback avatar and no error box.
+ * The adapter rejects with an axios 403 error. Starts with an empty cache.
  */
 export const ApiFailed = Template.bind({});
-ApiFailed.parameters = {
-  mockData: [
-    {
-      url: 'https://api.github.com/users/*',
-      method: 'GET',
-      status: 403,
-      response: {
-        message: 'API rate limit exceeded'
-      }
-    }
-  ]
+ApiFailed.beforeEach = withApi({
+  adapter: (config) => Promise.reject(rateLimited(config))
+});
+ApiFailed.play = async ({ canvasElement }) => {
+  const canvas = within(canvasElement);
+  const card = await expectCardContent(canvas);
+  await waitFor(() => {
+    expect(within(card).getByRole('img', { name: /avatar/i })).toHaveAttribute('src', FALLBACK_AVATAR);
+  });
 };
 
 /**
  * This story demonstrates the cached data fallback.
+ * Starts with a stale cache entry (older than the 5 minute window) holding the
+ * sample profile; the adapter then rejects with a 403, so the cached avatar is used.
  */
 export const CachedFallback = Template.bind({});
 CachedFallback.parameters = {
@@ -84,15 +142,9 @@ CachedFallback.parameters = {
     description: {
       story: 'When the GitHub API request fails but cached data exists, the component uses the cached profile data for the avatar.'
     }
-  },
-  mockData: [
-    {
-      url: 'https://api.github.com/users/*',
-      method: 'GET',
-      status: 403,
-      response: {
-        message: 'API rate limit exceeded'
-      }
-    }
-  ]
+  }
 };
+CachedFallback.beforeEach = withApi({
+  adapter: (config) => Promise.reject(rateLimited(config)),
+  cache: { data: sampleProfile, timestamp: Date.now() - 60 * 60 * 1000 }
+});
