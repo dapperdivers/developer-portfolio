@@ -22,7 +22,7 @@ const ProfileHeader = ({
   highlightText = 'Security',
   animate = true
 }) => {
-  const { animationEnabled, itemVariants } = useAnimation();
+  const { animationEnabled, slideUpVariants: itemVariants } = useAnimation();
   
   // Only use animations if both props are enabled
   const shouldAnimate = animate && animationEnabled;

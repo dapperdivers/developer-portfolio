@@ -44,7 +44,7 @@ const MapControls = ({
   className = '',
   ...props 
 }) => {
-  const { isAnimationEnabled } = useAnimation();
+  const { animationEnabled: isAnimationEnabled } = useAnimation();
 
   const getMapModeIcon = () => {
     return mapMode === 'dark' ? FaSatellite : FaMap;

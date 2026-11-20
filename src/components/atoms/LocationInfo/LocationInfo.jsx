@@ -48,7 +48,7 @@ const LocationInfo = ({
   className = '',
   ...props 
 }) => {
-  const { isAnimationEnabled } = useAnimation();
+  const { animationEnabled: isAnimationEnabled } = useAnimation();
 
   if (!locationData) {
     return null;
