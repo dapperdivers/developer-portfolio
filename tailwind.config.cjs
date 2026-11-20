@@ -122,6 +122,15 @@ module.exports = {
         background: 'var(--color-background-alt)',
         'background-alt': 'var(--color-background-alt)',
         'background-muted': 'var(--color-background-muted)',
+        // Tailwind 3 default palette values for the shades the site uses. Tailwind 4 ships different
+        // (oklch) values and would also emit --color-* variables that clash with the design tokens.
+        blue: { 500: '#3b82f6', 700: '#1d4ed8' },
+        cyan: { 400: '#22d3ee', 500: '#06b6d4' },
+        green: { 400: '#4ade80', 500: '#22c55e', 600: '#16a34a', 900: '#14532d' },
+        pink: { 500: '#ec4899', 600: '#db2777' },
+        purple: { 400: '#c084fc', 500: '#a855f7', 600: '#9333ea' },
+        red: { 400: '#f87171', 500: '#ef4444', 600: '#dc2626', 900: '#7f1d1d' },
+        yellow: { 400: '#facc15', 500: '#eab308', 600: '#ca8a04', 900: '#713f12' },
       },
       
       // Typography from design system
@@ -277,18 +286,9 @@ module.exports = {
     },
   },
   plugins: [
-    function({ addBase, addComponents, addUtilities }) {
-      // Add base styles
-      addBase({
-        'body': {
-          backgroundColor: 'var(--color-background-alt)', // Using design system variable
-          color: 'var(--color-text)', // Using design system variable
-          scrollBehavior: 'smooth'
-        },
-        'html': {
-          scrollBehavior: 'smooth'
-        }
-      });
+    function({ addComponents, addUtilities }) {
+      // Base styles (body/html) now live in src/assets/css/tailwind.css: Tailwind 4 would emit
+      // addBase() output inside @layer base, which loses to the unlayered design-system body rules.
       // Add custom components
       addComponents({
         '.p-card': {
@@ -344,22 +344,22 @@ module.exports = {
         '.pt-28': { 'padding-top': '7rem' },
         
         // Add opacity variant utilities
-        '.bg-white\\/95': { 'background-color': 'rgba(255, 255, 255, 0.95)' },
-        '.bg-white\\/20': { 'background-color': 'rgba(255, 255, 255, 0.2)' },
-        '.bg-black\\/60': { 'background-color': 'rgba(0, 0, 0, 0.6)' },
-        '.text-white\\/90': { 'color': 'rgba(255, 255, 255, 0.9)' },
-        '.text-white\\/80': { 'color': 'rgba(255, 255, 255, 0.8)' },
-        '.ring-primary\\/50': { '--tw-ring-color': 'rgba(var(--color-primary-rgb), 0.5)' },
+        '.bg-white/95': { 'background-color': 'rgba(255, 255, 255, 0.95)' },
+        '.bg-white/20': { 'background-color': 'rgba(255, 255, 255, 0.2)' },
+        '.bg-black/60': { 'background-color': 'rgba(0, 0, 0, 0.6)' },
+        '.text-white/90': { 'color': 'rgba(255, 255, 255, 0.9)' },
+        '.text-white/80': { 'color': 'rgba(255, 255, 255, 0.8)' },
+        '.ring-primary/50': { '--tw-ring-color': 'rgba(var(--color-primary-rgb), 0.5)' },
         '.ring-opacity-50': { '--tw-ring-opacity': '0.5' },
         
         // Add min-height utilities
         '.min-h-80': { 'min-height': '20rem' },
         
         // Add border color with opacity variants
-        '.border-primary\\/20': { 'border-color': 'rgba(var(--color-primary-rgb), 0.2)' },
-        '.border-primary\\/50': { 'border-color': 'rgba(var(--color-primary-rgb), 0.5)' },
-        '.border-white\\/95': { 'border-color': 'rgba(255, 255, 255, 0.95)' },
-        '.border-white\\/50': { 'border-color': 'rgba(255, 255, 255, 0.5)' },
+        '.border-primary/20': { 'border-color': 'rgba(var(--color-primary-rgb), 0.2)' },
+        '.border-primary/50': { 'border-color': 'rgba(var(--color-primary-rgb), 0.5)' },
+        '.border-white/95': { 'border-color': 'rgba(255, 255, 255, 0.95)' },
+        '.border-white/50': { 'border-color': 'rgba(255, 255, 255, 0.5)' },
         
         // Add opacity utilities
         '.opacity-85': { 'opacity': '0.85' },
@@ -367,23 +367,23 @@ module.exports = {
         '.opacity-65': { 'opacity': '0.65' },
         
         // Add color opacity variants for button states
-        '.bg-success\\/90': { 'background-color': 'rgba(var(--color-success-rgb), 0.9)' },
-        '.border-success\\/90': { 'border-color': 'rgba(var(--color-success-rgb), 0.9)' },
-        '.bg-danger\\/90': { 'background-color': 'rgba(var(--color-danger-rgb), 0.9)' },
-        '.border-danger\\/90': { 'border-color': 'rgba(var(--color-danger-rgb), 0.9)' },
-        '.bg-warning\\/90': { 'background-color': 'rgba(var(--color-warning-rgb), 0.9)' },
-        '.border-warning\\/90': { 'border-color': 'rgba(var(--color-warning-rgb), 0.9)' },
-        '.bg-info\\/90': { 'background-color': 'rgba(var(--color-info-rgb), 0.9)' },
-        '.border-info\\/90': { 'border-color': 'rgba(var(--color-info-rgb), 0.9)' },
+        '.bg-success/90': { 'background-color': 'rgba(var(--color-success-rgb), 0.9)' },
+        '.border-success/90': { 'border-color': 'rgba(var(--color-success-rgb), 0.9)' },
+        '.bg-danger/90': { 'background-color': 'rgba(var(--color-danger-rgb), 0.9)' },
+        '.border-danger/90': { 'border-color': 'rgba(var(--color-danger-rgb), 0.9)' },
+        '.bg-warning/90': { 'background-color': 'rgba(var(--color-warning-rgb), 0.9)' },
+        '.border-warning/90': { 'border-color': 'rgba(var(--color-warning-rgb), 0.9)' },
+        '.bg-info/90': { 'background-color': 'rgba(var(--color-info-rgb), 0.9)' },
+        '.border-info/90': { 'border-color': 'rgba(var(--color-info-rgb), 0.9)' },
         
         // Theme opacity variants
-        '.bg-theme-navy\\/80': { 'background-color': 'rgba(var(--color-navy-rgb), 0.8)' },
-        '.bg-theme-navy\\/90': { 'background-color': 'rgba(var(--color-navy-rgb), 0.9)' },
-        '.bg-theme-cyan\\/20': { 'background-color': 'rgba(var(--color-cyan-rgb), 0.2)' },
-        '.bg-theme-cyan\\/50': { 'background-color': 'rgba(var(--color-cyan-rgb), 0.5)' },
-        '.text-theme-cyan\\/80': { 'color': 'rgba(var(--color-cyan-rgb), 0.8)' },
-        '.border-theme-cyan\\/30': { 'border-color': 'rgba(var(--color-cyan-rgb), 0.3)' },
-        '.border-theme-cyan\\/50': { 'border-color': 'rgba(var(--color-cyan-rgb), 0.5)' },
+        '.bg-theme-navy/80': { 'background-color': 'rgba(var(--color-navy-rgb), 0.8)' },
+        '.bg-theme-navy/90': { 'background-color': 'rgba(var(--color-navy-rgb), 0.9)' },
+        '.bg-theme-cyan/20': { 'background-color': 'rgba(var(--color-cyan-rgb), 0.2)' },
+        '.bg-theme-cyan/50': { 'background-color': 'rgba(var(--color-cyan-rgb), 0.5)' },
+        '.text-theme-cyan/80': { 'color': 'rgba(var(--color-cyan-rgb), 0.8)' },
+        '.border-theme-cyan/30': { 'border-color': 'rgba(var(--color-cyan-rgb), 0.3)' },
+        '.border-theme-cyan/50': { 'border-color': 'rgba(var(--color-cyan-rgb), 0.5)' },
         
         // Level badge utilities
         '.badge-critical': { 

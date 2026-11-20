@@ -42,7 +42,7 @@ const FeedbackQuote = ({ text, className = "", animated = true }) => {
 
   return (
     <motion.div 
-      className={`relative flex-grow mb-5 feedback-quote ${className}`}
+      className={`relative grow mb-5 feedback-quote ${className}`}
       initial={shouldAnimate ? "hidden" : "visible"}
       animate="visible"
       variants={shouldAnimate ? fadeInVariants : {}}

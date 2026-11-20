@@ -73,7 +73,7 @@ const Section = ({
         
         {title && <h2 className="section-title text-2xl md:text-3xl font-bold mb-2 relative inline-block">
           <span className="relative z-10">{title}</span>
-          <span className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-cyan-500 to-transparent w-full opacity-70"></span>
+          <span className="absolute bottom-0 left-0 h-1 bg-linear-to-r/srgb from-cyan-500 to-transparent w-full opacity-70"></span>
         </h2>}
         {subtitle && <div className="section-subtitle text-gray-100 max-w-2xl text-center">{subtitle}</div>}
       </motion.div>

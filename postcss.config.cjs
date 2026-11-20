@@ -1,9 +1,8 @@
-const tailwindcss = require('tailwindcss');
-
 module.exports = {
   plugins: {
-    'postcss-import': {},  // Add postcss-import to properly handle @import rules
-    'tailwindcss': {}, // Use direct tailwindcss package instead of @tailwindcss/postcss
+    '@tailwindcss/postcss': {}, // Tailwind 4: handles @import inlining itself (postcss-import no longer needed)
+    // Tailwind 4 only prefixes for its own fixed browser targets and does not read the
+    // project's browserslist, so autoprefixer stays to keep the same prefixes (e.g. -webkit-user-select).
     autoprefixer: {},
     ...(process.env.NODE_ENV === 'production' ? {
       cssnano: {
