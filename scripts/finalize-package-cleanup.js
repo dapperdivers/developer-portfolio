@@ -42,7 +42,7 @@ const scriptCategories = {
     'storybook', 'build-storybook',
     
     // Component generation (ongoing usage)
-    'generate-component', 'generate-story'
+    'generate:component', 'generate-story'
   ],
   
   // One-time reorganization scripts (can be removed)

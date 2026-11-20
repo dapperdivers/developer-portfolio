@@ -91,7 +91,7 @@
   - [x] Update metadata files with optimization info
 
 ## 9. Component Creation Script
-- [x] Create `scripts/generate-component.js`
+- [x] Create the component generator (now `scripts/generate.js`, run with `yarn generate:component`)
 - [x] Define templates for different component types
 - [x] Implement CSS file generation with design token usage
 - [x] Add documentation templates and prop types

@@ -1,41 +1,48 @@
 #!/usr/bin/env node
 
 /**
- * Enhanced Component and Story Generator
- * 
- * This script provides a unified interface for generating React components 
- * and Storybook stories with TypeScript support, following atomic design principles.
- * 
- * Features:
- * - Creates component TSX/JSX files with proper imports and documentation
- * - Organizes components in their own subdirectories (e.g., Button/Button.tsx)
- * - Generates co-located CSS files in the same directory as the component
- * - Creates index.ts files for clean imports (import { Button } from '@/components/atoms/Button')
- * - Uses TypeScript interfaces for type-safety instead of PropTypes
- * - Creates components following atomic design (atom, molecule, organism, layout)
- * - Adds Story file for Storybook documentation with interaction tests
- * - Generates Vitest test files with essential test cases
- * - Supports TypeScript by default
- * 
+ * Component and Story Generator
+ *
+ * Scaffolds React components and Storybook stories in TypeScript, following
+ * atomic design and the project rule that a building block must render with
+ * no provider around it.
+ *
+ * What it writes, in src/components/<layer>/<Name>/:
+ * - <Name>.tsx          component, exporting `interface <Name>Props`
+ * - <Name>.css          styles built on the design tokens
+ * - <Name>.stories.tsx  Storybook story (`satisfies Meta<typeof <Name>>`)
+ * - <Name>.test.tsx     Vitest test (globals are typed, nothing to import)
+ * - index.ts            default export plus `export type { <Name>Props }`
+ *
+ * Atoms and molecules never read app context: they take an optional
+ * `animated` prop and use `useMotionEnabled` and the shared variants from
+ * `@utils/motion`. Organisms and layout components may read
+ * `@context/AnimationContext` / `@context/PortfolioContext` and pass data and
+ * `animated={animationEnabled}` down as props.
+ *
  * Usage:
- * yarn generate --name=Button --type=atom
- * 
- * Legacy subcommand usage:
- * yarn generate component --name=Button --type=atom
- * yarn generate story --component=Button --type=atom --interactions --context=portfolio
- * 
+ * yarn generate:component --name=Button --type=atom
+ *
+ * Subcommand usage:
+ * yarn generate:component component --name=Button --type=atom
+ * yarn generate:component story --component=Button --type=atom --interactions
+ *
  * Options:
  * --name: The name of the component (required)
  * --type: Atomic design type (atom, molecule, organism, layout) (default: atom)
- * --dir: Custom component directory (optional, defaults to src/components/[atoms|molecules|organisms|layout]/[ComponentName])
+ * --dir: Custom parent directory (optional, defaults to src/components/[atoms|molecules|organisms|layout]); the component goes in [dir]/[ComponentName]
  * --files: Which files to generate (all, tsx, css, story, test, index) (default: all)
- * --js: Generate JavaScript instead of TypeScript (default: false)
- * 
- * Advanced story options:
- * --interactions: Include interaction tests (optional, flag)
- * --context: Add context support (optional, values: portfolio, theme)
- * --detailed: Add detailed documentation templates (optional, flag)
- * --subdir: For components in nested directories (e.g., Experience/Node)
+ * --help: Print usage
+ *
+ * Story subcommand options (for a component that already exists):
+ * --component: The name of the component (required)
+ * --type: Atomic design type (required)
+ * --interactions: Include an interaction test (optional, flag)
+ * --context: Wrap one story in a provider (optional, value: portfolio)
+ * --detailed: Add a documentation template (optional, flag)
+ * --path: Parent directory holding the component folder (optional, defaults to src/components/[layer])
+ *
+ * Existing files are overwritten without asking.
  */
 
 import { promises as fs } from 'fs';
@@ -58,10 +65,8 @@ const config = {
   createStory: true,
   createTest: true,
   createIndex: true,  // Generate index.ts file for clean imports
-  useTypeScript: true,
   importStyles: true,
   memoize: true,
-  addPropTypes: false,
   addJsDoc: true,
   
   // Folder mapping for atomic types
@@ -70,6 +75,14 @@ const config = {
     molecule: 'molecules',
     organism: 'organisms',
     layout: 'layout'
+  },
+
+  // Storybook title prefix for each atomic type
+  atomicTypesToStoryLayers: {
+    atom: 'Atoms',
+    molecule: 'Molecules',
+    organism: 'Organisms',
+    layout: 'Layout'
   }
 };
 
@@ -110,66 +123,62 @@ async function ensureDirectoryExists(directory) {
 }
 
 // Generate the component file
-async function generateComponentFile(componentPath, componentName, componentType, useTypeScript = true) {
-  const extension = useTypeScript ? 'tsx' : 'jsx';
-  const filename = `${componentName}.${extension}`;
+async function generateComponentFile(componentPath, componentName, componentType) {
+  const filename = `${componentName}.tsx`;
   const filepath = path.join(componentPath, filename);
-  
+  const className = componentName.toLowerCase();
+
   // CSS import path calculation
   const cssImportPath = config.importStyles
     ? `import './${componentName}.css';`
     : '';
-  
+
+  const jsDoc = (description) => config.addJsDoc ? `/**
+ * ${description}
+ *
+ * @component
+ * @param {${componentName}Props} props - Component props
+ * @returns {React.ReactElement} ${componentName} component
+ */
+` : '';
+
+  const exportLine = config.memoize
+    ? `// Apply memoization for performance optimization
+export default memo(${componentName});`
+    : `export default ${componentName};`;
+
   // Template based on component type
   let template = '';
-  
+
   // Atom Component Template
   if (componentType === 'atom') {
-    template = `import React${config.memoize ? ', { memo }' : ''} from 'react';
+    template = `${config.memoize ? "import { memo } from 'react';\n" : ''}import type { ReactNode } from 'react';
 import { motion } from 'framer-motion';
-import { useAnimation } from '@context/AnimationContext';
+import type { HTMLMotionProps } from 'framer-motion';
+import { fadeInVariants, useMotionEnabled } from '@utils/motion';
 ${cssImportPath}
 
-${config.addJsDoc ? `/**
- * ${componentName} atomic component with framer-motion animation support
- * 
- * @component
- * @param {Object} props - Component props
- * @returns {React.ReactElement} ${componentName} component
- */` : ""}
-${useTypeScript ? `interface ${componentName}Props {
+export interface ${componentName}Props extends Omit<HTMLMotionProps<'div'>, 'children'> {
   /** Component content */
-  children?: React.ReactNode;
+  children?: ReactNode;
   /** Additional CSS class names */
   className?: string;
-  [key: string]: any;
-}` : ""}
+  /** Whether the component animates in (default true) */
+  animated?: boolean;
+}
 
-const ${componentName} = (${useTypeScript ? `props: ${componentName}Props` : 'props'}) => {
-  const { children, className = '', ...rest } = props;
-  const { animationEnabled, shouldReduceMotion, fadeInVariants } = useAnimation();
-  
-  // Only animate if animations are enabled and reduced motion is not preferred
-  const shouldAnimate = animationEnabled && !shouldReduceMotion;
-  
-  // Component-specific animation variants
-  const ${componentName.toLowerCase()}Variants = {
-    hidden: { opacity: 0, y: 10 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: { 
-        duration: 0.4, 
-        ease: "easeOut" 
-      }
-    }
-  };
-  
+${jsDoc(`${componentName} atom.
+ *
+ * A building block: it takes everything through props and renders with no
+ * provider around it. Motion comes from \`@utils/motion\`, never from context.`)}const ${componentName} = ({ children, className = '', animated = true, ...rest }: ${componentName}Props) => {
+  // Animate only if the prop is on and the visitor has not asked for reduced motion
+  const shouldAnimate = useMotionEnabled(animated);
+
   return (
-    <motion.div 
-      className={\`${componentName.toLowerCase()} \${className}\`}
-      variants={${componentName.toLowerCase()}Variants}
-      initial={shouldAnimate ? "hidden" : "visible"}
+    <motion.div
+      className={['${className}', className].filter(Boolean).join(' ')}
+      variants={fadeInVariants}
+      initial={shouldAnimate ? 'hidden' : false}
       animate="visible"
       {...rest}
     >
@@ -178,77 +187,54 @@ const ${componentName} = (${useTypeScript ? `props: ${componentName}Props` : 'pr
   );
 };
 
-${config.memoize ? `// Apply memoization for performance optimization
-export default memo(${componentName});` : `export default ${componentName};`}
+${exportLine}
 `;
   }
-  
+
   // Molecule Component Template
   else if (componentType === 'molecule') {
-    template = `import React${config.memoize ? ', { memo }' : ''} from 'react';
+    template = `import { Children${config.memoize ? ', memo' : ''} } from 'react';
+import type { ReactNode } from 'react';
 import { motion } from 'framer-motion';
-import { useAnimation } from '@context/AnimationContext';
+import type { HTMLMotionProps, Variants } from 'framer-motion';
+import { STAGGER_DELAY, slideUpVariants, useMotionEnabled } from '@utils/motion';
 ${cssImportPath}
 
-${config.addJsDoc ? `/**
- * ${componentName} molecule component with framer-motion animation support
- * 
- * @component
- * @param {Object} props - Component props
- * @returns {React.ReactElement} ${componentName} component
- */` : ""}
-${useTypeScript ? `interface ${componentName}Props {
-  /** Component content */
-  children?: React.ReactNode;
+export interface ${componentName}Props extends Omit<HTMLMotionProps<'div'>, 'children'> {
+  /** Component content: each child animates in after the one before it */
+  children?: ReactNode;
   /** Additional CSS class names */
   className?: string;
-  [key: string]: any;
-}` : ""}
+  /** Whether the component animates in (default true) */
+  animated?: boolean;
+}
 
-const ${componentName} = (${useTypeScript ? `props: ${componentName}Props` : 'props'}) => {
-  const { children, className = '', ...rest } = props;
-  const { animationEnabled, shouldReduceMotion, fadeInVariants } = useAnimation();
-  
-  // Only animate if animations are enabled and reduced motion is not preferred
-  const shouldAnimate = animationEnabled && !shouldReduceMotion;
-  
-  // Component-specific animation variants
-  const containerVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: { 
-        duration: 0.5, 
-        ease: "easeOut",
-        when: "beforeChildren",
-        staggerChildren: 0.1
-      }
-    }
-  };
-  
-  const childVariants = {
-    hidden: { opacity: 0, y: 10 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: { 
-        duration: 0.4, 
-        ease: "easeOut" 
-      }
-    }
-  };
-  
+// Reveals the children one after another
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { when: 'beforeChildren', staggerChildren: STAGGER_DELAY }
+  }
+};
+
+${jsDoc(`${componentName} molecule.
+ *
+ * A building block: it takes its data through props and renders with no
+ * provider around it. Pass \`animated\` on to any atoms it is built from.`)}const ${componentName} = ({ children, className = '', animated = true, ...rest }: ${componentName}Props) => {
+  // Animate only if the prop is on and the visitor has not asked for reduced motion
+  const shouldAnimate = useMotionEnabled(animated);
+
   return (
-    <motion.div 
-      className={\`${componentName.toLowerCase()} \${className}\`}
+    <motion.div
+      className={['${className}', className].filter(Boolean).join(' ')}
       variants={containerVariants}
-      initial={shouldAnimate ? "hidden" : "visible"}
+      initial={shouldAnimate ? 'hidden' : false}
       animate="visible"
       {...rest}
     >
-      {React.Children.map(children, (child, index) => (
-        <motion.div key={index} variants={childVariants}>
+      {Children.map(children, (child) => (
+        <motion.div className="${className}__item" variants={slideUpVariants}>
           {child}
         </motion.div>
       ))}
@@ -256,161 +242,91 @@ const ${componentName} = (${useTypeScript ? `props: ${componentName}Props` : 'pr
   );
 };
 
-${config.memoize ? `// Apply memoization for performance optimization
-export default memo(${componentName});` : `export default ${componentName};`}
+${exportLine}
 `;
   }
-  
+
   // Organism Component Template
   else if (componentType === 'organism') {
-    template = `import React${config.memoize ? ', { memo }' : ''} from 'react';
+    template = `${config.memoize ? "import { memo } from 'react';\n" : ''}import type { ReactNode } from 'react';
 import { motion } from 'framer-motion';
+import type { HTMLMotionProps } from 'framer-motion';
+import Card from '@atoms/Card';
 import { useAnimation } from '@context/AnimationContext';
+import { fadeInVariants, slideUpVariants } from '@utils/motion';
 ${cssImportPath}
 
-${config.addJsDoc ? `/**
- * ${componentName} organism component with framer-motion animation support
- * 
- * @component
- * @param {Object} props - Component props
- * @returns {React.ReactElement} ${componentName} component
- */` : ""}
-${useTypeScript ? `interface ${componentName}Props {
+export interface ${componentName}Props extends Omit<HTMLMotionProps<'section'>, 'children' | 'title'> {
   /** Optional title for the organism */
-  title?: string; 
+  title?: string;
   /** Component content */
-  children: React.ReactNode;
+  children?: ReactNode;
   /** Additional CSS class names */
   className?: string;
-  [key: string]: any;
-}` : ""}
+}
 
-const ${componentName} = (${useTypeScript ? `props: ${componentName}Props` : 'props'}) => {
-  const { title, children, className = '', ...rest } = props;
-  const { animationEnabled, shouldReduceMotion, slideUpVariants } = useAnimation();
-  
-  // Only animate if animations are enabled and reduced motion is not preferred
-  const shouldAnimate = animationEnabled && !shouldReduceMotion;
-  
-  // Component-specific animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: { 
-      opacity: 1,
-      transition: { 
-        duration: 0.5, 
-        ease: "easeOut",
-        when: "beforeChildren",
-        staggerChildren: 0.15
-      }
-    }
-  };
-  
-  const titleVariants = {
-    hidden: { opacity: 0, y: -20 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: { 
-        duration: 0.5, 
-        ease: "easeOut" 
-      }
-    }
-  };
-  
-  const contentVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: { 
-        duration: 0.5, 
-        ease: "easeOut",
-        delay: 0.2
-      }
-    }
-  };
-  
+${jsDoc(`${componentName} organism.
+ *
+ * Organisms are where app context is read. Read portfolio data here too
+ * (\`usePortfolio\` from \`@context/PortfolioContext\`) and hand it to the
+ * atoms and molecules below as props, together with \`animated\`.`)}const ${componentName} = ({ title, children, className = '', ...rest }: ${componentName}Props) => {
+  // Already accounts for the visitor's reduced-motion preference
+  const { animationEnabled } = useAnimation();
+
   return (
-    <motion.section 
-      className={\`${componentName.toLowerCase()} \${className}\`}
-      variants={containerVariants}
-      initial={shouldAnimate ? "hidden" : "visible"}
+    <motion.section
+      className={['${className}', className].filter(Boolean).join(' ')}
+      variants={fadeInVariants}
+      initial={animationEnabled ? 'hidden' : false}
       animate="visible"
       {...rest}
     >
       {title && (
-        <motion.h2 
-          className="organism-title"
-          variants={titleVariants}
-        >
+        <motion.h2 className="${className}__title" variants={slideUpVariants}>
           {title}
         </motion.h2>
       )}
-      <motion.div 
-        className="organism-content"
-        variants={contentVariants}
-      >
+      {/* Building blocks do not read context: pass the setting down */}
+      <Card className="${className}__content" animated={animationEnabled}>
         {children}
-      </motion.div>
+      </Card>
     </motion.section>
   );
 };
 
-${config.memoize ? `// Apply memoization for performance optimization
-export default memo(${componentName});` : `export default ${componentName};`}
+${exportLine}
 `;
   }
-  
+
   // Layout Component Template
   else if (componentType === 'layout') {
-    template = `import React${config.memoize ? ', { memo }' : ''} from 'react';
+    template = `${config.memoize ? "import { memo } from 'react';\n" : ''}import type { ReactNode } from 'react';
 import { motion } from 'framer-motion';
+import type { HTMLMotionProps } from 'framer-motion';
 import { useAnimation } from '@context/AnimationContext';
+import { fadeInVariants } from '@utils/motion';
 ${cssImportPath}
 
-${config.addJsDoc ? `/**
- * ${componentName} layout component with framer-motion animation support
- * 
- * @component
- * @param {Object} props - Component props
- * @returns {React.ReactElement} ${componentName} component
- */` : ""}
-${useTypeScript ? `interface ${componentName}Props {
+export interface ${componentName}Props extends Omit<HTMLMotionProps<'div'>, 'children'> {
   /** Component content */
-  children: React.ReactNode;
+  children?: ReactNode;
   /** Additional CSS class names */
   className?: string;
-  [key: string]: any;
-}` : ""}
+}
 
-const ${componentName} = (${useTypeScript ? `props: ${componentName}Props` : 'props'}) => {
-  const { children, className = '', ...rest } = props;
-  const { animationEnabled, shouldReduceMotion } = useAnimation();
-  
-  // Only animate if animations are enabled and reduced motion is not preferred
-  const shouldAnimate = animationEnabled && !shouldReduceMotion;
-  
-  // Subtle layout animation variant
-  const layoutVariants = {
-    hidden: { opacity: 0 },
-    visible: { 
-      opacity: 1,
-      transition: { 
-        duration: 0.5, 
-        ease: "easeOut" 
-      }
-    }
-  };
-  
+${jsDoc(`${componentName} layout component.
+ *
+ * Layout components may read app context. Any atom or molecule rendered
+ * here gets the setting as a prop: \`<Button animated={animationEnabled} />\`.`)}const ${componentName} = ({ children, className = '', ...rest }: ${componentName}Props) => {
+  // Already accounts for the visitor's reduced-motion preference
+  const { animationEnabled } = useAnimation();
+
   return (
-    <motion.div 
-      className={\`${componentName.toLowerCase()} \${className}\`}
-      variants={layoutVariants}
-      initial={shouldAnimate ? "hidden" : "visible"}
+    <motion.div
+      className={['${className}', className].filter(Boolean).join(' ')}
+      variants={fadeInVariants}
+      initial={animationEnabled ? 'hidden' : false}
       animate="visible"
-      layout // Smooth layout transitions when component dimensions change
-      layoutId="${componentName.toLowerCase()}"
       {...rest}
     >
       {children}
@@ -418,11 +334,10 @@ const ${componentName} = (${useTypeScript ? `props: ${componentName}Props` : 'pr
   );
 };
 
-${config.memoize ? `// Apply memoization for performance optimization
-export default memo(${componentName});` : `export default ${componentName};`}
+${exportLine}
 `;
   }
-  
+
   try {
     await fs.writeFile(filepath, template);
     console.log(chalk.green(`✓ Created component file: ${filename}`));
@@ -438,42 +353,73 @@ async function generateCssFile(componentName, componentType, componentPath) {
   const cssFilename = `${componentName}.css`;
   const cssFilepath = path.join(componentPath, cssFilename);
   
-  // CSS template with Tailwind reference and framer-motion comments
+  // CSS template built on the design tokens in config.designTokensPath
+  const className = componentName.toLowerCase();
+  const typeStyles = {
+    atom: `  display: inline-flex;
+  align-items: center;
+  padding: var(--spacing-2) var(--spacing-4);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-md);`,
+    molecule: `  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  padding: var(--spacing-4);
+  color: var(--color-text);
+  border-radius: var(--border-radius-lg);`,
+    organism: `  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  padding: var(--spacing-8) var(--spacing-4);
+  color: var(--color-text);`,
+    layout: `  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: var(--spacing-4);
+  color: var(--color-text);
+  background-color: var(--color-background);`
+  };
+  const typeExtras = {
+    atom: '',
+    molecule: `
+.${className}__item {
+  min-width: 0;
+}
+`,
+    organism: `
+.${className}__title {
+  margin: 0;
+  color: var(--color-primary);
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-semibold);
+}
+`,
+    layout: ''
+  };
+
   const cssTemplate = `/**
  * ${componentName} Component Styles
- * 
- * Styling for the ${componentName} component
- * This project uses Tailwind CSS. See tailwind.config.js for configuration.
- * For custom styles beyond Tailwind, use the classes defined below.
- * 
- * Note: Animations are managed by framer-motion through the AnimationContext.
- * - Do NOT add CSS animations or transitions (use framer-motion instead)
- * - See AnimationContext.tsx for predefined animation variants
+ *
+ * Use the design tokens from ${config.designTokensPath}/*.css
+ * (colors, spacing, borders, typography, shadows) rather than raw values.
+ *
+ * Entry animations are handled by framer-motion in the component, so do not
+ * add CSS keyframes for them here.
  */
 
-.${componentName.toLowerCase()} {
-  /* Add custom styles here that go beyond Tailwind's utilities */
-  /* Do not include animations or transitions - use framer-motion instead */
+.${className} {
+${typeStyles[componentType] || typeStyles.atom}
 }
-
-/* 
- * For responsive design, use Tailwind's responsive prefixes in your component's JSX:
- * <div className="md:flex lg:p-4 dark:bg-gray-800"></div>
- * 
- * Or add custom responsive styles here:
- */
+${typeExtras[componentType] || ''}
 @media (max-width: 768px) {
-  .${componentName.toLowerCase()} {
-    /* Add mobile-specific styles if needed (no animations) */
+  .${className} {
+    /* Mobile-specific styles */
+    padding: var(--spacing-2);
   }
 }
-
-/*
- * For users with reduced motion preferences, framer-motion will automatically
- * disable animations via the AnimationContext. No need for CSS media queries.
- */
 `;
-  
+
   try {
     await fs.writeFile(cssFilepath, cssTemplate);
     console.log(chalk.green(`✓ Created CSS file: ${cssFilename}`));
@@ -485,54 +431,42 @@ async function generateCssFile(componentName, componentType, componentPath) {
 }
 
 // Generate the story file for a component
-async function generateComponentStoryFile(componentPath, componentName, componentType, useTypeScript = true) {
-  // Map to storybook format
-  const extension = useTypeScript ? 'tsx' : 'jsx';
-  const storyFilename = `${componentName}.stories.${extension}`;
+async function generateComponentStoryFile(componentPath, componentName, componentType) {
+  const storyFilename = `${componentName}.stories.tsx`;
   const storyFilepath = path.join(componentPath, storyFilename);
-  
-  // Generate appropriate import paths
-  const relativeImportPath = './';
-  
+  const storyLayer = config.atomicTypesToStoryLayers[componentType];
+  const isBuildingBlock = componentType === 'atom' || componentType === 'molecule';
+
   // Build the story content
-  let content = `import type { Meta, StoryObj } from '@storybook/react';
-import ${componentName} from '${relativeImportPath}${componentName}';
-import { AnimationProvider } from '@context/AnimationContext';
+  let content = `import type { Meta, StoryObj } from '@storybook/react-vite';
+${isBuildingBlock ? "import { expect, within } from 'storybook/test';\n" : ''}import ${componentName} from './${componentName}';
 
 const meta = {
-  title: '${capitalizeFirstLetter(componentType)}s/${componentName}',
+  title: '${storyLayer}/${componentName}',
   component: ${componentName},
+  tags: ['autodocs'],
   parameters: {
-    layout: 'centered',
+    layout: '${componentType === 'layout' ? 'fullscreen' : 'centered'}',
     docs: {
       description: {
-        component: '${componentName} component with framer-motion animations integrated with AnimationContext.'
+        component: '${componentName} ${componentType}: describe what it is for here.'
       }
     }
   },
-  tags: ['autodocs'],
   argTypes: {
-    // Define arg types here
-    className: { control: 'text' }
+    className: { control: 'text' }${isBuildingBlock ? `,
+    animated: { control: 'boolean', description: 'Whether the component animates in' }` : ''}
   },
-  decorators: [
-    (Story) => (
-      <AnimationProvider>
-        <Story />
-      </AnimationProvider>
-    )
-  ]
+  args: {
+    children: 'Content goes here'${isBuildingBlock ? `,
+    animated: true` : ''}
+  }
 } satisfies Meta<typeof ${componentName}>;
-
 export default meta;
+
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-  args: {
-    children: 'Content goes here',
-    className: ''
-  }
-};
+export const Default: Story = {};
 
 export const CustomStyle: Story = {
   args: {
@@ -540,53 +474,37 @@ export const CustomStyle: Story = {
     className: 'custom-style'
   }
 };
+`;
 
-/**
- * Example showing the component with animations disabled.
- * This is useful for users who prefer reduced motion or for
- * testing how the component renders without animations.
- */
-export const WithAnimationsDisabled: Story = {
+  // Building blocks own their animation switch and get an interaction test
+  if (isBuildingBlock) {
+    content += `
+/** Rendered with animation off, as a visitor who prefers reduced motion sees it. */
+export const Static: Story = {
   args: {
-    children: 'No animations',
-    className: ''
+    animated: false
+  }
+};
+
+/** Interaction test: extend this with clicks, typing and assertions. */
+export const WithInteractions: Story = {
+  args: {
+    children: 'Interactive component'
   },
-  decorators: [
-    (Story) => (
-      <AnimationProvider>
-        <div data-testid="animation-disabled-container">
-          <Story />
-        </div>
-      </AnimationProvider>
-    )
-  ],
   play: async ({ canvasElement }) => {
-    // This simulates a user who has animations disabled
-    window.__DEBUG_FLAGS = { 
-      ...window.__DEBUG_FLAGS,
-      disableAnimations: true 
-    };
-    
-    // The component should detect this via AnimationContext
+    const canvas = within(canvasElement);
+    await expect(canvas.getByText('Interactive component')).toBeInTheDocument();
   }
 };
 `;
+  }
 
-  // Add interaction tests if it's an atom or molecule component
-  if (componentType === 'atom' || componentType === 'molecule') {
+  // Organisms take a title
+  if (componentType === 'organism') {
     content += `
-/**
- * This example demonstrates interactions with the component.
- * The framer-motion animations should respond appropriately.
- */
-export const WithInteractions: Story = {
+export const WithTitle: Story = {
   args: {
-    children: 'Interactive component',
-    className: 'interactive-test'
-  },
-  play: async ({ canvasElement }) => {
-    // Add interaction tests here using @storybook/test
-    // For example, testing hover animations, click responses, etc.
+    title: '${componentName}'
   }
 };
 `;
@@ -595,28 +513,21 @@ export const WithInteractions: Story = {
   // Add responsive examples for layout components
   if (componentType === 'layout') {
     content += `
-/**
- * This example demonstrates how the component behaves in a responsive layout.
- * The layout animations should adjust appropriately.
- */
-export const ResponsiveLayout: Story = {
+/** How the component behaves at a phone width. */
+export const Mobile: Story = {
   args: {
     children: (
       <div style={{ width: '100%', maxWidth: '800px' }}>
-        <div style={{ padding: '20px', background: '#f0f0f0', marginBottom: '10px' }}>
+        <div style={{ padding: 'var(--spacing-4)', borderBottom: '1px solid var(--color-border)' }}>
           Header content
         </div>
-        <div style={{ padding: '20px', background: '#e0e0e0' }}>
-          Main content that will affect layout animations when resizing
+        <div style={{ padding: 'var(--spacing-4)' }}>
+          Main content
         </div>
       </div>
     )
   },
-  parameters: {
-    viewport: {
-      defaultViewport: 'responsive'
-    }
-  }
+  globals: { viewport: { value: 'mobile1', isRotated: false } }
 };
 `;
   }
@@ -632,106 +543,85 @@ export const ResponsiveLayout: Story = {
 }
 
 // Generate the test file
-async function generateTestFile(componentPath, componentName, useTypeScript = true) {
-  const extension = useTypeScript ? 'tsx' : 'jsx';
-  const testFilename = `${componentName}.test.${extension}`;
+async function generateTestFile(componentPath, componentName, componentType) {
+  const testFilename = `${componentName}.test.tsx`;
   const testFilepath = path.join(componentPath, testFilename);
-  
-  const testTemplate = `import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
-import { vi, describe, it, expect, beforeEach } from 'vitest';
+  const className = componentName.toLowerCase();
+  const isBuildingBlock = componentType === 'atom' || componentType === 'molecule';
+
+  // Building blocks render bare; organisms and layout get the real provider
+  const testTemplate = isBuildingBlock ? `import { render, screen } from '@testing-library/react';
 import ${componentName} from './${componentName}';
-import { AnimationProvider } from '@context/AnimationContext';
 
-// Mock the AnimationContext to test animation behavior
-vi.mock('@context/AnimationContext', () => ({
-  useAnimation: vi.fn().mockReturnValue({
-    animationEnabled: true,
-    shouldReduceMotion: false,
-    fadeInVariants: {
-      hidden: { opacity: 0 },
-      visible: { opacity: 1 }
-    },
-    slideUpVariants: {
-      hidden: { opacity: 0, y: 20 },
-      visible: { opacity: 1, y: 0 }
-    }
-  }),
-  AnimationProvider: ({ children }) => <div data-testid="animation-provider">{children}</div>
-}));
-
-// Helper function to render with animation context
-const renderWithAnimationContext = (ui) => {
-  return render(
-    <AnimationProvider>
-      {ui}
-    </AnimationProvider>
-  );
-};
-
+// Rendered with no provider on purpose: the block takes everything as props.
 describe('${componentName} Component', () => {
-  beforeEach(() => {
-    // Reset any mocks before each test
-    vi.clearAllMocks();
-  });
+  it('renders its children', () => {
+    render(<${componentName}>Test content</${componentName}>);
 
-  it('renders without crashing', () => {
-    renderWithAnimationContext(<${componentName}>Test content</${componentName}>);
     expect(screen.getByText('Test content')).toBeInTheDocument();
   });
-  
-  it('applies custom className', () => {
-    const { container } = renderWithAnimationContext(<${componentName} className="custom-class">Test</${componentName}>);
-    const element = container.querySelector('.${componentName.toLowerCase()}');
-    expect(element).toHaveClass('custom-class');
-    expect(element).toHaveClass('${componentName.toLowerCase()}');
-  });
-  
-  it('renders children correctly', () => {
-    const testId = 'test-child';
-    renderWithAnimationContext(
-      <${componentName}>
-        <div data-testid={testId}>Child component</div>
-      </${componentName}>
-    );
-    
-    expect(screen.getByTestId(testId)).toBeInTheDocument();
-    expect(screen.getByTestId(testId)).toHaveTextContent('Child component');
+
+  it('applies a custom class name', () => {
+    const { container } = render(<${componentName} className="custom-class">Test</${componentName}>);
+
+    expect(container.firstChild).toHaveClass('${className}');
+    expect(container.firstChild).toHaveClass('custom-class');
   });
 
-  it('uses motion component with correct animation props', () => {
-    const { container } = renderWithAnimationContext(<${componentName}>Test</${componentName}>);
-    const motionElement = container.querySelector('.${componentName.toLowerCase()}');
-    
-    // Check that it's using framer-motion
-    // Note: We can't directly test for motion props in JSDOM, but we can check for data attributes
-    expect(motionElement).toBeTruthy();
-    
-    // The component should have the animation className
-    expect(motionElement).toHaveClass('${componentName.toLowerCase()}');
+  it('passes other props to the root element', () => {
+    render(<${componentName} data-testid="root">Test</${componentName}>);
+
+    expect(screen.getByTestId('root')).toHaveClass('${className}');
   });
-  
-  it('respects AnimationContext settings', () => {
-    // Mock AnimationContext with animations disabled
-    const useAnimationMock = vi.fn().mockReturnValueOnce({
-      animationEnabled: false,
-      shouldReduceMotion: true,
-      fadeInVariants: { 
-        hidden: { opacity: 0 },
-        visible: { opacity: 1 }
-      }
-    });
-    
-    require('@context/AnimationContext').useAnimation.mockImplementation(useAnimationMock);
-    
-    renderWithAnimationContext(<${componentName}>Test with animations disabled</${componentName}>);
-    
-    // Check that useAnimation was called
-    expect(useAnimationMock).toHaveBeenCalled();
+
+  it('starts hidden when animated', () => {
+    const { container } = render(<${componentName}>Test</${componentName}>);
+
+    expect(container.firstChild).toHaveStyle({ opacity: '0' });
+  });
+
+  it('renders in its final state when animated is false', () => {
+    const { container } = render(<${componentName} animated={false}>Test</${componentName}>);
+
+    expect(container.firstChild).not.toHaveStyle({ opacity: '0' });
+  });
+});
+` : `import { render, screen } from '@testing-library/react';
+import type { ReactElement } from 'react';
+import { AnimationProvider } from '@context/AnimationContext';
+import ${componentName} from './${componentName}';
+
+// ${capitalizeFirstLetter(componentType)} components read app context, so they render inside the real provider
+const renderWithProviders = (ui: ReactElement) => render(<AnimationProvider>{ui}</AnimationProvider>);
+
+describe('${componentName} Component', () => {
+  it('renders its children', () => {
+    renderWithProviders(<${componentName}>Test content</${componentName}>);
+
+    expect(screen.getByText('Test content')).toBeInTheDocument();
+  });
+
+  it('applies a custom class name', () => {
+    const { container } = renderWithProviders(<${componentName} className="custom-class">Test</${componentName}>);
+
+    const element = container.querySelector('.${className}');
+    expect(element).toHaveClass('custom-class');
+  });
+${componentType === 'organism' ? `
+  it('renders the title when given one', () => {
+    renderWithProviders(<${componentName} title="Section title">Test</${componentName}>);
+
+    expect(screen.getByRole('heading', { name: 'Section title' })).toBeInTheDocument();
+  });
+` : ''}
+  it('passes other props to the root element', () => {
+    renderWithProviders(<${componentName} data-testid="root">Test</${componentName}>);
+
+    expect(screen.getByTestId('root')).toHaveClass('${className}');
   });
 });
 `;
-  
+
   try {
     await fs.writeFile(testFilepath, testTemplate);
     console.log(chalk.green(`✓ Created test file: ${testFilename}`));
@@ -743,22 +633,15 @@ describe('${componentName} Component', () => {
 }
 
 // Generate an index.ts file for the component
-async function generateIndexFile(componentPath, componentName, useTypeScript = true) {
-  const extension = useTypeScript ? 'ts' : 'js';
-  const indexFilename = `index.${extension}`;
+async function generateIndexFile(componentPath, componentName) {
+  const indexFilename = 'index.ts';
   const indexFilepath = path.join(componentPath, indexFilename);
-  
-  // Create a simple index file that exports the component
-  const indexContent = `/**
- * ${componentName} Component
- * 
- * @module ${componentName}
- */
 
-export { default } from './${componentName}';
-export * from './${componentName}';
+  // Create a simple index file that exports the component and its props type
+  const indexContent = `export { default } from './${componentName}';
+export type { ${componentName}Props } from './${componentName}';
 `;
-  
+
   try {
     await fs.writeFile(indexFilepath, indexContent);
     console.log(chalk.green(`✓ Created index file: ${indexFilename}`));
@@ -780,118 +663,99 @@ async function generateStandaloneStoryFile(args) {
   const hasInteractions = !!args.interactions;
   const context = args.context;
   const detailed = !!args.detailed;
-  const useTypeScript = args.js !== true;
-  const subdir = args.subdir || '';
-  
+
   // Validate component type
   if (!config.componentTypes.includes(atomicType)) {
     console.error(chalk.red(`Error: Invalid component type "${atomicType}".`));
     console.log(chalk.yellow(`Valid types: ${config.componentTypes.join(', ')}`));
     return false;
   }
-  
-  // Determine paths
-  const pluralType = config.atomicTypesToFolders[atomicType] || atomicType;
-  const baseComponentName = componentName;
-  
-  // Use the provided path or construct from atomic type with component subdirectory
-  const componentBasePath = args.path || 
-    path.join(process.cwd(), 'src/components', pluralType);
-  const componentPath = path.join(componentBasePath, baseComponentName);
-  
-  // Check if component exists
-  try {
-    let componentExists = false;
-    const jsxPath = path.join(componentPath, `${baseComponentName}.jsx`);
-    const tsxPath = path.join(componentPath, `${baseComponentName}.tsx`);
-    
-    if (await fileExists(jsxPath) || await fileExists(tsxPath)) {
-      componentExists = true;
-    }
-    
-    if (!componentExists) {
-      console.error(chalk.red(`Error: Component ${baseComponentName} not found at ${componentPath}`));
-      return false;
-    }
-  } catch (err) {
-    console.error(chalk.red(`Error checking component: ${err.message}`));
+
+  if (context && context !== 'portfolio') {
+    console.error(chalk.red(`Error: Unknown context "${context}".`));
+    console.log(chalk.yellow('Valid contexts: portfolio'));
     return false;
   }
-  
+
+  // Determine paths
+  const pluralType = config.atomicTypesToFolders[atomicType] || atomicType;
+  const storyLayer = config.atomicTypesToStoryLayers[atomicType];
+  const baseComponentName = componentName;
+
+  // Use the provided path or construct from atomic type with component subdirectory
+  const componentBasePath = args.path ||
+    path.join(process.cwd(), 'src/components', pluralType);
+  const componentPath = path.join(componentBasePath, baseComponentName);
+
+  // Check if component exists
+  const tsxPath = path.join(componentPath, `${baseComponentName}.tsx`);
+  if (!(await fileExists(tsxPath))) {
+    console.error(chalk.red(`Error: Component ${baseComponentName} not found at ${tsxPath}`));
+    return false;
+  }
+
   // Also check for CSS file, and if not found, generate it
   const cssPath = path.join(componentPath, `${baseComponentName}.css`);
   if (!(await fileExists(cssPath)) && config.createCss) {
     console.log(chalk.yellow(`CSS file not found for ${baseComponentName}, generating one...`));
     await generateCssFile(baseComponentName, atomicType, componentPath);
   }
-  
+
   // Also check for index file, and if not found, generate it
   const indexTsPath = path.join(componentPath, 'index.ts');
-  const indexJsPath = path.join(componentPath, 'index.js');
-  if (!(await fileExists(indexTsPath)) && !(await fileExists(indexJsPath)) && config.createIndex) {
+  if (!(await fileExists(indexTsPath)) && config.createIndex) {
     console.log(chalk.yellow(`Index file not found for ${baseComponentName}, generating one...`));
-    await generateIndexFile(componentPath, baseComponentName, useTypeScript);
+    await generateIndexFile(componentPath, baseComponentName);
   }
-  
-  // Determine story path
-  const storyExtension = useTypeScript ? 'tsx' : 'jsx';
-  const storyBaseName = `${baseComponentName}.stories.${storyExtension}`;
-  const storiesPath = args.storiesPath || 'src/components';
-  
-  // Construct full story path - story goes in the component subdirectory
-  const storyPath = args.path ?
-    path.join(args.path, storyBaseName) :
-    path.join(componentPath, storyBaseName);
-  
+
+  // The story goes next to the component so its relative import resolves
+  const storyBaseName = `${baseComponentName}.stories.tsx`;
+  const storyPath = path.join(componentPath, storyBaseName);
+
   // Create imports section
-  let imports = `import type { Meta, StoryObj } from '@storybook/react';
-import ${baseComponentName} from './${baseComponentName}';`;
+  let imports = `import type { Meta, StoryObj } from '@storybook/react-vite';`;
 
   // Add interaction test imports if needed
   if (hasInteractions) {
     imports += `
-import { userEvent, within, waitFor } from 'storybook/test';`;
+import { expect, userEvent, within } from 'storybook/test';`;
   }
 
   // Add context imports if needed
-  if (context) {
-    if (context === 'portfolio') {
-      imports += `
+  if (context === 'portfolio') {
+    imports += `
 import { PortfolioProvider } from '@context/PortfolioContext';`;
   }
 
+  imports += `
+import ${baseComponentName} from './${baseComponentName}';`;
+
   // Create story configuration
-  const storyConfig = `
-const meta = {
-  title: '${capitalizeFirstLetter(atomicType)}/${baseComponentName}',
+  const storyConfig = `const meta = {
+  title: '${storyLayer}/${baseComponentName}',
   component: ${baseComponentName},
+  tags: ['autodocs'],
   parameters: {
     layout: 'centered',
-    backgrounds: {
-      default: 'light',
-    },
     docs: {
       description: {
         component: '${baseComponentName} component description goes here'
       }
     }
   },
-  tags: ['autodocs'],
   argTypes: {
     // Define your argTypes here
+  },
+  args: {
+    // Props every story shares. Required props must be given here.
   }
 } satisfies Meta<typeof ${baseComponentName}>;
-
 export default meta;
+
 type Story = StoryObj<typeof meta>;`;
 
   // Create story examples
-  let stories = `
-export const Default: Story = {
-  args: {
-    // Default props
-  }
-};
+  let stories = `export const Default: Story = {};
 
 export const Variant: Story = {
   args: {
@@ -907,22 +771,21 @@ export const WithInteractions: Story = {
   args: {
     // Add props for interaction test
   },
-  play: async ({ canvasElement, args }) => {
+  play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    
-    // Example interaction test
-    await userEvent.click(canvas.getByText('Click me'));
-    await waitFor(() => {
-      expect(canvas.getByText('Clicked')).toBeInTheDocument();
-    });
+
+    // Replace with a real interaction, for example:
+    //   await userEvent.click(canvas.getByRole('button'));
+    //   await expect(args.onClick).toHaveBeenCalledTimes(1);
+    await userEvent.tab();
+    await expect(canvas.queryByRole('alert')).not.toBeInTheDocument();
   }
 };`;
   }
 
   // Add context decorator if requested
-  if (context) {
-    if (context === 'portfolio') {
-      stories += `
+  if (context === 'portfolio') {
+    stories += `
 
 // With Portfolio Context
 export const WithPortfolioContext: Story = {
@@ -945,31 +808,31 @@ export const WithPortfolioContext: Story = {
 
 /**
  * ## Component Usage
- * 
- * \`\`\`jsx
- * import { ${baseComponentName} } from 'components/${pluralType}/${baseComponentName}';
- * 
+ *
+ * \`\`\`tsx
+ * import ${baseComponentName} from '@${pluralType}/${baseComponentName}';
+ *
  * function MyComponent() {
  *   return <${baseComponentName} />;
  * }
  * \`\`\`
- * 
+ *
  * ## Properties
- * 
+ *
  * | Name | Type | Default | Description |
  * |------|------|---------|-------------|
  * | prop1 | string | undefined | Description of prop1 |
  * | prop2 | number | 0 | Description of prop2 |
- * 
+ *
  * ## Accessibility
- * 
+ *
  * This component follows these accessibility best practices:
  * - Uses semantic HTML
  * - Provides appropriate ARIA attributes
  * - Supports keyboard navigation
- * 
+ *
  * ## Edge Cases
- * 
+ *
  * The following stories demonstrate edge cases and special scenarios.
  */
 export const EdgeCase: Story = {
@@ -988,25 +851,12 @@ export const Responsive: Story = {
   args: {
     // Props for demonstrating responsive behavior
   },
-  parameters: {
-    viewport: {
-      defaultViewport: 'mobile1',
-    },
-  }
+  globals: { viewport: { value: 'mobile1', isRotated: false } }
 };`;
   }
 
   // Combine all content
-  const finalStoryContent = imports + '\n\n' + storyConfig + '\n\n' + stories;
-
-  // Create the stories directory if it doesn't exist
-  const storyDir = path.dirname(storyPath);
-  try {
-    await ensureDirectoryExists(storyDir);
-  } catch (err) {
-    console.error(chalk.red(`Error creating story directory: ${err.message}`));
-    return false;
-  }
+  const finalStoryContent = imports + '\n\n' + storyConfig + '\n\n' + stories + '\n';
 
   // Write the story file
   try {
@@ -1039,6 +889,21 @@ function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+// Print usage
+function printUsage() {
+  console.log(`Component and Story Generator
+
+Usage:
+  yarn generate:component --name=<Name> [--type=atom|molecule|organism|layout] [--dir=<parent dir>] [--files=all|tsx|css|story|test|index]
+  yarn generate:component component --name=<Name> [same options]
+  yarn generate:component story --component=<Name> --type=<type> [--interactions] [--context=portfolio] [--detailed] [--path=<parent dir>]
+
+Components are written in TypeScript to src/components/<layer>/<Name>/.
+Atoms and molecules are generated provider-free (an \`animated\` prop and @utils/motion);
+organisms and layout components read the animation context and pass it down.
+Existing files are overwritten without asking.`);
+}
+
 // ---------------------------
 // Main Functions
 // ---------------------------
@@ -1054,7 +919,6 @@ async function generateComponent(args) {
   const componentDir = `${baseDir}/${componentName}`;
   
   const createFiles = args.files || 'all'; // all, tsx, css, story, test, index
-  const useTypeScript = args.js !== true;
   
   console.log(chalk.blue.bold('Component Generator'));
   console.log(chalk.gray(`Creating ${componentType} component: ${componentName}`));
@@ -1074,8 +938,8 @@ async function generateComponent(args) {
   // 2. Create component files
   let success = true;
   
-  if (createFiles === 'all' || createFiles === 'tsx' || createFiles === 'jsx') {
-    success = await generateComponentFile(componentPath, componentName, componentType, useTypeScript);
+  if (createFiles === 'all' || createFiles === 'tsx') {
+    success = await generateComponentFile(componentPath, componentName, componentType);
     if (!success) return false;
   }
   
@@ -1085,17 +949,17 @@ async function generateComponent(args) {
   }
   
   if (config.createStory && (createFiles === 'all' || createFiles === 'story')) {
-    success = await generateComponentStoryFile(componentPath, componentName, componentType, useTypeScript);
+    success = await generateComponentStoryFile(componentPath, componentName, componentType);
     if (!success) console.log(chalk.yellow('⚠ Story file creation failed, but continuing...'));
   }
   
   if (config.createTest && (createFiles === 'all' || createFiles === 'test')) {
-    success = await generateTestFile(componentPath, componentName, useTypeScript);
+    success = await generateTestFile(componentPath, componentName, componentType);
     if (!success) console.log(chalk.yellow('⚠ Test file creation failed, but continuing...'));
   }
   
   if (config.createIndex && (createFiles === 'all' || createFiles === 'index')) {
-    success = await generateIndexFile(componentPath, componentName, useTypeScript);
+    success = await generateIndexFile(componentPath, componentName);
     if (!success) console.log(chalk.yellow('⚠ Index file creation failed, but continuing...'));
   }
   
@@ -1109,6 +973,11 @@ async function generateComponent(args) {
 async function main() {
   const cmdArgs = process.argv.slice(2);
   const args = parseArgs(cmdArgs);
+
+  if (args.help) {
+    printUsage();
+    return true;
+  }
   
   // Check for command (first arg that doesn't start with --)
   const command = cmdArgs.find(arg => !arg.startsWith('--'));
@@ -1118,7 +987,7 @@ async function main() {
     // Simple mode - just generate everything with one command
     if (!args.name && !args.component) {
       console.error(chalk.red('Error: Component name is required.'));
-      console.log(chalk.yellow('Usage: yarn generate --name=MyComponent --type=atom'));
+      console.log(chalk.yellow('Usage: yarn generate:component --name=MyComponent --type=atom'));
       process.exit(1);
     }
 
@@ -1131,7 +1000,7 @@ async function main() {
     args.type = componentType;
     
     // Generate component first
-    await generateComponent(args);
+    if (!(await generateComponent(args))) process.exit(1);
     
     console.log(chalk.blue('\nComponent generation complete!\n'));
     
@@ -1142,31 +1011,31 @@ async function main() {
   if (command === 'component') {
     if (!args.name) {
       console.error(chalk.red('Error: Component name is required.'));
-      console.log(chalk.yellow('Usage: yarn generate component --name=MyComponent --type=atom'));
+      console.log(chalk.yellow('Usage: yarn generate:component component --name=MyComponent --type=atom'));
       process.exit(1);
     }
     
-    await generateComponent(args);
+    if (!(await generateComponent(args))) process.exit(1);
   } 
   else if (command === 'story') {
     if (!args.component) {
       console.error(chalk.red('Error: Component name is required.'));
-      console.log(chalk.yellow('Usage: yarn generate story --component=MyComponent --type=atom'));
+      console.log(chalk.yellow('Usage: yarn generate:component story --component=MyComponent --type=atom'));
       process.exit(1);
     }
     
     if (!args.type) {
       console.error(chalk.red('Error: Component type is required.'));
-      console.log(chalk.yellow('Usage: yarn generate story --component=MyComponent --type=atom'));
+      console.log(chalk.yellow('Usage: yarn generate:component story --component=MyComponent --type=atom'));
       process.exit(1);
     }
     
-    await generateStandaloneStoryFile(args);
+    if (!(await generateStandaloneStoryFile(args))) process.exit(1);
   }
   else {
     console.error(chalk.red(`Error: Unknown command "${command}"`));
-    console.log(chalk.yellow('Usage: yarn generate --name=MyComponent --type=atom'));
-    console.log(chalk.yellow('Or use subcommands: yarn generate component|story [options]'));
+    console.log(chalk.yellow('Usage: yarn generate:component --name=MyComponent --type=atom'));
+    console.log(chalk.yellow('Or use subcommands: yarn generate:component component|story [options] (--help for all options)'));
     process.exit(1);
   }
 }
