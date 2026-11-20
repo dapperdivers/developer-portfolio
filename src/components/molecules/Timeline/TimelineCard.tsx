@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence, Transition, TargetAndTransition } from 'framer-motion';
-import './Timeline.css';
+import './TimelineCard.css';
 import type { Experience } from '@/types/portfolio';
 
 const CYAN_GLOW = (alpha: number) => `rgba(100, 255, 218, ${alpha})`;

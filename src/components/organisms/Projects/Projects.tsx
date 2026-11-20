@@ -7,6 +7,7 @@ import useMemoValues from "@hooks/useMemoValues";
 import type { MemoValuesData } from "@hooks/useMemoValues";
 import { usePortfolio } from "@context/PortfolioContext";
 import { useAnimation } from "@context/AnimationContext";
+import { slideUpVariants, STAGGER_DELAY } from "@utils/motion";
 import { motion, Variants } from "framer-motion";
 import type { PortfolioData, Project } from '@/types/portfolio';
 import './Projects.css';
@@ -47,7 +48,7 @@ const Projects = () => {
   const topProjects = memoValues.topProjects as unknown as Project[];
   
   // Get animation context values
-  const { animationEnabled, slideUpVariants, animationStaggerDelay } = useAnimation();
+  const { animationEnabled } = useAnimation();
   
   // Get loading delay from context or use default (demonstrates skeleton loading)
   const loadingDelay = portfolioData?.settings?.loadingDelay || 0;
@@ -89,11 +90,11 @@ const Projects = () => {
     visible: { 
       opacity: 1,
       transition: { 
-        staggerChildren: animationStaggerDelay,
+        staggerChildren: STAGGER_DELAY,
         delayChildren: 0.2
       }
     }
-  }), [animationStaggerDelay]);
+  }), []);
 
   // Render loading state if projects data is not available
   if (isLoading) {

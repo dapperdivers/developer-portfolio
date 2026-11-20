@@ -1,0 +1,34 @@
+@reference "../../../assets/css/tailwind.css";
+
+/* Secret message overlay */
+.timeline__secret-message {
+  transform: translateX(-50%); /* was @apply transform -translate-x-1/2 */
+  @apply fixed top-20 left-1/2 z-50 bg-gray-900 border border-theme-cyan text-theme-cyan px-6 py-3 rounded-lg font-mono text-sm font-bold;
+  box-shadow: 0 0 20px rgba(100, 255, 218, 0.5);
+  backdrop-filter: blur(10px);
+  background: linear-gradient(135deg, rgba(31, 41, 55, 0.95), rgba(17, 24, 39, 0.95));
+}
+
+/* Achievement notifications */
+.timeline__achievement {
+  @apply fixed right-4 z-50 bg-green-500 text-white px-4 py-2 rounded-lg font-bold text-sm;
+  box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4);
+  backdrop-filter: blur(10px);
+  max-width: 300px;
+}
+
+/* Mouse trail effects */
+.timeline__mouse-trail {
+  pointer-events: none;
+  z-index: 9999;
+}
+
+@media (max-width: 768px) {
+  .timeline__secret-message {
+    @apply max-w-xs px-4 py-2 text-xs;
+  }
+
+  .timeline__achievement {
+    @apply text-xs px-3 py-1 max-w-64;
+  }
+}

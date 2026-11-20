@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import './Timeline.css';
+import './TimelineEasterEggOverlay.css';
 import type { TimelineTrailPoint } from './useTimelineEasterEggs';
 
 /** How long an achievement toast stays before asking to be dismissed. */

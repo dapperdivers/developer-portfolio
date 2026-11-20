@@ -61,31 +61,9 @@
   20%, 40%, 60%, 80% { transform: translateX(5px); }
 }
 
-@keyframes borderScan {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-}
-
 @keyframes pulseGlow {
   0%, 100% { box-shadow: 0 0 5px rgba(100, 255, 218, 0.3); }
   50% { box-shadow: 0 0 20px rgba(100, 255, 218, 0.8), 0 0 30px rgba(100, 255, 218, 0.4); }
-}
-
-/* Secret message overlay */
-.timeline__secret-message {
-  transform: translateX(-50%); /* was @apply transform -translate-x-1/2 */
-  @apply fixed top-20 left-1/2 z-50 bg-gray-900 border border-theme-cyan text-theme-cyan px-6 py-3 rounded-lg font-mono text-sm font-bold;
-  box-shadow: 0 0 20px rgba(100, 255, 218, 0.5);
-  backdrop-filter: blur(10px);
-  background: linear-gradient(135deg, rgba(31, 41, 55, 0.95), rgba(17, 24, 39, 0.95));
-}
-
-/* Achievement notifications */
-.timeline__achievement {
-  @apply fixed right-4 z-50 bg-green-500 text-white px-4 py-2 rounded-lg font-bold text-sm;
-  box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4);
-  backdrop-filter: blur(10px);
-  max-width: 300px;
 }
 
 /* Central timeline line with enhanced effects */
@@ -187,267 +165,6 @@
   pointer-events: none;
 }
 
-/* Enhanced experience card */
-.timeline__card {
-  @apply relative bg-gray-900 border border-gray-700 rounded-lg p-6 max-w-md;
-  background: linear-gradient(135deg, rgba(31, 41, 55, 0.95), rgba(17, 24, 39, 0.95));
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
-  overflow: hidden;
-}
-
-.timeline__entry--left .timeline__card {
-  @apply mr-auto;
-  margin-right: calc(50% + 2rem);
-}
-
-.timeline__entry--right .timeline__card {
-  @apply ml-auto;
-  margin-left: calc(50% + 2rem);
-}
-
-/* Full width override for expanded cards */
-.timeline__entry--left .timeline__card--expanded,
-.timeline__entry--right .timeline__card--expanded {
-  @apply mx-auto;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.timeline__card--expanded {
-  @apply border-theme-cyan/30;
-  max-width: calc(100vw - 8rem);
-  width: 100%;
-  z-index: 30; /* Higher than timeline line */
-  box-shadow: 
-    0 10px 40px rgba(0, 0, 0, 0.3),
-    0 0 20px rgba(100, 255, 218, 0.2);
-  background: linear-gradient(135deg, rgba(31, 41, 55, 0.98), rgba(17, 24, 39, 0.98));
-}
-
-.timeline__card--clicked {
-  border-color: rgba(239, 68, 68, 0.5);
-  box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
-}
-
-/* Holographic overlay for hack modes */
-.timeline__hologram {
-  @apply absolute inset-0 rounded-lg pointer-events-none;
-  background: linear-gradient(45deg, transparent, rgba(100, 255, 218, 0.1), transparent);
-  background-size: 200% 200%;
-}
-
-/* Enhanced security badge */
-.timeline__security-badge {
-  @apply absolute top-2 right-2 bg-theme-cyan text-gray-900 rounded-full px-3 py-1 flex items-center gap-1 text-sm font-bold z-10;
-  box-shadow: 0 0 15px rgba(100, 255, 218, 0.5);
-  transition: all 0.3s ease;
-}
-
-.timeline__badge-icon {
-  @apply text-xs;
-}
-
-.timeline__badge-text {
-  @apply text-xs;
-}
-
-/* Company logo with enhanced effects */
-.timeline__logo {
-  @apply mb-4 flex justify-center;
-}
-
-.timeline__logo-image {
-  @apply w-12 h-12 rounded-lg object-contain;
-  transition: all 0.3s ease;
-}
-
-/* Card header */
-.timeline__header {
-  @apply mb-4;
-}
-
-.timeline__role {
-  @apply text-white text-lg font-bold mb-2;
-  transition: color 0.3s ease;
-}
-
-.timeline__company-info {
-  @apply flex flex-col gap-1;
-}
-
-.timeline__company {
-  @apply text-theme-cyan font-semibold;
-}
-
-.timeline__date {
-  @apply text-gray-400 text-sm;
-}
-
-/* Improved layout for expanded cards */
-.timeline__card--expanded .timeline__header {
-  @apply text-center mb-6;
-}
-
-.timeline__card--expanded .timeline__role {
-  @apply text-xl;
-}
-
-.timeline__card--expanded .timeline__company-info {
-  @apply items-center;
-}
-
-/* Expandable content */
-.timeline__content {
-  @apply border-t border-gray-700 pt-4 mt-4;
-  perspective: 1000px;
-}
-
-.timeline__classification {
-  @apply mb-4 pb-2 border-b border-red-500/30;
-  transition: background-color 0.3s ease;
-}
-
-.timeline__classification-label {
-  @apply bg-red-500 text-white px-2 py-1 rounded text-xs font-bold;
-  transition: all 0.3s ease;
-}
-
-.timeline__description {
-  @apply text-gray-300 mb-4 leading-relaxed;
-  transition: text-shadow 0.3s ease;
-}
-
-.timeline__bullets {
-  @apply list-none mb-4;
-}
-
-/* Tailwind 3 `space-y-2` behaviour (see the space-y note in tailwind.css) */
-.timeline__bullets > :not([hidden]) ~ :not([hidden]) {
-  margin-top: var(--spacing-2);
-  margin-bottom: 0;
-}
-
-.timeline__bullet {
-  @apply text-gray-300 text-sm relative pl-6;
-  transition: all 0.3s ease;
-}
-
-/* Improved content layout for expanded cards */
-.timeline__card--expanded .timeline__content {
-  @apply pt-6 mt-6;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
-  align-items: start;
-}
-
-.timeline__card--expanded .timeline__classification {
-  @apply col-span-2 text-center mb-6 pb-4;
-}
-
-.timeline__card--expanded .timeline__description {
-  @apply text-base leading-relaxed mt-4 text-center;
-  /* Description is now structurally inside classification */
-}
-
-.timeline__card--expanded .timeline__bullets {
-  @apply col-span-2;
-  /* Bullets now span both columns and use CSS Grid */
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem 2rem;
-  align-items: start;
-}
-
-/* Grid gap handles the spacing; the stacked-list margins would push every
-   bullet after the first down and misalign the two columns. */
-.timeline__card--expanded .timeline__bullets > :not([hidden]) ~ :not([hidden]) {
-  margin-top: 0;
-}
-
-.timeline__card--expanded .timeline__bullet {
-  @apply text-base;
-  /* Each bullet takes one column */
-  break-inside: avoid;
-}
-
-.timeline__card--expanded .timeline__terminal {
-  @apply col-span-2 mt-6;
-}
-
-.timeline__bullet::before {
-  content: "▸";
-  @apply absolute left-0 text-theme-cyan font-bold;
-}
-
-/* Enhanced terminal footer */
-.timeline__terminal {
-  @apply bg-gray-800 rounded p-3 font-mono text-sm flex items-center gap-2 mt-4;
-  transition: box-shadow 0.3s ease;
-}
-
-.timeline__prompt {
-  @apply text-green-400;
-}
-
-.timeline__cursor {
-  @apply text-white animate-pulse;
-}
-
-.timeline__hack-text {
-  @apply text-red-400 font-bold;
-  animation: typewriter 2s steps(30) infinite;
-}
-
-@keyframes typewriter {
-  0%, 50% { opacity: 1; }
-  51%, 100% { opacity: 0; }
-}
-
-/* Enhanced border effects */
-.timeline__border-effect {
-  @apply absolute inset-0 rounded-lg pointer-events-none;
-  background: linear-gradient(
-    45deg,
-    transparent 30%,
-    rgba(100, 255, 218, 0.1) 50%,
-    transparent 70%
-  );
-  background-size: 200% 200%;
-  animation: borderScan 3s ease-in-out infinite;
-}
-
-/* Enhanced data streams */
-.timeline__data-streams {
-  @apply absolute inset-0 pointer-events-none overflow-hidden rounded-lg;
-}
-
-.timeline__data-stream {
-  @apply absolute w-0.5 h-4 rounded-full;
-  background: linear-gradient(to bottom, transparent, #64ffda, transparent);
-  box-shadow: 0 0 6px #64ffda;
-}
-
-.timeline__data-stream--1 {
-  @apply left-4;
-}
-
-.timeline__data-stream--2 {
-  @apply right-4;
-}
-
-.timeline__data-stream--3 {
-  transform: translateX(-50%); /* was @apply transform -translate-x-1/2 */
-  @apply left-1/2;
-}
-
-/* Glitch overlay */
-.timeline__glitch-overlay {
-  @apply absolute inset-0 bg-red-500 mix-blend-multiply rounded-lg pointer-events-none;
-  opacity: 0.1;
-}
-
 /* Enhanced background effects */
 .timeline__background-effects {
   @apply absolute inset-0 pointer-events-none overflow-hidden;
@@ -510,12 +227,6 @@
   50% { opacity: 0.3; }
 }
 
-/* Mouse trail effects */
-.timeline__mouse-trail {
-  pointer-events: none;
-  z-index: 9999;
-}
-
 /* Responsive design */
 @media (max-width: 768px) {
   /* Tailwind 3 `space-y-12` behaviour (see the space-y note in tailwind.css) */
@@ -528,22 +239,6 @@
     @apply justify-center;
   }
 
-  .timeline__entry--left .timeline__card,
-  .timeline__entry--right .timeline__card {
-    @apply mx-auto max-w-sm;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .timeline__card {
-    @apply max-w-sm;
-  }
-
-  .timeline__card--expanded {
-    max-width: calc(100vw - 4rem);
-    width: calc(100vw - 4rem);
-  }
-
   .timeline__line {
     @apply left-8;
   }
@@ -552,34 +247,6 @@
      title. The line alone carries the timeline on small screens. */
   .timeline__connector {
     display: none;
-  }
-
-  .timeline__secret-message {
-    @apply max-w-xs px-4 py-2 text-xs;
-  }
-
-  .timeline__achievement {
-    @apply text-xs px-3 py-1 max-w-64;
-  }
-
-  /* Mobile layout for expanded cards */
-  .timeline__card--expanded .timeline__content {
-    display: block;
-    gap: 0;
-  }
-
-  .timeline__card--expanded .timeline__classification {
-    @apply col-span-1 mb-4;
-  }
-
-  .timeline__card--expanded .timeline__bullets {
-    @apply col-span-1;
-    display: block;
-    gap: 0;
-  }
-
-  .timeline__card--expanded .timeline__terminal {
-    @apply col-span-1 mt-4;
   }
 }
 
@@ -681,11 +348,6 @@
   will-change: transform;
 }
 
-.timeline__card {
-  contain: layout style paint;
-}
-
-.timeline__data-stream,
 .timeline__particle,
 .timeline__matrix-particle {
   contain: strict;
