@@ -128,7 +128,7 @@ const Button = ({
   // Cyberpunk glint effect
   const GlintEffect = variant === 'cyberpunk' && (
     <motion.span 
-      className="absolute inset-0 bg-gradient-to-r from-transparent via-theme-cyan/10 to-transparent"
+      className="absolute inset-0 bg-linear-to-r/srgb from-transparent via-theme-cyan/10 to-transparent"
       initial={{ x: "-100%", opacity: 0 }}
       whileHover={{
         x: "100%",

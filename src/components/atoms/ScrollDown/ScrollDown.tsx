@@ -83,7 +83,7 @@ const ScrollDown = ({
             {/* Animated data points */}
             <motion.div
               animate={shouldAnimate ? dataFlowVariants.animate : false}
-              className="absolute top-0 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+              className="absolute top-0 left-1/2 [transform:translateX(-50%)] flex flex-col items-center gap-2"
             >
               <div className="w-3 h-0.5 bg-theme-cyan data-point"></div>
               <div className="w-2 h-0.5 bg-theme-cyan/60 data-point"></div>

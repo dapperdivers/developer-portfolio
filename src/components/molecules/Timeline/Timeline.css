@@ -1,5 +1,7 @@
 /* Enhanced Timeline Component - Cybersecurity themed vertical timeline with visual flare and easter eggs */
 
+@reference "../../../assets/css/tailwind.css";
+
 .timeline {
   @apply relative w-full;
   min-height: 400px;
@@ -71,7 +73,8 @@
 
 /* Secret message overlay */
 .timeline__secret-message {
-  @apply fixed top-20 left-1/2 transform -translate-x-1/2 z-50 bg-gray-900 border border-theme-cyan text-theme-cyan px-6 py-3 rounded-lg font-mono text-sm font-bold;
+  transform: translateX(-50%); /* was @apply transform -translate-x-1/2 */
+  @apply fixed top-20 left-1/2 z-50 bg-gray-900 border border-theme-cyan text-theme-cyan px-6 py-3 rounded-lg font-mono text-sm font-bold;
   box-shadow: 0 0 20px rgba(100, 255, 218, 0.5);
   backdrop-filter: blur(10px);
   background: linear-gradient(135deg, rgba(31, 41, 55, 0.95), rgba(17, 24, 39, 0.95));
@@ -87,7 +90,8 @@
 
 /* Central timeline line with enhanced effects */
 .timeline__line {
-  @apply absolute left-1/2 top-0 bottom-0 w-0.5 transform -translate-x-1/2;
+  transform: translateX(-50%); /* was @apply transform -translate-x-1/2 */
+  @apply absolute left-1/2 top-0 bottom-0 w-0.5;
   background: linear-gradient(
     to bottom,
     rgba(100, 255, 218, 0.8) 0%,
@@ -130,7 +134,13 @@
 
 /* Timeline entries container */
 .timeline__entries {
-  @apply relative space-y-16 py-8;
+  @apply relative py-8;
+}
+
+/* Tailwind 3 `space-y-16` behaviour (see the space-y note in tailwind.css) */
+.timeline__entries > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 4rem;
+  margin-bottom: 0;
 }
 
 /* Individual timeline entry */
@@ -153,7 +163,8 @@
 
 /* Timeline connector with enhanced effects */
 .timeline__connector {
-  @apply absolute left-1/2 transform -translate-x-1/2 z-20;
+  transform: translateX(-50%); /* was @apply transform -translate-x-1/2 */
+  @apply absolute left-1/2 z-20;
 }
 
 .timeline__node {
@@ -308,7 +319,13 @@
 }
 
 .timeline__bullets {
-  @apply list-none space-y-2 mb-4;
+  @apply list-none mb-4;
+}
+
+/* Tailwind 3 `space-y-2` behaviour (see the space-y note in tailwind.css) */
+.timeline__bullets > :not([hidden]) ~ :not([hidden]) {
+  margin-top: var(--spacing-2);
+  margin-bottom: 0;
 }
 
 .timeline__bullet {
@@ -421,7 +438,8 @@
 }
 
 .timeline__data-stream--3 {
-  @apply left-1/2 transform -translate-x-1/2;
+  transform: translateX(-50%); /* was @apply transform -translate-x-1/2 */
+  @apply left-1/2;
 }
 
 /* Glitch overlay */
@@ -465,7 +483,8 @@
 }
 
 .timeline__radar-sweep {
-  @apply absolute top-1/2 left-1/2 w-32 h-32 transform -translate-x-1/2 -translate-y-1/2;
+  transform: translate(-50%, -50%); /* was @apply transform -translate-x-1/2 -translate-y-1/2 */
+  @apply absolute top-1/2 left-1/2 w-32 h-32;
   background: conic-gradient(from 0deg, transparent 0deg, rgba(100, 255, 218, 0.3) 30deg, transparent 60deg);
   border-radius: 50%;
   pointer-events: none;
@@ -499,8 +518,10 @@
 
 /* Responsive design */
 @media (max-width: 768px) {
-  .timeline__entries {
-    @apply space-y-12;
+  /* Tailwind 3 `space-y-12` behaviour (see the space-y note in tailwind.css) */
+  .timeline__entries > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 3rem;
+    margin-bottom: 0;
   }
 
   .timeline__entry {

@@ -123,7 +123,7 @@ const Greetings = () => {
           <div className="relative z-fixed">
             <motion.h1 
               variants={headingVariants}
-              className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 md:mb-8 text-transparent bg-clip-text bg-gradient-to-r from-theme-cyan to-primary"
+              className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 md:mb-8 text-transparent bg-clip-text bg-linear-to-r/srgb from-theme-cyan to-primary"
               data-testid="greeting-heading"
             >
               {greetings.title}
