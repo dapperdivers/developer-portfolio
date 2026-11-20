@@ -38,7 +38,7 @@ export const Default = {
  */
 export const LongQuote = {
   args: {
-    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+    text: 'Derek joined in the middle of a difficult cloud migration and within a month had mapped every exposed service, closed the riskiest gaps and put automated checks in the pipeline so they stayed closed. He explains security trade-offs in terms the product team can act on, and he writes down what he learns so the next engineer does not have to rediscover it.',
   },
 };
 
@@ -100,9 +100,7 @@ export const MobileView = {
   args: {
     text: 'A quote that adapts well to mobile screens.',
   },
-  parameters: {
-    viewport: {
-      defaultViewport: 'mobile1',
-    },
+  globals: {
+    viewport: { value: 'mobile1', isRotated: false },
   },
 }; 

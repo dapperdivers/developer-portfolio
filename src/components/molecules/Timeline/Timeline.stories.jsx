@@ -45,7 +45,7 @@ const mockExperiences = [
 ];
 
 export default {
-  title: 'molecules/Timeline',
+  title: 'Molecules/Timeline',
   component: Timeline,
   parameters: {
     layout: 'padded',

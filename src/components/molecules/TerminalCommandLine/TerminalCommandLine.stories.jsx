@@ -1,7 +1,7 @@
 import TerminalCommandLine from './TerminalCommandLine';
 
 export default {
-  title: 'molecules/TerminalCommandLine',
+  title: 'Molecules/TerminalCommandLine',
   component: TerminalCommandLine,
   parameters: { 
     layout: 'centered',
@@ -237,13 +237,3 @@ export const InteractiveDemo = () => (
     </div>
   </div>
 );
-
-export const Playground = Template.bind({});
-Playground.args = {
-  prompt: 'user@portfolio:~$',
-  command: 'ls -la',
-  interactive: false,
-  showCursor: true,
-  variant: 'default',
-  isLoading: false
-};

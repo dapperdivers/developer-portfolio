@@ -1,7 +1,8 @@
+import { useState } from 'react';
 import MapControls from './MapControls';
 
 export default {
-  title: 'atoms/MapControls',
+  title: 'Atoms/MapControls',
   component: MapControls,
   parameters: {
     layout: 'centered',
@@ -66,14 +67,41 @@ Critical.args = {
   showGrid: true,
 };
 
-export const Interactive = Template.bind({});
+// Buttons drive local state: toggle the map mode and grid, reset restores the args
+const InteractiveTemplate = ({ mapMode: initialMode, showGrid: initialGrid, ...args }) => {
+  const [mapMode, setMapMode] = useState(initialMode);
+  const [showGrid, setShowGrid] = useState(initialGrid);
+
+  return (
+    <div className="bg-gray-900 p-8 min-h-screen">
+      <MapControls
+        {...args}
+        mapMode={mapMode}
+        showGrid={showGrid}
+        onToggleMapMode={() => {
+          setMapMode((mode) => (mode === 'dark' ? 'satellite' : 'dark'));
+          args.onToggleMapMode?.();
+        }}
+        onToggleGrid={() => {
+          setShowGrid((grid) => !grid);
+          args.onToggleGrid?.();
+        }}
+        onResetView={() => {
+          setMapMode(initialMode);
+          setShowGrid(initialGrid);
+          args.onResetView?.();
+        }}
+      />
+      <p className="mt-4 text-sm text-gray-400">
+        View: {mapMode === 'dark' ? 'standard' : 'satellite'} · Grid: {showGrid ? 'on' : 'off'}
+      </p>
+    </div>
+  );
+};
+
+export const Interactive = InteractiveTemplate.bind({});
 Interactive.args = {
   variant: 'default',
   mapMode: 'dark',
   showGrid: false,
-};
-Interactive.argTypes = {
-  variant: { control: { type: 'select' } },
-  mapMode: { control: { type: 'select' } },
-  showGrid: { control: { type: 'boolean' } },
 };

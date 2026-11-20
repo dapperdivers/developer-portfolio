@@ -1,7 +1,7 @@
 import DataStream from './DataStream';
 
 export default {
-  title: 'atoms/DataStream',
+  title: 'Atoms/DataStream',
   component: DataStream,
   parameters: {
     layout: 'centered',
@@ -92,7 +92,7 @@ MultipleStreams.args = {
 
 export const HighIntensity = Template.bind({});
 HighIntensity.args = {
-  variant: 'critical',
+  variant: 'default',
   delay: 0,
   duration: 1.8,
   intensity: 'high',
@@ -100,7 +100,7 @@ HighIntensity.args = {
 
 export const LowIntensity = Template.bind({});
 LowIntensity.args = {
-  variant: 'secure',
+  variant: 'default',
   delay: 0,
   duration: 3.5,
   intensity: 'low',

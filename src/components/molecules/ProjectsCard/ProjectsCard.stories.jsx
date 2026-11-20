@@ -1,6 +1,7 @@
 import React from 'react';
 import ProjectsCard from './ProjectsCard';
 import { within, userEvent, expect } from 'storybook/test';
+import { placeholderImage } from '@stories-utils/placeholderImage';
 
 export default {
   title: 'Molecules/ProjectsCard',
@@ -44,7 +45,7 @@ const exampleProjects = [
   {
     name: "React Dashboard",
     desc: "A comprehensive admin dashboard with multiple views and data visualization components",
-    image: "https://source.unsplash.com/random/800x450/?dashboard",
+    image: placeholderImage(800, 450, { label: 'dashboard' }),
     github: "https://github.com/username/react-dashboard",
     link: "https://react-dashboard-demo.example.com",
     stack: ["React", "Redux", "Material UI", "Chart.js"]
@@ -52,7 +53,7 @@ const exampleProjects = [
   {
     name: "E-commerce Platform",
     desc: "Full-featured online store with product listings, cart functionality, and payment integration",
-    image: "https://source.unsplash.com/random/800x450/?ecommerce",
+    image: placeholderImage(800, 450, { label: 'ecommerce', accent: 'blue' }),
     github: "https://github.com/username/ecommerce-platform",
     link: "https://ecommerce-demo.example.com",
     stack: ["React", "Node.js", "MongoDB", "Stripe"]
@@ -111,7 +112,7 @@ export const WithLongText = {
   data: {
     name: "Project with Very Long Title That Should Wrap to Multiple Lines",
     desc: "This is a project with an extremely long description that should be truncated or handled gracefully by the component. The description explains all the features and technologies used in great detail.",
-    image: "https://source.unsplash.com/random/800x450/?code",
+    image: placeholderImage(800, 450, { label: 'code', accent: 'amber' }),
     github: "https://github.com/username/long-title-project",
     link: "https://demo.example.com",
     stack: ["React", "GraphQL", "Node.js", "PostgreSQL", "Redis", "WebSockets", "AWS", "Docker", "Kubernetes"]
@@ -183,8 +184,4 @@ export const Responsive = {
   index: 1,
 }
 };
-Responsive.parameters = {
-  viewport: {
-    defaultViewport: 'mobile1',
-  },
-};
+Responsive.globals = { viewport: { value: 'mobile1', isRotated: false } };

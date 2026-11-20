@@ -1,6 +1,9 @@
 import React from 'react';
 import Skills from './Skills';
 import { within, userEvent, expect } from 'storybook/test';
+import PortfolioContext from '@context/PortfolioContext';
+import { AnimationContext } from '@context/AnimationContext';
+import { mockAnimationData } from '@stories-utils';
 import { mockPortfolioData } from '@stories-utils/mocks/data';
 
 export default {
@@ -22,9 +25,6 @@ export default {
           }
         ],
       },
-    },
-    viewport: {
-      defaultViewport: 'desktop',
     },
     layout: 'fullscreen',
   },
@@ -61,11 +61,18 @@ Default.play = async ({ canvasElement, step }) => {
   });
 };
 
-// Reduced Motion variant
+// Reduced Motion variant: animations switched off in AnimationContext, so the
+// section fades in without the slide and stagger
 export const ReducedMotion = Template.bind({});
-ReducedMotion.parameters = {
-  chromatic: { reducedMotion: true },
-};
+ReducedMotion.decorators = [
+  (Story) => (
+    <AnimationContext.Provider
+      value={{ ...mockAnimationData, animationEnabled: false, prefersReducedMotion: true }}
+    >
+      <Story />
+    </AnimationContext.Provider>
+  ),
+];
 
 /**
  * ## Component Usage
@@ -116,10 +123,8 @@ ReducedMotion.parameters = {
 
 // Mobile Viewport
 export const MobileView = Template.bind({});
-MobileView.parameters = {
-  viewport: {
-    defaultViewport: 'mobile1',
-  },
+MobileView.globals = {
+  viewport: { value: 'mobile1', isRotated: false },
 };
 
 // Many Skills
@@ -162,5 +167,3 @@ ManySkills.decorators = [
     );
   }
 ];
-
-import PortfolioContext from '@context/PortfolioContext';

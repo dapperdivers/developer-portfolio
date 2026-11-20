@@ -171,14 +171,14 @@ LongContent.play = async ({ canvasElement, step }) => {
 
 // Mobile viewport story
 export const Mobile = Template.bind({});
-Mobile.parameters = {
-  viewport: { defaultViewport: 'mobile1' },
+Mobile.globals = {
+  viewport: { value: 'mobile1', isRotated: false },
 };
 
 // Tablet viewport story
 export const Tablet = Template.bind({});
-Tablet.parameters = {
-  viewport: { defaultViewport: 'tablet' },
+Tablet.globals = {
+  viewport: { value: 'tablet', isRotated: false },
 };
 
 // Story with customized greeting content

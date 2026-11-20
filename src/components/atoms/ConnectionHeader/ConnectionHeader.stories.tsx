@@ -172,9 +172,5 @@ export const Responsive = {
     animate: true,
     variant: 'security',
   },
-  parameters: {
-    viewport: {
-      defaultViewport: 'mobile1',
-    },
-  }
+  globals: { viewport: { value: 'mobile1', isRotated: false } },
 };

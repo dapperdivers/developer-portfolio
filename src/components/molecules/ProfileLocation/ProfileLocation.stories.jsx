@@ -2,7 +2,7 @@ import React from 'react';
 import ProfileLocation from './ProfileLocation';
 
 export default {
-  title: 'molecules/ProfileLocation',
+  title: 'Molecules/ProfileLocation',
   component: ProfileLocation,
   parameters: {
     layout: 'centered',
@@ -202,10 +202,8 @@ export const MobileView = {
     location: "Miami, FL",
     variant: 'secure'
   },
+  globals: { viewport: { value: 'mobile1', isRotated: false } },
   parameters: {
-    viewport: {
-      defaultViewport: 'mobile1'
-    },
     docs: {
       description: {
         story: 'ProfileLocation component optimized for mobile viewing with responsive typography and layout adjustments.'

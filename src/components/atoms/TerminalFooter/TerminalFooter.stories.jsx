@@ -1,7 +1,7 @@
 import TerminalFooter from './TerminalFooter';
 
 export default {
-  title: 'atoms/TerminalFooter',
+  title: 'Atoms/TerminalFooter',
   component: TerminalFooter,
   parameters: {
     layout: 'centered',
@@ -72,13 +72,5 @@ export const Collapsed = {
     prompt: 'user@portfolio:~$',
     variant: 'default',
     expanded: false
-  }
-};
-
-export const Playground = {
-  args: {
-    prompt: 'user@portfolio:~$',
-    variant: 'default',
-    expanded: true
   }
 };

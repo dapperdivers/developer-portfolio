@@ -8,6 +8,10 @@ const meta: Meta<typeof MatrixStream> = {
   component: MatrixStream,
   parameters: {
     layout: 'centered',
+    // The global matcher treats any prop ending in "background" as a colour, which catches isBackground
+    controls: {
+      matchers: { color: /^color$/i }
+    },
     docs: {
       description: {
         component: 'MatrixStream component with framer-motion animations integrated with AnimationContext.'
@@ -16,7 +20,13 @@ const meta: Meta<typeof MatrixStream> = {
   },
   tags: ['autodocs'],
   argTypes: {
-    // Define arg types here
+    color: { control: 'color', description: 'Character colour' },
+    fontSize: { control: { type: 'number', min: 8, max: 48, step: 1 }, description: 'Character size in pixels' },
+    speed: { control: { type: 'range', min: 0.5, max: 10, step: 0.5 }, description: 'How often characters change' },
+    moveSpeed: { control: { type: 'range', min: 0.1, max: 5, step: 0.1 }, description: 'Downward speed' },
+    width: { control: { type: 'number', min: 10, max: 800, step: 10 }, description: 'Stream width in pixels' },
+    height: { control: { type: 'number', min: 50, max: 800, step: 10 }, description: 'Stream height in pixels' },
+    isBackground: { control: 'boolean', description: 'Render fixed behind the content' },
     className: { control: 'text' }
   },
   decorators: [
@@ -153,49 +163,4 @@ export const DecorativeBorder: Story = {
       </div>
     </div>
   ),
-};
-
-/**
- * Example showing the component with animations disabled.
- * This is useful for users who prefer reduced motion or for
- * testing how the component renders without animations.
- */
-export const WithAnimationsDisabled: Story = {
-  args: {
-    children: 'No animations',
-    className: ''
-  },
-  decorators: [
-    (Story) => (
-      <AnimationProvider>
-        <div data-testid="animation-disabled-container">
-          <Story />
-        </div>
-      </AnimationProvider>
-    )
-  ],
-  play: async () => {
-    // This simulates a user who has animations disabled
-    window.__DEBUG_FLAGS = {
-      ...window.__DEBUG_FLAGS,
-      disableAnimations: true
-    };
-    
-    // The component should detect this via AnimationContext
-  }
-};
-
-/**
- * This example demonstrates interactions with the component.
- * The framer-motion animations should respond appropriately.
- */
-export const WithInteractions: Story = {
-  args: {
-    children: 'Interactive component',
-    className: 'interactive-test'
-  },
-  play: async () => {
-    // Add interaction tests here using @storybook/test
-    // For example, testing hover animations, click responses, etc.
-  }
 };

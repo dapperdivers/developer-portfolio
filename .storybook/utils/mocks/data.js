@@ -1,3 +1,4 @@
+import { placeholderImage } from '../placeholderImage';
 /**
  * Mock Data for Storybook
  * 
@@ -83,14 +84,14 @@ export const mockPortfolioData = {
     {
       role: "Software Engineering Manager",
       company: "Traction Tools",
-      companylogo: "https://via.placeholder.com/150",
+      companylogo: placeholderImage(150, 150),
       date: "February 2021 – Present",
       desc: "Working as the Software Engineering Manager for a direct-to-consumer site that provides tooling for businesses running EOS."
     },
     {
       role: "Senior Software Engineer",
       company: "Ubicquia",
-      companylogo: "https://via.placeholder.com/150",
+      companylogo: placeholderImage(150, 150, { accent: 'blue' }),
       date: "May 2018 – June 2020",
       desc: "Created an enterprise solution to manage cellular connected units on light poles with Laravel API and Angular frontend."
     }
@@ -120,7 +121,7 @@ export const mockPortfolioData = {
 // Mock GitHub Profile data
 export const mockGithubProfile = {
   login: "dmackley",
-  avatar_url: "https://via.placeholder.com/150",
+  avatar_url: placeholderImage(150, 150, { accent: 'amber' }),
   html_url: "https://github.com/username",
   name: "Derek Mackley",
   bio: "Full Stack Developer and Security Expert",

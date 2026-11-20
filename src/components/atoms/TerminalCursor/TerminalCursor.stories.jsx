@@ -1,7 +1,7 @@
 import TerminalCursor from './TerminalCursor';
 
 export default {
-  title: 'atoms/TerminalCursor',
+  title: 'Atoms/TerminalCursor',
   component: TerminalCursor,
   parameters: { 
     layout: 'centered',
@@ -83,13 +83,6 @@ Terminal.args = {
 export const Hidden = Template.bind({});
 Hidden.args = {
   show: false,
-  focused: false,
-  variant: 'default'
-};
-
-export const Playground = Template.bind({});
-Playground.args = {
-  show: true,
   focused: false,
   variant: 'default'
 };

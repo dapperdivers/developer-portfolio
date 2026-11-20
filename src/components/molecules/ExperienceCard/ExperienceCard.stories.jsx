@@ -16,7 +16,7 @@ const securityExperienceData = {
     'Led security audits and penetration testing for 50+ applications',
     'Mentored junior security analysts in incident response procedures'
   ],
-  url: 'https://cybersec-solutions.com'
+  url: 'https://example.com/cybersec-solutions'
 };
 
 const regularExperienceData = {
@@ -31,7 +31,7 @@ const regularExperienceData = {
     'Optimized application performance and user experience',
     'Collaborated with design team on UI/UX improvements'
   ],
-  url: 'https://tech-innovations.com'
+  url: 'https://example.com/tech-innovations'
 };
 
 const shortExperienceData = {
@@ -149,7 +149,7 @@ Default.args = {
 Default.parameters = {
   docs: {
     description: {
-      story: 'Default ExperienceCard built with atomic components. Clean separation of concerns with isolated styling.',
+      story: 'The card as it first appears on the site: collapsed, in the default `cyberpunk` variant. Click the header or the toggle to expand it, and use the controls to change variant, shadow and data.',
     },
   },
 };
@@ -214,24 +214,7 @@ TerminalVariant.parameters = {
   },
 };
 
-// Cyberpunk variant story
-export const CyberpunkVariant = Template.bind({});
-CyberpunkVariant.args = {
-  data: securityExperienceData,
-  index: 0,
-  variant: 'cyberpunk',
-  shadow: true,
-  isExpanded: true,
-};
-CyberpunkVariant.parameters = {
-  docs: {
-    description: {
-      story: 'Cyberpunk variant with enhanced visual effects and grid patterns.',
-    },
-  },
-};
-
-// Expanded state
+// Expanded state (cyberpunk is the default variant)
 export const ExpandedState = Template.bind({});
 ExpandedState.args = {
   data: securityExperienceData,
@@ -243,24 +226,7 @@ ExpandedState.args = {
 ExpandedState.parameters = {
   docs: {
     description: {
-      story: 'ExperienceCard in expanded state showing all atomic components working together.',
-    },
-  },
-};
-
-// Collapsed state
-export const CollapsedState = Template.bind({});
-CollapsedState.args = {
-  data: securityExperienceData,
-  index: 0,
-  variant: 'cyberpunk',
-  shadow: true,
-  isExpanded: false,
-};
-CollapsedState.parameters = {
-  docs: {
-    description: {
-      story: 'ExperienceCard in collapsed state showing only the header atomic components.',
+      story: 'ExperienceCard in expanded state, in the default `cyberpunk` variant, showing all atomic components working together. The collapsed state is the Default story.',
     },
   },
 };
@@ -396,23 +362,6 @@ InteractiveTest.parameters = {
   docs: {
     description: {
       story: 'Interactive test demonstrating the expand/collapse functionality with atomic components.',
-    },
-  },
-};
-
-// Playground story
-export const Playground = Template.bind({});
-Playground.args = {
-  data: securityExperienceData,
-  index: 0,
-  variant: 'cyberpunk',
-  shadow: true,
-  isExpanded: false,
-};
-Playground.parameters = {
-  docs: {
-    description: {
-      story: 'Playground for experimenting with different props and seeing how atomic components respond.',
     },
   },
 };

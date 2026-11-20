@@ -2,7 +2,7 @@ import React from 'react';
 import ConsoleHeader from './ConsoleHeader';
 
 const meta = {
-  title: 'organisms/ConsoleHeader',
+  title: 'Organisms/ConsoleHeader',
   component: ConsoleHeader,
   tags: ['autodocs'],
   parameters: {

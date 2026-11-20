@@ -4,76 +4,76 @@ import EducationCard from './EducationCard';
 // Sample education data for stories
 const mockEducationData = {
   complete: {
-    schoolName: "Stanford University",
-    degree: "Master of Computer Science",
-    major: "Artificial Intelligence",
-    minor: "Mathematics",
+    schoolName: "Northfield State University",
+    degree: "Master of Science",
+    major: "Computer Science",
+    minor: "Applied Mathematics",
     duration: "2018 - 2020",
     certifications: [
       {
-        name: "AWS Certified Solutions Architect",
-        issuer: "Amazon Web Services",
+        name: "Cloud Solutions Architect",
+        issuer: "Cloud Certification Board",
         date: "2020",
-        credentialId: "AWS-SAA-123456"
+        credentialId: "CSA-123456"
       },
       {
-        name: "Google Cloud Professional",
-        issuer: "Google Cloud",
+        name: "Cloud Security Practitioner",
+        issuer: "Cloud Certification Board",
         date: "2019",
-        credentialId: "GCP-PCA-789012"
+        credentialId: "CSP-789012"
       },
       {
-        name: "Certified Kubernetes Administrator",
-        issuer: "Cloud Native Computing Foundation",
+        name: "Container Platform Administrator",
+        issuer: "Open Infrastructure Institute",
         date: "2020",
-        credentialId: "CKA-567890"
+        credentialId: "CPA-567890"
       }
     ]
   },
   minimal: {
-    schoolName: "MIT",
+    schoolName: "Lakeshore Technical College",
     degree: "Bachelor of Science",
     major: "Computer Engineering",
     duration: "2014 - 2018"
   },
   cybersecurity: {
-    schoolName: "Georgia Institute of Technology",
+    schoolName: "Ridgeview Institute of Technology",
     degree: "Master of Science",
     major: "Cybersecurity",
     minor: "Information Systems",
     duration: "2019 - 2021",
     certifications: [
       {
-        name: "CISSP",
-        issuer: "ISC2",
+        name: "Information Security Professional",
+        issuer: "Security Certification Council",
         date: "2021",
-        credentialId: "CISSP-567890"
+        credentialId: "ISP-567890"
       },
       {
-        name: "CEH",
-        issuer: "EC-Council",
+        name: "Incident Response Analyst",
+        issuer: "Security Certification Council",
         date: "2020",
-        credentialId: "CEH-234567"
+        credentialId: "IRA-234567"
       },
       {
-        name: "OSCP",
-        issuer: "Offensive Security",
+        name: "Offensive Security Practitioner",
+        issuer: "Penetration Testing Guild",
         date: "2021",
-        credentialId: "OSCP-890123"
+        credentialId: "OSP-890123"
       }
     ]
   },
   bootcamp: {
-    schoolName: "Lambda School",
-    degree: "Full Stack Web Development",
-    major: "Software Engineering",
+    schoolName: "Harbor Code Academy",
+    degree: "Application Security Bootcamp",
+    major: "Secure Software Development",
     duration: "2020",
     certifications: [
       {
-        name: "React Developer Certification",
-        issuer: "Meta",
+        name: "Secure Coding Certificate",
+        issuer: "Harbor Code Academy",
         date: "2020",
-        credentialId: "META-RDC-345678"
+        credentialId: "SCC-345678"
       }
     ]
   }
@@ -281,7 +281,7 @@ VariantComparison.parameters = {
 export const LongTextHandling = {
   args: {
     education: {
-      schoolName: "Massachusetts Institute of Technology School of Engineering and Applied Sciences",
+      schoolName: "Ridgeview Institute of Technology School of Engineering and Applied Sciences",
       degree: "Bachelor of Science in Computer Engineering with Specialization in Embedded Systems",
       major: "Robotics and Embedded Systems with Advanced Machine Learning Applications",
       minor: "Applied Mathematics, Statistics, and Computational Sciences",
@@ -289,9 +289,9 @@ export const LongTextHandling = {
       certifications: [
         {
           name: "Professional Cloud Solutions Architect with Advanced Networking and Security Specialization",
-          issuer: "Amazon Web Services Training and Certification",
+          issuer: "Cloud Certification Board Training and Certification",
           date: "2020",
-          credentialId: "AWS-PCSA-ANSS-123456789"
+          credentialId: "CCB-PCSA-ANSS-123456789"
         }
       ]
     },
@@ -307,23 +307,6 @@ export const LongTextHandling = {
   }
 };
 
-// Interactive playground
-export const Playground = {
-  args: {
-    education: mockEducationData.complete,
-    variant: 'default',
-    index: 0,
-    className: ''
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Interactive playground to test different education data configurations and variants. Modify the controls to see how the component adapts.'
-      }
-    }
-  }
-};
-
 // Mobile view testing
 export const MobileView = {
   args: {
@@ -331,10 +314,10 @@ export const MobileView = {
     variant: 'secure',
     index: 0
   },
+  globals: {
+    viewport: { value: 'mobile1', isRotated: false },
+  },
   parameters: {
-    viewport: {
-      defaultViewport: 'mobile1',
-    },
     docs: {
       description: {
         story: 'Shows how the education card appears and functions on mobile devices with responsive layout adjustments.'
@@ -352,17 +335,17 @@ export const MobileView = {
  * function Education() {
  *   const educationData = [
  *     {
- *       schoolName: "Stanford University",
- *       degree: "Master of Computer Science",
- *       major: "Artificial Intelligence",
- *       minor: "Mathematics",
+ *       schoolName: "Northfield State University",
+ *       degree: "Master of Science",
+ *       major: "Computer Science",
+ *       minor: "Applied Mathematics",
  *       duration: "2018 - 2020",
  *       certifications: [
  *         {
- *           name: "AWS Certified Solutions Architect",
- *           issuer: "Amazon Web Services",
+ *           name: "Cloud Solutions Architect",
+ *           issuer: "Cloud Certification Board",
  *           date: "2020",
- *           credentialId: "AWS-SAA-123456"
+ *           credentialId: "CSA-123456"
  *         }
  *       ]
  *     }

@@ -1,7 +1,7 @@
 import TerminalPrompt from './TerminalPrompt';
 
 export default {
-  title: 'atoms/TerminalPrompt',
+  title: 'Atoms/TerminalPrompt',
   component: TerminalPrompt,
   parameters: { 
     layout: 'centered',
@@ -103,10 +103,3 @@ export const CustomPrompts = () => (
     </div>
   </div>
 );
-
-export const Playground = Template.bind({});
-Playground.args = {
-  text: 'user@portfolio:~$',
-  variant: 'default',
-  mobile: false
-};

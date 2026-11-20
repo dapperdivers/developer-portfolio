@@ -1,9 +1,16 @@
 import React from 'react';
 import SecurityBadge from './SecurityBadge';
-import { FaShieldAlt, FaLock, FaUserShield } from 'react-icons/fa';
+import { motion } from 'framer-motion';
+import { FaLock, FaUserShield } from 'react-icons/fa';
+
+// Entrance variants, as a parent card would supply them
+const entranceVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+};
 
 export default {
-  title: 'GitHub Profile/Atoms/Security/SecurityBadge',
+  title: 'Atoms/SecurityBadge',
   component: SecurityBadge,
   tags: ['autodocs'],
   parameters: {
@@ -18,15 +25,20 @@ export default {
     text: { control: 'text' },
     icon: { control: { disable: true } },
     animate: { control: 'boolean' },
+    variants: { control: { disable: true } },
     className: { control: 'text' },
   },
 };
 
-// Template for the component
+// The motion parent drives the entrance; `animate={false}` opts the component out of it
 const Template = (args) => (
-  <div style={{ padding: '2rem', background: '#121212', display: 'flex', justifyContent: 'center' }}>
-    <SecurityBadge {...args} />
-  </div>
+  <motion.div
+    initial="hidden"
+    animate="visible"
+    style={{ padding: '2rem', background: '#121212', display: 'flex', justifyContent: 'center' }}
+  >
+    <SecurityBadge variants={entranceVariants} {...args} />
+  </motion.div>
 );
 
 /**
@@ -59,7 +71,7 @@ WithUserShieldIcon.args = {
 };
 
 /**
- * Without animation example.
+ * Without animation: the badge ignores the parent's entrance variants and renders in place.
  */
 export const NoAnimation = Template.bind({});
 NoAnimation.args = {

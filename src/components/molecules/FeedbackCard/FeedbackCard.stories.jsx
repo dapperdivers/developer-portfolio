@@ -1,4 +1,5 @@
 import React from 'react';
+import { placeholderImage } from '@stories-utils/placeholderImage';
 import FeedbackCard from './FeedbackCard';
 import { within, userEvent, expect } from 'storybook/test';
 
@@ -15,7 +16,7 @@ const mockFeedbackData = {
     feedback: "The developer delivered a high-quality application within the deadline. Very professional and responsive throughout the project.",
     designation: "CTO",
     rating: 5,
-    avatar: "https://randomuser.me/api/portraits/women/44.jpg"
+    avatar: placeholderImage(96, 96, { label: 'JS' })
   },
   longContent: {
     name: "Robert Johnson",
@@ -44,8 +45,20 @@ export default {
       control: 'number',
       description: 'Index number for staggered animations',
       defaultValue: 0
+    },
+    animated: {
+      control: 'boolean',
+      description: 'Whether the card animates in and reacts to hover'
     }
   },
+  // Constrain the width to mimic the grid column the card sits in on the site
+  decorators: [
+    (Story) => (
+      <div style={{ maxWidth: '350px', margin: '0 auto' }}>
+        <Story />
+      </div>
+    ),
+  ],
   parameters: {
     docs: {
       description: {
@@ -64,14 +77,6 @@ export default {
     layout: 'padded'
   },
 };
-
-
-// Wrap the card in a container with a fixed width to mimic the grid layout in the real application
-const Template = (args) => (
-  <div style={{ width: '350px', margin: '0 auto' }}>
-    <FeedbackCard {...args} />
-  </div>
-);
 
 // Basic story with default feedback
 export const Default = {
@@ -176,20 +181,20 @@ PartialRating.play = async ({ canvasElement, step }) => {
   });
 };
 
-// Story showcasing animation capabilities
-export const AnimatedEntry = {
+// Story with animations switched off
+export const WithoutAnimation = {
   args: {
   data: mockFeedbackData.default,
-  index: 0
+  index: 0,
+  animated: false
 }
 };
-AnimatedEntry.parameters = {
+WithoutAnimation.parameters = {
   docs: {
     description: {
-      story: 'Demonstrates the animated entry of the feedback card when it comes into view.'
+      story: 'With `animated` set to false the card renders in place with no entry animation and no hover lift. The other stories animate in on mount.'
     }
-  },
-  chromatic: { disable: true } // Disable Chromatic snapshots for this animation story
+  }
 };
 
 /**
@@ -234,6 +239,7 @@ AnimatedEntry.parameters = {
  * | data.designation | string | "Client" | Job title or role |
  * | data.rating | number | 5 | Rating from 1-5 stars |
  * | index | number | 0 | Index for staggered animation timing |
+ * | animated | boolean | true | Whether the card animates in and reacts to hover |
  * 
  * ## Accessibility Features
  * 
@@ -258,10 +264,10 @@ export const MobileView = {
   index: 0
 }
 };
+MobileView.globals = {
+  viewport: { value: 'mobile1', isRotated: false },
+};
 MobileView.parameters = {
-  viewport: {
-    defaultViewport: 'mobile1',
-  },
   docs: {
     description: {
       story: 'Shows how the feedback card responds to smaller screen sizes.'

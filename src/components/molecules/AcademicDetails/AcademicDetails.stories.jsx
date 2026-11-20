@@ -134,10 +134,8 @@ export const MobileView = {
     minor: 'UX Design',
     graduationDate: 'July 2024',
   },
-  parameters: {
-    viewport: {
-      defaultViewport: 'mobile1',
-    },
+  globals: {
+    viewport: { value: 'mobile1', isRotated: false },
   },
 };
 
@@ -149,7 +147,7 @@ export const InternationalDate = {
     schoolName: 'International University',
     degree: 'Master of Business Administration',
     major: 'International Business',
-    minor: 'Finance',
+    minor: 'Economics',
     graduationDate: '15 March 2024',
   },
 }; 

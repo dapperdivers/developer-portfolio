@@ -2,6 +2,8 @@ import React from 'react';
 import Education from './Education';
 import { expect, within } from 'storybook/test';
 import PortfolioContext from '@context/PortfolioContext';
+import { AnimationContext } from '@context/AnimationContext';
+import { mockAnimationData } from '@stories-utils';
 
 // Mock portfolio data for stories
 const mockEducationData = [
@@ -234,42 +236,23 @@ MultipleEducationItems.parameters = {
 };
 
 /**
- * Performance testing story with reduced animations
+ * Reduced motion: animations switched off in AnimationContext
  */
 export const ReducedMotion = Template.bind({});
-ReducedMotion.decorators = [createContextWithEducation(mockEducationData)];
+ReducedMotion.decorators = [
+  createContextWithEducation(mockEducationData),
+  (Story) => (
+    <AnimationContext.Provider
+      value={{ ...mockAnimationData, animationEnabled: false, prefersReducedMotion: true }}
+    >
+      <Story />
+    </AnimationContext.Provider>
+  ),
+];
 ReducedMotion.parameters = {
   docs: {
     description: {
-      story: 'Tests the component with reduced motion preferences, ensuring accessibility compliance.',
+      story: 'Animations disabled through AnimationContext, as happens when the visitor prefers reduced motion. The cards render in place with no entrance slide or stagger.',
     }
-  },
-  css: `
-    @media (prefers-reduced-motion: reduce) {
-      * {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-      }
-    }
-  `
-};
-
-/**
- * Dark theme variant (already the default, but explicitly documented)
- */
-export const DarkCyberTheme = Template.bind({});
-DarkCyberTheme.decorators = [createContextWithEducation(mockEducationData)];
-DarkCyberTheme.parameters = {
-  docs: {
-    description: {
-      story: 'The primary dark cybersecurity theme with navy blue backgrounds, cyan accents, and terminal aesthetics.',
-    }
-  },
-  backgrounds: {
-    default: 'dark',
-    values: [
-      { name: 'dark', value: '#0a192f' }
-    ]
   }
 };

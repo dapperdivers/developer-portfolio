@@ -4,6 +4,7 @@ import { within, userEvent, expect } from 'storybook/test';
 import PortfolioContext from '@context/PortfolioContext';
 import { mockPortfolioData } from '@data/mockPortfolioData';
 import { withViewport } from '@stories-utils';
+import { placeholderImage } from '@stories-utils/placeholderImage';
 
 // Helper function to create context with custom projects data
 const createContextWithProjects = (projectsData) => {
@@ -46,7 +47,7 @@ const sampleProjects = [
   {
     name: "Project Alpha",
     desc: "A full-stack web application with React and Node.js",
-    image: "https://via.placeholder.com/600x400?text=Project+Alpha",
+    image: placeholderImage(600, 400, { label: 'Project Alpha' }),
     link: "https://example.com/project-alpha",
     github: "https://github.com/username/project-alpha",
     stack: ["React", "Node.js", "MongoDB"]
@@ -54,7 +55,7 @@ const sampleProjects = [
   {
     name: "Project Beta",
     desc: "Mobile-first responsive website with modern UI/UX",
-    image: "https://via.placeholder.com/600x400?text=Project+Beta",
+    image: placeholderImage(600, 400, { label: 'Project Beta', accent: 'blue' }),
     link: "https://example.com/project-beta",
     github: "https://github.com/username/project-beta",
     stack: ["React", "CSS3", "Firebase"]
@@ -62,7 +63,7 @@ const sampleProjects = [
   {
     name: "Project Gamma",
     desc: "Real-time data visualization dashboard",
-    image: "https://via.placeholder.com/600x400?text=Project+Gamma",
+    image: placeholderImage(600, 400, { label: 'Project Gamma', accent: 'amber' }),
     link: "https://example.com/project-gamma",
     github: "https://github.com/username/project-gamma",
     stack: ["D3.js", "React", "Express", "Socket.io"]
@@ -145,7 +146,7 @@ MixedDataCompleteness.decorators = [
     {
       name: "No Links Project",
       desc: "A project without any links",
-      image: "https://via.placeholder.com/600x400?text=No+Links",
+      image: placeholderImage(600, 400, { label: 'No Links', accent: 'green' }),
       stack: ["Python", "Django"]
     },
     // Minimal project
@@ -225,21 +226,21 @@ ManyProjects.decorators = [
     {
       name: "Project Delta",
       desc: "E-commerce platform with payment integration",
-      image: "https://via.placeholder.com/600x400?text=Project+Delta",
+      image: placeholderImage(600, 400, { label: 'Project Delta', accent: 'red' }),
       link: "https://example.com/project-delta",
       stack: ["React", "Redux", "Stripe", "Express"]
     },
     {
       name: "Project Epsilon",
       desc: "Content management system for digital publications",
-      image: "https://via.placeholder.com/600x400?text=Project+Epsilon",
+      image: placeholderImage(600, 400, { label: 'Project Epsilon' }),
       github: "https://github.com/username/project-epsilon",
       stack: ["Next.js", "GraphQL", "PostgreSQL"]
     },
     {
       name: "Project Zeta",
       desc: "Machine learning application for image recognition",
-      image: "https://via.placeholder.com/600x400?text=Project+Zeta",
+      image: placeholderImage(600, 400, { label: 'Project Zeta', accent: 'blue' }),
       github: "https://github.com/username/project-zeta",
       link: "https://example.com/project-zeta",
       stack: ["Python", "TensorFlow", "Flask", "React"]

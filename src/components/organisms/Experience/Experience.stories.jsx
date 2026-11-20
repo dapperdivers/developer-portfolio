@@ -182,10 +182,8 @@ export const NoExperience = {
 export const ResponsiveView = {
   render: () => <Template experienceData={mockExperienceData} />,
   decorators: [createPortfolioDecorator(mockExperienceData)],
+  globals: { viewport: { value: 'mobile1', isRotated: false } },
   parameters: {
-  viewport: {
-    defaultViewport: 'mobile1'
-  },
   docs: {
     description: {
       story: 'Shows how the experience section responds to smaller viewport sizes.'

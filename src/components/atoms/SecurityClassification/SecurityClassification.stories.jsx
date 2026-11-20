@@ -1,7 +1,7 @@
 import SecurityClassification from './SecurityClassification';
 
 export default {
-  title: 'atoms/SecurityClassification',
+  title: 'Atoms/SecurityClassification',
   component: SecurityClassification,
   parameters: {
     layout: 'centered',

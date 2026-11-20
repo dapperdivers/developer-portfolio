@@ -119,9 +119,5 @@ export const Responsive = {
     date: 'June 2023',
     credentialId: 'RWD-789',
   },
-  parameters: {
-    viewport: {
-      defaultViewport: 'mobile1',
-    },
-  }
+  globals: { viewport: { value: 'mobile1', isRotated: false } },
 };

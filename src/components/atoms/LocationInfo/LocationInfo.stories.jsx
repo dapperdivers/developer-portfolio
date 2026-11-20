@@ -1,7 +1,7 @@
 import LocationInfo from './LocationInfo';
 
 export default {
-  title: 'atoms/LocationInfo',
+  title: 'Atoms/LocationInfo',
   component: LocationInfo,
   parameters: {
     layout: 'centered',
@@ -95,15 +95,4 @@ NoLocation.args = {
   variant: 'default',
   locationData: null,
   mapMode: 'dark',
-};
-
-export const Interactive = Template.bind({});
-Interactive.args = {
-  variant: 'default',
-  locationData: mockLocationData,
-  mapMode: 'dark',
-};
-Interactive.argTypes = {
-  variant: { control: { type: 'select' } },
-  mapMode: { control: { type: 'select' } },
 };

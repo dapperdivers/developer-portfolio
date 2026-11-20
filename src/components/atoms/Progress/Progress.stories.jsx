@@ -82,6 +82,8 @@ const ProgressContainer = ({ children, style = {} }) => (
     padding: '20px',
     background: 'var(--color-background, #0a192f)',
     borderRadius: '8px',
+    // Stories are centred, so without a width the container shrinks to nothing
+    width: 'min(600px, 90vw)',
     maxWidth: '600px',
     ...style
   }}>

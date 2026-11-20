@@ -1,7 +1,8 @@
 import ExperienceHeader from './ExperienceHeader';
+import { placeholderImage } from '@stories-utils/placeholderImage';
 
 export default {
-  title: 'atoms/ExperienceHeader',
+  title: 'Atoms/ExperienceHeader',
   component: ExperienceHeader,
   parameters: {
     layout: 'centered',
@@ -30,8 +31,8 @@ const sampleData = {
   role: 'Senior Security Engineer',
   company: 'CyberSec Solutions',
   date: 'January 2022 – Present',
-  logo: 'https://ui-avatars.com/api/?name=CS&background=64ffda&color=0a192f&bold=true',
-  url: 'https://cybersec-solutions.com'
+  logo: placeholderImage(96, 96, { label: 'CS' }),
+  url: 'https://example.com'
 };
 
 export const Default = {
@@ -87,14 +88,6 @@ export const WithoutURL = {
   args: {
     ...sampleData,
     url: undefined,
-    variant: 'default',
-    expanded: false
-  }
-};
-
-export const Playground = {
-  args: {
-    ...sampleData,
     variant: 'default',
     expanded: false
   }
