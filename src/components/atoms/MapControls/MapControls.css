@@ -1,63 +1,50 @@
-/* MapControls Component Styles */
+/* MapControls: toolbar over the map, on the opaque raised surface.
+ * Status variants (secure / breach / critical) change only the accent. */
 @import url('../../../assets/css/design-system/index.css');
 
 .map-controls {
+  --map-accent: var(--color-primary);
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: var(--spacing-3) var(--spacing-4);
-  background: rgba(var(--color-navy-rgb), 0.9);
-  border: 1px solid rgba(var(--color-cyan-rgb), 0.2);
-  border-radius: var(--border-radius-md);
-  backdrop-filter: blur(8px);
+  background: var(--surface-card-raised);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
   margin-bottom: var(--spacing-4);
   position: relative;
   z-index: 10;
 }
 
-.map-controls--secure {
-  border-color: rgba(var(--color-level-low-rgb), 0.4);
-  background: rgba(var(--color-level-low-rgb), 0.1);
-}
+.map-controls--secure { --map-accent: var(--color-success); }
+.map-controls--breach { --map-accent: var(--color-warning); }
+.map-controls--critical { --map-accent: var(--color-danger); }
 
-.map-controls--breach {
-  border-color: rgba(var(--color-level-medium-rgb), 0.4);
-  background: rgba(var(--color-level-medium-rgb), 0.1);
-}
-
+.map-controls--secure,
+.map-controls--breach,
 .map-controls--critical {
-  border-color: rgba(var(--color-level-critical-rgb), 0.4);
-  background: rgba(var(--color-level-critical-rgb), 0.1);
+  border-color: var(--map-accent);
 }
 
 .map-controls__label {
   display: flex;
   align-items: center;
   gap: var(--spacing-2);
-  font-size: var(--font-size-sm);
+  font-family: var(--font-family-jetbrains);
+  font-size: var(--font-size-xs);
   font-weight: var(--font-weight-medium);
-  color: var(--color-cyan);
+  color: var(--map-accent);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: var(--letter-spacing-technical);
 }
 
 .map-controls__status-dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--color-level-low);
+  background: var(--map-accent);
   animation: pulse-dot 2s ease-in-out infinite;
-  box-shadow: 0 0 8px rgba(var(--color-level-low-rgb), 0.6);
-}
-
-.map-controls--breach .map-controls__status-dot {
-  background: var(--color-level-medium);
-  box-shadow: 0 0 8px rgba(var(--color-level-medium-rgb), 0.6);
-}
-
-.map-controls--critical .map-controls__status-dot {
-  background: var(--color-level-critical);
-  box-shadow: 0 0 8px rgba(var(--color-level-critical-rgb), 0.6);
 }
 
 .map-controls__actions {
@@ -69,99 +56,45 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
-  background: transparent;
-  border: 1px solid rgba(var(--color-cyan-rgb), 0.3);
-  border-radius: var(--border-radius-sm);
-  color: var(--color-cyan);
+  width: var(--control-height);
+  height: var(--control-height);
+  background: var(--surface-inset);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-control);
+  color: var(--map-accent);
   cursor: pointer;
-  transition: all var(--transition-fast);
-  position: relative;
-  overflow: hidden;
-}
-
-.map-controls__button:before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(var(--color-cyan-rgb), 0.1), transparent);
-  transition: left 0.2s ease-in-out;
-}
-
-.map-controls__button:hover:before {
-  left: 100%;
+  transition: border-color var(--transition-fast), background-color var(--transition-fast);
 }
 
 .map-controls__button:hover {
-  border-color: rgba(var(--color-cyan-rgb), 0.6);
-  box-shadow: 0 0 12px rgba(var(--color-cyan-rgb), 0.3);
-  transform: translateY(-1px);
+  border-color: var(--surface-border-strong);
 }
 
 .map-controls__button--active {
-  background: rgba(var(--color-cyan-rgb), 0.1);
-  border-color: var(--color-cyan);
-  box-shadow: 0 0 8px rgba(var(--color-cyan-rgb), 0.4);
+  background: var(--surface-card);
+  border-color: var(--map-accent);
 }
 
-.map-controls__button:active {
-  transform: translateY(0);
-  box-shadow: 0 0 8px rgba(var(--color-cyan-rgb), 0.2);
+.map-controls__button:focus-visible {
+  box-shadow: var(--ring-focus);
+  outline: none;
 }
 
 .map-controls__icon {
   font-size: 14px;
-  z-index: 1;
 }
 
-/* Security variant button styles */
-.map-controls--secure .map-controls__button {
-  border-color: rgba(var(--color-level-low-rgb), 0.3);
-  color: var(--color-level-low);
-}
-
-.map-controls--secure .map-controls__button:hover {
-  border-color: rgba(var(--color-level-low-rgb), 0.6);
-  box-shadow: 0 0 12px rgba(var(--color-level-low-rgb), 0.3);
-}
-
-.map-controls--breach .map-controls__button {
-  border-color: rgba(var(--color-level-medium-rgb), 0.3);
-  color: var(--color-level-medium);
-}
-
-.map-controls--breach .map-controls__button:hover {
-  border-color: rgba(var(--color-level-medium-rgb), 0.6);
-  box-shadow: 0 0 12px rgba(var(--color-level-medium-rgb), 0.3);
-}
-
-.map-controls--critical .map-controls__button {
-  border-color: rgba(var(--color-level-critical-rgb), 0.3);
-  color: var(--color-level-critical);
-}
-
-.map-controls--critical .map-controls__button:hover {
-  border-color: rgba(var(--color-level-critical-rgb), 0.6);
-  box-shadow: 0 0 12px rgba(var(--color-level-critical-rgb), 0.3);
-}
-
-/* Animations */
 @keyframes pulse-dot {
-  0%, 100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.6;
-    transform: scale(1.2);
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.2); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .map-controls__status-dot {
+    animation: none;
   }
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
   .map-controls {
     padding: var(--spacing-2) var(--spacing-3);
@@ -169,13 +102,9 @@
     gap: var(--spacing-2);
   }
 
-  .map-controls__label {
-    font-size: var(--font-size-xs);
-  }
-
   .map-controls__button {
-    width: 32px;
-    height: 32px;
+    width: var(--control-height-sm);
+    height: var(--control-height-sm);
   }
 
   .map-controls__icon {

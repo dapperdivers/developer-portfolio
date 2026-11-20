@@ -14,7 +14,7 @@
 .skills-content-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.5rem;
   max-width: var(--container-max-width);
   margin: 0 auto;
   padding: 0 var(--container-gutter);
@@ -22,7 +22,7 @@
 
 /* Skills Container */
 .skills-container {
-  padding: 2rem;
+  padding: 1.25rem 1.5rem;
   background-color: rgba(var(--color-navy-rgb), 0.5);
   border-radius: 8px;
   border: 1px solid rgba(var(--color-cyan-rgb), 0.3);
@@ -34,8 +34,8 @@
 .skills-category-title {
   font-family: var(--font-family-jetbrains);
   color: var(--color-cyan);
-  font-size: 1.25rem;
-  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
   padding-bottom: 0.5rem;
   border-bottom: 1px solid rgba(var(--color-cyan-rgb), 0.3);
   letter-spacing: var(--letter-spacing-technical);
@@ -56,19 +56,64 @@
   gap: 1rem;
 }
 
-/* Domain Headers */
+/* Groups: label column + chips, one row per domain */
+.skills-groups {
+  margin: 0;
+}
+
+.skills-group {
+  display: grid;
+  grid-template-columns: 13rem 1fr;
+  gap: var(--spacing-2) var(--spacing-4);
+  align-items: start;
+  padding: var(--spacing-3) 0;
+  border-bottom: 1px solid rgba(var(--color-cyan-rgb), 0.12);
+}
+
+.skills-group:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
 .domain-header {
   font-family: var(--font-family-jetbrains);
   color: var(--color-cyan);
-  font-size: 1.1rem;
-  margin: 1.5rem 0 0.75rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid rgba(var(--color-cyan-rgb), 0.3);
+  font-size: var(--font-size-sm);
   letter-spacing: var(--letter-spacing-technical);
+  padding-top: var(--spacing-1);
 }
 
-.domain-header:first-of-type {
-  margin-top: 0;
+.skills-group-body {
+  margin: 0;
+  min-width: 0;
+}
+
+.skills-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-2);
+}
+
+.skills-detail {
+  margin: var(--spacing-2) 0 0;
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-base);
+  color: var(--color-offwhite);
+}
+
+.skills-detail[hidden] {
+  display: none;
+}
+
+.skills-detail strong {
+  color: var(--color-cyan);
+  font-weight: var(--font-weight-semibold);
+}
+
+@media (max-width: 640px) {
+  .skills-group {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* Terminal Container */

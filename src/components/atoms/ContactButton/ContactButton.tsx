@@ -1,6 +1,7 @@
 import React from 'react';
 import { FaRocket } from 'react-icons/fa';
 import { motion, Variants } from 'framer-motion';
+import '../Button/Button.css';
 import './ContactButton.css';
 
 export interface ContactButtonProps {
@@ -19,7 +20,7 @@ export interface ContactButtonProps {
 }
 
 /**
- * ContactButton component for email contact links with rocket icon.
+ * ContactButton: an email link rendered with the shared primary Button styles.
  * 
  * @component
  * @param {Object} props - Component props
@@ -42,10 +43,9 @@ const ContactButton = ({
   return (
     <motion.a 
       href={`mailto:${email}`}
-      className={`contact-button ${className}`}
+      className={['btn', 'btn-primary', 'contact-button', className].filter(Boolean).join(' ')}
       variants={animate ? variants : undefined}
-      whileHover={animate ? { scale: 1.05 } : undefined}
-      whileTap={animate ? { scale: 0.95 } : undefined}
+      whileTap={animate ? { scale: 0.97 } : undefined}
     >
       <span className="contact-button__text">{text}</span>
       <Icon className="contact-button__icon" />

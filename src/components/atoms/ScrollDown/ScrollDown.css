@@ -20,7 +20,8 @@
   cursor: pointer;
   padding: 0;
   outline: none;
-  transition: all 0.3s ease;
+  border-radius: var(--radius-control);
+  transition: transform 0.3s ease;
   position: absolute;
   bottom: 2rem;
   left: 50%;
@@ -32,33 +33,42 @@
 }
 
 .scroll-down-container:focus-visible {
-  outline: 2px solid var(--color-cyan);
-  outline-offset: 4px;
+  box-shadow: var(--ring-focus);
+  outline: none;
 }
 
 /* Interface dots styling */
 .interface-dot {
-  width: 2px;
-  height: 2px;
-  background-color: var(--color-cyan);
-  opacity: 0.6;
+  width: 3px;
+  height: 3px;
+  background-color: var(--color-primary);
+  opacity: 0.7;
   transition: all 0.3s ease;
+}
+
+/* Line, markers and label */
+.scroll-down-line { background: var(--surface-border-strong); }
+.scroll-down-base { background: var(--color-primary); }
+.scroll-down-label {
+  color: var(--color-primary);
+  font-family: var(--font-family-jetbrains);
 }
 
 /* Data points animation */
 .data-point {
+  background: var(--color-primary);
   transform-origin: center;
   transition: all 0.3s ease;
 }
 
 /* Hover effects */
 .scroll-down-container:hover .data-point {
+  background: var(--color-primary);
   transform: scaleX(1.5);
 }
 
 .scroll-down-container:hover .interface-dot {
   opacity: 1;
-  box-shadow: 0 0 4px var(--color-cyan);
 }
 
 /* Terminal text effect */
@@ -74,7 +84,7 @@
   top: 50%;
   width: 3px;
   height: 1px;
-  background-color: var(--color-cyan);
+  background-color: var(--color-primary);
   opacity: 0.6;
 }
 
@@ -85,7 +95,7 @@
   top: 50%;
   width: 3px;
   height: 1px;
-  background-color: var(--color-cyan);
+  background-color: var(--color-primary);
   opacity: 0.6;
 }
 
@@ -103,3 +113,6 @@
   }
 }
 
+
+.data-point--mid { opacity: 0.6; }
+.data-point--low { opacity: 0.3; }

@@ -39,7 +39,16 @@ const experiences: TimelineExperience[] = [
 ];
 
 const withSurface: Decorator = (Story) => (
-  <div className="w-full max-w-6xl mx-auto bg-gray-900 p-8 rounded-lg border border-gray-700">
+  <div
+    className="w-full max-w-6xl mx-auto"
+    style={{
+      padding: 'var(--spacing-6)',
+      background: 'var(--surface-card)',
+      border: '1px solid var(--surface-border)',
+      borderRadius: 'var(--radius-card)',
+      boxShadow: 'var(--shadow-card)',
+    }}
+  >
     <Story />
   </div>
 );

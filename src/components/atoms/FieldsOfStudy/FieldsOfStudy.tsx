@@ -1,11 +1,11 @@
 import React from "react";
-import { motion, Variants } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useMotionEnabled, slideUpVariants } from '@utils/motion';
 import './FieldsOfStudy.css';
 
 export interface FieldsOfStudyProps {
   /** Major field of study */
-  major: string;
+  major?: string;
   /** Minor field of study */
   minor?: string;
   /** Additional CSS classes */
@@ -15,84 +15,34 @@ export interface FieldsOfStudyProps {
 }
 
 /**
- * Component for displaying major and minor fields of study
- * 
+ * MAJOR and MINOR fields of study, each a mono label over an Inter
+ * semibold value. Either is left out when empty.
+ *
  * @component
- * @param {Object} props - Component props
- * @param {string} props.major - Major field of study
- * @param {string} [props.minor] - Minor field of study (optional)
- * @param {string} [props.className] - Additional CSS classes
- * @param {boolean} [props.animated=true] - Whether to animate the component
- * @returns {React.ReactElement} FieldsOfStudy component
  */
 const FieldsOfStudy = ({ major, minor, className = "", animated = true }: FieldsOfStudyProps) => {
   // Animate only when the prop is on and reduced motion is not requested
   const shouldAnimate = useMotionEnabled(animated);
-  
-  // Item variants for staggered children
-  const itemVariants: Variants = {
-    hidden: { opacity: 0, x: -10 },
-    visible: { 
-      opacity: 1, 
-      x: 0,
-      transition: { duration: 0.3 }
-    }
-  };
-  
-  // Container variants with staggered children
-  const containerVariants: Variants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2
-      }
-    }
-  };
 
   return (
-    <motion.div 
+    <motion.div
       className={`fields-of-study ${className}`}
       initial={shouldAnimate ? "hidden" : "visible"}
       animate="visible"
-      variants={slideUpVariants}
+      variants={shouldAnimate ? slideUpVariants : {}}
     >
-      <motion.div 
-        className="major-container"
-        variants={shouldAnimate ? containerVariants : {}}
-      >
-        <motion.span 
-          className="field-label"
-          variants={shouldAnimate ? itemVariants : {}}
-        >
-          Major
-        </motion.span>
-        <motion.div 
-          className="major-value"
-          variants={shouldAnimate ? itemVariants : {}}
-        >
-          {major}
-        </motion.div>
-      </motion.div>
-      
+      {major && (
+        <div className="fields-of-study__field">
+          <span className="field-label">Major</span>
+          <div className="field-value">{major}</div>
+        </div>
+      )}
+
       {minor && (
-        <motion.div 
-          className="minor-container"
-          variants={shouldAnimate ? containerVariants : {}}
-        >
-          <motion.span 
-            className="field-label"
-            variants={shouldAnimate ? itemVariants : {}}
-          >
-            Minor
-          </motion.span>
-          <motion.div 
-            className="minor-value"
-            variants={shouldAnimate ? itemVariants : {}}
-          >
-            {minor.replace("Minor in ", "")}
-          </motion.div>
-        </motion.div>
+        <div className="fields-of-study__field">
+          <span className="field-label">Minor</span>
+          <div className="field-value">{minor.replace("Minor in ", "")}</div>
+        </div>
       )}
     </motion.div>
   );

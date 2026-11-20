@@ -4,6 +4,7 @@ import { slideUpVariants, STAGGER_DELAY, useMotionEnabled } from '@utils/motion'
 import ProfileAvatar from '@atoms/ProfileAvatar';
 import ProfileHeader from '@molecules/ProfileHeader';
 import ProfileLocation from '@molecules/ProfileLocation';
+import type { ClusterStatusResult } from '@/types/cluster';
 import ProfileContent from '@molecules/ProfileContent';
 import './GithubProfileCard.css';
 import type { Greeting, ProfileLinks } from '@/types/portfolio';
@@ -20,26 +21,26 @@ export interface GithubProfileCardProps {
   prof?: GithubProfile | null;
   /** Site owner details: name, title, jobTitle, description, emailAddress, location */
   greetings?: Partial<Greeting>;
-  /** Facts to pick one from at random */
-  securityFacts?: string[];
   /** GitHub user name, used for the fallback avatar */
   githubUserName?: string;
   /** Passed to SocialLinks: github, linkedin and contactCard URLs */
   links?: Partial<ProfileLinks>;
   /** Play the entrance animation */
   animated?: boolean;
+  /** Live cluster telemetry, passed to the map */
+  clusterStatus?: ClusterStatusResult;
 }
 
 /**
  * GitHub profile card component for displaying contact information from the site data.
  * The GitHub API result only enhances the avatar; if it is missing the card still
  * renders in full with the public github.com avatar URL.
- * Enhanced with map visualization and security-themed decorative elements.
+ * Ends with a short call to action, the email button and the social links.
  * A props-only building block: the parent passes the site data in.
  *
  * @component
  */
-const GithubProfileCard = ({ prof, greetings = {}, securityFacts = [], githubUserName, links = {}, animated = true }: GithubProfileCardProps) => {
+const GithubProfileCard = ({ prof, greetings = {}, githubUserName, links = {}, animated = true, clusterStatus }: GithubProfileCardProps) => {
   const animationEnabled = useMotionEnabled(animated);
 
   // Custom animation variants with staggered children for profile card elements
@@ -67,9 +68,6 @@ const GithubProfileCard = ({ prof, greetings = {}, securityFacts = [], githubUse
     }
   };
 
-  // Pick a random security fact from the portfolio
-  const randomFact = securityFacts[Math.floor(Math.random() * securityFacts.length)];
-
   // Contact address and location come from the site data; the GitHub profile
   // location is only a fallback so the map does not depend on the API.
   const emailAddress = greetings.emailAddress;
@@ -78,25 +76,14 @@ const GithubProfileCard = ({ prof, greetings = {}, securityFacts = [], githubUse
   // Avatar from the API when available, else the public avatar URL that needs no API call
   const avatarSrc = prof?.avatar_url || (githubUserName ? `https://github.com/${githubUserName}.png` : undefined);
 
-  // Format description for display
-  const formatDescription = () => {
-    if (greetings.description) {
-      return (
-        <>
-          {greetings.description.split('.')[0]}.<br />
-          Need to discuss secure architecture? My inbox is always open!
-        </>
-      );
-    }
-
-    return (
-      <>
-        Have a security concern? Want to discuss secure architecture?
-        <br />
-        Or just want to talk tech? My inbox is secure and always open!
-      </>
-    );
-  };
+  // Short call to action; the hero already tells the story
+  const callToAction = (
+    <>
+      Product security. AI agent security. Homelabs that got out of hand.
+      <br />
+      If one of those is your problem, email me.
+    </>
+  );
 
   return (
     <div className="github-profile-card" data-testid="github-profile-card">
@@ -124,12 +111,12 @@ const GithubProfileCard = ({ prof, greetings = {}, securityFacts = [], githubUse
               />
             </div>
 
-            {/* Security Headquarters Header - Before map */}
+            {/* Headquarters header, before the map */}
             <div className="github-profile-card__header-section">
               <ProfileHeader
                 title="Headquarters"
                 subtitle={greetings.jobTitle || "Security Engineer"}
-                highlightText="Security"
+                highlightText="Garage"
                 animate={animationEnabled}
               />
             </div>
@@ -140,6 +127,7 @@ const GithubProfileCard = ({ prof, greetings = {}, securityFacts = [], githubUse
                 <ProfileLocation
                   location={location}
                   animate={animationEnabled}
+                  clusterStatus={clusterStatus}
                 />
               )}
             </div>
@@ -147,8 +135,7 @@ const GithubProfileCard = ({ prof, greetings = {}, securityFacts = [], githubUse
             {/* Bottom section with description and contact */}
             <div className="github-profile-card__content-section">
               <ProfileContent
-                description={formatDescription()}
-                securityFact={randomFact}
+                description={callToAction}
                 email={emailAddress ?? ''}
                 links={links}
                 animate={animationEnabled}

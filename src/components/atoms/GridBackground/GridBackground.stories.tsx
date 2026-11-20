@@ -59,8 +59,8 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     gridSize: 30,
-    gridColor: 'rgba(255, 255, 255, 0.1)',
-    backgroundColor: 'rgba(0, 0, 0, 0.95)'
+    gridColor: 'rgba(100, 255, 218, 0.08)',
+    backgroundColor: 'rgba(10, 25, 47, 0.95)'
   }
 };
 

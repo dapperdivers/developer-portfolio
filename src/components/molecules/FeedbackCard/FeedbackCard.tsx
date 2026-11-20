@@ -22,8 +22,8 @@ export interface FeedbackCardProps {
 /**
  * Enhanced feedback card component for displaying testimonials.
  * 
- * This component has been refactored to use smaller, more manageable sub-components
- * and enhanced with a highlighted section to draw focus to key parts of the feedback.
+ * Built from small sub-components on the shared card surface: rating, an optional
+ * highlighted pull quote, the quote itself and the author (photo or initials badge).
  * 
  * @component
  */
@@ -38,9 +38,6 @@ const FeedbackCard = ({ data, index = 0, animated = true }: FeedbackCardProps) =
   
   // Generate a rating based on the feedback length or use a default of 5
   const rating = data.rating || 5;
-  
-  // Default avatar if none is provided - using a data URI for a generic user avatar to avoid CSP issues
-  const avatar = data.avatar || "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23cccccc'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z'/%3E%3C/svg%3E";
   
   // Extract job title/role or use a default
   const role = data.designation || "Client";
@@ -92,57 +89,15 @@ const FeedbackCard = ({ data, index = 0, animated = true }: FeedbackCardProps) =
     }
   };
   
-  // Hover animation for the card
-  const hoverVariants: Variants = {
-    hover: { 
-      y: -10,
-      rotateX: 5,
-      boxShadow: "0 15px 30px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(100, 255, 218, 0.1)",
-      transition: { 
-        duration: 0.4,
-        ease: [0.175, 0.885, 0.32, 1.275]
-      }
-    }
-  };
-  
-  // Decoration animation variants
-  const decorationVariants: Variants = {
-    initial: { opacity: 0.3, scale: 1 },
-    hover: { 
-      opacity: 0.7, 
-      scale: 1.1, 
-      filter: "blur(1px)",
-      transition: { duration: 0.4, repeatDelay: 0.5 }
-    }
-  };
-
   return (
     <motion.div 
       ref={ref}
       className="feedback-card-wrapper"
       initial={shouldAnimate ? "hidden" : "visible"}
       animate={isInView && shouldAnimate ? "visible" : "visible"}
-      whileHover={shouldAnimate ? "hover" : ""}
       variants={shouldAnimate ? cardVariants : {}}
     >
-      <Card className="feedback-card" shadow>
-        {/* Decorative elements */}
-        <motion.div 
-          className="feedback-decoration-top"
-          variants={shouldAnimate ? decorationVariants : {}}
-          initial="initial"
-          animate={isInView && shouldAnimate ? "initial" : "initial"}
-          whileHover="hover"
-        ></motion.div>
-        
-        <motion.div 
-          className="feedback-decoration-bottom"
-          variants={shouldAnimate ? decorationVariants : {}}
-          initial="initial"
-          animate={isInView && shouldAnimate ? "initial" : "initial"}
-          whileHover="hover"
-        ></motion.div>
-        
+      <Card className="feedback-card" shadow animated={animated}>
         {/* Main content */}
         <div className="feedback-content">
           {/* Rating stars */}
@@ -160,7 +115,7 @@ const FeedbackCard = ({ data, index = 0, animated = true }: FeedbackCardProps) =
           <FeedbackAuthor 
             name={data.name} 
             role={role} 
-            avatar={avatar}
+            avatar={data.avatar}
             animated={shouldAnimate} 
           />
         </div>

@@ -64,57 +64,37 @@ interface PageLayoutProps {
 }
 
 const PageLayout = ({ children, mainContent, variant = '', showNavigation = true }: PageLayoutProps) => (
-  <div style={{ 
-    minHeight: '100vh', 
-    display: 'flex', 
+  <div style={{
+    minHeight: '24rem',
+    display: 'flex',
     flexDirection: 'column',
-    background: variant.includes('security') || variant.includes('terminal') 
-      ? 'var(--color-background, #0a192f)' 
-      : '#fff'
+    background: 'var(--color-background)',
+    border: '1px solid var(--surface-border)',
+    borderRadius: 'var(--radius-card)',
+    overflow: 'hidden',
+    position: 'relative',
+    color: 'var(--color-text)',
   }}>
     <SkipToContent variant={variant} />
-    
+
     {showNavigation && (
-      <header style={{ 
-        padding: '20px', 
-        backgroundColor: variant.includes('security') || variant.includes('terminal')
-          ? 'rgba(0, 0, 0, 0.3)'
-          : '#f0f0f0',
-        borderBottom: variant.includes('security')
-          ? '1px solid var(--color-cyan, #64ffda)'
-          : variant.includes('terminal')
-          ? '1px dashed var(--color-cyan, #64ffda)'
-          : '1px solid #ddd'
+      <header style={{
+        padding: '1.25rem',
+        background: 'var(--surface-card)',
+        borderBottom: '1px solid var(--surface-border)',
+        paddingTop: '3.5rem',
       }}>
-        <nav>
-          <ul style={{ 
-            display: 'flex', 
-            gap: '20px', 
-            listStyle: 'none',
-            margin: 0,
-            padding: 0
-          }}>
+        <nav aria-label="Main">
+          <ul style={{ display: 'flex', gap: '1.25rem', listStyle: 'none', margin: 0, padding: 0 }}>
             {['Home', 'About', 'Projects', 'Contact'].map((item) => (
               <li key={item}>
-                <a 
+                <a
                   href="#"
-                  tabIndex={0}
                   style={{
-                    color: variant.includes('security') || variant.includes('terminal')
-                      ? 'var(--color-text, #e6f1ff)'
-                      : '#333',
+                    color: 'var(--color-text)',
                     textDecoration: 'none',
-                    padding: '8px 12px',
-                    borderRadius: '4px',
-                    transition: 'all 0.2s ease'
-                  }}
-                  onFocus={(e) => {
-                    e.target.style.backgroundColor = variant.includes('security') || variant.includes('terminal')
-                      ? 'rgba(100, 255, 218, 0.1)'
-                      : '#e0e0e0';
-                  }}
-                  onBlur={(e) => {
-                    e.target.style.backgroundColor = 'transparent';
+                    padding: '0.5rem 0.75rem',
+                    borderRadius: 'var(--radius-control)',
                   }}
                 >
                   {item}
@@ -125,17 +105,8 @@ const PageLayout = ({ children, mainContent, variant = '', showNavigation = true
         </nav>
       </header>
     )}
-    
-    <main 
-      id="main-content" 
-      style={{ 
-        padding: '20px', 
-        flex: 1,
-        color: variant.includes('security') || variant.includes('terminal')
-          ? 'var(--color-text, #e6f1ff)'
-          : '#333'
-      }}
-    >
+
+    <main id="main-content" style={{ padding: '1.25rem', flex: 1 }}>
       {mainContent || children}
     </main>
   </div>
@@ -144,11 +115,15 @@ const PageLayout = ({ children, mainContent, variant = '', showNavigation = true
 // Default example
 export const Default: StoryFn = () => (
   <PageLayout>
-    <h1>Main Content Area</h1>
-    <p>Press Tab to see the skip link. It will appear at the top of the page when focused.</p>
-    <p>This helps keyboard users bypass the navigation menu and jump directly to the main content.</p>
+    <h1>Derek Mackley</h1>
+    <p>The skip link is hidden until it takes focus. It is focused here so you can see it; press Tab on any page to reveal it.</p>
+    <p>It lets keyboard users jump past the navigation straight to this content.</p>
   </PageLayout>
 );
+Default.play = async ({ canvasElement }) => {
+  await userEvent.tab();
+  await expect(within(canvasElement).getByRole('link', { name: 'Skip to main content' })).toHaveFocus();
+};
 
 // Security variant
 export const SecurityVariant: StoryFn = () => (
@@ -163,7 +138,7 @@ export const SecurityVariant: StoryFn = () => (
 export const TerminalVariant: StoryFn = () => (
   <PageLayout variant="terminal">
     <h1>Terminal-Themed Content</h1>
-    <p>This variant uses a terminal-like appearance with dashed borders.</p>
+    <p>This variant uses a terminal-like appearance with a mono face.</p>
     <p>Press Tab to see the terminal-styled skip link.</p>
   </PageLayout>
 );
@@ -183,20 +158,20 @@ export const Interactive: StoryFn = () => {
           <div style={{ 
             marginTop: '20px',
             padding: '15px',
-            background: 'rgba(100, 255, 218, 0.1)',
-            border: '1px solid var(--color-cyan, #64ffda)',
-            borderRadius: '4px'
+            background: 'var(--surface-card)',
+            border: '1px solid var(--surface-border)',
+            borderRadius: 'var(--radius-card)'
           }}>
             <h2>Focus Order:</h2>
             <ol style={{ margin: '10px 0 0 20px' }}>
               <li style={{ 
-                color: activeSection === 'skip-link' ? 'var(--color-cyan, #64ffda)' : 'inherit'
+                color: activeSection === 'skip-link' ? 'var(--color-primary)' : 'inherit'
               }}>Skip Link (on first Tab)</li>
               <li style={{ 
-                color: activeSection === 'navigation' ? 'var(--color-cyan, #64ffda)' : 'inherit'
+                color: activeSection === 'navigation' ? 'var(--color-primary)' : 'inherit'
               }}>Navigation Items</li>
               <li style={{ 
-                color: activeSection === 'content' ? 'var(--color-cyan, #64ffda)' : 'inherit'
+                color: activeSection === 'content' ? 'var(--color-primary)' : 'inherit'
               }}>Main Content</li>
             </ol>
           </div>
@@ -221,7 +196,7 @@ export const KeyboardNavigation: StoryFn = () => (
         marginTop: '20px',
         padding: '15px',
         background: 'rgba(100, 255, 218, 0.1)',
-        border: '1px solid var(--color-cyan, #64ffda)',
+        border: '1px solid var(--color-primary)',
         borderRadius: '4px'
       }}>
         <h2>Focus Management</h2>
@@ -246,7 +221,7 @@ export const Responsive: StoryFn = () => (
         marginBottom: '10px' 
       }}>Desktop View</h3>
       <div style={{ 
-        border: '1px solid var(--color-cyan, #64ffda)', 
+        border: '1px solid var(--color-primary)', 
         borderRadius: '8px', 
         overflow: 'hidden' 
       }}>
@@ -268,7 +243,7 @@ export const Responsive: StoryFn = () => (
         marginBottom: '10px' 
       }}>Mobile View</h3>
       <div style={{ 
-        border: '1px solid var(--color-cyan, #64ffda)', 
+        border: '1px solid var(--color-primary)', 
         borderRadius: '8px', 
         overflow: 'hidden',
         maxWidth: '375px'
@@ -303,7 +278,7 @@ export const AccessibilityTest: StoryFn = () => (
         marginTop: '20px',
         padding: '15px',
         background: 'rgba(100, 255, 218, 0.1)',
-        border: '1px solid var(--color-cyan, #64ffda)',
+        border: '1px solid var(--color-primary)',
         borderRadius: '4px'
       }}>
         <h2>Testing Notes</h2>

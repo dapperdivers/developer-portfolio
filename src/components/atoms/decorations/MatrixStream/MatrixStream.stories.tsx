@@ -49,7 +49,7 @@ export const Customized: Story = {
     height: 400,
     width: 40,
     fontSize: 24,
-    color: '#00ff99',
+    color: '#64ffda',
     speed: 1,
     moveSpeed: 0.2,
   },
@@ -69,7 +69,7 @@ export const MultipleStreams: Story = {
 // Positioned streams
 export const PositionedStreams: Story = {
   render: () => (
-    <div style={{ position: 'relative', width: '400px', height: '300px', border: '1px solid #ccc' }}>
+    <div style={{ position: 'relative', width: '400px', height: '300px', border: '1px solid var(--surface-border)', borderRadius: 'var(--radius-card)', background: 'var(--color-navy)' }}>
       <MatrixStream className="matrix-stream-left" height={300} moveSpeed={0.2} speed={1} />
       <MatrixStream className="matrix-stream-right" height={300} moveSpeed={0.2} speed={1} />
     </div>
@@ -99,7 +99,7 @@ export const SpeedComparison: Story = {
 // Background example
 export const AsBackground: Story = {
   render: () => (
-    <div style={{ position: 'relative', width: '400px', height: '300px', border: '1px solid #ccc', padding: '20px' }}>
+    <div style={{ position: 'relative', width: '400px', height: '300px', border: '1px solid var(--surface-border)', borderRadius: 'var(--radius-card)', background: 'var(--color-navy)', padding: '20px' }}>
       <MatrixStream 
         isBackground 
         width={400} 
@@ -146,9 +146,8 @@ export const DecorativeBorder: Story = {
       <div style={{ 
         margin: '0 25px',
         padding: '20px',
-        background: 'white',
-        border: '1px solid #ccc',
-        borderRadius: '8px',
+        border: '1px solid var(--surface-border)', borderRadius: 'var(--radius-card)', background: 'var(--color-navy)',
+        color: 'var(--color-text)',
         textAlign: 'center'
       }}>
         <h2>Content Between Streams</h2>

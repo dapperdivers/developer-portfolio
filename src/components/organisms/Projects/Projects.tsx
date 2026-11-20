@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import ProjectsCard from '@molecules/ProjectsCard';
+import OffTheClock from '@molecules/OffTheClock';
 import SkeletonCard from '@atoms/SkeletonCard';
 import Section from '../../layout/Section';
 import useProjects from "@hooks/useProjects";
@@ -63,6 +64,16 @@ const Projects = () => {
   const displayProjects = portfolioData?.projectsSection?.showTopProjectsOnly ? 
     topProjects : projects;
   
+  // Personal projects (hobbies) go in the "Off the clock" strip, not the grid
+  const workProjects = useMemo(
+    () => (displayProjects || []).filter((p) => p.kind !== 'personal'),
+    [displayProjects]
+  );
+  const personalProjects = useMemo(
+    () => (displayProjects || []).filter((p) => p.kind === 'personal'),
+    [displayProjects]
+  );
+
   // Loading state flag (use more sophisticated approach than just empty check)
   const isLoading = !portfolioData || !displayProjects;
   
@@ -159,7 +170,7 @@ const Projects = () => {
         animate="visible"
         viewport={{ once: true, margin: "-50px" }}
       >
-        {displayProjects.map((data, i) => (
+        {workProjects.map((data, i) => (
           <ProjectsCard 
             key={`project-${data.name}-${i}`} 
             data={data} 
@@ -168,6 +179,7 @@ const Projects = () => {
           />
         ))}
       </motion.div>
+      <OffTheClock items={personalProjects} animated={animationEnabled} />
     </Section>
   );
 };

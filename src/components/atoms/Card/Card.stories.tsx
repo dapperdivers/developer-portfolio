@@ -8,10 +8,10 @@ const meta = {
   component: Card,
   tags: ['autodocs'],
   parameters: {
-    componentSubtitle: 'Versatile container component with cyberpunk-inspired themes',
+    componentSubtitle: 'The shared card surface',
     docs: {
       description: {
-        component: 'The Card component provides a flexible container for content with cyberpunk and security-themed styling options. It supports headers, footers, hover effects, shadows, and animations. The component is fully accessible and responsive, with support for custom content, interactive elements, and decorative variants.'
+        component: 'The card surface used across the site: --surface-card fill, 1px --surface-border, --radius-card and --shadow-card. Hoverable cards lift to --shadow-card-hover. The security and terminal variants only change the header treatment.'
       }
     }
   },
@@ -104,13 +104,8 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 // Container for consistent display
-const CardContainer = ({ children, background = 'var(--color-background)' }: { children: ReactNode; background?: string }) => (
-  <div style={{
-    padding: '2rem',
-    background,
-    borderRadius: '8px',
-    margin: '1rem 0'
-  }}>
+const CardContainer = ({ children }: { children: ReactNode }) => (
+  <div style={{ margin: '1rem 0' }}>
     {children}
   </div>
 );
@@ -118,17 +113,17 @@ const CardContainer = ({ children, background = 'var(--color-background)' }: { c
 // Default card
 export const Default: Story = {
   args: {
-    title: 'Card Title',
-    subtitle: 'Card Subtitle',
+    title: 'Cluster status',
+    subtitle: 'ChelonianLabs homelab',
     bordered: true,
     shadow: false,
-    hoverable: false
+    hoverable: true
   },
   render: (args) => (
     <CardContainer>
       <div style={{ maxWidth: '350px' }}>
         <Card {...args}>
-          <p>This is the content of the card. You can add any elements or components here.</p>
+          <p>Three Talos control-plane nodes and four workers, reconciled from Git by Flux.</p>
         </Card>
       </div>
     </CardContainer>
@@ -150,11 +145,11 @@ export const Variants: Story = {
           <h4 style={{ marginBottom: '1rem', color: 'var(--color-text-muted)' }}>Security</h4>
           <Card 
             title="Security Card" 
-            subtitle="Cybersecurity theme"
+            subtitle="Accent edge"
             variant="security"
             bordered
           >
-            <p>Security-themed card with enhanced visual effects.</p>
+            <p>Security variant: same surface with a cyan accent edge.</p>
           </Card>
         </div>
         <div>
@@ -297,14 +292,14 @@ export const Layouts: Story = {
             gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
             gap: '1rem'
           }}>
-            <Card title="Card 1" variant="security" hoverable shadow>
-              <p>Grid item 1</p>
+            <Card title="Detect" variant="security" hoverable shadow>
+              <p>Alerting that routes to the right person.</p>
             </Card>
-            <Card title="Card 2" variant="security" hoverable shadow>
-              <p>Grid item 2</p>
+            <Card title="Respond" variant="security" hoverable shadow>
+              <p>Runbooks that are tested, not just written.</p>
             </Card>
-            <Card title="Card 3" variant="security" hoverable shadow>
-              <p>Grid item 3</p>
+            <Card title="Recover" variant="security" hoverable shadow>
+              <p>Backups restored on a schedule.</p>
             </Card>
           </div>
         </div>

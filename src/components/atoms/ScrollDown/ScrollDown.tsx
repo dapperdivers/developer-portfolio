@@ -1,6 +1,7 @@
 import React, { memo } from 'react';
 import { motion } from 'framer-motion';
 import { useMotionEnabled } from '@utils/motion';
+import '@assets/css/tailwind.css';
 import './ScrollDown.css';
 
 /**
@@ -75,19 +76,19 @@ const ScrollDown = ({
         {/* Main indicator */}
         <div className="relative h-16 flex items-center">
           {/* Central line with data points */}
-          <div className="relative w-px h-full bg-theme-cyan/20">
+          <div className="relative w-0.5 h-full scroll-down-line">
             {/* Animated data points */}
             <motion.div
               animate={shouldAnimate ? dataFlowVariants.animate : false}
               className="absolute top-0 left-1/2 [transform:translateX(-50%)] flex flex-col items-center gap-2"
             >
-              <div className="w-3 h-0.5 bg-theme-cyan data-point"></div>
-              <div className="w-2 h-0.5 bg-theme-cyan/60 data-point"></div>
-              <div className="w-1 h-0.5 bg-theme-cyan/30 data-point"></div>
+              <div className="w-3 h-0.5 data-point"></div>
+              <div className="w-2 h-0.5 data-point data-point--mid"></div>
+              <div className="w-1 h-0.5 data-point data-point--low"></div>
             </motion.div>
 
             {/* Static base marker */}
-            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-theme-cyan"></div>
+            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 scroll-down-base"></div>
           </div>
 
           {/* Side interface elements */}
@@ -109,7 +110,7 @@ const ScrollDown = ({
           className="mt-2 terminal-text"
           animate={shouldAnimate ? labelVariants.animate : false}
         >
-          <span className="text-xs font-mono text-theme-cyan tracking-widest">
+          <span className="text-xs font-mono scroll-down-label tracking-widest">
             {label}
           </span>
         </motion.div>

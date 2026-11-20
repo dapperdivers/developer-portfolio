@@ -2,8 +2,7 @@
 
 :root {
   /* Define the accent color directly in this component */
-  --binary-stream-color: #05d5fa;
-  --binary-stream-glow: rgba(5, 213, 250, 0.5);
+  --binary-stream-color: var(--color-primary);
 }
 
 /* Binary digits */
@@ -11,8 +10,7 @@
   position: absolute;
   font-family: monospace;
   font-size: 12px;
-  color: var(--binary-stream-color, #05d5fa);
-  text-shadow: 0 0 5px var(--binary-stream-glow, rgba(5, 213, 250, 0.5));
+  color: var(--binary-stream-color);
   /* Removed animation properties - now handled by framer-motion */
   box-sizing: border-box;
   /* Add transition for smooth changes when motion is disabled */

@@ -91,7 +91,7 @@ type Story = StoryObj<typeof meta>;
 
 // Container to give the image reasonable dimensions
 const Container = ({ children, width = '300px', height = '200px' }: { children: ReactNode; width?: string; height?: string }) => (
-  <div style={{ width, height, backgroundColor: '#f0f0f0' }}>
+  <div style={{ width, height, backgroundColor: 'var(--surface-inset)' }}>
     {children}
   </div>
 );

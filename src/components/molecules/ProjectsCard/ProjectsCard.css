@@ -1,0 +1,134 @@
+/**
+ * ProjectsCard
+ *
+ * The reference "interactive card": shared card surface, lifts on hover or
+ * keyboard focus to --shadow-card-hover. Button styling lives in Button.css.
+ * Selectors start with div.project-card so they win over the older
+ * .project-card rules in tailwind.css.
+ */
+
+div.project-card {
+  height: 100%;
+  margin-bottom: 0;
+}
+
+div.project-card .card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-height: none;
+  overflow: hidden;
+  background: var(--surface-card);
+  backdrop-filter: none;
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+div.project-card .card:hover,
+div.project-card .card:focus-within {
+  transform: translateY(-4px);
+  border-color: var(--surface-border);
+  box-shadow: var(--shadow-card-hover);
+}
+
+div.project-card .project-image-container {
+  height: 180px;
+  border-bottom: 1px solid var(--surface-divider);
+}
+
+div.project-card .card-body {
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-5);
+}
+
+/* Title: Inter semibold, no decorative underline */
+div.project-card .project-title {
+  margin: 0 0 var(--spacing-3);
+  padding: 0;
+  color: var(--color-text);
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
+}
+
+div.project-card .project-title::after {
+  content: none;
+}
+
+div.project-card .project-description {
+  flex: 1;
+  margin: 0 0 var(--spacing-4);
+  color: var(--color-text-muted);
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-sm);
+  line-height: 1.7;
+}
+
+/* Tech tags: chips */
+div.project-card .tech-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-2);
+  margin: 0 0 var(--spacing-4);
+}
+
+div.project-card .tech-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px var(--spacing-3);
+  background: var(--surface-inset);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-chip);
+  color: var(--color-text-muted);
+  font-family: var(--font-family-jetbrains);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--letter-spacing-technical);
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+div.project-card .tech-tag:hover,
+div.project-card .tech-tag:focus {
+  transform: none;
+  background: var(--surface-inset);
+  border-color: var(--surface-border-strong);
+  color: var(--color-text);
+}
+
+div.project-card .project-title:focus-visible,
+div.project-card .project-description:focus-visible,
+div.project-card .tech-tag:focus-visible {
+  outline: none;
+  box-shadow: var(--ring-focus);
+}
+
+div.project-card .project-links {
+  display: flex;
+  gap: var(--spacing-3);
+  margin-top: auto;
+}
+
+@media (max-width: 768px) {
+  div.project-card .card-body {
+    padding: var(--spacing-4);
+  }
+
+  div.project-card .project-image-container {
+    height: 150px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  div.project-card .card {
+    transition: none;
+  }
+
+  div.project-card .card:hover,
+  div.project-card .card:focus-within {
+    transform: none;
+  }
+}

@@ -9,7 +9,7 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component: 'Contact button component for email links with customizable icon and text.',
+        component: 'An email link drawn with the shared primary Button styles (solid cyan, navy text, --radius-control, shared focus ring), with a customizable icon and text.',
       },
     },
     componentSubtitle: 'A contact component for email communication',
@@ -23,7 +23,7 @@ const meta = {
   },
   // Shared wrapper for every story
   render: (args) => (
-    <div style={{ padding: '2rem', background: '#121212', display: 'flex', justifyContent: 'center' }}>
+    <div style={{ display: 'flex', justifyContent: 'center' }}>
       <ContactButton {...args} />
     </div>
   ),
@@ -37,7 +37,7 @@ type Story = StoryObj<typeof meta>;
  */
 export const Default: Story = {
   args: {
-    email: 'contact@example.com',
+    email: 'contact@chelonianlabs.com',
     text: 'Contact Me',
     animate: true,
   },
@@ -48,7 +48,7 @@ export const Default: Story = {
  */
 export const WithEnvelopeIcon: Story = {
   args: {
-    email: 'contact@example.com',
+    email: 'contact@chelonianlabs.com',
     text: 'Send Email',
     icon: FaEnvelope,
     animate: true,
@@ -60,7 +60,7 @@ export const WithEnvelopeIcon: Story = {
  */
 export const WithPaperPlaneIcon: Story = {
   args: {
-    email: 'contact@example.com',
+    email: 'contact@chelonianlabs.com',
     text: 'Message Me',
     icon: FaPaperPlane,
     animate: true,
@@ -72,7 +72,7 @@ export const WithPaperPlaneIcon: Story = {
  */
 export const CustomText: Story = {
   args: {
-    email: 'security@example.com',
+    email: 'contact@chelonianlabs.com',
     text: 'Report Security Issue',
     animate: true,
   },
@@ -83,7 +83,7 @@ export const CustomText: Story = {
  */
 export const NoAnimation: Story = {
   args: {
-    email: 'contact@example.com',
+    email: 'contact@chelonianlabs.com',
     text: 'Contact Me',
     animate: false,
   },

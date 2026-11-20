@@ -1,32 +1,36 @@
 /**
- * SocialLinks Component
- * 
- * Styles for the SocialLinks component following atomic design principles.
- * Uses design tokens for consistent styling across the application.
- * Animations are now managed by framer-motion through AnimationContext
+ * SocialLinks
+ *
+ * Square icon controls that match the Button system: --control-height,
+ * --radius-control, 1px border, cyan icon, --ring-focus on keyboard focus.
  */
 
 .social-link {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2.75rem; /* w-11 */
-  height: 2.75rem; /* h-11 */
-  border-radius: 50%; /* rounded-full */
-  background-color: var(--color-gray-800);
-  color: var(--color-cyan);
-  border: 2px solid rgba(var(--color-cyan-rgb), 0.5);
+  box-sizing: border-box;
+  width: var(--control-height);
+  height: var(--control-height);
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: var(--color-primary);
+  border: 1px solid var(--surface-border-strong);
   text-decoration: none;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
-.social-link:focus {
+.social-link:hover {
+  background: rgba(var(--color-primary-rgb), 0.1);
+  border-color: var(--color-primary);
+}
+
+.social-link:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2px rgba(var(--color-cyan-rgb), 0.5);
-  ring: 2px rgba(var(--color-cyan-rgb), 0.5);
+  box-shadow: var(--ring-focus);
 }
 
 .social-link svg {
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 1.25rem;
+  height: 1.25rem;
 }

@@ -5,14 +5,15 @@ import { within, userEvent, expect } from 'storybook/test';
 import PortfolioContext from '@context/PortfolioContext';
 import { AnimationContext } from '@context/AnimationContext';
 import { mockAnimationData } from '@stories-utils';
-import { mockPortfolioData } from '@stories-utils/mocks/data';
+import { siteData, withSiteData } from '../storyFixtures';
 import type { PortfolioData } from '@/types/portfolio';
 
 const meta = {
   title: 'Organisms/Skills',
   component: Skills,
   tags: ['autodocs'],
-  // Skills takes no props
+  // Skills takes no props; it reads the real site data from context
+  decorators: [withSiteData()],
   render: () => (
     <div style={{ margin: '2rem' }}>
       <Skills />
@@ -21,7 +22,7 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component: 'Skills component that displays a grid of skills icons and descriptions. Showcases the developer\'s technical skills with interactive icons and descriptions arranged in a responsive grid layout.',
+        component: 'Skills: a Core Capabilities terminal, then one row per skill group with a chip per skill. Activating a chip opens its full description under the row.',
       },
     },
     a11y: {
@@ -41,27 +42,26 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// Default story with full context
+// Default story: the real skills from the site data
 export const Default: Story = {
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
   
     await step('Initial render check', async () => {
-      // Check section title is rendered
+      // Section title is rendered
       await expect(canvas.getByRole('heading', { level: 2 })).toBeInTheDocument();
-    
-      // Check if skills are rendered
-      const skillElements = canvas.getAllByRole('img', { hidden: true });
-      await expect(skillElements.length).toBeGreaterThan(0);
+      // Skills are rendered as chips
+      const chips = canvas.getAllByRole('button');
+      await expect(chips.length).toBeGreaterThan(0);
     });
-  
-    await step('Skill hover interaction', async () => {
-      // Find a skill element and hover on it
-      const skillElements = canvas.getAllByRole('img', { hidden: true });
-      if (skillElements.length > 0) {
-        await userEvent.hover(skillElements[0]);
-        // We can't easily test the tooltip here as it might be in a portal
-      }
+
+    await step('Chip opens its description, and closes again', async () => {
+      const chip = canvas.getAllByRole('button')[0];
+      await expect(chip).toHaveAttribute('aria-expanded', 'false');
+      await userEvent.click(chip);
+      await expect(chip).toHaveAttribute('aria-expanded', 'true');
+      await userEvent.click(chip);
+      await expect(chip).toHaveAttribute('aria-expanded', 'false');
     });
   },
 };
@@ -140,8 +140,8 @@ export const ManySkills: Story = {
 // This variant uses a customized context with many skills
 ManySkills.decorators = [
   (Story) => {
-    // Deep clone the mock data to avoid mutations
-    const extendedData: PortfolioData = JSON.parse(JSON.stringify(mockPortfolioData));
+    // Deep clone the site data to avoid mutations
+    const extendedData: PortfolioData = JSON.parse(JSON.stringify(siteData));
     
     // Add more skills
     const additionalSkills = [

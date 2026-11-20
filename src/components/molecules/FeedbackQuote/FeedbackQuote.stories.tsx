@@ -8,10 +8,17 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component: 'A component for displaying testimonial quotes with decorative quotation marks.',
+        component: 'A testimonial quote in Inter, upright, with small quotation marks. Line breaks in the text are kept.',
       },
     },
   },
+  decorators: [
+    (Story) => (
+      <div style={{ maxWidth: '480px' }}>
+        <Story />
+      </div>
+    ),
+  ],
   argTypes: {
     text: {
       control: 'text',
@@ -20,6 +27,10 @@ const meta = {
     className: {
       control: 'text',
       description: 'Additional CSS classes to apply',
+    },
+    animated: {
+      control: 'boolean',
+      description: 'Whether to animate the quote in',
     },
   },
 } satisfies Meta<typeof FeedbackQuote>;
@@ -32,7 +43,7 @@ type Story = StoryObj<typeof meta>;
  */
 export const Default: Story = {
   args: {
-    text: 'This is a fantastic portfolio website!',
+    text: 'Derek was a dependable developer who always finished what he started, even while priorities kept changing. He picked up new languages, servers and platforms quickly and explained his work well.',
   },
 };
 
@@ -46,44 +57,11 @@ export const LongQuote: Story = {
 };
 
 /**
- * Story showing a quote with custom styling
- */
-export const CustomStyling: Story = {
-  args: {
-    text: 'A beautifully styled quote!',
-    className: 'bg-gray-900 border border-gray-700 p-6 rounded-lg shadow-md',
-  },
-};
-
-/**
- * Story showing a quote in dark mode
- */
-export const DarkMode: Story = {
-  args: {
-    text: 'A quote that looks great in dark mode.',
-  },
-  parameters: {
-    backgrounds: {
-      default: 'dark',
-    },
-  },
-};
-
-/**
  * Story showing a quote with special characters
  */
 export const SpecialCharacters: Story = {
   args: {
-    text: '¡This quote includes special characters! @#$%^&*()_+ áéíóú',
-  },
-};
-
-/**
- * Story showing a quote with HTML entities
- */
-export const WithHtmlEntities: Story = {
-  args: {
-    text: 'This quote has HTML entities: &amp; &lt; &gt; &quot;',
+    text: 'He turned a 3 a.m. page into a 10-minute fix & a better runbook: "check the cert first, then the proxy". Très professionnel.',
   },
 };
 
@@ -92,7 +70,17 @@ export const WithHtmlEntities: Story = {
  */
 export const MultiParagraph: Story = {
   args: {
-    text: 'First paragraph of the quote.\n\nSecond paragraph of the quote.\n\nThird paragraph with more content.',
+    text: 'First, he mapped what we had.\n\nThen he fixed what mattered most.\n\nFinally, he made sure it stayed fixed.',
+  },
+};
+
+/**
+ * Story with the entrance animation off
+ */
+export const WithoutAnimation: Story = {
+  args: {
+    text: 'Calm in an incident and clear afterwards.',
+    animated: false,
   },
 };
 
@@ -101,9 +89,9 @@ export const MultiParagraph: Story = {
  */
 export const MobileView: Story = {
   args: {
-    text: 'A quote that adapts well to mobile screens.',
+    text: 'A quote that adapts well to mobile screens: the text wraps inside the card and keeps its line height.',
   },
   globals: {
     viewport: { value: 'mobile1', isRotated: false },
   },
-}; 
+};

@@ -5,6 +5,7 @@ import ResponsiveImage from '@atoms/ResponsiveImage';
 import { useInView, Variants } from "framer-motion";
 import { useMotionEnabled, slideUpVariants, STAGGER_DELAY } from "@utils/motion";
 import type { Project } from '@/types/portfolio';
+import './ProjectsCard.css';
 
 export interface ProjectsCardProps {
   /** Project data object */
@@ -86,12 +87,13 @@ const ProjectsCard = ({ data, index = 0, animated = true }: ProjectsCardProps) =
               </div>
             )}
             
+            {(data.github || data.link) && (
             <div className="project-links">
               {data.github && (
                 <Button
                   className="project-button"
                   href={data.github}
-                  variant="primary"
+                  variant="secondary"
                   size="sm"
                   animated={animated}
                   icon="simple-icons:github"
@@ -119,6 +121,7 @@ const ProjectsCard = ({ data, index = 0, animated = true }: ProjectsCardProps) =
                 </Button>
               )}
             </div>
+            )}
           </div>
         </Card>
       </div>

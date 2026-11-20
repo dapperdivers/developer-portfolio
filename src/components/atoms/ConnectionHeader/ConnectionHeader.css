@@ -1,21 +1,23 @@
-/* ConnectionHeader component styles 
- * Animations are now handled by framer-motion through the AnimationContext
- */
+/* ConnectionHeader: a status strip on the shared card surface.
+ * Default is cyan (secure = good news); terminal is success green;
+ * cyberpunk is warning amber. Animations are driven by framer-motion. */
 
 .secure-connection-start {
+  --status-color: var(--color-primary);
   display: flex;
   flex-direction: column;
-  margin-bottom: 1rem;
-  font-family: monospace;
+  margin-bottom: var(--spacing-4);
+  font-family: var(--font-family-jetbrains);
 }
 
 .secure-connection-status {
   display: flex;
   align-items: center;
-  background: var(--color-background-dark, #121212);
-  border: 1px solid var(--color-accent, #05d5fa);
-  border-radius: 4px;
-  padding: 0.5rem 1rem;
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: var(--spacing-2) var(--spacing-4);
   position: relative;
   overflow: hidden;
 }
@@ -23,19 +25,18 @@
 .connection-pulse {
   width: 8px;
   height: 8px;
-  background-color: var(--color-accent, #05d5fa);
+  background-color: var(--status-color);
   border-radius: 50%;
-  margin-right: 15px;
+  margin-right: var(--spacing-4);
   position: relative;
-  box-shadow: 0 0 8px var(--color-accent, #05d5fa);
-  /* Animation removed - now handled by framer-motion */
+  flex-shrink: 0;
 }
 
 .secure-label {
-  font-size: 0.9rem;
-  font-weight: bold;
-  color: var(--color-accent, #05d5fa);
-  letter-spacing: 1px;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  color: var(--status-color);
+  letter-spacing: var(--letter-spacing-technical);
   position: relative;
 }
 
@@ -43,17 +44,17 @@
   position: absolute;
   width: 100%;
   height: 2px;
-  background: rgba(5, 213, 250, 0.5);
+  background: rgba(var(--color-primary-rgb), 0.5);
   top: 50%;
   left: 0;
   transform: translateY(-50%);
   opacity: 0;
-  /* Animation removed - now handled by framer-motion */
 }
 
 .status-code {
-  font-size: 0.8rem;
-  opacity: 0.8;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-normal);
+  color: var(--color-text-muted);
   margin-top: 0.25rem;
 }
 
@@ -64,50 +65,20 @@
 }
 
 .shield-icon {
-  color: var(--color-accent, #05d5fa);
+  color: var(--status-color);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* Security variant specific styles */
 .secure-connection-start--security .secure-connection-status {
-  border-color: var(--color-accent, #05d5fa);
+  border-color: var(--surface-border-strong);
 }
 
-.secure-connection-start--security .connection-pulse {
-  background-color: var(--color-accent, #05d5fa);
-  box-shadow: 0 0 8px var(--color-accent, #05d5fa);
+.secure-connection-start--terminal {
+  --status-color: var(--color-success);
 }
 
-/* Terminal variant specific styles */
-.secure-connection-start--terminal .secure-connection-status {
-  border-color: var(--color-success, #00ff00);
+.secure-connection-start--cyberpunk {
+  --status-color: var(--color-warning);
 }
-
-.secure-connection-start--terminal .connection-pulse {
-  background-color: var(--color-success, #00ff00);
-  box-shadow: 0 0 8px var(--color-success, #00ff00);
-}
-
-.secure-connection-start--terminal .secure-label,
-.secure-connection-start--terminal .shield-icon {
-  color: var(--color-success, #00ff00);
-}
-
-/* Cyberpunk variant specific styles */
-.secure-connection-start--cyberpunk .secure-connection-status {
-  border-color: var(--color-warning, #ffcc00);
-}
-
-.secure-connection-start--cyberpunk .connection-pulse {
-  background-color: var(--color-warning, #ffcc00);
-  box-shadow: 0 0 8px var(--color-warning, #ffcc00);
-}
-
-.secure-connection-start--cyberpunk .secure-label,
-.secure-connection-start--cyberpunk .shield-icon {
-  color: var(--color-warning, #ffcc00);
-}
-
-/* Animation keyframes removed - now handled by framer-motion */ 

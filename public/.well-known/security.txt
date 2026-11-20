@@ -1,7 +1,4 @@
-Contact: mailto:security@chelonianlabs.com
-Expires: 2025-12-31T23:59:59.000Z
-Preferred-Language: en
+Contact: mailto:contact@chelonianlabs.com
+Expires: 2027-11-21T00:00:00.000Z
+Preferred-Languages: en
 Canonical: https://derekmackley.com/.well-known/security.txt
-Policy: https://github.com/DapperDivers/developer-portfolio/blob/main/.github/SECURITY_POLICY.md
-# Our security acknowledgments page
-Acknowledgments: https://github.com/DapperDivers/developer-portfolio/blob/main/.github/SECURITY_ACKNOWLEDGMENTS.md

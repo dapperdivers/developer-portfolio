@@ -31,8 +31,9 @@
 
 /* Security variants */
 .responsive-image-security {
-  border: 1px solid rgba(var(--color-cyan-rgb), 0.3);
-  background-color: rgba(var(--color-navy-rgb), 0.1);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-card);
+  background-color: var(--surface-inset);
 }
 
 .responsive-image-security.loading {
@@ -40,39 +41,40 @@
   filter: blur(8px) brightness(0.7);
   background: linear-gradient(
     45deg,
-    rgba(var(--color-navy-rgb), 0.3) 25%,
-    rgba(var(--color-cyan-rgb), 0.1) 50%,
-    rgba(var(--color-navy-rgb), 0.3) 75%
+    var(--surface-inset) 25%,
+    rgba(var(--color-primary-rgb), 0.1) 50%,
+    var(--surface-inset) 75%
   );
   background-size: 200% 200%;
   /* Animation removed - now handled by framer-motion */
 }
 
 .responsive-image-security.loaded {
-  box-shadow: 0 0 15px rgba(var(--color-cyan-rgb), 0.2);
+  box-shadow: var(--shadow-card);
 }
 
 .responsive-image-security.error {
-  border-color: var(--color-level-critical);
+  border-color: var(--color-danger);
   opacity: 0.7;
   filter: grayscale(1) brightness(0.7);
 }
 
 /* Terminal variants */
 .responsive-image-terminal {
-  border: 2px solid var(--color-cyan);
+  border: 1px solid var(--surface-border-strong);
+  border-radius: var(--radius-card);
   padding: 2px;
-  background-color: var(--color-navy);
+  background-color: var(--surface-card);
 }
 
 .responsive-image-terminal.loading {
-  border: 2px dashed var(--color-cyan);
+  border: 1px solid var(--surface-border);
   opacity: 0.4;
   background: linear-gradient(
     90deg,
-    var(--color-navy) 0%,
-    rgba(var(--color-cyan-rgb), 0.2) 50%,
-    var(--color-navy) 100%
+    var(--surface-inset) 0%,
+    rgba(var(--color-primary-rgb), 0.1) 50%,
+    var(--surface-inset) 100%
   );
   background-size: 200% 100%;
   /* Animation removed - now handled by framer-motion */
@@ -83,8 +85,7 @@
 }
 
 .responsive-image-terminal.error {
-  border-color: var(--color-level-critical);
-  border-style: dashed;
+  border-color: var(--color-danger);
   filter: grayscale(0.8) brightness(0.5);
 }
 

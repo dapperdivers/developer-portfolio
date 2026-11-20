@@ -17,17 +17,19 @@
     /* Animation is now handled by framer-motion */
 }
 
-/* Security-themed container */
+/* Security-themed container: the shared card surface */
 .loading-security {
-    background-color: rgba(var(--color-navy-rgb), 0.05);
-    border-radius: 4px;
+    background: var(--surface-card);
+    border: 1px solid var(--surface-border);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-card);
 }
 
-/* Terminal-themed container */
+/* Terminal-themed container: inset block, mono text */
 .loading-terminal {
-    background-color: rgba(var(--color-navy-rgb), 0.1);
-    border: 1px dashed rgba(var(--color-cyan-rgb), 0.3);
-    border-radius: 2px;
+    background: var(--surface-inset);
+    border: 1px solid var(--surface-border);
+    border-radius: var(--radius-card);
     font-family: var(--font-family-jetbrains);
 }
 
@@ -48,15 +50,14 @@
 
 /* Security-themed spinner */
 .loading-security .loading-spinner {
-    border: 3px solid rgba(var(--color-cyan-rgb), 0.1);
-    border-top-color: var(--color-cyan);
-    box-shadow: 0 0 10px rgba(var(--color-cyan-rgb), 0.2);
+    border: 3px solid var(--surface-border);
+    border-top-color: var(--color-primary);
 }
 
 /* Terminal-themed spinner */
 .loading-terminal .loading-spinner {
-    border: 2px dashed rgba(var(--color-cyan-rgb), 0.3);
-    border-top: 2px solid var(--color-cyan);
+    border: 2px solid var(--surface-border);
+    border-top: 2px solid var(--color-primary);
     width: 40px;
     height: 40px;
 }
@@ -75,13 +76,12 @@
 
 /* Security-themed pulse */
 .loading-security .loading-pulse {
-    background-color: var(--color-cyan);
-    box-shadow: 0 0 15px rgba(var(--color-cyan-rgb), 0.5);
+    background-color: var(--color-primary);
 }
 
 /* Terminal-themed pulse */
 .loading-terminal .loading-pulse {
-    background-color: var(--color-cyan);
+    background-color: var(--color-primary);
     border-radius: 2px;
     width: 30px;
     height: 30px;
@@ -106,13 +106,12 @@
 
 /* Security-themed dots */
 .loading-security .loading-dot {
-    background-color: var(--color-cyan);
-    box-shadow: 0 0 5px rgba(var(--color-cyan-rgb), 0.5);
+    background-color: var(--color-primary);
 }
 
 /* Terminal-themed dots */
 .loading-terminal .loading-dot {
-    background-color: var(--color-cyan);
+    background-color: var(--color-primary);
     border-radius: 1px;
     width: 6px;
     height: 6px;

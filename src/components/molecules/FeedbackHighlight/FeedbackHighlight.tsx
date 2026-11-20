@@ -39,25 +39,6 @@ const FeedbackHighlight = ({ text, className = "", animated = true }: FeedbackHi
     }
   };
   
-  // Decoration animation
-  const decorationVariants: Variants = {
-    hidden: { opacity: 0, scale: 0.5 },
-    visible: { 
-      opacity: 0.7, 
-      scale: 1,
-      transition: { duration: 0.6, delay: 0.2 }
-    },
-    hover: {
-      opacity: [0.5, 0.8, 0.5],
-      scale: [1, 1.05, 1],
-      transition: { 
-        duration: 3,
-        repeat: Infinity,
-        ease: "easeInOut" 
-      }
-    }
-  };
-  
   return (
     <motion.div 
       className={`feedback-highlight ${className}`}
@@ -65,20 +46,11 @@ const FeedbackHighlight = ({ text, className = "", animated = true }: FeedbackHi
       animate="visible"
       variants={shouldAnimate ? containerVariants : {}}
     >
-      <motion.div 
-        className="highlight-container"
-        whileHover={shouldAnimate ? "hover" : {}}
-      >
+      <div className="highlight-container">
         <motion.p className="highlight-text">
           &ldquo;{text}&rdquo;
         </motion.p>
-        <motion.div 
-          className="highlight-decoration"
-          variants={shouldAnimate ? decorationVariants : {}}
-          animate={shouldAnimate ? "visible" : {}}
-          whileHover={shouldAnimate ? "hover" : {}}
-        ></motion.div>
-      </motion.div>
+      </div>
     </motion.div>
   );
 };

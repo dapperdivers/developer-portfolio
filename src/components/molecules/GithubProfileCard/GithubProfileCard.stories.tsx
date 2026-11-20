@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import GithubProfileCard from './GithubProfileCard';
 import { mockGithubProfile } from '@data/mockPortfolioData';
-import { greetings, securityFacts, openSource } from '@/portfolio';
+import { greetings, openSource } from '@/portfolio';
 
 const meta = {
   title: 'Molecules/GithubProfileCard',
@@ -26,7 +26,6 @@ const meta = {
   // Site data the organism passes in
   args: {
     greetings,
-    securityFacts,
     githubUserName: openSource.githubUserName,
     animated: true,
   },

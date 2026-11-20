@@ -2,17 +2,13 @@ import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import Head from './Head';
 import type { HeadProps } from './Head';
-import { mockStructuredData } from '@stories-utils';
-import { HelmetProvider } from 'react-helmet-async';
-
-// We need to wrap the Head component in HelmetProvider
-// for it to work properly in Storybook (Note: This is now handled globally)
-const helmetContext = {};
 
 const meta = {
   title: 'Layout/Head',
   component: Head,
   tags: ['autodocs'],
+  // Head renders nothing itself, so every story shows a preview of what it sets
+  render: (args) => <HeadPreview {...args} />,
   argTypes: {
     title: {
       control: 'text',
@@ -55,27 +51,86 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// Template for the component
-const Template = (args: HeadProps) => {
-  // Since we can't directly visualize Head changes in Storybook,
-  // we'll display some information about what tags would be set
+// Schema.org samples for the structured data stories
+const structuredDataSamples = {
+  person: {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: 'Derek Mackley',
+    jobTitle: 'Principal Security Engineer',
+    url: 'https://www.derekmackley.com',
+    knowsAbout: ['Product Security', 'Kubernetes', 'AI Agent Security'],
+  },
+  article: {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: 'Running a Kubernetes cluster from the garage',
+    author: { '@type': 'Person', name: 'Derek Mackley' },
+    datePublished: '2026-11-01',
+  },
+  product: {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: 'Developer Portfolio',
+    operatingSystem: 'Web Browser',
+    applicationCategory: 'WebApplication',
+  },
+};
+
+const DEFAULT_TITLE = 'Derek Mackley | Principal Security Engineer';
+const DEFAULT_DESCRIPTION = 'Derek Mackley - Principal Security Engineer working across product security, Kubernetes platform engineering and AI agent security';
+
+const previewLabel = {
+  margin: '0 0 var(--spacing-2)',
+  color: 'var(--color-primary)',
+  fontFamily: 'var(--font-family-jetbrains)',
+  fontSize: 'var(--font-size-xs)',
+  letterSpacing: 'var(--letter-spacing-technical)',
+  textTransform: 'uppercase',
+} as const;
+
+// Head modifies document.head and renders no UI, so show what it sets: the
+// browser tab and search result, then the tags that carry the same values.
+const HeadPreview = (args: HeadProps) => {
+  const title = args.title || DEFAULT_TITLE;
+  const description = args.description || DEFAULT_DESCRIPTION;
+  const tags = [
+    `<title>${title}</title>`,
+    `<meta name="description" content="${description}" />`,
+    args.canonicalUrl ? `<link rel="canonical" href="${args.canonicalUrl}" />` : '',
+    args.imageUrl ? `<meta property="og:image" content="${args.imageUrl}" />` : '',
+    args.imageUrl ? `<meta name="twitter:image" content="${args.imageUrl}" />` : '',
+    args.structuredData ? `<script type="application/ld+json"> ${JSON.stringify(args.structuredData)}` : '',
+  ].filter(Boolean);
+
   return (
-    <div className="head-demo">
+    <div style={{
+      width: 'min(100%, 40rem)',
+      padding: 'var(--spacing-5)',
+      background: 'var(--surface-card)',
+      border: '1px solid var(--surface-border)',
+      borderRadius: 'var(--radius-card)',
+      boxShadow: 'var(--shadow-card)',
+    }}>
       <Head {...args} />
-      <div className="head-preview">
-        <h3>Head Component Preview</h3>
-        <p className="note">Note: This component modifies the document head and does not render visible UI.</p>
-        <h4>The following metadata would be set:</h4>
-        <pre>
-          {`
-<title>${args.title || "Derek Mackley | Full Stack Developer"}</title>
-<meta name="description" content="${args.description || "Derek Mackley - Full Stack Developer and Security Expert..."}" />
-${args.canonicalUrl ? `<link rel="canonical" href="${args.canonicalUrl}" />` : ""}
-${args.imageUrl ? `<meta property="og:image" content="${args.imageUrl}" />` : ""}
-${args.imageUrl ? `<meta name="twitter:image" content="${args.imageUrl}" />` : ""}
-          `}
-        </pre>
-      </div>
+      <p style={previewLabel}>Search result</p>
+      <p style={{ margin: 0, color: 'var(--color-primary)', fontSize: 'var(--font-size-lg)', fontWeight: 'var(--font-weight-semibold)', overflowWrap: 'anywhere' }}>{title}</p>
+      <p style={{ margin: 'var(--spacing-1) 0 var(--spacing-5)', color: 'var(--color-text-muted)', fontSize: 'var(--font-size-sm)', lineHeight: 1.6 }}>{description}</p>
+      <p style={previewLabel}>Tags set in the document head</p>
+      <pre style={{
+        margin: 0,
+        padding: 'var(--spacing-3)',
+        background: 'var(--surface-inset)',
+        border: '1px solid var(--surface-divider)',
+        borderRadius: 'var(--radius-control)',
+        color: 'var(--color-text)',
+        fontFamily: 'var(--font-family-jetbrains)',
+        fontSize: 'var(--font-size-xs)',
+        whiteSpace: 'pre-wrap',
+        overflowWrap: 'anywhere',
+      }}>
+        {tags.join('\n')}
+      </pre>
     </div>
   );
 };
@@ -83,13 +138,13 @@ ${args.imageUrl ? `<meta name="twitter:image" content="${args.imageUrl}" />` : "
 // Default story with default values
 export const Default: Story = {
   args: {
-    title: 'My Portfolio',
-    description: 'Welcome to my developer portfolio',
+    title: DEFAULT_TITLE,
+    description: DEFAULT_DESCRIPTION,
   },
   parameters: {
     docs: {
       description: {
-        story: 'The Head component with default values for title, description, etc.'
+        story: 'The Head component with the title and description the site uses.'
       }
     }
   },
@@ -98,9 +153,9 @@ export const Default: Story = {
 // Story with custom title and description
 export const CustomMetadata: Story = {
   args: {
-  title: "Derek Mackley | Portfolio Projects",
-  description: "View my latest web development projects and case studies",
-  canonicalUrl: "https://example.com/projects"
+  title: "Derek Mackley | Projects",
+  description: "The homelab, agents and security projects behind this site",
+  canonicalUrl: "https://www.derekmackley.com/projects"
 },
   parameters: {
     docs: {
@@ -117,60 +172,20 @@ export const CustomMetadata: Story = {
  */
 export const SocialSharing: Story = {
   args: {
-  title: "Derek Mackley | Project Case Study",
-  description: "How I built a high-performance React application",
-  imageUrl: "https://example.com/project-preview.jpg",
-  imageAlt: "Screenshot of project dashboard",
-  canonicalUrl: "https://example.com/case-study"
+  title: "Derek Mackley | The Garage Cluster",
+  description: "How the site is served from a cluster in the garage",
+  imageUrl: "https://www.derekmackley.com/images/project-preview.jpg",
+  imageAlt: "Diagram of the garage cluster",
+  canonicalUrl: "https://www.derekmackley.com/case-study"
 }
 };
-
-// Documentation for component usage - this is used internally in the story development
- 
-const componentDocumentation = `
-## Component Usage
-
-\`\`\`jsx
-import Head from './Head';
-import { HelmetProvider } from 'react-helmet-async';
-
-function App() {
-  return (
-    <HelmetProvider>
-      <Head 
-        title="Custom Page Title" 
-        description="Custom page description for SEO"
-      />
-      <main>
-        {/* Main content */}
-      </main>
-    </HelmetProvider>
-  );
-}
-\`\`\`
-
-## Properties
-
-| Name | Type | Default | Description |
-|------|------|---------|-------------|
-| title | string | "Derek Mackley | Full Stack Developer" | Page title that appears in browser tab |
-| description | string | "Derek Mackley - Full Stack Developer..." | Meta description for SEO |
-| imageUrl | string | "" | URL for social sharing preview images |
-| imageAlt | string | "Derek Mackley - Full Stack Developer" | Alt text for social preview images |
-| canonicalUrl | string | "" | Canonical URL for SEO purposes |
-| structuredData | object | null | Schema.org structured data for rich results |
-
-## Structured Data
-
-The component accepts structured data for schema.org markup, which helps search engines understand the page content.
-`;
 
 // Demonstration of structured data for rich search results
 export const StructuredData: Story = {
   args: {
-  title: "Derek Mackley | About Me",
-  description: "Learn about my background, skills and experience",
-  structuredData: mockStructuredData.person
+  title: "Derek Mackley | About",
+  description: "Background, skills and experience",
+  structuredData: structuredDataSamples.person
 },
   parameters: {
     docs: {
@@ -184,25 +199,25 @@ export const StructuredData: Story = {
 // Article page example with article schema
 export const ArticlePage: Story = {
   args: {
-  title: "How to Build a Developer Portfolio | Derek Mackley",
-  description: "A comprehensive guide to creating an effective developer portfolio website",
-  imageUrl: "https://example.com/article-featured-image.jpg",
-  structuredData: mockStructuredData.article
+  title: "Running a Kubernetes Cluster from the Garage | Derek Mackley",
+  description: "Notes on running a GitOps-managed cluster at home",
+  imageUrl: "https://www.derekmackley.com/images/article.jpg",
+  structuredData: structuredDataSamples.article
 }
 };
 
 // Product page example
 export const ProductPage: Story = {
   args: {
-  title: "Portfolio Template | Derek Mackley",
-  description: "A customizable portfolio template for developers",
-  structuredData: mockStructuredData.product
+  title: "Developer Portfolio | Derek Mackley",
+  description: "The source for this site",
+  structuredData: structuredDataSamples.product
 }
 };
 
 export const WithLongTitle: Story = {
   args: {
-    title: 'John Doe | Senior Software Engineer | Full Stack Developer',
-    description: 'Professional portfolio showcasing my work in web development, software engineering, and cloud architecture',
+    title: 'Derek Mackley | Principal Security Engineer | Product Security, Platform Engineering and AI Agent Security',
+    description: 'Principal security engineer who builds security programs the way he used to build software: automated, measurable and easy for developers to live with.',
   }
 };

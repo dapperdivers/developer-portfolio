@@ -42,7 +42,7 @@ import ConnectionHeader from './ConnectionHeader';
  * ## Styling
  * 
  * The component uses theme colors that can be customized via CSS variables:
- * - Security variant: Uses `--color-accent` (default: blue)
+ * - Security variant: Uses `--color-primary` (cyan)
  * - Terminal variant: Uses `--color-success` (default: green)
  * - Cyberpunk variant: Uses `--color-warning` (default: yellow)
  */

@@ -374,7 +374,6 @@ export const experience: Experience[] = [
 	{
 		role: "Principal Security Engineer",
 		company: "Mastery Logistics Systems",
-		companylogo: "https://ui-avatars.com/api/?name=MLS&background=3563E9&color=fff&bold=true",
 		date: "November 2026 – Present",
 		url: "https://www.masterylogistics.com",
 		desc: "Own product security across the company and lead how its engineering organization adopts AI agents safely, with scope now extending into security operations and endpoint hardening.",
@@ -388,7 +387,6 @@ export const experience: Experience[] = [
 	{
 		role: "Staff Product Security Engineer",
 		company: "Mastery Logistics Systems",
-		companylogo: "https://ui-avatars.com/api/?name=MLS&background=3563E9&color=fff&bold=true",
 		date: "July 2023 – October 2026",
 		url: "https://www.masterylogistics.com",
 		desc: "Founding technical lead of a new product security team. Built the program from scratch: vulnerability management, pipeline security, testing and developer education.",
@@ -404,7 +402,6 @@ export const experience: Experience[] = [
 	{
 		role: "Senior Software Engineering Manager",
 		company: "Mastery Logistics Systems",
-		companylogo: "https://ui-avatars.com/api/?name=MLS&background=3563E9&color=fff&bold=true",
 		date: "May 2022 – July 2023",
 		url: "https://www.masterylogistics.com",
 		desc: "Led international engineering teams delivering critical integrations with enterprise logistics systems, focusing on secure communication protocols and data protection.",
@@ -434,7 +431,6 @@ export const experience: Experience[] = [
 	{
 		role: "Senior Software Engineer",
 		company: "Satcom Direct",
-		companylogo: "https://ui-avatars.com/api/?name=SD&background=FF4D4D&color=fff&bold=true",
 		date: "July 2020 – February 2021",
 		url: "https://www.satcomdirect.com",
 		desc: "Developed secure aviation communication software with emphasis on high availability and reliability for mission-critical systems where security failures could have significant safety implications.",
@@ -509,7 +505,6 @@ export const experience: Experience[] = [
 	{
 		role: "Equipment Management Technician",
 		company: "Astreya",
-		companylogo: "https://ui-avatars.com/api/?name=AST&background=A85C32&color=fff&bold=true",
 		date: "November 2015 – March 2016",
 		url: "https://www.astreya.com",
 		desc: "Managed Google's asset inventory system for the Atlanta area and parts of the Southeast region.",
@@ -524,7 +519,6 @@ export const experience: Experience[] = [
 	{
 		role: "PADI Divemaster",
 		company: "Sunshine Divers",
-		companylogo: "https://ui-avatars.com/api/?name=SD&background=FFA500&color=fff&bold=true",
 		date: "March 2015 – August 2015",
 		url: "https://www.facebook.com/sunshinediverskhtao",
 		desc: "Applied management and organizational skills to operate a dive training facility in Koh Tao, Thailand.",
@@ -562,10 +556,12 @@ export const projects: Project[] = [
 	},
 	{
 		name: "3D Printing & RFID",
+		kind: "personal",
 		desc: "I like turning digital ideas into physical objects and run a small fleet of customized printers. I'm also slowly removing keys from my life with RFID. Ask me about it!",
 	},
 	{
 		name: "Scuba Diving",
+		kind: "personal",
 		desc: "PADI Divemaster. I spent a season working at a dive school on Koh Tao, Thailand, and still get underwater whenever I can.",
 	},
 ];

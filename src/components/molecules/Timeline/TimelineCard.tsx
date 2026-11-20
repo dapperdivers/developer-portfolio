@@ -13,6 +13,18 @@ const statusFor = (clickCount: number) => {
   return { badge: 'ACTIVE', classification: 'DECLASSIFIED' };
 };
 
+/** Up to three capital letters from a company name, e.g. "Mastery Logistics Systems" gives "MLS". */
+export const companyInitials = (company: string): string =>
+  company
+    .split(/[\s&,.-]+/)
+    .filter((word) => /^[A-Za-z0-9]/.test(word) && !/^(the|of|and|inc|llc|ltd)$/i.test(word))
+    .slice(0, 3)
+    .map((word) => word[0].toUpperCase())
+    .join('') || company.slice(0, 2).toUpperCase();
+
+/** Generated avatars are placeholders, not logos; draw the initials badge instead. */
+const isPlaceholderLogo = (url?: string) => !url || /ui-avatars\.com/i.test(url);
+
 /** One role on the timeline. Only the role, company and dates are required. */
 export type TimelineExperience = Pick<Experience, 'role' | 'company' | 'date'> &
   Partial<Pick<Experience, 'desc' | 'descBullets' | 'companylogo' | 'url'>>;
@@ -111,7 +123,11 @@ const TimelineCard = ({ experience, expanded = false, onToggle = () => {}, click
         </motion.div>
       )}
 
-      {experience.companylogo && (
+      {isPlaceholderLogo(experience.companylogo) ? (
+        <div className="timeline__logo">
+          <span className="timeline__initials" aria-hidden="true">{companyInitials(experience.company)}</span>
+        </div>
+      ) : (
         <motion.div className="timeline__logo" whileHover={hack ? { rotate: [0, 5, -5, 0], scale: [1, 1.1, 1] } : {}}>
           <motion.img
             src={experience.companylogo}

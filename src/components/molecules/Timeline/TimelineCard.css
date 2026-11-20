@@ -80,6 +80,24 @@
   transition: all 0.3s ease;
 }
 
+/* Initials badge, used when there is no real logo */
+.timeline__initials {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 3rem;
+  height: 3rem;
+  padding: 0 var(--spacing-2);
+  border: 1px solid rgba(100, 255, 218, 0.4);
+  border-radius: 0.5rem;
+  background: rgba(100, 255, 218, 0.08);
+  color: var(--color-primary);
+  font-family: var(--font-family-jetbrains);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
 /* Card header */
 .timeline__header {
   @apply mb-4;

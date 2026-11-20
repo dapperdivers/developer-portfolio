@@ -38,6 +38,7 @@ const SkeletonCard = ({
   const combinedClassName = [
     baseClass,
     variant, // Will add 'security' or 'terminal' class if provided
+    shouldAnimate ? '' : 'skeleton-static',
     className
   ].filter(Boolean).join(' ');
   

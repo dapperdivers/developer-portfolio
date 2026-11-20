@@ -8,7 +8,7 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component: 'Profile error component for displaying error states with retry functionality.',
+        component: 'Error state for the profile card, on the shared card surface with a red icon badge and an optional Retry button.',
       },
     },
     componentSubtitle: 'A molecule component for error states and retry functionality',
@@ -19,9 +19,7 @@ const meta = {
     animate: { control: 'boolean' },
   },
   render: (args) => (
-    <div style={{ padding: '2rem', background: '#121212' }}>
-      <ProfileError {...args} />
-    </div>
+    <ProfileError {...args} />
   ),
 } satisfies Meta<typeof ProfileError>;
 export default meta;
@@ -34,7 +32,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     message: 'Unable to load GitHub profile data. Please try again later.',
-    onRetry: () => console.log('Retry clicked'),
+    
     animate: true,
   },
 };
@@ -45,7 +43,7 @@ export const Default: Story = {
 export const CustomMessage: Story = {
   args: {
     message: 'API rate limit exceeded. Please try again in a few minutes.',
-    onRetry: () => console.log('Retry clicked'),
+    
     animate: true,
   },
 };
@@ -68,7 +66,7 @@ export const WithoutRetry: Story = {
 export const NoAnimation: Story = {
   args: {
     message: 'Unable to load GitHub profile data. Please try again later.',
-    onRetry: () => console.log('Retry clicked'),
+    
     animate: false,
   },
 };

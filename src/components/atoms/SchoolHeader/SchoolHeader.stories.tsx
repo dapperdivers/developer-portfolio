@@ -1,68 +1,44 @@
-import type { Meta, StoryObj, StoryFn } from '@storybook/react-vite';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import SchoolHeader from './SchoolHeader';
+import { educationInfo } from '@/portfolio';
 
 const meta = {
   title: 'Atoms/SchoolHeader',
   component: SchoolHeader,
   tags: ['autodocs'],
-  argTypes: {
-    schoolName: {
-      control: 'text',
-      description: 'Name of the school or institution',
-    },
-    className: {
-      control: 'text',
-      description: 'Additional CSS classes',
+  parameters: {
+    docs: {
+      description: {
+        component: 'The school name as a card heading: Inter semibold on the text colour. Long names wrap.',
+      },
     },
   },
+  argTypes: {
+    schoolName: { control: 'text', description: 'Name of the school or institution' },
+    className: { control: 'text', description: 'Additional CSS classes' },
+    animated: { control: 'boolean', description: 'Whether the heading slides in' },
+  },
 } satisfies Meta<typeof SchoolHeader>;
-
 export default meta;
+
 type Story = StoryObj<typeof meta>;
 
-// Default story
+/** The school from the real site data */
 export const Default: Story = {
-  args: {
-    schoolName: 'University of Technology',
-  }
+  args: { schoolName: educationInfo[0].schoolName },
 };
 
-// Long school name
-export const LongSchoolName: Story = {
-  args: {
-    schoolName: 'Massachusetts Institute of Technology - School of Computer Science and Engineering',
-  }
+export const ShortName: Story = {
+  args: { schoolName: 'Example University' },
 };
 
-// With custom class
-export const WithCustomClass: Story = {
+export const LongName: Story = {
   args: {
-    schoolName: 'Stanford University',
-    className: 'highlighted-header',
-  }
+    schoolName: 'Example University, School of Engineering and Applied Sciences, Department of Computer Science',
+  },
+  decorators: [(Story) => <div style={{ maxWidth: '24rem' }}><Story /></div>],
 };
 
-// Multiple schools example
-export const MultipleSchools: StoryFn = () => (
-  <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-    <SchoolHeader schoolName="Harvard University" />
-    <SchoolHeader schoolName="Yale University" />
-    <SchoolHeader schoolName="Princeton University" />
-  </div>
-);
-
-// With container
-export const WithContainer: StoryFn = () => (
-  <div style={{ 
-    maxWidth: '600px', 
-    padding: '2rem',
-    backgroundColor: 'var(--color-background-alt)',
-    border: '1px solid var(--color-border)',
-    borderRadius: 'var(--border-radius-lg)'
-  }}>
-    <SchoolHeader schoolName="Oxford University" />
-    <p style={{ marginTop: '1rem', color: 'var(--color-text-muted)' }}>
-      Founded in 1096, Oxford University is one of the oldest and most prestigious universities in the world.
-    </p>
-  </div>
-); 
+export const ReducedMotion: Story = {
+  args: { schoolName: 'Example University', animated: false },
+};

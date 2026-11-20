@@ -18,30 +18,6 @@ const meta = {
 
 export default meta;
 
-// Create a container with scrollable content
-const ScrollContainer = ({ children }: { children: ReactNode }) => (
-  <div style={{ height: '200vh', padding: '20px' }}>
-    <div style={{ position: 'sticky', top: 0, backgroundColor: '#fff', padding: '10px', marginBottom: '20px' }}>
-      Scroll down to see the button appear
-    </div>
-    {children}
-    <div style={{ marginTop: '20px' }}>
-      {Array.from({ length: 20 }).map((_, i) => (
-        <p key={i} style={{ marginBottom: '20px' }}>
-          Scroll content {i + 1}
-        </p>
-      ))}
-    </div>
-  </div>
-);
-
-// Default story
-export const Default: StoryFn = () => (
-  <ScrollContainer>
-    <ScrollToTop />
-  </ScrollContainer>
-);
-
 const playbookSections = [
   { title: 'Preparation', body: 'Keep an asset inventory, an on-call rota and tested backups. Agree severity levels and escalation paths before they are needed.' },
   { title: 'Detection', body: 'Correlate endpoint, identity and network telemetry. Tune alerts so that every page is actionable and has an owner.' },
@@ -55,60 +31,61 @@ const playbookSections = [
   { title: 'Hardening', body: 'Feed lessons back into detection rules, access policies and runbooks, then rehearse the scenario in a tabletop exercise.' },
 ];
 
-// With custom content around it
-export const WithContent: StoryFn = () => (
-  <ScrollContainer>
-    <div style={{ maxWidth: '600px', margin: '0 auto' }}>
-      <h1>Incident Response Playbook</h1>
-      <p>A long-form page, as the ScrollToTop button would sit beside it on the site.</p>
-      {playbookSections.map(({ title, body }) => (
-        <div key={title} style={{ marginBottom: '40px' }}>
-          <h2>{title}</h2>
-          <p>{body}</p>
-        </div>
-      ))}
+// Dark scrollable page with a sticky header, as the button sits on the site
+const Header = ({ children }: { children: ReactNode }) => (
+  <div style={{
+    position: 'sticky',
+    top: 0,
+    background: 'var(--surface-card-raised)',
+    borderBottom: '1px solid var(--surface-border)',
+    color: 'var(--color-text)',
+    fontFamily: 'var(--font-family-jetbrains)',
+    fontSize: 'var(--font-size-sm)',
+    padding: '0.75rem 1.25rem',
+    marginBottom: '1.5rem',
+    zIndex: 1,
+  }}>
+    {children}
+  </div>
+);
+
+const Sections = () => (
+  <div style={{ maxWidth: '38rem', margin: '0 auto' }}>
+    <h1 style={{ marginTop: 0 }}>Incident Response Playbook</h1>
+    {playbookSections.map(({ title, body }) => (
+      <section key={title} style={{ marginBottom: '2.5rem' }}>
+        <h2>{title}</h2>
+        <p style={{ color: 'var(--color-text-muted)' }}>{body}</p>
+      </section>
+    ))}
+  </div>
+);
+
+const ScrollContainer = ({ children }: { children: ReactNode }) => (
+  <div style={{ minHeight: '200vh', background: 'var(--color-background)', color: 'var(--color-text)' }}>
+    <Header>Scroll down past 300px and the button appears</Header>
+    <div style={{ padding: '0 1.25rem' }}>
+      <Sections />
     </div>
+    {children}
+  </div>
+);
+
+// Default story
+export const Default: StoryFn = () => (
+  <ScrollContainer>
     <ScrollToTop />
   </ScrollContainer>
 );
 
-// In a dark theme context
-export const DarkTheme: StoryFn = () => (
-  <div style={{ 
-    backgroundColor: '#1a1a1a', 
-    color: '#fff',
-    minHeight: '200vh',
-    padding: '20px'
-  }}>
-    <div style={{ position: 'sticky', top: 0, backgroundColor: '#1a1a1a', padding: '10px', marginBottom: '20px' }}>
-      Dark theme example
-    </div>
-    {Array.from({ length: 20 }).map((_, i) => (
-      <p key={i} style={{ marginBottom: '20px' }}>
-        Dark theme content {i + 1}
-      </p>
-    ))}
-    <ScrollToTop />
-  </div>
-);
 
 // With reduced motion: the button appears and reacts without animation
 export const ReducedMotion: StoryFn = () => (
-  <div style={{ 
-    minHeight: '200vh',
-    padding: '20px'
-  }}>
-    <div style={{ position: 'sticky', top: 0, backgroundColor: '#fff', padding: '10px', marginBottom: '20px' }}>
-      Reduced motion: scroll down, the button appears without the slide-in
+  <div style={{ minHeight: '200vh', background: 'var(--color-background)', color: 'var(--color-text)' }}>
+    <Header>Reduced motion: the button appears without the slide-in</Header>
+    <div style={{ padding: '0 1.25rem' }}>
+      <Sections />
     </div>
-    <p style={{ marginBottom: '20px' }}>
-      Animations are switched off with the animated prop, as they are when the visitor prefers reduced motion. Hover and tap effects are disabled too.
-    </p>
-    {Array.from({ length: 20 }).map((_, i) => (
-      <p key={i} style={{ marginBottom: '20px' }}>
-        Content section {i + 1}
-      </p>
-    ))}
     <ScrollToTop animated={false} />
   </div>
-); 
+);

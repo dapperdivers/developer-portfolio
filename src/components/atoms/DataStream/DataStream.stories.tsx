@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { ComponentProps } from 'react';
 import DataStream from './DataStream';
 
 const meta = {
@@ -49,12 +50,39 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+const StreamPanel = (args: ComponentProps<typeof DataStream>) => (
+  <div
+    style={{
+      width: 'min(32rem, 90vw)',
+      padding: '1.25rem',
+      background: 'var(--surface-card)',
+      border: '1px solid var(--surface-border)',
+      borderRadius: 'var(--radius-card)',
+      boxShadow: 'var(--shadow-card)',
+      color: 'var(--color-text)',
+      fontFamily: 'var(--font-family-jetbrains)',
+      fontSize: 'var(--font-size-xs)',
+      letterSpacing: 'var(--letter-spacing-technical)',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '0.75rem',
+    }}
+  >
+    <div style={{ display: 'flex', justifyContent: 'space-between', textTransform: 'uppercase' }}>
+      <span>ingress / chelonianlabs.com</span>
+      <span style={{ color: 'var(--color-text-muted)' }}>live</span>
+    </div>
+    <DataStream {...args} />
+  </div>
+);
+
 export const Default: Story = {
+  render: (args) => <StreamPanel {...args} />,
   args: {
     variant: 'default',
     delay: 0,
     duration: 2.5,
-    intensity: 'medium',
+    intensity: 'high',
   },
 };
 

@@ -140,8 +140,8 @@
 .cyberpunk-effects--secure .cyberpunk-effects__glow {
   background: radial-gradient(
     circle at center,
-    rgba(34, 197, 94, 0.4),
-    rgba(34, 197, 94, 0.2),
+    rgba(var(--color-success-rgb), 0.4),
+    rgba(var(--color-success-rgb), 0.2),
     transparent 70%
   );
 }
@@ -150,25 +150,25 @@
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(34, 197, 94, 0.8),
+    rgba(var(--color-success-rgb), 0.8),
     transparent
   );
 }
 
 .cyberpunk-effects--secure .cyberpunk-effects__scan-lines:before {
-  background: rgba(34, 197, 94, 1);
-  box-shadow: 0 0 10px rgba(34, 197, 94, 0.8);
+  background: rgba(var(--color-success-rgb), 1);
+  box-shadow: 0 0 10px rgba(var(--color-success-rgb), 0.8);
 }
 
 .cyberpunk-effects--secure .cyberpunk-effects__corner {
-  border-color: rgba(34, 197, 94, 0.6);
+  border-color: rgba(var(--color-success-rgb), 0.6);
 }
 
 .cyberpunk-effects--secure .cyberpunk-effects__data-particle {
   background: linear-gradient(
     to bottom,
     transparent,
-    rgba(34, 197, 94, 0.8),
+    rgba(var(--color-success-rgb), 0.8),
     transparent
   );
 }
@@ -176,8 +176,8 @@
 .cyberpunk-effects--breach .cyberpunk-effects__glow {
   background: radial-gradient(
     circle at center,
-    rgba(248, 113, 113, 0.4),
-    rgba(248, 113, 113, 0.2),
+    rgba(var(--color-danger-rgb), 0.4),
+    rgba(var(--color-danger-rgb), 0.2),
     transparent 70%
   );
 }
@@ -186,25 +186,25 @@
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(248, 113, 113, 0.8),
+    rgba(var(--color-danger-rgb), 0.8),
     transparent
   );
 }
 
 .cyberpunk-effects--breach .cyberpunk-effects__scan-lines:before {
-  background: rgba(248, 113, 113, 1);
-  box-shadow: 0 0 10px rgba(248, 113, 113, 0.8);
+  background: rgba(var(--color-danger-rgb), 1);
+  box-shadow: 0 0 10px rgba(var(--color-danger-rgb), 0.8);
 }
 
 .cyberpunk-effects--breach .cyberpunk-effects__corner {
-  border-color: rgba(248, 113, 113, 0.6);
+  border-color: rgba(var(--color-danger-rgb), 0.6);
 }
 
 .cyberpunk-effects--breach .cyberpunk-effects__data-particle {
   background: linear-gradient(
     to bottom,
     transparent,
-    rgba(248, 113, 113, 0.8),
+    rgba(var(--color-danger-rgb), 0.8),
     transparent
   );
 }
@@ -212,8 +212,8 @@
 .cyberpunk-effects--critical .cyberpunk-effects__glow {
   background: radial-gradient(
     circle at center,
-    rgba(251, 191, 36, 0.4),
-    rgba(251, 191, 36, 0.2),
+    rgba(var(--color-warning-rgb), 0.4),
+    rgba(var(--color-warning-rgb), 0.2),
     transparent 70%
   );
 }
@@ -222,25 +222,25 @@
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(251, 191, 36, 0.8),
+    rgba(var(--color-warning-rgb), 0.8),
     transparent
   );
 }
 
 .cyberpunk-effects--critical .cyberpunk-effects__scan-lines:before {
-  background: rgba(251, 191, 36, 1);
-  box-shadow: 0 0 10px rgba(251, 191, 36, 0.8);
+  background: rgba(var(--color-warning-rgb), 1);
+  box-shadow: 0 0 10px rgba(var(--color-warning-rgb), 0.8);
 }
 
 .cyberpunk-effects--critical .cyberpunk-effects__corner {
-  border-color: rgba(251, 191, 36, 0.6);
+  border-color: rgba(var(--color-warning-rgb), 0.6);
 }
 
 .cyberpunk-effects--critical .cyberpunk-effects__data-particle {
   background: linear-gradient(
     to bottom,
     transparent,
-    rgba(251, 191, 36, 0.8),
+    rgba(var(--color-warning-rgb), 0.8),
     transparent
   );
 }

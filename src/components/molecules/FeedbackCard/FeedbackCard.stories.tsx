@@ -1,34 +1,37 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { placeholderImage } from '@stories-utils/placeholderImage';
 import FeedbackCard from './FeedbackCard';
+import { feedbacks } from '@/portfolio';
 import type { Feedback } from '@/types/portfolio';
 import { within, userEvent, expect } from 'storybook/test';
 
-// Sample feedback data for stories
+// Sample feedback data for stories. The default is the real testimonial from the site.
 const mockFeedbackData = {
-  default: {
-    name: "John Doe",
-    feedback: "Working with this developer was a fantastic experience. Their attention to detail and technical expertise was impressive.",
-    designation: "Project Manager",
+  default: { ...feedbacks[0], designation: feedbacks[0].designation ?? 'Client' },
+  withImage: {
+    name: "Maya Okafor",
+    feedback: "Derek reviewed our release pipeline, found two ways a bad build could reach production and closed both within the week. He explained each fix to the team in plain terms and left a runbook behind.",
+    highlight: "Closed both within the week and left a runbook behind.",
+    designation: "VP of Engineering, Northwind Freight",
+    rating: 5,
+    avatar: placeholderImage(96, 96, { label: 'MO' })
+  },
+  noHighlight: {
+    name: "Tomas Alvarez",
+    feedback: "Calm in an incident and clear afterwards. Our on-call team now follows the checklists he wrote.",
+    designation: "Site Reliability Lead, Example University",
     rating: 5
   },
-  withImage: {
-    name: "Jane Smith",
-    feedback: "The developer delivered a high-quality application within the deadline. Very professional and responsive throughout the project.",
-    designation: "CTO",
-    rating: 5,
-    avatar: placeholderImage(96, 96, { label: 'JS' })
-  },
   longContent: {
-    name: "Robert Johnson",
-    feedback: "I've worked with many developers over the years, but this experience was truly exceptional. The attention to detail, clear communication, and problem-solving skills demonstrated throughout our project were outstanding. Not only was the work completed on time, but the quality exceeded our expectations. I especially appreciated how proactive the developer was in suggesting improvements and identifying potential issues before they became problems. I would absolutely recommend this developer to anyone looking for high-quality work and will definitely be hiring them for future projects.",
-    designation: "Senior Product Manager",
+    name: "Priya Raman",
+    feedback: "Derek led the security review for our platform rebuild and it changed how the whole team works. He started by threat modelling each service with the engineers who owned it, then turned the findings into pipeline checks instead of a report nobody would read. When a dependency vulnerability landed in the middle of launch week he had a patched build, a rollout plan and a clear summary for leadership within a few hours. He is patient with questions, direct about risk, and he documents everything so the knowledge stays with the team after the project ends. I would gladly work with him again and recommend him without hesitation.",
+    designation: "Director of Platform Engineering, Northwind Freight",
     rating: 5
   },
   lowRating: {
-    name: "Michael Brown",
-    feedback: "The work was completed on time, but there were some issues with the implementation that required additional revisions.",
-    designation: "Product Owner",
+    name: "Sam Whitfield",
+    feedback: "The work was completed on time, but a few details needed another round of revisions.",
+    designation: "Product Owner, Example University",
     rating: 3
   }
 } satisfies Record<string, Feedback>;
@@ -125,7 +128,7 @@ export const Default: Story = {
   },
 };
 
-// Story with custom avatar image
+// Story with a photo, a custom pull quote and no real name from the site
 export const WithAvatar: Story = {
   args: {
   data: mockFeedbackData.withImage,
@@ -134,9 +137,17 @@ export const WithAvatar: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Displays a feedback card with a custom avatar image.'
+        story: 'A card with a photo and a pull quote. Without a photo the author gets an initials badge, as in the default story.'
       }
     }
+  },
+};
+
+// Quote with no pull quote: the card finds one or shows none
+export const WithoutHighlight: Story = {
+  args: {
+    data: mockFeedbackData.noHighlight,
+    index: 1
   },
 };
 
@@ -206,13 +217,14 @@ export const WithoutAnimation: Story = {
  * 
  * ```jsx
  * import FeedbackCard from './FeedbackCard';
+import { feedbacks } from '@/portfolio';
  * 
  * function TestimonialSection() {
  *   const feedbacks = [
  *     {
- *       name: "John Doe",
+ *       name: "Maya Okafor",
  *       feedback: "Great work, very professional!",
- *       designation: "CTO, Tech Company",
+ *       designation: "VP of Engineering, Northwind Freight",
  *       rating: 5
  *     },
  *     // More feedback items...
@@ -239,7 +251,7 @@ export const WithoutAnimation: Story = {
  * | data | Object | required | Feedback data object |
  * | data.name | string | required | Name of the person giving feedback |
  * | data.feedback | string | required | The feedback text content |
- * | data.avatar | string | null | URL to avatar image |
+ * | data.avatar | string | undefined | URL to avatar image; initials badge when missing |
  * | data.designation | string | "Client" | Job title or role |
  * | data.rating | number | 5 | Rating from 1-5 stars |
  * | index | number | 0 | Index for staggered animation timing |
@@ -256,7 +268,7 @@ export const WithoutAnimation: Story = {
  * ## Implementation Notes
  * 
  * - Uses intersection observer for entry animations
- * - Automatically handles missing avatar with a placeholder
+ * - Draws an initials badge when there is no avatar
  * - Scrollable container for long content
  * - Responsive design for different screen sizes
  */

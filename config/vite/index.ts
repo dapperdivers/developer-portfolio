@@ -15,6 +15,7 @@ import getCorePlugins from './plugins/core';
 import getPwaPlugins from './plugins/pwa';
 import getCodeSplittingConfig from './optimization/splitting';
 import getViteDevConfig from './dev/vite';
+import clusterStatusDevPlugin from './dev/clusterStatus';
 
 // Initialize environment variables
 const { initEnv, getClientEnv, isProd, isDev, getNodeEnv } = envConfig;
@@ -39,6 +40,9 @@ export default defineConfig(({ command, mode }) => {
     
     // Progressive Web App features and analysis tools
     ...getPwaPlugins({ isProd: isProd(), analyze: isAnalyze }),
+
+    // Dev-only /api/cluster-status (the production Express server has its own)
+    clusterStatusDevPlugin(),
   ].filter(Boolean); // Remove any false/undefined entries
   
   // Vite development server configuration
@@ -104,7 +108,9 @@ export default defineConfig(({ command, mode }) => {
       terserOptions: isProd() ? {
         compress: {
           passes: 2,
-          drop_console: true,
+          // Strip debug logging; warnings, errors and console.info (the devtools
+          // greeting in src/index.tsx) stay
+          pure_funcs: ['console.log', 'console.debug'],
           drop_debugger: true
         },
         format: {

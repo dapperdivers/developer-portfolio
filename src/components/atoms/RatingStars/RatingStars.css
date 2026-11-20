@@ -1,14 +1,24 @@
 /**
  * Rating Stars Component Styles
+ * Small cyan stars; unfilled stars are a faint cyan.
  */
 
 .rating-stars {
-  color: var(--color-primary);
   display: flex;
-  gap: var(--spacing-1);
+  align-items: center;
+  gap: 2px;
 }
 
-.star {
-  width: 18px;
-  height: 18px;
+.rating-stars .star {
+  width: 14px;
+  height: 14px;
+  margin: 0;
+}
+
+.rating-stars .star--filled {
+  color: var(--color-primary);
+}
+
+.rating-stars .star--empty {
+  color: rgba(var(--color-primary-rgb), 0.2);
 }

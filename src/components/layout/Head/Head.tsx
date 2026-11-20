@@ -77,8 +77,8 @@ const Head = ({
       <meta httpEquiv="Permissions-Policy" content="interest-cohort=()" />
       
       {/* PWA related tags */}
-      <meta name="theme-color" content="#006ee6" />
-      <meta name="color-scheme" content="light" />
+      <meta name="theme-color" content="#0a192f" />
+      <meta name="color-scheme" content="dark" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
       <link rel="manifest" href="/site.webmanifest" />
       <link rel="apple-touch-icon" href="/favicon.png" />

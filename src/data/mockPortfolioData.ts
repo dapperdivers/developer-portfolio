@@ -6,7 +6,7 @@ export const mockGithubProfile = {
   bio: 'Full-stack developer passionate about creating innovative solutions',
   company: 'DapperDivers',
   location: 'United States',
-  email: 'derek.mackley@hotmail.com',
+  email: 'contact@chelonianlabs.com',
   blog: 'https://derek-mackley.com',
   public_repos: 42,
   public_gists: 5,
@@ -27,7 +27,7 @@ export const mockPortfolioData = {
   socialLinks: {
     github: 'https://github.com/dapperdivers',
     linkedin: 'https://linkedin.com/in/derek-mackley',
-    gmail: 'derek.mackley@hotmail.com',
+    gmail: 'contact@chelonianlabs.com',
     twitter: 'https://twitter.com/dapperdivers',
     facebook: 'https://facebook.com/dapperdivers',
     instagram: 'https://instagram.com/dapperdivers'

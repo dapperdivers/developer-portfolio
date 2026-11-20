@@ -95,7 +95,7 @@ const SnippetContainer = ({ children, background = 'var(--color-background)' }: 
   <div style={{
     padding: '2rem',
     background,
-    borderRadius: '8px',
+    borderRadius: 'var(--radius-card)',
     margin: '1rem 0',
     maxWidth: '800px'
   }}>
@@ -106,7 +106,12 @@ const SnippetContainer = ({ children, background = 'var(--color-background)' }: 
 // Default code snippet
 export const Default: Story = {
   args: {
-    code: 'const greeting = "Hello, World!";\nconsole.log(greeting);',
+    code: `// Gate a deploy on the scan result
+async function gateRelease(scan) {
+  const open = scan.findings.filter((f) => f.severity === 'critical');
+  if (open.length > 0) throw new Error('Blocked: ' + open.length + ' critical');
+  return { approved: true, owner: "Derek Mackley" };
+}`,
     language: 'javascript',
     theme: 'dark'
   },
@@ -214,8 +219,8 @@ export default darkTheme;`}
         </SnippetContainer>
       </div>
       <div>
-        <h4 style={{ marginBottom: '1rem', color: 'var(--color-text-muted)' }}>Light Theme</h4>
-        <SnippetContainer background="var(--color-background-light)">
+        <h4 style={{ marginBottom: '1rem', color: 'var(--color-text-muted)' }}>Raised Theme</h4>
+        <SnippetContainer>
           <CodeSnippet
             code={`import { lightTheme } from './themes';
 export default lightTheme;`}

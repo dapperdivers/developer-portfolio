@@ -1,54 +1,30 @@
 /**
- * TerminalPrompt Component Styles
- * Styling for terminal command prompts with cybersecurity theming
+ * TerminalPrompt: command prompt in mono. Green by default (a live shell),
+ * cyan for the security variant.
  */
 
-/* Base prompt styles */
 .terminal-prompt {
-  color: var(--color-level-low);
+  color: var(--color-success);
   margin-right: var(--spacing-2);
   font-weight: var(--font-weight-medium);
   user-select: none;
   flex-shrink: 0;
   font-family: var(--font-family-jetbrains);
-  transition: var(--transition-fast);
+  letter-spacing: var(--letter-spacing-technical);
 }
 
-/* Variant styles */
 .terminal-prompt--security {
-  color: var(--color-cyan);
-  text-shadow: 0 0 5px rgba(var(--color-cyan-rgb), 0.5);
+  color: var(--color-primary);
 }
 
 .terminal-prompt--terminal {
-  color: var(--color-info);
+  color: var(--color-success);
 }
 
-/* Mobile optimizations */
 .terminal-prompt--mobile {
   font-size: var(--font-size-sm);
 }
 
-/* Enhanced security variant with glow effects */
-.terminal-prompt--security:hover {
-  text-shadow: 0 0 8px rgba(var(--color-cyan-rgb), 0.7);
-}
-
-/* Focus-within context enhancement for security variant */
-.console-content:focus-within .terminal-prompt--security {
-  text-shadow: 0 0 10px rgba(var(--color-cyan-rgb), 0.9);
-}
-
-/* Terminal variant hover effects */
-.terminal-prompt--terminal:hover {
-  text-shadow: 0 0 5px rgba(var(--color-info-rgb), 0.5);
-}
-
-.console-content:focus-within .terminal-prompt--terminal {
-  text-shadow: 0 0 8px rgba(var(--color-info-rgb), 0.7);
-}
-
-/* Responsive styles */
 @media (max-width: 768px) {
   .terminal-prompt {
     font-size: var(--font-size-sm);

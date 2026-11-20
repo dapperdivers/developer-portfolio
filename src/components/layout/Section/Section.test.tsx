@@ -26,18 +26,29 @@ describe('Section Component', () => {
     expect(screen.getByText('Section content')).toBeInTheDocument();
   });
 
-  test('renders with icon', () => {
+  test('renders a path kicker from the id', () => {
     render(
-      <Section
-        title="Education"
-      >
+      <Section id="education" title="Education">
         <p>Section content</p>
       </Section>
     );
-    expect(screen.getByText('Education')).toBeInTheDocument();
-    expect(screen.getByText('Section content')).toBeInTheDocument();
-    // The Section component renders predefined icons based on title, not the icon prop
-    expect(document.querySelector('.section-icon')).toBeInTheDocument();
+    expect(screen.getByText('~/education')).toBeInTheDocument();
+    expect(document.querySelector('.section-icon')).not.toBeInTheDocument();
+  });
+
+  test('uses an explicit kicker and hides it with an empty string', () => {
+    const { rerender } = render(
+      <Section id="x" title="T" kicker="// 02 experience">
+        <p>c</p>
+      </Section>
+    );
+    expect(screen.getByText('// 02 experience')).toBeInTheDocument();
+    rerender(
+      <Section id="x" title="T" kicker="">
+        <p>c</p>
+      </Section>
+    );
+    expect(document.querySelector('.section-kicker')).not.toBeInTheDocument();
   });
 
   test('applies id attribute', () => {

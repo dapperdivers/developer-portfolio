@@ -4,8 +4,7 @@ import { within, expect, waitFor } from 'storybook/test';
 import axios from 'axios';
 import type { AxiosAdapter, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import GithubProfile, { githubApi } from './GithubProfile';
-import { mockGithubProfile } from '@data/mockPortfolioData';
-import { openSource } from '@/portfolio';
+import { greetings, openSource } from '@/portfolio';
 
 const meta = {
   title: 'Organisms/GithubProfile',
@@ -41,7 +40,14 @@ const FALLBACK_AVATAR = `https://github.com/${openSource.githubUserName}.png`;
 const SAMPLE_AVATAR = 'data:image/svg+xml,' + encodeURIComponent(
   '<svg xmlns="http://www.w3.org/2000/svg" width="150" height="150"><rect width="150" height="150" fill="#0a192f"/><circle cx="75" cy="60" r="28" fill="#64ffda"/></svg>'
 );
-const sampleProfile = { ...mockGithubProfile, avatar_url: SAMPLE_AVATAR };
+// The fields of the GitHub response the card keeps, filled from the site data
+const sampleProfile = {
+  login: openSource.githubUserName,
+  name: greetings.name,
+  location: greetings.location,
+  html_url: `https://github.com/${openSource.githubUserName}`,
+  avatar_url: SAMPLE_AVATAR,
+};
 
 const okResponse = (config: InternalAxiosRequestConfig): AxiosResponse => ({
   data: sampleProfile,

@@ -10,16 +10,37 @@ footer a:focus {
     text-decoration: none;
 }
 
-/* Social links in footer */
-footer .social-link {
-    margin-left: 0.5rem;
-    margin-right: 0.5rem;
-    color: var(--color-gray-400);
+/* Cluster line: a live dot before the text */
+.footer-cluster-line {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-family-jetbrains);
 }
 
-footer .social-link:hover,
-footer .social-link:focus {
-    color: var(--color-white);
+.footer-cluster-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-gray-600);
+    flex-shrink: 0;
+}
+
+.footer-cluster-dot--live {
+    background: var(--color-cyan);
+    box-shadow: 0 0 6px rgba(var(--color-cyan-rgb), 0.7);
+    animation: footer-cluster-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes footer-cluster-pulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .footer-cluster-dot--live {
+        animation: none;
+    }
 }
 
 /* Reduced motion preferences now handled by AnimationContext */

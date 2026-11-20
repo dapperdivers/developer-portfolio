@@ -197,6 +197,16 @@ export function createBaseServer(config = {}) {
     }
   }));
 
+  // RFC 8615 well-known files (security.txt). express.static skips dot-folders,
+  // so mount this one explicitly; nothing else starting with a dot is served.
+  app.use('/.well-known', express.static(path.join(buildPath, '.well-known'), {
+    setHeaders: (res) => {
+      res.set('X-Content-Type-Options', 'nosniff');
+      res.set('Cache-Control', 'public, max-age=86400');
+    }
+  }));
+  app.use('/.well-known', (req, res) => res.status(404).type('text/plain').send('Not found'));
+
   // Serve main static files AFTER specific routes to avoid conflicts
   app.use(express.static(buildPath, {
     ...getStaticHeaders(),

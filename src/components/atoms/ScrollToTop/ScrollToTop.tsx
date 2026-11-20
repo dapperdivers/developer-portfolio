@@ -64,7 +64,7 @@ const ScrollToTop = ({ animated = true }: ScrollToTopProps) => {
     hover: { 
       y: -5,
       scale: 1.05,
-      boxShadow: '0 6px 15px rgba(0, 0, 0, 0.4), 0 0 20px rgba(59, 130, 246, 0.5)',
+      boxShadow: 'var(--shadow-card-hover)',
       transition: { 
         duration: 0.3 
       }

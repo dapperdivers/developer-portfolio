@@ -11,7 +11,7 @@ import './MatrixStream.css';
  * @returns {React.ReactElement} MatrixStream component
  */
 export interface MatrixStreamProps extends Omit<HTMLMotionProps<'div'>, 'color'> {
-  /** Text color for the matrix rain (default: #0F0) */
+  /** Text color for the matrix rain (default: #64ffda) */
   color?: string;
   /** Font size for the characters (default: 20) */
   fontSize?: number;
@@ -33,7 +33,7 @@ export interface MatrixStreamProps extends Omit<HTMLMotionProps<'div'>, 'color'>
 
 const MatrixStream = (props: MatrixStreamProps) => {
   const {
-    color = '#0F0',
+    color = '#64ffda',
     fontSize = 20,
     speed = 1,
     moveSpeed = 0.3,

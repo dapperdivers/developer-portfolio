@@ -10,7 +10,7 @@ const meta = {
     componentSubtitle: 'Display technology badges with various styles and security levels',
     docs: {
       description: {
-        component: 'TechBadge is a versatile component for displaying technology labels, skills, and security clearance levels. It supports different sizes, variants, and interactive states.'
+        component: 'TechBadge is a chip: --radius-chip, --surface-inset fill, 1px border and JetBrains Mono xs text. Variants and levels only change the text and border tone; red appears only at the critical level.'
       }
     }
   },
@@ -69,7 +69,7 @@ const BadgeContainer = ({ children }: { children: ReactNode }) => (
 
 // Default badge
 export const Default: StoryFn = () => (
-  <TechBadge label="React" />
+  <TechBadge label="Kubernetes" />
 );
 
 // Size variants
@@ -106,13 +106,13 @@ export const Interactive: StoryFn = () => (
     <TechBadge 
       label="Click me" 
       interactive 
-      onClick={() => alert('Badge clicked!')}
+      onClick={() => undefined}
     />
     <TechBadge 
       label="Security" 
       variant="security" 
       interactive 
-      onClick={() => alert('Security badge clicked!')}
+      onClick={() => undefined}
     />
   </BadgeContainer>
 );
@@ -120,92 +120,59 @@ export const Interactive: StoryFn = () => (
 // Tech stack example
 export const TechStack: StoryFn = () => (
   <div>
-    <h4 style={{ marginBottom: '10px' }}>Frontend</h4>
+    <h4 style={{ marginBottom: '10px' }}>Platform</h4>
     <BadgeContainer>
-      <TechBadge label="React" />
-      <TechBadge label="TypeScript" />
-      <TechBadge label="Next.js" />
-      <TechBadge label="Tailwind CSS" />
+      <TechBadge label="Kubernetes" />
+      <TechBadge label="Talos Linux" />
+      <TechBadge label="Flux CD" />
+      <TechBadge label="Ceph" />
     </BadgeContainer>
-    
-    <h4 style={{ margin: '20px 0 10px' }}>Backend</h4>
+
+    <h4 style={{ margin: '20px 0 10px' }}>Languages</h4>
     <BadgeContainer>
-      <TechBadge label="Node.js" variant="terminal" />
-      <TechBadge label="Express" variant="terminal" />
-      <TechBadge label="MongoDB" variant="terminal" />
-      <TechBadge label="GraphQL" variant="terminal" />
+      <TechBadge label="TypeScript" variant="terminal" />
+      <TechBadge label="Go" variant="terminal" />
+      <TechBadge label="Python" variant="terminal" />
+      <TechBadge label="Bash" variant="terminal" />
     </BadgeContainer>
-    
+
     <h4 style={{ margin: '20px 0 10px' }}>Security</h4>
     <BadgeContainer>
-      <TechBadge label="OAuth" variant="security" level="high" />
-      <TechBadge label="JWT" variant="security" level="medium" />
-      <TechBadge label="HTTPS" variant="security" level="critical" />
-      <TechBadge label="2FA" variant="security" level="high" />
+      <TechBadge label="OIDC" variant="security" level="low" />
+      <TechBadge label="mTLS" variant="security" level="low" />
+      <TechBadge label="Secrets rotation" variant="security" level="medium" />
+      <TechBadge label="Exposed admin port" variant="security" level="critical" />
     </BadgeContainer>
   </div>
-);
-
-// Custom styling
-export const CustomStyling: StoryFn = () => (
-  <BadgeContainer>
-    <TechBadge 
-      label="Gradient" 
-      style={{ 
-        background: 'linear-gradient(45deg, #ff00cc, #3333ff)',
-        color: 'white',
-        fontWeight: 'bold',
-        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
-      }} 
-    />
-    <TechBadge 
-      label="Neon" 
-      style={{ 
-        background: '#000',
-        color: '#0ff',
-        border: '1px solid #0ff',
-        textShadow: '0 0 5px #0ff',
-        boxShadow: '0 0 10px rgba(0, 255, 255, 0.5)'
-      }} 
-    />
-    <TechBadge 
-      label="Outlined" 
-      style={{ 
-        background: 'transparent',
-        border: '2px solid currentColor',
-        fontWeight: '600'
-      }} 
-    />
-  </BadgeContainer>
 );
 
 // Responsive example
 export const Responsive: StoryFn = () => (
   <div>
     <div style={{ 
-      border: '1px solid #ccc', 
+      border: '1px solid var(--surface-border)', 
       padding: '20px',
       marginBottom: '20px',
       maxWidth: '600px'
     }}>
       <h4 style={{ marginBottom: '10px' }}>Desktop View</h4>
       <div className="compact-tech-stack">
-        <TechBadge label="React" size="md" />
+        <TechBadge label="Kubernetes" size="md" />
         <TechBadge label="TypeScript" size="md" />
-        <TechBadge label="Node.js" size="md" />
+        <TechBadge label="Flux CD" size="md" />
       </div>
     </div>
     
     <div style={{ 
-      border: '1px solid #ccc', 
+      border: '1px solid var(--surface-border)', 
       padding: '15px',
       maxWidth: '300px'
     }}>
       <h4 style={{ marginBottom: '10px' }}>Mobile View</h4>
       <div className="compact-tech-stack">
-        <TechBadge label="React" size="sm" />
+        <TechBadge label="Kubernetes" size="sm" />
         <TechBadge label="TypeScript" size="sm" />
-        <TechBadge label="Node.js" size="sm" />
+        <TechBadge label="Flux CD" size="sm" />
       </div>
     </div>
   </div>

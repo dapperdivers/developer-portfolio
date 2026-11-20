@@ -9,7 +9,7 @@ import './HeaderName.css';
  * @component
  * @example
  * ```tsx
- * <HeaderName name="John Doe" />
+ * <HeaderName name="Derek Mackley" />
  * ```
  */
 export interface HeaderNameProps {
@@ -19,12 +19,15 @@ export interface HeaderNameProps {
   className?: string;
   /** Whether hovering starts the animation (default: true) */
   animated?: boolean;
+  /** Small image shown before the name, such as a logo; decorative */
+  logoSrc?: string;
 }
 
 const HeaderName: React.FC<HeaderNameProps> = ({ 
   name, 
   className = '',
-  animated = true
+  animated = true,
+  logoSrc
 }: HeaderNameProps) => {
   const controls = useAnimation();
   const motionOn = useMotionEnabled(animated);
@@ -38,10 +41,13 @@ const HeaderName: React.FC<HeaderNameProps> = ({
       onHoverEnd={() => controls.start('initial')}
     >
       <h2 
-        className="font-agustina text-6xl text-cyan-400 relative tracking-wide flex items-center"
+        className="font-agustina text-4xl sm:text-5xl lg:text-6xl text-cyan-400 relative tracking-wide flex items-center gap-3"
         data-content={name}
         aria-label={name}
       >
+        {logoSrc && (
+          <img src={logoSrc} alt="" className="header-name__logo" width={40} height={40} decoding="async" />
+        )}
         {name}
         <span className="cursor" aria-hidden="true" />
       </h2>

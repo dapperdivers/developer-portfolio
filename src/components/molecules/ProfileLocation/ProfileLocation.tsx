@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion, type HTMLMotionProps, type Variants } from 'framer-motion';
 import MapComponent from '@molecules/MapComponent';
 import { useMotionEnabled } from '@utils/motion';
+import type { ClusterStatusResult } from '@/types/cluster';
 import './ProfileLocation.css';
 
 const terminalVariants: Variants = {
@@ -27,13 +28,15 @@ export interface ProfileLocationProps extends Omit<HTMLMotionProps<'div'>, 'anim
   animate?: boolean;
   /** Additional CSS classes */
   className?: string;
+  /** Live cluster telemetry for the map panel; omitted, the panel is hidden */
+  clusterStatus?: ClusterStatusResult;
 }
 
 /**
  * A system-status line above the map: frames `MapComponent` as a terminal
  * panel for the profile card. A props-only building block.
  */
-const ProfileLocation = ({ location = 'Canton, GA', variant = 'default', animate = true, className = '', ...props }: ProfileLocationProps) => {
+const ProfileLocation = ({ location = 'Canton, GA', variant = 'default', animate = true, className = '', clusterStatus, ...props }: ProfileLocationProps) => {
   const [isLive, setIsLive] = useState(true);
   const shouldAnimate = useMotionEnabled(animate);
 
@@ -66,7 +69,7 @@ const ProfileLocation = ({ location = 'Canton, GA', variant = 'default', animate
       </div>
 
       <div className="profile-location__map-wrapper">
-        <MapComponent location={location} animated={animate} />
+        <MapComponent location={location} animated={animate} clusterStatus={clusterStatus} />
       </div>
     </motion.div>
   );

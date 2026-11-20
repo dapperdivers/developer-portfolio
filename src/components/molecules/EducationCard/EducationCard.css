@@ -1,416 +1,76 @@
 /**
- * EducationCard Component Styles
- * 
- * Clean, modern design with cybersecurity theming and optimized animations.
- * Follows BEM methodology for maintainable CSS structure.
+ * EducationCard: the reference look for the education family.
+ * Shared card surface, mono labels, inset academic block, ruled
+ * certification list. The pieces inside bring their own type styles.
  */
 
-/* Base Card Styles */
 .education-card {
-  position: relative;
   display: flex;
   flex-direction: column;
+  gap: var(--spacing-4);
   width: 100%;
-  padding: var(--spacing-6);
-  margin-bottom: var(--spacing-5);
-  background: linear-gradient(
-    135deg,
-    rgba(var(--color-navy-rgb), 0.95) 0%,
-    rgba(var(--color-navy-rgb), 0.92) 100%
-  );
-  border: 1px solid rgba(var(--color-cyan-rgb), 0.2);
-  border-radius: var(--border-radius-lg);
-  box-shadow: 
-    0 4px 12px rgba(0, 0, 0, 0.15),
-    0 0 20px rgba(var(--color-cyan-rgb), 0.05);
-  backdrop-filter: blur(10px);
-  overflow: hidden;
-  transition: all 0.3s ease;
+  padding: var(--spacing-5);
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  transition: box-shadow 0.2s ease;
 }
 
-/* Variant Styles */
-.education-card--secure {
-  border-color: rgba(var(--color-green-400-rgb), 0.3);
-  box-shadow: 
-    0 4px 12px rgba(0, 0, 0, 0.15),
-    0 0 20px rgba(var(--color-green-400-rgb), 0.1);
+.education-card:hover,
+.education-card:focus-within {
+  box-shadow: var(--shadow-card-hover);
 }
 
-.education-card--breach {
-  border-color: rgba(var(--color-red-400-rgb), 0.3);
-  box-shadow: 
-    0 4px 12px rgba(0, 0, 0, 0.15),
-    0 0 20px rgba(var(--color-red-400-rgb), 0.1);
-}
-
-.education-card--critical {
-  border-color: rgba(var(--color-yellow-400-rgb), 0.3);
-  box-shadow: 
-    0 4px 12px rgba(0, 0, 0, 0.15),
-    0 0 20px rgba(var(--color-yellow-400-rgb), 0.1);
-}
-
-/* Header Section */
 .education-card__header {
   display: flex;
   align-items: flex-start;
   gap: var(--spacing-4);
-  margin-bottom: var(--spacing-5);
-  position: relative;
-  z-index: 2;
-}
-
-.education-card__icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 60px;
-  height: 60px;
-  background: rgba(var(--color-cyan-rgb), 0.1);
-  border: 2px solid rgba(var(--color-cyan-rgb), 0.2);
-  border-radius: 50%;
-  font-size: 1.5rem;
-  flex-shrink: 0;
-  transition: all 0.3s ease;
 }
 
 .education-card__title-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-2);
+  min-width: 0;
 }
 
-.education-card__school {
-  font-size: var(--font-size-xl);
-  font-weight: var(--font-weight-bold);
-  color: var(--color-cyan);
-  margin: 0;
-  line-height: 1.3;
-  text-shadow: 0 0 8px rgba(var(--color-cyan-rgb), 0.3);
-}
-
-.education-card__duration {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-2);
-  font-size: var(--font-size-sm);
-  color: rgba(var(--color-offwhite-rgb), 0.8);
-  font-weight: var(--font-weight-medium);
-}
-
-.education-card__duration-icon {
-  font-size: 0.875rem;
-  color: var(--color-cyan);
-}
-
-.education-card__cert-badge {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--spacing-1);
-  padding: var(--spacing-2);
-  background: rgba(var(--color-cyan-rgb), 0.1);
-  border: 1px solid rgba(var(--color-cyan-rgb), 0.2);
-  border-radius: var(--border-radius-md);
-  font-size: var(--font-size-sm);
-  color: var(--color-cyan);
-  font-weight: var(--font-weight-semibold);
-  min-width: 50px;
-  text-align: center;
-}
-
-/* Content Section */
-.education-card__content {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-4);
-  position: relative;
-  z-index: 2;
-}
-
+/* Degree / major / minor block */
 .education-card__academic-info {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: var(--spacing-3);
-  padding: var(--spacing-4);
-  background: rgba(var(--color-navy-rgb), 0.8);
-  border: 1px solid rgba(var(--color-cyan-rgb), 0.15);
-  border-radius: var(--border-radius-md);
-  border-left: 3px solid var(--color-cyan);
-}
-
-.education-card__degree,
-.education-card__field {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-1);
-}
-
-.education-card__label {
-  font-size: var(--font-size-xs);
-  color: rgba(var(--color-offwhite-rgb), 0.6);
-  text-transform: uppercase;
-  letter-spacing: var(--letter-spacing-wide);
-  font-weight: var(--font-weight-medium);
-}
-
-.education-card__value {
-  font-size: var(--font-size-md);
-  color: var(--color-offwhite);
-  font-weight: var(--font-weight-semibold);
-  line-height: 1.4;
-}
-
-/* Certifications Section */
-.education-card__certifications {
-  padding: var(--spacing-4);
-  background: rgba(var(--color-navy-rgb), 0.6);
-  border: 1px solid rgba(var(--color-cyan-rgb), 0.1);
-  border-radius: var(--border-radius-md);
-  border-top: 2px solid rgba(var(--color-cyan-rgb), 0.3);
-}
-
-.education-card__cert-title {
-  font-size: var(--font-size-md);
-  color: var(--color-cyan);
-  margin: 0 0 var(--spacing-3) 0;
-  font-weight: var(--font-weight-semibold);
-  text-shadow: 0 0 6px rgba(var(--color-cyan-rgb), 0.3);
-}
-
-.education-card__cert-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: var(--spacing-3);
-}
-
-.education-card__cert-item {
-  padding: var(--spacing-3);
-  background: rgba(var(--color-cyan-rgb), 0.05);
-  border: 1px solid rgba(var(--color-cyan-rgb), 0.15);
-  border-radius: var(--border-radius-sm);
-  transition: all 0.3s ease;
-}
-
-.education-card__cert-item:hover {
-  background: rgba(var(--color-cyan-rgb), 0.08);
-  border-color: rgba(var(--color-cyan-rgb), 0.25);
-  transform: translateY(-1px);
-}
-
-.education-card__cert-name {
-  font-size: var(--font-size-sm);
-  color: var(--color-offwhite);
-  font-weight: var(--font-weight-semibold);
-  margin-bottom: var(--spacing-1);
-  line-height: 1.3;
-}
-
-.education-card__cert-meta {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--spacing-2);
-  font-size: var(--font-size-xs);
-  color: rgba(var(--color-offwhite-rgb), 0.7);
+  gap: var(--spacing-3) var(--spacing-5);
+  padding: var(--spacing-4);
+  background: var(--surface-inset);
+  border: 1px solid var(--surface-divider);
+  border-radius: var(--radius-control);
 }
 
-.education-card__cert-issuer::after {
-  content: '•';
-  margin-left: var(--spacing-2);
-  color: rgba(var(--color-cyan-rgb), 0.5);
+.education-card__academic-info > .degree-info {
+  flex: 1 1 14rem;
 }
 
-.education-card__cert-issuer:last-child::after {
-  display: none;
-}
-
-.education-card__cert-date::after {
-  content: '•';
-  margin-left: var(--spacing-2);
-  color: rgba(var(--color-cyan-rgb), 0.5);
-}
-
-.education-card__cert-date:last-child::after {
-  display: none;
-}
-
-.education-card__cert-id {
-  color: rgba(var(--color-cyan-rgb), 0.8);
-  font-family: var(--font-family-mono);
-  font-size: var(--font-size-xs);
-  padding: var(--spacing-1) var(--spacing-2);
-  background: rgba(var(--color-cyan-rgb), 0.1);
-  border-radius: var(--border-radius-sm);
-  border: 1px solid rgba(var(--color-cyan-rgb), 0.2);
-}
-
-/* Decorative Elements */
-.education-card__decoration {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 1;
-}
-
-.education-card__grid-overlay {
-  position: absolute;
-  inset: 0;
-  background: 
-    repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 1px,
-      rgba(var(--color-cyan-rgb), 0.02) 1px,
-      rgba(var(--color-cyan-rgb), 0.02) 2px
-    ),
-    repeating-linear-gradient(
-      90deg,
-      transparent,
-      transparent 1px,
-      rgba(var(--color-cyan-rgb), 0.02) 1px,
-      rgba(var(--color-cyan-rgb), 0.02) 2px
-    );
-  opacity: 0.5;
-}
-
-.education-card__accent-line {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    var(--color-cyan) 20%,
-    var(--color-cyan) 80%,
-    transparent 100%
-  );
-  box-shadow: 0 0 8px rgba(var(--color-cyan-rgb), 0.5);
-}
-
-/* Variant-specific accent lines */
-.education-card--secure .education-card__accent-line {
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    var(--color-green-400) 20%,
-    var(--color-green-400) 80%,
-    transparent 100%
-  );
-  box-shadow: 0 0 8px rgba(var(--color-green-400-rgb), 0.5);
-}
-
-.education-card--breach .education-card__accent-line {
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    var(--color-red-400) 20%,
-    var(--color-red-400) 80%,
-    transparent 100%
-  );
-  box-shadow: 0 0 8px rgba(var(--color-red-400-rgb), 0.5);
-}
-
-.education-card--critical .education-card__accent-line {
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    var(--color-yellow-400) 20%,
-    var(--color-yellow-400) 80%,
-    transparent 100%
-  );
-  box-shadow: 0 0 8px rgba(var(--color-yellow-400-rgb), 0.5);
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .education-card {
-    padding: var(--spacing-4);
-    margin-bottom: var(--spacing-4);
-  }
-
-  .education-card__header {
-    gap: var(--spacing-3);
-    margin-bottom: var(--spacing-4);
-  }
-
-  .education-card__icon {
-    width: 50px;
-    height: 50px;
-    font-size: 1.25rem;
-  }
-
-  .education-card__school {
-    font-size: var(--font-size-lg);
-  }
-
-  .education-card__academic-info {
-    grid-template-columns: 1fr;
-    gap: var(--spacing-2);
-    padding: var(--spacing-3);
-  }
-
-  .education-card__cert-list {
-    grid-template-columns: 1fr;
-    gap: var(--spacing-2);
-  }
-
-  .education-card__certifications {
-    padding: var(--spacing-3);
-  }
+.education-card__academic-info > .fields-of-study {
+  flex: 2 1 16rem;
 }
 
 @media (max-width: 480px) {
   .education-card {
-    padding: var(--spacing-3);
+    padding: var(--spacing-4);
   }
 
   .education-card__header {
-    flex-direction: column;
-    gap: var(--spacing-2);
-    text-align: center;
+    gap: var(--spacing-3);
   }
 
-  .education-card__icon {
-    align-self: center;
-  }
-
-  .education-card__cert-badge {
-    align-self: center;
-    flex-direction: row;
-    gap: var(--spacing-2);
-    padding: var(--spacing-2) var(--spacing-3);
+  .education-card__academic-info {
+    padding: var(--spacing-3);
   }
 }
 
-/* High Contrast Mode Support */
-@media (prefers-contrast: high) {
-  .education-card {
-    border-width: 2px;
-    background: rgba(var(--color-navy-rgb), 0.98);
-  }
-
-  .education-card__grid-overlay {
-    display: none;
-  }
-
-  .education-card__school,
-  .education-card__cert-title {
-    text-shadow: none;
-  }
-
-  .education-card__accent-line {
-    box-shadow: none;
-  }
-}
-
-/* Reduced Motion Support */
 @media (prefers-reduced-motion: reduce) {
-  .education-card,
-  .education-card__icon,
-  .education-card__cert-item {
+  .education-card {
     transition: none;
   }
 }

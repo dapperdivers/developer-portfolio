@@ -1,339 +1,74 @@
 /**
- * DateBubble Component Styles - Completely reimagined
- * Futuristic date display with holographic elements and data visualization
- * Animations are now handled by framer-motion through the AnimationContext
+ * DateBubble: a date in the shared mono metadata style.
+ * Plain text by default; the 'security' and 'terminal' variants add the
+ * inset chip surface.
  */
 
-:root {
-  /* Size variants with precise dimensions */
-  --date-bubble-size-sm: 75px;
-  --date-bubble-size-md: 90px;
-  --date-bubble-size-lg: 110px;
-  
-  /* Main colors for holographic effect */
-  --hologram-primary: rgba(100, 255, 218, 0.9);
-  --hologram-secondary: rgba(88, 166, 255, 0.9);
-  --hologram-warning: rgba(255, 157, 0, 0.9);
-  --hologram-critical: rgba(255, 94, 120, 0.9);
-  
-  /* Custom colors for timeline entries */
-  --color-entry1: #64ffda; /* Teal - Primary */
-  --color-entry2: #ff9d00; /* Orange */
-  --color-entry3: #ff5e78; /* Pink */
-  --color-entry4: #a78bfa; /* Purple */
-  --color-entry5: #2dd4bf; /* Turquoise */
-  
-  /* Glow effects */
-  --glow-strong: 0 0 25px;
-  --glow-medium: 0 0 15px;
-  --glow-soft: 0 0 8px;
-}
-
-/* Base styles - holographic data chip */
 .date-bubble {
-  position: relative;
-  display: flex;
-  flex-direction: column;
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  background-color: rgba(10, 25, 50, 0.85);
-  border-radius: 4px;
-  color: #FFFFFF;
-  font-family: var(--font-family-jetbrains, 'JetBrains Mono', monospace);
-  font-weight: 600;
+  font-family: var(--font-family-jetbrains);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--letter-spacing-technical);
+  color: var(--color-text-muted);
   user-select: none;
-  overflow: visible;
-  padding: 8px;
-  border: 2px solid transparent;
-  /* Transition removed - now handled by framer-motion */
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
 }
 
-/* Hexagonal cutout corners - cyberpunk detail */
-.date-bubble::before {
-  content: '';
-  position: absolute;
-  top: -4px;
-  right: -4px;
-  width: 10px;
-  height: 10px;
-  background-color: transparent;
-  border-top: 2px solid var(--hologram-primary);
-  border-right: 2px solid var(--hologram-primary);
-  opacity: 0.8;
+.date-bubble-text {
+  white-space: nowrap;
 }
 
-.date-bubble::after {
-  content: '';
-  position: absolute;
-  bottom: -4px;
-  left: -4px;
-  width: 10px;
-  height: 10px;
-  background-color: transparent;
-  border-bottom: 2px solid var(--hologram-primary);
-  border-left: 2px solid var(--hologram-primary);
-  opacity: 0.8;
-}
+/* Sizes */
+.date-bubble-sm { font-size: 0.6875rem; }
+.date-bubble-md { font-size: var(--font-size-xs); }
+.date-bubble-lg { font-size: var(--font-size-sm); }
 
-/* Size variants with proper scaling */
-.date-bubble-sm {
-  width: var(--date-bubble-size-sm);
-  height: 55px;
-  font-size: 1.1rem;
-}
-
-.date-bubble-md {
-  width: var(--date-bubble-size-md);
-  height: 65px;
-  font-size: 1.3rem;
-}
-
-.date-bubble-lg {
-  width: var(--date-bubble-size-lg);
-  height: 80px;
-  font-size: 1.6rem;
-}
-
-/* Variant styles - distinctive color schemes */
-.date-bubble {
-  border-color: var(--hologram-primary);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5), 0 0 20px rgba(100, 255, 218, 0.2);
-}
-
-.date-bubble-security {
-  border-color: var(--hologram-primary);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5), 0 0 20px rgba(100, 255, 218, 0.2);
+/* Chip surface */
+.date-bubble-security,
+.date-bubble-terminal {
+  padding: var(--spacing-1) var(--spacing-3);
+  background: var(--surface-inset);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-chip);
 }
 
 .date-bubble-terminal {
-  border-color: var(--hologram-secondary);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5), 0 0 20px rgba(88, 166, 255, 0.2);
+  text-transform: uppercase;
 }
 
-/* Security level variations with clear visual differentiation */
-.date-bubble-level-low {
-  border-color: var(--hologram-primary);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5), 0 0 20px rgba(100, 255, 218, 0.3);
-}
-
-.date-bubble-level-low::before,
-.date-bubble-level-low::after {
-  border-color: var(--hologram-primary);
-}
-
-.date-bubble-level-medium {
-  border-color: var(--hologram-secondary);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5), 0 0 20px rgba(88, 166, 255, 0.3);
-}
-
-.date-bubble-level-medium::before,
-.date-bubble-level-medium::after {
-  border-color: var(--hologram-secondary);
-}
-
-.date-bubble-level-high {
-  border-color: var(--hologram-warning);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 157, 0, 0.3);
-}
-
-.date-bubble-level-high::before,
-.date-bubble-level-high::after {
-  border-color: var(--hologram-warning);
-}
-
+/* Only a critical date is a warning */
 .date-bubble-level-critical {
-  border-color: var(--hologram-critical);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 94, 120, 0.3);
+  color: var(--color-danger);
 }
 
-.date-bubble-level-critical::before,
-.date-bubble-level-critical::after {
-  border-color: var(--hologram-critical);
+.date-bubble-level-critical.date-bubble-security,
+.date-bubble-level-critical.date-bubble-terminal {
+  border-color: rgba(var(--color-danger-rgb), 0.4);
 }
 
-/* Timeline-specific entry-indexed styles with enhanced holographic effects */
-.timeline-entry:nth-child(5n+1) .date-bubble {
-  border-color: var(--color-entry1);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5), 0 0 20px rgba(100, 255, 218, 0.3);
-  color: var(--color-entry1);
-}
-
-.timeline-entry:nth-child(5n+1) .date-bubble::before,
-.timeline-entry:nth-child(5n+1) .date-bubble::after {
-  border-color: var(--color-entry1);
-}
-
-.timeline-entry:nth-child(5n+2) .date-bubble {
-  border-color: var(--color-entry2);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 157, 0, 0.3);
-  color: var(--color-entry2);
-}
-
-.timeline-entry:nth-child(5n+2) .date-bubble::before,
-.timeline-entry:nth-child(5n+2) .date-bubble::after {
-  border-color: var(--color-entry2);
-}
-
-.timeline-entry:nth-child(5n+3) .date-bubble {
-  border-color: var(--color-entry3);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 94, 120, 0.3);
-  color: var(--color-entry3);
-}
-
-.timeline-entry:nth-child(5n+3) .date-bubble::before,
-.timeline-entry:nth-child(5n+3) .date-bubble::after {
-  border-color: var(--color-entry3);
-}
-
-.timeline-entry:nth-child(5n+4) .date-bubble {
-  border-color: var(--color-entry4);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5), 0 0 20px rgba(167, 139, 250, 0.3);
-  color: var(--color-entry4);
-}
-
-.timeline-entry:nth-child(5n+4) .date-bubble::before,
-.timeline-entry:nth-child(5n+4) .date-bubble::after {
-  border-color: var(--color-entry4);
-}
-
-.timeline-entry:nth-child(5n+5) .date-bubble {
-  border-color: var(--color-entry5);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5), 0 0 20px rgba(45, 212, 191, 0.3);
-  color: var(--color-entry5);
-}
-
-.timeline-entry:nth-child(5n+5) .date-bubble::before,
-.timeline-entry:nth-child(5n+5) .date-bubble::after {
-  border-color: var(--color-entry5);
-}
-
-/* Enhanced hover and animation effects - now handled by framer-motion */
-.timeline-entry .date-bubble {
-  /* Transition removed - now handled by framer-motion */
-}
-
-.timeline-entry:hover .date-bubble {
-  /* Transform removed - now handled by framer-motion */
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6), 0 0 30px rgba(var(--color-primary-rgb), 0.35);
-}
-
-/* Clickable state with improved interaction feedback - now handled by framer-motion */
+/* Clickable */
 .date-bubble-clickable {
   cursor: pointer;
+  padding: var(--spacing-1) var(--spacing-3);
+  background: var(--surface-inset);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-chip);
+  transition: border-color 0.2s ease, color 0.2s ease;
 }
 
 .date-bubble-clickable:hover {
-  /* Transform removed - now handled by framer-motion */
+  color: var(--color-text);
+  border-color: var(--surface-border-strong);
 }
 
-.date-bubble-clickable:active {
-  /* Transform removed - now handled by framer-motion */
-}
-
-/* Inner text container with improved layout */
-.date-bubble-text {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  width: 100%;
-  height: 100%;
-  position: relative;
-  z-index: 2;
-}
-
-/* Year display with futuristic styling */
-.date-bubble-year {
-  font-family: var(--font-family-jetbrains, 'JetBrains Mono', monospace);
-  font-weight: 600;
-  letter-spacing: 1px;
-  position: relative;
-  text-shadow: 0 0 10px currentColor;
-  color: #FFFFFF;
-}
-
-/* Indicator light for cyberpunk effect */
-.date-bubble-indicator {
-  position: relative;
-  width: 50%;
-  height: 2px;
-  background-color: currentColor;
-  margin-top: 6px;
-  opacity: 0.7;
-  overflow: hidden;
-}
-
-/* Scanning effect inside indicator - now handled by framer-motion */
-.date-bubble-indicator::after {
-  /* Content removed - now handled by framer-motion */
-}
-
-/* Animation keyframes removed - now handled by framer-motion */
-
-/* Scanner effect - horizontal scan line - now handled by framer-motion */
-.date-bubble-scanner {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background-color: currentColor;
-  opacity: 0.5;
-  /* Animation removed - now handled by framer-motion */
-  z-index: 3;
-}
-
-/* Animation keyframes removed - now handled by framer-motion */
-
-/* Data chip decoration - retro computer chip aesthetic */
-.date-chip {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  width: 8px;
-  height: 8px;
-  background-color: transparent;
-  border: 1px solid currentColor;
-  opacity: 0.6;
-}
-
-/* Focus styles for keyboard navigation with better visibility */
-.date-bubble:focus-visible {
+.date-bubble-clickable:focus-visible {
+  box-shadow: var(--ring-focus);
   outline: none;
-  box-shadow: 0 0 0 3px currentColor, 0 5px 15px rgba(0, 0, 0, 0.5);
 }
 
-/* Responsive styles for mobile devices */
-@media (max-width: 768px) {
-  .date-bubble-sm {
-    width: calc(var(--date-bubble-size-sm) * 0.9);
-    height: 50px;
-    font-size: 1rem;
-  }
-  
-  .date-bubble-md {
-    width: calc(var(--date-bubble-size-md) * 0.9);
-    height: 55px;
-    font-size: 1.15rem;
-  }
-  
-  .date-bubble-lg {
-    width: calc(var(--date-bubble-size-lg) * 0.9);
-    height: 65px;
-    font-size: 1.3rem;
-  }
-  
-  /* Ensure corners are still visible on mobile */
-  .date-bubble::before,
-  .date-bubble::after {
-    width: 8px;
-    height: 8px;
-  }
-}
-
-/* Reduced motion preferences - now handled by AnimationContext */
 @media (prefers-reduced-motion: reduce) {
-  /* All animations are now controlled by AnimationContext which respects user preferences */
+  .date-bubble-clickable {
+    transition: none;
+  }
 }

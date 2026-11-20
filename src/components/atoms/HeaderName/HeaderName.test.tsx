@@ -10,7 +10,7 @@ vi.mock('./HeaderName.css', () => ({
 }));
 
 describe('HeaderName Component', () => {
-  const defaultName = 'John Doe';
+  const defaultName = 'Derek Mackley';
 
   beforeEach(() => {
     // Reset any mocks before each test
@@ -61,5 +61,14 @@ describe('HeaderName Component', () => {
     const element = container.firstChild as HTMLElement;
     // Since we're mocking the CSS, we'll check for the class instead
     expect(element).toHaveClass('cyber-text-animation');
+  });
+
+  it('shows a decorative logo only when logoSrc is given', () => {
+    const { container, rerender } = render(<HeaderName name={defaultName} />);
+    expect(container.querySelector('img')).toBeNull();
+    rerender(<HeaderName name={defaultName} logoSrc="/apple-touch-icon.png" />);
+    const img = container.querySelector('img');
+    expect(img).toHaveAttribute('src', '/apple-touch-icon.png');
+    expect(img).toHaveAttribute('alt', '');
   });
 });

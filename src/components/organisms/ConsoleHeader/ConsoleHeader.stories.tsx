@@ -156,7 +156,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 // Container component for consistent display
-const ConsoleContainer = ({ children, background = 'var(--color-background)' }: { children: ReactNode; background?: string }) => (
+const ConsoleContainer = ({ children, background = 'var(--surface-inset)' }: { children: ReactNode; background?: string }) => (
   <div style={{
     padding: '2rem',
     background,

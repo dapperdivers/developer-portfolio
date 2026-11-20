@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import type { ErrorInfo, ReactNode } from 'react';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
+import Button from '@atoms/Button';
+import TerminalTitleBar from '@molecules/TerminalTitleBar';
 import './ErrorBoundary.css';
 
 // Animation variants for error fallback
@@ -101,6 +103,11 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
     }
   }
 
+  // Clears the error so the children render again
+  handleRetry = () => {
+    this.setState({ hasError: false, error: null, errorInfo: null });
+  };
+
   static getDerivedStateFromError(error: Error): Partial<ErrorBoundaryState> {
     // Update state so the next render will show the fallback UI
     return { hasError: true, error };
@@ -136,28 +143,53 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
           >
             {/* If a custom fallback is provided, use it */}
             {fallback ? (
-              typeof fallback === 'function' 
-                ? fallback(error, errorInfo) 
-                : fallback
+              <div className="error-boundary__body">
+                {typeof fallback === 'function' 
+                  ? fallback(error, errorInfo) 
+                  : fallback}
+              </div>
             ) : (
-              // Default fallback UI
+              // Default fallback UI: a terminal window on the shared card surface
               <>
-                <motion.h2 
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.2 }}
-                >
-                  Something went wrong.
-                </motion.h2>
-                <motion.details
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.4 }}
-                >
-                  <summary>Error details</summary>
-                  <p>{error?.toString()}</p>
-                  <p>{errorInfo?.componentStack}</p>
-                </motion.details>
+                <TerminalTitleBar
+                  className="error-boundary__bar"
+                  variant="kitty"
+                  title="security-console"
+                  animated={animationsEnabled}
+                />
+                <div className="error-boundary__body">
+                  <p className="error-boundary__code">ERR</p>
+                  <motion.h2 
+                    className="error-boundary__title"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.2 }}
+                  >
+                    Something went wrong.
+                  </motion.h2>
+                  <p className="error-boundary__message">
+                    This part of the page failed to load. Try again, or reload the page.
+                  </p>
+                  <motion.details
+                    className="error-boundary__details"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.4 }}
+                  >
+                    <summary>Error details</summary>
+                    <p>{error?.toString()}</p>
+                    <p>{errorInfo?.componentStack}</p>
+                  </motion.details>
+                  <Button
+                    className="error-boundary__retry"
+                    variant="secondary"
+                    size="sm"
+                    onClick={this.handleRetry}
+                    animated={animationsEnabled}
+                  >
+                    Retry
+                  </Button>
+                </div>
               </>
             )}
           </motion.div>

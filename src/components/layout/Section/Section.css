@@ -1,8 +1,8 @@
 /**
- * Section Layout Component
- * 
- * Styles for the Section layout component following atomic design principles.
- * Uses design tokens for consistent styling across the application.
+ * Section layout
+ *
+ * One header for every section: monospace path kicker, title, quiet subtitle,
+ * then a single hairline before the content.
  */
 
 .section {
@@ -13,97 +13,47 @@
   overflow: hidden;
 }
 
-/* Section header */
+/* Header */
 .section-header {
   position: relative;
-  text-align: center;
-  margin-bottom: 2rem;
   z-index: 10;
-  /* Hardware acceleration */
-  transform: translateZ(0);
+  text-align: left;
+  max-width: var(--container-max-width);
+  margin: 0 auto var(--spacing-8);
+  padding: 0 0 var(--spacing-5);
+  border-bottom: 1px solid rgba(var(--color-cyan-rgb), 0.2);
 }
 
-/* Section title */
+.section-kicker {
+  margin: 0 0 var(--spacing-2);
+  font-family: var(--font-family-jetbrains);
+  font-size: var(--font-size-sm);
+  letter-spacing: var(--letter-spacing-technical);
+  color: var(--color-cyan);
+}
+
 .section-title {
-  color: var(--cyberpunk-primary);
-  position: relative;
-  display: inline-block;
-  margin-bottom: 1rem;
-  padding-bottom: 0.5rem;
-  font-weight: bold;
-  text-shadow: 0 0 10px var(--cyberpunk-primary-glow);
-  letter-spacing: 1px;
-  /* Hardware acceleration */
-  transform: translateZ(0);
+  margin: 0;
+  font-family: var(--font-family-inter);
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  color: var(--color-white);
 }
 
-/* Section icon */
-.section-icon {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-  color: var(--cyberpunk-primary);
-  filter: drop-shadow(0 0 8px var(--cyberpunk-primary-glow));
-}
-
-/* Section title underline */
-.section-title:after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 25%;
-  width: 50%;
-  height: 2px;
-  background: linear-gradient(
-    to right,
-    transparent,
-    var(--cyberpunk-primary),
-    transparent
-  );
-}
-
-/* Section subtitle */
 .section-subtitle {
-  font-size: 1.1rem;
-  color: rgba(255, 255, 255, 0.7);
-  margin: 0 auto 2rem;
-  max-width: 800px;
-  line-height: 1.5;
+  margin: var(--spacing-2) 0 0;
+  max-width: 48rem;
+  font-family: var(--font-family-inter);
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-base);
+  color: var(--color-text-muted);
 }
 
-/* Section content */
+/* Content */
 .section-content {
   position: relative;
   z-index: 10;
-  /* Hardware acceleration */
-  transform: translateZ(0);
-}
-
-/* Section content decorative element */
-.section-content::before {
-  content: '';
-  position: absolute;
-  top: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 50px;
-  height: 3px;
-  background-color: var(--cyberpunk-primary);
-  opacity: 0.5;
-  border-radius: 10px;
-}
-
-/* Section content decorative element */
-.section-content::after {
-  content: '';
-  position: absolute;
-  bottom: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 50px;
-  height: 3px;
-  background-color: var(--cyberpunk-primary);
-  opacity: 0.5;
-  border-radius: 10px;
 }
 
 /* Container styles */
@@ -120,62 +70,26 @@
   padding: 0 15px;
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
   .section {
     padding: 3rem 0;
   }
-  
-  .section-title {
-    font-size: 1.75rem;
-  }
-  
-  .section-subtitle {
-    font-size: 0.9rem;
-  }
-}
 
-@media (max-width: 768px) {
+  .section-title {
+    font-size: var(--font-size-2xl);
+  }
+
+  .section-subtitle {
+    font-size: var(--font-size-base);
+  }
+
   .section .section-content {
     padding: 1.5rem 0;
   }
 }
 
-/* Accessibility focus styles */
-.section:focus {
-  outline: none;
-  box-shadow: none;
-}
-
+.section:focus,
 .section:focus-within {
   outline: none;
   box-shadow: none;
-}
-
-/* Motion accessibility */
-@media (prefers-reduced-motion: reduce) {
-  .section-content {
-    animation: none;
-  }
-}
-
-/* Mobile responsiveness adjustments */
-@media (max-width: 768px) {
-  .section {
-    padding: 3rem 0;
-  }
-  
-  .section-title {
-    font-size: 1.75rem;
-  }
-  
-  .section-subtitle {
-    font-size: 0.9rem;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .section-content {
-    transition: none !important;
-  }
 }

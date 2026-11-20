@@ -1,4 +1,6 @@
 import { motion, type Variants } from 'framer-motion';
+import ClusterStatus from '@molecules/ClusterStatus';
+import type { ClusterStatusResult } from '@/types/cluster';
 import type { MapTileMode } from './useLeafletMap';
 
 /**
@@ -9,15 +11,6 @@ import type { MapTileMode } from './useLeafletMap';
 const panelVariants: Variants = {
   hidden: { y: 20, opacity: 0 },
   visible: { y: 0, opacity: 1, transition: { delay: 0.5, duration: 0.6, ease: 'easeOut' } },
-};
-
-const streamVariants: Variants = {
-  hidden: { width: 0, opacity: 0 },
-  visible: (index: number) => ({
-    width: '100%',
-    opacity: [0, 0.7, 0.2],
-    transition: { delay: index * 0.2, duration: 2, repeat: Infinity, repeatType: 'loop', ease: 'linear' },
-  }),
 };
 
 export interface MapGridOverlayProps {
@@ -33,42 +26,21 @@ export const MapGridOverlay = ({ tileMode }: MapGridOverlayProps) => (
 );
 
 export interface MapMetricsPanelProps {
-  /** Whether the status light pulses */
+  /** Live cluster numbers. Without them the panel is not rendered: it never shows made-up figures. */
+  cluster?: ClusterStatusResult;
+  /** Whether the live dot pulses */
   animated?: boolean;
 }
 
-/** The floating "security metrics" readout. Its values are set dressing. */
-export const MapMetricsPanel = ({ animated = true }: MapMetricsPanelProps) => (
-  <motion.div className="security-metrics-panel" variants={panelVariants} initial="hidden" animate="visible">
-    <div className="metrics-header">
-      <div className="panel-title">SECURITY METRICS</div>
-      <motion.div
-        className="status-indicator"
-        animate={{ opacity: animated ? [0.4, 1, 0.4] : 0.7 }}
-        transition={{ duration: 1.5, repeat: Infinity, repeatType: 'reverse' }}
-      />
-    </div>
-    <div className="metrics-grid">
-      <div className="metric-item">
-        <span className="metric-label">THREAT LEVEL</span>
-        <span className="metric-value threat-low">LOW</span>
-      </div>
-      <div className="metric-item">
-        <span className="metric-label">PERIMETER</span>
-        <span className="metric-value">SECURE</span>
-      </div>
-      <div className="metric-item">
-        <span className="metric-label">UPTIME</span>
-        <span className="metric-value">99.8%</span>
-      </div>
-    </div>
-    <div className="data-streams" aria-hidden="true">
-      {[0, 1, 2].map((index) => (
-        <motion.div key={index} className="data-stream" variants={streamVariants} initial="hidden" animate="visible" custom={index} />
-      ))}
-    </div>
-  </motion.div>
-);
+/** The floating cluster readout, showing real numbers passed in by props. */
+export const MapMetricsPanel = ({ cluster, animated = true }: MapMetricsPanelProps) => {
+  if (!cluster) return null;
+  return (
+    <motion.div className="security-metrics-panel" variants={panelVariants} initial="hidden" animate="visible">
+      <ClusterStatus status={cluster.status} data={cluster.data} animated={animated} />
+    </motion.div>
+  );
+};
 
 export interface MapControlsBarProps {
   onZoomIn: () => void;

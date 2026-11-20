@@ -1,19 +1,22 @@
 import React from "react";
-import { motion, Variants } from "framer-motion";
-import { useMotionEnabled, slideUpVariants, STAGGER_DELAY } from '@utils/motion';
-import DateChip from '@atoms/DateChip';
-import CertificationBadge from '@molecules/CertificationBadge';
+import { motion } from "framer-motion";
+import { useMotionEnabled, slideUpVariants } from '@utils/motion';
+import SchoolHeader from '@atoms/SchoolHeader';
+import DegreeInfo from '@atoms/DegreeInfo';
+import FieldsOfStudy from '@atoms/FieldsOfStudy';
+import DateBubble from '@atoms/DateBubble';
+import CertificationList from '@molecules/CertificationList';
 import type { Certification } from '@/types/portfolio';
 import './EducationDetails.css';
 
 export interface EducationDetailsProps {
   /** Name of the school or institution */
   schoolName: string;
-  /** Degree or certification title */
+  /** Degree title, optionally "Degree in Major" */
   subHeader: string;
   /** Time period of education */
   duration: string;
-  /** Description or details */
+  /** Minor field of study (a leading "Minor in " is dropped) */
   desc?: string;
   /** Bullet points for additional details */
   descBullets?: string[];
@@ -26,163 +29,60 @@ export interface EducationDetailsProps {
 }
 
 /**
- * Enhanced component for displaying education details including 
- * degree, duration, description, and certifications.
- * Uses framer-motion for animations controlled by the `animated` prop.
- * 
+ * Education details on the shared card surface: school, degree and fields,
+ * dates, optional bullets and the ruled certification list. Built from the
+ * same pieces as EducationCard.
+ *
  * @component
  */
-const EducationDetails = ({ 
-  schoolName, 
-  subHeader, 
-  duration, 
-  desc, 
-  descBullets = [], 
+const EducationDetails = ({
+  schoolName,
+  subHeader,
+  duration,
+  desc,
+  descBullets = [],
   certifications = [],
   className = "",
   animated = true
 }: EducationDetailsProps) => {
   const animationEnabled = useMotionEnabled(animated);
-  
+
   // Extract degree and major from subHeader if it follows the pattern "X in Y"
   const degreeMatch = subHeader.match(/^(.*?)\s+in\s+(.*)$/);
   const degree = degreeMatch ? degreeMatch[1] : subHeader;
   const major = degreeMatch ? degreeMatch[2] : '';
-  
-  // Animation variants for certifications with staggered children
-  const certContainerVariants: Variants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: STAGGER_DELAY,
-        delayChildren: 0.2
-      }
-    }
-  };
-  
-  // Item variant for each certification badge
-  const certItemVariants: Variants = {
-    hidden: { opacity: 0, x: -10 },
-    visible: {
-      opacity: 1,
-      x: 0,
-      transition: {
-        duration: 0.5,
-        ease: "easeOut"
-      }
-    }
-  };
-  
+
   return (
-    <motion.div 
+    <motion.div
       className={`education-details ${className}`}
-      variants={slideUpVariants}
+      variants={animationEnabled ? slideUpVariants : {}}
       initial={animationEnabled ? "hidden" : "visible"}
       animate="visible"
     >
-      {/* University name */}
-      <motion.h5 
-        className="education-school-name"
-        initial={animationEnabled ? { opacity: 0, x: -20 } : {}}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        {schoolName}
-      </motion.h5>
-      
-      {/* Academic information section */}
-      <motion.div 
-        className="education-academic-info"
-        initial={animationEnabled ? { opacity: 0, y: 20 } : {}}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.1 }}
-      >
-        {/* Degree */}
-        <div className="education-degree-container">
-          <span className="education-label">Degree</span>
-          <h6 className="education-degree">{degree}</h6>
-        </div>
-        
-        {/* Major */}
-        {major && (
-          <div className="education-major-container">
-            <span className="education-label">Major</span>
-            <div className="education-major-value">{major}</div>
-          </div>
+      <SchoolHeader schoolName={schoolName} animated={animationEnabled} />
+
+      <div className="education-academic-info">
+        <DegreeInfo degree={degree} animated={animationEnabled} />
+        {(major || desc) && (
+          <FieldsOfStudy major={major} minor={desc} animated={animationEnabled} />
         )}
-        
-        {/* Minor */}
-        {desc && (
-          <div className="education-minor-container">
-            <span className="education-label">Minor</span>
-            <div className="education-minor-value">{desc.replace("Minor in ", "")}</div>
-          </div>
-        )}
-      </motion.div>
-      
-      {/* Date chip moved to bottom */}
-      <motion.div
-        initial={animationEnabled ? { opacity: 0, y: 10 } : {}}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-      >
-        <DateChip date={duration} className="education-date-chip" animated={animationEnabled} />
-      </motion.div>
-      
+      </div>
+
+      <DateBubble date={duration} size="sm" animated={animationEnabled} />
+
       {descBullets.length > 0 && (
-        <motion.ul 
-          className="education-bullets"
-          initial={animationEnabled ? { opacity: 0, y: 20 } : {}}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-        >
+        <ul className="education-bullets">
           {descBullets.map((bullet, i) => (
-            <motion.li 
-              key={i} 
-              className="education-bullet-item"
-              initial={animationEnabled ? { opacity: 0, x: -10 } : {}}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 + (i * 0.1) }}
-            >
-              {bullet}
-            </motion.li>
+            <li key={i} className="education-bullet-item">{bullet}</li>
           ))}
-        </motion.ul>
+        </ul>
       )}
-      
-      {certifications.length > 0 && (
-        <motion.div 
-          className="education-certifications-container"
-          initial={animationEnabled ? { opacity: 0, y: 20 } : {}}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-        >
-          <h6 className="certifications-title">Certifications</h6>
-          <motion.div 
-            className="education-certifications"
-            variants={certContainerVariants}
-            initial={animationEnabled ? "hidden" : "visible"}
-            animate="visible"
-          >
-            {certifications.map((cert, i) => (
-              <motion.div 
-                key={`cert-${i}`}
-                variants={certItemVariants}
-                className="certification-badge-wrapper"
-              >
-                <CertificationBadge 
-                  name={cert.name} 
-                  issuer={cert.issuer}
-                  date={cert.date}
-                  credentialId={cert.credentialId}
-                  animated={animationEnabled}
-                />
-              </motion.div>
-            ))}
-          </motion.div>
-        </motion.div>
-      )}
+
+      <CertificationList
+        title="Certifications"
+        certifications={certifications}
+        animated={animationEnabled}
+      />
     </motion.div>
   );
 };

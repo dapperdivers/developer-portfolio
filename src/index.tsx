@@ -19,6 +19,22 @@ import ReactDOM from 'react-dom/client';
 // import TestApp from './TestApp';
 import App from './App';
 
+// One-time greeting for anyone who opens devtools
+console.info(
+  [
+    '%c      ___',
+    '   .-"   "-.',
+    '  /  o   o  \\    hello, fellow inspector',
+    '  \\   ---   /',
+    "   `-._____.-'",
+  ].join('\n'),
+  'color:#22d3ee;font-family:monospace;line-height:1.3'
+);
+console.info(
+  '%cOpen source, served from a homelab in a garage. The Experience timeline is hiding something. Look closer.',
+  'color:#94a3b8;font-family:monospace'
+);
+
 // Create root and render application
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 

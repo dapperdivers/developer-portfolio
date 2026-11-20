@@ -10,19 +10,19 @@ export interface DateChipProps {
   variant?: 'default' | 'secure' | 'breach' | 'critical';
   /** Additional CSS classes */
   className?: string;
-  /** Whether hover motion is enabled */
+  /** Whether the entrance fade is enabled */
   animated?: boolean;
 }
 
 /**
- * A stylized date/duration display component with cybersecurity theming.
+ * A date or duration chip from the shared chip family.
  * 
  * @component
  * @param {Object} props - Component props
  * @param {string} props.date - The date or duration text to display
  * @param {string} [props.variant] - Visual variant: 'default', 'secure', 'breach', 'critical'
  * @param {string} [props.className] - Additional CSS classes
- * @param {boolean} [props.animated=true] - Whether hover motion is enabled
+ * @param {boolean} [props.animated=true] - Whether the entrance fade is enabled
  * @returns {React.ReactElement} DateChip component
  */
 const DateChip = ({ date, variant = 'default', className = "", animated = true }: DateChipProps) => {
@@ -46,38 +46,6 @@ const DateChip = ({ date, variant = 'default', className = "", animated = true }
     }
   };
   
-  const chipVariants: Variants = {
-    initial: { 
-      y: 0,
-      scale: 1,
-      boxShadow: "0 4px 15px rgba(0, 0, 0, 0.3), 0 0 20px rgba(100, 255, 218, 0.1)"
-    },
-    hover: { 
-      y: shouldAnimate ? -3 : 0,
-      scale: shouldAnimate ? 1.02 : 1,
-      boxShadow: "0 8px 25px rgba(0, 0, 0, 0.4), 0 0 30px rgba(100, 255, 218, 0.2)",
-      transition: {
-        duration: 0.3,
-        ease: "easeOut"
-      }
-    }
-  };
-  
-  const glowVariants: Variants = {
-    initial: { 
-      opacity: 0,
-      rotate: 0
-    },
-    hover: { 
-      opacity: 0.8,
-      rotate: shouldAnimate ? 360 : 0,
-      transition: {
-        opacity: { duration: 0.3, ease: "easeOut" },
-        rotate: { duration: 2, ease: "linear", repeat: Infinity }
-      }
-    }
-  };
-  
   // Build className with variant support
   const chipClasses = [
     'date-chip',
@@ -89,24 +57,12 @@ const DateChip = ({ date, variant = 'default', className = "", animated = true }
     <motion.div 
       className={chipClasses}
       variants={containerVariants}
-      initial="hidden"
+      initial={shouldAnimate ? 'hidden' : false}
       animate="visible"
-      viewport={{ once: true }}
     >
-      <motion.div 
-        className="date-chip-inner"
-        variants={chipVariants}
-        initial="initial"
-        whileHover="hover"
-      >
+      <div className="date-chip-inner">
         <span className="date-chip-text">{date}</span>
-        <motion.div 
-          className="date-chip-glow"
-          variants={glowVariants}
-          initial="initial"
-          whileHover="hover"
-        />
-      </motion.div>
+      </div>
     </motion.div>
   );
 };

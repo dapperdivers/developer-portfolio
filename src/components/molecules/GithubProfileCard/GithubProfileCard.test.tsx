@@ -50,7 +50,6 @@ const siteData: GithubProfileCardProps = {
     jobTitle: 'Security Engineer',
     description: 'I am a security professional with expertise in secure architecture.'
   },
-  securityFacts: ['Security fact 1', 'Security fact 2'],
   githubUserName: 'octocat'
 };
 

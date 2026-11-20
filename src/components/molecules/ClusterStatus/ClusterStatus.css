@@ -1,0 +1,99 @@
+.cluster-status {
+  font-family: var(--font-family-jetbrains);
+  color: var(--color-text-muted);
+}
+
+.cluster-status__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-3);
+  margin-bottom: var(--spacing-2);
+  padding-bottom: var(--spacing-1);
+  border-bottom: 1px solid var(--surface-divider);
+}
+
+.cluster-status--compact .cluster-status__header {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.cluster-status__title {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--letter-spacing-technical);
+  color: var(--color-primary);
+}
+
+.cluster-status__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  font-size: var(--font-size-xs);
+  letter-spacing: var(--letter-spacing-technical);
+  color: var(--color-text);
+}
+
+.cluster-status__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.cluster-status__dot--live {
+  background: var(--color-primary);
+  box-shadow: 0 0 6px rgba(var(--color-primary-rgb), 0.7);
+}
+
+.cluster-status__dot--degraded {
+  background: var(--color-warning);
+  box-shadow: 0 0 6px rgba(var(--color-warning-rgb), 0.7);
+}
+
+.cluster-status__dot--offline {
+  background: var(--color-gray-600);
+}
+
+.cluster-status__note {
+  margin: 0;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+}
+
+.cluster-status__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px;
+  margin: 0;
+}
+
+.cluster-status__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--spacing-4);
+}
+
+.cluster-status__label {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+}
+
+.cluster-status__value {
+  margin: 0;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+}
+
+.cluster-status__updated {
+  margin: var(--spacing-2) 0 0;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+}
+
+/* Compact: readings flow in one wrapping line */
+.cluster-status--compact .cluster-status__grid {
+  grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
+}

@@ -1,52 +1,44 @@
 /**
- * Greetings Organism Styles
- *
- * Styles for the Greetings component (Hero area) following atomic design principles
- * Animations are now handled by framer-motion in the component file
+ * Greetings organism: the hero terminal and its actions.
+ * The hero clears the fixed navigation with top padding at every width.
  */
 
-/* Hero/Greetings base styles */
-.min-h-screen {
+.greetings {
+  --greetings-nav-clearance: 7.5rem;
   position: relative;
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  min-height: 100svh;
+  box-sizing: border-box;
+  padding: var(--greetings-nav-clearance) var(--spacing-4) var(--spacing-5);
 }
 
-@keyframes subtle-scan {
-  from {
-    background-position: 0 0;
-  }
-  to {
-    background-position: 0 100%;
-  }
+.greetings__inner {
+  width: 100%;
+  max-width: 46rem;
+  margin: 0 auto;
 }
 
-@keyframes subtle-highlight {
-  0% {
-    opacity: 0;
-    transform: translateX(-100%);
-  }
-  20% {
-    opacity: 0.5;
-  }
-  50% {
-    opacity: 0.2;
-  }
-  100% {
-    opacity: 0;
-    transform: translateX(100%);
-  }
+.greetings__title {
+  margin: 0;
+  font-size: clamp(1.5rem, 6vw, 2.5rem);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.15;
+  color: var(--color-primary);
+  overflow-wrap: anywhere;
 }
 
-/* Accessibility - Reduced motion */
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .min-h-screen {
-    padding: 3rem 0;
-  }
+.greetings__actions {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--spacing-5);
 }
 
-/* Reduced motion support - now handled by framer-motion */
-@media (prefers-reduced-motion: reduce) {
-  /* framer-motion will handle these preferences automatically */
-} 
+@media (min-width: 768px) {
+  .greetings {
+    --greetings-nav-clearance: 8rem;
+  }
+}

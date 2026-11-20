@@ -6,14 +6,19 @@ const meta = {
   component: SecurityClassification,
   parameters: {
     layout: 'centered',
-    backgrounds: {
-      default: 'dark',
-      values: [
-        { name: 'dark', value: '#0a192f' },
-        { name: 'navy', value: '#162b3d' },
-      ],
+    docs: {
+      description: {
+        component: 'A classification banner in the chip family. Cyan is the neutral default (declassified), green is secure, and red is kept for the alarming levels (breach, critical).',
+      },
     },
   },
+  decorators: [
+    (Story) => (
+      <div style={{ width: 'min(560px, 90vw)', padding: '0 2rem' }}>
+        <Story />
+      </div>
+    ),
+  ],
   argTypes: {
     animated: { control: 'boolean', description: 'Play animations; reduced motion always turns them off' },
     variant: {
@@ -66,7 +71,7 @@ export const Critical: Story = {
 
 export const CustomLabel: Story = {
   args: {
-    label: 'TOP SECRET',
+    label: 'INTERNAL USE ONLY',
     variant: 'default',
     expanded: true
   }

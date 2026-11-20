@@ -1,39 +1,32 @@
-/* Scroll to top button styles */
+/* Scroll to top button: a round control on the raised navy surface */
 .scroll-to-top {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 45px;
-  height: 45px;
-  background-color: var(--color-primary-600, #2563eb);
-  color: white;
+  bottom: var(--spacing-5, 1.25rem);
+  right: var(--spacing-5, 1.25rem);
+  width: 2.75rem;
+  height: 2.75rem;
+  background: var(--surface-card-raised);
+  color: var(--color-primary);
+  border: 1px solid var(--surface-border-strong);
   border-radius: 50%;
-  border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3), 0 0 15px rgba(59, 130, 246, 0.3);
-  /* Transitions now handled by framer-motion */
+  box-shadow: var(--shadow-card);
 }
 
-/* Hover styles are now handled by framer-motion variants */
-.scroll-to-top:focus {
+.scroll-to-top:hover {
+  border-color: var(--color-primary);
+}
+
+.scroll-to-top:focus-visible {
+  box-shadow: var(--ring-focus);
   outline: none;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
 }
 
 .scroll-icon {
   width: 20px;
   height: 20px;
-}
-
-/* Accessibility considerations */
-@media (prefers-reduced-motion: reduce) {
-  /* Animations now controlled via AnimationContext and framer-motion */
-  .scroll-to-top {
-    animation: none;
-    transition: background-color 0.2s ease;
-  }
 }

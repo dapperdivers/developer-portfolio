@@ -1,40 +1,45 @@
 /**
- * Academic Details Component Styles
+ * Academic Details: the shared card surface around the education pieces.
  */
 
 .academic-details {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-4);
   width: 100%;
-  margin-bottom: var(--spacing-3);
+  padding: var(--spacing-5);
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
 }
 
-/* Panel containing the degree, fields of study, and graduation date */
 .academic-panel {
-  padding: var(--spacing-3);
-  background-color: rgba(100, 255, 218, 0.05);
-  border-radius: var(--border-radius-lg);
-  border-left: 2px solid var(--color-primary);
-}
-
-/* Container for the graduation date chip */
-.graduation-date-container {
   display: flex;
-  justify-content: flex-end;
-  margin-top: var(--spacing-3);
+  flex-wrap: wrap;
+  gap: var(--spacing-3) var(--spacing-5);
+  width: 100%;
+  padding: var(--spacing-4);
+  background: var(--surface-inset);
+  border: 1px solid var(--surface-divider);
+  border-radius: var(--radius-control);
 }
 
-.graduation-date-chip {
-  max-width: 180px;
+.academic-panel > .degree-info {
+  flex: 1 1 14rem;
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .academic-panel {
-    padding: var(--spacing-2);
+.academic-panel > .fields-of-study {
+  flex: 2 1 16rem;
+}
+
+@media (max-width: 480px) {
+  .academic-details {
+    padding: var(--spacing-4);
   }
-  
-  .graduation-date-container {
-    justify-content: flex-start;
+
+  .academic-panel {
+    padding: var(--spacing-3);
   }
 }

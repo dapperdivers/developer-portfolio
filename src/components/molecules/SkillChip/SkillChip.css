@@ -1,0 +1,44 @@
+/* SkillChip: chip family, rendered as a toggle button. */
+
+.skill-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  box-sizing: border-box;
+  min-height: 1.75rem;
+  padding: 0 var(--spacing-3);
+  font-family: var(--font-family-jetbrains);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--letter-spacing-technical);
+  color: var(--color-offwhite);
+  background: var(--surface-inset);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-chip);
+  cursor: pointer;
+}
+
+.skill-chip--animated {
+  transition: border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+}
+
+.skill-chip__icon {
+  font-size: 1.1em;
+  flex-shrink: 0;
+}
+
+.skill-chip:hover {
+  color: var(--color-primary);
+  border-color: var(--surface-border-strong);
+}
+
+.skill-chip--selected {
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+  background: rgba(var(--color-primary-rgb), 0.1);
+}
+
+.skill-chip:focus-visible {
+  outline: none;
+  box-shadow: var(--ring-focus);
+}

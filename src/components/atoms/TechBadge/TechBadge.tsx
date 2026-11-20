@@ -79,23 +79,12 @@ const TechBadge: FC<TechBadgeProps> = ({
         ease: "easeOut"
       }
     },
-    hover: isClickable ? { 
-      y: -2,
-      scale: 1.05,
-      boxShadow: "0 3px 6px rgba(0, 0, 0, 0.2)",
-      transition: { 
-        duration: 0.2
-      }
-    } : {
+    hover: isClickable ? {
       y: -1,
-      boxShadow: "0 3px 6px rgba(0, 0, 0, 0.2)",
-      transition: { 
-        duration: 0.2
-      }
-    },
+      transition: { duration: 0.2 }
+    } : {},
     tap: isClickable ? { 
-      scale: 0.95,
-      y: -1,
+      scale: 0.97,
       transition: { 
         duration: 0.1
       }

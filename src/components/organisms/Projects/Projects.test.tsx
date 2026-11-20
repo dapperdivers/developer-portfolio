@@ -112,6 +112,18 @@ beforeEach(() => {
 });
 
 describe('Projects Container Integration Tests', () => {
+  it('moves personal projects out of the grid into the Off the clock strip', () => {
+    mockUseProjects.mockReturnValue([
+      ...mockProjects,
+      { name: 'Scuba Diving', desc: 'Diving', kind: 'personal' },
+    ]);
+    render(<Projects />);
+
+    expect(screen.getAllByTestId('project-card-mock')).toHaveLength(2);
+    expect(screen.getByText('Off the clock')).toBeInTheDocument();
+    expect(screen.getByText('Scuba Diving')).toBeInTheDocument();
+  });
+
   it('renders projects from useProjects hook with correct layout', () => {
     render(<Projects />);
     

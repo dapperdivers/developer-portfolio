@@ -59,7 +59,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     gridSize: 30,
-    nodeColor: '#00f5d4',
+    nodeColor: '#64ffda',
     networkIntensity: 0.5
   }
 };
@@ -92,7 +92,7 @@ export const Professional: Story = {
 export const ActiveNetwork: Story = {
   args: {
     gridSize: 25,
-    nodeColor: '#00f5d4',
+    nodeColor: '#64ffda',
     networkIntensity: 0.8
   }
 };

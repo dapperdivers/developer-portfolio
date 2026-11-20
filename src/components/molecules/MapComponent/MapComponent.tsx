@@ -3,6 +3,7 @@ import { motion, type Variants } from 'framer-motion';
 import { findLocation } from '@utils/geocodingUtils';
 import { fadeInVariants, useMotionEnabled } from '@utils/motion';
 import useLeafletMap, { type MapTileMode, type MapView } from './useLeafletMap';
+import type { ClusterStatusResult } from '@/types/cluster';
 import { MapControlsBar, MapGridOverlay, MapMetricsPanel } from './MapParts';
 import './MapComponent.css';
 
@@ -16,6 +17,8 @@ const formatCoordinates = (view: MapView | null): string => (view ? `${view.lat.
 export interface MapComponentProps {
   /** Place name to show, e.g. "Canton, GA". Resolved from a built-in list; no network lookup is made. An unknown name shows a world view with no marker. */
   location: string;
+  /** Live cluster numbers (status and data from the cluster-status feed). Without them the metrics panel and cluster readout are left out. */
+  clusterStatus?: ClusterStatusResult;
   /** Whether the status light pulses */
   animated?: boolean;
 }
@@ -27,7 +30,7 @@ export interface MapComponentProps {
  * Leaflet is driven by `useLeafletMap`; this component only decides what to
  * show.
  */
-const MapComponent = ({ location, animated = true }: MapComponentProps) => {
+const MapComponent = ({ location, clusterStatus, animated = true }: MapComponentProps) => {
   const mountRef = useRef<HTMLDivElement>(null);
   const [tileMode, setTileMode] = useState<MapTileMode>('dark');
   const [gridVisible, setGridVisible] = useState(true);
@@ -57,18 +60,15 @@ const MapComponent = ({ location, animated = true }: MapComponentProps) => {
         <div className="map-status-bar">
           <div className="status-left">
             <span>{formatCoordinates(view)}</span>
-            <span className="separator">|</span>
-            <span className="metric-label">SECURITY LEVEL:</span>
-            <span className="metric-value">STANDARD</span>
-            <span className="separator">|</span>
-            <span className="metric-label">PROTOCOL:</span>
-            <span className="metric-value">TLS 1.3</span>
-            <span className="separator">|</span>
-            <span className="metric-label">ENCRYPTION:</span>
-            <span className="metric-value">AES-256</span>
-            <span className="separator">|</span>
-            <span className="metric-label">STATUS:</span>
-            <span className="metric-value status-online">ONLINE</span>
+            {clusterStatus?.status === 'ok' && clusterStatus.data && (
+              <>
+                <span className="separator">|</span>
+                <span className="metric-label">CLUSTER:</span>
+                <span className={clusterStatus.data.badges.cluster_status?.value.toLowerCase() === 'up' ? 'metric-value status-online' : 'metric-value'}>
+                  {clusterStatus.data.badges.cluster_status?.value.toUpperCase() ?? 'LIVE'}
+                </span>
+              </>
+            )}
           </div>
         </div>
 
@@ -79,7 +79,7 @@ const MapComponent = ({ location, animated = true }: MapComponentProps) => {
             {gridVisible && <MapGridOverlay tileMode={tileMode} />}
           </div>
 
-          <div className="map-data-overlay">{view && <MapMetricsPanel animated={motionOn} />}</div>
+          <div className="map-data-overlay">{view && <MapMetricsPanel cluster={clusterStatus} animated={motionOn} />}</div>
         </div>
 
         <MapControlsBar

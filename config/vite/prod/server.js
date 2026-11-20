@@ -3,6 +3,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs/promises';
 import { existsSync } from 'fs';
+import { createClusterStatusHandler } from './clusterStatus.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -35,6 +36,9 @@ const prodConfig = {
 const app = createBaseServer({ ...prodConfig, registerRoutes: registerHealthRoutes });
 
 function registerHealthRoutes(app) {
+// Live cluster numbers from Kromgo (cached 60 s)
+app.get('/api/cluster-status', createClusterStatusHandler());
+
 // Production-specific comprehensive health check
 app.get('/health/comprehensive', async (req, res) => {
   const healthReport = {

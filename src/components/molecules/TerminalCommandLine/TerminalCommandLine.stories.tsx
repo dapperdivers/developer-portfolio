@@ -51,10 +51,10 @@ const meta = {
   render: (args) => (
     <div style={{
       width: '700px',
-      border: '1px solid var(--color-border)',
-      borderRadius: '8px',
+      border: '1px solid var(--surface-border)',
+      borderRadius: 'var(--radius-card)',
       overflow: 'hidden',
-      background: 'var(--color-background)'
+      background: 'var(--surface-card)'
     }}>
       <TerminalCommandLine {...args} />
     </div>
@@ -133,10 +133,10 @@ export const TerminalInteractive: Story = {
 export const NarrowInteractive: FnStory = () => (
   <div style={{
     width: '320px',
-    border: '1px solid var(--color-border)',
-    borderRadius: '8px',
+    border: '1px solid var(--surface-border)',
+    borderRadius: 'var(--radius-card)',
     overflow: 'hidden',
-    background: 'var(--color-background)'
+    background: 'var(--surface-card)'
   }}>
     <TerminalCommandLine
       prompt="user@portfolio:/experience$"
@@ -175,8 +175,8 @@ export const AllVariants: FnStory = () => (
       <h4 style={{ marginBottom: '1rem', color: 'var(--color-text-muted)' }}>Default Variant</h4>
       <div style={{
         width: '700px',
-        border: '1px solid var(--color-border)',
-        borderRadius: '8px',
+        border: '1px solid var(--surface-border)',
+        borderRadius: 'var(--radius-card)',
         overflow: 'hidden'
       }}>
         <TerminalCommandLine 
@@ -191,8 +191,8 @@ export const AllVariants: FnStory = () => (
       <h4 style={{ marginBottom: '1rem', color: 'var(--color-text-muted)' }}>Security Variant</h4>
       <div style={{
         width: '700px',
-        border: '1px solid var(--color-border)',
-        borderRadius: '8px',
+        border: '1px solid var(--surface-border)',
+        borderRadius: 'var(--radius-card)',
         overflow: 'hidden'
       }}>
         <TerminalCommandLine 
@@ -207,8 +207,8 @@ export const AllVariants: FnStory = () => (
       <h4 style={{ marginBottom: '1rem', color: 'var(--color-text-muted)' }}>Terminal Variant</h4>
       <div style={{
         width: '700px',
-        border: '1px solid var(--color-border)',
-        borderRadius: '8px',
+        border: '1px solid var(--surface-border)',
+        borderRadius: 'var(--radius-card)',
         overflow: 'hidden'
       }}>
         <TerminalCommandLine 
@@ -232,8 +232,8 @@ export const InteractiveDemo: FnStory = () => (
       </p>
       <div style={{
         width: '700px',
-        border: '1px solid var(--color-border)',
-        borderRadius: '8px',
+        border: '1px solid var(--surface-border)',
+        borderRadius: 'var(--radius-card)',
         overflow: 'hidden'
       }}>
         <TerminalCommandLine 
