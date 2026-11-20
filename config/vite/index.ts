@@ -123,7 +123,6 @@ export default defineConfig(({ command, mode }) => {
         'react-dom',
         'framer-motion',
         '@iconify/react',
-        'prop-types',
         'react-is', // Explicitly include react-is to prevent tree-shaking issues
         'axios',
         'classnames'
@@ -138,11 +137,10 @@ export default defineConfig(({ command, mode }) => {
       environment: 'jsdom',
       setupFiles: ['./src/test/setup.ts'],
       include: [
-        'src/__tests__/**/*.test.js?(x)',
-        'src/components/**/__tests__/*.test.jsx',
-        'src/components/**/*.test.jsx',
-        'src/hooks/**/__tests__/*.test.js?(x)',
-        'src/utils/**/__tests__/*.test.js?(x)'
+        'src/__tests__/**/*.test.{js,jsx,ts,tsx}',
+        'src/components/**/*.test.{jsx,tsx}',
+        'src/hooks/**/__tests__/*.test.{js,jsx,ts,tsx}',
+        'src/utils/**/__tests__/*.test.{js,jsx,ts,tsx}'
       ],
       coverage: {
         provider: 'v8',

@@ -7,7 +7,7 @@ import App from '../../src/App';
 // Import utility mocks
 import { withHelmetProvider } from '../utils/mocks/helmetProvider';
 import { withPortfolioContext } from '../utils/mocks/portfolioContext';
-import { mockPortfolioData } from '../utils/mocks/data.js';
+import { mockPortfolioData } from '../utils/mocks/data';
 
 /**
  * # App Component Stories

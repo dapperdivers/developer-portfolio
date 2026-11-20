@@ -1,0 +1,252 @@
+import type { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
+import TerminalCommandLine from './TerminalCommandLine';
+
+const meta = {
+  title: 'Molecules/TerminalCommandLine',
+  component: TerminalCommandLine,
+  parameters: { 
+    layout: 'centered',
+    docs: {
+      description: {
+        component: 'A terminal command line molecule that combines TerminalPrompt, command text/input, and TerminalCursor. Features both display and interactive modes with cybersecurity theming.'
+      }
+    }
+  },
+  argTypes: {
+    animated: { control: 'boolean', description: 'Play animations; reduced motion always turns them off' },
+    prompt: {
+      control: { type: 'text' },
+      description: 'Command prompt text'
+    },
+    command: {
+      control: { type: 'text' },
+      description: 'Command text (for display mode)'
+    },
+    placeholder: {
+      control: { type: 'text' },
+      description: 'Placeholder text for input mode'
+    },
+    interactive: {
+      control: { type: 'boolean' },
+      description: 'Whether to show interactive input'
+    },
+    showCursor: {
+      control: { type: 'boolean' },
+      description: 'Whether to show the blinking cursor'
+    },
+    variant: {
+      control: { type: 'select' },
+      options: ['default', 'security', 'terminal'],
+      description: 'Visual variant of the command line'
+    },
+    isLoading: {
+      control: { type: 'boolean' },
+      description: 'Whether command is being processed'
+    },
+    onCommand: {
+      action: 'command-executed',
+      description: 'Callback when command is executed'
+    }
+  },
+  render: (args) => (
+    <div style={{
+      width: '700px',
+      border: '1px solid var(--color-border)',
+      borderRadius: '8px',
+      overflow: 'hidden',
+      background: 'var(--color-background)'
+    }}>
+      <TerminalCommandLine {...args} />
+    </div>
+  ),
+} satisfies Meta<typeof TerminalCommandLine>;
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+type FnStory = StoryFn<typeof TerminalCommandLine>;
+
+export const Default: Story = {
+  args: {
+    prompt: 'user@portfolio:~$',
+    command: 'ls -la',
+    interactive: false,
+    showCursor: true,
+    variant: 'default'
+  },
+};
+
+export const Interactive: Story = {
+  args: {
+    prompt: 'user@portfolio:~$',
+    placeholder: 'Type a command...',
+    interactive: true,
+    showCursor: true,
+    variant: 'default'
+  },
+};
+
+export const Security: Story = {
+  args: {
+    prompt: 'security@system:~$',
+    command: 'nmap -sS target.com',
+    interactive: false,
+    showCursor: true,
+    variant: 'security'
+  },
+};
+
+export const SecurityInteractive: Story = {
+  args: {
+    prompt: 'security@system:~$',
+    placeholder: 'Enter security command...',
+    interactive: true,
+    showCursor: true,
+    variant: 'security'
+  },
+};
+
+export const Terminal: Story = {
+  args: {
+    prompt: 'dev@localhost:~$',
+    command: 'npm run build',
+    interactive: false,
+    showCursor: true,
+    variant: 'terminal'
+  },
+};
+
+export const TerminalInteractive: Story = {
+  args: {
+    prompt: 'dev@localhost:~$',
+    placeholder: 'npm, git, docker commands...',
+    interactive: true,
+    showCursor: true,
+    variant: 'terminal'
+  },
+};
+
+/**
+ * Experience section prompt and long placeholder in a 320px box. The input must
+ * wrap under the prompt and stay inside the terminal. Resize the canvas to 320-480px
+ * (the 480px breakpoint follows the browser window, not the box).
+ */
+export const NarrowInteractive: FnStory = () => (
+  <div style={{
+    width: '320px',
+    border: '1px solid var(--color-border)',
+    borderRadius: '8px',
+    overflow: 'hidden',
+    background: 'var(--color-background)'
+  }}>
+    <TerminalCommandLine
+      prompt="user@portfolio:/experience$"
+      placeholder="Type 'help' for commands or 'ls la' to expand all experiences..."
+      compactPlaceholder="Type 'help' for commands"
+      interactive={true}
+      variant="kitty"
+    />
+  </div>
+);
+
+export const Loading: Story = {
+  args: {
+    prompt: 'user@portfolio:~$',
+    command: 'processing...',
+    interactive: false,
+    showCursor: true,
+    variant: 'security',
+    isLoading: true
+  },
+};
+
+export const NoCursor: Story = {
+  args: {
+    prompt: 'user@portfolio:~$',
+    command: 'echo "Hello World"',
+    interactive: false,
+    showCursor: false,
+    variant: 'default'
+  },
+};
+
+export const AllVariants: FnStory = () => (
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+    <div>
+      <h4 style={{ marginBottom: '1rem', color: 'var(--color-text-muted)' }}>Default Variant</h4>
+      <div style={{
+        width: '700px',
+        border: '1px solid var(--color-border)',
+        borderRadius: '8px',
+        overflow: 'hidden'
+      }}>
+        <TerminalCommandLine 
+          prompt="user@portfolio:~$"
+          command="ls -la"
+          variant="default"
+        />
+      </div>
+    </div>
+    
+    <div>
+      <h4 style={{ marginBottom: '1rem', color: 'var(--color-text-muted)' }}>Security Variant</h4>
+      <div style={{
+        width: '700px',
+        border: '1px solid var(--color-border)',
+        borderRadius: '8px',
+        overflow: 'hidden'
+      }}>
+        <TerminalCommandLine 
+          prompt="security@system:~$"
+          command="scan --security-level high"
+          variant="security"
+        />
+      </div>
+    </div>
+    
+    <div>
+      <h4 style={{ marginBottom: '1rem', color: 'var(--color-text-muted)' }}>Terminal Variant</h4>
+      <div style={{
+        width: '700px',
+        border: '1px solid var(--color-border)',
+        borderRadius: '8px',
+        overflow: 'hidden'
+      }}>
+        <TerminalCommandLine 
+          prompt="dev@localhost:~$"
+          command="npm run dev"
+          variant="terminal"
+        />
+      </div>
+    </div>
+  </div>
+);
+
+export const InteractiveDemo: FnStory = () => (
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+    <div>
+      <h4 style={{ marginBottom: '1rem', color: 'var(--color-text-muted)' }}>
+        Interactive Security Terminal
+      </h4>
+      <p style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)', marginBottom: '1rem' }}>
+        Click on the terminal and try typing commands. Press Enter to execute.
+      </p>
+      <div style={{
+        width: '700px',
+        border: '1px solid var(--color-border)',
+        borderRadius: '8px',
+        overflow: 'hidden'
+      }}>
+        <TerminalCommandLine 
+          prompt="security@demo:~$"
+          placeholder="Try: help, ls, pwd, nmap..."
+          interactive={true}
+          variant="security"
+          onCommand={(cmd) => {
+            console.log('Command executed:', cmd);
+            alert(`Command executed: ${cmd}`);
+          }}
+        />
+      </div>
+    </div>
+  </div>
+);

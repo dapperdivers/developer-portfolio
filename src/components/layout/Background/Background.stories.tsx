@@ -1,4 +1,5 @@
 import React from 'react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import Background from './Background';
 
 /**
@@ -48,7 +49,7 @@ import Background from './Background';
  * The background effects are purely decorative and don't interfere with content accessibility.
  * The component respects prefers-reduced-motion settings by disabling animations.
  */
-export default {
+const meta = {
   title: 'Layout/Background',
   component: Background,
   tags: ['autodocs'],
@@ -58,7 +59,7 @@ export default {
       description: 'Enable/disable the circuit grid overlay',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: true },
+        defaultValue: { summary: 'true' },
       }
     },
     enableScanlines: {
@@ -66,7 +67,7 @@ export default {
       description: 'Enable/disable the scanline effect',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: true },
+        defaultValue: { summary: 'true' },
       }
     },
     enableGlitch: {
@@ -74,7 +75,7 @@ export default {
       description: 'Enable/disable the glitch effect',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: true },
+        defaultValue: { summary: 'true' },
       }
     },
     enableColorPulse: {
@@ -82,7 +83,7 @@ export default {
       description: 'Enable/disable the color pulse effect',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: true },
+        defaultValue: { summary: 'true' },
       }
     },
     enableNoise: {
@@ -90,7 +91,7 @@ export default {
       description: 'Enable/disable the noise texture effect',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: true },
+        defaultValue: { summary: 'true' },
       }
     },
   },
@@ -102,10 +103,15 @@ export default {
     },
     layout: 'fullscreen',
   },
-};
+} satisfies Meta<typeof Background>;
+
+export default meta;
+// BackgroundProps requires children, but the effect stories render the backdrop
+// alone, so stories are typed against the component and args stay partial.
+type Story = StoryObj<typeof Background>;
 
 // Default Background with sample content
-export const Default = {
+export const Default: Story = {
   render: (args) => (
     <Background {...args}>
       <div style={{
@@ -150,7 +156,7 @@ export const Default = {
 };
 
 // With Circuit Grid
-export const WithCircuitGrid = {
+export const WithCircuitGrid: Story = {
   args: {
     enableCircuitGrid: true,
     enableScanlines: false,
@@ -161,7 +167,7 @@ export const WithCircuitGrid = {
 };
 
 // With Scanlines
-export const WithScanlines = {
+export const WithScanlines: Story = {
   args: {
     enableCircuitGrid: false,
     enableScanlines: true,
@@ -172,7 +178,7 @@ export const WithScanlines = {
 };
 
 // With Glitch Effect
-export const WithGlitchEffect = {
+export const WithGlitchEffect: Story = {
   args: {
     enableCircuitGrid: false,
     enableScanlines: false,
@@ -183,7 +189,7 @@ export const WithGlitchEffect = {
 };
 
 // With Color Pulse
-export const WithColorPulse = {
+export const WithColorPulse: Story = {
   args: {
     enableCircuitGrid: false,
     enableScanlines: false,
@@ -194,7 +200,7 @@ export const WithColorPulse = {
 };
 
 // With Noise Texture
-export const WithNoiseTexture = {
+export const WithNoiseTexture: Story = {
   args: {
     enableCircuitGrid: false,
     enableScanlines: false,
@@ -205,7 +211,7 @@ export const WithNoiseTexture = {
 };
 
 // Full Cyberpunk Theme
-export const FullCyberpunkTheme = {
+export const FullCyberpunkTheme: Story = {
   args: {
     enableCircuitGrid: true,
     enableScanlines: true,
