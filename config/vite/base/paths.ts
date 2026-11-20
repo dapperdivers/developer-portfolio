@@ -125,8 +125,8 @@ export const getTsPathAliases = () => {
 export const getTestAliases = () => {
   return {
     // Mock implementations for common dependencies
-    'framer-motion': path.resolve(dirs.src, '__mocks__/framerMotionMock.jsx'),
-    '@iconify/react': path.resolve(dirs.src, '__mocks__/iconifyMock.jsx'),
+    'framer-motion': path.resolve(dirs.src, '__mocks__/framerMotionMock.tsx'),
+    '@iconify/react': path.resolve(dirs.src, '__mocks__/iconifyMock.tsx'),
     
     // Include all standard aliases
     ...createAliases()

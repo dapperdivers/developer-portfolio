@@ -1,18 +1,18 @@
 {
   "compilerOptions": {
+    "types": ["vite/client", "vitest/globals", "@testing-library/jest-dom"],
     "target": "ES2020",
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "jsx": "react-jsx",
     "allowJs": true,
     "checkJs": false,
-    "strict": false,
+    "strict": true,
     "noEmit": true,
     "isolatedModules": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
-    "noImplicitAny": false,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "paths": {
@@ -49,8 +49,14 @@
       "@context/*": [
         "./src/context/*"
       ],
+      "@data/*": [
+        "./src/data/*"
+      ],
+      "@stories-utils": [
+        "./.storybook/utils/index.ts"
+      ],
       "@stories-utils/*": [
-        "./src/stories/utils/*"
+        "./.storybook/utils/*"
       ],
       "@atoms/Button/*": [
         "./src/components/atoms/Button/*"
@@ -147,15 +153,6 @@
   "exclude": [
     "node_modules",
     "build",
-    "dist",
-    "src/**/*.test.{js,jsx}",
-    "src/**/*.stories.{js,jsx}",
-    "src/setupTests.js",
-    "src/setupJest.js",
-    "src/__mocks__/**/*",
-    "src/__tests__/**/*",
-    "src/components/**/*.test.{js,jsx}",
-    "src/containers/**/*.test.{js,jsx}",
-    "src/utils/**/*.test.{js,jsx}"
+    "dist"
   ]
 }

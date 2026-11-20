@@ -1,24 +1,26 @@
 import React, { createContext } from 'react';
 import { vi } from 'vitest';
 import type { ReactNode } from 'react';
+import type { Variants } from 'framer-motion';
+import type { AnimationContextType } from '../AnimationContext';
 
 // Define animation variants directly to avoid hoisting issues
-const fadeInVariants = {
+const fadeInVariants: Variants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { duration: 0.5 } }
 };
 
-const slideUpVariants = {
+const slideUpVariants: Variants = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
 };
 
-const scaleVariants = {
+const scaleVariants: Variants = {
   hidden: { opacity: 0, scale: 0.8 },
   visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } }
 };
 
-const staggerContainerVariants = {
+const staggerContainerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: { 
     opacity: 1,
@@ -29,7 +31,7 @@ const staggerContainerVariants = {
   }
 };
 
-const pulseVariants = {
+const pulseVariants: Variants = {
   hidden: { opacity: 0.6 },
   visible: { 
     opacity: [0.6, 1, 0.6], 
@@ -41,7 +43,7 @@ const pulseVariants = {
   }
 };
 
-const matrixVariants = {
+const matrixVariants: Variants = {
   hidden: { opacity: 0 },
   visible: { 
     opacity: 1, 
@@ -52,7 +54,7 @@ const matrixVariants = {
   }
 };
 
-const glitchVariants = {
+const glitchVariants: Variants = {
   hidden: { opacity: 0 },
   visible: { 
     opacity: 1, 
@@ -69,10 +71,10 @@ const glitchVariants = {
 };
 
 // Create a mock context
-export const AnimationContext = createContext(null);
+export const AnimationContext = createContext<AnimationContextType | null>(null);
 
 // Mock animation context value
-const mockAnimationValue = {
+const mockAnimationValue: AnimationContextType & { staggerContainerVariants: Variants } = {
   inView: true,
   setInView: vi.fn(),
   animationEnabled: true,
@@ -83,11 +85,12 @@ const mockAnimationValue = {
   animationStaggerDelay: 0.15,
   getAnimationDelay: (index: number) => `${index * 0.1}s`,
   // Framer-motion specific properties
+  // Only the control methods components call
   controls: {
     start: vi.fn(),
     stop: vi.fn(),
     set: vi.fn()
-  },
+  } as unknown as AnimationContextType['controls'],
   getVariants: (duration = 0.5, delay = 0) => ({
     hidden: { opacity: 0 },
     visible: { 
@@ -109,7 +112,7 @@ const mockAnimationValue = {
   // Animation optimization properties
   prefersReducedMotion: false,
   isLowPowerDevice: false,
-  optimizeVariants: (variants: any) => variants,
+  optimizeVariants: (variants: Variants) => variants,
   
   // Performance monitoring (dev only)
   enablePerformanceMonitoring: vi.fn(),

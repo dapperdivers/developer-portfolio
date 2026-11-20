@@ -44,7 +44,7 @@ export function createChunkStrategy() {
       // Vendor chunks - dependencies
       if (id.includes('node_modules')) {
         // React and related core packages - explicitly include react-is and framer-motion
-        if (id.includes('react') || id.includes('react-dom') || id.includes('scheduler') || id.includes('react-is') || id.includes('prop-types') || id.includes('framer-motion')) {
+        if (id.includes('react') || id.includes('react-dom') || id.includes('scheduler') || id.includes('react-is') || id.includes('framer-motion')) {
           return 'vendor-react';
         }
         

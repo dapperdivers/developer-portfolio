@@ -52,4 +52,4 @@ export {
   mockPortfolioData,
   mockGithubProfile,
   mockStructuredData
-} from './mocks/data.js';
+} from './mocks/data';

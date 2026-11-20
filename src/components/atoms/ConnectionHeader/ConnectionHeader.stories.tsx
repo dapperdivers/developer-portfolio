@@ -1,4 +1,4 @@
-import React from 'react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import ConnectionHeader from './ConnectionHeader';
 
 /**
@@ -46,7 +46,7 @@ import ConnectionHeader from './ConnectionHeader';
  * - Terminal variant: Uses `--color-success` (default: green)
  * - Cyberpunk variant: Uses `--color-warning` (default: yellow)
  */
-export default {
+const meta = {
   title: 'Atoms/ConnectionHeader',
   component: ConnectionHeader,
   tags: ['autodocs'],
@@ -72,7 +72,7 @@ export default {
       description: 'Whether to animate the header',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: true },
+        defaultValue: { summary: 'true' },
       }
     },
     variant: {
@@ -111,11 +111,14 @@ export default {
       </div>
     ),
   ],
-};
+} satisfies Meta<typeof ConnectionHeader>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
 
 
 // Default story
-export const Default = {
+export const Default: Story = {
   args: {
     title: 'SECURE CONNECTION ESTABLISHED',
     statusCode: '[0xFF2941] VERIFIED',
@@ -125,7 +128,7 @@ export const Default = {
 };
 
 // Terminal Variant
-export const TerminalVariant = {
+export const TerminalVariant: Story = {
   args: {
     title: 'TERMINAL SESSION ACTIVE',
     statusCode: '[SYS:READY]',
@@ -135,7 +138,7 @@ export const TerminalVariant = {
 };
 
 // Cyberpunk Variant
-export const CyberpunkVariant = {
+export const CyberpunkVariant: Story = {
   args: {
     title: 'NEURAL LINK ONLINE',
     statusCode: '[UPLINK:STABLE]',
@@ -145,7 +148,7 @@ export const CyberpunkVariant = {
 };
 
 // Without Animation
-export const WithoutAnimation = {
+export const WithoutAnimation: Story = {
   args: {
     title: 'SECURE CONNECTION ESTABLISHED',
     statusCode: '[0xFF2941] VERIFIED',
@@ -155,7 +158,7 @@ export const WithoutAnimation = {
 };
 
 // Different Messages
-export const WarningMessage = {
+export const WarningMessage: Story = {
   args: {
     title: 'WARNING: UNAUTHORIZED ACCESS',
     statusCode: '[ERR:0x5523] ACCESS DENIED',
@@ -165,7 +168,7 @@ export const WarningMessage = {
 };
 
 // Responsive behavior example
-export const Responsive = {
+export const Responsive: Story = {
   args: {
     title: 'CONNECTION ACTIVE',
     statusCode: '[0x5912] MOBILE',
