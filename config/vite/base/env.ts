@@ -79,7 +79,7 @@ export function loadEnv() {
     const dotenvPath = path.resolve(rootDir, dotenvFile);
     
     if (fs.existsSync(dotenvPath)) {
-      const result = dotenv.config({ path: dotenvPath });
+      const result = dotenv.config({ path: dotenvPath, quiet: true });
       
       if (result.error) {
         throw result.error;

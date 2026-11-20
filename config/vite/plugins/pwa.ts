@@ -6,6 +6,7 @@
  */
 
 import { VitePWA } from 'vite-plugin-pwa';
+import { visualizer } from 'rollup-plugin-visualizer';
 import env from '../base/env';
 
 interface PwaPluginOptions {
@@ -126,7 +127,6 @@ export function createAnalyzerPlugin({ analyze = false }: AnalyzerPluginOptions 
   }
   
   try {
-    const visualizer = require('rollup-plugin-visualizer').visualizer;
     return visualizer({
       open: true,
       filename: 'build/stats.html',

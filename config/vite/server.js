@@ -12,7 +12,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Load configuration
-dotenv.config();
+dotenv.config({ quiet: true });
 
 export function createBaseServer(config = {}) {
   const app = express();

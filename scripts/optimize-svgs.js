@@ -60,9 +60,7 @@ const svgoConfig = {
           // customize default plugin options
           cleanupNumericValues: {
             floatPrecision: config.precision
-          },
-          // disable plugins
-          removeViewBox: false
+          }
         }
       }
     },
@@ -70,7 +68,7 @@ const svgoConfig = {
     'removeDimensions', // removes width/height and adds viewBox if it's missing
     'removeOffCanvasPaths', // removes paths outside of the viewBox
     'sortAttrs', // sorts attribute names within elements
-    'removeScriptElement', // removes <script> elements
+    'removeScripts', // removes <script> elements (renamed from removeScriptElement in svgo 4)
     'removeStyleElement', // removes <style> elements
   ]
 };
@@ -89,15 +87,7 @@ async function ensureDirectoryExists(directory) {
 
 // Find all SVG files in the source directory
 function findSvgs() {
-  return new Promise((resolve, reject) => {
-    glob(`${config.sourceDir}/**/*.svg`, (err, files) => {
-      if (err) {
-        reject(err);
-        return;
-      }
-      resolve(files);
-    });
-  });
+  return glob(`${config.sourceDir}/**/*.svg`);
 }
 
 // Generate metadata file for an SVG
