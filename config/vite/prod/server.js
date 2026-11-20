@@ -129,7 +129,7 @@ app.get('/health/comprehensive', async (req, res) => {
 
       if (existsSync(cssDir)) {
         const cssFiles = await fs.readdir(cssDir);
-        const styleFile = cssFiles.find(f => f.startsWith('style-') && f.endsWith('.css'));
+        const styleFile = cssFiles.find(f => f.startsWith('main-') && f.endsWith('.css'));
         
         if (styleFile) {
           const stats = await fs.stat(path.join(cssDir, styleFile));

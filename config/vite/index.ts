@@ -87,8 +87,12 @@ export default defineConfig(({ command, mode }) => {
       // Increase warning limit for chunks
       chunkSizeWarningLimit: 1600,
       
-      // Disable CSS code splitting to include all CSS (including lazy-loaded components) in main CSS file
-      cssCodeSplit: false,
+      // Emit one stylesheet per chunk. The entry stylesheet (global styles) is
+      // linked from index.html and each lazy section's stylesheet loads with
+      // its chunk, so the cascade order matches the dev server. A single
+      // merged file is concatenated in chunk order, which put component styles
+      // ahead of the global ones.
+      cssCodeSplit: true,
       
       // Apply Rollup options from splitting.js
       ...rollupOptions,
