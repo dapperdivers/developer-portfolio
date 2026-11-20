@@ -1,7 +1,8 @@
 import express from 'express';
 import path from 'path';
 import helmet from 'helmet';
-import rateLimit from 'express-rate-limit';
+import rateLimit, { ipKeyGenerator } from 'express-rate-limit';
+import { isIP } from 'net';
 import { fileURLToPath } from 'url';
 import fs from 'fs/promises';
 import { existsSync } from 'fs';
@@ -102,13 +103,29 @@ export function createBaseServer(config = {}) {
   });
 
   // Rate limiting
+  // The limit is per visitor. In production the app sits behind Cloudflare, a
+  // tunnel and a gateway, so `req.ip` is the last proxy for every request and
+  // would put all visitors in one shared bucket. Cloudflare sets
+  // CF-Connecting-IP to the real client address; use it when it is a valid IP
+  // and fall back to `req.ip` for traffic that did not come through Cloudflare.
+  const clientAddress = (req) => {
+    const header = req.headers['cf-connecting-ip'];
+    const candidate = Array.isArray(header) ? header[0] : header;
+    return candidate && isIP(candidate.trim()) ? candidate.trim() : req.ip;
+  };
+
+  // Probes come from the kubelet many times a minute and must never be limited.
+  const HEALTH_PATHS = new Set(['/healthz', '/ready', '/live', '/health/comprehensive', '/health/assets']);
+
   const limiter = rateLimit({
     windowMs: rateLimitWindow,
     limit: rateLimitMax,
     standardHeaders: true,
     legacyHeaders: false,
     message: 'Too many requests from this IP, please try again later.',
-    skipSuccessfulRequests: false
+    skipSuccessfulRequests: false,
+    keyGenerator: (req) => ipKeyGenerator(clientAddress(req)),
+    skip: (req) => HEALTH_PATHS.has(req.path)
   });
   app.use(limiter);
 
