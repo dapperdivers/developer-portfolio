@@ -27,6 +27,10 @@ export default {
       control: { type: 'boolean' },
       description: 'Whether grid overlay is active'
     },
+    animated: {
+      control: { type: 'boolean' },
+      description: 'Whether the buttons react to hover and tap'
+    },
     onResetView: { action: 'reset-view' },
     onToggleMapMode: { action: 'toggle-map-mode' },
     onToggleGrid: { action: 'toggle-grid' },

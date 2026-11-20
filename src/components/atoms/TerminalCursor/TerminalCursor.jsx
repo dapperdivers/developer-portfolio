@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
-import { useAnimation } from '@context/AnimationContext';
+import { useMotionEnabled } from '@utils/motion';
 import './TerminalCursor.css';
 
 /**
@@ -13,6 +13,7 @@ import './TerminalCursor.css';
  * @param {boolean} [props.focused=false] - Whether the cursor is in focused state
  * @param {string} [props.variant='default'] - Visual variant ('default', 'security', 'terminal', 'kitty')
  * @param {string} [props.className=''] - Additional CSS classes
+ * @param {boolean} [props.animated=true] - Whether the cursor blinks
  * @returns {React.ReactElement} TerminalCursor component
  */
 const TerminalCursor = ({ 
@@ -20,9 +21,10 @@ const TerminalCursor = ({
   focused = false,
   variant = 'default',
   className = '',
+  animated = true,
   ...rest
 }) => {
-  const { animationEnabled, prefersReducedMotion } = useAnimation();
+  const motionOn = useMotionEnabled(animated);
   
   // Enhanced cursor variants with better blinking
   const cursorVariants = {
@@ -68,7 +70,7 @@ const TerminalCursor = ({
       variants={cursorVariants}
       initial="visible"
       animate={
-        animationEnabled && !prefersReducedMotion
+        motionOn
           ? (focused ? "focused" : "visible")
           : "noAnimation"
       }
@@ -82,6 +84,7 @@ TerminalCursor.propTypes = {
   focused: PropTypes.bool,
   variant: PropTypes.oneOf(['default', 'security', 'terminal', 'kitty']),
   className: PropTypes.string,
+  animated: PropTypes.bool,
 };
 
 export default memo(TerminalCursor);

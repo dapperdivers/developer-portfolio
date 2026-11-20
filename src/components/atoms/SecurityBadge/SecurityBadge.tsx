@@ -1,6 +1,6 @@
 import React, { FC, memo } from 'react';
 import { motion, MotionStyle, Variants } from 'framer-motion';
-import { useAnimation } from '@context/AnimationContext';
+import { useMotionEnabled } from '@utils/motion';
 import './SecurityBadge.css';
 
 interface SecurityBadgeProps {
@@ -39,11 +39,7 @@ const SecurityBadge: FC<SecurityBadgeProps> = ({
   animated = true,
   hoverEffect = true,
 }) => {
-  // Get animation settings from context
-  const { animationEnabled } = useAnimation();
-  
-  // Only animate if both component prop and global setting allow it
-  const shouldAnimate = animated && animationEnabled;
+  const shouldAnimate = useMotionEnabled(animated);
   
   // Default animation variants
   const defaultVariants: Variants = {

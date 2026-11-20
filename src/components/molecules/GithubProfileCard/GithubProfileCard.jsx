@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { motion } from "framer-motion";
-import { greetings, securityFacts, openSource } from '@/portfolio';
-import { useAnimation } from "@context/AnimationContext";
+import { slideUpVariants, STAGGER_DELAY, useMotionEnabled } from '@utils/motion';
 import ProfileAvatar from '@atoms/ProfileAvatar';
 import ProfileHeader from '@molecules/ProfileHeader';
 import ProfileLocation from '@molecules/ProfileLocation';
@@ -14,21 +13,19 @@ import './GithubProfileCard.css';
  * The GitHub API result only enhances the avatar; if it is missing the card still
  * renders in full with the public github.com avatar URL.
  * Enhanced with map visualization and security-themed decorative elements.
- * Uses framer-motion and the AnimationContext for animations.
+ * A props-only building block: the parent passes the site data in.
  *
  * @component
  * @param {Object} props - Component props
  * @param {Object} [props.prof] - GitHub profile data (optional enhancement)
+ * @param {Object} [props.greetings] - Site owner details: name, title, jobTitle, description, emailAddress, location
+ * @param {string[]} [props.securityFacts] - Facts to pick one from at random
+ * @param {string} [props.githubUserName] - GitHub user name, used for the fallback avatar
+ * @param {boolean} [props.animated=true] - Play the entrance animation
  * @returns {React.ReactElement} GithubProfileCard component
  */
-const GithubProfileCard = ({ prof }) => {
-  // Get animation context values
-  const {
-    animationEnabled,
-    animationStaggerDelay,
-    fadeInVariants,
-    slideUpVariants
-  } = useAnimation();
+const GithubProfileCard = ({ prof, greetings = {}, securityFacts = [], githubUserName, links = {}, animated = true }) => {
+  const animationEnabled = useMotionEnabled(animated);
 
   // Custom animation variants with staggered children for profile card elements
   const containerVariants = {
@@ -36,7 +33,7 @@ const GithubProfileCard = ({ prof }) => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: animationStaggerDelay,
+        staggerChildren: STAGGER_DELAY,
         delayChildren: 0.2
       }
     }
@@ -64,7 +61,7 @@ const GithubProfileCard = ({ prof }) => {
   const location = greetings.location || prof?.location;
 
   // Avatar from the API when available, else the public avatar URL that needs no API call
-  const avatarSrc = prof?.avatar_url || `https://github.com/${openSource.githubUserName}.png`;
+  const avatarSrc = prof?.avatar_url || (githubUserName ? `https://github.com/${githubUserName}.png` : undefined);
 
   // Format description for display
   const formatDescription = () => {
@@ -106,7 +103,7 @@ const GithubProfileCard = ({ prof }) => {
               <ProfileAvatar
                 src={avatarSrc}
                 alt={`${prof?.name || greetings.name || 'Profile'} avatar`}
-                clearanceText={greetings.title.includes("Hi") ? greetings.name : "Security Clearance: Top Level"}
+                clearanceText={greetings.title?.includes("Hi") ? greetings.name : "Security Clearance: Top Level"}
                 variants={itemVariants}
                 animate={animationEnabled}
               />
@@ -138,6 +135,7 @@ const GithubProfileCard = ({ prof }) => {
                 description={formatDescription()}
                 securityFact={randomFact}
                 email={emailAddress}
+                links={links}
                 animate={animationEnabled}
               />
             </div>
@@ -149,7 +147,20 @@ const GithubProfileCard = ({ prof }) => {
 };
 
 GithubProfileCard.propTypes = {
-  prof: PropTypes.object
+  prof: PropTypes.object,
+  greetings: PropTypes.shape({
+    name: PropTypes.string,
+    title: PropTypes.string,
+    jobTitle: PropTypes.string,
+    description: PropTypes.string,
+    emailAddress: PropTypes.string,
+    location: PropTypes.string
+  }),
+  securityFacts: PropTypes.arrayOf(PropTypes.string),
+  githubUserName: PropTypes.string,
+  /** Passed to SocialLinks: github, linkedin and contactCard URLs */
+  links: PropTypes.object,
+  animated: PropTypes.bool
 };
 
 export default GithubProfileCard;

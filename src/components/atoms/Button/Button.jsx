@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Icon } from '@iconify/react';
 import { motion } from 'framer-motion';
-import { useAnimation } from '@context/AnimationContext';
+import { useMotionEnabled } from '@utils/motion';
 import './Button.css';
 
 /**
@@ -46,8 +46,7 @@ const Button = ({
   animationVariant = 'default',
   ...rest
 }) => {
-  // Get animation context
-  const { animationEnabled, defaultButtonVariants } = useAnimation();
+  const motionOn = useMotionEnabled(animated);
 
   // Determine size class
   const sizeClass = {
@@ -76,8 +75,7 @@ const Button = ({
 
   // Define animation variants
   const getButtonAnimations = () => {
-    // Animation enabled check
-    if (!animated || !animationEnabled) {
+    if (!motionOn) {
       return {};
     }
 
@@ -119,8 +117,7 @@ const Button = ({
       case 'default':
       default:
         return {
-          whileTap: tapAnimation,
-          ...defaultButtonVariants
+          whileTap: tapAnimation
         };
     }
   };

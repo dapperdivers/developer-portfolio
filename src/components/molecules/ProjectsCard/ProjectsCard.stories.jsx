@@ -15,6 +15,10 @@ export default {
     index: {
       control: 'number',
       description: 'Index number for staggered animations',
+    },
+    animated: {
+      control: 'boolean',
+      description: 'Whether to animate the card',
     }
   },
   parameters: {
@@ -154,6 +158,7 @@ export const WithLongText = {
  * | data.link | string | undefined | Live demo URL |
  * | data.stack | string[] | [] | Array of technologies used |
  * | index | number | 0 | Index number for staggered animations |
+ * | animated | boolean | true | Whether to animate the card |
  * 
  * ## Accessibility
  * 

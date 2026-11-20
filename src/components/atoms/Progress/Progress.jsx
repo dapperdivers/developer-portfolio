@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
-import { useAnimation } from '@context/AnimationContext';
+import { useMotionEnabled } from '@utils/motion';
 import './Progress.css';
 
 /**
@@ -34,7 +34,7 @@ const Progress = ({
   size = "",
   ...rest
 }) => {
-  const { animationEnabled, prefersReducedMotion } = useAnimation();
+  const stripesMoving = useMotionEnabled(animated);
   
   // Convert string values to numbers if needed and calculate width as percentage
   const numericValue = typeof value === 'string' ? parseFloat(value) : value;
@@ -109,7 +109,7 @@ const Progress = ({
         initial="initial"
         animate="animate"
         // Apply stripes animation if animated is true and not reduced motion
-        {...(striped && animated && animationEnabled && !prefersReducedMotion ? {
+        {...(striped && stripesMoving ? {
           variants: stripesVariants,
           animate: "animated",
         } : striped ? {

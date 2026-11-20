@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import PropTypes from 'prop-types';
 import Loading from '@atoms/Loading'
-import { openSource } from "@/portfolio";
+import { greetings, securityFacts, openSource, profileLinks } from "@/portfolio";
 import axios from 'axios';
 import GithubProfileCard from '@molecules/GithubProfileCard';
 import { motion } from "framer-motion";
@@ -29,7 +29,7 @@ const CACHE_DURATION = 5 * 60 * 1000;
 /**
  * GitHub profile container. Renders the contact card immediately from site data and
  * fetches the GitHub profile in the background to fill in the avatar.
- * 
+ *
  * @component
  * @param {Object} props - Component props
  * @param {string} [props.id] - Section ID for anchor links
@@ -100,7 +100,7 @@ const GithubProfile = ({ id = 'contact' }) => {
                     // Handled: the card falls back to site data, so this is a
                     // warning rather than an error.
                     console.warn('GitHub profile request failed:', err.message);
-                    
+
                     // Use cached data as fallback if available
                     try {
                         const username = validateGithubUsername(openSource.githubUserName);
@@ -124,21 +124,28 @@ const GithubProfile = ({ id = 'contact' }) => {
         };
     }, []);
 
-    return ( 
+    return (
         <Section
             id={id}
             title="Contact Me"
             className="github-profile-section"
             data-testid="github-profile-section"
         >
-            <Suspense fallback={<div className="py-20 text-center"><Loading /></div>}>
+            <Suspense fallback={<div className="py-20 text-center"><Loading animated={animationEnabled} /></div>}>
                 <motion.div
                     variants={slideUpVariants}
                     initial={animationEnabled ? "hidden" : "visible"}
                     animate="visible"
                     className="mt-8"
                 >
-                    <GithubProfileCard prof={prof} />
+                    <GithubProfileCard
+                        prof={prof}
+                        greetings={greetings}
+                        securityFacts={securityFacts}
+                        githubUserName={openSource.githubUserName}
+                        links={profileLinks}
+                        animated={animationEnabled}
+                    />
                 </motion.div>
             </Suspense>
         </Section>
@@ -148,5 +155,5 @@ const GithubProfile = ({ id = 'contact' }) => {
 GithubProfile.propTypes = {
     id: PropTypes.string
 };
- 
+
 export default GithubProfile;

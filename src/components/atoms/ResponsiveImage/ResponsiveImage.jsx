@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
-import { useAnimation } from '@context/AnimationContext';
+import { useMotionEnabled } from '@utils/motion';
 import useIntersectionObserver from '@hooks/useIntersectionObserver';
 import '@assets/css/tailwind.css';
 import './ResponsiveImage.css';
@@ -9,7 +9,7 @@ import './ResponsiveImage.css';
 /**
  * ResponsiveImage component for optimized image loading with lazy loading,
  * placeholder support, and animation capabilities.
- * Updated with security-themed variants and AnimationContext integration.
+ * Updated with security-themed variants.
  *
  * @component
  * @param {Object} props - Component props
@@ -20,12 +20,13 @@ import './ResponsiveImage.css';
  * @param {string} [props.placeholderSrc] - Low-quality placeholder image to show while loading
  * @param {boolean} [props.lazy=true] - Whether to lazy load the image
  * @param {string} [props.objectFit='cover'] - CSS object-fit property
- * @param {Object} [props.animation] - Framer Motion animation properties (deprecated, use AnimationContext)
+ * @param {Object} [props.animation] - Framer Motion animation properties (legacy override)
  * @param {number} [props.threshold=0.1] - Intersection observer threshold (0-1)
  * @param {Function} [props.onLoad] - Callback when image is loaded
  * @param {Function} [props.onError] - Callback when image fails to load
  * @param {string} [props.sizes] - Sizes attribute for responsive images
  * @param {string} [props.srcSet] - SrcSet attribute for responsive images
+ * @param {boolean} [props.animated=true] - Whether to animate the image as it loads
  * @returns {React.ReactElement} ResponsiveImage component
  * 
  * @example
@@ -50,13 +51,14 @@ const ResponsiveImage = ({
   onError,
   sizes,
   srcSet,
+  animated = true,
   ...rest
 }) => {
   const [isLoaded, setIsLoaded] = useState(!lazy);
   const [isError, setIsError] = useState(false);
   const [ref, isVisible] = useIntersectionObserver({ threshold });
   const [currentSrc, setCurrentSrc] = useState(placeholderSrc || '');
-  const { animationEnabled, prefersReducedMotion, fadeInVariants } = useAnimation();
+  const motionOn = useMotionEnabled(animated);
   
   // Image classes
   const imageClasses = [
@@ -147,7 +149,7 @@ const ResponsiveImage = ({
   // Determine which animation to use
   const getAnimationProps = () => {
     // If animations are disabled or reduced motion is preferred, use minimal animation
-    if (!animationEnabled || prefersReducedMotion) {
+    if (!motionOn) {
       return {
         initial: { opacity: isLoaded ? 1 : 0.7 },
         animate: { opacity: isLoaded ? 1 : 0.7 },
@@ -200,7 +202,8 @@ ResponsiveImage.propTypes = {
   onLoad: PropTypes.func,
   onError: PropTypes.func,
   sizes: PropTypes.string,
-  srcSet: PropTypes.string
+  srcSet: PropTypes.string,
+  animated: PropTypes.bool
 };
 
 export default ResponsiveImage;

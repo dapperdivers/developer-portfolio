@@ -17,7 +17,7 @@ const SECURITY_DOMAINS = {
 // Security level constants (1-5 scale)
 const SECURITY_LEVELS = {
   BASIC: 1,
-  INTERMEDIATE: 2, 
+  INTERMEDIATE: 2,
   ADVANCED: 3,
   EXPERT: 4,
   MASTER: 5
@@ -59,12 +59,12 @@ const validateUrl = (url) => {
 // Sanitize text content with recursive sanitization to prevent incomplete sanitization attacks
 const sanitizeText = (text) => {
     if (typeof text !== 'string') return '';
-    
+
     // Create a safe version by using the browser's built-in HTML escaping
     const div = document.createElement('div');
     div.textContent = text;
     const safeText = div.innerHTML;
-    
+
     // Alternative approach for server-side rendering where DOM might not be available
     const recursiveSanitize = (str) => {
         const originalStr = str;
@@ -76,7 +76,7 @@ const sanitizeText = (text) => {
         // If sanitization made changes, run again to catch nested tags
         return sanitized !== originalStr ? recursiveSanitize(sanitized) : sanitized.trim();
     };
-    
+
     // Use DOM-based approach if available, otherwise use recursive regex
     return typeof document !== 'undefined' ? safeText.trim() : recursiveSanitize(text);
 };
@@ -120,6 +120,12 @@ export const contact = {
 export const socialLinks = {
     github: validateUrl("https://github.com/DapperDivers"),
     linkedin: validateUrl("https://www.linkedin.com/in/dmackley/"),
+};
+
+// Everything the SocialLinks block shows, in the shape it takes as a prop
+export const profileLinks = {
+    ...socialLinks,
+    contactCard: contact.vcfLink,
 };
 
 export const skillsSection = {
@@ -413,7 +419,7 @@ export const experience = [
 	{
 		role: "Senior Software Engineer",
 		company: "Satcom Direct",
-		companylogo: "https://ui-avatars.com/api/?name=SD&background=FF4D4D&color=fff&bold=true", 
+		companylogo: "https://ui-avatars.com/api/?name=SD&background=FF4D4D&color=fff&bold=true",
 		date: "July 2020 – February 2021",
 		url: "https://www.satcomdirect.com",
 		desc: "Developed secure aviation communication software with emphasis on high availability and reliability for mission-critical systems where security failures could have significant safety implications.",
@@ -433,7 +439,7 @@ export const experience = [
 		url: "https://www.ubicquia.com",
 		desc: "Led development of enterprise IoT platform for managing cellular-connected smart city devices with emphasis on secure device communication and cloud infrastructure.",
 		descBullets: [
-			"Developed secure PHP Laravel API and Angular frontend with comprehensive authentication system", 
+			"Developed secure PHP Laravel API and Angular frontend with comprehensive authentication system",
 			"Created automation frameworks, MQTT broker connections, and Python APIs for secure device management",
 			"Orchestrated secure cloud migration from Azure to GCP, resulting in $500K annual cost savings",
 			"Configured Linux environments and wrote Ansible scripts for automated, secure deployments",
@@ -448,7 +454,7 @@ export const experience = [
 		url: "https://www.medicomp.com",
 		desc: "Led development team for healthcare applications handling sensitive patient data, with focus on modernizing legacy systems while ensuring HIPAA compliance and data protection.",
 		descBullets: [
-			"Improved direct-to-consumer healthcare reporting website for nationwide doctor access", 
+			"Improved direct-to-consumer healthcare reporting website for nationwide doctor access",
 			"Implemented security best practices while maintaining compatibility with legacy WebForms and jQuery systems",
 			"Led team of four developers, prioritizing work and ensuring quality across healthcare applications",
 			"Enhanced security for Azure-hosted healthcare data analytics platform handling sensitive ECG patient data",

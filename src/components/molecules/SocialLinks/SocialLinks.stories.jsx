@@ -6,6 +6,7 @@ const sampleLinks = {
   both: {
     github: 'https://github.com/username',
     linkedin: 'https://www.linkedin.com/in/username',
+    contactCard: '/contact/Example_Person.vcf',
   },
   githubOnly: {
     github: 'https://github.com/username',
@@ -13,7 +14,9 @@ const sampleLinks = {
   linkedinOnly: {
     linkedin: 'https://www.linkedin.com/in/username',
   },
-  none: {},
+  contactCardOnly: {
+    contactCard: '/contact/Example_Person.vcf',
+  },
 };
 
 export default {
@@ -24,8 +27,8 @@ export default {
     docs: {
       description: {
         component:
-          'A row of round icon links: GitHub and LinkedIn from the `links` prop (falling back to the site data in `portfolio.js`), ' +
-          'followed by a contact card download. The contact card comes from the site data and is always shown. ' +
+          'A row of round icon links: GitHub, LinkedIn and a contact card download, all from the `links` prop. ' +
+          'An icon shows only if its link is given. The block reads no site data itself. ' +
           'Each link has an `aria-label`, since the links are icon-only.',
       },
     },
@@ -33,7 +36,7 @@ export default {
   argTypes: {
     links: {
       control: 'object',
-      description: 'Social link URLs (`github`, `linkedin`). A missing key hides that icon.',
+      description: 'URLs for `github`, `linkedin` and `contactCard` (a vCard to download). A missing key hides that icon.',
     },
     animated: {
       control: 'boolean',
@@ -113,7 +116,7 @@ export const LinkedInOnly = {
  */
 export const ContactCardOnly = {
   args: {
-    links: sampleLinks.none,
+    links: sampleLinks.contactCardOnly,
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);

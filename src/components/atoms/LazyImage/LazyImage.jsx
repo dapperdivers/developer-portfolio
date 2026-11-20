@@ -2,7 +2,7 @@ import React, { useState, useRef, memo } from 'react';
 import PropTypes from 'prop-types';
 import { motion, AnimatePresence } from 'framer-motion';
 import useIntersectionObserver from '@hooks/useIntersectionObserver';
-import { useAnimation } from '@context/AnimationContext';
+import { useMotionEnabled } from '@utils/motion';
 import '@assets/css/tailwind.css';
 import './LazyImage.css';
 
@@ -22,6 +22,7 @@ import './LazyImage.css';
  * @param {string} [props.aspectRatio] - Aspect ratio to maintain (e.g., '16:9', '4:3', '1:1')
  * @param {Function} [props.onLoad] - Callback when image loads
  * @param {Function} [props.onError] - Callback when image fails to load
+ * @param {boolean} [props.animated=true] - Whether to animate loading transitions
  * @returns {React.ReactElement} LazyImage component
  */
 const LazyImage = ({
@@ -33,7 +34,8 @@ const LazyImage = ({
   imgProps = {},
   aspectRatio,
   onLoad,
-  onError
+  onError,
+  animated = true
 }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
@@ -43,11 +45,7 @@ const LazyImage = ({
   });
   const imageRef = useRef(null);
   
-  // Get animation context values
-  const { animationEnabled, fadeInVariants, prefersReducedMotion } = useAnimation();
-  
-  // Determine if animations should run
-  const shouldAnimate = animationEnabled && !prefersReducedMotion;
+  const shouldAnimate = useMotionEnabled(animated);
   
   // Calculate aspect ratio styles if provided
   const aspectRatioStyle = {};
@@ -215,7 +213,8 @@ LazyImage.propTypes = {
   imgProps: PropTypes.object,
   aspectRatio: PropTypes.string,
   onLoad: PropTypes.func,
-  onError: PropTypes.func
+  onError: PropTypes.func,
+  animated: PropTypes.bool
 };
 
 export default memo(LazyImage);

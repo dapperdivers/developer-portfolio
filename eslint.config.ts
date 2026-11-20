@@ -124,19 +124,19 @@ const config: ESLintFlatConfig[] = [
   {
     // Building blocks must render with no provider around them: atoms and
     // molecules take everything through props. Only organisms and layout read
-    // app context or portfolio data. A warning until the existing violations
-    // are converted, then an error.
+    // app context or portfolio data.
     files: ["src/components/atoms/**", "src/components/molecules/**"],
     ignores: ["**/*.stories.*", "**/*.test.*", "**/__mocks__/**"],
     rules: {
-      "no-restricted-imports": ["warn", {
+      "no-restricted-imports": ["error", {
         patterns: [
           {
-            group: ["@context/*", "**/context/*"],
+            group: ["@context/**", "**/context/**"],
             message: "Atoms and molecules must not read app context. Take the value as a prop from the organism."
           },
           {
-            group: ["@hooks/*", "**/hooks/*"],
+            // useIntersectionObserver is a generic UI hook with no app state
+            group: ["@hooks/*", "**/hooks/*", "!@hooks/useIntersectionObserver", "!**/hooks/useIntersectionObserver"],
             message: "Atoms and molecules must not use app data hooks. Take the data as props."
           },
           {

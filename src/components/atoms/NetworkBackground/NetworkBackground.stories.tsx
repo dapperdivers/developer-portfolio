@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import NetworkBackground from './NetworkBackground';
-import { AnimationProvider } from '@context/AnimationContext';
 
 const meta = {
   title: 'Atoms/NetworkBackground',
@@ -18,6 +17,7 @@ const meta = {
   },
   tags: ['autodocs'],
   argTypes: {
+    animated: { control: 'boolean', description: 'Play animations; reduced motion always turns them off' },
     gridSize: {
       control: { type: 'number', min: 10, max: 100, step: 5 },
       description: 'Base grid size for node placement'
@@ -37,17 +37,15 @@ const meta = {
   },
   decorators: [
     (Story) => (
-      <AnimationProvider>
-        <div style={{ width: '100vw', height: '100vh', position: 'relative' }}>
-          <Story />
-          <div className="relative z-10 p-8">
-            <h1 className="text-4xl font-bold mb-4 text-white">Network Background Demo</h1>
-            <p className="text-lg text-white/80">
-              Observe the animated network with hub nodes and data flows
-            </p>
-          </div>
+      <div style={{ width: '100vw', height: '100vh', position: 'relative' }}>
+        <Story />
+        <div className="relative z-10 p-8">
+          <h1 className="text-4xl font-bold mb-4 text-white">Network Background Demo</h1>
+          <p className="text-lg text-white/80">
+            Observe the animated network with hub nodes and data flows
+          </p>
         </div>
-      </AnimationProvider>
+      </div>
     )
   ]
 } satisfies Meta<typeof NetworkBackground>;

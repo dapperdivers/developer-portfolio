@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { useAnimation } from '@context/AnimationContext';
+import { useMotionEnabled } from '@utils/motion';
 import './MatrixStream.css';
 
 /**
@@ -27,6 +27,8 @@ interface MatrixStreamProps {
   className?: string;
   /** Whether to render as a background (default: false) */
   isBackground?: boolean;
+  /** Run the canvas animation (default: true) */
+  animated?: boolean;
   [key: string]: any;
 }
 
@@ -40,14 +42,15 @@ const MatrixStream = (props: MatrixStreamProps) => {
     height = 200,
     className = '',
     isBackground = false,
+    animated = true,
     ...rest
   } = props;
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const { animationEnabled, prefersReducedMotion } = useAnimation();
+  const motionOn = useMotionEnabled(animated);
 
   useEffect(() => {
-    if (!canvasRef.current || !animationEnabled || prefersReducedMotion) return;
+    if (!canvasRef.current || !motionOn) return;
 
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
@@ -109,7 +112,7 @@ const MatrixStream = (props: MatrixStreamProps) => {
     return () => {
       cancelAnimationFrame(animationFrame);
     };
-  }, [animationEnabled, prefersReducedMotion, color, fontSize, speed, moveSpeed, width, height]);
+  }, [motionOn, color, fontSize, speed, moveSpeed, width, height]);
 
   return (
     <motion.div 

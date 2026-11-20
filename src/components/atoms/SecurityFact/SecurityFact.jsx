@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FaTerminal } from 'react-icons/fa';
 import { motion } from 'framer-motion';
-import { useAnimation } from '@context/AnimationContext';
+import { slideUpVariants, useMotionEnabled } from '@utils/motion';
 import './SecurityFact.css';
 
 /**
@@ -22,10 +22,7 @@ const SecurityFact = ({
   animate = true,
   className = ''
 }) => {
-  const { animationEnabled, slideUpVariants } = useAnimation();
-  
-  // Use animation only if both component prop and context allow it
-  const shouldAnimate = animate && animationEnabled;
+  const shouldAnimate = useMotionEnabled(animate);
 
   return (
     <motion.div 

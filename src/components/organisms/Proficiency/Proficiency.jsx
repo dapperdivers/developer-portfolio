@@ -35,7 +35,7 @@ const ProgressBar = ({ skill, index }) => {
             ref={ref}
             variants={slideInVariant}
             initial={animationEnabled ? "hidden" : "visible"}
-            animate={shouldAnimate ? "visible" : "hidden"}
+            animate={!animationEnabled || shouldAnimate ? "visible" : "hidden"}
         >
             <div className="progress-label">
                 <span className="text-cyan-400 font-semibold">{skill.Stack}</span>

@@ -12,6 +12,7 @@ export default {
     }
   },
   argTypes: {
+    animated: { control: 'boolean', description: 'Play animations; reduced motion always turns them off' },
     show: {
       control: { type: 'boolean' },
       description: 'Whether to display the cursor'

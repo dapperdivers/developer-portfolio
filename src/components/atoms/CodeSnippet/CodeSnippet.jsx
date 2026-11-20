@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { motion } from 'framer-motion';
-import { useAnimation } from '@context/AnimationContext';
+import { motion, useReducedMotion } from 'framer-motion';
+import { useMotionEnabled } from '@utils/motion';
 import './CodeSnippet.css';
 
 /**
@@ -17,6 +17,7 @@ import './CodeSnippet.css';
  * @param {Object} [props.style={}] - Additional inline styles
  * @param {boolean} [props.isDecorative=false] - Whether this is a decorative element
  * @param {string} [props.ariaDescription] - Accessible description
+ * @param {boolean} [props.animated=true] - Play the entrance and hover animations
  * @returns {React.ReactElement} CodeSnippet component
  */
 const CodeSnippet = ({ 
@@ -28,10 +29,12 @@ const CodeSnippet = ({
   style = {},
   isDecorative = false,
   ariaDescription,
+  animated = true,
   ...rest
 }) => {
   const codeRef = useRef(null);
-  const { animationEnabled, prefersReducedMotion } = useAnimation();
+  const motionOn = useMotionEnabled(animated);
+  const reducedMotion = useReducedMotion();
 
   // Define animation variants
   const snippetVariants = {
@@ -54,7 +57,7 @@ const CodeSnippet = ({
       y: [0, 1, -1, 1, 0],
       transition: {
         duration: 0.2,
-        repeat: prefersReducedMotion ? 0 : 2,
+        repeat: reducedMotion ? 0 : 2,
         repeatType: "reverse",
         ease: "easeInOut",
         repeatDelay: 5,
@@ -117,10 +120,10 @@ const CodeSnippet = ({
       className={classes}
       style={style}
       data-testid="code-snippet"
-      initial={animationEnabled ? "hidden" : "visible"}
+      initial={motionOn ? "hidden" : "visible"}
       animate="visible"
       variants={snippetVariants}
-      whileHover={animationEnabled && !prefersReducedMotion && !isDecorative ? "glitch" : "idle"}
+      whileHover={motionOn && !isDecorative ? "glitch" : "idle"}
       {...a11yProps}
       {...rest}
     >
@@ -145,7 +148,8 @@ CodeSnippet.propTypes = {
   className: PropTypes.string,
   style: PropTypes.object,
   isDecorative: PropTypes.bool,
-  ariaDescription: PropTypes.string
+  ariaDescription: PropTypes.string,
+  animated: PropTypes.bool
 };
 
 export default memo(CodeSnippet);

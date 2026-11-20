@@ -1,7 +1,7 @@
 import React, { memo, useMemo } from "react";
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
-import { useAnimation } from '@context/AnimationContext';
+import { useMotionEnabled } from '@utils/motion';
 import Card from '@atoms/Card';
 import RatingStars from '@atoms/RatingStars';
 import FeedbackQuote from '@molecules/FeedbackQuote';
@@ -35,10 +35,8 @@ const FeedbackCard = ({ data, index = 0, animated = true }) => {
     rootMargin: "-50px 0px" 
   });
   
-  const { animationEnabled, getAnimationDelay } = useAnimation();
-  
-  // Only use animations if both props are enabled
-  const shouldAnimate = animated && animationEnabled;
+  // Animate only when the prop is on and reduced motion is not requested
+  const shouldAnimate = useMotionEnabled(animated);
   
   // Generate a rating based on the feedback length or use a default of 5
   const rating = data.rating || 5;

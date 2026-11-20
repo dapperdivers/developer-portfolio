@@ -26,6 +26,10 @@ export default {
       control: { type: 'object' },
       description: 'Location data object'
     },
+    animated: {
+      control: { type: 'boolean' },
+      description: 'Whether the status dot and data streams animate'
+    },
   },
 };
 

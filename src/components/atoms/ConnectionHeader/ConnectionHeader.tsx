@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { motion } from 'framer-motion';
-import { useAnimation } from '@context/AnimationContext';
+import { fadeInVariants, useMotionEnabled } from '@utils/motion';
 import './ConnectionHeader.css';
 
 export interface ConnectionHeaderProps {
@@ -17,7 +17,7 @@ export interface ConnectionHeaderProps {
 /**
  * Connection header component for timelines
  * Displays a cyberpunk-style secure connection header
- * Enhanced with framer-motion animations controlled by AnimationContext
+ * Animated with framer-motion; the `animate` prop switches it off
  * 
  * @component
  * @example
@@ -32,11 +32,7 @@ const ConnectionHeader: FC<ConnectionHeaderProps> = ({
   animate = true,
   variant = 'security'
 }) => {
-  // Get animation context values
-  const { animationEnabled, fadeInVariants } = useAnimation();
-  
-  // Only animate if both props and context allow it
-  const shouldAnimate = animate && animationEnabled;
+  const shouldAnimate = useMotionEnabled(animate);
   
   const variantClass = variant ? `secure-connection-start--${variant}` : '';
   

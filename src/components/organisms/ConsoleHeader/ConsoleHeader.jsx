@@ -134,6 +134,7 @@ const ConsoleHeader = ({
           onCloseClick={onCloseClick}
           onMinimizeClick={onMinimizeClick}
           onMaximizeClick={onMaximizeClick}
+          animated={animationEnabled}
         />
         
         <TerminalCommandLine
@@ -146,6 +147,7 @@ const ConsoleHeader = ({
           showCursor={showCursor}
           variant={variant}
           isLoading={isLoading}
+          animated={animationEnabled}
         />
         
         {/* Hidden text for screen readers that represents the full command */}

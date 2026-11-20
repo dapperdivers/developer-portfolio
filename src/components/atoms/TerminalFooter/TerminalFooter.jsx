@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
-import { useAnimation } from '@context/AnimationContext';
+import { useMotionEnabled } from '@utils/motion';
 import './TerminalFooter.css';
 
 const TerminalFooter = ({ 
@@ -9,9 +9,10 @@ const TerminalFooter = ({
   variant = 'default',
   expanded = false,
   className = '',
+  animated = true,
   ...props
 }) => {
-  const { animationEnabled } = useAnimation();
+  const motionOn = useMotionEnabled(animated);
 
   const footerClasses = [
     'terminal-footer',
@@ -45,7 +46,7 @@ const TerminalFooter = ({
       <motion.span 
         className="terminal-footer__cursor"
         variants={cursorVariants}
-        animate={animationEnabled ? "visible" : "hidden"}
+        animate={motionOn ? "visible" : "hidden"}
       >
         |
       </motion.span>
@@ -58,6 +59,7 @@ TerminalFooter.propTypes = {
   variant: PropTypes.oneOf(['default', 'secure', 'breach', 'critical']),
   expanded: PropTypes.bool,
   className: PropTypes.string,
+  animated: PropTypes.bool,
 };
 
 export default TerminalFooter;

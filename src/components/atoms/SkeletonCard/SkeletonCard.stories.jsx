@@ -37,6 +37,14 @@ export default {
         type: { summary: 'number' },
         defaultValue: { summary: 0 }
       }
+    },
+    animated: {
+      control: 'boolean',
+      description: 'Whether to animate the entrance and shimmer',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: true }
+      }
     }
   }
 };

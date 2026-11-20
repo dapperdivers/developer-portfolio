@@ -1,7 +1,5 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { AnimationProvider } from '@context/AnimationContext';
-import { PortfolioProvider } from '@context/PortfolioContext';
 import EducationCard from './EducationCard';
 import { vi } from 'vitest';
 
@@ -23,13 +21,7 @@ vi.mock('framer-motion', () => {
       div: ({ children, ...props }) => <div {...filterMotionProps(props)}>{children}</div>,
       h3: ({ children, ...props }) => <h3 {...filterMotionProps(props)}>{children}</h3>
     },
-    useAnimation: () => ({
-      start: vi.fn().mockResolvedValue(undefined),
-      stop: vi.fn(),
-      set: vi.fn(),
-      mount: vi.fn(),
-      unmount: vi.fn()
-    }),
+    useReducedMotion: () => false,
     AnimatePresence: ({ children }) => <div data-testid="animate-presence">{children}</div>
   };
 });
@@ -42,14 +34,8 @@ vi.mock('react-icons/fa', () => ({
   FaUniversity: () => <div data-testid="university-icon">🏛️</div>
 }));
 
-// Test wrapper component
-const TestWrapper = ({ children }) => (
-  <AnimationProvider>
-    <PortfolioProvider>
-      {children}
-    </PortfolioProvider>
-  </AnimationProvider>
-);
+// The card takes everything through props, so it renders with no provider
+const TestWrapper = ({ children }) => <>{children}</>;
 
 describe('EducationCard Component', () => {
   const mockEducation = {

@@ -26,6 +26,10 @@ export default {
       control: 'text',
       description: 'Additional CSS class',
     },
+    animated: {
+      control: 'boolean',
+      description: 'Whether to animate the card',
+    },
   },
   parameters: {
     docs: {

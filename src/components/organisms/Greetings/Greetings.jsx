@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FaDownload } from 'react-icons/fa';
 import Button from '@atoms/Button';
 import SocialLinks from '@molecules/SocialLinks';
+import { profileLinks } from '@/portfolio';
 import ScrollDown from '@atoms/ScrollDown';
 import useCallbackHandlers from '@/hooks/useCallbackHandlers';
 import { useAnimation, MotionVariants } from '@context//AnimationContext';
@@ -13,14 +14,14 @@ const Greetings = () => {
   const greetings = useGreetings();
   const { handleDownload } = useCallbackHandlers();
   const { animationEnabled, fadeInVariants, slideUpVariants } = useAnimation();
-  
+
   const scrollToNextSection = () => {
     const nextSection = document.querySelector('#greetings-section').nextElementSibling;
     if (nextSection) {
       nextSection.scrollIntoView({ behavior: 'smooth' });
     }
   };
-  
+
   const downloadResume = async (e) => {
     e.preventDefault();
     await handleDownload('/resume/Cybersecurity_2025.pdf', 'Cybersecurity_2025.pdf');
@@ -37,57 +38,57 @@ const Greetings = () => {
       }
     }
   };
-  
+
   const headingVariants = {
     hidden: { opacity: 0, y: -30 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
-      transition: { 
-        type: "spring", 
-        stiffness: 300, 
+      transition: {
+        type: "spring",
+        stiffness: 300,
         damping: 30,
-        duration: 0.8 
+        duration: 0.8
       }
     }
   };
-  
+
   const textVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
-      transition: { 
-        duration: 0.6 
+      transition: {
+        duration: 0.6
       }
     }
   };
-  
+
   const buttonVariants = {
     hidden: { opacity: 0, scale: 0.9 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       scale: 1,
-      transition: { 
-        duration: 0.4 
+      transition: {
+        duration: 0.4
       }
     },
-    hover: { 
+    hover: {
       scale: 1.05,
       boxShadow: "0 0 8px rgba(5, 213, 250, 0.5)",
-      transition: { 
-        duration: 0.2 
+      transition: {
+        duration: 0.2
       }
     }
   };
-  
+
   const glintVariants = {
     hidden: { x: "-100%", opacity: 0 },
     hover: {
       x: "100%",
       opacity: [0, 0.3, 0],
-      transition: { 
-        duration: 1.5 
+      transition: {
+        duration: 1.5
       }
     }
   };
@@ -118,29 +119,29 @@ const Greetings = () => {
             <div className="absolute bottom-0 left-0 w-6 md:w-8 h-0.5 bg-theme-cyan"></div>
             <div className="absolute bottom-0 left-0 w-0.5 h-6 md:h-8 bg-theme-cyan"></div>
           </div>
-          
+
           {/* Content with relative positioning for layering */}
           <div className="relative z-fixed">
-            <motion.h1 
+            <motion.h1
               variants={headingVariants}
               className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 md:mb-8 text-transparent bg-clip-text bg-linear-to-r/srgb from-theme-cyan to-primary"
               data-testid="greeting-heading"
             >
               {greetings.title}
             </motion.h1>
-            
+
             <div className="space-y-3 md:space-y-4">
-              <motion.p 
+              <motion.p
                 variants={textVariants}
-                className="text-lg sm:text-xl md:text-2xl max-w-3xl mx-auto leading-loose text-theme-offwhite opacity-90 px-2 sm:px-4" 
+                className="text-lg sm:text-xl md:text-2xl max-w-3xl mx-auto leading-loose text-theme-offwhite opacity-90 px-2 sm:px-4"
                 data-testid="title-text"
               >
                 {greetings.description}
               </motion.p>
             </div>
-            
+
             {/* Download resume button with cyberpunk styling */}
-            <motion.div 
+            <motion.div
               variants={buttonVariants}
               className="pt-6 md:pt-8 mb-4 md:mb-6"
             >
@@ -149,34 +150,34 @@ const Greetings = () => {
                 onClick={downloadResume}
                 icon="fa:download"
                 iconPosition="right"
-                animated={true}
+                animated={animationEnabled}
               >
                 Download Resume
               </Button>
             </motion.div>
-            
+
             {/* Social Links */}
-            <motion.div 
+            <motion.div
               variants={fadeInVariants}
               className="flex justify-center mt-2 md:mt-4"
             >
-              <SocialLinks />
+              <SocialLinks animated={animationEnabled} links={profileLinks} />
             </motion.div>
           </div>
         </motion.div>
       </div>
-      
+
       {/* Scroll down indicator using the ScrollDown atom component */}
-      <motion.div 
+      <motion.div
         variants={slideUpVariants}
         initial="hidden"
         animate={animationEnabled ? "visible" : "hidden"}
         transition={{ delay: 1.2 }}
       >
-        <ScrollDown onClick={scrollToNextSection} />
+        <ScrollDown onClick={scrollToNextSection} animated={animationEnabled} />
       </motion.div>
     </div>
   );
 }
- 
+
 export default Greetings;

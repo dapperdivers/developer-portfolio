@@ -206,6 +206,7 @@ const Skills = () => {
                   key={i} 
                   type="skill" 
                   index={i} 
+                  animated={animationEnabled}
                 />
               ))}
             </div>
@@ -254,6 +255,7 @@ const Skills = () => {
             title="Core Capabilities"
             variant="kitty"
             interactive={false}
+            animated={animationEnabled}
           />
           <motion.div 
             className="terminal-content"
@@ -292,6 +294,7 @@ const Skills = () => {
                     key={`skill-card-${skill.skillName}`}
                     skill={skill}
                     index={+index}
+                    animated={animationEnabled}
                     reducedMotion={!shouldAnimate}
                     onClick={handleSkillClick}
                   />
@@ -308,6 +311,7 @@ const Skills = () => {
           skill={expandedSkill}
           onClose={closeExpandedSkill}
           isVisible={true}
+          animated={animationEnabled}
         />
       )}
     </Section>

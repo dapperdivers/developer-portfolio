@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
-import { useAnimation } from '@context/AnimationContext';
+import { useMotionEnabled, fadeInVariants } from '@utils/motion';
 import ResponsiveImage from '@atoms/ResponsiveImage';
 import './FeedbackAuthor.css';
 
@@ -18,10 +18,8 @@ import './FeedbackAuthor.css';
  * @returns {React.ReactElement} FeedbackAuthor component
  */
 const FeedbackAuthor = ({ name, role, avatar, className = "", animated = true }) => {
-  const { animationEnabled, fadeInVariants } = useAnimation();
-  
-  // Only use animations if both props are enabled
-  const shouldAnimate = animated && animationEnabled;
+  // Animate only when the prop is on and reduced motion is not requested
+  const shouldAnimate = useMotionEnabled(animated);
   
   // Animation variants for staggered animation
   const containerVariants = {

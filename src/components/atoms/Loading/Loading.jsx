@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
 import './Loading.css';
-import { useAnimation, MotionVariants } from '@context/AnimationContext';
+import { useMotionEnabled } from '@utils/motion';
 
 /**
  * Loading component with security-themed variants
@@ -13,15 +13,17 @@ import { useAnimation, MotionVariants } from '@context/AnimationContext';
  * @param {string} [props.type='spinner'] - Loading animation type ('spinner', 'pulse', 'dots')
  * @param {string} [props.size='md'] - Size of the loading indicator (sm, md, lg)
  * @param {string} [props.className=''] - Additional CSS classes
+ * @param {boolean} [props.animated=true] - Whether the indicator animates; when off it is shown static
  * @returns {React.ReactElement} Loading component
  */
 const Loading = ({ 
     variant = '', 
     type = 'spinner', 
     size = 'md',
-    className = '' 
+    className = '',
+    animated = true
 }) => {
-    const { animationEnabled } = useAnimation();
+    const motionOn = useMotionEnabled(animated);
     
     // Size classes
     const sizeMap = {
@@ -150,8 +152,8 @@ const Loading = ({
             role="status"
             aria-live="polite"
             aria-busy="true"
-            initial="hidden"
-            animate={animationEnabled ? "visible" : "hidden"}
+            initial={motionOn ? "hidden" : "visible"}
+            animate="visible"
             variants={containerVariants}
         >
             {renderLoadingElement()}
@@ -164,7 +166,8 @@ Loading.propTypes = {
     variant: PropTypes.oneOf(['', 'security', 'terminal']),
     type: PropTypes.oneOf(['spinner', 'pulse', 'dots']),
     size: PropTypes.oneOf(['sm', 'md', 'lg']),
-    className: PropTypes.string
+    className: PropTypes.string,
+    animated: PropTypes.bool
 };
 
 export default Loading;

@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { getCoordinatesForLocation, formatPopupContent } from '../../../utils/geocodingUtils';
-import { useAnimation, MotionVariants } from '@context/AnimationContext';
+import { fadeInVariants, useMotionEnabled } from '@utils/motion';
 import './MapComponent.css';
 
 // Fix Leaflet default icon path issues
@@ -121,9 +121,10 @@ const createTileLayer = (mode) => L.tileLayer('https://{s}.tile.openstreetmap.or
  * @component
  * @param {Object} props - Component props
  * @param {string} props.location - Location name to geocode and display
+ * @param {boolean} [props.animated=true] - Whether the status indicator pulses
  * @returns {React.ReactElement} Map component
  */
-const MapComponent = ({ location }) => {
+const MapComponent = ({ location, animated = true }) => {
   const [mapError, setMapError] = useState(null);
   const [locationData, setLocationData] = useState(null);
   const [mapMode, setMapMode] = useState('dark'); // 'dark' or 'satellite'
@@ -135,8 +136,7 @@ const MapComponent = ({ location }) => {
   const locationCircle2Ref = useRef(null);
   const tileLayerRef = useRef(null);
   
-  // Get animation context
-  const { animationEnabled: isAnimationEnabled } = useAnimation();
+  const isAnimationEnabled = useMotionEnabled(animated);
   
   useEffect(() => {
     // Initialize map
@@ -380,7 +380,7 @@ const MapComponent = ({ location }) => {
       {mapError ? (
         <motion.div 
           className="map-error-message"
-          variants={MotionVariants.fadeIn}
+          variants={fadeInVariants}
           initial="hidden"
           animate="visible"
         >
@@ -595,7 +595,8 @@ const MapComponent = ({ location }) => {
 };
 
 MapComponent.propTypes = {
-  location: PropTypes.string.isRequired
+  location: PropTypes.string.isRequired,
+  animated: PropTypes.bool
 };
 
 export default MapComponent;

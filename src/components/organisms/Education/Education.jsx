@@ -186,6 +186,7 @@ const Education = () => {
               <EducationCard 
                 education={education}
                 index={index}
+                animated={animationEnabled}
               />
             </motion.div>
           ))}

@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, useAnimation } from 'framer-motion';
-import { useAnimation as useAppAnimation } from '@context/AnimationContext';
+import { useMotionEnabled } from '@utils/motion';
 import './HeaderName.css';
 
 /**
@@ -17,21 +17,24 @@ interface HeaderNameProps {
   name: string;
   /** Optional CSS class names to add to the component */
   className?: string;
+  /** Whether hovering starts the animation (default: true) */
+  animated?: boolean;
 }
 
 const HeaderName: React.FC<HeaderNameProps> = ({ 
   name, 
-  className = '' 
+  className = '',
+  animated = true
 }: HeaderNameProps) => {
   const controls = useAnimation();
-  const { animationEnabled } = useAppAnimation();
+  const motionOn = useMotionEnabled(animated);
 
   return (
     <motion.div
       className={`relative cyber-text-animation ${className}`.trim()}
       initial={{ opacity: 1 }}
       whileHover={{ opacity: 1 }}
-      onHoverStart={() => animationEnabled && controls.start('hover')}
+      onHoverStart={() => motionOn && controls.start('hover')}
       onHoverEnd={() => controls.start('initial')}
     >
       <h2 

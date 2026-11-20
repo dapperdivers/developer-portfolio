@@ -84,6 +84,10 @@ export default {
   component: EducationCard,
   tags: ['autodocs'],
   argTypes: {
+    animated: {
+      control: 'boolean',
+      description: 'Whether the card animates in and reacts to hover',
+    },
     education: {
       control: 'object',
       description: 'Education data object containing information about educational background',

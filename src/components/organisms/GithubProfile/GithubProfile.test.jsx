@@ -36,7 +36,10 @@ vi.mock('@molecules/GithubProfileCard', () => ({
 }));
 
 vi.mock('@/portfolio', () => ({
-  openSource: { githubUserName: 'octocat' }
+  greetings: { name: 'John Doe', title: 'Hi, I am' },
+  securityFacts: ['Security fact 1'],
+  openSource: { githubUserName: 'octocat' },
+  profileLinks: { github: 'https://github.com/octocat' }
 }));
 
 import GithubProfile from './GithubProfile';

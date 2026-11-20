@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
-import { useAnimation } from '@context/AnimationContext';
+import { useMotionEnabled, slideUpVariants } from '@utils/motion';
 import './FieldsOfStudy.css';
 
 /**
@@ -16,10 +16,8 @@ import './FieldsOfStudy.css';
  * @returns {React.ReactElement} FieldsOfStudy component
  */
 const FieldsOfStudy = ({ major, minor, className = "", animated = true }) => {
-  const { animationEnabled, slideUpVariants } = useAnimation();
-  
-  // Only use animations if both props are enabled
-  const shouldAnimate = animated && animationEnabled;
+  // Animate only when the prop is on and reduced motion is not requested
+  const shouldAnimate = useMotionEnabled(animated);
   
   // Item variants for staggered children
   const itemVariants = {

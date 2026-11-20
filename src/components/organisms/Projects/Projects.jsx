@@ -95,6 +95,7 @@ const Projects = () => {
               key={i} 
               type="project" 
               index={i} 
+              animated={animationEnabled}
             />
           ))}
         </motion.div>
@@ -142,6 +143,7 @@ const Projects = () => {
             key={`project-${data.name}-${i}`} 
             data={data} 
             index={i} 
+            animated={animationEnabled}
           />
         ))}
       </motion.div>

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
 import { FaMapMarkerAlt } from 'react-icons/fa';
 import Button from '@atoms/Button';
-import { useAnimation } from '@context/AnimationContext';
+import { fadeInVariants, useMotionEnabled } from '@utils/motion';
 import './ProfileError.css';
 
 /**
@@ -21,10 +21,7 @@ const ProfileError = ({
   onRetry,
   animate = true
 }) => {
-  const { animationEnabled, fadeInVariants } = useAnimation();
-  
-  // Only use animations if both props are enabled
-  const shouldAnimate = animate && animationEnabled;
+  const shouldAnimate = useMotionEnabled(animate);
 
   return (
     <motion.div 

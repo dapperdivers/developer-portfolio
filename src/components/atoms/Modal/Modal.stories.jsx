@@ -42,6 +42,10 @@ export default {
     showCloseButton: {
       control: 'boolean',
       description: 'Whether to show the close button'
+    },
+    animated: {
+      control: 'boolean',
+      description: 'Whether to animate the modal'
     }
   }
 };

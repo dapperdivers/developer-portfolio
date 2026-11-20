@@ -11,9 +11,10 @@ import './CertificationList.css';
  * @param {Object} props - Component props
  * @param {Array} props.certifications - Array of certification objects
  * @param {string} [props.className] - Additional CSS classes
+ * @param {boolean} [props.animated=true] - Passed to each badge
  * @returns {React.ReactElement} CertificationList component
  */
-const CertificationList = ({ certifications = [], className = "" }) => {
+const CertificationList = ({ certifications = [], className = "", animated = true }) => {
   if (!certifications || !certifications.length) return null;
   
   // Group certifications by issuer for better organization (optional)
@@ -39,6 +40,7 @@ const CertificationList = ({ certifications = [], className = "" }) => {
               issuer={cert.issuer}
               date={cert.date}
               credentialId={cert.credentialId}
+              animated={animated}
             />
           </div>
         ))}
@@ -64,7 +66,8 @@ CertificationList.propTypes = {
       credentialId: PropTypes.string
     })
   ),
-  className: PropTypes.string
+  className: PropTypes.string,
+  animated: PropTypes.bool
 };
 
 export default CertificationList;

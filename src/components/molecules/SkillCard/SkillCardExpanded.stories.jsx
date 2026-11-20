@@ -54,6 +54,10 @@ export default {
       action: 'closed',
       description: 'Function called when the expanded view is closed',
     },
+    animated: {
+      control: 'boolean',
+      description: 'Whether to animate the modal and its content',
+    },
   },
   args: {
     isVisible: true,

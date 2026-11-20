@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
-import { useAnimation } from '@context/AnimationContext';
+import { useMotionEnabled } from '@utils/motion';
 import './FeedbackHighlight.css';
 
 /**
@@ -15,12 +15,10 @@ import './FeedbackHighlight.css';
  * @returns {React.ReactElement} FeedbackHighlight component
  */
 const FeedbackHighlight = ({ text, className = "", animated = true }) => {
+  // Animate only when the prop is on and reduced motion is not requested
+  const shouldAnimate = useMotionEnabled(animated);
+
   if (!text) return null;
-  
-  const { animationEnabled } = useAnimation();
-  
-  // Only use animations if both props are enabled
-  const shouldAnimate = animated && animationEnabled;
   
   // Animation variants
   const containerVariants = {

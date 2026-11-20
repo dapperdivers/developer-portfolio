@@ -4,6 +4,7 @@ import { FaHeart } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAnimation } from '@context//AnimationContext';
 import SocialLinks from '@molecules/SocialLinks';
+import { profileLinks } from '@/portfolio';
 import useFooter from '@hooks/useFooter';
 import useCallbackHandlers from '@/hooks/useCallbackHandlers';
 import './Footer.css';
@@ -11,7 +12,7 @@ import './Footer.css';
 /**
  * Footer component with essential information and links in a concise format.
  * Enhanced with framer-motion animations.
- * 
+ *
  * @component
  * @returns {React.ReactElement} Footer component
  */
@@ -19,15 +20,15 @@ const Footer = () => {
   const { currentYear, greetings } = useFooter();
   const { handleDownload } = useCallbackHandlers();
   const { animationEnabled } = useAnimation();
-  
+
   // Animation variants for footer elements
   const footerVariants = {
-    hidden: { 
+    hidden: {
       opacity: 0,
       y: 20
     },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
       transition: {
         duration: 0.5,
@@ -37,29 +38,29 @@ const Footer = () => {
       }
     }
   };
-  
+
   const itemVariants = {
-    hidden: { 
-      opacity: 0, 
-      y: 10 
+    hidden: {
+      opacity: 0,
+      y: 10
     },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
       transition: {
         duration: 0.3
       }
     }
   };
-  
+
   const linkHoverVariants = {
-    hover: { 
-      scale: 1.05, 
+    hover: {
+      scale: 1.05,
       color: "var(--color-white)",
       transition: { duration: 0.2 }
     }
   };
-  
+
   const heartVariants = {
     pulse: {
       scale: [1, 1.1, 1],
@@ -70,15 +71,15 @@ const Footer = () => {
       }
     }
   };
-  
+
   const downloadContactCard = (e) => {
     e.preventDefault();
     handleDownload('/contact/Derek_Mackley.vcf', 'Derek_Mackley.vcf');
   };
-  
+
   return (
-    <motion.footer 
-      className="text-gray-200 py-6 border-t border-gray-800" 
+    <motion.footer
+      className="text-gray-200 py-6 border-t border-gray-800"
       role="contentinfo"
       data-testid="footer"
       initial={animationEnabled ? "hidden" : false}
@@ -88,7 +89,7 @@ const Footer = () => {
       <div className="container mx-auto px-4">
         <div className="flex flex-wrap items-center justify-between">
           {/* Copyright and Made with */}
-          <motion.div 
+          <motion.div
             className="w-full md:w-auto mb-3 md:mb-0 text-center md:text-left"
             variants={itemVariants}
           >
@@ -97,7 +98,7 @@ const Footer = () => {
             </span>
             <span className="text-sm hidden md:inline-block">
               Made with {' '}
-              <motion.span 
+              <motion.span
                 variants={heartVariants}
                 animate={animationEnabled ? "pulse" : false}
               >
@@ -106,9 +107,9 @@ const Footer = () => {
               {' '} using React
             </span>
           </motion.div>
-          
+
           {/* Essential Links */}
-          <motion.div 
+          <motion.div
             className="w-full md:w-auto mb-3 md:mb-0 text-center md:text-right"
             variants={itemVariants}
           >
@@ -118,13 +119,13 @@ const Footer = () => {
                        item === "Resume" ? (greetings.resumeLink || "/files/Cybersecurity_2025.pdf") :
                        item === "Contact Card" ? "/contact/Derek_Mackley.vcf" :
                        `#${item.toLowerCase()}`;
-                
+
                 const handleClick = item === "Contact Card" ? downloadContactCard : undefined;
-                
+
                 return (
-                  <motion.a 
+                  <motion.a
                     key={item}
-                    href={href} 
+                    href={href}
                     className="text-gray-400 hover:text-white text-sm mx-2 my-1 inline-block whitespace-nowrap"
                     onClick={handleClick}
                     whileHover={animationEnabled ? linkHoverVariants.hover : false}
@@ -137,19 +138,19 @@ const Footer = () => {
               })}
             </AnimatePresence>
           </motion.div>
-          
+
           {/* Social Links */}
-          <motion.div 
+          <motion.div
             className="w-full md:w-auto text-center md:text-right"
             variants={itemVariants}
           >
-            <SocialLinks className="justify-center md:justify-end" />
-            <motion.span 
+            <SocialLinks className="justify-center md:justify-end" links={profileLinks} />
+            <motion.span
               className="text-sm md:hidden block mt-3"
               variants={itemVariants}
             >
               Made with {' '}
-              <motion.span 
+              <motion.span
                 variants={heartVariants}
                 animate={animationEnabled ? "pulse" : false}
               >
