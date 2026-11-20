@@ -1,263 +1,152 @@
 import React from 'react';
-import { Meta, StoryObj } from '@storybook/react-vite';
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { linkTo } from '@storybook/addon-links';
+import { expect, within } from 'storybook/test';
 
 /**
- * # Developer Portfolio Storybook Introduction
- * 
- * This Storybook serves as a component library and development environment for the
- * Developer Portfolio project. It provides an organized showcase of all UI components
- * and patterns used throughout the application.
- * 
- * ## Storybook Organization in This Project
- * 
- * Our stories follow a standardized structure based on Atomic Design principles:
- * - **Atoms**: Basic UI elements like buttons, inputs, and cards
- * - **Molecules**: Combinations of atoms forming more complex components
- * - **Organisms**: Complex components composed of molecules and atoms
- * - **Layout**: Components that define page layouts and structure
- * 
- * ## How Stories Are Organized
- * 
- * Stories are co-located with their components following our project structure:
- * ```
- * src/components/[type]/[ComponentName]/
- * ├── [ComponentName].jsx       # Component implementation
- * ├── [ComponentName].css       # Component styles
- * ├── [ComponentName].stories.jsx # Storybook stories
- * ├── [ComponentName].test.jsx  # Component tests
- * └── index.js                  # Re-exports the component
- * ```
- * 
- * ## Creating New Stories
- * 
- * We have a dedicated script for generating stories:
- * ```
- * yarn generate-story --component=ComponentName --type=atom [options]
- * ```
- * 
- * Options include:
- * - `--interactions`: Add interaction tests
- * - `--context`: Add context support (portfolio, theme)
- * - `--detailed`: Add detailed documentation
- * - `--tsx`: Generate TypeScript story
- * 
- * ## Atomic Design Structure in Action
- * 
- * The Developer Portfolio follows strict atomic design principles. Here's how our 
- * terminal/console components are properly structured:
- * 
- * ### Atoms (Building Blocks)
- * - **TerminalControls**: Terminal window control buttons
- * - **TerminalCursor**: Blinking cursor element
- * - **TerminalPrompt**: Command prompt text
- * 
- * ### Molecules (Combined Atoms)
- * - **TerminalTitleBar**: TerminalControls + title display
- * - **TerminalCommandLine**: TerminalPrompt + command/input + TerminalCursor
- * 
- * ### Organisms (Complete Functional Units)
- * - **ConsoleHeader**: Complete terminal interface using the above molecules
- * 
- * ## Using Components for Theming
- * 
- * The Developer Portfolio includes several specialized components 
- * that can be combined to create immersive, tech-themed backgrounds and UI elements:
- * - **MatrixBackground**: Creates a Matrix-style falling code animation
- * - **BinaryStream**: Displays flowing binary data for a cyber aesthetic
- * - **CodeSnippet**: Shows formatted code blocks with syntax highlighting
- * - **NetworkBackground**: Animated network node connections
- * - **GridBackground**: Cyberpunk-style grid overlays
- * 
- * These components can be layered to create dynamic, interactive backgrounds
- * that enhance the tech/hacker aesthetic of the portfolio.
+ * Landing page for the component library.
  */
 
-interface IntroductionProps {}
+const mono = 'var(--font-family-jetbrains)';
 
-const Introduction: React.FC<IntroductionProps> = () => (
-  <div style={{ 
-    padding: '20px',
-    maxWidth: '800px',
-    margin: '0 auto',
-    fontFamily: 'Arial, sans-serif',
-    color: '#333'
-  }}>
-    <h1 style={{ color: '#0062cc', borderBottom: '1px solid #ddd', paddingBottom: '10px' }}>
-      Developer Portfolio Storybook Guide
-    </h1>
-    
-    <p>
-      Welcome to the Storybook for the Developer Portfolio project.
-      This guide explains how we use Storybook to develop, document, and test our components.
-    </p>
-    
-    <h2 style={{ marginTop: '24px', color: '#0062cc' }}>Storybook Structure</h2>
-    <p>
-      Our stories are organized following the Atomic Design methodology:
-    </p>
-    <ul style={{ lineHeight: '1.6' }}>
-      <li><strong>Atoms</strong> - Basic UI elements like buttons, inputs, icons</li>
-      <li><strong>Molecules</strong> - Components combining multiple atoms</li>
-      <li><strong>Organisms</strong> - Complex UI sections combining molecules and atoms</li>
-      <li><strong>Layout</strong> - Page layouts, grids, and container components</li>
-    </ul>
-    
-    <h2 style={{ marginTop: '24px', color: '#0062cc' }}>Story Authoring Conventions</h2>
-    <p>
-      Each story should follow these conventions:
-    </p>
-    <ul style={{ lineHeight: '1.6' }}>
-      <li>Use the autodocs tag for automatic documentation generation</li>
-      <li>Include multiple story variants showing different component states</li>
-      <li>Provide JSDoc comments for props and component descriptions</li>
-      <li>Include controls for interactive testing</li>
-      <li>Add interaction tests for critical user flows</li>
-    </ul>
-    
-    <div style={{ 
-      background: '#f5f5f5', 
-      padding: '15px', 
-      borderRadius: '5px',
-      marginTop: '20px',
-      borderLeft: '4px solid #0062cc'
-    }}>
-      <h3 style={{ margin: '0 0 10px 0' }}>Story File Template</h3>
-      <pre style={{ overflow: 'auto', background: '#f8f8f8', padding: '10px', margin: '0', fontSize: '14px' }}>
-{`import React from 'react';
-import ComponentName from './ComponentName';
-import { within, userEvent, expect } from 'storybook/test';
-
-export default {
-  title: 'Category/ComponentName',
-  component: ComponentName,
-  tags: ['autodocs'],
-  argTypes: {
-    // Define control types for props
+const LAYERS = [
+  {
+    name: 'Foundations',
+    summary: 'Design tokens for colour, type, spacing, shape and motion, documented from the live stylesheet.',
+    target: ['Foundations/Colors', 'Palette'],
   },
-  parameters: {
-    // Additional configuration
-  }
+  {
+    name: 'Atoms',
+    summary: 'Single-purpose pieces: buttons, badges, progress bars, terminal cursor and prompt.',
+    target: ['Atoms/Button', 'Default'],
+  },
+  {
+    name: 'Molecules',
+    summary: 'Atoms composed into units with one job: a skill card, a timeline entry, a terminal title bar.',
+    target: ['Molecules/SkillCard', 'Default'],
+  },
+  {
+    name: 'Organisms',
+    summary: 'Whole page sections that read portfolio data from context: experience, education, projects.',
+    target: ['Organisms/Experience', 'Default'],
+  },
+] as const;
+
+const PRACTICES = [
+  ['Tokens, not values', 'Components reference CSS custom properties, and the Foundations pages render those same properties, so the documentation cannot drift from the implementation.'],
+  ['Stories are tests', 'Stories with a play function assert behaviour in a real browser: focus order, callbacks, scroll states.'],
+  ['Motion is optional', 'Animated components read one context flag, so reduced-motion preferences are honoured everywhere at once.'],
+  ['Offline by default', 'Stories use generated placeholder images and mock data, so they render the same with no network.'],
+] as const;
+
+const STACK = ['React 19', 'Vite 8', 'Tailwind CSS 4', 'TypeScript', 'Framer Motion', 'Storybook 10', 'Vitest'];
+
+const card: React.CSSProperties = {
+  display: 'block',
+  width: '100%',
+  padding: 'var(--spacing-4)',
+  textAlign: 'left',
+  borderRadius: 'var(--border-radius-lg)',
+  border: '1px solid rgba(var(--color-primary-rgb), 0.25)',
+  background: 'var(--color-background-alt)',
+  color: 'var(--color-text)',
+  font: 'inherit',
+  cursor: 'pointer',
 };
 
-export const Default = {
-  args: {
-    // Default props
-  }
+const heading: React.CSSProperties = {
+  margin: 'var(--spacing-8) 0 var(--spacing-4)',
+  paddingBottom: 'var(--spacing-2)',
+  borderBottom: '1px solid var(--color-border)',
+  fontFamily: 'var(--font-family-inter)',
+  fontSize: 'var(--font-size-lg)',
+  fontWeight: 600,
 };
 
-export const Variant = {
-  args: {
-    // Variant props
-  }
-};
-
-// Interaction tests
-export const WithInteractions = {
-  play: async ({ canvasElement }) => {
-    // Test interactions
-  }
-};`}
-      </pre>
-    </div>
-    
-    <h2 style={{ marginTop: '24px', color: '#0062cc' }}>Atomic Design Example: Terminal Components</h2>
-    <p>
-      Here's a perfect example of our atomic design structure using terminal components:
+const Introduction: React.FC = () => (
+  <div
+    style={{
+      maxWidth: 960,
+      margin: '0 auto',
+      padding: 'var(--spacing-8) var(--spacing-5) var(--spacing-9)',
+      color: 'var(--color-text)',
+      fontFamily: 'var(--font-family-base)',
+      textAlign: 'left',
+    }}
+  >
+    <p style={{ margin: 0, fontFamily: mono, fontSize: 'var(--font-size-xs)', letterSpacing: 'var(--letter-spacing-technical)', textTransform: 'uppercase', color: 'var(--color-primary)' }}>
+      derekmackley.com / component library
     </p>
-    <div style={{ 
-      background: '#f0f8ff', 
-      padding: '15px', 
-      borderRadius: '5px',
-      marginTop: '15px',
-      borderLeft: '4px solid #0062cc'
-    }}>
-      <h3 style={{ margin: '0 0 10px 0' }}>Proper Atomic Structure</h3>
-      <pre style={{ overflow: 'auto', background: '#f8f8f8', padding: '10px', margin: '0', fontSize: '14px' }}>
-{`// ATOMS (Single purpose, minimal logic)
-import TerminalControls from '@atoms/TerminalControls';
-import TerminalCursor from '@atoms/TerminalCursor';
-import TerminalPrompt from '@atoms/TerminalPrompt';
-
-// MOLECULES (Combination of atoms)
-import TerminalTitleBar from '@molecules/TerminalTitleBar';
-import TerminalCommandLine from '@molecules/TerminalCommandLine';
-
-// ORGANISM (Complete functional unit)
-import ConsoleHeader from '@organisms/ConsoleHeader';`}
-      </pre>
-    </div>
-    
-    <h2 style={{ marginTop: '24px', color: '#0062cc' }}>Creating Tech-Themed Backgrounds</h2>
-    <p>
-      The portfolio comes with several components specifically designed for creating engaging, 
-      tech-themed backgrounds and UI elements:
+    <h1 style={{ margin: 'var(--spacing-2) 0 var(--spacing-4)', fontFamily: 'var(--font-family-inter)', fontSize: 'var(--font-size-h1)', fontWeight: 700, lineHeight: 'var(--line-height-tight)' }}>
+      The parts this portfolio is built from
+    </h1>
+    <p style={{ margin: 0, maxWidth: '62ch', fontSize: 'var(--font-size-md)', lineHeight: 'var(--line-height-base)', color: 'var(--color-offwhite)' }}>
+      Every piece of the site lives here in isolation, from a single design token up to a full page section. It is the
+      workbench the site is developed on, and a record of how it is put together.
     </p>
-    <ul style={{ lineHeight: '1.6' }}>
-      <li><strong>MatrixBackground</strong> - Creates a Matrix-style raining code effect</li>
-      <li><strong>BinaryStream</strong> - Displays animated binary data streams</li>
-      <li><strong>NetworkBackground</strong> - Animated network node connections</li>
-      <li><strong>GridBackground</strong> - Cyberpunk-style grid overlays</li>
-      <li><strong>CodeSnippet</strong> - Shows code with syntax highlighting</li>
-      <li><strong>ConsoleHeader</strong> - Complete terminal interface organism</li>
-    </ul>
-    
-    <div style={{ 
-      background: '#f0f8ff', 
-      padding: '15px', 
-      borderRadius: '5px',
-      marginTop: '20px',
-      borderLeft: '4px solid #0062cc'
-    }}>
-      <h3 style={{ margin: '0 0 10px 0' }}>Background Component Example</h3>
-      <p style={{ margin: '0 0 10px 0' }}>Here's how you might combine these components:</p>
-      <pre style={{ overflow: 'auto', background: '#f8f8f8', padding: '10px', margin: '0', fontSize: '14px' }}>
-{`import React from 'react';
-import MatrixBackground from '@atoms/decorations/MatrixBackground';
-import ConsoleHeader from '@organisms/ConsoleHeader';
-import CodeSnippet from '@atoms/CodeSnippet';
 
-const HackerThemedSection = ({ children }) => (
-  <div className="hacker-section">
-    <MatrixBackground opacity={0.15} speed={1.5} />
-    <div className="content-container">
-      <ConsoleHeader 
-        title="Portfolio::MainSection" 
-        interactive={true}
-        variant="security"
-      />
-      <div className="content">
-        {children}
-      </div>
-      <CodeSnippet 
-        language="javascript" 
-        code="console.log('Portfolio loaded successfully');" 
-      />
+    <h2 style={heading}>Where to look</h2>
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(210px, 1fr))', gap: 'var(--spacing-4)' }}>
+      {LAYERS.map(({ name, summary, target }) => (
+        <button key={name} type="button" style={card} onClick={linkTo(target[0], target[1])}>
+          <span style={{ display: 'block', fontFamily: mono, fontSize: 'var(--font-size-sm)', color: 'var(--color-primary)' }}>{name} →</span>
+          <span style={{ display: 'block', marginTop: 'var(--spacing-2)', fontSize: 'var(--font-size-sm)', lineHeight: 'var(--line-height-base)', color: 'var(--color-text-muted)' }}>
+            {summary}
+          </span>
+        </button>
+      ))}
     </div>
-  </div>
-);`}
-      </pre>
-    </div>
-    
-    <h2 style={{ marginTop: '24px', color: '#0062cc' }}>Generating Stories</h2>
-    <div style={{ 
-      background: '#e6f3ff', 
-      padding: '15px', 
-      borderRadius: '5px',
-      marginTop: '20px',
-      borderLeft: '4px solid #0062cc'
-    }}>
-      <h3 style={{ margin: '0 0 10px 0' }}>Story Generation Command</h3>
-      <p style={{ margin: '0 0 10px 0' }}>We have a dedicated script to generate new stories:</p>
-      <pre style={{ overflow: 'auto', background: '#f8f8f8', padding: '10px', margin: '0', fontSize: '14px' }}>
-{`yarn generate-story --component=Button --type=atom --interactions --detailed`}
-      </pre>
-    </div>
-    
-    <h2 style={{ marginTop: '24px', color: '#0062cc' }}>Storybook Development Commands</h2>
-    <ul style={{ lineHeight: '1.6' }}>
-      <li><code>yarn storybook</code> - Start Storybook development server (port 7000)</li>
-      <li><code>yarn build-storybook</code> - Build a static version for sharing</li>
+
+    <h2 style={heading}>How it is kept honest</h2>
+    <dl style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 'var(--spacing-5)', margin: 0 }}>
+      {PRACTICES.map(([term, detail]) => (
+        <div key={term}>
+          <dt style={{ fontWeight: 600 }}>{term}</dt>
+          <dd style={{ margin: 'var(--spacing-1) 0 0', fontSize: 'var(--font-size-sm)', lineHeight: 'var(--line-height-base)', color: 'var(--color-text-muted)' }}>{detail}</dd>
+        </div>
+      ))}
+    </dl>
+
+    <h2 style={heading}>Built with</h2>
+    <ul style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--spacing-2)', margin: 0, padding: 0, listStyle: 'none' }}>
+      {STACK.map((item) => (
+        <li
+          key={item}
+          style={{
+            padding: 'var(--spacing-1) var(--spacing-3)',
+            borderRadius: 'var(--border-radius-pill)',
+            border: '1px solid var(--color-border)',
+            fontFamily: mono,
+            fontSize: 'var(--font-size-xs)',
+            color: 'var(--color-offwhite)',
+          }}
+        >
+          {item}
+        </li>
+      ))}
     </ul>
+
+    <h2 style={heading}>Component layout</h2>
+    <pre
+      style={{
+        margin: 0,
+        padding: 'var(--spacing-4)',
+        overflow: 'auto',
+        borderRadius: 'var(--border-radius-lg)',
+        background: 'var(--color-navy)',
+        fontFamily: mono,
+        fontSize: 'var(--font-size-sm)',
+        lineHeight: 'var(--line-height-code)',
+        color: 'var(--color-offwhite)',
+      }}
+    >
+      {`src/components/<layer>/<Component>/
+├── Component.jsx           implementation
+├── Component.css           styles, tokens only
+├── Component.stories.jsx   states, controls, interaction tests
+├── Component.test.jsx      unit tests
+└── index.js                public export`}
+    </pre>
   </div>
 );
 
@@ -265,15 +154,18 @@ const meta: Meta<typeof Introduction> = {
   title: 'Introduction',
   component: Introduction,
   parameters: {
-    options: {
-      showPanel: false,
-    },
-  }
+    layout: 'fullscreen',
+    controls: { disable: true },
+    actions: { disable: true },
+  },
 };
-
 export default meta;
-type Story = StoryObj<typeof Introduction>;
 
-export const Main: Story = {
-  render: () => <Introduction />
+export const Main: StoryObj<typeof Introduction> = {
+  name: 'Welcome',
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByRole('heading', { level: 1 })).toBeVisible();
+    await expect(canvas.getAllByRole('button')).toHaveLength(4);
+  },
 };

@@ -6,13 +6,11 @@ import {
   withAnimationContext
 } from './utils';
 
-// Import global and design system styles only
+// Load the same fonts and global stylesheets, in the same order, as src/index.jsx,
+// so a component looks the same here as it does on the site.
+import '../src/utils/fontLoader';
 import '../src/assets/css/design-system/index.css';
-import '../src/assets/css/tailwind.css';
-import '../src/assets/css/utilities/index.css';
-import '../src/assets/css/typography.css';
-import '../src/assets/css/browser-fixes.css';
-import '../src/assets/css/global.css';
+import '../src/assets/css/index.css';
 
 // Note: Component-specific CSS files are now imported directly by each component
 // and don't need to be imported here. This follows the co-location principle
@@ -42,6 +40,11 @@ const preview: Preview = {
       ],
     },
     layout: 'centered',
+    options: {
+      storySort: {
+        order: ['Introduction', 'Foundations', ['Colors', 'Typography', 'Spacing and shape', 'Motion'], 'Atoms', 'Molecules', 'Organisms', 'Layout', 'Templates'],
+      },
+    },
   },
   
   // Global decorators applied to all stories

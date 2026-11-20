@@ -101,7 +101,7 @@ export const CustomStyling = {
     major: 'Digital Design',
     minor: 'Web Development',
     graduationDate: 'August 2024',
-    className: 'bg-gray-100 p-6 rounded-lg shadow-md',
+    className: 'bg-gray-900 border border-gray-700 p-6 rounded-lg shadow-md',
   },
 };
 

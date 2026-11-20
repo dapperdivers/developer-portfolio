@@ -80,7 +80,7 @@ export const WithFallbackFunction = {
   args: {
     children: <BuggyComponent shouldThrow={true} />,
     fallback: (error) => (
-      <div style={{ padding: '20px', backgroundColor: '#ffebee' }}>
+      <div style={{ padding: '20px', borderRadius: 'var(--border-radius-lg)', border: '1px solid var(--color-danger)', backgroundColor: 'rgba(var(--color-danger-rgb), 0.12)', color: 'var(--color-text)' }}>
         <h3>Function Fallback</h3>
         <p>{error?.message}</p>
       </div>
