@@ -63,39 +63,13 @@ export function createChunkStrategy() {
         return 'vendor-other';
       }
       
-      // Application code - separate by feature area
-      
-      // Context provider files - separate from utilities to allow better tree-shaking
-      if (id.includes('/src/context/')) {
-        return 'feature-context';
-      }
-      
-      // Component files - split by component type
-      if (id.includes('/src/components/')) {
-        if (id.includes('/atoms/')) {
-          return 'components-atoms';
-        } else if (id.includes('/molecules/')) {
-          return 'components-molecules';
-        } else if (id.includes('/organisms/')) {
-          return 'components-organisms';
-        } else if (id.includes('/layout/')) {
-          return 'components-layout';
-        }
-        return 'components-other';
-      }
-      
-      // Hooks layer
-      if (id.includes('/src/hooks/')) {
-        return 'feature-hooks';
-      }
-      
-      // Utilities - Split context utilities from other utils to allow tree-shaking
-      if (id.includes('/src/utils/')) {
-        if (id.includes('context')) {
-          return 'feature-context-utils';
-        }
-        return 'feature-utils';
-      }
+      // Application code is deliberately not split by hand. Stylesheets are
+      // emitted chunk by chunk, with a chunk's static imports before the chunk
+      // itself, so putting components in their own chunks placed every
+      // component stylesheet ahead of the global ones (design tokens, Tailwind,
+      // typography) imported first in src/index.jsx. The production cascade then
+      // differed from the dev server. Leaving app code to the bundler keeps the
+      // stylesheets in import order.
     }
   };
 }
