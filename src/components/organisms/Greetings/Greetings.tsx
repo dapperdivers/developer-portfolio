@@ -98,8 +98,8 @@ const Greetings = () => {
       <div className="container mx-auto px-container-x pt-24 pb-8 md:py-section-y">
         <motion.div
           variants={containerVariants}
-          initial="hidden"
-          animate={animationEnabled ? "visible" : "hidden"}
+          initial={animationEnabled ? "hidden" : false}
+          animate="visible"
           className="text-center p-card relative overflow-hidden"
         >
           {/* Cyberpunk decorative elements - Hide on very small screens */}
@@ -170,8 +170,8 @@ const Greetings = () => {
       {/* Scroll down indicator using the ScrollDown atom component */}
       <motion.div
         variants={slideUpVariants}
-        initial="hidden"
-        animate={animationEnabled ? "visible" : "hidden"}
+        initial={animationEnabled ? "hidden" : false}
+        animate="visible"
         transition={{ delay: 1.2 }}
       >
         <ScrollDown onClick={scrollToNextSection} animated={animationEnabled} />

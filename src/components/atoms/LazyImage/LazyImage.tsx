@@ -61,11 +61,10 @@ const LazyImage = ({
 }: LazyImageProps) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
-  // The hook does not type its return as a tuple, so it is asserted here
   const [ref, isInView] = useIntersectionObserver({
     rootMargin: '200px', // Load images 200px before they enter viewport
     threshold: 0.01
-  }) as [React.RefObject<HTMLDivElement | null>, boolean];
+  });
   const imageRef = useRef<HTMLImageElement>(null);
   
   const shouldAnimate = useMotionEnabled(animated);

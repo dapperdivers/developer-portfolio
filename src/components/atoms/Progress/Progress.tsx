@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion, HTMLMotionProps, MotionStyle, Variants } from 'framer-motion';
+import { motion, HTMLMotionProps, MotionStyle, type TargetAndTransition } from 'framer-motion';
 import { useMotionEnabled } from '@utils/motion';
 import './Progress.css';
 
@@ -28,7 +28,7 @@ export interface ProgressProps extends Omit<HTMLMotionProps<'div'>, 'color'> {
 
 /**
  * Custom Progress component with security-themed variants
- * 
+ *
  * @component
  */
 const Progress = ({
@@ -45,53 +45,37 @@ const Progress = ({
   ...rest
 }: ProgressProps) => {
   const stripesMoving = useMotionEnabled(animated);
-  
+
   // Convert string values to numbers if needed and calculate width as percentage
   const numericValue = typeof value === 'string' ? parseFloat(value) : value;
   const numericMax = typeof max === 'string' ? parseFloat(max) : max;
-  const percent = Math.round((numericValue / numericMax) * 100);
-  
-  // Define animation variants
-  const progressVariants: Variants = {
-    initial: { 
-      width: '0%'
+  // A missing or zero maximum, or a value that is not a number, shows as empty
+  const ratio = numericMax > 0 ? numericValue / numericMax : 0;
+  const percent = Number.isFinite(ratio) ? Math.min(100, Math.max(0, Math.round(ratio * 100))) : 0;
+
+  // The bar always grows to its value. Stripes, when on, are animated as a
+  // second property of the same element, so they cannot replace the width.
+  const barAnimation: TargetAndTransition = {
+    width: `${percent}%`,
+    ...(striped ? { backgroundPosition: stripesMoving ? ['1rem 0', '0 0'] : '1rem 0' } : {}),
+    transition: {
+      width: { duration: 0.8, ease: 'easeOut' },
+      ...(striped && stripesMoving ? { backgroundPosition: { duration: 1, ease: 'linear', repeat: Infinity, repeatType: 'loop' } } : {}),
     },
-    animate: { 
-      width: `${percent}%`,
-      transition: {
-        duration: 0.8,
-        ease: "easeOut"
-      }
-    }
   };
-  
-  const stripesVariants: Variants = {
-    static: {
-      backgroundPosition: "1rem 0"
-    },
-    animated: {
-      backgroundPosition: ["1rem 0", "0 0"],
-      transition: {
-        duration: 1,
-        ease: "linear",
-        repeat: Infinity,
-        repeatType: "loop"
-      }
-    }
-  };
-  
+
   // Construct class names
   const baseClassName = "tailwind-progress";
   const barBaseClassName = "tailwind-progress-bar";
   const colorClassName = `tailwind-progress-${color}`;
-  
+
   const combinedClassName = [
     baseClassName,
     variant ? `tailwind-progress-${variant}` : '',
     size ? `tailwind-progress-${size}` : '',
     className
   ].filter(Boolean).join(' ');
-  
+
   const combinedBarClassName = [
     barBaseClassName,
     colorClassName,
@@ -99,33 +83,24 @@ const Progress = ({
     // Remove animated class as we'll handle it with framer-motion
     barClassName
   ].filter(Boolean).join(' ');
-  
+
   return (
-    <motion.div 
-      className={combinedClassName} 
+    <motion.div
+      className={combinedClassName}
       style={style}
       role="progressbar"
       aria-valuenow={numericValue}
-      aria-valuemin={0} 
+      aria-valuemin={0}
       aria-valuemax={numericMax}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3 }}
       {...rest}
     >
-      <motion.div 
-        className={combinedBarClassName} 
-        variants={progressVariants}
-        initial="initial"
-        animate="animate"
-        // Apply stripes animation if animated is true and not reduced motion
-        {...(striped && stripesMoving ? {
-          variants: stripesVariants,
-          animate: "animated",
-        } : striped ? {
-          variants: stripesVariants,
-          animate: "static"
-        } : {})}
+      <motion.div
+        className={combinedBarClassName}
+        initial={{ width: '0%' }}
+        animate={barAnimation}
       />
       <span className="tailwind-progress-label">
         {percent}% complete

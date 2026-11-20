@@ -1,6 +1,6 @@
 /**
  * SkipToContent Component
- * 
+ *
  * Styles for the skip to content accessibility component with security-themed variants.
  */
 
@@ -10,7 +10,8 @@
   left: 0;
   padding: 0.75rem 1.25rem;
   background-color: var(--color-primary);
-  color: var(--color-white);
+  /* Navy on cyan is about 14:1; white on cyan was about 1.2:1 */
+  color: var(--color-navy);
   border-radius: 0 0 4px 0;
   font-weight: var(--font-weight-semibold);
   z-index: 9999;
@@ -87,7 +88,7 @@
     border: 1px solid ButtonText;
     box-shadow: none;
   }
-  
+
   .skip-to-content:focus,
   .skip-to-content-security:focus,
   .skip-to-content-terminal:focus {

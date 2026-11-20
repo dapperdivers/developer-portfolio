@@ -63,10 +63,6 @@ const Skills = () => {
   const isLoading = !skillsData;
   const hasError = skillsData && skillsSection.softwareSkills.length === 0;
   
-  // Skip rendering if explicitly disabled in config
-  if (portfolioData?.skillsSection?.display === false) {
-    return null;
-  }
   
   // Determine number of skeleton cards to show
   const skeletonCount = 12; // Reasonable default
@@ -194,6 +190,12 @@ const Skills = () => {
   }, [expandedSkill]);
   
   // Loading state
+  // Skip rendering if explicitly disabled in config. This has to come after
+  // every hook above, so the hooks run in the same order on each render.
+  if (portfolioData?.skillsSection?.display === false) {
+    return null;
+  }
+
   if (isLoading) {
     return (
       <Section

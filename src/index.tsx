@@ -1,5 +1,3 @@
-// DEBUG: Track React hydration flow
-console.log('[DEBUG] Starting React app initialization...');
 
 // Import browser compatibility fixes first
 import '@utils/browserFixes';
@@ -12,24 +10,17 @@ import '@utils/fontLoader';
 import '@assets/css/design-system/index.css';
 import '@assets/css/index.css';
 
-console.log('[DEBUG] CSS and utilities loaded');
-
 // Import React and ReactDOM directly - using standard named imports
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-
-console.log('[DEBUG] React imported successfully');
 
 // Import the main application
 // App already includes the DebugProvider setup internally
 // import TestApp from './TestApp';
 import App from './App';
 
-console.log('[DEBUG] App component imported, starting React render...');
-
 // Create root and render application
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
-console.log('[DEBUG] React root created');
 
 root.render(
   <React.StrictMode>
@@ -37,4 +28,3 @@ root.render(
   </React.StrictMode>
 );
 
-console.log('[DEBUG] React render initiated');
