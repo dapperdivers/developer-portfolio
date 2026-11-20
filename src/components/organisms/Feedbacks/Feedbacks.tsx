@@ -4,6 +4,7 @@ import FeedbackCard from '@molecules/FeedbackCard';
 import Section from '../../layout/Section';
 import useFeedback from "@hooks/useFeedback";
 import { useAnimation } from "@context/AnimationContext";
+import { slideUpVariants } from "@utils/motion";
 
 /**
  * Feedbacks section displaying testimonials and recommendations.
@@ -13,7 +14,7 @@ import { useAnimation } from "@context/AnimationContext";
  */
 const Feedbacks = () => {
   const feedbacks = useFeedback();
-  const { animationEnabled, slideUpVariants } = useAnimation();
+  const { animationEnabled } = useAnimation();
   
   // Animation config for framer-motion using AnimationContext
   const animation: MotionProps = {

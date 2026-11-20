@@ -16,12 +16,6 @@ vi.mock('axios', () => {
 vi.mock('@context/AnimationContext', () => ({
   useAnimation: () => ({
     animationEnabled: false,
-    animationStaggerDelay: 0,
-    fadeInVariants: { hidden: { opacity: 0 }, visible: { opacity: 1 } },
-    slideUpVariants: {
-      hidden: { opacity: 0, y: 20 },
-      visible: { opacity: 1, y: 0 }
-    }
   })
 }));
 

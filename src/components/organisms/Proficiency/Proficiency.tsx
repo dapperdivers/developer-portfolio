@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import { SkillBars } from "@/portfolio";
 import { motion, useInView, Variants } from "framer-motion";
 import { useAnimation } from "@context/AnimationContext";
+import { slideUpVariants, STAGGER_DELAY } from "@utils/motion";
 
 import Progress from '@atoms/Progress';
 import Section from '../../layout/Section';
@@ -18,7 +19,7 @@ interface ProgressBarProps {
 const ProgressBar = ({ skill, index }: ProgressBarProps) => {
     const ref = useRef<HTMLDivElement>(null);
     const isInView = useInView(ref, { once: true, margin: "-100px 0px" });
-    const { slideUpVariants, animationEnabled, animationStaggerDelay } = useAnimation();
+    const { animationEnabled } = useAnimation();
     
     // Create a custom variant based on the slideUpVariants but with x axis movement
     const slideInVariant: Variants = {
@@ -28,7 +29,7 @@ const ProgressBar = ({ skill, index }: ProgressBarProps) => {
             x: 0,
             transition: {
                 duration: 0.5,
-                delay: animationStaggerDelay * index,
+                delay: STAGGER_DELAY * index,
                 ease: "easeOut"
             }
         }

@@ -7,13 +7,14 @@ import SocialLinks from '@molecules/SocialLinks';
 import { profileLinks } from '@/portfolio';
 import ScrollDown from '@atoms/ScrollDown';
 import useCallbackHandlers from '@/hooks/useCallbackHandlers';
-import { useAnimation, MotionVariants } from '@context/AnimationContext';
+import { useAnimation } from '@context/AnimationContext';
+import { fadeInVariants, slideUpVariants } from '@utils/motion';
 import './Greetings.css';
 
 const Greetings = () => {
   const greetings = useGreetings();
   const { handleDownload } = useCallbackHandlers();
-  const { animationEnabled, fadeInVariants, slideUpVariants } = useAnimation();
+  const { animationEnabled } = useAnimation();
 
   const scrollToNextSection = () => {
     const nextSection = document.querySelector('#greetings-section')?.nextElementSibling;

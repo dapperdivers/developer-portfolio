@@ -3,7 +3,19 @@ import { motion, HTMLMotionProps, MotionProps } from 'framer-motion';
 import { FaGraduationCap, FaBriefcase, FaCode, FaStar, FaHandshake, FaShieldAlt } from 'react-icons/fa';
 import '@assets/css/tailwind.css';
 import './Section.css';
-import { useAnimation, MotionVariants } from '@context/AnimationContext';
+import { useAnimation } from '@context/AnimationContext';
+import { slideUpVariants, fadeInVariants } from '@utils/motion';
+
+// Staggers the section's children as they appear
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+};
 
 export interface SectionProps extends HTMLMotionProps<'section'> {
   /** The section content */
@@ -50,7 +62,7 @@ const Section = ({
   role = 'region',
   ...rest
 }: SectionProps) => {
-  const { animationEnabled, slideUpVariants, fadeInVariants } = useAnimation();
+  const { animationEnabled } = useAnimation();
   
   // Base classes - removed background styling to let global background show through
   const sectionClasses = [
@@ -146,7 +158,7 @@ const Section = ({
   const motionProps: MotionProps = animationEnabled ? {
     initial: "hidden",
     animate: "visible",
-    variants: MotionVariants.container,
+    variants: containerVariants,
   } : {};
 
   // Handle animation with Framer Motion

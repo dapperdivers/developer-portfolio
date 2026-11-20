@@ -9,6 +9,7 @@ import Section from '../../layout/Section';
 import useSkills from "@hooks/useSkills";
 import { usePortfolio } from "@context/PortfolioContext";
 import { useAnimation } from '@context/AnimationContext';
+import { slideUpVariants, fadeInVariants, STAGGER_DELAY } from '@utils/motion';
 import type { PortfolioData, Skill, SkillsSection } from '@/types/portfolio';
 import '@assets/css/tailwind.css';
 import './Skills.css';
@@ -34,12 +35,7 @@ const Skills = () => {
   const portfolioData: PortfolioData & SkillsSettingsConfig = usePortfolio();
   
   // Get animation context
-  const { 
-    animationEnabled, 
-    slideUpVariants, 
-    fadeInVariants, 
-    animationStaggerDelay 
-  } = useAnimation();
+  const { animationEnabled } = useAnimation();
   
   // Get loading delay from context or use default (demonstrates skeleton loading)
   const loadingDelay = portfolioData?.settings?.loadingDelay || 0;
@@ -112,10 +108,10 @@ const Skills = () => {
       transition: { 
         delay: shouldAnimate ? 0.6 : 0.3, 
         duration: shouldAnimate ? 0.5 : 0.3,
-        staggerChildren: shouldAnimate ? animationStaggerDelay : animationStaggerDelay / 2
+        staggerChildren: shouldAnimate ? STAGGER_DELAY : STAGGER_DELAY / 2
       }
     }
-  }), [shouldAnimate, animationStaggerDelay]);
+  }), [shouldAnimate]);
   
   // Function to generate staggered animations for skill text items - optimized version
   const getSkillTextVariants = useMemo(() => (index: number | string): Variants => {
@@ -137,10 +133,10 @@ const Skills = () => {
       visible: {
         opacity: 1,
         x: 0,
-        transition: { delay: 0.3 + (numIndex * animationStaggerDelay) }
+        transition: { delay: 0.3 + (numIndex * STAGGER_DELAY) }
       }
     };
-  }, [shouldAnimate, animationStaggerDelay]);
+  }, [shouldAnimate]);
   
   // Group skills by security domain
   const groupedSkills = useMemo(() => {

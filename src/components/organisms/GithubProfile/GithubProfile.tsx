@@ -6,6 +6,7 @@ import GithubProfileCard from '@molecules/GithubProfileCard';
 import { motion } from "framer-motion";
 import Section from '../../layout/Section';
 import { useAnimation } from "@context/AnimationContext";
+import { slideUpVariants } from "@utils/motion";
 import './GithubProfile.css';
 
 // Requests are deliberately unauthenticated. Anything in the browser bundle is
@@ -54,7 +55,7 @@ const GithubProfile = ({ id = 'contact' }: GithubProfileProps) => {
     const [prof, setProf] = useState<GithubProfileData>({});
 
     // Use animation context for animation values
-    const { slideUpVariants, animationEnabled } = useAnimation();
+    const { animationEnabled } = useAnimation();
 
     // Validate GitHub username
     const validateGithubUsername = (username: string) => {

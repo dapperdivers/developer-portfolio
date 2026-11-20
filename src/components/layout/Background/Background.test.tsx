@@ -7,8 +7,6 @@ import Background from './Background';
 vi.mock('@context/AnimationContext', () => ({
   useAnimation: () => ({
     animationEnabled: true,
-    registerEntryAnimation: vi.fn(),
-    playEntryAnimation: vi.fn(),
   }),
 }));
 

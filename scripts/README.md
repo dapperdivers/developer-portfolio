@@ -88,7 +88,7 @@ These have no package.json entry; run them with `node scripts/<name>.js`.
 
 - **analyze-dependencies.js**: scans components, hooks, contexts and utils for import patterns and circular dependencies. Writes `dependency-report.html` and `dependency-report.json` to the project root.
 - **finalize-package-cleanup.js**: lists the package.json scripts by category. With `--clean` it rewrites package.json (after saving `package.json.bak`) to drop the one-time reorganization scripts; none of those remain, so it currently removes nothing.
-- **monitor-animation-performance.js**: not a command-line script. It is a browser module that measures animation frame times; `src/context/AnimationContext.tsx` loads it through the `@scripts` alias when performance monitoring is switched on.
+- **monitor-animation-performance.js**: not a command-line script. It is a browser module that measures animation frame times. Nothing imports it at the moment.
 
 ## Not working
 

@@ -2,7 +2,7 @@
  * Animation Utilities
  * 
  * This file has been converted to use framer-motion for animations.
- * See src/context/AnimationContext.tsx and the MotionVariants export.
+ * See src/utils/motion.ts for the shared variants.
  * 
  * IMPORTANT: The CSS classes below are kept only as fallbacks for when JS is disabled.
  * All new code should use framer-motion's animation system.
