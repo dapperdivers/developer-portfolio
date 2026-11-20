@@ -53,7 +53,7 @@ export function createBaseServer(config = {}) {
           "'unsafe-inline'", 
           'https://fonts.googleapis.com'
         ],
-        imgSrc: ["'self'", 'data:', 'https://*.basemaps.cartocdn.com', 'https://*.tile.openstreetmap.org', 'https://avatars.githubusercontent.com', 'https://*.githubusercontent.com', 'https://ui-avatars.com', 'blob:'],
+        imgSrc: ["'self'", 'data:', 'https://*.basemaps.cartocdn.com', 'https://*.tile.openstreetmap.org', 'https://github.com', 'https://avatars.githubusercontent.com', 'https://*.githubusercontent.com', 'https://ui-avatars.com', 'blob:'],
         connectSrc: [
           "'self'", 
           'https://api.github.com', 

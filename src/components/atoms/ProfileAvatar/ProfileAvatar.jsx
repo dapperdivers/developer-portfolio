@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { FaLock } from 'react-icons/fa';
+import { FaLock, FaUserSecret } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import './ProfileAvatar.css';
 
@@ -9,7 +9,7 @@ import './ProfileAvatar.css';
  * 
  * @component
  * @param {Object} props - Component props
- * @param {string} props.src - Image source URL
+ * @param {string} [props.src] - Image source URL; a missing or failing image shows an icon placeholder
  * @param {string} props.alt - Image alt text
  * @param {string} [props.clearanceText] - Security clearance text
  * @param {Object} [props.variants] - Framer motion animation variants
@@ -23,17 +23,35 @@ const ProfileAvatar = ({
   variants,
   animate = true
 }) => {
+  const [failed, setFailed] = useState(false);
+
+  // Try again when the source changes (e.g. the API avatar replaces the fallback)
+  useEffect(() => {
+    setFailed(false);
+  }, [src]);
+
   return (
     <motion.div 
       className="profile-avatar__container"
       variants={animate ? variants : undefined}
     >
-      <img 
-        src={src} 
-        alt={alt}
-        className="profile-avatar__image"
-        loading="lazy"
-      />
+      {src && !failed ? (
+        <img 
+          src={src} 
+          alt={alt}
+          className="profile-avatar__image"
+          loading="lazy"
+          onError={() => setFailed(true)}
+        />
+      ) : (
+        <div 
+          className="profile-avatar__image profile-avatar__placeholder"
+          role="img"
+          aria-label={alt}
+        >
+          <FaUserSecret />
+        </div>
+      )}
       <div className="profile-avatar__clearance">
         <FaLock className="profile-avatar__lock-icon" />
         <span>{clearanceText}</span>
@@ -44,7 +62,7 @@ const ProfileAvatar = ({
 
 ProfileAvatar.propTypes = {
   /** Image source URL */
-  src: PropTypes.string.isRequired,
+  src: PropTypes.string,
   /** Image alt text */
   alt: PropTypes.string.isRequired,
   /** Security clearance text */

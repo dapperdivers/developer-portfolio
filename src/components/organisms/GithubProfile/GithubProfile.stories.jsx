@@ -9,7 +9,7 @@ export default {
   parameters: {
     docs: {
       description: {
-        component: 'GitHub profile section that fetches and displays user data from the GitHub API. Includes loading states, error handling, and caching.',
+        component: 'GitHub profile section that fetches and displays user data from the GitHub API. The card renders immediately from site data; the API only supplies the avatar, with a fallback when it fails, and caching.',
       },
     },
     componentSubtitle: 'An organism component that manages GitHub profile data fetching and display',
@@ -43,11 +43,11 @@ Success.parameters = {
 };
 
 /**
- * Loading state shows what the component looks like while waiting for
- * the GitHub API response.
+ * Slow API: the card is shown immediately with the fallback avatar while the
+ * GitHub API response is pending.
  */
-export const Loading = Template.bind({});
-Loading.parameters = {
+export const SlowApi = Template.bind({});
+SlowApi.parameters = {
   mockData: [
     {
       url: 'https://api.github.com/users/*',
@@ -58,27 +58,11 @@ Loading.parameters = {
 };
 
 /**
- * Error state shows how the component handles API errors.
+ * API failed: the API is rate limited (403) but the card still renders in full
+ * with the fallback avatar and no error box.
  */
-export const Error = Template.bind({});
-Error.parameters = {
-  mockData: [
-    {
-      url: 'https://api.github.com/users/*',
-      method: 'GET',
-      status: 403,
-      response: {
-        message: 'API rate limit exceeded'
-      }
-    }
-  ]
-};
-
-/**
- * This story demonstrates the retry functionality when an error occurs.
- */
-export const Retry = Template.bind({});
-Retry.parameters = {
+export const ApiFailed = Template.bind({});
+ApiFailed.parameters = {
   mockData: [
     {
       url: 'https://api.github.com/users/*',
@@ -98,7 +82,7 @@ export const CachedFallback = Template.bind({});
 CachedFallback.parameters = {
   docs: {
     description: {
-      story: 'When the GitHub API request fails but cached data exists, the component displays the cached profile data with a notice about using cached data.'
+      story: 'When the GitHub API request fails but cached data exists, the component uses the cached profile data for the avatar.'
     }
   },
   mockData: [

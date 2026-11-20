@@ -223,6 +223,26 @@
   }
 }
 
+/* Phones: put the input on its own line under the prompt and let it shrink
+   so it never extends past the terminal */
+@media (max-width: 480px) {
+  .terminal-command-line {
+    flex-wrap: wrap;
+    overflow-x: hidden;
+  }
+
+  .terminal-command-line__input-container {
+    flex: 1 1 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .terminal-command-line__input {
+    width: 100%;
+    text-overflow: ellipsis;
+  }
+}
+
 /* Reduced motion preferences */
 @media (prefers-reduced-motion: reduce) {
   .terminal-command-line--loading::before {

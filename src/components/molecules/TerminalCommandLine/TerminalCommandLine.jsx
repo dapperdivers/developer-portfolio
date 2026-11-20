@@ -13,6 +13,7 @@ import './TerminalCommandLine.css';
  * @param {string} [props.prompt='user@portfolio:~$'] - Command prompt text
  * @param {string} [props.command=''] - Command text (for display mode)
  * @param {string} [props.placeholder=''] - Placeholder text for input mode
+ * @param {string} [props.compactPlaceholder=''] - Shorter placeholder used at 480px and narrower
  * @param {boolean} [props.interactive=false] - Whether to show interactive input
  * @param {function} [props.onCommand] - Callback when command is executed
  * @param {boolean} [props.showCursor=true] - Whether to show the blinking cursor
@@ -25,6 +26,7 @@ const TerminalCommandLine = ({
   prompt = 'user@portfolio:~$',
   command = '',
   placeholder = '',
+  compactPlaceholder = '',
   interactive = false,
   onCommand,
   showCursor = true,
@@ -37,12 +39,14 @@ const TerminalCommandLine = ({
   const [inputValue, setInputValue] = useState('');
   const [isFocused, setIsFocused] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isNarrow, setIsNarrow] = useState(false);
   const inputRef = useRef(null);
-  
+
   // Mobile detection
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth <= 768);
+      setIsNarrow(window.innerWidth <= 480);
     };
     
     checkMobile();
@@ -118,7 +122,7 @@ const TerminalCommandLine = ({
             onKeyPress={handleKeyPress}
             onFocus={handleFocus}
             onBlur={handleBlur}
-            placeholder={placeholder}
+            placeholder={isNarrow && compactPlaceholder ? compactPlaceholder : placeholder}
             className="terminal-command-line__input"
             aria-label={`Terminal input. ${placeholder}`}
             autoComplete="off"
@@ -145,6 +149,7 @@ TerminalCommandLine.propTypes = {
   prompt: PropTypes.string,
   command: PropTypes.string,
   placeholder: PropTypes.string,
+  compactPlaceholder: PropTypes.string,
   interactive: PropTypes.bool,
   onCommand: PropTypes.func,
   showCursor: PropTypes.bool,

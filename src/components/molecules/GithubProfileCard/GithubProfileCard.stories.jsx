@@ -9,7 +9,7 @@ export default {
   parameters: {
     docs: {
       description: {
-        component: 'GitHub profile card component for displaying user information from GitHub API. Enhanced with map visualization and security-themed decorative elements.',
+        component: 'GitHub profile card component for displaying contact information from the site data. The GitHub API result only supplies the avatar. Enhanced with map visualization and security-themed decorative elements.',
       },
     },
     componentSubtitle: 'A molecule component that combines profile components into a cohesive card',
@@ -36,29 +36,24 @@ const Template = (args) => (
  */
 export const Success = Template.bind({});
 Success.args = {
-  prof: mockGithubProfile,
-  error: null,
-  onRetry: () => console.log('Retry clicked')
+  prof: mockGithubProfile
 };
 
 /**
- * Error story shows the GitHub profile card with an error message.
+ * API failed: no profile data (rate limit, blocked or slow API). The card still
+ * renders in full with the fallback avatar and no error box.
  */
-export const Error = Template.bind({});
-Error.args = {
-  prof: null,
-  error: 'Unable to load GitHub profile data. API rate limit exceeded.',
-  onRetry: () => console.log('Retry clicked')
+export const ApiFailed = Template.bind({});
+ApiFailed.args = {
+  prof: null
 };
 
 /**
- * No Retry story shows the GitHub profile card with an error message but no retry button.
+ * Empty profile object, the initial state before the API answers.
  */
-export const NoRetry = Template.bind({});
-NoRetry.args = {
-  prof: null,
-  error: 'Unable to load GitHub profile data. API rate limit exceeded.',
-  onRetry: null
+export const EmptyProfile = Template.bind({});
+EmptyProfile.args = {
+  prof: {}
 };
 
 /**
@@ -69,7 +64,5 @@ NoLocation.args = {
   prof: {
     ...mockGithubProfile,
     location: null
-  },
-  error: null,
-  onRetry: () => console.log('Retry clicked')
+  }
 };

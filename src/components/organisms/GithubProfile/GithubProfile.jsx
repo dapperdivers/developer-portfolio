@@ -27,7 +27,8 @@ const githubApi = axios.create({
 const CACHE_DURATION = 5 * 60 * 1000;
 
 /**
- * GitHub profile container that fetches and displays user profile data.
+ * GitHub profile container. Renders the contact card immediately from site data and
+ * fetches the GitHub profile in the background to fill in the avatar.
  * 
  * @component
  * @param {Object} props - Component props
@@ -36,12 +37,9 @@ const CACHE_DURATION = 5 * 60 * 1000;
  */
 const GithubProfile = ({ id = 'contact' }) => {
     const [prof, setProf] = useState({});
-    const [error, setError] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [retryCount, setRetryCount] = useState(0);
 
     // Use animation context for animation values
-    const { slideUpVariants, fadeInVariants, animationEnabled } = useAnimation();
+    const { slideUpVariants, animationEnabled } = useAnimation();
 
     // Validate GitHub username
     const validateGithubUsername = (username) => {
@@ -63,20 +61,14 @@ const GithubProfile = ({ id = 'contact' }) => {
             }, {});
     };
 
-    // Handle retry action
-    const handleRetry = () => {
-        setRetryCount(prevCount => prevCount + 1);
-    };
-
+    // The card renders immediately from site data. This fetch only supplies the
+    // avatar, so a failure is logged and otherwise ignored.
     useEffect(() => {
         const controller = new AbortController();
         let timeoutId;
 
         const fetchProfileData = async () => {
             try {
-                setLoading(true);
-                setError(null);
-
                 // Validate username
                 const username = validateGithubUsername(openSource.githubUserName);
 
@@ -86,7 +78,6 @@ const GithubProfile = ({ id = 'contact' }) => {
                     const { data, timestamp } = JSON.parse(cachedData);
                     if (Date.now() - timestamp < CACHE_DURATION) {
                         setProf(data);
-                        setLoading(false);
                         return;
                     }
                 }
@@ -106,7 +97,6 @@ const GithubProfile = ({ id = 'contact' }) => {
                 setProf(sanitizedData);
             } catch (err) {
                 if (!axios.isCancel(err)) {
-                    setError(err.response?.data?.message || 'Failed to fetch GitHub profile');
                     console.error('GitHub Profile Error:', err);
                     
                     // Use cached data as fallback if available
@@ -116,14 +106,11 @@ const GithubProfile = ({ id = 'contact' }) => {
                         if (cachedData) {
                             const { data } = JSON.parse(cachedData);
                             setProf(data);
-                            setError('Using cached data. Current GitHub data unavailable.');
                         }
                     } catch (cacheErr) {
                         console.error('Cache fallback error:', cacheErr);
                     }
                 }
-            } finally {
-                setLoading(false);
             }
         };
 
@@ -133,7 +120,7 @@ const GithubProfile = ({ id = 'contact' }) => {
             controller.abort();
             clearTimeout(timeoutId);
         };
-    }, [retryCount]);
+    }, []);
 
     return ( 
         <Section
@@ -149,22 +136,7 @@ const GithubProfile = ({ id = 'contact' }) => {
                     animate="visible"
                     className="mt-8"
                 >
-                    {loading ? (
-                        <motion.div 
-                            className="min-h-[300px] flex items-center justify-center"
-                            variants={fadeInVariants}
-                            initial="hidden"
-                            animate="visible"
-                        >
-                            <Loading />
-                        </motion.div>
-                    ) : (
-                        <GithubProfileCard 
-                            prof={prof} 
-                            error={error} 
-                            onRetry={handleRetry}
-                        />
-                    )}
+                    <GithubProfileCard prof={prof} />
                 </motion.div>
             </Suspense>
         </Section>
