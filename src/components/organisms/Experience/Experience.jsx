@@ -1,6 +1,6 @@
-import React, { memo, useRef, useState, useCallback } from "react";
+import React, { memo, useMemo, useRef, useState, useCallback } from "react";
 import { motion, useInView } from "framer-motion";
-import Timeline from '@molecules/Timeline';
+import Timeline, { TimelineEasterEggOverlay, useTimelineEasterEggs } from '@molecules/Timeline';
 import Section from '../../layout/Section';
 import ConsoleHeader from '@organisms/ConsoleHeader';
 import { usePortfolio } from "@context/PortfolioContext";
@@ -28,8 +28,18 @@ const Experience = () => {
   const [showHelp, setShowHelp] = useState(false);
   const [lastCommand, setLastCommand] = useState('');
   const [feedbackMessage, setFeedbackMessage] = useState('');
-  const [hasUserTyped, setHasUserTyped] = useState(true);
-  const [terminalCommandTrigger, setTerminalCommandTrigger] = useState(0);
+  const easterEggs = useTimelineEasterEggs();
+  const resetEasterEggs = easterEggs.reset;
+  const registerEasterEggClick = easterEggs.registerClick;
+
+  // Ambient tint for the timeline, from the visitor's local time
+  const timeOfDay = useMemo(() => {
+    const hour = new Date().getHours();
+    if (hour >= 22 || hour <= 6) return 'night-mode';
+    if (hour >= 12 && hour <= 14) return 'lunch-break';
+    if (hour >= 9 && hour <= 17) return 'work-hours';
+    return '';
+  }, []);
   
   const containerRef = useRef(null);
   const isInView = useInView(containerRef, { 
@@ -92,11 +102,9 @@ const Experience = () => {
     const cmd = command.toLowerCase().trim();
     setLastCommand(command);
     setFeedbackMessage('');
-    setHasUserTyped(true);
-    
-    // Trigger easter egg reset in Timeline component
-    setTerminalCommandTrigger(prev => prev + 1);
-    
+
+    // Any console command clears the timeline's hidden extras
+    resetEasterEggs();
     // Handle ls commands
     if (cmd.startsWith('ls')) {
       setCurrentCommand(`Executed: ${command}`);
@@ -193,10 +201,11 @@ const Experience = () => {
     setCurrentCommand(`${command}: command not found`);
     setFeedbackMessage(`Unknown command: "${command}". Showing available commands...`);
     setTimeout(() => setShowHelp(true), 500);
-  }, [experience, visibleCount, showHelp]);
+  }, [experience, visibleCount, showHelp, resetEasterEggs]);
 
   // Handle card expansion toggle
   const handleCardToggle = useCallback((index) => {
+    registerEasterEggClick(index);
     setExpandedCards(prev => {
       const newSet = new Set(prev);
       if (newSet.has(index)) {
@@ -206,7 +215,7 @@ const Experience = () => {
       }
       return newSet;
     });
-  }, []);
+  }, [registerEasterEggClick]);
 
   // Handle load more functionality
   const handleLoadMore = () => {
@@ -337,7 +346,13 @@ const Experience = () => {
             width: '100%'
           }}
         >
-          <Timeline 
+          <TimelineEasterEggOverlay
+            secretMessage={easterEggs.secretMessage}
+            achievements={easterEggs.achievements}
+            onDismissAchievement={easterEggs.dismissAchievement}
+            mouseTrail={easterEggs.mouseTrail}
+          />
+          <Timeline
             experiences={visibleExperience}
             expandedCards={expandedCards}
             onCardToggle={handleCardToggle}
@@ -345,7 +360,10 @@ const Experience = () => {
             // Not "experience-timeline": a legacy global rule with that name
             // hides the element below 1024px.
             className="experience-timeline-view"
-            onTerminalCommand={terminalCommandTrigger}
+            animated={animationEnabled}
+            effects={easterEggs.effects}
+            clickCounts={easterEggs.clickCounts}
+            timeOfDay={timeOfDay}
           />
         </motion.div>
 

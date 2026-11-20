@@ -109,25 +109,6 @@ export interface ConsoleHeaderProps extends BaseComponentProps {
 }
 
 /**
- * ExperienceCard Component Props
- */
-export interface ExperienceCardProps extends BaseComponentProps {
-  data: {
-    company: string;
-    role: string;
-    date: string;
-    desc: string;
-    companylogo: string;
-    descBullets?: string[];
-  };
-  index: number;
-  variant?: ComponentVariant;
-  colorOverride?: { r: number; g: number; b: number } | null;
-  showHeader?: boolean;
-  shadow?: boolean;
-}
-
-/**
  * TimelineEntry Component Props
  */
 export interface TimelineEntryProps extends BaseComponentProps {

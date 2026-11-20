@@ -86,7 +86,7 @@ export default {
   parameters: {
     docs: {
       description: {
-        component: 'Experience section component displaying work history. Renders a grid of ExperienceCard components with work history data retrieved from the PortfolioContext.',
+        component: 'Experience section component displaying work history. Reads the work history from PortfolioContext and passes it to the props-only Timeline, with a console for filtering with the timeline hidden extras wired in.',
       },
     },
     a11y: {
