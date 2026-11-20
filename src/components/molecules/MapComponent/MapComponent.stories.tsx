@@ -66,11 +66,17 @@ export const WholeCountry: Story = {
 };
 
 /**
- * A place that is not in the built-in list. The map falls back to its default
- * centre and keeps the given name on the marker.
+ * A place that is not in the built-in list. The map stays on its world view
+ * with no marker, and the status line reads "LOCATION UNKNOWN".
  */
 export const UnknownPlace: Story = {
   args: { location: 'Nowhere, ZZ' },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await waitFor(() => expect(canvasElement.querySelector('.leaflet-container')).not.toBeNull());
+    await expect(canvas.getByText('LOCATION UNKNOWN')).toBeInTheDocument();
+    await expect(canvasElement.querySelector('.marker-label')).toBeNull();
+  },
 };
 
 /** The label is inserted as text, so markup in a place name is shown literally. */

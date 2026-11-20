@@ -152,7 +152,17 @@ const useLeafletMap = (containerRef: RefObject<HTMLElement | null>, view: MapVie
     viewRef.current = lat === undefined || lng === undefined ? null : { lat, lng, zoom: zoom ?? 7, label: label ?? '' };
     const map = mapRef.current;
     const current = viewRef.current;
-    if (!ready || !map || !current) return;
+    if (!ready || !map) return;
+
+    // No known place: clear the marker and rings and show the whole world
+    if (!current) {
+      markerRef.current?.remove();
+      markerRef.current = null;
+      ringsRef.current.forEach((ring) => ring.remove());
+      ringsRef.current = [];
+      map.setView([20, 0], 2);
+      return;
+    }
 
     const position: L.LatLngTuple = [current.lat, current.lng];
     map.setView(position, current.zoom);

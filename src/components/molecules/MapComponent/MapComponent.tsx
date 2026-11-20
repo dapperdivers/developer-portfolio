@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { motion, type Variants } from 'framer-motion';
-import { getCoordinatesForLocation } from '@utils/geocodingUtils';
+import { findLocation } from '@utils/geocodingUtils';
 import { fadeInVariants, useMotionEnabled } from '@utils/motion';
 import useLeafletMap, { type MapTileMode, type MapView } from './useLeafletMap';
 import { MapControlsBar, MapGridOverlay, MapMetricsPanel } from './MapParts';
@@ -11,10 +11,10 @@ const wrapperVariants: Variants = {
   visible: { opacity: 1, transition: { duration: 0.8 } },
 };
 
-const formatCoordinates = (view: MapView | null): string => (view ? `${view.lat.toFixed(4)}°, ${view.lng.toFixed(4)}°` : '00.0000°, 00.0000°');
+const formatCoordinates = (view: MapView | null): string => (view ? `${view.lat.toFixed(4)}°, ${view.lng.toFixed(4)}°` : 'LOCATION UNKNOWN');
 
 export interface MapComponentProps {
-  /** Place name to show, e.g. "Canton, GA". Resolved from a built-in list; no network lookup is made. */
+  /** Place name to show, e.g. "Canton, GA". Resolved from a built-in list; no network lookup is made. An unknown name shows a world view with no marker. */
   location: string;
   /** Whether the status light pulses */
   animated?: boolean;
@@ -29,32 +29,19 @@ export interface MapComponentProps {
  */
 const MapComponent = ({ location, animated = true }: MapComponentProps) => {
   const mountRef = useRef<HTMLDivElement>(null);
-  const [view, setView] = useState<MapView | null>(null);
-  const [lookupFailed, setLookupFailed] = useState(false);
   const [tileMode, setTileMode] = useState<MapTileMode>('dark');
   const [gridVisible, setGridVisible] = useState(true);
   const motionOn = useMotionEnabled(animated);
 
-  // Resolve the place name. The latest request wins if the prop changes.
-  useEffect(() => {
-    if (!location) return undefined;
-    let current = true;
-    getCoordinatesForLocation(location)
-      .then((found: { lat: number; lng: number; zoom?: number; name?: string }) => {
-        if (!current) return;
-        setLookupFailed(false);
-        setView({ lat: found.lat, lng: found.lng, zoom: found.zoom ?? 7, label: found.name ?? location });
-      })
-      .catch(() => {
-        if (current) setLookupFailed(true);
-      });
-    return () => {
-      current = false;
-    };
+  // A place that is not in the built-in list has no view: the map stays on
+  // its world view with no marker, and the status line says so.
+  const view = useMemo<MapView | null>(() => {
+    const found = findLocation(location);
+    return found ? { lat: found.lat, lng: found.lng, zoom: found.zoom, label: found.name } : null;
   }, [location]);
 
   const map = useLeafletMap(mountRef, view, tileMode);
-  const errorMessage = map.error ?? (lookupFailed ? 'Could not display location on map' : null);
+  const errorMessage = map.error;
 
   return (
     <motion.div className="map-container-wrapper" variants={wrapperVariants} initial="hidden" animate="visible">

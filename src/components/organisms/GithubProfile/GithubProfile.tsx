@@ -5,24 +5,17 @@ import axios from 'axios';
 import GithubProfileCard from '@molecules/GithubProfileCard';
 import { motion } from "framer-motion";
 import Section from '../../layout/Section';
-import envConfig from '@utils/envConfig';
 import { useAnimation } from "@context/AnimationContext";
 import './GithubProfile.css';
 
-// envConfig has no `githubToken` key (the token is at `github.token`), so this
-// is always undefined and requests go out unauthenticated. Left as it was.
-const githubToken = (envConfig as { githubToken?: string }).githubToken;
-
-// Create axios instance with base configuration
+// Requests are deliberately unauthenticated. Anything in the browser bundle is
+// public, so a token here would be handed to every visitor. The public API's
+// anonymous rate limit is enough for one cached profile lookup.
 export const githubApi = axios.create({
   baseURL: 'https://api.github.com',
   timeout: 5000,
   headers: {
-    'Accept': 'application/vnd.github.v3+json',
-    // Add Authorization header if GitHub token is available
-    ...(githubToken && {
-      'Authorization': `token ${githubToken}`
-    })
+    'Accept': 'application/vnd.github.v3+json'
   }
 });
 

@@ -1,13 +1,13 @@
 /**
  * Tailwind CSS Entry Point
- * 
+ *
  * This file is the primary entry point for Tailwind CSS.
  * It imports design tokens, sets up Tailwind layers, and defines component extensions.
  */
 
 /**
  * Design System Tokens
- * 
+ *
  * We import design tokens before Tailwind layers so they're available for the theme extension
  * in tailwind.config.cjs. These CSS variables are the single source of truth for our design system.
  */
@@ -15,7 +15,7 @@
 
 /**
  * Utility Classes
- * 
+ *
  * Import explicit utility classes before Tailwind layers
  */
 @import './utilities/font-utilities.css';
@@ -292,7 +292,7 @@ a.btn[aria-disabled="true"] {
   .loading-spinner {
     animation-duration: 1.5s;
   }
-  
+
   .loading-container {
     animation-duration: 0s;
   }
@@ -348,7 +348,7 @@ a.btn[aria-disabled="true"] {
     transform: translateY(0); /* was @apply translate-y-0 */
     @apply shadow-sm;
   }
-  
+
   .experience-card .card:active {
     transform: translateY(-5px); /* was @apply -translate-y-[5px] */
     @apply shadow-md;
@@ -373,12 +373,12 @@ a.btn[aria-disabled="true"] {
 
 /* Reduced motion preferences */
 @media (prefers-reduced-motion: reduce) {
-  .experience-card, 
+  .experience-card,
   .experience-card .card,
   .company-logo {
     @apply transition-none;
   }
-  
+
   .experience-card .card:hover,
   .experience-card:hover .company-logo {
     @apply transform-none;
@@ -438,7 +438,7 @@ a.btn[aria-disabled="true"] {
   .feedback-card .card {
     @apply p-3;
   }
-  
+
   .quote-content {
     @apply text-sm;
   }
@@ -535,19 +535,19 @@ a.btn[aria-disabled="true"] {
   .project-image-container {
     @apply h-[150px];
   }
-  
+
   .card-body {
     @apply p-3;
   }
-  
+
   .project-title {
     @apply text-base;
   }
-  
+
   .project-description {
     @apply text-sm;
   }
-  
+
   .tech-stack {
     @apply gap-1;
   }
@@ -562,7 +562,7 @@ a.btn[aria-disabled="true"] {
   .project-button {
     @apply transition-none;
   }
-  
+
   .project-card .card:hover,
   .project-card .card:hover .project-image,
   .tech-tag:hover,
@@ -574,7 +574,8 @@ a.btn[aria-disabled="true"] {
 /* SkipToContent Component */
 .skip-to-content {
   outline-width: 2px; /* Tailwind 3 outline-2 (width only) */
-  @apply absolute -top-10 left-0 bg-primary text-white py-2 px-4 z-[9999] transition-[top] duration-200 ease-in rounded-br-md font-semibold text-base no-underline outline-transparent;
+  @apply absolute -top-10 left-0 bg-primary py-2 px-4 z-[9999] transition-[top] duration-200 ease-in rounded-br-md font-semibold text-base no-underline outline-transparent;
+  color: var(--color-navy);
 }
 
 .skip-to-content:focus {
@@ -612,8 +613,8 @@ a.btn[aria-disabled="true"] {
 }
 
 .skeleton-gradient {
-  background: linear-gradient(90deg, 
-    rgb(243 244 246) 0%, /* gray-100 */ 
+  background: linear-gradient(90deg,
+    rgb(243 244 246) 0%, /* gray-100 */
     rgb(229 231 235) 50%, /* gray-200 */
     rgb(243 244 246) 100% /* gray-100 */
   );
@@ -772,7 +773,7 @@ a.btn[aria-disabled="true"] {
   .skeleton-actions::after {
     @apply animate-none;
   }
-  
+
   .skeleton-shimmer {
     @apply hidden;
   }
@@ -859,12 +860,12 @@ a.btn[aria-disabled="true"] {
   .proficiency-section {
     @apply py-12;
   }
-  
+
   .progress-label,
   .progress-percentage {
     @apply text-sm;
   }
-  
+
   .progress {
     @apply h-2;
   }
@@ -892,9 +893,9 @@ a.btn[aria-disabled="true"] {
 .tailwind-progress-bar::after {
   @apply content-[''] absolute inset-0;
   background: linear-gradient(
-    90deg, 
-    rgba(255, 255, 255, 0) 0%, 
-    rgba(255, 255, 255, 0.15) 50%, 
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.15) 50%,
     rgba(255, 255, 255, 0) 100%
   );
   animation: shimmer 2s infinite;
@@ -975,12 +976,12 @@ a.btn[aria-disabled="true"] {
   .experience-grid {
     @apply gap-4;
   }
-  
+
   /* Switch to grid layout on tablet */
   .experience-timeline {
     @apply hidden;
   }
-  
+
   .experience-grid {
     @apply flex;
   }
@@ -990,21 +991,21 @@ a.btn[aria-disabled="true"] {
   .experience-section {
     @apply py-8;
   }
-  
+
   /* Further simplify on mobile */
   .experience-timeline::before {
     @apply left-5;
   }
-  
+
   .timeline-entry::before {
     @apply left-5;
   }
-  
+
   .timeline-entry:nth-child(odd),
   .timeline-entry:nth-child(even) {
     @apply justify-end;
   }
-  
+
   .timeline-entry .experience-card {
     @apply w-4/5;
   }
@@ -1047,7 +1048,7 @@ a.btn[aria-disabled="true"] {
   .projects-section {
     @apply py-7;
   }
-  
+
   .projects-grid {
     @apply grid-cols-1 mt-5;
   }

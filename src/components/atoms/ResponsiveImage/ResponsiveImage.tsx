@@ -71,7 +71,7 @@ const ResponsiveImage = ({
 }: ResponsiveImageProps) => {
   const [isLoaded, setIsLoaded] = useState(!lazy);
   const [isError, setIsError] = useState(false);
-  const [ref, isVisible] = useIntersectionObserver({ threshold });
+  const [ref, isVisible] = useIntersectionObserver<HTMLImageElement>({ threshold });
   const [currentSrc, setCurrentSrc] = useState(placeholderSrc || '');
   const motionOn = useMotionEnabled(animated);
   
@@ -198,7 +198,7 @@ const ResponsiveImage = ({
   return (
     <motion.img
       // The hook's ref is not typed for a specific element
-      ref={lazy ? (ref as React.Ref<HTMLImageElement>) : undefined}
+      ref={lazy ? (ref) : undefined}
       {...imageProps}
       {...getAnimationProps()}
     />
