@@ -1,0 +1,101 @@
+import React from 'react';
+import { Helmet } from 'react-helmet-async';
+
+export interface HeadProps {
+  /** Page title */
+  title?: string;
+  /** Meta description, also used for the social cards */
+  description?: string;
+  /** Social card image URL */
+  imageUrl?: string;
+  /** Alt text for the social card image */
+  imageAlt?: string;
+  /** Canonical URL; falls back to the current location */
+  canonicalUrl?: string;
+  /** JSON-LD structured data replacing the default Person schema */
+  structuredData?: Record<string, unknown> | null;
+}
+
+const Head = ({ 
+  title = "Derek Mackley | Principal Security Engineer",
+  description = "Derek Mackley - Principal Security Engineer working across product security, Kubernetes platform engineering and AI agent security",
+  imageUrl = "",
+  imageAlt = "Derek Mackley - Principal Security Engineer",
+  canonicalUrl = "",
+  structuredData = null
+}: HeadProps) => {
+  // Default structured data if none provided
+  const defaultStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Derek Mackley",
+    "url": canonicalUrl || window.location.href,
+    "jobTitle": "Principal Security Engineer",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Mastery Logistics Systems"
+    },
+    "description": description,
+    "knowsAbout": [
+      "Product Security", "Application Security", "Vulnerability Management", "DevSecOps", "Kubernetes", "AI Agent Security", "Python", "C#"
+    ],
+    "sameAs": [
+      "https://github.com/DapperDivers",
+      "https://www.linkedin.com/in/dmackley/"
+    ]
+  };
+  
+  // Merge provided structured data with default
+  const finalStructuredData = structuredData || defaultStructuredData;
+
+  return (
+    <Helmet>
+      <title>{title}</title>
+      <meta name="description" content={description} />
+      
+      {/* Canonical URL */}
+      {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+      
+      {/* Open Graph Tags */}
+      <meta property="og:type" content="website" />
+      <meta property="og:title" content={title} />
+      <meta property="og:description" content={description} />
+      <meta property="og:url" content={canonicalUrl || window.location.href} />
+      {imageUrl && <meta property="og:image" content={imageUrl} />}
+      {imageAlt && <meta property="og:image:alt" content={imageAlt} />}
+      
+      {/* Twitter Cards */}
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content={title} />
+      <meta name="twitter:description" content={description} />
+      {imageUrl && <meta name="twitter:image" content={imageUrl} />}
+      {imageAlt && <meta name="twitter:image:alt" content={imageAlt} />}
+      
+      {/* Performance and security related tags */}
+      <meta httpEquiv="X-Content-Type-Options" content="nosniff" />
+      <meta name="referrer" content="no-referrer-when-downgrade" />
+      <meta httpEquiv="Permissions-Policy" content="interest-cohort=()" />
+      
+      {/* PWA related tags */}
+      <meta name="theme-color" content="#006ee6" />
+      <meta name="color-scheme" content="light" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+      <link rel="manifest" href="/site.webmanifest" />
+      <link rel="apple-touch-icon" href="/favicon.png" />
+      
+      {/* Preload critical resources */}
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      <link rel="dns-prefetch" href="https://api.github.com" />
+      
+      {/* Resource hints for performance - remove preload for favicon as it's already loaded via link rel="icon" */}
+      
+      {/* Structured data for better SEO */}
+      <script type="application/ld+json">
+        {JSON.stringify(finalStructuredData)}
+      </script>
+    </Helmet>
+  );
+};
+
+export default Head;

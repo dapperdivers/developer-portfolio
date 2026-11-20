@@ -17,7 +17,7 @@ export const mockPortfolioData = {
   openSource: {
     githubUserName: "DapperDivers",
   },
-  contact: {},
+  contact: { vcfLink: '/contact/Example_Person.vcf' },
   socialLinks: {
     github: "https://github.com/DapperDivers",
     linkedin: "https://www.linkedin.com/in/dmackley/",
@@ -30,6 +30,7 @@ export const mockPortfolioData = {
       "Implement robust security measures and conduct security audits to ensure application integrity",
       "Update and migrate legacy apps to modern frameworks using cutting-edge technology",
     ],
+    certifications: [],
     softwareSkills: [
       {
         skillName: "JavaScript",

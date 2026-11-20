@@ -140,7 +140,8 @@ const config: ESLintFlatConfig[] = [
             message: "Atoms and molecules must not use app data hooks. Take the data as props."
           },
           {
-            group: ["**/portfolio", "@/portfolio", "@data/*"],
+            // Types are fine: only the data module itself is off limits
+            group: ["**/portfolio", "@/portfolio", "@data/*", "!@/types/portfolio", "!**/types/portfolio"],
             message: "Atoms and molecules must not import portfolio data. Take it as props."
           }
         ]

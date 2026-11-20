@@ -9,6 +9,7 @@ import React from 'react';
 import PortfolioContext from '@context/PortfolioContext';
 import { mockPortfolioData } from './data';
 import type { Decorator } from '../index';
+import type { PortfolioData } from '@/types/portfolio';
 
 /**
  * Provides mock PortfolioContext to stories
@@ -25,7 +26,8 @@ import type { Decorator } from '../index';
  * };
  */
 export const withPortfolioContext: Decorator = (Story) => {
-  const portfolioContextValue = mockPortfolioData;
+  // The mock is a deliberately small subset of the site data
+  const portfolioContextValue = mockPortfolioData as unknown as PortfolioData;
   return (
     <PortfolioContext.Provider value={portfolioContextValue}>
       <Story />

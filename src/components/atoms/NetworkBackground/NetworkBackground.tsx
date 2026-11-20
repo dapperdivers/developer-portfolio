@@ -1,5 +1,5 @@
 import React, { memo, useRef, useEffect } from 'react';
-import { LazyMotion, domAnimation, m } from 'framer-motion';
+import { LazyMotion, domAnimation, m, HTMLMotionProps } from 'framer-motion';
 import { useMotionEnabled } from '@utils/motion';
 import './NetworkBackground.css';
 
@@ -27,7 +27,7 @@ interface Connection {
  * @param {Object} props - Component props
  * @returns {React.ReactElement} NetworkBackground component
  */
-interface NetworkBackgroundProps {
+export interface NetworkBackgroundProps extends Omit<HTMLMotionProps<'div'>, 'children'> {
   /** Component content */
   children?: React.ReactNode;
   /** Additional CSS class names */
@@ -40,7 +40,6 @@ interface NetworkBackgroundProps {
   networkIntensity?: number;
   /** Run the canvas animation and fade-in (default: true) */
   animated?: boolean;
-  [key: string]: any;
 }
 
 const NetworkBackground = (props: NetworkBackgroundProps) => {

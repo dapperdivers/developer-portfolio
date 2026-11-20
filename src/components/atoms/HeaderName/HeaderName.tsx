@@ -12,7 +12,7 @@ import './HeaderName.css';
  * <HeaderName name="John Doe" />
  * ```
  */
-interface HeaderNameProps {
+export interface HeaderNameProps {
   /** The name to display with animation effects */
   name: string;
   /** Optional CSS class names to add to the component */

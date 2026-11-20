@@ -114,9 +114,15 @@ export function useDebugManager() {
 }
 
 // Debug provider component
+/** Overrides for the default config; `features` and `performance` are merged key by key. */
+type DebugConfigOverrides = Partial<Omit<DebugConfig, 'features' | 'performance'>> & {
+  features?: Partial<DebugConfig['features']>;
+  performance?: Partial<DebugConfig['performance']>;
+};
+
 interface DebugProviderProps {
   children: ReactNode;
-  initialConfig?: Partial<DebugConfig>;
+  initialConfig?: DebugConfigOverrides;
 }
 
 export function DebugProvider({ children, initialConfig = {} }: DebugProviderProps) {
@@ -705,9 +711,12 @@ export function withDebugging<P extends object>(
   return WithDebugging;
 }
 
-// Export the registrar component
-export function DebugComponentRegistrar() {
-  return null;
+interface DebugComponentRegistrarProps {
+  /** Components to register, keyed by display name. Currently unused. */
+  components?: Record<string, unknown>;
 }
+
+// Export the registrar component
+export const DebugComponentRegistrar: React.FC<DebugComponentRegistrarProps> = () => null;
 
 // No need to re-export DebugConfig as it's already exported in the interface definition above 

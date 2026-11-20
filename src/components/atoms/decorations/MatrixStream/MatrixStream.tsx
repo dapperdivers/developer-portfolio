@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
+import { motion, HTMLMotionProps } from 'framer-motion';
 import { useMotionEnabled } from '@utils/motion';
 import './MatrixStream.css';
 
@@ -10,7 +10,7 @@ import './MatrixStream.css';
  * @param {Object} props - Component props
  * @returns {React.ReactElement} MatrixStream component
  */
-interface MatrixStreamProps {
+export interface MatrixStreamProps extends Omit<HTMLMotionProps<'div'>, 'color'> {
   /** Text color for the matrix rain (default: #0F0) */
   color?: string;
   /** Font size for the characters (default: 20) */
@@ -29,7 +29,6 @@ interface MatrixStreamProps {
   isBackground?: boolean;
   /** Run the canvas animation (default: true) */
   animated?: boolean;
-  [key: string]: any;
 }
 
 const MatrixStream = (props: MatrixStreamProps) => {

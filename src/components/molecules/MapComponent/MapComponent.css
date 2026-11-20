@@ -481,59 +481,54 @@
   align-items: flex-end;
 }
 
+.map-container {
+  position: relative;
+  z-index: 5;
+  width: 100%;
+  height: 400px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #1a1a2e, #162447);
+  border-radius: 0 0 8px 8px;
+}
+
+/* Leaflet mounts here and manages this element's children itself */
+.map-container__leaflet {
+  position: absolute;
+  inset: 0;
+}
+
+/* Decorative grid: 30 by 30 cells with a dot at every crossing. Drawn with
+   backgrounds on one element instead of one element per line and dot. */
 .map-grid-overlay {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   pointer-events: none;
   z-index: 400;
+  container-type: size;
+  --grid-line: rgba(5, 213, 250, 0.08);
+  --grid-point: rgba(5, 213, 250, 0.3);
 }
 
-.map-grid-horizontal,
-.map-grid-vertical {
+.map-grid-overlay.grid-light-mode {
+  --grid-line: rgba(255, 0, 85, 0.1);
+  --grid-point: rgba(255, 0, 85, 0.3);
+}
+
+.map-grid-overlay__pattern {
+  --cell-w: calc(100cqw / 30);
+  --cell-h: calc(100cqh / 30);
+  --inset: 2px;
   position: absolute;
-}
-
-/* Grid colors for dark mode */
-.grid-dark-mode .map-grid-horizontal,
-.grid-dark-mode .map-grid-vertical {
-  background-color: rgba(5, 213, 250, 0.18);
-}
-
-.grid-dark-mode .map-grid-point {
-  background-color: rgba(5, 213, 250, 0.35);
-}
-
-/* Grid colors for light mode */
-.grid-light-mode .map-grid-horizontal,
-.grid-light-mode .map-grid-vertical {
-  background-color: rgba(255, 0, 85, 0.22);
-}
-
-.grid-light-mode .map-grid-point {
-  background-color: rgba(255, 0, 85, 0.4);
-}
-
-.map-grid-horizontal {
-  width: 100%;
-  height: 1px;
-  left: 0;
-}
-
-.map-grid-vertical {
-  height: 100%;
-  width: 1px;
-  top: 0;
-}
-
-.map-grid-point {
-  position: absolute;
-  width: 3px;
-  height: 3px;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
+  /* Inset slightly so the lines that fall on the outer edge are not drawn */
+  inset: var(--inset);
+  /* Each background tile is one cell, centred on a crossing: a dot in the
+     middle with one vertical and one horizontal line through it. */
+  background-image:
+    radial-gradient(circle, var(--grid-point) 1.5px, transparent 2px),
+    linear-gradient(to right, transparent calc(50% - 0.5px), var(--grid-line) calc(50% - 0.5px), var(--grid-line) calc(50% + 0.5px), transparent calc(50% + 0.5px)),
+    linear-gradient(to bottom, transparent calc(50% - 0.5px), var(--grid-line) calc(50% - 0.5px), var(--grid-line) calc(50% + 0.5px), transparent calc(50% + 0.5px));
+  background-size: var(--cell-w) var(--cell-h);
+  background-position: calc(var(--cell-w) / 2 - var(--inset)) calc(var(--cell-h) / 2 - var(--inset));
 }
 
 .metric {

@@ -67,7 +67,7 @@ export function createChunkStrategy() {
       // emitted chunk by chunk, with a chunk's static imports before the chunk
       // itself, so putting components in their own chunks placed every
       // component stylesheet ahead of the global ones (design tokens, Tailwind,
-      // typography) imported first in src/index.jsx. The production cascade then
+      // typography) imported first in src/index.tsx. The production cascade then
       // differed from the dev server. Leaving app code to the bundler keeps the
       // stylesheets in import order.
     }
