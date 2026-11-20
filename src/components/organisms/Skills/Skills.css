@@ -56,8 +56,6 @@
   gap: 1rem;
 }
 
-
-
 /* Domain Headers */
 .domain-header {
   font-family: var(--font-family-jetbrains);
@@ -104,82 +102,6 @@
   font-weight: bold;
 }
 
-/* View Toggle Controls */
-.view-controls {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 1.5rem;
-}
-
-.view-toggle-btn {
-  display: flex;
-  align-items: center;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  background-color: rgba(var(--color-navy-rgb), 0.7);
-  border: 1px solid rgba(var(--color-cyan-rgb), 0.2);
-  color: var(--color-gray-400);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-family: var(--font-family-jetbrains);
-  font-size: 0.875rem;
-  letter-spacing: var(--letter-spacing-technical);
-}
-
-.view-toggle-btn:hover {
-  background-color: rgba(var(--color-navy-rgb), 0.9);
-  border-color: rgba(var(--color-cyan-rgb), 0.4);
-  color: var(--color-cyan);
-  box-shadow: 0 0 8px rgba(var(--color-cyan-rgb), 0.3);
-}
-
-.view-toggle-btn.active {
-  background-color: rgba(var(--color-navy-rgb), 0.9);
-  border-color: var(--color-cyan);
-  color: var(--color-cyan);
-  font-weight: bold;
-  box-shadow: 0 0 12px rgba(var(--color-cyan-rgb), 0.4);
-}
-
-.view-toggle-btn .view-icon {
-  margin-right: 0.5rem;
-}
-
-/* Security View Mode Styles */
-.skills-section.security-mode {
-  background-color: var(--color-navy);
-  color: var(--color-offwhite);
-}
-
-.skills-section.security-mode .section-title,
-.skills-section.security-mode .section-subtitle {
-  color: var(--color-offwhite);
-}
-
-.security-domain {
-  margin-bottom: 2rem;
-  padding: 1rem;
-  border-radius: 6px;
-  background-color: rgba(var(--color-navy-rgb), 0.7);
-  border: 1px solid rgba(var(--color-cyan-rgb), 0.3);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-.security-domain h3 {
-  color: var(--color-cyan);
-  font-family: var(--font-family-jetbrains);
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid var(--color-cyan);
-  margin-bottom: 1rem;
-  letter-spacing: var(--letter-spacing-technical);
-}
-
-.security-domain-skills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-}
-
 /* Domain Badges */
 .domain-badge {
   display: inline-block;
@@ -193,24 +115,8 @@
   color: var(--color-offwhite);
 }
 
-.domain-badge.app-security {
-  background-color: var(--color-level-critical);
-}
-
-.domain-badge.cloud-security {
-  background-color: var(--color-level-high);
-}
-
-.domain-badge.network-security {
-  background-color: var(--color-level-medium);
-}
-
 .domain-badge.identity {
   background-color: var(--color-level-info);
-}
-
-.domain-badge.devsecops {
-  background-color: #6a5acd; /* SlateBlue */
 }
 
 .domain-badge.compliance {
@@ -227,14 +133,6 @@
 
 /* Media queries for responsive design */
 @media (max-width: 768px) {
-  .security-domain-skills {
-    justify-content: center;
-  }
-  
-  .view-controls {
-    justify-content: center;
-    margin-bottom: 2rem;
-  }
   
   .skills-container, 
   .terminal-container {
@@ -295,13 +193,3 @@
 }
 
 /* Reduced motion preferences */
-@media (prefers-reduced-motion: reduce) {
-  /* 
-   * All animations are now conditionally rendered through framer-motion
-   * based on the AnimationContext which respects prefers-reduced-motion settings
-   */
-  .reduced-motion .security-mode .terminal-line {
-    opacity: 1 !important;
-    transform: none !important;
-  }
-}

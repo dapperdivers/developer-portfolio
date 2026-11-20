@@ -64,18 +64,6 @@
     margin-left: var(--spacing-4);
   }
   
-  /* Fix for sticky position behavior */
-  .sticky-element {
-    position: -webkit-sticky;
-    position: sticky;
-  }
-  
-  /* Fix for border-radius overflow clipping */
-  .border-radius-overflow-fix {
-    -webkit-mask-image: -webkit-radial-gradient(white, black);
-    overflow: hidden;
-  }
-  
   /* Fix for image rendering on retina displays */
   img {
     -webkit-backface-visibility: hidden;
@@ -85,16 +73,6 @@
   /* Fix for CSS variables in calc() */
   :root {
     --safari-fixed-height: 100vh;
-  }
-  
-  /* Fix for 100vh issue on iOS Safari */
-  .full-height {
-    height: var(--safari-fixed-height);
-  }
-  
-  /* Better scrolling experience */
-  .scrollable-content {
-    -webkit-overflow-scrolling: touch;
   }
 }
 
@@ -111,39 +89,10 @@
     --edge-fixed-color: #0062cc;
   }
   
-  .edge-color-fix {
-    color: var(--edge-fixed-color, #0062cc);
-  }
-  
   /* Fix for object-fit in Edge */
   .object-fit-cover {
     font-family: 'object-fit: cover;';
   }
-  
-  /* Fix for flexbox in Edge */
-  .flex-container {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-  }
-  
-  /* Fix for position:sticky support */
-  .sticky-element {
-    position: -ms-sticky;
-    position: sticky;
-  }
-  
-  /* Fix for CSS Grid auto-placement */
-  .grid-auto-fix {
-    grid-auto-columns: 1fr;
-    -ms-grid-columns: 1fr;
-  }
-}
-
-/* General fixes for all browsers */
-.form-control:focus {
-  box-shadow: none !important; 
-  -webkit-box-shadow: none !important;
 }
 
 /* Fix for backdrop-filter fallback */
@@ -164,24 +113,10 @@
     min-height: 44px;
     min-width: 44px;
   }
-  
-  /* Provide alternative for hover interactions */
-  .hover-effect {
-    transition: none !important;
-  }
-  
-  .hover-effect:active {
-    transform: scale(0.98);
-  }
 }
 
 /* Media query for high-contrast mode support */
 @media (forced-colors: active) {
-  /* Ensure visibility in high-contrast mode */
-  .high-contrast-visible {
-    forced-color-adjust: none;
-    border: 1px solid transparent;
-  }
   
   /* Ensure buttons remain visible */
   button, 

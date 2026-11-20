@@ -10,13 +10,6 @@ footer a:focus {
     text-decoration: none;
 }
 
-/* Back to top button */
-.back-to-top {
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3), 0 0 15px rgba(59, 130, 246, 0.3);
-    opacity: 0.9;
-    /* transitions and animations removed - now handled by framer-motion */
-}
-
 /* Social links in footer */
 footer .social-link {
     margin-left: 0.5rem;

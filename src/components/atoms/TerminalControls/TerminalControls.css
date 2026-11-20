@@ -36,27 +36,6 @@
   /* transition removed - now handled by framer-motion */
 }
 
-/* Terminal window styling */
-.timeline-card {
-  border-radius: var(--border-radius-md);
-  overflow: visible;
-  width: 100%;
-  border: 1px solid var(--terminal-border);
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4), /* Stronger shadow */
-              0 0 12px var(--terminal-glow);
-  background-color: var(--terminal-background);
-  backdrop-filter: blur(4px);
-  position: relative;
-  margin-bottom: 0.5rem;
-  transition: all 0.3s ease;
-}
-
-/* Add hover effects */
-.timeline-card-container:hover .timeline-card {
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.6), /* Stronger shadow on hover */
-              0 0 15px var(--terminal-glow);
-}
-
 /* Terminal header */
 .card-header {
   display: flex;
@@ -69,33 +48,6 @@
   border-top-right-radius: var(--border-radius-md);
   position: relative;
   z-index: 2;
-}
-
-/* Terminal title - Simple, high-contrast style for easy readability */
-.terminal-title {
-  font-family: var(--terminal-font);
-  font-size: var(--font-size-sm);
-  color: #FFFFFF; /* Pure white for best readability */
-  text-align: center;
-  flex: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  margin-left: var(--spacing-4);
-  position: relative;
-  z-index: 5;
-  font-weight: 600; /* Semi-bold for clarity */
-  letter-spacing: 0.3px; /* Slight letter spacing for better readability */
-  
-  /* Simple, subtle outline for contrast against any background */
-  text-shadow: 
-    0 0 1px rgba(0, 0, 0, 0.9),
-    0 1px 2px rgba(0, 0, 0, 0.8);
-  
-  /* Very slight background for better contrast */
-  background-color: rgba(0, 0, 0, 0.3);
-  padding: 2px 8px;
-  border-radius: 4px;
 }
 
 /* Terminal footer with enhanced cyberpunk styling */
@@ -131,39 +83,6 @@
   opacity: 0.2;
   pointer-events: none;
   z-index: 0;
-}
-
-/* Terminal screen effect */
-.timeline-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: repeating-linear-gradient(
-    0deg,
-    rgba(var(--color-background-alt-rgb, 20, 40, 70), 0.05),
-    rgba(var(--color-background-alt-rgb, 20, 40, 70), 0.05) 2px,
-    transparent 2px,
-    transparent 4px
-  );
-  pointer-events: none;
-  opacity: 0.3;
-  z-index: 1;
-  border-radius: var(--border-radius-md);
-}
-
-/* Connection status indicators with enhanced cyberpunk styling */
-.connection-status {
-  display: flex;
-  align-items: center;
-  position: relative;
-  z-index: 1;
-  background-color: rgba(0, 0, 0, 0.3);
-  padding: 0.15rem 0.5rem;
-  border-radius: 3px;
-  border: 1px solid rgba(var(--color-primary-rgb), 0.2);
 }
 
 .status-indicator {
@@ -203,122 +122,9 @@
   100% { width: 14px; height: 14px; opacity: 0.6; }
 }
 
-.session-id {
-  font-family: var(--terminal-font);
-  letter-spacing: 1px;
-  position: relative;
-  z-index: 1;
-  padding: 0.15rem 0.5rem;
-  background-color: rgba(0, 0, 0, 0.3);
-  border-radius: 3px;
-  border: 1px solid rgba(var(--color-primary-rgb), 0.2);
-  text-shadow: 0 0 5px currentColor;
-  font-weight: bold;
-}
-
-/* Command prompt and response styles - enhanced with cyberpunk effects */
-.command-prompt {
-  display: flex;
-  align-items: center;
-  margin-bottom: var(--spacing-3);
-  line-height: 1.6;
-  font-family: var(--terminal-font);
-  position: relative;
-  padding: 0.5rem 0.75rem;
-  background-color: rgba(0, 0, 0, 0.5);
-  border-radius: 4px;
-  border-left: 3px solid rgba(var(--color-primary-rgb), 0.7);
-  overflow: hidden;
-}
-
-/* Subtle terminal scan line effect - less distracting */
-.command-prompt::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 1px;
-  background-color: rgba(var(--color-primary-rgb), 0.3);
-  opacity: 0.5;
-  animation: scanline 3s linear infinite;
-  pointer-events: none;
-  z-index: 5;
-}
-
 @keyframes scanline {
   0% { transform: translateY(-100%); }
   100% { transform: translateY(2000%); }
-}
-
-.command-prompt-symbol {
-  color: var(--terminal-prompt);
-  margin-right: var(--spacing-2);
-  font-weight: bold;
-  font-size: 1.1em;
-  text-shadow: 0 0 4px var(--terminal-prompt); /* Reduced glow for better readability */
-  position: relative;
-  z-index: 2;
-}
-
-/* Simplified command prompt symbol with better visibility */
-.command-prompt-symbol::before {
-  content: '';
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background-color: currentColor;
-  opacity: 0.1;
-  border-radius: 50%;
-  filter: blur(4px);
-  z-index: -1;
-}
-
-.command-text {
-  color: var(--terminal-prompt);
-  font-weight: 600;
-  white-space: nowrap;
-  overflow: hidden;
-  text-shadow: 0 0 3px var(--terminal-prompt); /* Reduced glow for better readability */
-  position: relative;
-  z-index: 2;
-  letter-spacing: 0.5px;
-  font-size: 1.05em; /* Slightly larger for better readability */
-}
-
-/* Access level indicator with improved readability */
-.command-access-level {
-  margin-left: var(--spacing-2);
-  font-size: 0.8em;
-  background-color: rgba(0, 0, 0, 0.5); /* Darker background for better contrast */
-  padding: 2px 8px; /* Increased padding for better visibility */
-  border-radius: 4px; /* Slightly more rounded */
-  border: 1px solid rgba(var(--color-primary-rgb), 0.5); /* More visible border */
-  color: var(--terminal-prompt);
-  position: relative;
-  font-weight: bold;
-  text-shadow: 0 0 2px currentColor; /* Reduced glow for better readability */
-  display: inline-block;
-  position: relative;
-  top: -1px;
-  letter-spacing: 0.5px; /* Better letter spacing */
-}
-
-/* Command execution status indicator with improved visibility */
-.command-status {
-  margin-left: auto;
-  font-size: 0.8em; /* Slightly larger */
-  background-color: rgba(var(--color-success-rgb), 0.15); /* More visible background */
-  padding: 2px 8px; /* Increased padding */
-  border-radius: 4px; /* Slightly more rounded */
-  border: 1px solid rgba(var(--color-success-rgb), 0.4); /* More visible border */
-  color: var(--color-success);
-  font-weight: bold;
-  text-shadow: 0 0 2px currentColor; /* Reduced glow for better readability */
-  display: inline-block;
-  position: relative;
-  top: -1px;
-  letter-spacing: 0.5px; /* Better letter spacing */
 }
 
 @keyframes levelPulse {
@@ -326,134 +132,9 @@
   50% { color: #ffffff; }
 }
 
-/* Command typing animation with improved readability */
-.command-text.typing {
-  border-right: 2px solid var(--terminal-prompt);
-  animation: blinkCursor 1s infinite step-end;
-  width: fit-content;
-  overflow: visible;
-}
-
 @keyframes blinkCursor {
   from, to { border-color: transparent; }
   50% { border-color: var(--terminal-prompt); }
-}
-
-/* Command response with improved readability */
-.command-response {
-  margin-left: var(--spacing-4);
-  margin-bottom: var(--spacing-4); /* Increased spacing for better readability */
-  color: #ffffff; /* Brighter text for readability */
-  font-size: var(--font-size-sm);
-  font-family: var(--terminal-font);
-  line-height: 1.7; /* Increased line height for better readability */
-  background-color: rgba(10, 30, 50, 0.7); /* Higher contrast background */
-  padding: 1rem; /* Increased padding for better spacing */
-  border-radius: 6px; /* Slightly rounded corners */
-  border-left: 4px solid rgba(var(--color-primary-rgb), 0.8); /* More visible border */
-  font-weight: 500; /* Slightly bolder for better readability */
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3); /* Subtle shadow for depth */
-}
-
-/* Simplified background for better readability */
-.command-response::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(
-    to right,
-    rgba(var(--color-primary-rgb), 0.4),
-    rgba(var(--color-primary-rgb), 0.1)
-  );
-  opacity: 0.8;
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* Important command highlights with improved readability */
-.command-response > div {
-  position: relative;
-  padding-left: 1.25rem;
-  z-index: 1;
-  margin-bottom: 0.5rem; /* Add space between lines */
-}
-
-.command-response > div:before {
-  content: '>';
-  position: absolute;
-  left: 0;
-  color: var(--terminal-prompt);
-  opacity: 0.9;
-  font-weight: bold;
-  text-shadow: 0 0 3px currentColor; /* Reduced glow */
-}
-
-/* Authentication message styling with improved readability */
-.authentication-message {
-  font-weight: bold;
-  color: var(--color-success);
-  text-align: center;
-  margin-bottom: var(--spacing-3); /* Increased margin */
-  padding: var(--spacing-2); /* Increased padding */
-  border: 2px solid rgba(var(--color-success-rgb), 0.5); /* More visible border */
-  background-color: rgba(var(--color-success-rgb), 0.15); /* Slightly more visible bg */
-  border-radius: 5px; /* More rounded corners */
-  position: relative;
-  overflow: hidden;
-  font-size: 0.95em; /* Slightly larger text */
-  line-height: 1.4; /* Better line height */
-  letter-spacing: 0.5px; /* Improved letter spacing */
-}
-
-/* Authentication status code styling with improved readability */
-.auth-status-code {
-  display: block;
-  font-size: 0.85em;
-  opacity: 0.9; /* Increased visibility */
-  letter-spacing: 1px;
-  margin-top: 4px; /* Increased spacing */
-  color: rgba(255, 255, 255, 0.95); /* Higher contrast */
-}
-
-/* Highlighted values in command responses with improved contrast */
-.highlight-value {
-  color: #FFFFFF;
-  font-weight: bold;
-  letter-spacing: 0.5px;
-  background-color: rgba(var(--color-primary-rgb), 0.15); /* Background for better visibility */
-  padding: 0 3px; /* Padding around text */
-  border-radius: 2px; /* Slightly rounded corners */
-  position: relative;
-}
-
-/* Authorization status with better visibility */
-.blink-slow {
-  color: var(--color-success);
-  font-weight: bold;
-  padding: 0 5px;
-  background-color: rgba(var(--color-success-rgb), 0.15);
-  border-radius: 3px;
-}
-
-/* Expand/collapse hint message */
-.expand-collapse-hint {
-  text-align: center;
-  font-size: var(--font-size-xs);
-  opacity: 0.8;
-  margin-top: 0.25rem;
-  font-style: italic;
-  color: var(--terminal-prompt);
-}
-
-/* Compact view adjustments */
-.timeline-card-container.compact .terminal-footer {
-  padding: 0.25rem 0.5rem;
-  font-size: 9px;
 }
 
 /* Terminal controls for macOS */
@@ -676,42 +357,6 @@
   .terminal-controls-interactive .terminal-circle:active {
     /* No CSS animations to disable - framer-motion handles reduced motion preferences */
   }
-}
-
-/* Color variations for timeline entries */
-.timeline-entry:nth-child(5n+1) .command-prompt-symbol,
-.timeline-entry:nth-child(5n+1) .command-text,
-.timeline-entry:nth-child(5n+1) .expand-collapse-hint {
-  color: var(--color-entry1);
-  text-shadow: 0 0 4px var(--color-entry1);
-}
-
-.timeline-entry:nth-child(5n+2) .command-prompt-symbol,
-.timeline-entry:nth-child(5n+2) .command-text,
-.timeline-entry:nth-child(5n+2) .expand-collapse-hint {
-  color: var(--color-entry2);
-  text-shadow: 0 0 4px var(--color-entry2);
-}
-
-.timeline-entry:nth-child(5n+3) .command-prompt-symbol,
-.timeline-entry:nth-child(5n+3) .command-text,
-.timeline-entry:nth-child(5n+3) .expand-collapse-hint {
-  color: var(--color-entry3);
-  text-shadow: 0 0 4px var(--color-entry3);
-}
-
-.timeline-entry:nth-child(5n+4) .command-prompt-symbol,
-.timeline-entry:nth-child(5n+4) .command-text,
-.timeline-entry:nth-child(5n+4) .expand-collapse-hint {
-  color: var(--color-entry4);
-  text-shadow: 0 0 4px var(--color-entry4);
-}
-
-.timeline-entry:nth-child(5n+5) .command-prompt-symbol,
-.timeline-entry:nth-child(5n+5) .command-text,
-.timeline-entry:nth-child(5n+5) .expand-collapse-hint {
-  color: var(--color-entry5);
-  text-shadow: 0 0 4px var(--color-entry5);
 }
 
 /* Simple header color variations with borders only */

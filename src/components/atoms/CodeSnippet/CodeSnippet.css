@@ -142,21 +142,6 @@
   text-shadow: 0 0 4px rgba(var(--color-warning-rgb), 0.4);
 }
 
-.code-snippet .token-operator {
-  color: var(--color-primary);
-  text-shadow: 0 0 4px rgba(var(--color-primary-rgb), 0.4);
-}
-
-.code-snippet .token-number {
-  color: var(--color-danger);
-  text-shadow: 0 0 4px rgba(var(--color-danger-rgb), 0.4);
-}
-
-.code-snippet-terminal .token-operator {
-  color: var(--color-info);
-  text-shadow: 0 0 4px rgba(var(--color-info-rgb), 0.4);
-}
-
 /* Glitch effect for certain elements - Static styling only, animation now handled by framer-motion */
 .code-snippet .token-keyword,
 .code-snippet .token-function {
@@ -223,29 +208,6 @@
   );
   box-shadow: 0 0 10px rgba(var(--color-primary-rgb), 0.7);
   /* Matrix scan animation removed - now handled by framer-motion */
-}
-
-/* 
- * Keyframes removed - now implemented with framer-motion variants
- * @keyframes matrix-scan {...} 
- */
-
-.terminal-code-snippet:hover::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    radial-gradient(
-      circle at 50% 50%,
-      rgba(var(--color-info-rgb), 0.1),
-      transparent 70%
-    );
-  pointer-events: none;
-  z-index: 1;
-  /* Animation now handled by framer-motion */
 }
 
 @media (max-width: 768px) {

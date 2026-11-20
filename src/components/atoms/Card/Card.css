@@ -268,34 +268,6 @@
   font-family: var(--font-family-jetbrains);
 }
 
-/* Dark mode card (optional fallback) */
-.dark-mode .card {
-  background: linear-gradient(
-    135deg,
-    rgba(var(--color-navy-rgb), 0.95) 0%,
-    rgba(var(--color-navy-rgb), 0.9) 100%
-  );
-  color: var(--color-offwhite);
-}
-
-.dark-mode .card-header,
-.dark-mode .card-footer {
-  background: rgba(var(--color-navy-rgb), 0.98);
-  border-color: rgba(var(--color-cyan-rgb), 0.2);
-}
-
-.dark-mode .card-bordered {
-  border-color: rgba(var(--color-cyan-rgb), 0.3);
-}
-
-.dark-mode .card-title {
-  color: var(--color-offwhite);
-}
-
-.dark-mode .card-subtitle {
-  color: rgba(var(--color-offwhite-rgb), 0.8);
-}
-
 /* Accessibility: Focus outline */
 .card:focus-within {
   outline: 2px solid var(--color-cyan);

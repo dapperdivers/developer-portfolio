@@ -120,71 +120,6 @@
   padding: 0 15px;
 }
 
-/* Background variations */
-.bg-light {
-  background-color: #f8f9fa !important;
-  color: #343a40;
-}
-
-.bg-dark {
-  background-color: #343a40 !important;
-  color: #fff;
-}
-
-/* Dark theme specific styles */
-.bg-dark .section-title {
-  color: #fff;
-}
-
-.bg-dark .section-subtitle {
-  color: rgba(255, 255, 255, 0.7);
-}
-
-.bg-primary {
-  background-color: var(--cyberpunk-primary) !important;
-  color: #fff;
-}
-
-/* Primary theme specific styles */
-.bg-primary .section-title {
-  color: #fff;
-}
-
-.bg-primary .section-title:after {
-  background: rgba(255, 255, 255, 0.5);
-}
-
-.bg-primary .section-subtitle {
-  color: rgba(255, 255, 255, 0.8);
-}
-
-.bg-primary .section-icon {
-  color: #fff;
-}
-
-.bg-secondary {
-  background-color: var(--cyberpunk-secondary) !important;
-  color: #fff;
-}
-
-/* Secondary theme specific styles */
-.bg-secondary .section-title {
-  color: #fff;
-}
-
-.bg-secondary .section-title:after {
-  background: rgba(255, 255, 255, 0.5);
-}
-
-.bg-secondary .section-subtitle {
-  color: rgba(255, 255, 255, 0.8);
-}
-
-.bg-gray {
-  background-color: #f8f9fa !important;
-  color: #343a40;
-}
-
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .section {
@@ -224,49 +159,6 @@
   }
 }
 
-/* Diagonal line background */
-.diagonal-lines {
-  position: absolute;
-  inset: -100% -100%;
-  background-size: 20px 20px;
-  background-image: repeating-linear-gradient(
-    45deg,
-    rgba(5, 213, 250, 0.2) 0,
-    rgba(5, 213, 250, 0.2) 1px,
-    transparent 1px,
-    transparent 20px
-  );
-  /* Animation is now handled by framer-motion */
-}
-
-/* Circuit pattern decorative background */
-.circuit-pattern {
-  background-size: 400px 400px;
-  background-image: url("data:image/svg+xml,%3Csvg width='400' height='400' viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cpath stroke='%2305d5fa' stroke-width='1' d='M200 0v400M0 200h400'/%3E%3Cpath stroke='%2305d5fa' stroke-width='0.5' d='M100 0v400M300 0v400M0 100h400M0 300h400'/%3E%3Cpath stroke='%2305d5fa' stroke-width='0.25' d='M50 0v400M150 0v400M250 0v400M350 0v400M0 50h400M0 150h400M0 250h400M0 350h400'/%3E%3C/g%3E%3C/svg%3E");
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-}
-
-/* Border glow effect */
-.border-glow {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 1;
-  border: 1px solid rgba(5, 213, 250, 0.3);
-  box-shadow: 
-    inset 0 0 15px rgba(5, 213, 250, 0.2),
-    0 0 15px rgba(5, 213, 250, 0.2);
-  /* Animation is now handled by framer-motion */
-}
-
 /* Mobile responsiveness adjustments */
 @media (max-width: 768px) {
   .section {
@@ -280,23 +172,10 @@
   .section-subtitle {
     font-size: 0.9rem;
   }
-  
-  .diagonal-lines {
-    background-size: 10px 10px;
-  }
-  
-  .circuit-pattern {
-    background-size: 200px 200px;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .section-content {
     transition: none !important;
-  }
-  
-  .diagonal-lines,
-  .border-glow {
-    animation: none !important;
   }
 }

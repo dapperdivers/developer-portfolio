@@ -1,41 +1,10 @@
-/**
- * HeaderName Component Styles
- * 
- * Note: All animations have been moved to framer-motion in the component file.
- * This CSS file only contains basic styles and fallbacks for non-JS environments.
- * 
- * This project uses Tailwind CSS. See tailwind.config.js for configuration.
- */
 
-.headername {
-  /* Add custom styles here that go beyond Tailwind's utilities */
-  
-  /* For application-wide styles, consider adding to:
-   * - tailwind.config.js (for theme customization)
-   * - src/assets/css/styles.css (for global styles) 
-   */
-}
 
 /* You can use Tailwind's responsive prefixes in your component's JSX:
  * <div className="md:flex lg:p-4 dark:bg-gray-800"></div>
  * 
  * Or add custom responsive styles here:
  */
-@media (max-width: 768px) {
-  .headername {
-    /* Add mobile-specific styles if needed */
-  }
-}
-
-/* Font styles are now centralized in src/assets/css/fonts.css */
-
-/* Canvas container styles */
-.canvas-container {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  min-height: 4rem;
-}
 
 /* Glitch effect styles */
 @keyframes glitch {
@@ -57,28 +26,6 @@
   100% {
     transform: translate(0);
   }
-}
-
-/* Glow effect */
-.glow-effect {
-  position: absolute;
-  inset: -20px;
-  background: radial-gradient(circle at center, rgba(5, 213, 250, 0.2), transparent 70%);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  pointer-events: none;
-}
-
-/* Hover effects */
-.hover-trigger:hover .glow-effect {
-  opacity: 1;
-}
-
-/* Ensure the text remains crisp */
-.text-sharp {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
 }
 
 /* Terminal-style cursor */

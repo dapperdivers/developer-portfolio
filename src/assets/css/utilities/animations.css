@@ -15,59 +15,12 @@
   transition: opacity 0.3s ease-in-out;
 }
 
-.fade-in-up {
-  transition: opacity 0.4s ease-out, transform 0.4s ease-out;
-}
-
-.fade-in-down {
-  transition: opacity 0.4s ease-out, transform 0.4s ease-out;
-}
-
-.fade-in-left {
-  transition: opacity 0.4s ease-out, transform 0.4s ease-out;
-}
-
-.fade-in-right {
-  transition: opacity 0.4s ease-out, transform 0.4s ease-out;
-}
-
 .pulse {
   transition: transform 1.5s ease-in-out;
 }
 
 .spin {
   transition: transform 1s linear;
-}
-
-/* Transition utilities - still useful with framer-motion */
-.hw-accelerate {
-  will-change: transform;
-  transform: translateZ(0);
-  backface-visibility: hidden;
-}
-
-/* Below classes are kept for backward compatibility but new code should use framer-motion */
-.slide-in-bottom {
-  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-.pulse-glow {
-  transition: box-shadow 2s ease-in-out;
-}
-
-/* Framer-motion compatible utilities */
-.fm-hidden {
-  opacity: 0;
-}
-
-.fm-visible {
-  opacity: 1;
-}
-
-/* Add noscript fallbacks for users with JavaScript disabled */
-noscript .fm-hidden {
-  opacity: 1;
-  transition: opacity 0.5s ease;
 }
 
 /* Media query for users who prefer reduced motion */
