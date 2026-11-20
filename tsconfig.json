@@ -15,127 +15,126 @@
     "noImplicitAny": false,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
-    "baseUrl": ".",
     "paths": {
       "@/*": [
-        "src/*"
+        "./src/*"
       ],
       "@components/*": [
-        "src/components/*"
+        "./src/components/*"
       ],
       "@atoms/*": [
-        "src/components/atoms/*"
+        "./src/components/atoms/*"
       ],
       "@molecules/*": [
-        "src/components/molecules/*"
+        "./src/components/molecules/*"
       ],
       "@organisms/*": [
-        "src/components/organisms/*"
+        "./src/components/organisms/*"
       ],
       "@layout/*": [
-        "src/components/layout/*"
+        "./src/components/layout/*"
       ],
       "@assets/*": [
-        "src/assets/*"
+        "./src/assets/*"
       ],
       "@utils/*": [
-        "src/utils/*"
+        "./src/utils/*"
       ],
       "@scripts/*": [
-        "scripts/*"
+        "./scripts/*"
       ],
       "@hooks/*": [
-        "src/hooks/*"
+        "./src/hooks/*"
       ],
       "@context/*": [
-        "src/context/*"
+        "./src/context/*"
       ],
       "@stories-utils/*": [
-        "src/stories/utils/*"
+        "./src/stories/utils/*"
       ],
       "@atoms/Button/*": [
-        "src/components/atoms/Button/*"
+        "./src/components/atoms/Button/*"
       ],
       "@atoms/Card/*": [
-        "src/components/atoms/Card/*"
+        "./src/components/atoms/Card/*"
       ],
       "@atoms/Head/*": [
-        "src/components/layout/Head/*"
+        "./src/components/layout/Head/*"
       ],
       "@atoms/LazyImage/*": [
-        "src/components/atoms/LazyImage/*"
+        "./src/components/atoms/LazyImage/*"
       ],
       "@atoms/Loading/*": [
-        "src/components/atoms/Loading/*"
+        "./src/components/atoms/Loading/*"
       ],
       "@atoms/Progress/*": [
-        "src/components/atoms/Progress/*"
+        "./src/components/atoms/Progress/*"
       ],
       "@atoms/ResponsiveImage/*": [
-        "src/components/atoms/ResponsiveImage/*"
+        "./src/components/atoms/ResponsiveImage/*"
       ],
       "@atoms/SkeletonCard/*": [
-        "src/components/atoms/SkeletonCard/*"
+        "./src/components/atoms/SkeletonCard/*"
       ],
       "@atoms/Skill/*": [
-        "src/components/atoms/Skill/*"
+        "./src/components/atoms/Skill/*"
       ],
       "@atoms/SkipToContent/*": [
-        "src/components/atoms/SkipToContent/*"
+        "./src/components/atoms/SkipToContent/*"
       ],
       "@molecules/EducationCard/*": [
-        "src/components/molecules/EducationCard/*"
+        "./src/components/molecules/EducationCard/*"
       ],
       "@molecules/ErrorBoundary/*": [
-        "src/components/molecules/ErrorBoundary/*"
+        "./src/components/molecules/ErrorBoundary/*"
       ],
       "@molecules/ExperienceCard/*": [
-        "src/components/molecules/ExperienceCard/*"
+        "./src/components/molecules/ExperienceCard/*"
       ],
       "@molecules/FeedbackCard/*": [
-        "src/components/molecules/FeedbackCard/*"
+        "./src/components/molecules/FeedbackCard/*"
       ],
       "@molecules/Footer/*": [
-        "src/components/molecules/Footer/*"
+        "./src/components/molecules/Footer/*"
       ],
       "@molecules/GithubProfileCard/*": [
-        "src/components/molecules/GithubProfileCard/*"
+        "./src/components/molecules/GithubProfileCard/*"
       ],
       "@molecules/Navigation/*": [
-        "src/components/molecules/Navigation/*"
+        "./src/components/molecules/Navigation/*"
       ],
       "@molecules/ProjectsCard/*": [
-        "src/components/molecules/ProjectsCard/*"
+        "./src/components/molecules/ProjectsCard/*"
       ],
       "@molecules/SocialLinks/*": [
-        "src/components/molecules/SocialLinks/*"
+        "./src/components/molecules/SocialLinks/*"
       ],
       "@organisms/Education/*": [
-        "src/components/organisms/Education/*"
+        "./src/components/organisms/Education/*"
       ],
       "@organisms/Experience/*": [
-        "src/components/organisms/Experience/*"
+        "./src/components/organisms/Experience/*"
       ],
       "@organisms/Feedbacks/*": [
-        "src/components/organisms/Feedbacks/*"
+        "./src/components/organisms/Feedbacks/*"
       ],
       "@organisms/GithubProfile/*": [
-        "src/components/organisms/GithubProfile/*"
+        "./src/components/organisms/GithubProfile/*"
       ],
       "@organisms/Greetings/*": [
-        "src/components/organisms/Greetings/*"
+        "./src/components/organisms/Greetings/*"
       ],
       "@organisms/Proficiency/*": [
-        "src/components/organisms/Proficiency/*"
+        "./src/components/organisms/Proficiency/*"
       ],
       "@organisms/Projects/*": [
-        "src/components/organisms/Projects/*"
+        "./src/components/organisms/Projects/*"
       ],
       "@organisms/Skills/*": [
-        "src/components/organisms/Skills/*"
+        "./src/components/organisms/Skills/*"
       ],
       "@layout/Section/*": [
-        "src/components/layout/Section/*"
+        "./src/components/layout/Section/*"
       ]
     }
   },
