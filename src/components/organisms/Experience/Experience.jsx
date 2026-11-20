@@ -250,6 +250,7 @@ const Experience = () => {
           <ConsoleHeader
             prompt="user@portfolio:/experience$"
             placeholder="Type 'help' for commands or 'ls la' to expand all experiences..."
+            compactPlaceholder="Type 'help' for commands"
             interactive={true}
             onCommand={handleConsoleCommand}
             variant="kitty"

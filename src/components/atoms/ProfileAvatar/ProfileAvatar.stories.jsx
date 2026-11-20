@@ -60,3 +60,14 @@ NoAnimation.args = {
   clearanceText: 'Security Clearance: Top Level',
   animate: false,
 };
+
+/**
+ * Missing source: shows the icon placeholder instead of a broken image.
+ */
+export const NoSource = Template.bind({});
+NoSource.args = {
+  src: '',
+  alt: 'John Doe',
+  clearanceText: 'Security Clearance: Top Level',
+  animate: false,
+};

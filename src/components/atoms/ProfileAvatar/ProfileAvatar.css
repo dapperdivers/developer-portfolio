@@ -17,6 +17,15 @@
     0 10px 20px rgba(0, 0, 0, 0.3);
 }
 
+.profile-avatar__placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-navy);
+  color: var(--color-cyan);
+  font-size: 4rem;
+}
+
 .profile-avatar__image:hover {
   box-shadow: 
     0 0 0 4px rgba(var(--color-navy-rgb), 0.5),

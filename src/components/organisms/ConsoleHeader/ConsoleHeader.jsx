@@ -16,6 +16,7 @@ import './ConsoleHeader.css';
  * @param {string} [props.prompt='user@portfolio:~$'] - Command prompt text
  * @param {string} [props.command=''] - Command text (for display mode)
  * @param {string} [props.placeholder=''] - Placeholder text for input mode
+ * @param {string} [props.compactPlaceholder=''] - Shorter placeholder used at 480px and narrower
  * @param {boolean} [props.interactive=false] - Whether to show interactive input
  * @param {function} [props.onCommand] - Callback when command is executed
  * @param {boolean} [props.showCursor=true] - Whether to show the blinking cursor
@@ -37,6 +38,7 @@ const ConsoleHeader = ({
   prompt = 'user@portfolio:~$',
   command = '',
   placeholder = '',
+  compactPlaceholder = '',
   interactive = false,
   onCommand,
   showCursor = true,
@@ -138,6 +140,7 @@ const ConsoleHeader = ({
           prompt={prompt}
           command={command}
           placeholder={placeholder}
+          compactPlaceholder={compactPlaceholder}
           interactive={interactive}
           onCommand={handleCommand}
           showCursor={showCursor}
@@ -161,6 +164,7 @@ ConsoleHeader.propTypes = {
   prompt: PropTypes.string,
   command: PropTypes.string,
   placeholder: PropTypes.string,
+  compactPlaceholder: PropTypes.string,
   interactive: PropTypes.bool,
   onCommand: PropTypes.func,
   showCursor: PropTypes.bool,

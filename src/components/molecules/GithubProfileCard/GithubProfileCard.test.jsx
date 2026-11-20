@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import GithubProfileCard from './GithubProfileCard';
 import { AnimationProvider } from '@context/AnimationContext';
 
@@ -59,15 +59,6 @@ vi.mock('@molecules/ProfileContent', () => ({
   ),
 }));
 
-vi.mock('@molecules/ProfileError', () => ({
-  __esModule: true,
-  default: ({ message, onRetry }) => (
-    <div data-testid="profile-error" data-message={message} onClick={onRetry}>
-      ProfileError
-    </div>
-  ),
-}));
-
 // Mock the portfolio data
 vi.mock('@/portfolio', () => ({
   greetings: {
@@ -76,7 +67,8 @@ vi.mock('@/portfolio', () => ({
     subTitle: 'Security Engineer',
     description: 'I am a security professional with expertise in secure architecture.'
   },
-  securityFacts: ['Security fact 1', 'Security fact 2']
+  securityFacts: ['Security fact 1', 'Security fact 2'],
+  openSource: { githubUserName: 'octocat' }
 }));
 
 describe('GithubProfileCard', () => {
@@ -101,34 +93,25 @@ describe('GithubProfileCard', () => {
     expect(screen.getByTestId('profile-header')).toBeInTheDocument();
     expect(screen.getByTestId('profile-location')).toBeInTheDocument();
     expect(screen.getByTestId('profile-content')).toBeInTheDocument();
+    expect(screen.getByTestId('profile-avatar')).toHaveAttribute('data-src', 'https://example.com/avatar.jpg');
     expect(screen.queryByTestId('profile-error')).not.toBeInTheDocument();
   });
 
-  test('renders error state when error is provided', () => {
-    const errorMessage = 'API rate limit exceeded';
-    const onRetry = vi.fn();
-    
-    renderWithContext(
-      <GithubProfileCard 
-        prof={null} 
-        error={errorMessage} 
-        onRetry={onRetry} 
-      />
-    );
-    
-    expect(screen.getByTestId('profile-error')).toBeInTheDocument();
-    expect(screen.queryByTestId('profile-avatar')).not.toBeInTheDocument();
-    
-    // Test retry functionality
-    fireEvent.click(screen.getByTestId('profile-error'));
-    expect(onRetry).toHaveBeenCalledTimes(1);
+  test('API failed: card still renders with fallback avatar', () => {
+    renderWithContext(<GithubProfileCard prof={null} />);
+
+    expect(screen.getByTestId('profile-avatar')).toHaveAttribute('data-src', 'https://github.com/octocat.png');
+    expect(screen.getByTestId('profile-header')).toBeInTheDocument();
+    expect(screen.getByTestId('profile-content')).toBeInTheDocument();
+    expect(screen.queryByTestId('profile-error')).not.toBeInTheDocument();
   });
 
-  test('renders error state when profile is empty', () => {
-    renderWithContext(<GithubProfileCard prof={{}} error={null} />);
-    
-    expect(screen.getByTestId('profile-error')).toBeInTheDocument();
-    expect(screen.queryByTestId('profile-avatar')).not.toBeInTheDocument();
+  test('renders full card with fallback avatar when profile is empty', () => {
+    renderWithContext(<GithubProfileCard prof={{}} />);
+
+    expect(screen.getByTestId('profile-avatar')).toHaveAttribute('data-src', 'https://github.com/octocat.png');
+    expect(screen.getByTestId('profile-content')).toBeInTheDocument();
+    expect(screen.queryByTestId('profile-error')).not.toBeInTheDocument();
   });
 
   test('does not render location when location is not provided', () => {

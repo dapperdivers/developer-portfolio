@@ -114,6 +114,29 @@ TerminalInteractive.args = {
   variant: 'terminal'
 };
 
+/**
+ * Experience section prompt and long placeholder in a 320px box. The input must
+ * wrap under the prompt and stay inside the terminal. Resize the canvas to 320-480px
+ * (the 480px breakpoint follows the browser window, not the box).
+ */
+export const NarrowInteractive = () => (
+  <div style={{
+    width: '320px',
+    border: '1px solid var(--color-border)',
+    borderRadius: '8px',
+    overflow: 'hidden',
+    background: 'var(--color-background)'
+  }}>
+    <TerminalCommandLine
+      prompt="user@portfolio:/experience$"
+      placeholder="Type 'help' for commands or 'ls la' to expand all experiences..."
+      compactPlaceholder="Type 'help' for commands"
+      interactive={true}
+      variant="kitty"
+    />
+  </div>
+);
+
 export const Loading = Template.bind({});
 Loading.args = {
   prompt: 'user@portfolio:~$',
