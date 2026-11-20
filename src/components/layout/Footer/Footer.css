@@ -1,11 +1,5 @@
 /* Footer specific styles */
 
-.footer {
-    background-color: var(--color-background-dark);
-    color: var(--color-text-light);
-    padding: var(--spacing-4) 0;
-}
-
 /* Footer link hover effects */
 footer a {
     /* transitions removed - now handled by framer-motion */

@@ -102,7 +102,7 @@
 .education-bullet-item {
   font-size: var(--font-size-sm);
   line-height: 1.6;
-  color: var(--color-text-light);
+  color: var(--color-offwhite);
   margin-bottom: var(--spacing-2);
 }
 

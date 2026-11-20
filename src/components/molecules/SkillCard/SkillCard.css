@@ -489,7 +489,7 @@
 .skill-card-expanded-content {
   font-size: var(--font-size-base);
   color: rgba(var(--color-offwhite-rgb), 0.9);
-  line-height: var(--line-height-relaxed);
+  line-height: var(--line-height-base);
   margin-bottom: var(--spacing-4);
 }
 
@@ -664,7 +664,7 @@
 .skill-card-expanded-content-wrapper .skill-card-expanded-content {
   font-size: var(--font-size-base);
   color: rgba(var(--color-offwhite-rgb), 0.9);
-  line-height: var(--line-height-relaxed);
+  line-height: var(--line-height-base);
   margin-bottom: var(--spacing-4);
 }
 

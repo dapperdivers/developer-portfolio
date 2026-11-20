@@ -237,7 +237,7 @@
 
 .education-card__cert-id {
   color: rgba(var(--color-cyan-rgb), 0.8);
-  font-family: var(--font-mono);
+  font-family: var(--font-family-mono);
   font-size: var(--font-size-xs);
   padding: var(--spacing-1) var(--spacing-2);
   background: rgba(var(--color-cyan-rgb), 0.1);

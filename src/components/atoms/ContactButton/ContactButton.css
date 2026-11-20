@@ -6,7 +6,7 @@
   background: linear-gradient(90deg, var(--color-cyan) 0%, var(--color-primary) 100%);
   color: var(--color-navy);
   padding: var(--spacing-2) var(--spacing-5);
-  border-radius: var(--border-radius-full);
+  border-radius: var(--border-radius-pill);
   font-weight: var(--font-weight-bold);
   font-size: var(--font-size-sm);
   text-transform: uppercase;

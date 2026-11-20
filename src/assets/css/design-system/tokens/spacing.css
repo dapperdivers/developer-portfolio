@@ -14,6 +14,7 @@
   
   /* Semantic Spacing */
   --section-padding-y: var(--spacing-8);
+  --section-padding-y-sm: var(--spacing-6);
   --container-padding-x: var(--spacing-6);
   --container-max-width: 1280px;
   --container-gutter: var(--spacing-6);

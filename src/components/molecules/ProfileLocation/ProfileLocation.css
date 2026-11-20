@@ -3,7 +3,7 @@
 
 .profile-location {
   width: 100%;
-  background: var(--color-dark);
+  background: var(--color-background-alt);
   border: 2px solid var(--color-cyan);
   border-radius: 0;
   padding: 0;
