@@ -384,8 +384,8 @@ npm run docs:build
 ### Utility Scripts
 
 ```bash
-# Generate component
-npm run generate-component
+# Generate component (TypeScript; see scripts/README.md)
+yarn generate:component --name=Button --type=atom
 
 # Optimize images
 npm run optimize-images

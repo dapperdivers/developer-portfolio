@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "type": "module",
   "description": "Software Developer Portfolio Template built with react.js",
-  "main": "index.jsx",
   "engines": {
     "node": ">=22.0.0"
   },
@@ -45,8 +44,6 @@
     "dev:frontend": "concurrently --kill-others --prefix-colors \"cyan,magenta\" --prefix \"[{name}]\" --names \"vite,storybook\" --timestamp-format \"HH:mm:ss\" \"vite\" \"storybook dev -p 6006 --host 0.0.0.0\"",
     "dev:minimal": "concurrently --kill-others --prefix-colors \"cyan,green\" --prefix \"[{name}]\" --names \"vite,server\" --timestamp-format \"HH:mm:ss\" \"vite\" \"node config/vite/dev/server.js\"",
     "dev:docs": "cd docs && bundle install && bundle exec jekyll serve --watch --livereload --host 0.0.0.0",
-    "dev:enhanced": "node scripts/dev.js all",
-    "dev:help": "node scripts/dev.js --help",
     "dev:status": "node scripts/dev-status.js",
     "preview": "vite preview",
     "preview:prod": "PREVIEW_PORT=5173 PREVIEW_HOST=0.0.0.0 vite preview",
@@ -64,7 +61,7 @@
     "storybook": "storybook dev -p 6006 --host 0.0.0.0",
     "storybook:build": "storybook build --output-dir=storybook-static",
     "storybook:test": "test-storybook",
-    "generate-story": "node scripts/generate.js --type=story",
+    "generate-story": "node scripts/generate.js story",
     "test": "vitest --config vitest.config.ts",
     "test:watch": "vitest --watch --config vitest.config.ts",
     "test:run": "vitest run --config vitest.config.ts",
@@ -82,15 +79,13 @@
     "optimize": "npm-run-all optimize:*",
     "optimize:images": "node scripts/optimize-images.js",
     "optimize:svgs": "node scripts/optimize-svgs.js",
-    "optimize:imports": "node scripts/standardize-react-imports.js",
     "clean": "rm -rf node_modules .cache dist build",
     "clean:all": "npm-run-all clean clean:build",
     "clean:build": "rm -rf build",
     "reinstall": "yarn clean && yarn",
     "validate": "node scripts/validate-config.js",
     "generate": "node scripts/generate-asset-metadata.js",
-    "cleanup": "node scripts/cleanup-repo.js",
-    "restore": "node scripts/restore-context-files.js"
+    "generate:component": "node scripts/generate.js"
   },
   "browserslist": {
     "production": [

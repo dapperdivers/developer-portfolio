@@ -194,7 +194,7 @@ To maintain optimal asset performance over time, follow these practices:
 2. **Use Component Generator for New Components**
    - Ensures proper CSS organization and optimization
    - Maintains consistency in asset references
-   - Run `npm run generate-component` for new components
+   - Run `yarn generate:component --name=<Name> --type=<atom|molecule|organism|layout>` for new components
 
 3. **Regular Audits**
    - Perform quarterly performance audits
