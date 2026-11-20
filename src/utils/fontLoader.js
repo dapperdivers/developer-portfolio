@@ -87,6 +87,8 @@ class FontLoader {
     });
 
     try {
+      // FontFace is built from the individual font file, as the Font Loading API expects
+      const font = new window.FontFace(fontFamily,`url(${fontUrl})`, { weight, style, display });
       const loadedFont = await Promise.race([font.load(), timeoutPromise]);
       document.fonts.add(loadedFont);
       
