@@ -7,6 +7,14 @@ import { existsSync } from 'fs';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// RATE_LIMIT_MAX must be a non-negative integer; anything else keeps the default.
+function rateLimitMaxFromEnv(fallback = 600) {
+  const raw = process.env.RATE_LIMIT_MAX;
+  if (raw === undefined || raw === '') return fallback;
+  const value = Number(raw);
+  return Number.isInteger(value) && value >= 0 ? value : fallback;
+}
+
 // Production-specific configuration
 const prodConfig = {
   port: parseInt(process.env.PORT) || 8080,
@@ -14,9 +22,10 @@ const prodConfig = {
   buildPath: path.join(__dirname, '../../../build'),
   storybookPath: path.join(__dirname, '../../../storybook-static'),
   docsPath: path.join(__dirname, '../../../docs-static'),
-  // Per visitor. A cold page load is about 25 requests, so this allows a
-  // few dozen page loads per 15 minutes before limiting.
-  rateLimitMax: 600,
+  // Requests per visitor per window; RATE_LIMIT_MAX=0 disables the limiter.
+  // A cold page load is about 25 requests, so the default allows a few dozen
+  // page loads per 15 minutes.
+  rateLimitMax: rateLimitMaxFromEnv(),
   rateLimitWindow: 15 * 60 * 1000,
   cacheMaxAge: '1y' // Aggressive caching in production
 };

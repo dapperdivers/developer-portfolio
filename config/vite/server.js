@@ -103,11 +103,15 @@ export function createBaseServer(config = {}) {
   });
 
   // Rate limiting
-  // The limit is per visitor. In production the app sits behind Cloudflare, a
-  // tunnel and a gateway, so `req.ip` is the last proxy for every request and
-  // would put all visitors in one shared bucket. Cloudflare sets
-  // CF-Connecting-IP to the real client address; use it when it is a valid IP
-  // and fall back to `req.ip` for traffic that did not come through Cloudflare.
+  // The limit is meant to be per visitor, which needs the visitor's address.
+  // Cloudflare sets CF-Connecting-IP to it; use that when it is a valid IP and
+  // fall back to `req.ip` otherwise.
+  //
+  // If the proxies in front of the app pass neither that header nor a usable
+  // X-Forwarded-For, `req.ip` is the last proxy for every request and all
+  // visitors share one bucket. In that setup the limiter can only throttle
+  // everyone at once, so turn it off with RATE_LIMIT_MAX=0 and rate limit at
+  // the edge instead.
   const clientAddress = (req) => {
     const header = req.headers['cf-connecting-ip'];
     const candidate = Array.isArray(header) ? header[0] : header;
@@ -127,7 +131,11 @@ export function createBaseServer(config = {}) {
     keyGenerator: (req) => ipKeyGenerator(clientAddress(req)),
     skip: (req) => HEALTH_PATHS.has(req.path)
   });
-  app.use(limiter);
+  if (rateLimitMax > 0) {
+    app.use(limiter);
+  } else {
+    console.log('Rate limiting is disabled (RATE_LIMIT_MAX=0)');
+  }
 
   // Only build output with a content hash in its name is safe to cache for a
   // long time. Everything else (HTML, the service worker, manifests) must be
