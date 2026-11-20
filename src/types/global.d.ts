@@ -28,22 +28,12 @@ declare global {
     supportPassiveEvents?: boolean;
     /** HTML-escaping helper installed by security.applyXXSSProtection. */
     encodeHTML?: (str: unknown) => string;
-    /** Marker installed by the CSS-variable fallback. */
-    cssVars?: () => void;
     /** Render log shared by the debug profiler components. */
     PERFORMANCE_DEBUG?: {
       renders: Record<string, ProfilerRenderRecord[]>;
       recordRender: (id: string, data: ProfilerRenderRecord) => void;
       clear: () => void;
     };
-    /** Console helpers installed by RenderDebugTools while it is enabled. */
-    debugUtils?: {
-      profiler: object;
-      toggleMonitoring: () => void;
-      capturePerformance: () => void;
-    };
-    /** Set by RenderVisualizer for other debug components to read. */
-    RENDER_VISUALIZATION_ENABLED?: boolean;
     /** Chrome DevTools extension API; only present inside DevTools pages. */
     chrome?: { devtools?: { executeScript: (options: { code: string }) => void } };
     /** Chrome DevTools console utility; not available to page scripts. */
