@@ -29,15 +29,10 @@ vi.mock('@/hooks/useCallbackHandlers', () => ({
   default: () => mockUseCallbackHandlers()
 }));
 
-// Mock the SocialLinks component
-vi.mock('@molecules/SocialLinks', () => ({
-  default: () => <div data-testid="social-links">Social Links</div>
-}));
-
-// Mock the FaHeart and FaChevronUp icons
-vi.mock('react-icons/fa', () => ({
-  FaHeart: () => <svg data-testid="heart-icon" />,
-  FaChevronUp: () => <svg data-testid="up-icon" />
+// Mock the cluster status hook
+const mockUseClusterStatus = vi.fn();
+vi.mock('@hooks/useClusterStatus', () => ({
+  default: () => mockUseClusterStatus()
 }));
 
 // Mock AnimationContext
@@ -66,6 +61,7 @@ describe('Footer Component', () => {
     vi.clearAllMocks();
     mockUseFooter.mockReturnValue(mockFooterData);
     mockUseCallbackHandlers.mockReturnValue(mockHandlersData);
+    mockUseClusterStatus.mockReturnValue({ status: 'loading', data: null });
   });
 
   it('renders correctly with all required data', () => {
@@ -78,8 +74,8 @@ describe('Footer Component', () => {
     const footerText = screen.getByText(/© 2025/);
     expect(footerText).toBeInTheDocument();
     
-    // Check that social links component is rendered
-    expect(screen.getByTestId('social-links')).toBeInTheDocument();
+    // The social icon row is gone from the footer
+    expect(screen.queryByTestId('social-links')).not.toBeInTheDocument();
     
     // Check for navigation links
     expect(screen.getByText('Home')).toBeInTheDocument();
@@ -88,14 +84,7 @@ describe('Footer Component', () => {
     expect(screen.getByText('Contact')).toBeInTheDocument();
     expect(screen.getByText('Resume')).toBeInTheDocument();
     expect(screen.getByText('Contact Card')).toBeInTheDocument();
-    
-    // Check for "Made with" text (appears twice for responsive layout)
-    const madeWithTexts = screen.getAllByText(/Made with/);
-    expect(madeWithTexts.length).toBeGreaterThan(0);
-    
-    // Check for "using React" text
-    const usingReactTexts = screen.getAllByText(/using React/);
-    expect(usingReactTexts.length).toBeGreaterThan(0);
+    expect(screen.queryByText(/Made with/)).not.toBeInTheDocument();
   });
 
 
@@ -121,5 +110,41 @@ describe('Footer Component', () => {
     // Check that the handleDownload function was called with correct parameters
     expect(mockHandlersData.handleDownload).toHaveBeenCalledTimes(1);
     expect(mockHandlersData.handleDownload).toHaveBeenCalledWith('/contact/Derek_Mackley.vcf', 'Derek_Mackley.vcf');
+  });
+
+  describe('cluster line', () => {
+    const okData = {
+      updatedAt: '2026-11-20T14:32:00.000Z',
+      badges: {
+        cluster_status: { title: 'Cluster', value: 'up', color: 'green' },
+        cluster_node_count: { title: 'Nodes', value: '11', color: 'green' },
+        cluster_pod_count: { title: 'Pods', value: '266', color: 'green' }
+      }
+    };
+
+    it('shows live numbers and links to the cluster repo', () => {
+      mockUseClusterStatus.mockReturnValue({ status: 'ok', data: okData });
+      render(<Footer />);
+      const line = screen.getByTestId('footer-cluster-line');
+      expect(line).toHaveTextContent('Served from a Talos cluster in my garage · 11 nodes · 266 pods · all systems up');
+      expect(line).toHaveAttribute('href', 'https://github.com/dapperdivers/dapper-cluster');
+    });
+
+    it('says degraded when the cluster is not up', () => {
+      mockUseClusterStatus.mockReturnValue({
+        status: 'ok',
+        data: { ...okData, badges: { ...okData.badges, cluster_status: { title: 'Cluster', value: 'degraded', color: 'yellow' } } }
+      });
+      render(<Footer />);
+      expect(screen.getByTestId('footer-cluster-line')).toHaveTextContent(/11 nodes · 266 pods · degraded$/);
+    });
+
+    it.each(['loading', 'error'] as const)('shows only the fixed text while %s', (status) => {
+      mockUseClusterStatus.mockReturnValue({ status, data: null });
+      render(<Footer />);
+      const line = screen.getByTestId('footer-cluster-line');
+      expect(line).toHaveTextContent(/^Served from a Talos cluster in my garage$/);
+      expect(line.textContent).not.toMatch(/\d/);
+    });
   });
 });

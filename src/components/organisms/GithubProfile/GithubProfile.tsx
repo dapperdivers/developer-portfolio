@@ -1,11 +1,12 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import Loading from '@atoms/Loading'
-import { greetings, securityFacts, openSource, profileLinks } from "@/portfolio";
+import { greetings, openSource, profileLinks } from "@/portfolio";
 import axios from 'axios';
 import GithubProfileCard from '@molecules/GithubProfileCard';
 import { motion } from "framer-motion";
 import Section from '../../layout/Section';
 import { useAnimation } from "@context/AnimationContext";
+import useClusterStatus from "@hooks/useClusterStatus";
 import { slideUpVariants } from "@utils/motion";
 import './GithubProfile.css';
 
@@ -56,6 +57,7 @@ const GithubProfile = ({ id = 'contact' }: GithubProfileProps) => {
 
     // Use animation context for animation values
     const { animationEnabled } = useAnimation();
+    const clusterStatus = useClusterStatus();
 
     // Validate GitHub username
     const validateGithubUsername = (username: string) => {
@@ -160,10 +162,10 @@ const GithubProfile = ({ id = 'contact' }: GithubProfileProps) => {
                     <GithubProfileCard
                         prof={prof}
                         greetings={greetings}
-                        securityFacts={securityFacts}
                         githubUserName={openSource.githubUserName}
                         links={profileLinks}
                         animated={animationEnabled}
+                        clusterStatus={clusterStatus}
                     />
                 </motion.div>
             </Suspense>

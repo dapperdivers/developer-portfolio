@@ -8,7 +8,9 @@
 
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  /* At most two columns: the cards carry long descriptions, and an even
+     number of projects lays out as a clean grid */
+  grid-template-columns: repeat(auto-fill, minmax(max(300px, calc(50% - var(--spacing-5))), 1fr));
   gap: var(--spacing-5);
   margin-top: var(--spacing-6);
 }
@@ -123,7 +125,6 @@
 
 @media (max-width: 992px) {
   .projects-grid {
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: var(--spacing-4);
   }
 }
@@ -134,7 +135,7 @@
   }
   
   .projects-grid {
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: 1fr;
     gap: var(--spacing-3);
     margin-top: var(--spacing-4);
   }

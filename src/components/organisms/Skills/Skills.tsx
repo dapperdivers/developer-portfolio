@@ -1,15 +1,14 @@
 import React, { memo, useMemo, useState, useEffect } from 'react';
 import { motion, MotionProps, Variants } from "framer-motion";
 
-import SkillCard, { SkillCardExpanded } from '@molecules/SkillCard';
-import type { SkillCardData } from '@molecules/SkillCard';
+import SkillChip from '@molecules/SkillChip';
 import SkeletonCard from '@atoms/SkeletonCard';
 import TerminalTitleBar from '@molecules/TerminalTitleBar';
 import Section from '../../layout/Section';
 import useSkills from "@hooks/useSkills";
 import { usePortfolio } from "@context/PortfolioContext";
 import { useAnimation } from '@context/AnimationContext';
-import { slideUpVariants, fadeInVariants, STAGGER_DELAY } from '@utils/motion';
+import { STAGGER_DELAY } from '@utils/motion';
 import type { PortfolioData, Skill, SkillsSection } from '@/types/portfolio';
 import '@assets/css/tailwind.css';
 import './Skills.css';
@@ -21,6 +20,18 @@ export interface SkillsSettingsConfig {
     loadingDelay?: number;
   };
 }
+
+/** Words kept upper-case when an ALL CAPS subtitle is converted to sentence case */
+const KEEP_UPPER = new Set(['AI', 'AppSec', 'CI/CD', 'SDLC']);
+
+/** Turns an ALL CAPS string into sentence case; mixed-case text is left as it is. */
+const sentenceCase = (text: string): string => {
+  if (text !== text.toUpperCase()) return text;
+  const lower = text.toLowerCase().replace(/\b[a-z/]+\b/g, w =>
+    [...KEEP_UPPER].find(k => k.toLowerCase() === w) ?? w
+  );
+  return lower.charAt(0).toUpperCase() + lower.slice(1);
+};
 
 /**
  * Skills component that displays a grid of skills icons and descriptions.
@@ -52,8 +63,8 @@ const Skills = () => {
     skills: []
   };
   
-  // State for expanded skill card
-  const [expandedSkill, setExpandedSkill] = useState<SkillCardData | null>(null);
+  // One open skill description per group, keyed by domain
+  const [openSkills, setOpenSkills] = useState<Record<string, string | null>>({});
   
   // Loading and error states
   const isLoading = !skillsData;
@@ -161,30 +172,11 @@ const Skills = () => {
     return grouped;
   }, [skillsSection.softwareSkills]);
   
-  // Handle skill card click
-  const handleSkillClick = (skill: SkillCardData) => {
-    setExpandedSkill(skill);
+  // Open a skill's description in its group, or close it if already open
+  const toggleSkill = (domain: string, skillName: string) => {
+    setOpenSkills(prev => ({ ...prev, [domain]: prev[domain] === skillName ? null : skillName }));
   };
-  
-  // Close expanded skill card
-  const closeExpandedSkill = () => {
-    setExpandedSkill(null);
-  };
-  
-  // Prevent background scrolling when modal is open
-  useEffect(() => {
-    if (expandedSkill) {
-      // Prevent background scrolling
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [expandedSkill]);
-  
+
   // Loading state
   // Skip rendering if explicitly disabled in config. This has to come after
   // every hook above, so the hooks run in the same order on each render.
@@ -197,7 +189,6 @@ const Skills = () => {
       <Section
         id="skills"
         title="Skills"
-        icon="simple-icons:apachespark"
         className={`skills-section text-white ${!shouldAnimate ? 'reduced-motion' : ''}`}
       >
         <div className="flex flex-wrap -mx-4 items-center">
@@ -236,7 +227,6 @@ const Skills = () => {
       <Section
         id="skills"
         title="Skills"
-        icon="simple-icons:apachespark"
         className="skills-section text-white"
       >
         <div className="skills-empty-state">
@@ -251,7 +241,7 @@ const Skills = () => {
     <Section
       id="skills"
       title={skillsSection.title}
-      subtitle={skillsSection.subTitle}
+      subtitle={skillsSection.subTitle ? sentenceCase(skillsSection.subTitle) : undefined}
       animation={sectionAnimation}
       className="skills-section text-white"
       aria-label="Developer skills and technologies"
@@ -285,43 +275,45 @@ const Skills = () => {
           </motion.div>
         </div>
         
-        {/* Skills Grid Section */}
+        {/* Skills by group: a label and a row of chips; the description opens under the row */}
         <div className="skills-container">
           <h3 className="skills-category-title">Technical Skills</h3>
-          
-          {/* Render skills grouped by domain */}
-          {Object.keys(groupedSkills).map(domain => (
-            <div key={domain}>
-              <h4 className="domain-header">{domain}</h4>
-              <div 
-                className="skills-grid standard-grid"
-                aria-label={`${groupedSkills[domain].length} skills in ${domain}`}
-              >
-                {groupedSkills[domain].map((skill, index) => (
-                  <SkillCard
-                    key={`skill-card-${skill.skillName}`}
-                    skill={skill}
-                    index={+index}
-                    animated={animationEnabled}
-                    reducedMotion={!shouldAnimate}
-                    onClick={handleSkillClick}
-                  />
-                ))}
-              </div>
-            </div>
-          ))}
+          <dl className="skills-groups">
+            {Object.keys(groupedSkills).map(domain => {
+              const openName = openSkills[domain];
+              const openSkill = groupedSkills[domain].find(s => s.skillName === openName);
+              const detailId = `skill-detail-${domain.replace(/[^a-z0-9]+/gi, '-').toLowerCase()}`;
+              return (
+                <div key={domain} className="skills-group">
+                  <dt className="domain-header">{domain}</dt>
+                  <dd className="skills-group-body">
+                    <div className="skills-chips">
+                      {groupedSkills[domain].map(skill => (
+                        <SkillChip
+                          key={`skill-chip-${skill.skillName}`}
+                          name={skill.skillName}
+                          iconName={skill.iconName}
+                          selected={openName === skill.skillName}
+                          controlsId={skill.description ? detailId : undefined}
+                          onClick={skill.description ? () => toggleSkill(domain, skill.skillName) : undefined}
+                          animated={animationEnabled}
+                        />
+                      ))}
+                    </div>
+                    <p id={detailId} className="skills-detail" hidden={!openSkill} aria-live="polite">
+                      {openSkill && (
+                        <>
+                          <strong>{openSkill.skillName}.</strong> {openSkill.description}
+                        </>
+                      )}
+                    </p>
+                  </dd>
+                </div>
+              );
+            })}
+          </dl>
         </div>
       </div>
-      
-      {/* Expanded Skill Modal */}
-      {expandedSkill && (
-        <SkillCardExpanded
-          skill={expandedSkill}
-          onClose={closeExpandedSkill}
-          isVisible={true}
-          animated={animationEnabled}
-        />
-      )}
     </Section>
   );
 };

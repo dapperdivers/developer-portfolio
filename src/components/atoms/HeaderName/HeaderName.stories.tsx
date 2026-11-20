@@ -43,6 +43,14 @@ export const Default: Story = {
   },
 };
 
+/** The turtle brand mark before the name, as the nav shows it. */
+export const WithLogo: Story = {
+  args: {
+    name: 'Derek Mackley',
+    logoSrc: '/apple-touch-icon.png',
+  },
+};
+
 export const LongName: Story = {
   args: {
     name: 'Dr. Jonathan Doe-Smith III',

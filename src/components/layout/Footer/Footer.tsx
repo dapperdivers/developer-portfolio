@@ -1,12 +1,30 @@
 import React, { memo } from 'react';
-import { FaHeart } from 'react-icons/fa';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { useAnimation } from '@context/AnimationContext';
-import SocialLinks from '@molecules/SocialLinks';
-import { profileLinks } from '@/portfolio';
+import useClusterStatus from '@hooks/useClusterStatus';
+import { clusterHealth, healthLabel } from '@molecules/ClusterStatus/clusterSummary';
 import useFooter from '@hooks/useFooter';
 import useCallbackHandlers from '@/hooks/useCallbackHandlers';
 import './Footer.css';
+
+interface ClusterLine {
+  text: string;
+  live: boolean;
+}
+
+// "Served from a Talos cluster in my garage · 11 nodes · 266 pods · all systems up".
+// Without live data only the fixed part is shown.
+const buildClusterLine = ({ status, data }: ReturnType<typeof useClusterStatus>): ClusterLine => {
+  const parts = ['Served from a Talos cluster in my garage'];
+  if (status !== 'ok' || !data) return { text: parts[0], live: false };
+  const nodes = data.badges.cluster_node_count?.value;
+  const pods = data.badges.cluster_pod_count?.value;
+  const health = healthLabel(clusterHealth(data));
+  if (nodes) parts.push(`${nodes} nodes`);
+  if (pods) parts.push(`${pods} pods`);
+  if (health) parts.push(health);
+  return { text: parts.join(' · '), live: true };
+};
 
 /**
  * Footer component with essential information and links in a concise format.
@@ -19,6 +37,8 @@ const Footer = () => {
   const { currentYear, greetings } = useFooter();
   const { handleDownload } = useCallbackHandlers();
   const { animationEnabled } = useAnimation();
+  const cluster = useClusterStatus();
+  const clusterLine = buildClusterLine(cluster);
 
   // Animation variants for footer elements
   const footerVariants: Variants = {
@@ -60,17 +80,6 @@ const Footer = () => {
     }
   } satisfies Variants;
 
-  const heartVariants: Variants = {
-    pulse: {
-      scale: [1, 1.1, 1],
-      transition: {
-        duration: 2,
-        repeat: Infinity,
-        ease: "easeInOut"
-      }
-    }
-  };
-
   const downloadContactCard = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     handleDownload('/contact/Derek_Mackley.vcf', 'Derek_Mackley.vcf');
@@ -87,23 +96,13 @@ const Footer = () => {
     >
       <div className="container mx-auto px-4">
         <div className="flex flex-wrap items-center justify-between">
-          {/* Copyright and Made with */}
+          {/* Copyright */}
           <motion.div
             className="w-full md:w-auto mb-3 md:mb-0 text-center md:text-left"
             variants={itemVariants}
           >
             <span className="text-sm md:mr-6">
               © {currentYear} {greetings.name}
-            </span>
-            <span className="text-sm hidden md:inline-block">
-              Made with {' '}
-              <motion.span
-                variants={heartVariants}
-                animate={animationEnabled ? "pulse" : false}
-              >
-                <FaHeart className="text-primary-400 inline-block mx-1" aria-hidden="true" />
-              </motion.span>
-              {' '} using React
             </span>
           </motion.div>
 
@@ -138,25 +137,18 @@ const Footer = () => {
             </AnimatePresence>
           </motion.div>
 
-          {/* Social Links */}
-          <motion.div
-            className="w-full md:w-auto text-center md:text-right"
-            variants={itemVariants}
-          >
-            <SocialLinks className="justify-center md:justify-end" links={profileLinks} />
-            <motion.span
-              className="text-sm md:hidden block mt-3"
-              variants={itemVariants}
+          {/* Where the site runs, with live numbers */}
+          <motion.div className="w-full text-center md:text-right mt-1" variants={itemVariants}>
+            <a
+              href="https://github.com/dapperdivers/dapper-cluster"
+              className="footer-cluster-line text-sm text-gray-400 hover:text-white"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-testid="footer-cluster-line"
             >
-              Made with {' '}
-              <motion.span
-                variants={heartVariants}
-                animate={animationEnabled ? "pulse" : false}
-              >
-                <FaHeart className="text-primary-400 inline-block mx-1" aria-hidden="true" />
-              </motion.span>
-              {' '} using React
-            </motion.span>
+              <span className={`footer-cluster-dot${clusterLine.live ? ' footer-cluster-dot--live' : ''}`} aria-hidden="true" />
+              {clusterLine.text}
+            </a>
           </motion.div>
         </div>
       </div>

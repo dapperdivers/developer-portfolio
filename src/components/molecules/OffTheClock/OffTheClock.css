@@ -1,0 +1,43 @@
+.off-the-clock {
+  margin-top: var(--spacing-6);
+  padding: var(--spacing-4) var(--spacing-5);
+  border: 1px dashed rgba(100, 255, 218, 0.3);
+  border-radius: var(--border-radius-lg);
+  background: rgba(100, 255, 218, 0.03);
+}
+
+.off-the-clock__title {
+  margin: 0 0 var(--spacing-3);
+  color: var(--color-primary);
+  font-family: var(--font-family-jetbrains);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.off-the-clock__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--spacing-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.off-the-clock__item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+}
+
+.off-the-clock__name {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.off-the-clock__desc {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}

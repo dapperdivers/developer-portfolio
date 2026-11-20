@@ -21,7 +21,7 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component: 'Skills component that displays a grid of skills icons and descriptions. Showcases the developer\'s technical skills with interactive icons and descriptions arranged in a responsive grid layout.',
+        component: 'Skills: a Core Capabilities terminal, then one row per skill group with a chip per skill. Activating a chip opens its full description under the row.',
       },
     },
     a11y: {
@@ -47,21 +47,20 @@ export const Default: Story = {
     const canvas = within(canvasElement);
   
     await step('Initial render check', async () => {
-      // Check section title is rendered
+      // Section title is rendered
       await expect(canvas.getByRole('heading', { level: 2 })).toBeInTheDocument();
-    
-      // Check if skills are rendered
-      const skillElements = canvas.getAllByRole('img', { hidden: true });
-      await expect(skillElements.length).toBeGreaterThan(0);
+      // Skills are rendered as chips
+      const chips = canvas.getAllByRole('button');
+      await expect(chips.length).toBeGreaterThan(0);
     });
-  
-    await step('Skill hover interaction', async () => {
-      // Find a skill element and hover on it
-      const skillElements = canvas.getAllByRole('img', { hidden: true });
-      if (skillElements.length > 0) {
-        await userEvent.hover(skillElements[0]);
-        // We can't easily test the tooltip here as it might be in a portal
-      }
+
+    await step('Chip opens its description, and closes again', async () => {
+      const chip = canvas.getAllByRole('button')[0];
+      await expect(chip).toHaveAttribute('aria-expanded', 'false');
+      await userEvent.click(chip);
+      await expect(chip).toHaveAttribute('aria-expanded', 'true');
+      await userEvent.click(chip);
+      await expect(chip).toHaveAttribute('aria-expanded', 'false');
     });
   },
 };

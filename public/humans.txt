@@ -1,0 +1,16 @@
+/* TEAM */
+Human: Derek Mackley
+Role: Principal Security Engineer
+Site: https://derekmackley.com
+Location: Canton, GA, USA
+
+/* THANKS */
+The open source maintainers this site stands on, and the homelab,
+which keeps me honest about operations.
+
+/* SITE */
+Hosting: a Kubernetes cluster (Talos Linux, Flux CD) in a garage,
+         increasingly operated by AI agents
+Stack: React, TypeScript, Vite, Framer Motion, Tailwind, Storybook
+Source: https://github.com/DapperDivers/developer-portfolio
+Security contact: /.well-known/security.txt

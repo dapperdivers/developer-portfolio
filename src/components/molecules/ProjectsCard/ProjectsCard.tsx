@@ -86,6 +86,7 @@ const ProjectsCard = ({ data, index = 0, animated = true }: ProjectsCardProps) =
               </div>
             )}
             
+            {(data.github || data.link) && (
             <div className="project-links">
               {data.github && (
                 <Button
@@ -119,6 +120,7 @@ const ProjectsCard = ({ data, index = 0, animated = true }: ProjectsCardProps) =
                 </Button>
               )}
             </div>
+            )}
           </div>
         </Card>
       </div>

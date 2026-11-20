@@ -1,177 +1,127 @@
-import React from "react";
+import React, { useCallback, useMemo, useRef, useState } from 'react';
+import { motion } from 'framer-motion';
 import { useGreetings } from '@context/PortfolioContext';
-import { motion, AnimatePresence, Variants } from "framer-motion";
-import { FaDownload } from 'react-icons/fa';
 import Button from '@atoms/Button';
-import SocialLinks from '@molecules/SocialLinks';
-import { profileLinks } from '@/portfolio';
 import ScrollDown from '@atoms/ScrollDown';
+import TerminalWindow from '@molecules/TerminalWindow';
+import type { TerminalWindowLine } from '@molecules/TerminalWindow';
 import useCallbackHandlers from '@/hooks/useCallbackHandlers';
 import { useAnimation } from '@context/AnimationContext';
-import { fadeInVariants, slideUpVariants } from '@utils/motion';
+import { slideUpVariants, useMotionEnabled } from '@utils/motion';
+import { runCommand } from './commands';
+import type { CommandEffect } from './commands';
 import './Greetings.css';
+
+const RESUME_PATH = '/resume/Cybersecurity_2025.pdf';
+const RESUME_NAME = 'Cybersecurity_2025.pdf';
+const SUGGESTIONS = ['help', 'ls', 'cat resume', 'contact'];
+const MAX_LINES = 80;
+
+// Second line of the opening story; the first comes from the greeting data
+const HOME_LAB_LINE =
+  'This site runs on a Kubernetes cluster in my garage, increasingly operated by agents.';
+
+/** First sentence of the greeting description. */
+const firstSentence = (text: string): string => {
+  const match = text.match(/^.*?[.!?](?=\s|$)/);
+  return (match ? match[0] : text).trim();
+};
 
 const Greetings = () => {
   const greetings = useGreetings();
   const { handleDownload } = useCallbackHandlers();
   const { animationEnabled } = useAnimation();
+  const motionOn = useMotionEnabled(animationEnabled);
+  const jobTitle = greetings.jobTitle ?? 'Principal Security Engineer';
+  const location = greetings.location ?? '';
+  const counter = useRef(0);
+  const loadedAt = useRef(Date.now());
+  const nextId = () => `line-${counter.current++}`;
+
+  const [lines, setLines] = useState<TerminalWindowLine[]>(() => [
+    { id: 'boot-0', kind: 'input', text: 'whoami' },
+    { id: 'boot-1', kind: 'output', text: [jobTitle, location].filter(Boolean).join(', ') },
+    { id: 'boot-2', kind: 'input', text: 'cat story.txt' },
+    { id: 'boot-3', kind: 'output', text: firstSentence(greetings.description) },
+    { id: 'boot-4', kind: 'output', text: HOME_LAB_LINE },
+    { id: 'boot-5', kind: 'muted', text: 'Type help to look around, or use the buttons below.' },
+  ]);
 
   const scrollToNextSection = () => {
-    const nextSection = document.querySelector('#greetings-section')?.nextElementSibling;
+    const nextSection = document.querySelector('#greetings')?.nextElementSibling;
     if (nextSection) {
-      nextSection.scrollIntoView({ behavior: 'smooth' });
+      nextSection.scrollIntoView({ behavior: motionOn ? 'smooth' : 'auto' });
     }
   };
 
-  const downloadResume = async (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
-    e.preventDefault();
-    await handleDownload('/resume/Cybersecurity_2025.pdf', 'Cybersecurity_2025.pdf');
-  };
+  const downloadResume = useCallback(async (e?: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
+    e?.preventDefault();
+    await handleDownload(RESUME_PATH, RESUME_NAME);
+  }, [handleDownload]);
 
-  // Variants for coordinated animations
-  const containerVariants: Variants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.2
-      }
+  const applyEffect = useCallback((effect: CommandEffect) => {
+    if (effect.type === 'download') {
+      void downloadResume();
+    } else if (effect.type === 'scroll') {
+      const target = effect.section === 'top' ? document.body : document.getElementById(effect.section);
+      target?.scrollIntoView({ behavior: motionOn ? 'smooth' : 'auto', block: 'start' });
     }
-  };
+  }, [downloadResume, motionOn]);
 
-  const headingVariants: Variants = {
-    hidden: { opacity: 0, y: -30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        type: "spring",
-        stiffness: 300,
-        damping: 30,
-        duration: 0.8
-      }
+  const onCommand = useCallback((raw: string) => {
+    const result = runCommand(raw, {
+      name: greetings.name,
+      jobTitle,
+      location,
+      uptimeSeconds: Math.round((Date.now() - loadedAt.current) / 1000),
+    });
+    if (result.effect?.type === 'clear') {
+      setLines([]);
+      return;
     }
-  };
+    setLines((prev) => [
+      ...prev,
+      { id: nextId(), kind: 'input' as const, text: raw },
+      ...result.output.map((o) => ({ id: nextId(), kind: o.kind, text: o.text })),
+    ].slice(-MAX_LINES));
+    if (result.effect) applyEffect(result.effect);
+  }, [greetings.name, jobTitle, location, applyEffect]);
 
-  const textVariants: Variants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6
-      }
-    }
-  };
-
-  const buttonVariants: Variants = {
-    hidden: { opacity: 0, scale: 0.9 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: {
-        duration: 0.4
-      }
-    },
-    hover: {
-      scale: 1.05,
-      boxShadow: "0 0 8px rgba(5, 213, 250, 0.5)",
-      transition: {
-        duration: 0.2
-      }
-    }
-  };
-
-  const glintVariants: Variants = {
-    hidden: { x: "-100%", opacity: 0 },
-    hover: {
-      x: "100%",
-      opacity: [0, 0.3, 0],
-      transition: {
-        duration: 1.5
-      }
-    }
-  };
+  const heading = useMemo(() => (
+    <h1 className="greetings__title" data-testid="greeting-heading">
+      {greetings.title}
+    </h1>
+  ), [greetings.title]);
 
   return (
-    <div id="greetings-section" className="min-h-screen text-text flex flex-col justify-center items-center relative">
-      <div className="container mx-auto px-container-x pt-24 pb-8 md:py-section-y">
-        <motion.div
-          variants={containerVariants}
-          initial={animationEnabled ? "hidden" : false}
-          animate="visible"
-          className="text-center p-card relative overflow-hidden"
-        >
-          {/* Cyberpunk decorative elements - Hide on very small screens */}
-          <div className="hidden sm:block absolute top-0 left-0 w-16 md:w-20 h-16 md:h-20 pointer-events-none opacity-60">
-            <div className="absolute top-0 left-0 w-6 md:w-8 h-0.5 bg-theme-cyan"></div>
-            <div className="absolute top-0 left-0 w-0.5 h-6 md:h-8 bg-theme-cyan"></div>
-          </div>
-          <div className="hidden sm:block absolute top-0 right-0 w-16 md:w-20 h-16 md:h-20 pointer-events-none opacity-60">
-            <div className="absolute top-0 right-0 w-6 md:w-8 h-0.5 bg-theme-cyan"></div>
-            <div className="absolute top-0 right-0 w-0.5 h-6 md:h-8 bg-theme-cyan"></div>
-          </div>
-          <div className="hidden sm:block absolute bottom-0 right-0 w-16 md:w-20 h-16 md:h-20 pointer-events-none opacity-60">
-            <div className="absolute bottom-0 right-0 w-6 md:w-8 h-0.5 bg-theme-cyan"></div>
-            <div className="absolute bottom-0 right-0 w-0.5 h-6 md:h-8 bg-theme-cyan"></div>
-          </div>
-          <div className="hidden sm:block absolute bottom-0 left-0 w-16 md:w-20 h-16 md:h-20 pointer-events-none opacity-60">
-            <div className="absolute bottom-0 left-0 w-6 md:w-8 h-0.5 bg-theme-cyan"></div>
-            <div className="absolute bottom-0 left-0 w-0.5 h-6 md:h-8 bg-theme-cyan"></div>
-          </div>
+    <div id="greetings" className="greetings text-text">
+      <div className="greetings__inner">
+        <TerminalWindow
+          lines={lines}
+          onCommand={onCommand}
+          animated={animationEnabled}
+          header={heading}
+          suggestions={SUGGESTIONS}
+          title="guest@derekmackley.com: ~"
+        />
 
-          {/* Content with relative positioning for layering */}
-          <div className="relative z-fixed">
-            <motion.h1
-              variants={headingVariants}
-              className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 md:mb-8 text-transparent bg-clip-text bg-linear-to-r/srgb from-theme-cyan to-primary"
-              data-testid="greeting-heading"
-            >
-              {greetings.title}
-            </motion.h1>
-
-            <div className="space-y-3 md:space-y-4">
-              <motion.p
-                variants={textVariants}
-                className="text-lg sm:text-xl md:text-2xl max-w-3xl mx-auto leading-loose text-theme-offwhite opacity-90 px-2 sm:px-4"
-                data-testid="title-text"
-              >
-                {greetings.description}
-              </motion.p>
-            </div>
-
-            {/* Download resume button with cyberpunk styling */}
-            <motion.div
-              variants={buttonVariants}
-              className="pt-6 md:pt-8 mb-4 md:mb-6"
-            >
-              <Button
-                variant="cyberpunk"
-                onClick={downloadResume}
-                icon="fa:download"
-                iconPosition="right"
-                animated={animationEnabled}
-              >
-                Download Resume
-              </Button>
-            </motion.div>
-
-            {/* Social Links */}
-            <motion.div
-              variants={fadeInVariants}
-              className="flex justify-center mt-2 md:mt-4"
-            >
-              <SocialLinks animated={animationEnabled} links={profileLinks} />
-            </motion.div>
-          </div>
-        </motion.div>
+        <div className="greetings__actions">
+          <Button
+            variant="cyberpunk"
+            onClick={downloadResume}
+            icon="fa:download"
+            iconPosition="right"
+            animated={animationEnabled}
+          >
+            Download Resume
+          </Button>
+        </div>
       </div>
 
       {/* Scroll down indicator using the ScrollDown atom component */}
       <motion.div
         variants={slideUpVariants}
-        initial={animationEnabled ? "hidden" : false}
+        initial={animationEnabled ? 'hidden' : false}
         animate="visible"
         transition={{ delay: 1.2 }}
       >
@@ -179,6 +129,6 @@ const Greetings = () => {
       </motion.div>
     </div>
   );
-}
+};
 
 export default Greetings;

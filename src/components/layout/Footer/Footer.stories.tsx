@@ -21,6 +21,29 @@ const createPortfolioDecorator = (data: PortfolioTestValue): Decorator => (Story
   </PortfolioContext.Provider>
 );
 
+// Stubs the cluster-status endpoint for a story. Other requests pass through.
+const clusterFeed = (respond: () => Response | Promise<Response>) => ({
+  loaders: [
+    async () => {
+      const realFetch = window.fetch;
+      window.fetch = ((input: RequestInfo | URL, init?: RequestInit) =>
+        String(input).includes('/api/cluster-status') ? Promise.resolve(respond()) : realFetch(input, init)) as typeof window.fetch;
+      return {};
+    },
+  ],
+});
+
+const badge = (title: string, value: string, color = 'green') => ({ title, value, color });
+const feedBody = (clusterState: string) =>
+  JSON.stringify({
+    updatedAt: '2026-11-20T14:32:00.000Z',
+    badges: {
+      cluster_status: badge('Cluster', clusterState),
+      cluster_node_count: badge('Nodes', '11'),
+      cluster_pod_count: badge('Pods', '266'),
+    },
+  });
+
 const meta = {
   title: 'Layout/Footer',
   component: Footer,
@@ -30,7 +53,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Site footer with the copyright line, in-page navigation links, resume and contact card downloads, and the social links. ' +
+          'Site footer with the copyright line, in-page navigation links, resume and contact card downloads, and a line saying the site is served from the garage cluster with live node and pod counts (from `useClusterStatus`, with a plain fallback when the feed is unavailable). ' +
           'It takes no props: the name and resume link come from `PortfolioContext` (`greetings`) through the `useFooter` hook. ' +
           'Below the `md` breakpoint the three groups stack and centre.',
       },
@@ -84,8 +107,34 @@ export const Default: Story = {
   },
 };
 
+/** Live numbers from the cluster feed. */
+export const ClusterUp: Story = {
+  ...clusterFeed(() => new Response(feedBody('up'))),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(await canvas.findByText(/11 nodes · 266 pods · all systems up/)).toBeInTheDocument();
+    await expect(canvas.getByTestId('footer-cluster-line')).toHaveAttribute('href', 'https://github.com/dapperdivers/dapper-cluster');
+  },
+};
+
+export const ClusterDegraded: Story = {
+  ...clusterFeed(() => new Response(feedBody('degraded'))),
+  play: async ({ canvasElement }) => {
+    await expect(await within(canvasElement).findByText(/266 pods · degraded/)).toBeInTheDocument();
+  },
+};
+
+/** Feed down: only the fixed text, no numbers. */
+export const ClusterUnavailable: Story = {
+  ...clusterFeed(() => new Response('{}', { status: 503 })),
+  play: async ({ canvasElement }) => {
+    const line = within(canvasElement).getByTestId('footer-cluster-line');
+    await expect(line).toHaveTextContent(/^Served from a Talos cluster in my garage$/);
+  },
+};
+
 /**
- * Mobile viewport: the groups stack and the "Made with" line moves under the social links
+ * Mobile viewport: the groups stack and centre
  */
 export const Mobile: Story = {
   globals: {

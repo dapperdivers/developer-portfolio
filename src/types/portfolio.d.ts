@@ -82,8 +82,8 @@ export interface Education {
 export interface Experience {
   role: string;
   company: string;
-  /** Image URL (bundled asset or remote avatar). */
-  companylogo: string;
+  /** Real logo (bundled asset or URL). When absent, the card draws an initials badge. */
+  companylogo?: string;
   date: string;
   /** Company website. */
   url?: string;
@@ -93,6 +93,8 @@ export interface Experience {
 
 export interface Project {
   name: string;
+  /** 'personal' projects (hobbies) show in the "Off the clock" strip. Defaults to 'work'. */
+  kind?: 'work' | 'personal';
   desc: string;
   github?: string;
   /** Technology names shown as badges. */

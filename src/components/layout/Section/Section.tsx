@@ -1,6 +1,5 @@
 import React from 'react';
 import { motion, HTMLMotionProps, MotionProps } from 'framer-motion';
-import { FaGraduationCap, FaBriefcase, FaCode, FaStar, FaHandshake, FaShieldAlt } from 'react-icons/fa';
 import '@assets/css/tailwind.css';
 import './Section.css';
 import { useAnimation } from '@context/AnimationContext';
@@ -26,8 +25,8 @@ export interface SectionProps extends HTMLMotionProps<'section'> {
   title?: string;
   /** The section subtitle */
   subtitle?: string;
-  /** Iconify icon name for the section */
-  icon?: string;
+  /** Path-style label above the title, e.g. "~/experience". Defaults to `~/<id>`; pass "" to hide. */
+  kicker?: string;
   /** Additional CSS classes */
   className?: string;
   /** Whether to wrap content in a container */
@@ -53,7 +52,7 @@ const Section = ({
   id,
   title,
   subtitle,
-  icon,
+  kicker,
   className = '',
   container = true,
   fluid = false,
@@ -75,31 +74,19 @@ const Section = ({
   const containerClasses = `container${fluid ? '-fluid' : ''}`;
 
 
-  // Section header with appropriate icon based on section title
+  // One header for every section: path kicker, title, optional subtitle
+  const kickerText = kicker ?? (id ? `~/${id}` : '');
   const sectionHeader = (title || subtitle) && (
-    <motion.div 
-      className="section-header p-6 mb-8 relative"
+    <motion.div
+      className="section-header"
       variants={fadeInVariants}
     >
-      
-      {/* Map section titles to appropriate React icons */}
-      <motion.div 
-        className="flex flex-col items-center justify-center relative"
-        variants={slideUpVariants}
-      >
-        {title === "Education" && <FaGraduationCap className="section-icon" />}
-        {title === "Experience" && <FaBriefcase className="section-icon" />}
-        {title === "Projects" && <FaCode className="section-icon" />}
-        {title === "Skills" && <FaCode className="section-icon" />}
-        {title === "Feedbacks" && <FaStar className="section-icon" />}
-        {title === "Contact" && <FaHandshake className="section-icon" />}
-        {title === "Security" && <FaShieldAlt className="section-icon" />}
-        
-        {title && <h2 className="section-title text-2xl md:text-3xl font-bold mb-2 relative inline-block">
-          <span className="relative z-10">{title}</span>
-          <span className="absolute bottom-0 left-0 h-1 bg-linear-to-r/srgb from-cyan-500 to-transparent w-full opacity-70"></span>
-        </h2>}
-        {subtitle && <div className="section-subtitle text-gray-100 max-w-2xl text-center">{subtitle}</div>}
+      <motion.div variants={slideUpVariants}>
+        {kickerText && (
+          <p className="section-kicker" aria-hidden="true">{kickerText}</p>
+        )}
+        {title && <h2 className="section-title">{title}</h2>}
+        {subtitle && <p className="section-subtitle">{subtitle}</p>}
       </motion.div>
     </motion.div>
   );
@@ -119,7 +106,7 @@ const Section = ({
     <div className={`${containerClasses} py-16`}>
       {sectionHeader}
       <motion.div 
-        className="section-content p-8 relative"
+        className="section-content"
         variants={fadeInVariants}
       >
         
@@ -135,7 +122,7 @@ const Section = ({
         </div>
       )}
       <motion.div 
-        className="section-content p-8 relative"
+        className="section-content"
         variants={fadeInVariants}
       >
         

@@ -146,15 +146,6 @@ const EducationCard = ({
           </motion.div>
         </div>
 
-        {hasCertifications && (
-          <motion.div 
-            className="education-card__cert-badge"
-            variants={animationEnabled ? itemVariants : {}}
-          >
-            <FaCertificate aria-hidden="true" />
-            <span>{certifications.length}</span>
-          </motion.div>
-        )}
       </motion.header>
 
       {/* Content Section */}

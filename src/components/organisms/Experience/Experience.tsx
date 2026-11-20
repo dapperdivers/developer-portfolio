@@ -403,30 +403,6 @@ const Experience = () => {
           </motion.div>
         )}
 
-        {/* Experience Summary with enhanced styling */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.6 }}
-          className="experience-summary"
-        >
-          <div className="summary-stats">
-            <span className="stat-item">
-              <span className="stat-number">{visibleCount}</span>
-              <span className="stat-label">of {experience.length} experiences</span>
-            </span>
-            {expandedCards.size > 0 && (
-              <span className="stat-item">
-                <span className="stat-number">{expandedCards.size}</span>
-                <span className="stat-label">expanded</span>
-              </span>
-            )}
-          </div>
-          <div className="summary-hint">
-            Interactive timeline with cybersecurity-themed effects - use console commands to navigate
-          </div>
-        </motion.div>
-
         {/* Cybersecurity themed background effects */}
         <div className="experience-bg-effects">
           <div className="grid-overlay"></div>

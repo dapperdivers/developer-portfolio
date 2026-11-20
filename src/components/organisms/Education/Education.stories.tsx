@@ -55,7 +55,7 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component: 'Cybersecurity-themed Education section that displays educational background and professional credentials. Features terminal aesthetics, animated cyber grid backgrounds, and security status indicators.',
+        component: 'Cybersecurity-themed Education section that displays educational background and professional credentials. Degrees with a crisp certification list.',
       },
     },
     a11y: {
@@ -108,7 +108,7 @@ export const CybersecurityTheme: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'The main cybersecurity-themed education section with terminal aesthetics, animated cyber grid background, security status indicator, and terminal output simulation.',
+        story: 'The main cybersecurity-themed education section with terminal aesthetics, and a ruled certification list.',
       }
     }
   },
@@ -117,11 +117,11 @@ export const CybersecurityTheme: Story = {
   
     await step('Check section title and cybersecurity theme', () => {
       expect(canvas.getByText('Education & Certifications')).toBeInTheDocument();
-      expect(canvas.getByText(/Academic foundation and professional credentials/)).toBeInTheDocument();
     });
   
-    await step('Check security status indicator', () => {
-      expect(canvas.getByText('CREDENTIALS VERIFIED')).toBeInTheDocument();
+    await step('No fake verification badge or testimonial block', () => {
+      expect(canvas.queryByText('CREDENTIALS VERIFIED')).not.toBeInTheDocument();
+      expect(canvas.queryByText(/Professional Recommendation/)).not.toBeInTheDocument();
     });
   
     await step('Check education cards', () => {

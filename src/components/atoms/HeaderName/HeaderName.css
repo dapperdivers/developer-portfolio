@@ -128,3 +128,20 @@ noscript ~ * .cursor {
   opacity: 0.5;
   transform: scaleX(1);
 }
+
+/* Brand mark before the name */
+.header-name__logo {
+  flex: none;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  border: 1px solid rgba(var(--color-cyan-rgb), 0.45);
+  object-fit: cover;
+}
+
+@media (min-width: 1024px) {
+  .header-name__logo {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+}

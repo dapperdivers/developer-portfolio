@@ -1,7 +1,7 @@
 import React from 'react';
 import type { Decorator, Meta, StoryObj } from '@storybook/react-vite';
+import { within, expect, userEvent } from 'storybook/test';
 import Greetings from './Greetings';
-import { within, expect } from 'storybook/test';
 import PortfolioContext from '@context/PortfolioContext';
 import { mockPortfolioData } from '@data/mockPortfolioData';
 import type { Greeting, PortfolioData } from '@/types/portfolio';
@@ -17,14 +17,25 @@ const createContextWithGreetings = (greetingsData: Greeting): Decorator => {
   );
 };
 
+const derek: Greeting = {
+  name: 'Derek Mackley',
+  title: "Hi There, I'm Derek Mackley",
+  jobTitle: 'Principal Security Engineer',
+  location: 'Canton, GA',
+  description:
+    "I'm a Principal Security Engineer who builds security programs the way I used to build software: automated, measurable and easy for developers to live with. I lead product security across a logistics software company.",
+};
+
 const meta = {
   title: 'Organisms/Greetings',
   component: Greetings,
   tags: ['autodocs'],
+  decorators: [createContextWithGreetings(derek)],
   parameters: {
     docs: {
       description: {
-        component: 'Hero section with personal greeting, description, download resume button, social links, and scroll down indicator.',
+        component:
+          'Hero section built as a terminal. It types a short whoami sequence (any key or click skips it; reduced motion shows it at once) and leaves an interactive prompt. Commands: help, whoami, ls (ls -a), cd/open <section>, cat resume, contact, uptime, ping, clear, sudo hire derek. The h1, a Download Resume button and the scroll cue stay visible for people who never type.',
       },
     },
     a11y: {
@@ -32,7 +43,6 @@ const meta = {
         rules: [
           { id: 'color-contrast', enabled: true },
           { id: 'button-name', enabled: true },
-          { id: 'image-alt', enabled: true }
         ],
       },
     },
@@ -43,139 +53,91 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-
-
-// Default story with standard greeting
 export const Default: Story = {
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
-  
-    // Test heading elements
-    await step('Verify greeting elements are present', async () => {
-      const headingElement = canvas.getByTestId('greeting-heading');
-      const descriptionElement = canvas.getByTestId('title-text');
-    
-      expect(headingElement).toBeInTheDocument();
-      expect(descriptionElement).toBeInTheDocument();
-    });
-  
-    // Test download button
-    await step('Verify download button is present', async () => {
-      const downloadButton = canvas.getByText('Download Resume');
-      expect(downloadButton).toBeInTheDocument();
-    
-      // Not clicked here: the resume file is not served by Storybook, so the
-      // download would only log a 404.
-    });
-  
-    // Test SocialLinks component is present after the download button
-    await step('Verify social links follow the download button', async () => {
-      const downloadButton = canvas.getByText('Download Resume');
-      const githubLink = canvas.getByLabelText('GitHub Profile');
-      expect(githubLink).toBeInTheDocument();
 
-      expect(downloadButton.compareDocumentPosition(githubLink) & Node.DOCUMENT_POSITION_FOLLOWING)
-        .toBeTruthy();
+    await step('Heading, resume button and scroll cue are present while it types', async () => {
+      await expect(canvas.getByTestId('greeting-heading')).toHaveTextContent("Hi There, I'm Derek Mackley");
+      await expect(canvas.getByText('Download Resume')).toBeInTheDocument();
+      await expect(canvas.getByLabelText('>>_NEXT')).toHaveClass('scroll-down-container');
     });
 
-    // Test scroll down button
-    await step('Verify scroll down component is present', async () => {
-      const scrollDown = canvas.getByLabelText('>>_NEXT');
-      expect(scrollDown).toBeInTheDocument();
-      expect(scrollDown).toHaveClass('scroll-down-container');
+    await step('A click skips the typing and shows the prompt', async () => {
+      await userEvent.click(canvasElement);
+      await expect(await canvas.findByLabelText(/Terminal command/)).toBeInTheDocument();
+      await expect(canvas.getByText(/Principal Security Engineer, Canton, GA/)).toBeInTheDocument();
+    });
+
+    await step('The hero has no social icon row', async () => {
+      await expect(canvas.queryByLabelText('GitHub Profile')).not.toBeInTheDocument();
     });
   },
 };
 
-/**
- * Renders with the src/data mock greeting. This story used to set an
- * `animation` field, which is not part of the greeting data and is not read
- * by the component.
- */
-export const AlternativeAnimation: Story = {
-  decorators: [
-    createContextWithGreetings({
-      ...mockPortfolioData.greetings
-    })
-  ],
-  parameters: {
-    docs: {
-      description: {
-        story: 'The greeting section with the mock greeting data. The component has no animation setting.'
-      }
-    }
+/** Types commands at the prompt. */
+export const TypeCommands: Story = {
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+    await userEvent.click(canvasElement);
+    const input = await canvas.findByLabelText(/Terminal command/);
+
+    await step('help lists the commands', async () => {
+      await userEvent.type(input, 'help{Enter}');
+      await expect(await canvas.findByText(/cat resume/)).toBeInTheDocument();
+    });
+
+    await step('ls -a reveals the hidden entry and cat points at the timeline', async () => {
+      await userEvent.type(input, 'ls -a{Enter}');
+      await expect(await canvas.findByText(/\.secrets/)).toBeInTheDocument();
+      await userEvent.type(input, 'cat .secrets{Enter}');
+      await expect(await canvas.findByText(/timeline card/i)).toBeInTheDocument();
+    });
+
+    await step('an unknown command gets a friendly answer', async () => {
+      await userEvent.type(input, 'frobnicate{Enter}');
+      await expect(await canvas.findByText(/frobnicate: command not found/)).toBeInTheDocument();
+    });
+
+    await step('clear empties the log but keeps the prompt', async () => {
+      await userEvent.type(input, 'clear{Enter}');
+      await expect(canvas.queryByText(/command not found/)).not.toBeInTheDocument();
+      await expect(input).toBeInTheDocument();
+    });
   },
 };
 
-/**
- * Demonstrates the component with different content,
- * showing how it handles longer text.
- */
+/** The quick-command buttons help touch screens, where typing is clumsy. */
+export const QuickCommands: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.click(canvasElement);
+    await userEvent.click(await canvas.findByRole('button', { name: 'ls' }));
+    await expect(await canvas.findByText(/experience\//)).toBeInTheDocument();
+  },
+};
+
 export const LongContent: Story = {
   decorators: [
     createContextWithGreetings({
-      name: "Derek Mackley",
-      title: "Hello, I'm Derek Mackley",
-      description: "A passionate Full Stack Web Developer with extensive experience in building secure web applications. I specialize in creating robust, scalable solutions that solve real-world problems. With expertise in JavaScript, React, Node.js, Python, C#, and various cloud technologies, I bring a comprehensive approach to development. I'm dedicated to writing clean, maintainable code and continuously learning new technologies to stay at the forefront of the industry. Let's collaborate to bring your ideas to life!",
-      resumeLink: "https://example.com/resume.pdf"
-    })
+      ...derek,
+      description:
+        "A passionate security engineer with extensive experience building secure systems. I specialize in robust, scalable solutions that solve real-world problems. Let's collaborate.",
+    }),
   ],
-  play: async ({ canvasElement, step }) => {
-    const canvas = within(canvasElement);
-  
-    await step('Check long content handling', async () => {
-      const description = canvas.getByText(/A passionate Full Stack Web Developer with extensive experience/);
-      await expect(description).toBeInTheDocument();
-    });
-  },
 };
 
-/**
- * ## Component Usage
- * 
- * ```jsx
- * import Greetings from '@/stories/containers/Greetings';
- * 
- * // Component uses data from portfolio.js:
- * // export const greetings = {
- * //   name: "Derek Mackley",
- * //   title: "Hi There, I'm Derek",
- * //   description: "A passionate Full Stack Web Developer...",
- * //   resumeLink: "https://example.com/resume.pdf"
- * // };
- * 
- * function App() {
- *   return <Greetings />;
- * }
- * ```
- * 
- * ## Data Requirements
- * 
- * The component depends on the following data structure from portfolio.js:
- * 
- * | Field | Type | Description |
- * |------|------|-------------|
- * | greetings.name | string | Your full name |
- * | greetings.title | string | Hero section title/greeting |
- * | greetings.description | string | Brief description about yourself |
- * | greetings.resumeLink | string | URL to your resume file |
- * 
- * ## Accessibility
- * 
- * This component follows these accessibility best practices:
- * - Uses semantic HTML with proper heading hierarchy
- * - Provides ARIA labels for interactive elements
- * - Ensures proper keyboard focus management
- * - Maintains high contrast for text readability
- * - Uses SVG and animation in an accessible way
- * 
- * ## Animation
- * 
- * The component uses Framer Motion for entrance animations and Lottie for the 
- * decorative animation. These enhance the visual appeal without affecting usability.
- */
+export const MissingOptionalFields: Story = {
+  decorators: [
+    createContextWithGreetings({
+      name: 'Jane Developer',
+      title: 'Hello World!',
+      description: 'Frontend developer and UI/UX enthusiast.',
+    }),
+  ],
+};
 
-// Mobile viewport story
+// Mobile viewport story: the hero must clear the fixed navigation
 export const Mobile: Story = {
   globals: {
     viewport: { value: 'mobile1', isRotated: false },
@@ -187,16 +149,4 @@ export const Tablet: Story = {
   globals: {
     viewport: { value: 'tablet', isRotated: false },
   },
-};
-
-// Story with customized greeting content
-export const CustomContent: Story = {
-  decorators: [
-    createContextWithGreetings({
-      title: "Hello World!",
-      name: "Jane Developer",
-      description: "Frontend Developer & UI/UX Enthusiast",
-      resumeLink: "jane-developer-resume.pdf",
-    }),
-  ],
 };

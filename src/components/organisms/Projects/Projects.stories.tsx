@@ -119,6 +119,24 @@ export const WithSingleProject: Story = {
 };
 
 /**
+ * Personal projects leave the grid and appear in the "Off the clock" strip.
+ */
+export const WithPersonalProjects: Story = {
+  decorators: [
+    createContextWithProjects([
+      sampleProjects[0],
+      { name: "Scuba Diving", desc: "PADI Divemaster.", kind: "personal" },
+    ])
+  ],
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByText('Off the clock')).toBeInTheDocument();
+    await expect(canvas.getByText('Scuba Diving')).toBeInTheDocument();
+    await expect(canvas.getByText('Project Alpha')).toBeInTheDocument();
+  },
+};
+
+/**
  * Shows what happens when no projects are available.
  * The component should render the section without any cards.
  */

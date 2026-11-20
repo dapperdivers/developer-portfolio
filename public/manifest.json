@@ -2,20 +2,25 @@
   "short_name": "Portfolio",
   "name": "Derek's Portfolio",
   "description": "Portfolio of Derek Mackley, Principal Security Engineer.",
-    "icons": [
-      {
-        "src": "./favicon.png",
-        "type": "image/png",
-        "sizes": "192x192"
-      },
-      {
-        "src": "./favicon.png",
-        "type": "image/png",
-        "sizes": "512x512"
-      }
-    ],
+  "icons": [
+    {
+      "src": "./favicon-32.png",
+      "type": "image/png",
+      "sizes": "32x32"
+    },
+    {
+      "src": "./favicon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "./favicon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
   "start_url": "./index.html",
   "display": "standalone",
-  "theme_color": "#11cdef",
-  "background_color": "#11cdef"
+  "theme_color": "#0a192f",
+  "background_color": "#0a192f"
 }

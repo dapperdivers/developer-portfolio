@@ -1,6 +1,18 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
+import type { ClusterStatusData } from '@/types/cluster';
 import MapComponent from './MapComponent';
+
+const clusterFixture: ClusterStatusData = {
+  updatedAt: '2026-11-20T14:32:00.000Z',
+  badges: {
+    cluster_status: { title: 'Cluster', value: 'up', color: 'green' },
+    cluster_node_count: { title: 'Nodes', value: '11', color: 'green' },
+    cluster_pod_count: { title: 'Pods', value: '266', color: 'green' },
+    services_up: { title: 'Services', value: '69 up', color: 'green' },
+    cluster_uptime_days: { title: 'Uptime', value: '7d', color: 'green' },
+  },
+};
 
 const meta: Meta<typeof MapComponent> = {
   title: 'Molecules/MapComponent',
@@ -17,7 +29,8 @@ const meta: Meta<typeof MapComponent> = {
   },
   argTypes: {
     location: { control: 'text', description: 'Place name to show, e.g. "Canton, GA"' },
-    animated: { control: 'boolean', description: 'Whether the status light pulses' },
+    clusterStatus: { control: 'object', description: 'Live cluster numbers: `{ status, data }`. Without them the metrics panel is left out.' },
+    animated: { control: 'boolean', description: 'Whether the live dot pulses' },
   },
   args: { location: 'Canton, GA', animated: true },
 };
@@ -33,6 +46,10 @@ export const Default: Story = {
       await waitFor(() => expect(canvasElement.querySelector('.leaflet-container')).not.toBeNull());
       await waitFor(() => expect(canvasElement.querySelector('.marker-label')).toHaveTextContent('Canton, GA'));
       await expect(canvas.getByText('34.2368°, -84.4908°')).toBeInTheDocument();
+    });
+
+    await step('Without cluster data there is no metrics panel', async () => {
+      await expect(canvasElement.querySelector('.security-metrics-panel')).toBeNull();
     });
 
     await step('The grid can be switched off and on', async () => {
@@ -53,6 +70,29 @@ export const Default: Story = {
       await userEvent.click(canvas.getByRole('button', { name: 'Switch to dark map' }));
       await waitFor(() => expect(canvasElement.querySelector('.map-tiles--dark')).not.toBeNull());
     });
+  },
+};
+
+/** With live cluster numbers the metrics panel shows them. */
+export const WithClusterStatus: Story = {
+  args: { clusterStatus: { status: 'ok', data: clusterFixture } },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByText('CLUSTER TELEMETRY')).toBeInTheDocument();
+    await expect(canvas.getByText('266')).toBeInTheDocument();
+  },
+};
+
+export const ClusterStatusLoading: Story = {
+  args: { clusterStatus: { status: 'loading', data: null } },
+};
+
+/** Feed unavailable: the panel says telemetry is offline and shows no figures. */
+export const ClusterStatusOffline: Story = {
+  args: { clusterStatus: { status: 'error', data: null } },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByText(/Telemetry offline/)).toBeInTheDocument();
   },
 };
 

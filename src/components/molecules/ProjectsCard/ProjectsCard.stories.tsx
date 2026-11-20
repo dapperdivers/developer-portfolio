@@ -111,6 +111,19 @@ export const WithoutImage: Story = {
 }
 };
 
+// Project with no links: no empty button row
+export const WithoutLinks: Story = {
+  args: {
+    data: { name: "Security Lab", desc: "Policy as code at admission and a segmented network behind my own firewall.", stack: ["Kyverno", "OPNsense"] },
+    index: 0,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.queryByText('Code')).toBeNull();
+    await expect(canvasElement.querySelector('.project-links')).toBeNull();
+  },
+};
+
 // Project with long text
 export const WithLongText: Story = {
   args: {

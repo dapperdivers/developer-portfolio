@@ -12,7 +12,7 @@ const meta = {
     layout: 'fullscreen',
     docs: {
       description: {
-        component: 'A layout component for structuring content into sections with consistent styling and optional animations.',
+        component: 'A layout component for structuring content into sections. Every section gets the same header: a monospace path kicker (~/id), the title, one subtitle style and a single hairline before the content.',
       },
     },
   },
@@ -24,6 +24,10 @@ const meta = {
     subtitle: {
       control: 'text',
       description: 'Section subtitle',
+    },
+    kicker: {
+      control: 'text',
+      description: 'Monospace path label above the title. Defaults to ~/<id>; "" hides it.',
     },
     id: {
       control: 'text',
@@ -67,30 +71,33 @@ export const Default: Story = {
 };
 
 /**
- * Story showing a section with predefined icons
+ * Education section with a kicker from its id
  */
 export const Education: Story = {
   args: {
+    id: 'education',
     title: 'Education',
     subtitle: 'My academic journey',
     children: (
       <div style={{ padding: '20px' }}>
-        <p>Education section content with graduation cap icon.</p>
+        <p>Education section content.</p>
       </div>
     ),
   },
 };
 
 /**
- * Story showing a section with experience icon
+ * Experience section with an explicit kicker
  */
 export const Experience: Story = {
   args: {
+    id: 'experience',
+    kicker: '// 02 experience',
     title: 'Experience',
     subtitle: 'Professional journey',
     children: (
       <div style={{ padding: '20px' }}>
-        <p>Experience section content with briefcase icon.</p>
+        <p>Experience section content.</p>
       </div>
     ),
   },
@@ -289,4 +296,22 @@ export const FluidSection: Story = {
   fluid: true,
   children: <p style={{ padding: '20px' }}>Section content goes here.</p>,
 }
+};
+
+// Same header across sections: kicker, title, subtitle
+export const HeaderConsistency: Story = {
+  args: { title: 'Header', children: null },
+  render: () => (
+    <>
+      <Section id="skills" title="What I do" subtitle="Principal security engineer across product security, platforms and AI agents">
+        <p>Content</p>
+      </Section>
+      <Section id="projects" title="Projects" subtitle="Some of my recent work">
+        <p>Content</p>
+      </Section>
+      <Section id="contact" title="Contact" kicker="">
+        <p>No kicker when it is set to an empty string.</p>
+      </Section>
+    </>
+  ),
 };

@@ -63,8 +63,22 @@ export const Expanded: Story = {
   args: { expanded: true },
 };
 
+/** No logo: a monospace initials badge is drawn instead. */
 export const WithoutLogo: Story = {
-  args: { experience: { ...experience, companylogo: undefined } },
+  args: { experience: { ...experience, company: 'Mastery Logistics Systems', companylogo: undefined } },
+  play: async ({ canvasElement }) => {
+    await expect(within(canvasElement).getByText('MLS')).toBeInTheDocument();
+  },
+};
+
+/** A generated avatar URL is treated as a placeholder. */
+export const GeneratedAvatarIgnored: Story = {
+  args: { experience: { ...experience, company: 'Acme Security', companylogo: 'https://ui-avatars.com/api/?name=AS' } },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByText('AS')).toBeInTheDocument();
+    await expect(canvas.queryByRole('img')).toBeNull();
+  },
 };
 
 export const WithoutBullets: Story = {

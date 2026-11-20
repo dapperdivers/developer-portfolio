@@ -1,0 +1,141 @@
+/**
+ * TerminalWindow: window chrome, output log, prompt and quick-command chips
+ */
+
+.terminal-window {
+  width: 100%;
+  max-width: 46rem;
+  margin: 0 auto;
+  text-align: left;
+  border: 1px solid rgba(var(--color-cyan-rgb), 0.28);
+  border-radius: var(--border-radius-lg);
+  background-color: rgba(var(--color-navy-rgb), 0.92);
+  box-shadow: 0 0 0 1px rgba(var(--color-cyan-rgb), 0.06), 0 18px 50px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+  font-family: var(--font-family-jetbrains);
+}
+
+.terminal-window__body {
+  padding: var(--spacing-4);
+}
+
+.terminal-window__header {
+  margin-bottom: var(--spacing-3);
+}
+
+.terminal-window__log {
+  max-height: 16rem;
+  min-height: 7rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  font-size: var(--font-size-sm);
+  line-height: 1.6;
+  color: var(--color-offwhite);
+}
+
+.terminal-window__log:focus-visible,
+.terminal-window__chip:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.terminal-window__line {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.terminal-window__line--input {
+  color: var(--color-white);
+}
+
+.terminal-window__line--muted {
+  color: var(--color-gray-500);
+}
+
+.terminal-window__line--success {
+  color: var(--color-success);
+}
+
+.terminal-window__line--error {
+  color: var(--color-warning);
+}
+
+.terminal-window__prompt {
+  color: var(--color-primary);
+  user-select: none;
+  white-space: nowrap;
+}
+
+.terminal-window__caret {
+  display: inline-block;
+  width: 0.55em;
+  height: 1.05em;
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  background-color: var(--color-primary);
+}
+
+.terminal-window__input-row {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  margin-top: var(--spacing-1);
+  font-size: var(--font-size-sm);
+  cursor: text;
+}
+
+.terminal-window__input {
+  flex: 1;
+  min-width: 0;
+  padding: var(--spacing-1) 0;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  background: transparent;
+  color: var(--color-white);
+  caret-color: var(--color-primary);
+  font: inherit;
+  /* 16px stops iOS zooming into the field */
+  font-size: max(16px, var(--font-size-sm));
+}
+
+.terminal-window__input::placeholder {
+  color: var(--color-gray-500);
+}
+
+.terminal-window__input:focus {
+  outline: none;
+  border-bottom-color: rgba(var(--color-cyan-rgb), 0.6);
+}
+
+.terminal-window__suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-2);
+  margin-top: var(--spacing-3);
+}
+
+.terminal-window__chip {
+  padding: var(--spacing-1) var(--spacing-3);
+  border: 1px solid rgba(var(--color-cyan-rgb), 0.35);
+  border-radius: var(--border-radius-pill);
+  background: transparent;
+  color: var(--color-primary);
+  font-family: inherit;
+  font-size: var(--font-size-xs);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.terminal-window__chip:hover {
+  background-color: rgba(var(--color-cyan-rgb), 0.12);
+}
+
+@media (max-width: 480px) {
+  .terminal-window__body {
+    padding: var(--spacing-3);
+  }
+
+  .terminal-window__log {
+    font-size: var(--font-size-xs);
+  }
+}
