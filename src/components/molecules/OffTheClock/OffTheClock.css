@@ -4,8 +4,8 @@
  */
 
 .off-the-clock {
-  margin-top: var(--spacing-6);
-  padding: var(--spacing-5);
+  margin-top: min(var(--spacing-6), 8.3vw);
+  padding: min(var(--spacing-5), 6.2vw);
   background: var(--surface-card);
   border: 1px solid var(--surface-border);
   border-radius: var(--radius-card);
@@ -26,8 +26,8 @@
 
 .off-the-clock__list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: var(--spacing-5);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16.25rem), 1fr));
+  gap: min(var(--spacing-5), 6.2vw);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -50,4 +50,11 @@
   font-family: var(--font-family-base);
   font-size: var(--font-size-sm);
   line-height: 1.7;
+}
+
+/* Large text: tighter leading */
+@media (max-width: 24rem) {
+  .off-the-clock__desc {
+    line-height: 1.45;
+  }
 }

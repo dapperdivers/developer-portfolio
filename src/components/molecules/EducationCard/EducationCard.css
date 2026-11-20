@@ -9,7 +9,7 @@
   flex-direction: column;
   gap: var(--spacing-4);
   width: 100%;
-  padding: var(--spacing-5);
+  padding: var(--spacing-5) min(var(--spacing-5), 6.2vw);
   background: var(--surface-card);
   border: 1px solid var(--surface-border);
   border-radius: var(--radius-card);
@@ -41,23 +41,23 @@
   display: flex;
   flex-wrap: wrap;
   gap: var(--spacing-3) var(--spacing-5);
-  padding: var(--spacing-4);
+  padding: var(--spacing-4) min(var(--spacing-4), 4.2vw);
   background: var(--surface-inset);
   border: 1px solid var(--surface-divider);
   border-radius: var(--radius-control);
 }
 
 .education-card__academic-info > .degree-info {
-  flex: 1 1 14rem;
+  flex: 1 1 min(100%, 14rem);
 }
 
 .education-card__academic-info > .fields-of-study {
-  flex: 2 1 16rem;
+  flex: 2 1 min(100%, 16rem);
 }
 
 @media (max-width: 480px) {
   .education-card {
-    padding: var(--spacing-4);
+    padding: var(--spacing-4) min(var(--spacing-4), 4.2vw);
   }
 
   .education-card__header {
@@ -65,7 +65,18 @@
   }
 
   .education-card__academic-info {
-    padding: var(--spacing-3);
+    padding: var(--spacing-3) min(var(--spacing-3), 3.1vw);
+  }
+}
+
+/* Large text: give the reading column its width back */
+@media (max-width: 24rem) {
+  .education-card {
+    padding: min(var(--spacing-5), 3vw);
+  }
+
+  .education-card__academic-info {
+    padding: min(var(--spacing-3), 3vw);
   }
 }
 

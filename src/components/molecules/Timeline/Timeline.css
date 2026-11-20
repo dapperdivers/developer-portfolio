@@ -117,7 +117,7 @@
 
 /* Tailwind 3 `space-y-16` behaviour (see the space-y note in tailwind.css) */
 .timeline__entries > :not([hidden]) ~ :not([hidden]) {
-  margin-top: 4rem;
+  margin-top: min(4rem, 16.5vw);
   margin-bottom: 0;
 }
 
@@ -231,7 +231,7 @@
 @media (max-width: 768px) {
   /* Tailwind 3 `space-y-12` behaviour (see the space-y note in tailwind.css) */
   .timeline__entries > :not([hidden]) ~ :not([hidden]) {
-    margin-top: 3rem;
+    margin-top: min(3rem, 12.4vw);
     margin-bottom: 0;
   }
 

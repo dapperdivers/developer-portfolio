@@ -14,7 +14,7 @@
 .skills-content-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: min(1.5rem, 6.2vw);
   max-width: var(--container-max-width);
   margin: 0 auto;
   padding: 0 var(--container-gutter);
@@ -22,7 +22,7 @@
 
 /* Skills Container */
 .skills-container {
-  padding: 1.25rem 1.5rem;
+  padding: min(1.25rem, 5.2vw) min(1.5rem, 6.2vw);
   background-color: rgba(var(--color-navy-rgb), 0.5);
   border-radius: 8px;
   border: 1px solid rgba(var(--color-cyan-rgb), 0.3);
@@ -35,8 +35,8 @@
   font-family: var(--font-family-jetbrains);
   color: var(--color-cyan);
   font-size: 1.1rem;
-  margin-bottom: 0.5rem;
-  padding-bottom: 0.5rem;
+  margin-bottom: min(0.5rem, 2.1vw);
+  padding-bottom: min(0.5rem, 2.1vw);
   border-bottom: 1px solid rgba(var(--color-cyan-rgb), 0.3);
   letter-spacing: var(--letter-spacing-technical);
 }
@@ -51,7 +51,7 @@
 
 .standard-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 140px), 1fr));
   margin-top: 1rem;
   gap: 1rem;
 }
@@ -59,15 +59,25 @@
 /* Groups: label column + chips, one row per domain */
 .skills-groups {
   margin: 0;
+  container-type: inline-size;
 }
+
 
 .skills-group {
   display: grid;
   grid-template-columns: 13rem 1fr;
   gap: var(--spacing-2) var(--spacing-4);
   align-items: start;
-  padding: var(--spacing-3) 0;
+  padding: min(var(--spacing-3), 3.1vw) 0;
   border-bottom: 1px solid rgba(var(--color-cyan-rgb), 0.12);
+}
+
+/* Label above chips when the column is narrow; measured in text units so
+   large text collapses it too */
+@container (max-width: 34rem) {
+  .skills-group {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 .skills-group:last-child {
@@ -110,12 +120,6 @@
   font-weight: var(--font-weight-semibold);
 }
 
-@media (max-width: 640px) {
-  .skills-group {
-    grid-template-columns: 1fr;
-  }
-}
-
 /* Terminal Container */
 .terminal-container {
   background-color: rgba(var(--color-navy-rgb), 0.8);
@@ -127,7 +131,7 @@
 }
 
 .terminal-content {
-  padding: 1rem;
+  padding: min(1rem, 4.2vw);
   height: 100%;
   overflow-y: auto;
   max-height: 350px;
@@ -139,6 +143,13 @@
   line-height: 1.5;
   position: relative;
   font-size: 0.9rem;
+}
+
+/* Large text: tighter leading */
+@media (max-width: 24rem) {
+  .terminal-line {
+    line-height: 1.4;
+  }
 }
 
 .terminal-prompt {
@@ -198,7 +209,7 @@
   }
 
   .skills-container {
-    padding: 1rem;
+    padding: min(1rem, 4.2vw);
   }
 
   /* Show every capability line instead of a short scrolling box */
@@ -214,7 +225,7 @@
   }
 
   .skills-container {
-    padding: 0.75rem;
+    padding: min(0.75rem, 3.1vw);
   }
   
   .skill-card-expanded {

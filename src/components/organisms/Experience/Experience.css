@@ -17,13 +17,13 @@
   width: 100%;
   max-width: 1400px;
   margin: 0 auto;
-  padding: 2rem 1rem;
+  padding: min(2rem, 8.3vw) min(1rem, 4.2vw);
   /* Removed z-index to allow natural stacking */
 }
 
 /* Experience header section */
 .experience-header {
-  margin-bottom: 3rem;
+  margin-bottom: min(3rem, 12.4vw);
   position: relative;
   width: 100%;
   /* Removed high z-index to prevent stacking issues */
@@ -38,7 +38,7 @@
   );
   border: 1px solid rgba(var(--color-cyan-rgb), 0.4);
   border-radius: 8px;
-  padding: 1rem 1.25rem;
+  padding: 1rem min(1.25rem, 5.2vw);
   margin: 1rem 0;
   font-family: var(--font-family-jetbrains);
   backdrop-filter: blur(20px);
@@ -92,7 +92,7 @@
   );
   border: 1px solid rgba(var(--color-cyan-rgb), 0.3);
   border-radius: 12px;
-  padding: 1.5rem;
+  padding: 1.5rem min(1.5rem, 6.2vw);
   margin: 1rem 0;
   backdrop-filter: blur(25px);
   box-shadow: 
@@ -142,7 +142,7 @@
 
 .console-help__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17.5rem), 1fr));
   gap: 1rem;
   margin-bottom: 1rem;
   position: relative;
@@ -198,7 +198,7 @@
 
 .load-more-btn {
   position: relative;
-  padding: 1rem 2rem;
+  padding: 1rem min(2rem, 8.3vw);
   background: linear-gradient(
     135deg,
     rgba(var(--color-navy-rgb), 0.9) 0%,
@@ -289,7 +289,7 @@
   flex-direction: column;
   align-items: center;
   gap: 0.25rem;
-  padding: 1rem 1.5rem;
+  padding: 1rem min(1.5rem, 6.2vw);
   background: linear-gradient(
     135deg,
     rgba(var(--color-navy-rgb), 0.8) 0%,
@@ -414,11 +414,11 @@
 @media (max-width: 1024px) {
   .experience-container {
     max-width: 1200px;
-    padding: 1.5rem 1rem;
+    padding: 1.5rem min(1rem, 4.2vw);
   }
   
   .console-help__grid {
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 15.6rem), 1fr));
   }
   
   .summary-stats {
@@ -428,7 +428,7 @@
 
 @media (max-width: 768px) {
   .experience-container {
-    padding: 1rem 0.75rem;
+    padding: 1rem min(0.75rem, 3.1vw);
   }
   
   .experience-header {
@@ -437,12 +437,11 @@
   
   .console-feedback,
   .console-help {
-    padding: 1rem;
+    padding: 1rem min(1rem, 4.2vw);
     margin: 0.75rem 0;
   }
   
   .console-help__grid {
-    grid-template-columns: 1fr;
     gap: 0.75rem;
   }
   
@@ -453,11 +452,11 @@
   }
   
   .stat-item {
-    padding: 0.75rem 1.25rem;
+    padding: 0.75rem min(1.25rem, 5.2vw);
   }
   
   .load-more-btn {
-    padding: 0.875rem 1.5rem;
+    padding: 0.875rem min(1.5rem, 6.2vw);
     font-size: 0.85rem;
   }
   
@@ -469,12 +468,12 @@
 
 @media (max-width: 480px) {
   .experience-container {
-    padding: 0.75rem 0.5rem;
+    padding: 0.75rem min(0.5rem, 2.1vw);
   }
   
   .console-feedback,
   .console-help {
-    padding: 0.75rem;
+    padding: 0.75rem min(0.75rem, 3.1vw);
     border-radius: 8px;
   }
   
@@ -578,3 +577,9 @@
   /* Removed will-change: transform to prevent layout conflicts */
 }
 
+/* Large text: let the timeline use the full width */
+@media (max-width: 24rem) {
+  .experience-container {
+    padding-inline: min(1rem, 2vw);
+  }
+}

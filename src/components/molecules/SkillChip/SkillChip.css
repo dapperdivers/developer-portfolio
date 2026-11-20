@@ -6,7 +6,9 @@
   gap: var(--spacing-2);
   box-sizing: border-box;
   min-height: 1.75rem;
+  min-width: 0;
   padding: 0 var(--spacing-3);
+  overflow-wrap: anywhere;
   font-family: var(--font-family-jetbrains);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-medium);

@@ -7,7 +7,7 @@
 
 .section {
   position: relative;
-  padding: 6rem 0;
+  padding: min(6rem, 25vw) 0;
   background: transparent;
   min-height: 50vh;
   overflow: hidden;
@@ -19,8 +19,8 @@
   z-index: 10;
   text-align: left;
   max-width: var(--container-max-width);
-  margin: 0 auto var(--spacing-8);
-  padding: 0 0 var(--spacing-5);
+  margin: 0 auto min(var(--spacing-8), 12.4vw);
+  padding: 0 0 min(var(--spacing-5), 6.2vw);
   border-bottom: 1px solid rgba(var(--color-cyan-rgb), 0.2);
 }
 
@@ -35,7 +35,7 @@
 .section-title {
   margin: 0;
   font-family: var(--font-family-inter);
-  font-size: var(--font-size-3xl);
+  font-size: min(var(--font-size-3xl), 9vw);
   font-weight: var(--font-weight-bold);
   line-height: var(--line-height-tight);
   color: var(--color-white);
@@ -72,11 +72,11 @@
 
 @media (max-width: 768px) {
   .section {
-    padding: 3rem 0;
+    padding: min(3rem, 12.4vw) 0;
   }
 
   .section-title {
-    font-size: var(--font-size-2xl);
+    font-size: min(var(--font-size-2xl), 8vw);
   }
 
   .section-subtitle {
@@ -84,7 +84,7 @@
   }
 
   .section .section-content {
-    padding: 1.5rem 0;
+    padding: min(1.5rem, 6.2vw) 0;
   }
 }
 

@@ -15,9 +15,9 @@
   /* Semantic Spacing */
   --section-padding-y: var(--spacing-8);
   --section-padding-y-sm: var(--spacing-6);
-  --container-padding-x: var(--spacing-6);
+  --container-padding-x: min(var(--spacing-6), 8.3vw);
   --container-max-width: 1280px;
-  --container-gutter: var(--spacing-6);
+  --container-gutter: min(var(--spacing-6), 8.3vw);
   --card-padding: var(--spacing-4);
   --button-padding-x: var(--spacing-4);
   --button-padding-y: var(--spacing-2);
