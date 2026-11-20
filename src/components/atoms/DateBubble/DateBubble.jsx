@@ -1,12 +1,12 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
-import { useAnimation } from '@context/AnimationContext';
+import { useMotionEnabled, fadeInVariants } from '@utils/motion';
 import './DateBubble.css';
 
 /**
  * DateBubble atom component for displaying dates in timelines
- * Enhanced with framer-motion animations controlled by AnimationContext
+ * Enhanced with framer-motion animations controlled by the `animated` prop
  * 
  * @component
  * @param {Object} props - Component props
@@ -14,12 +14,13 @@ import './DateBubble.css';
  * @param {string} [props.level=''] - Security level ('low', 'medium', 'high', 'critical')
  * @param {string} [props.variant=''] - Visual variant ('', 'security', 'terminal')
  * @param {string} [props.size='md'] - Size of the bubble ('sm', 'md', 'lg')
- * @param {Object} [props.animation=null] - Framer Motion animation props (deprecated, use AnimationContext)
+ * @param {Object} [props.animation=null] - Framer Motion animation props (deprecated, unused)
  * @param {string} [props.className=''] - Additional CSS classes
  * @param {Object} [props.style={}] - Additional inline styles
  * @param {Function} [props.onClick=undefined] - Click handler function
  * @param {string} [props.id] - Unique ID for ARIA relationships
  * @param {string} [props.ariaLabel] - ARIA label override
+ * @param {boolean} [props.animated=true] - Whether to animate the component
  * @returns {React.ReactElement} DateBubble component
  */
 const DateBubble = ({ 
@@ -33,10 +34,10 @@ const DateBubble = ({
   onClick,
   id,
   ariaLabel,
+  animated = true,
   ...rest
 }) => {
-  // Get animation context values
-  const { animationEnabled, fadeInVariants } = useAnimation();
+  const animationEnabled = useMotionEnabled(animated);
   
   // Determine class names based on props
   const classes = [
@@ -154,7 +155,8 @@ DateBubble.propTypes = {
   style: PropTypes.object,
   onClick: PropTypes.func, /* React.MouseEventHandler<HTMLDivElement> */
   id: PropTypes.string,
-  ariaLabel: PropTypes.string
+  ariaLabel: PropTypes.string,
+  animated: PropTypes.bool
 };
 
 export default memo(DateBubble);

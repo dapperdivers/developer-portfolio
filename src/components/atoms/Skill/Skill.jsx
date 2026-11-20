@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
 import { Icon } from '@iconify/react';
-import { useAnimation } from '@context/AnimationContext';
+import { useMotionEnabled } from '@utils/motion';
 import '@assets/css/tailwind.css';
 
 /* 
@@ -58,7 +58,7 @@ import '@assets/css/tailwind.css';
 
 /**
  * Skill component for displaying individual skills with icons and tooltips.
- * Updated with security-themed variant and integration with AnimationContext.
+ * Updated with security-themed variant.
  * 
  * @component
  * @param {Object} props - Component props
@@ -85,11 +85,7 @@ const Skill = ({
   reducedMotion = false,
   showLevel = false
 }) => {
-  // Get animation settings from context
-  const { animationEnabled } = useAnimation();
-  
-  // Determine if we should animate
-  const shouldAnimate = animate && animationEnabled;
+  const shouldAnimate = useMotionEnabled(animate);
   
   // Size classes
   const sizeMap = {

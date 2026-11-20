@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Icon } from '@iconify/react';
-import { useAnimation } from '@context/AnimationContext';
+import { useMotionEnabled } from '@utils/motion';
 
 import './Modal.css';
 
@@ -22,6 +22,7 @@ import './Modal.css';
  * @param {boolean} props.closeOnEscape - Whether to close on escape key (default: true)
  * @param {boolean} props.showCloseButton - Whether to show close button (default: true)
  * @param {string} props.size - Modal size: 'sm', 'md', 'lg', 'xl' (default: 'md')
+ * @param {boolean} props.animated - Whether to animate the modal (default: true)
  * @returns {React.ReactElement|null} Modal component or null if not open
  */
 const Modal = ({
@@ -33,10 +34,10 @@ const Modal = ({
   closeOnBackdropClick = true,
   closeOnEscape = true,
   showCloseButton = true,
-  size = 'md'
+  size = 'md',
+  animated = true
 }) => {
-  // Get animation settings from context
-  const { animationEnabled } = useAnimation();
+  const motionOn = useMotionEnabled(animated);
   
   // Ref for the modal content
   const modalRef = useRef(null);
@@ -137,9 +138,9 @@ const Modal = ({
         {/* Backdrop */}
         <motion.div
           className="modal-backdrop"
-          initial={animationEnabled ? "hidden" : false}
-          animate={animationEnabled ? "visible" : false}
-          exit={animationEnabled ? "exit" : false}
+          initial={motionOn ? "hidden" : false}
+          animate={motionOn ? "visible" : false}
+          exit={motionOn ? "exit" : false}
           variants={backdropVariants}
           onClick={handleBackdropClick}
           transition={{ duration: 0.2 }}
@@ -149,9 +150,9 @@ const Modal = ({
         <motion.div
           ref={modalRef}
           className={`modal-content ${sizeClasses[size]} ${className}`}
-          initial={animationEnabled ? "hidden" : false}
-          animate={animationEnabled ? "visible" : false}
-          exit={animationEnabled ? "exit" : false}
+          initial={motionOn ? "hidden" : false}
+          animate={motionOn ? "visible" : false}
+          exit={motionOn ? "exit" : false}
           variants={contentVariants}
           role="dialog"
           aria-modal="true"
@@ -164,8 +165,8 @@ const Modal = ({
               className="modal-close-button"
               onClick={handleCloseClick}
               aria-label="Close modal"
-              whileHover={animationEnabled ? { scale: 1.1 } : false}
-              whileTap={animationEnabled ? { scale: 0.95 } : false}
+              whileHover={motionOn ? { scale: 1.1 } : false}
+              whileTap={motionOn ? { scale: 0.95 } : false}
             >
               <Icon icon="mdi:close" width="24" height="24" />
             </motion.button>
@@ -200,7 +201,9 @@ Modal.propTypes = {
   /** Whether to show close button */
   showCloseButton: PropTypes.bool,
   /** Modal size */
-  size: PropTypes.oneOf(['sm', 'md', 'lg', 'xl'])
+  size: PropTypes.oneOf(['sm', 'md', 'lg', 'xl']),
+  /** Whether to animate the modal */
+  animated: PropTypes.bool
 };
 
 export default Modal;

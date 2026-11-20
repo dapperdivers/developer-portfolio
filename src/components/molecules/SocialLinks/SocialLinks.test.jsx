@@ -1,81 +1,70 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import SocialLinks from '@molecules/SocialLinks';
 import { vi } from 'vitest';
+import SocialLinks from '@molecules/SocialLinks';
+import { downloadFile } from '@utils/download';
 
-// Create mock functions for hooks
-const mockUseCallbackHandlers = vi.fn();
+vi.mock('@utils/download', () => ({ downloadFile: vi.fn() }));
 
-// Mock the useCallbackHandlers hook
-vi.mock('@/hooks/useCallbackHandlers', () => ({
-  default: () => mockUseCallbackHandlers()
-}));
-
-// Mock the socialLinks and contact data
-vi.mock('@/portfolio', () => ({
-  socialLinks: {
-    github: 'https://github.com/DapperDivers',
-    linkedin: 'https://www.linkedin.com/in/dmackley/'
-  },
-  contact: {
-    vcfLink: '/contact/Derek_Mackley.vcf'
-  }
-}));
-
-// Mock the react-icons
 vi.mock('react-icons/fa', () => ({
   FaGithub: () => <svg data-testid="github-icon" />,
   FaLinkedin: () => <svg data-testid="linkedin-icon" />,
   FaAddressCard: () => <svg data-testid="address-card-icon" />
 }));
 
+const links = {
+  github: 'https://github.com/example',
+  linkedin: 'https://www.linkedin.com/in/example/',
+  contactCard: '/contact/Example_Person.vcf'
+};
+
+// Rendered with no provider on purpose: the block takes everything as props.
 describe('SocialLinks Component', () => {
-  const mockHandlers = {
-    handleDownload: vi.fn()
-  };
+  beforeEach(() => vi.clearAllMocks());
 
-  beforeEach(() => {
-    // Reset mocks before each test
-    vi.clearAllMocks();
-    mockUseCallbackHandlers.mockReturnValue(mockHandlers);
+  it('renders a link for each URL it is given', () => {
+    render(<SocialLinks links={links} />);
+
+    expect(screen.getByLabelText('GitHub Profile')).toHaveAttribute('href', links.github);
+    expect(screen.getByLabelText('LinkedIn Profile')).toHaveAttribute('href', links.linkedin);
+    expect(screen.getByLabelText('Download Contact Card')).toHaveAttribute('href', links.contactCard);
   });
 
-  it('renders social links correctly', () => {
+  it('renders nothing but the container when given no links', () => {
     render(<SocialLinks />);
-    
-    // Check that the GitHub link is rendered
-    const githubLink = screen.getByLabelText('GitHub Profile');
-    expect(githubLink).toBeInTheDocument();
-    expect(githubLink).toHaveAttribute('href', 'https://github.com/DapperDivers');
-    
-    // Check that the LinkedIn link is rendered
-    const linkedinLink = screen.getByLabelText('LinkedIn Profile');
-    expect(linkedinLink).toBeInTheDocument();
-    expect(linkedinLink).toHaveAttribute('href', 'https://www.linkedin.com/in/dmackley/');
-    
-    // Check that the Contact Card link is rendered
-    const contactCardLink = screen.getByLabelText('Download Contact Card');
-    expect(contactCardLink).toBeInTheDocument();
-    expect(contactCardLink).toHaveAttribute('href', '/contact/Derek_Mackley.vcf');
+
+    expect(screen.queryAllByRole('link')).toHaveLength(0);
   });
 
-  it('calls handleDownload when Contact Card link is clicked', () => {
-    render(<SocialLinks />);
-    
-    // Find and click the Contact Card link
-    const contactCardLink = screen.getByLabelText('Download Contact Card');
-    fireEvent.click(contactCardLink);
-    
-    // Check that the handleDownload function was called with correct parameters
-    expect(mockHandlers.handleDownload).toHaveBeenCalledTimes(1);
-    expect(mockHandlers.handleDownload).toHaveBeenCalledWith('/contact/Derek_Mackley.vcf', 'Derek_Mackley.vcf');
+  it('hides the icons whose links are missing', () => {
+    render(<SocialLinks links={{ github: links.github }} />);
+
+    expect(screen.getByLabelText('GitHub Profile')).toBeInTheDocument();
+    expect(screen.queryByLabelText('LinkedIn Profile')).not.toBeInTheDocument();
+    expect(screen.queryByLabelText('Download Contact Card')).not.toBeInTheDocument();
   });
-  
-  it('accepts and applies additional className prop', () => {
-    render(<SocialLinks className="custom-class" />);
-    
-    // Check that the container includes the custom class
-    const container = screen.getByLabelText('GitHub Profile').closest('div');
-    expect(container).toHaveClass('custom-class');
+
+  it('opens profile links in a new tab without leaking the opener', () => {
+    render(<SocialLinks links={links} />);
+
+    for (const label of ['GitHub Profile', 'LinkedIn Profile']) {
+      const link = screen.getByLabelText(label);
+      expect(link).toHaveAttribute('target', '_blank');
+      expect(link).toHaveAttribute('rel', 'noopener noreferrer');
+    }
+  });
+
+  it('downloads the contact card under its own file name', () => {
+    render(<SocialLinks links={links} />);
+
+    fireEvent.click(screen.getByLabelText('Download Contact Card'));
+
+    expect(downloadFile).toHaveBeenCalledWith('/contact/Example_Person.vcf', 'Example_Person.vcf');
+  });
+
+  it('applies a custom class name', () => {
+    const { container } = render(<SocialLinks links={links} className="custom-class" />);
+
+    expect(container.firstChild).toHaveClass('custom-class');
   });
 });

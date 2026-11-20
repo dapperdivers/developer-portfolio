@@ -2,8 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaMapMarkerAlt, FaShieldAlt, FaEye } from 'react-icons/fa';
-import { useAnimation } from '@context/AnimationContext';
-import { usePortfolio } from '@context/PortfolioContext';
+import { useMotionEnabled } from '@utils/motion';
 import DataStream from '@atoms/DataStream';
 import './LocationInfo.css';
 
@@ -41,14 +40,27 @@ const itemVariants = {
   }
 };
 
-const LocationInfo = ({ 
+/**
+ * Location information panel with security metrics and data streams.
+ *
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.variant='default'] - Security variant theme
+ * @param {Object} [props.locationData] - Location to show: name, lat, lng
+ * @param {string} [props.mapMode='dark'] - Current map mode: dark or satellite
+ * @param {boolean} [props.animated=true] - Whether the status dot and data streams animate
+ * @param {string} [props.className=''] - Additional CSS classes
+ * @returns {React.ReactElement|null} LocationInfo component
+ */
+const LocationInfo = ({
   variant = 'default',
   locationData,
   mapMode = 'dark',
+  animated = true,
   className = '',
-  ...props 
+  ...props
 }) => {
-  const { animationEnabled: isAnimationEnabled } = useAnimation();
+  const isAnimationEnabled = useMotionEnabled(animated);
 
   if (!locationData) {
     return null;
@@ -140,9 +152,9 @@ const LocationInfo = ({
         </motion.div>
 
         <motion.div className="location-info__data-streams" variants={itemVariants}>
-          <DataStream variant={variant} delay={0} />
-          <DataStream variant={variant} delay={0.3} />
-          <DataStream variant={variant} delay={0.6} />
+          <DataStream variant={variant} delay={0} animated={animated} />
+          <DataStream variant={variant} delay={0.3} animated={animated} />
+          <DataStream variant={variant} delay={0.6} animated={animated} />
         </motion.div>
       </motion.div>
     </AnimatePresence>
@@ -157,6 +169,7 @@ LocationInfo.propTypes = {
     lng: PropTypes.number.isRequired,
   }),
   mapMode: PropTypes.oneOf(['dark', 'satellite']),
+  animated: PropTypes.bool,
   className: PropTypes.string,
 };
 

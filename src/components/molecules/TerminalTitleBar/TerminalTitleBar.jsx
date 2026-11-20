@@ -1,7 +1,7 @@
 import React, { memo, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
-import { useAnimation } from '@context/AnimationContext';
+import { useMotionEnabled } from '@utils/motion';
 import TerminalControls from '@atoms/TerminalControls';
 import './TerminalTitleBar.css';
 
@@ -18,6 +18,7 @@ import './TerminalTitleBar.css';
  * @param {React.MouseEventHandler<HTMLButtonElement>} [props.onMinimizeClick] - Callback for minimize button
  * @param {React.MouseEventHandler<HTMLButtonElement>} [props.onMaximizeClick] - Callback for maximize button
  * @param {string} [props.className=''] - Additional CSS classes
+ * @param {boolean} [props.animated=true] - Play the entrance, typing and glitch animations
  * @returns {React.ReactElement} TerminalTitleBar component
  */
 const TerminalTitleBar = ({ 
@@ -28,9 +29,10 @@ const TerminalTitleBar = ({
   onMinimizeClick,
   onMaximizeClick,
   className = '',
+  animated = true,
   ...rest
 }) => {
-  const { animationEnabled, prefersReducedMotion } = useAnimation();
+  const motionOn = useMotionEnabled(animated);
   const [glitchActive, setGlitchActive] = useState(false);
   const [titleText, setTitleText] = useState('');
   // Determine title based on variant
@@ -43,7 +45,7 @@ const TerminalTitleBar = ({
   
   // Matrix-style typing effect for hacker variant
   useEffect(() => {
-    if (variant === 'hacker' && animationEnabled && !prefersReducedMotion) {
+    if (variant === 'hacker' && motionOn) {
       let currentIndex = 0;
       const typeText = () => {
         if (currentIndex <= baseTitle.length) {
@@ -56,11 +58,11 @@ const TerminalTitleBar = ({
     } else {
       setTitleText(baseTitle);
     }
-  }, [baseTitle, variant, animationEnabled, prefersReducedMotion]);
+  }, [baseTitle, variant, motionOn]);
   
   // Glitch effect for hacker variant
   useEffect(() => {
-    if (variant === 'hacker' && animationEnabled && !prefersReducedMotion) {
+    if (variant === 'hacker' && motionOn) {
       const glitchInterval = setInterval(() => {
         setGlitchActive(true);
         setTimeout(() => setGlitchActive(false), 150);
@@ -68,7 +70,7 @@ const TerminalTitleBar = ({
       
       return () => clearInterval(glitchInterval);
     }
-  }, [variant, animationEnabled, prefersReducedMotion]);
+  }, [variant, motionOn]);
   
   const displayTitle = titleText || baseTitle;
   
@@ -107,7 +109,7 @@ const TerminalTitleBar = ({
     <motion.div 
       className={classes} 
       variants={titleBarVariants}
-      initial={animationEnabled && !prefersReducedMotion ? "initial" : "animate"}
+      initial={motionOn ? "initial" : "animate"}
       animate="animate"
       {...rest}
     >
@@ -146,12 +148,13 @@ const TerminalTitleBar = ({
         onCloseClick={onCloseClick}
         onMinimizeClick={onMinimizeClick}
         onMaximizeClick={onMaximizeClick}
+        animated={animated}
       />
       
       <motion.span 
         className="terminal-title-bar__title"
         variants={titleVariants}
-        initial={animationEnabled && !prefersReducedMotion ? "initial" : "animate"}
+        initial={motionOn ? "initial" : "animate"}
         animate={glitchActive ? "glitch" : "animate"}
       >
         {displayTitle}
@@ -222,6 +225,7 @@ TerminalTitleBar.propTypes = {
   onMinimizeClick: PropTypes.func,
   onMaximizeClick: PropTypes.func,
   className: PropTypes.string,
+  animated: PropTypes.bool,
 };
 
 export default memo(TerminalTitleBar);

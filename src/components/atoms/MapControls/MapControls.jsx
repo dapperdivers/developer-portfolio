@@ -2,8 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
 import { FaRedo, FaMap, FaSatellite, FaTh } from 'react-icons/fa';
-import { useAnimation } from '@context/AnimationContext';
-import { usePortfolio } from '@context/PortfolioContext';
+import { useMotionEnabled } from '@utils/motion';
 import './MapControls.css';
 
 // Optimized animation variants
@@ -34,17 +33,33 @@ const buttonVariants = {
   tap: { scale: 0.95 }
 };
 
-const MapControls = ({ 
+/**
+ * Map control buttons: reset view, toggle map mode, toggle grid overlay.
+ *
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.variant='default'] - Security variant theme
+ * @param {string} [props.mapMode='dark'] - Current map mode: dark or satellite
+ * @param {boolean} [props.showGrid=false] - Whether the grid overlay is active
+ * @param {Function} [props.onResetView] - Called when the reset button is pressed
+ * @param {Function} [props.onToggleMapMode] - Called when the map mode button is pressed
+ * @param {Function} [props.onToggleGrid] - Called when the grid button is pressed
+ * @param {boolean} [props.animated=true] - Whether the buttons react to hover and tap
+ * @param {string} [props.className=''] - Additional CSS classes
+ * @returns {React.ReactElement} MapControls component
+ */
+const MapControls = ({
   variant = 'default',
   mapMode = 'dark',
   showGrid = false,
   onResetView,
   onToggleMapMode,
   onToggleGrid,
+  animated = true,
   className = '',
-  ...props 
+  ...props
 }) => {
-  const { animationEnabled: isAnimationEnabled } = useAnimation();
+  const isAnimationEnabled = useMotionEnabled(animated);
 
   const getMapModeIcon = () => {
     return mapMode === 'dark' ? FaSatellite : FaMap;
@@ -114,6 +129,7 @@ MapControls.propTypes = {
   onResetView: PropTypes.func,
   onToggleMapMode: PropTypes.func,
   onToggleGrid: PropTypes.func,
+  animated: PropTypes.bool,
   className: PropTypes.string,
 };
 

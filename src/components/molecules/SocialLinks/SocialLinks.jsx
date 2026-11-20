@@ -1,36 +1,33 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
-import { useAnimation } from '@context/AnimationContext';
 import { FaGithub, FaLinkedin, FaAddressCard } from 'react-icons/fa';
-import { socialLinks as siteSocialLinks, contact } from "@/portfolio";
-import useCallbackHandlers from '@/hooks/useCallbackHandlers';
+import { downloadFile } from '@utils/download';
+import { useMotionEnabled } from '@utils/motion';
 import './SocialLinks.css';
 
 
 /**
- * Social Links component for displaying social media links
- * 
+ * Row of icon links: GitHub, LinkedIn and a downloadable contact card.
+ * Each icon shows only if its link is given. A props-only building block.
+ *
  * @component
  * @param {Object} props - Component props
  * @param {string} props.className - Additional CSS classes
  * @param {boolean} [props.animated=true] - Whether to animate the component
- * @param {Object} [props.links] - Social link URLs; defaults to the site data
+ * @param {Object} [props.links] - `github` and `linkedin` profile URLs, and `contactCard`, the URL of a vCard to download
  * @returns {React.ReactElement} SocialLinks component
  */
-const SocialLinks = ({ className = '', animated = true, links }) => {
-    const socialLinks = links || siteSocialLinks;
-    const { handleDownload } = useCallbackHandlers();
-    const { animationEnabled } = useAnimation();
-    
-    // Only use animations if both props are enabled
-    const shouldAnimate = animated && animationEnabled;
-    
+const SocialLinks = ({ className = '', animated = true, links = {} }) => {
+    const socialLinks = links;
+    const shouldAnimate = useMotionEnabled(animated);
+
     const downloadContactCard = (e) => {
         e.preventDefault();
-        handleDownload(contact.vcfLink, 'Derek_Mackley.vcf');
+        // Save under the file's own name, e.g. "Derek_Mackley.vcf"
+        downloadFile(links.contactCard, links.contactCard.split('/').pop());
     };
-    
+
     // Animation variants
     const containerVariants = {
         hidden: { opacity: 0 },
@@ -42,21 +39,21 @@ const SocialLinks = ({ className = '', animated = true, links }) => {
             }
         }
     };
-    
+
     const itemVariants = {
         hidden: { opacity: 0, y: 10, scale: 0.8 },
         visible: {
             opacity: 1,
             y: 0,
             scale: 1,
-            transition: { 
-                type: "spring", 
-                stiffness: 300, 
-                damping: 15 
+            transition: {
+                type: "spring",
+                stiffness: 300,
+                damping: 15
             }
         }
     };
-    
+
     // Hover animation for social links
     const hoverVariants = {
         hover: {
@@ -72,9 +69,9 @@ const SocialLinks = ({ className = '', animated = true, links }) => {
             transition: { duration: 0.1 }
         }
     };
-    
+
     return (
-        <motion.div 
+        <motion.div
             className={`flex items-center flex-wrap gap-3 ${className}`}
             initial={shouldAnimate ? "hidden" : "visible"}
             animate="visible"
@@ -94,7 +91,7 @@ const SocialLinks = ({ className = '', animated = true, links }) => {
                     <FaGithub className="w-6 h-6" />
                 </motion.a>
             )}
-            
+
             {socialLinks.linkedin && (
                 <motion.a
                     className="social-link"
@@ -109,11 +106,11 @@ const SocialLinks = ({ className = '', animated = true, links }) => {
                     <FaLinkedin className="w-6 h-6" />
                 </motion.a>
             )}
-            
-            {contact.vcfLink && (
+
+            {links.contactCard && (
                 <motion.a
                     className="social-link"
-                    href={contact.vcfLink}
+                    href={links.contactCard}
                     onClick={downloadContactCard}
                     aria-label="Download Contact Card"
                     variants={shouldAnimate ? itemVariants : {}}
@@ -132,10 +129,11 @@ SocialLinks.propTypes = {
     className: PropTypes.string,
     /** Whether to animate the component */
     animated: PropTypes.bool,
-    /** Social link URLs; defaults to the site data */
+    /** Profile URLs and the vCard to download; an icon shows only if its link is given */
     links: PropTypes.shape({
         github: PropTypes.string,
-        linkedin: PropTypes.string
+        linkedin: PropTypes.string,
+        contactCard: PropTypes.string
     })
 };
 

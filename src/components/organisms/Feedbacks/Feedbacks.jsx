@@ -41,7 +41,7 @@ const Feedbacks = () => {
       <div className="feedbacks-carousel-container">
         <div className="feedbacks-carousel">
           {feedbacks.map((data, i) => (
-            <FeedbackCard key={`feedback-${i}`} data={data} index={i} />
+            <FeedbackCard key={`feedback-${i}`} data={data} index={i} animated={animationEnabled} />
           ))}
         </div>
       </div>

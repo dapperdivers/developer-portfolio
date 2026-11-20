@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from 'prop-types';
 import { motion } from "framer-motion";
-import { useAnimation } from '@context/AnimationContext';
+import { useMotionEnabled } from '@utils/motion';
 import './DateChip.css';
 
 /**
@@ -12,14 +12,12 @@ import './DateChip.css';
  * @param {string} props.date - The date or duration text to display
  * @param {string} [props.variant] - Visual variant: 'default', 'secure', 'breach', 'critical'
  * @param {string} [props.className] - Additional CSS classes
+ * @param {boolean} [props.animated=true] - Whether hover motion is enabled
  * @returns {React.ReactElement} DateChip component
  */
-const DateChip = ({ date, variant = 'default', className = "" }) => {
-  // Get animation context values
-  const { animationEnabled, fadeInVariants, prefersReducedMotion } = useAnimation();
-  
-  // Only animate if animations are enabled and user doesn't prefer reduced motion
-  const shouldAnimate = animationEnabled && !prefersReducedMotion;
+const DateChip = ({ date, variant = 'default', className = "", animated = true }) => {
+  // Only animate if enabled and the user doesn't prefer reduced motion
+  const shouldAnimate = useMotionEnabled(animated);
   
   // Define optimized animation variants for better performance
   const containerVariants = {
@@ -106,7 +104,8 @@ const DateChip = ({ date, variant = 'default', className = "" }) => {
 DateChip.propTypes = {
   date: PropTypes.string.isRequired,
   variant: PropTypes.oneOf(['default', 'secure', 'breach', 'critical']),
-  className: PropTypes.string
+  className: PropTypes.string,
+  animated: PropTypes.bool
 };
 
 export default DateChip;

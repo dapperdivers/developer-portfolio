@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useAnimation } from '@context/AnimationContext';
+import PropTypes from 'prop-types';
+import { useMotionEnabled } from '@utils/motion';
 import './ScrollToTop.css';
 
 /**
@@ -8,11 +9,13 @@ import './ScrollToTop.css';
  * back to the top of the page. The button appears after scrolling down.
  * 
  * @component
+ * @param {Object} props - Component props
+ * @param {boolean} [props.animated=true] - Play the enter, exit, hover and tap animations
  * @returns {React.ReactElement} ScrollToTop component
  */
-const ScrollToTop = () => {
+const ScrollToTop = ({ animated = true }) => {
   const [visible, setVisible] = useState(false);
-  const { animationEnabled } = useAnimation();
+  const motionOn = useMotionEnabled(animated);
 
   // Toggle button visibility based on scroll position
   useEffect(() => {
@@ -83,11 +86,11 @@ const ScrollToTop = () => {
           onClick={scrollToTop}
           className="scroll-to-top"
           aria-label="Scroll to top of page"
-          initial={animationEnabled ? "hidden" : false}
-          animate={animationEnabled ? "visible" : false}
-          exit={animationEnabled ? "exit" : false}
-          whileHover={animationEnabled ? "hover" : false}
-          whileTap={animationEnabled ? "tap" : false}
+          initial={motionOn ? "hidden" : false}
+          animate={motionOn ? "visible" : false}
+          exit={motionOn ? "exit" : false}
+          whileHover={motionOn ? "hover" : false}
+          whileTap={motionOn ? "tap" : false}
           variants={buttonVariants}
         >
           <svg 
@@ -108,6 +111,10 @@ const ScrollToTop = () => {
       )}
     </AnimatePresence>
   );
+};
+
+ScrollToTop.propTypes = {
+  animated: PropTypes.bool
 };
 
 export default ScrollToTop;

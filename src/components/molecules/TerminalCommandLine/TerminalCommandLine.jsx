@@ -20,6 +20,7 @@ import './TerminalCommandLine.css';
  * @param {string} [props.variant='default'] - Visual variant ('default', 'security', 'terminal', 'kitty')
  * @param {boolean} [props.isLoading=false] - Whether command is being processed
  * @param {string} [props.className=''] - Additional CSS classes
+ * @param {boolean} [props.animated=true] - Whether the cursor blinks
  * @returns {React.ReactElement} TerminalCommandLine component
  */
 const TerminalCommandLine = ({ 
@@ -33,6 +34,7 @@ const TerminalCommandLine = ({
   variant = 'default',
   isLoading = false,
   className = '',
+  animated = true,
   ...rest
 }) => {
   // State management
@@ -113,6 +115,7 @@ const TerminalCommandLine = ({
             focused={isFocused}
             variant={variant}
             className="terminal-command-line__cursor--input"
+            animated={animated}
           />
           <input
             ref={inputRef}
@@ -138,6 +141,7 @@ const TerminalCommandLine = ({
             show={showCursor}
             focused={false}
             variant={variant}
+            animated={animated}
           />
         </>
       )}
@@ -156,6 +160,7 @@ TerminalCommandLine.propTypes = {
   variant: PropTypes.oneOf(['default', 'security', 'terminal', 'kitty']),
   isLoading: PropTypes.bool,
   className: PropTypes.string,
+  animated: PropTypes.bool,
 };
 
 export default memo(TerminalCommandLine);

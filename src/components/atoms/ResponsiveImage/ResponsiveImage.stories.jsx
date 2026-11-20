@@ -59,6 +59,10 @@ export default {
     srcSet: {
       control: 'text',
       description: 'SrcSet attribute for responsive images'
+    },
+    animated: {
+      control: 'boolean',
+      description: 'Whether to animate the image as it loads'
     }
   },
   parameters: {

@@ -4,7 +4,7 @@ import Card from '@atoms/Card';
 import Button from '@atoms/Button';
 import ResponsiveImage from '@atoms/ResponsiveImage';
 import { useInView } from "framer-motion";
-import { useAnimation } from "@context/AnimationContext";
+import { useMotionEnabled, slideUpVariants, STAGGER_DELAY } from "@utils/motion";
 
 /**
  * Project card component for displaying individual project information.
@@ -19,9 +19,10 @@ import { useAnimation } from "@context/AnimationContext";
  * @param {string} [props.data.link] - Live demo URL
  * @param {Array} [props.data.stack] - Array of technologies used
  * @param {number} [props.index=0] - Index number for staggered animations
+ * @param {boolean} [props.animated=true] - Whether to animate the card
  * @returns {React.ReactElement} ProjectsCard component
  */
-const ProjectsCard = ({ data, index = 0 }) => {
+const ProjectsCard = ({ data, index = 0, animated = true }) => {
     const ref = React.useRef(null);
     const isInView = useInView(ref, { 
       once: true,
@@ -29,8 +30,7 @@ const ProjectsCard = ({ data, index = 0 }) => {
       margin: "-50px 0px"
     });
     
-    // Get animation context values
-    const { animationEnabled, slideUpVariants, animationStaggerDelay } = useAnimation();
+    const motionOn = useMotionEnabled(animated);
     
     // Only use the image if it's explicitly provided
     const hasImage = !!data.image;
@@ -45,23 +45,23 @@ const ProjectsCard = ({ data, index = 0 }) => {
         ...slideUpVariants.visible,
         transition: {
           ...slideUpVariants.visible.transition,
-          delay: animationStaggerDelay * (index % 4), 
+          delay: STAGGER_DELAY * (index % 4), 
         }
       }
-    }), [slideUpVariants, index, animationStaggerDelay]);
+    }), [index]);
 
-    // Skip animations if disabled at the context level
-    const shouldAnimate = animationEnabled && isInView;
+    const shouldAnimate = motionOn && isInView;
   
     return (
       <div className="project-card" ref={ref}>
         <Card 
           className="h-100"
           variants={cardVariants}
-          initial={animationEnabled ? "hidden" : "visible"}
-          animate={shouldAnimate ? "visible" : "hidden"}
+          initial={motionOn ? "hidden" : "visible"}
+          animate={!motionOn || shouldAnimate ? "visible" : "hidden"}
           hoverable
           shadow
+          animated={animated}
         >
           {hasImage && (
             <div className="project-image-container">
@@ -70,6 +70,7 @@ const ProjectsCard = ({ data, index = 0 }) => {
                 alt={`${data.name} project screenshot`}
                 className="project-image"
                 lazy={true}
+                animated={animated}
                 width={800}
                 height={450}
                 sizes="(max-width: 768px) 100vw, 400px"
@@ -97,6 +98,7 @@ const ProjectsCard = ({ data, index = 0 }) => {
                   href={data.github}
                   variant="primary"
                   size="sm"
+                  animated={animated}
                   icon="simple-icons:github"
                   ariaLabel={`View ${data.name} source code on GitHub`}
                   target="_blank"
@@ -112,6 +114,7 @@ const ProjectsCard = ({ data, index = 0 }) => {
                   href={data.link}
                   variant="primary"
                   size="sm"
+                  animated={animated}
                   icon="fa:external-link"
                   ariaLabel={`View ${data.name} live demo`}
                   target="_blank"
@@ -136,7 +139,8 @@ ProjectsCard.propTypes = {
     link: PropTypes.string,
     stack: PropTypes.arrayOf(PropTypes.string)
   }).isRequired,
-  index: PropTypes.number
+  index: PropTypes.number,
+  animated: PropTypes.bool
 };
 
 // Applying memoization for performance optimization

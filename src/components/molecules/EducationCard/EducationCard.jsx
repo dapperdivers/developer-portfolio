@@ -2,8 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
 import { FaGraduationCap, FaCertificate, FaCalendarAlt, FaUniversity } from 'react-icons/fa';
-import { useAnimation } from '@context/AnimationContext';
-import { usePortfolio } from '@context/PortfolioContext';
+import { useMotionEnabled } from '@utils/motion';
 import './EducationCard.css';
 
 /**
@@ -26,6 +25,7 @@ import './EducationCard.css';
  * @param {string} [props.variant='default'] - Theme variant (default, secure, breach, critical)
  * @param {number} [props.index=0] - Index for staggered animations
  * @param {string} [props.className=''] - Additional CSS classes
+ * @param {boolean} [props.animated=true] - Whether to animate the component
  * @returns {React.ReactElement} EducationCard component
  */
 const EducationCard = ({ 
@@ -33,9 +33,10 @@ const EducationCard = ({
   variant = 'default', 
   index = 0, 
   className = '',
+  animated = true,
   ...props 
 }) => {
-  const { animationEnabled } = useAnimation();
+  const animationEnabled = useMotionEnabled(animated);
   
   // Animation variants optimized for performance
   const cardVariants = {
@@ -246,7 +247,8 @@ EducationCard.propTypes = {
   }).isRequired,
   variant: PropTypes.oneOf(['default', 'secure', 'breach', 'critical']),
   index: PropTypes.number,
-  className: PropTypes.string
+  className: PropTypes.string,
+  animated: PropTypes.bool
 };
 
 export default EducationCard;

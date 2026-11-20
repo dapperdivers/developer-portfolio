@@ -1,26 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import GithubProfileCard from './GithubProfileCard';
-import { AnimationProvider } from '@context/AnimationContext';
-
-// Mock AnimationContext to avoid matchMedia issues
-vi.mock('@context/AnimationContext', () => ({
-  useAnimation: () => ({
-    animationEnabled: true,
-    prefersReducedMotion: false,
-    isLowPowerDevice: false,
-    optimizeVariants: (variants) => variants,
-    fadeInVariants: {
-      hidden: { opacity: 0 },
-      visible: { opacity: 1 }
-    },
-    slideUpVariants: {
-      hidden: { opacity: 0, y: 20 },
-      visible: { opacity: 1, y: 0 }
-    }
-  }),
-  AnimationProvider: ({ children }) => <div data-testid="animation-provider">{children}</div>
-}));
 
 // Mock the child components
 vi.mock('@atoms/ProfileAvatar', () => ({
@@ -59,8 +39,7 @@ vi.mock('@molecules/ProfileContent', () => ({
   ),
 }));
 
-// Mock the portfolio data
-vi.mock('@/portfolio', () => ({
+const siteData = {
   greetings: {
     name: 'John Doe',
     title: 'Hi, I am',
@@ -68,8 +47,8 @@ vi.mock('@/portfolio', () => ({
     description: 'I am a security professional with expertise in secure architecture.'
   },
   securityFacts: ['Security fact 1', 'Security fact 2'],
-  openSource: { githubUserName: 'octocat' }
-}));
+  githubUserName: 'octocat'
+};
 
 describe('GithubProfileCard', () => {
   const mockProfile = {
@@ -78,16 +57,10 @@ describe('GithubProfileCard', () => {
     location: 'San Francisco, CA'
   };
 
-  const renderWithContext = (ui) => {
-    return render(
-      <AnimationProvider>
-        {ui}
-      </AnimationProvider>
-    );
-  };
+  const renderCard = (props) => render(<GithubProfileCard {...siteData} {...props} />);
 
   test('renders profile data when provided', () => {
-    renderWithContext(<GithubProfileCard prof={mockProfile} />);
+    renderCard({ prof: mockProfile });
     
     expect(screen.getByTestId('profile-avatar')).toBeInTheDocument();
     expect(screen.getByTestId('profile-header')).toBeInTheDocument();
@@ -98,7 +71,7 @@ describe('GithubProfileCard', () => {
   });
 
   test('API failed: card still renders with fallback avatar', () => {
-    renderWithContext(<GithubProfileCard prof={null} />);
+    renderCard({ prof: null });
 
     expect(screen.getByTestId('profile-avatar')).toHaveAttribute('data-src', 'https://github.com/octocat.png');
     expect(screen.getByTestId('profile-header')).toBeInTheDocument();
@@ -107,7 +80,7 @@ describe('GithubProfileCard', () => {
   });
 
   test('renders full card with fallback avatar when profile is empty', () => {
-    renderWithContext(<GithubProfileCard prof={{}} />);
+    renderCard({ prof: {} });
 
     expect(screen.getByTestId('profile-avatar')).toHaveAttribute('data-src', 'https://github.com/octocat.png');
     expect(screen.getByTestId('profile-content')).toBeInTheDocument();
@@ -120,8 +93,16 @@ describe('GithubProfileCard', () => {
       location: null
     };
     
-    renderWithContext(<GithubProfileCard prof={profileWithoutLocation} />);
+    renderCard({ prof: profileWithoutLocation });
     
+    expect(screen.queryByTestId('profile-location')).not.toBeInTheDocument();
+  });
+
+  test('renders with no site data and no provider', () => {
+    render(<GithubProfileCard />);
+
+    expect(screen.getByTestId('profile-avatar')).not.toHaveAttribute('data-src');
+    expect(screen.getByTestId('profile-content')).toBeInTheDocument();
     expect(screen.queryByTestId('profile-location')).not.toBeInTheDocument();
   });
 });

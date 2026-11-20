@@ -12,6 +12,7 @@ export default {
     }
   },
   argTypes: {
+    animated: { control: 'boolean', description: 'Play animations; reduced motion always turns them off' },
     title: {
       control: { type: 'text' },
       description: 'Custom title text (defaults based on variant)'

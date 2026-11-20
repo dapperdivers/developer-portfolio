@@ -14,6 +14,7 @@ export default {
     }
   },
   argTypes: {
+    animated: { control: 'boolean', description: 'Play animations; reduced motion always turns them off' },
     variant: {
       control: { type: 'select', options: ['macos', 'windows', 'linux'] },
       description: 'Visual style variant based on operating system',

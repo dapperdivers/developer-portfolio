@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
-import { useAnimation } from '@context//AnimationContext';
+import { useMotionEnabled } from '@utils/motion';
 
 import Skill from '@atoms/Skill';
 import './SkillCard.css';
@@ -17,6 +17,7 @@ import './SkillCard.css';
  * @param {boolean} props.reducedMotion - Whether to use simplified animations for performance
  * @param {Function} props.onClick - Click handler when skill card is selected
  * @param {string} props.className - Additional CSS class
+ * @param {boolean} [props.animated=true] - Whether to animate the card
  * @returns {React.ReactElement} SkillCard component
  */
 const SkillCard = ({ 
@@ -24,13 +25,13 @@ const SkillCard = ({
   index = 0, 
   reducedMotion = false,
   onClick,
-  className = '' // Default to empty string for optional className
+  className = '', // Default to empty string for optional className
+  animated = true
 }) => {
-  // Get animation settings from context
-  const { animationEnabled, getAnimationDelay } = useAnimation();
+  const motionOn = useMotionEnabled(animated);
   
   // Determine if we should animate
-  const shouldAnimate = animationEnabled && !reducedMotion;
+  const shouldAnimate = motionOn && !reducedMotion;
   
   // Animation variants
   const cardVariants = {
@@ -104,6 +105,7 @@ const SkillCard = ({
           index={index}
           size="md"
           variant="security"
+          animate={animated}
           reducedMotion={reducedMotion}
         />
       </div>
@@ -140,7 +142,9 @@ SkillCard.propTypes = {
   /** Click handler function */
   onClick: PropTypes.func,
   /** Additional CSS class names */
-  className: PropTypes.string
+  className: PropTypes.string,
+  /** Whether to animate the card */
+  animated: PropTypes.bool
 };
 
 // Apply memoization for performance

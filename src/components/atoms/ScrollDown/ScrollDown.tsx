@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { motion } from 'framer-motion';
-import { useAnimation } from '@context/AnimationContext';
+import { useMotionEnabled } from '@utils/motion';
 import './ScrollDown.css';
 
 /**
@@ -27,11 +27,7 @@ const ScrollDown = ({
   className = '',
   animated = true 
 }: ScrollDownProps) => {
-  // Get animation settings from context
-  const { animationEnabled } = useAnimation();
-  
-  // Only animate if both component prop and global setting allow it
-  const shouldAnimate = animated && animationEnabled;
+  const shouldAnimate = useMotionEnabled(animated);
 
   // Animation variants
   const containerVariants = {

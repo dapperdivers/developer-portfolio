@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
-import { useAnimation } from '@context/AnimationContext';
+import { useMotionEnabled, fadeInVariants } from '@utils/motion';
 import { FaQuoteLeft, FaQuoteRight } from 'react-icons/fa';
 import './FeedbackQuote.css';
 
@@ -16,10 +16,8 @@ import './FeedbackQuote.css';
  * @returns {React.ReactElement} FeedbackQuote component
  */
 const FeedbackQuote = ({ text, className = "", animated = true }) => {
-  const { animationEnabled, fadeInVariants } = useAnimation();
-  
-  // Only use animations if both props are enabled
-  const shouldAnimate = animated && animationEnabled;
+  // Animate only when the prop is on and reduced motion is not requested
+  const shouldAnimate = useMotionEnabled(animated);
   
   // Animation variants
   const quoteIconVariants = {

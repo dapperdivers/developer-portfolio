@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
-import { useAnimation } from '@context/AnimationContext';
+import { useMotionEnabled } from '@utils/motion';
 import './TerminalControls.css';
 
 /**
@@ -16,6 +16,7 @@ import './TerminalControls.css';
  * @param {React.MouseEventHandler<HTMLButtonElement>} [props.onMinimizeClick] - Callback for minimize button click
  * @param {React.MouseEventHandler<HTMLButtonElement>} [props.onMaximizeClick] - Callback for maximize button click
  * @param {string} [props.className=''] - Additional CSS classes
+ * @param {boolean} [props.animated=true] - Play the hover and tap animations on interactive controls
  * @returns {React.ReactElement} TerminalControls component
  */
 const TerminalControls = ({ 
@@ -25,9 +26,10 @@ const TerminalControls = ({
   onMinimizeClick,
   onMaximizeClick,
   className = '',
+  animated = true,
   ...rest
 }) => {
-  const { animationEnabled, prefersReducedMotion } = useAnimation();
+  const motionOn = useMotionEnabled(animated);
   
   // Determine class names based on props
   const classes = [
@@ -55,8 +57,7 @@ const TerminalControls = ({
     }
   };
   
-  // Only animate if animations are enabled and user doesn't prefer reduced motion
-  const shouldAnimate = animationEnabled && !prefersReducedMotion && interactive;
+  const shouldAnimate = motionOn && interactive;
 
   return (
     <motion.div 
@@ -110,7 +111,8 @@ TerminalControls.propTypes = {
   onCloseClick: PropTypes.func, /* React.MouseEventHandler<HTMLButtonElement> */
   onMinimizeClick: PropTypes.func, /* React.MouseEventHandler<HTMLButtonElement> */
   onMaximizeClick: PropTypes.func, /* React.MouseEventHandler<HTMLButtonElement> */
-  className: PropTypes.string
+  className: PropTypes.string,
+  animated: PropTypes.bool
 };
 
 export default memo(TerminalControls);

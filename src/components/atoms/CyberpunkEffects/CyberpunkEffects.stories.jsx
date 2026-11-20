@@ -14,6 +14,7 @@ export default {
     },
   },
   argTypes: {
+    animated: { control: 'boolean', description: 'Play animations; reduced motion always turns them off' },
     variant: {
       control: { type: 'select' },
       options: ['default', 'secure', 'breach', 'critical']

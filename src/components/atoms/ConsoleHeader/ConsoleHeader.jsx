@@ -1,7 +1,7 @@
 import React, { memo, useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
-import { useAnimation } from '@context/AnimationContext';
+import { useMotionEnabled } from '@utils/motion';
 import Card from '@atoms/Card';
 import TerminalControls from '@atoms/TerminalControls/TerminalControls';
 import './ConsoleHeader.css';
@@ -24,6 +24,7 @@ import './ConsoleHeader.css';
  * @param {string} [props.ariaDescription] - Description for screen readers
  * @param {boolean} [props.showHint=true] - Whether to show the interactive hint
  * @param {string} [props.hintText='Type a command...'] - Custom hint text
+ * @param {boolean} [props.animated=true] - Play the entrance and cursor animations
  * @returns {React.ReactElement} ConsoleHeader component
  */
 const ConsoleHeader = ({ 
@@ -40,6 +41,7 @@ const ConsoleHeader = ({
   ariaDescription,
   showHint = true,
   hintText = 'Type a command...',
+  animated = true,
   ...rest
 }) => {
   // State to track if on mobile
@@ -49,7 +51,7 @@ const ConsoleHeader = ({
   const [isHovered, setIsHovered] = useState(false);
   const [hasBeenFocused, setHasBeenFocused] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { animationEnabled, prefersReducedMotion } = useAnimation();
+  const motionOn = useMotionEnabled(animated);
   const inputRef = useRef(null);
   
   // Set up mobile detection
@@ -179,7 +181,7 @@ const ConsoleHeader = ({
   return (
     <motion.div 
       id={id}
-      initial={animationEnabled ? "hidden" : "visible"}
+      initial={motionOn ? "hidden" : "visible"}
       animate="visible" // FIXED: Always animate to visible, no hover animation
       variants={consoleVariants}
       onMouseEnter={handleMouseEnter}
@@ -196,7 +198,7 @@ const ConsoleHeader = ({
         {...rest}
       >
       <div className="console-header-top">
-        <TerminalControls variant="kitty" />
+        <TerminalControls variant="kitty" animated={animated} />
         <span className="console-title">
           {variant === 'security' ? 'Alacritty' : 
            variant === 'hacker' ? 'H4CK3R-T3RM1N4L' : 
@@ -218,7 +220,7 @@ const ConsoleHeader = ({
                 variants={cursorVariants}
                 initial="visible"
                 animate={
-                  animationEnabled && !prefersReducedMotion
+                  motionOn
                     ? (isFocused ? "focused" : "visible")
                     : "noAnimation"
                 }
@@ -252,7 +254,7 @@ const ConsoleHeader = ({
                 variants={cursorVariants}
                 initial="visible"
                 animate={
-                  animationEnabled && !prefersReducedMotion
+                  motionOn
                     ? "visible"
                     : "noAnimation"
                 }
@@ -286,7 +288,8 @@ ConsoleHeader.propTypes = {
   id: PropTypes.string,
   ariaDescription: PropTypes.string,
   showHint: PropTypes.bool,
-  hintText: PropTypes.string
+  hintText: PropTypes.string,
+  animated: PropTypes.bool
 };
 
 export default memo(ConsoleHeader);

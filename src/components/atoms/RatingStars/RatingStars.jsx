@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
 import { FaStar } from 'react-icons/fa';
-import { useAnimation } from '@context/AnimationContext';
+import { useMotionEnabled } from '@utils/motion';
 import './RatingStars.css';
 
 /**
@@ -16,10 +16,8 @@ import './RatingStars.css';
  * @returns {React.ReactElement} RatingStars component
  */
 const RatingStars = ({ rating, className = "", animated = true }) => {
-  const { animationEnabled } = useAnimation();
-  
-  // Only use animations if both props are enabled
-  const shouldAnimate = animated && animationEnabled;
+  // Animate only when the prop is on and reduced motion is not requested
+  const shouldAnimate = useMotionEnabled(animated);
 
   // Container and star animation variants
   const containerVariants = {

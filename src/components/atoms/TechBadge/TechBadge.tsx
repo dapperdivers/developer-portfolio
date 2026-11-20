@@ -1,6 +1,6 @@
 import React, { FC, memo } from 'react';
 import { motion, HTMLMotionProps, Variants } from 'framer-motion';
-import { useAnimation } from '@context/AnimationContext';
+import { useMotionEnabled } from '@utils/motion';
 import './TechBadge.css';
 
 interface TechBadgeProps extends Omit<HTMLMotionProps<'div'>, 'size'> {
@@ -47,11 +47,7 @@ const TechBadge: FC<TechBadgeProps> = ({
   index = 0,
   ...rest
 }) => {
-  // Get animation settings from context
-  const { animationEnabled } = useAnimation();
-  
-  // Determine if animations should run
-  const shouldAnimate = animate && animationEnabled;
+  const shouldAnimate = useMotionEnabled(animate);
   
   // Determine if the badge is clickable
   const isClickable = interactive || !!onClick;

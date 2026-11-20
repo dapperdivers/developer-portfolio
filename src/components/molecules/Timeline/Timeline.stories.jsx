@@ -193,8 +193,11 @@ export const WithEasterEggs = {
 
     await step('The third click arms the extras', async () => {
       await userEvent.click(card);
-      await expect(await canvas.findByText(/SYSTEM BREACH DETECTED/)).toBeVisible();
-      await expect(await canvas.findByText(/TRIPLE CLICKER/)).toBeVisible();
+      // Both fade in, so wait for them to finish appearing
+      const banner = await canvas.findByText(/SYSTEM BREACH DETECTED/);
+      await waitFor(() => expect(banner).toBeVisible());
+      const toast = await canvas.findByText(/TRIPLE CLICKER/);
+      await waitFor(() => expect(toast).toBeVisible());
     });
   },
 };

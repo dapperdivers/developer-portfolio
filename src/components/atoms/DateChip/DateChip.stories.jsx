@@ -23,6 +23,10 @@ const meta = {
     }
   },
   argTypes: {
+    animated: {
+      control: 'boolean',
+      description: 'Whether the chip lifts and glows on hover',
+    },
     date: {
       control: 'text',
       description: 'The date or duration text to display',

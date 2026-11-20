@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
-import { useAnimation } from '@context/AnimationContext';
-import { usePortfolio } from '@context/PortfolioContext';
+import { useMotionEnabled } from '@utils/motion';
 import './DataStream.css';
 
 // Optimized animation variants
@@ -24,15 +23,29 @@ const streamVariants = {
   })
 };
 
-const DataStream = ({ 
+/**
+ * Animated data stream lines.
+ *
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.variant='default'] - Security variant theme
+ * @param {number} [props.delay=0] - Animation delay in seconds
+ * @param {number} [props.duration=2.5] - Animation duration in seconds
+ * @param {string} [props.intensity='medium'] - Visual intensity: low, medium or high
+ * @param {boolean} [props.animated=true] - Whether the streams animate
+ * @param {string} [props.className=''] - Additional CSS classes
+ * @returns {React.ReactElement} DataStream component
+ */
+const DataStream = ({
   variant = 'default',
   delay = 0,
   duration = 2.5,
   intensity = 'medium',
+  animated = true,
   className = '',
-  ...props 
+  ...props
 }) => {
-  const { animationEnabled: isAnimationEnabled } = useAnimation();
+  const isAnimationEnabled = useMotionEnabled(animated);
 
   const getStreamColor = () => {
     switch (variant) {
@@ -98,6 +111,7 @@ DataStream.propTypes = {
   delay: PropTypes.number,
   duration: PropTypes.number,
   intensity: PropTypes.oneOf(['low', 'medium', 'high']),
+  animated: PropTypes.bool,
   className: PropTypes.string,
 };
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
-import { useAnimation } from '@context/AnimationContext';
+import { useMotionEnabled } from '@utils/motion';
 import './SkipToContent.css';
 
 /**
@@ -23,10 +23,7 @@ import './SkipToContent.css';
  * <SkipToContent mainId="main-content" variant="security" />
  */
 const SkipToContent = ({ mainId = 'main-content', variant = '', animated = true }) => {
-  const { animationEnabled } = useAnimation();
-  
-  // Only use animations if both props are enabled
-  const shouldAnimate = animated && animationEnabled;
+  const shouldAnimate = useMotionEnabled(animated);
   
   // Combine class names
   const className = [

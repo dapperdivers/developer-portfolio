@@ -1,5 +1,4 @@
-import React, { useMemo } from 'react';
-import { AnimationContext, useAnimation } from '@context/AnimationContext';
+import React from 'react';
 import ScrollToTop from './ScrollToTop';
 
 const meta = {
@@ -92,19 +91,8 @@ export const DarkTheme = () => (
   </div>
 );
 
-// Overrides the animation context the way a reduced-motion preference does
-const ReducedMotionProvider = ({ children }) => {
-  const animation = useAnimation();
-  const value = useMemo(
-    () => ({ ...animation, animationEnabled: false, prefersReducedMotion: true }),
-    [animation]
-  );
-  return <AnimationContext.Provider value={value}>{children}</AnimationContext.Provider>;
-};
-
 // With reduced motion: the button appears and reacts without animation
 export const ReducedMotion = () => (
-  <ReducedMotionProvider>
   <div style={{ 
     minHeight: '200vh',
     padding: '20px'
@@ -113,14 +101,13 @@ export const ReducedMotion = () => (
       Reduced motion: scroll down, the button appears without the slide-in
     </div>
     <p style={{ marginBottom: '20px' }}>
-      Animations are switched off through the animation context, as they are when the visitor prefers reduced motion. Hover and tap effects are disabled too.
+      Animations are switched off with the animated prop, as they are when the visitor prefers reduced motion. Hover and tap effects are disabled too.
     </p>
     {Array(20).fill().map((_, i) => (
       <p key={i} style={{ marginBottom: '20px' }}>
         Content section {i + 1}
       </p>
     ))}
-    <ScrollToTop />
+    <ScrollToTop animated={false} />
   </div>
-  </ReducedMotionProvider>
 ); 

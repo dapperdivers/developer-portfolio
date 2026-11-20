@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
-import { useAnimation } from '@context/AnimationContext';
+import { useMotionEnabled, slideUpVariants } from '@utils/motion';
 import SchoolHeader from '@atoms/SchoolHeader';
 import DegreeInfo from '@atoms/DegreeInfo';
 import FieldsOfStudy from '@atoms/FieldsOfStudy';
@@ -32,10 +32,8 @@ const AcademicDetails = ({
   className = "",
   animated = true
 }) => {
-  const { animationEnabled, slideUpVariants } = useAnimation();
-  
-  // Only use animations if both props are enabled
-  const shouldAnimate = animated && animationEnabled;
+  // Animate only when the prop is on and reduced motion is not requested
+  const shouldAnimate = useMotionEnabled(animated);
   
   // Content variants for staggered animations
   const containerVariants = {
@@ -92,7 +90,7 @@ const AcademicDetails = ({
           className="graduation-date-container"
           variants={shouldAnimate ? itemVariants : {}}
         >
-          <DateChip date={graduationDate} className="graduation-date-chip" />
+          <DateChip date={graduationDate} className="graduation-date-chip" animated={shouldAnimate} />
         </motion.div>
       </motion.div>
     </motion.div>

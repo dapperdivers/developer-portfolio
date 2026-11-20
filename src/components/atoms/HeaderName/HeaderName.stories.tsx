@@ -14,6 +14,7 @@ const meta = {
   },
   tags: ['autodocs'],
   argTypes: {
+    animated: { control: 'boolean', description: 'Play animations; reduced motion always turns them off' },
     name: {
       control: 'text',
       description: 'The name to be displayed',

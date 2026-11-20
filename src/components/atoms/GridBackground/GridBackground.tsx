@@ -1,6 +1,6 @@
 import React, { memo, useMemo } from 'react';
 import { LazyMotion, domAnimation, m } from 'framer-motion';
-import { useAnimation } from '@context/AnimationContext';
+import { useMotionEnabled } from '@utils/motion';
 import './GridBackground.css';
 
 /**
@@ -19,6 +19,8 @@ interface GridBackgroundProps {
   gridColor?: string;
   /** Background color (default: transparent) */
   backgroundColor?: string;
+  /** Fade the grid in on mount (default: true) */
+  animated?: boolean;
   [key: string]: any;
 }
 
@@ -28,11 +30,11 @@ const GridBackground = (props: GridBackgroundProps) => {
     gridSize = 30,
     gridColor = 'rgba(255, 255, 255, 0.1)',
     backgroundColor = 'rgba(0, 0, 0, 0.95)',
+    animated = true,
     ...rest 
   } = props;
   
-  const { animationEnabled, prefersReducedMotion } = useAnimation();
-  const shouldAnimate = animationEnabled && !prefersReducedMotion;
+  const shouldAnimate = useMotionEnabled(animated);
 
   // Animation variants
   const variants = useMemo(() => ({

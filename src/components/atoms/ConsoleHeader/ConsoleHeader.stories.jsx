@@ -14,6 +14,7 @@ const meta = {
     }
   },
   argTypes: {
+    animated: { control: 'boolean', description: 'Play animations; reduced motion always turns them off' },
     prompt: {
       control: 'text',
       description: 'Command prompt text displayed before the command',

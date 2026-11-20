@@ -13,6 +13,10 @@ export default {
   component: CertificationList,
   tags: ['autodocs'],
   argTypes: {
+    animated: {
+      control: 'boolean',
+      description: 'Whether the badges lift on hover',
+    },
     certifications: {
       control: 'object',
       description: 'Certification objects: name, issuer, date, credentialId',

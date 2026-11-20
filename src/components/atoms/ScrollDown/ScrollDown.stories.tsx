@@ -24,6 +24,7 @@ const meta = {
   },
   tags: ['autodocs'],
   argTypes: {
+    animated: { control: 'boolean', description: 'Play animations; reduced motion always turns them off' },
     onClick: { action: 'clicked', description: 'Function called when the scroll indicator is clicked' },
     label: { control: 'text', description: 'Text label above the scroll indicator' },
     className: { control: 'text', description: 'Additional CSS class names' }

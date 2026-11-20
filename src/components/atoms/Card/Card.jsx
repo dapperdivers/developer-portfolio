@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
-import { useAnimation, MotionVariants } from '@context/AnimationContext';
+import { useMotionEnabled, fadeInVariants, scaleVariants, slideUpVariants } from '@utils/motion';
 import './Card.css';
 
 /**
@@ -54,8 +54,7 @@ const Card = ({
   animationVariant = 'default',
   ...rest
 }) => {
-  // Get animation context
-  const { animationEnabled, fadeInVariants, scaleVariants, slideUpVariants } = useAnimation();
+  const motionOn = useMotionEnabled(animated);
   
   // Base classes
   const baseClasses = [
@@ -88,7 +87,7 @@ const Card = ({
   
   // Choose animation variant based on prop
   const getAnimationVariant = () => {
-    if (!animationEnabled || !animated) return {};
+    if (!motionOn) return {};
     
     // Custom animation takes precedence if provided
     if (animation) return animation;
@@ -110,8 +109,8 @@ const Card = ({
     <motion.div
       className={baseClasses}
       aria-label={ariaLabel}
-      initial={animated && animationEnabled ? "hidden" : false}
-      animate={animated && animationEnabled ? "visible" : false}
+      initial={motionOn ? "hidden" : false}
+      animate={motionOn ? "visible" : false}
       variants={getAnimationVariant()}
       transition={{ duration: 0.5 }}
       {...rest}

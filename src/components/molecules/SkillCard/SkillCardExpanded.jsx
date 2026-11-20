@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
-import { useAnimation } from '@context//AnimationContext';
+import { useMotionEnabled } from '@utils/motion';
 
 import Skill from '@atoms/Skill';
 import Modal from '@atoms/Modal';
@@ -16,15 +16,16 @@ import './SkillCard.css';
  * @param {Object} props.skill - Skill data object
  * @param {Function} props.onClose - Handler to close the expanded view
  * @param {boolean} props.isVisible - Whether the expanded card is visible
+ * @param {boolean} [props.animated=true] - Whether to animate the modal and its content
  * @returns {React.ReactElement} SkillCardExpanded component
  */
 const SkillCardExpanded = ({ 
   skill, 
   onClose, 
-  isVisible = true 
+  isVisible = true,
+  animated = true
 }) => {
-  // Get animation settings from context
-  const { animationEnabled } = useAnimation();
+  const motionOn = useMotionEnabled(animated);
   
   // Generate level dots for the expanded skill card
   const renderLevelDots = (level) => {
@@ -54,6 +55,7 @@ const SkillCardExpanded = ({
       onClose={onClose}
       size="md"
       className="skill-card-expanded-modal"
+      animated={animated}
       contentProps={{
         'aria-labelledby': 'expanded-skill-title'
       }}
@@ -89,8 +91,8 @@ const SkillCardExpanded = ({
         {skill.securityDomain && (
           <motion.div 
             className={`skill-domain-badge domain-badge ${skill.securityDomain.toLowerCase().replace(/\s+/g, '-')}`}
-            initial={animationEnabled ? { opacity: 0, x: -10 } : false}
-            animate={animationEnabled ? { opacity: 1, x: 0 } : false}
+            initial={motionOn ? { opacity: 0, x: -10 } : false}
+            animate={motionOn ? { opacity: 1, x: 0 } : false}
             transition={{ delay: 0.2 }}
           >
             {skill.securityDomain}
@@ -121,7 +123,9 @@ SkillCardExpanded.propTypes = {
   /** Function to close the expanded view */
   onClose: PropTypes.func.isRequired,
   /** Whether the expanded card is visible */
-  isVisible: PropTypes.bool
+  isVisible: PropTypes.bool,
+  /** Whether to animate the modal and its content */
+  animated: PropTypes.bool
 };
 
 // Apply memoization for performance

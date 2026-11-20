@@ -7,6 +7,7 @@ const meta = {
   component: Loading,
   tags: ['autodocs'],
   argTypes: {
+    animated: { control: 'boolean', description: 'Play animations; reduced motion always turns them off' },
     size: {
       control: 'select',
       options: ['sm', 'md', 'lg'],

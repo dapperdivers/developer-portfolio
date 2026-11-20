@@ -18,6 +18,10 @@ export default {
       control: 'text',
       description: 'Location name to geocode and display on the map',
     },
+    animated: {
+      control: 'boolean',
+      description: 'Whether the status indicator pulses',
+    },
   },
 };
 

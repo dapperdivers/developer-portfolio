@@ -14,6 +14,7 @@ const meta = {
     }
   },
   argTypes: {
+    animated: { control: 'boolean', description: 'Play animations; reduced motion always turns them off' },
     code: {
       control: 'text',
       description: 'Code content to display',

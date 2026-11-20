@@ -14,6 +14,10 @@ const meta = {
     }
   },
   argTypes: {
+    animated: {
+      control: 'boolean',
+      description: 'Whether the bubble fades in, scans and reacts to hover',
+    },
     date: {
       control: 'text',
       description: 'Date text to display',

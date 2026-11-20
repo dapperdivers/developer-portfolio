@@ -40,6 +40,10 @@ const meta = {
     imgProps: {
       control: 'object',
       description: 'Additional props to pass to img element',
+    },
+    animated: {
+      control: 'boolean',
+      description: 'Whether to animate loading transitions',
     }
   },
   parameters: {

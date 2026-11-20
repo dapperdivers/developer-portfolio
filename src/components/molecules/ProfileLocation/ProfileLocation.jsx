@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
 import MapComponent from '@molecules/MapComponent';
-import { useAnimation } from '@context/AnimationContext';
+import { useMotionEnabled } from '@utils/motion';
 import './ProfileLocation.css';
 
 // Terminal animation variants
@@ -40,11 +40,8 @@ const ProfileLocation = ({
   className = '',
   ...props
 }) => {
-  const { animationEnabled: isAnimationEnabled } = useAnimation();
   const [isLive, setIsLive] = useState(true);
-  
-  // Only use animations if enabled
-  const shouldAnimate = animate && isAnimationEnabled;
+  const shouldAnimate = useMotionEnabled(animate);
 
   const handleRefresh = () => setIsLive(prev => !prev);
 
@@ -89,7 +86,7 @@ const ProfileLocation = ({
 
       {/* Map Component Integration */}
       <div className="profile-location__map-wrapper">
-        <MapComponent location={location} />
+        <MapComponent location={location} animated={animate} />
       </div>
 
     </motion.div>

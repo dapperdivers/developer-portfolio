@@ -1,6 +1,7 @@
 import React from 'react';
 import GithubProfileCard from './GithubProfileCard';
 import { mockGithubProfile } from '@data/mockPortfolioData';
+import { greetings, securityFacts, openSource } from '@/portfolio';
 
 export default {
   title: 'Molecules/GithubProfileCard',
@@ -21,6 +22,16 @@ export default {
         ],
       },
     },
+  },
+  // Site data the organism passes in
+  args: {
+    greetings,
+    securityFacts,
+    githubUserName: openSource.githubUserName,
+    animated: true,
+  },
+  argTypes: {
+    animated: { control: 'boolean' },
   },
 };
 

@@ -1,6 +1,6 @@
 import React, { memo, useRef, useEffect } from 'react';
 import { LazyMotion, domAnimation, m } from 'framer-motion';
-import { useAnimation } from '@context/AnimationContext';
+import { useMotionEnabled } from '@utils/motion';
 import './NetworkBackground.css';
 
 interface Node {
@@ -38,6 +38,8 @@ interface NetworkBackgroundProps {
   nodeColor?: string;
   /** Network activity intensity (0-1, default: 0.5) */
   networkIntensity?: number;
+  /** Run the canvas animation and fade-in (default: true) */
+  animated?: boolean;
   [key: string]: any;
 }
 
@@ -47,11 +49,11 @@ const NetworkBackground = (props: NetworkBackgroundProps) => {
     gridSize = 30,
     nodeColor = '#00f5d4',
     networkIntensity = 0.5,
+    animated = true,
     ...rest
   } = props;
 
-  const { animationEnabled, prefersReducedMotion } = useAnimation();
-  const shouldAnimate = animationEnabled && !prefersReducedMotion;
+  const shouldAnimate = useMotionEnabled(animated);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const nodesRef = useRef<Node[]>([]);
   const connectionsRef = useRef<Connection[]>([]);

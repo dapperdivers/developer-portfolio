@@ -1,13 +1,13 @@
 import React from "react";
 import PropTypes from 'prop-types';
 import { motion } from "framer-motion";
-import { useAnimation } from "@context/AnimationContext";
+import { useMotionEnabled } from '@utils/motion';
 import { FaMedal, FaIdCard } from 'react-icons/fa';
 import './CertificationBadge.css';
 
 /**
  * A component to display certification information.
- * Enhanced with framer-motion animations controlled by AnimationContext.
+ * Enhanced with framer-motion animations controlled by the `animated` prop.
  * 
  * @component
  * @param {Object} props - Component props
@@ -17,6 +17,7 @@ import './CertificationBadge.css';
  * @param {string} [props.credentialId] - Credential ID if available
  * @param {string} [props.iconName] - Icon name to override the default medal icon
  * @param {string} [props.className] - Additional CSS classes
+ * @param {boolean} [props.animated=true] - Whether hover motion is enabled
  * @returns {React.ReactElement} CertificationBadge component
  */
 const CertificationBadge = ({ 
@@ -25,10 +26,10 @@ const CertificationBadge = ({
   date, 
   credentialId,
   iconName,
-  className = "" 
+  className = "",
+  animated = true
 }) => {
-  // Access animation context
-  const { animationEnabled } = useAnimation();
+  const animationEnabled = useMotionEnabled(animated);
   
   // We could use dynamic icon loading here if needed
   const CertIcon = iconName ? null : FaMedal;
@@ -108,7 +109,8 @@ CertificationBadge.propTypes = {
   date: PropTypes.string,
   credentialId: PropTypes.string,
   iconName: PropTypes.string,
-  className: PropTypes.string
+  className: PropTypes.string,
+  animated: PropTypes.bool
 };
 
 export default CertificationBadge;

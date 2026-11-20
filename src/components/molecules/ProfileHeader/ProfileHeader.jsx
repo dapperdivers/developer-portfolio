@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
 import SecurityBadge from '@atoms/SecurityBadge';
-import { useAnimation } from '@context/AnimationContext';
+import { slideUpVariants as itemVariants, useMotionEnabled } from '@utils/motion';
 import './ProfileHeader.css';
 
 /**
@@ -22,10 +22,7 @@ const ProfileHeader = ({
   highlightText = 'Security',
   animate = true
 }) => {
-  const { animationEnabled, slideUpVariants: itemVariants } = useAnimation();
-  
-  // Only use animations if both props are enabled
-  const shouldAnimate = animate && animationEnabled;
+  const shouldAnimate = useMotionEnabled(animate);
 
   return (
     <div className="profile-header">

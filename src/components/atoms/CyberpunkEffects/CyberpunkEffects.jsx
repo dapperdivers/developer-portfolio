@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useAnimation } from '@context/AnimationContext';
+import { useMotionEnabled } from '@utils/motion';
 import './CyberpunkEffects.css';
 
 const CyberpunkEffects = ({ 
@@ -13,9 +13,10 @@ const CyberpunkEffects = ({
   showScanLines = true,
   showDataStream = true,
   className = '',
+  animated = true,
   ...props
 }) => {
-  const { animationEnabled } = useAnimation();
+  const motionOn = useMotionEnabled(animated);
 
   const effectsClasses = [
     'cyberpunk-effects',
@@ -96,7 +97,7 @@ const CyberpunkEffects = ({
         <motion.div
           className="cyberpunk-effects__scan-lines"
           variants={scanLineVariants}
-          animate={expanded && animationEnabled ? "visible" : "hidden"}
+          animate={expanded && motionOn ? "visible" : "hidden"}
         />
       )}
 
@@ -155,6 +156,7 @@ CyberpunkEffects.propTypes = {
   showScanLines: PropTypes.bool,
   showDataStream: PropTypes.bool,
   className: PropTypes.string,
+  animated: PropTypes.bool,
 };
 
 export default CyberpunkEffects;

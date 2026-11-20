@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
-import { useAnimation } from '@context/AnimationContext';
+import { useMotionEnabled, STAGGER_DELAY } from '@utils/motion';
 import './SkeletonCard.css';
 
 
@@ -16,6 +16,7 @@ import './SkeletonCard.css';
  * @param {number} [props.index=0] - Index for staggered animations
  * @param {string} [props.className=''] - Additional CSS class names
  * @param {Object} [props.style={}] - Additional inline styles
+ * @param {boolean} [props.animated=true] - Whether to animate the entrance and shimmer
  * @returns {React.ReactElement} SkeletonCard component
  */
 const SkeletonCard = ({ 
@@ -23,9 +24,10 @@ const SkeletonCard = ({
   variant = '', 
   index = 0, 
   className = '', 
-  style = {} 
+  style = {},
+  animated = true
 }) => {
-  const { animationEnabled, prefersReducedMotion, animationStaggerDelay } = useAnimation();
+  const shouldAnimate = useMotionEnabled(animated);
   const baseClass = `${type}-card-skeleton`;
   const combinedClassName = [
     baseClass,
@@ -34,7 +36,7 @@ const SkeletonCard = ({
   ].filter(Boolean).join(' ');
   
   // Calculate animation delay based on index (staggered effect)
-  const staggerDelay = index * (animationStaggerDelay || 0.15);
+  const staggerDelay = index * STAGGER_DELAY;
   
   // Define animation variants
   const cardVariants = {
@@ -71,9 +73,6 @@ const SkeletonCard = ({
       backgroundPosition: "200% 0" // Static position when animations are disabled
     }
   };
-  
-  // Animation properties based on context
-  const shouldAnimate = animationEnabled && !prefersReducedMotion;
   
   // Render different skeleton types
   switch (type) {
@@ -185,7 +184,8 @@ SkeletonCard.propTypes = {
   variant: PropTypes.oneOf(['', 'security', 'terminal']),
   index: PropTypes.number,
   className: PropTypes.string,
-  style: PropTypes.object
+  style: PropTypes.object,
+  animated: PropTypes.bool
 };
 
 export default memo(SkeletonCard);

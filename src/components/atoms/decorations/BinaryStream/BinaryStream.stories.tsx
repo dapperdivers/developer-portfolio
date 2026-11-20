@@ -1,7 +1,6 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import BinaryStream from './BinaryStream';
-import { AnimationProvider } from '@context/AnimationContext';
 
 /**
  * BinaryStream draws a falling column of 0s and 1s on a canvas.
@@ -26,6 +25,7 @@ const meta: Meta<typeof BinaryStream> = {
   },
   tags: ['autodocs'],
   argTypes: {
+    animated: { control: 'boolean', description: 'Play animations; reduced motion always turns them off' },
     color: { control: 'color', description: 'Character colour' },
     fontSize: { control: { type: 'number', min: 8, max: 48, step: 1 }, description: 'Character size in pixels' },
     speed: { control: { type: 'range', min: 0.5, max: 10, step: 0.5 }, description: 'How often characters change' },
@@ -34,14 +34,7 @@ const meta: Meta<typeof BinaryStream> = {
     height: { control: { type: 'number', min: 50, max: 800, step: 10 }, description: 'Stream height in pixels' },
     isBackground: { control: 'boolean', description: 'Render fixed behind the content' },
     className: { control: 'text' }
-  },
-  decorators: [
-    (Story) => (
-      <AnimationProvider>
-        <Story />
-      </AnimationProvider>
-    )
-  ]
+  }
 };
 
 export default meta;

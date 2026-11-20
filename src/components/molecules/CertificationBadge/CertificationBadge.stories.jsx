@@ -7,6 +7,10 @@ export default {
   component: CertificationBadge,
   tags: ['autodocs'],
   argTypes: {
+    animated: {
+      control: 'boolean',
+      description: 'Whether the badge lifts on hover',
+    },
     name: {
       control: 'text',
       description: 'Name of the certification',

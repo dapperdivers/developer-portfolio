@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from 'prop-types';
 import { motion } from "framer-motion";
-import { useAnimation } from "@context/AnimationContext";
+import { useMotionEnabled, slideUpVariants, STAGGER_DELAY } from '@utils/motion';
 import DateChip from '@atoms/DateChip';
 import CertificationBadge from '@molecules/CertificationBadge';
 import './EducationDetails.css';
@@ -9,7 +9,7 @@ import './EducationDetails.css';
 /**
  * Enhanced component for displaying education details including 
  * degree, duration, description, and certifications.
- * Uses framer-motion for animations controlled by AnimationContext.
+ * Uses framer-motion for animations controlled by the `animated` prop.
  * 
  * @component
  * @param {Object} props - Component props
@@ -20,6 +20,7 @@ import './EducationDetails.css';
  * @param {Array} [props.descBullets] - Array of bullet points for additional details
  * @param {Array} [props.certifications] - Array of certification objects
  * @param {string} [props.className] - Additional CSS classes
+ * @param {boolean} [props.animated=true] - Whether to animate the component
  * @returns {React.ReactElement} EducationDetails component
  */
 const EducationDetails = ({ 
@@ -29,10 +30,10 @@ const EducationDetails = ({
   desc, 
   descBullets = [], 
   certifications = [],
-  className = "" 
+  className = "",
+  animated = true
 }) => {
-  // Get animation context values
-  const { slideUpVariants, animationEnabled, animationStaggerDelay } = useAnimation();
+  const animationEnabled = useMotionEnabled(animated);
   
   // Extract degree and major from subHeader if it follows the pattern "X in Y"
   const degreeMatch = subHeader.match(/^(.*?)\s+in\s+(.*)$/);
@@ -45,7 +46,7 @@ const EducationDetails = ({
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: animationStaggerDelay,
+        staggerChildren: STAGGER_DELAY,
         delayChildren: 0.2
       }
     }
@@ -117,7 +118,7 @@ const EducationDetails = ({
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
       >
-        <DateChip date={duration} className="education-date-chip" />
+        <DateChip date={duration} className="education-date-chip" animated={animationEnabled} />
       </motion.div>
       
       {descBullets.length > 0 && (
@@ -166,6 +167,7 @@ const EducationDetails = ({
                   issuer={cert.issuer}
                   date={cert.date}
                   credentialId={cert.credentialId}
+                  animated={animationEnabled}
                 />
               </motion.div>
             ))}
@@ -190,7 +192,8 @@ EducationDetails.propTypes = {
       iconName: PropTypes.string
     })
   ),
-  className: PropTypes.string
+  className: PropTypes.string,
+  animated: PropTypes.bool
 };
 
 export default EducationDetails;

@@ -30,6 +30,10 @@ export default {
       options: ['low', 'medium', 'high'],
       description: 'Visual intensity level'
     },
+    animated: {
+      control: { type: 'boolean' },
+      description: 'Whether the streams animate'
+    },
   },
 };
 

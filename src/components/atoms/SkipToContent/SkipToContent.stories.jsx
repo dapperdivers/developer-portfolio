@@ -30,6 +30,7 @@ export default {
     layout: 'fullscreen'
   },
   argTypes: {
+    animated: { control: 'boolean', description: 'Play animations; reduced motion always turns them off' },
     mainId: {
       control: 'text',
       description: 'ID of the main content element to skip to',
