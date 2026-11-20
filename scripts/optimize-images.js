@@ -64,15 +64,7 @@ async function ensureDirectoryExists(directory) {
 
 // Find all images in the source directory
 function findImages() {
-  return new Promise((resolve, reject) => {
-    glob(`${config.sourceDir}/**/*.{jpg,jpeg,png,gif}`, (err, files) => {
-      if (err) {
-        reject(err);
-        return;
-      }
-      resolve(files);
-    });
-  });
+  return glob(`${config.sourceDir}/**/*.{jpg,jpeg,png,gif}`);
 }
 
 // Generate metadata file for an image
