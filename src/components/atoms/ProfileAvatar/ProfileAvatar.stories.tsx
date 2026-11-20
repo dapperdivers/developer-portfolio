@@ -2,7 +2,6 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { motion } from 'framer-motion';
 import ProfileAvatar from './ProfileAvatar';
 import type { ProfileAvatarProps } from './ProfileAvatar';
-import { placeholderImage } from '@stories-utils/placeholderImage';
 
 // Entrance variants, as a parent card would supply them
 const entranceVariants = {
@@ -10,7 +9,8 @@ const entranceVariants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
 };
 
-const avatar = placeholderImage(200, 200, { label: 'JD' });
+// The turtle mark, served from /public
+const avatar = '/turtle.png';
 
 const meta = {
   title: 'Atoms/ProfileAvatar',
@@ -41,7 +41,7 @@ const Template = (args: ProfileAvatarProps) => (
   <motion.div
     initial="hidden"
     animate="visible"
-    style={{ padding: '2rem', background: '#121212', display: 'flex', justifyContent: 'center' }}
+    style={{ padding: '2rem 3rem', background: 'var(--color-background)', border: '1px solid var(--surface-border)', borderRadius: 'var(--radius-card)', display: 'flex', justifyContent: 'center' }}
   >
     <ProfileAvatar variants={entranceVariants} {...args} />
   </motion.div>
@@ -54,7 +54,7 @@ export const Default: Story = {
   render: Template,
   args: {
     src: avatar,
-    alt: 'John Doe',
+    alt: 'Derek Mackley',
     clearanceText: 'Security Clearance: Top Level',
     animate: true,
   },
@@ -67,8 +67,8 @@ export const CustomClearance: Story = {
   render: Template,
   args: {
     src: avatar,
-    alt: 'Jane Smith',
-    clearanceText: 'Jane Smith',
+    alt: 'Derek Mackley',
+    clearanceText: 'Principal Security Engineer',
     animate: true,
   },
 };
@@ -80,7 +80,7 @@ export const NoAnimation: Story = {
   render: Template,
   args: {
     src: avatar,
-    alt: 'John Doe',
+    alt: 'Derek Mackley',
     clearanceText: 'Security Clearance: Top Level',
     animate: false,
   },
@@ -93,7 +93,7 @@ export const NoSource: Story = {
   render: Template,
   args: {
     src: '',
-    alt: 'John Doe',
+    alt: 'Derek Mackley',
     clearanceText: 'Security Clearance: Top Level',
     animate: false,
   },

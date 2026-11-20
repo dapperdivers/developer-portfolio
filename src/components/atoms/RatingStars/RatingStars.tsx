@@ -45,16 +45,10 @@ const RatingStars = ({ rating, className = "", animated = true }: RatingStarsPro
     }
   };
   
-  // Hover animation for stars
-  const hoverAnimation = {
-    scale: 1.2,
-    rotate: 5,
-    transition: { duration: 0.2 }
-  };
-
   return (
     <motion.div 
-      className={`flex mb-4 text-primary rating-stars ${className}`} 
+      className={`rating-stars ${className}`.trim()} 
+      role="img"
       aria-label={`${rating} out of 5 stars`}
       initial={shouldAnimate ? "hidden" : "visible"}
       animate="visible"
@@ -64,11 +58,9 @@ const RatingStars = ({ rating, className = "", animated = true }: RatingStarsPro
         <motion.div 
           key={i}
           variants={shouldAnimate ? starVariants : {}}
-          whileHover={shouldAnimate ? hoverAnimation : {}}
         >
           <FaStar 
-            className="star mr-1 text-sm" 
-            color={i < rating ? '#64ffda' : '#343a40'}
+            className={`star ${i < rating ? 'star--filled' : 'star--empty'}`}
             aria-hidden="true"
           />
         </motion.div>

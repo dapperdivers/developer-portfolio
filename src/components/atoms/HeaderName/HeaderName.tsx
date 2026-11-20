@@ -9,7 +9,7 @@ import './HeaderName.css';
  * @component
  * @example
  * ```tsx
- * <HeaderName name="John Doe" />
+ * <HeaderName name="Derek Mackley" />
  * ```
  */
 export interface HeaderNameProps {

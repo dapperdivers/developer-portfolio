@@ -46,7 +46,7 @@ const NetworkBackground = (props: NetworkBackgroundProps) => {
   const {
     className = '',
     gridSize = 30,
-    nodeColor = '#00f5d4',
+    nodeColor = '#64ffda',
     networkIntensity = 0.5,
     animated = true,
     ...rest

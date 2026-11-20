@@ -2,13 +2,13 @@
 
 .github-profile-card {
   position: relative;
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-card);
   padding: var(--spacing-10) 0;
   overflow: hidden;
   backdrop-filter: blur(8px);
-  background-color: rgba(0, 0, 0, 0.3);
-  border: 1px solid var(--color-gray-800);
-  box-shadow: var(--box-shadow-lg);
+  background-color: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  box-shadow: var(--shadow-card);
 }
 
 /* Security-themed background elements */

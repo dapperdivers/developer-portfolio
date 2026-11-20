@@ -42,7 +42,7 @@ const preview: Preview = {
     layout: 'centered',
     options: {
       storySort: {
-        order: ['Introduction', 'Foundations', ['Colors', 'Typography', 'Spacing and shape', 'Motion'], 'Atoms', 'Molecules', 'Organisms', 'Layout', 'Templates'],
+        order: ['Introduction', 'Foundations', ['Components at a glance', 'Colors', 'Typography', 'Spacing and shape', 'Motion'], 'Atoms', 'Molecules', 'Organisms', 'Layout', 'Templates'],
       },
     },
   },

@@ -39,28 +39,36 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    name: 'John Doe',
+    name: 'Derek Mackley',
+    logoSrc: '/turtle.png',
   },
+  decorators: [
+    (Story) => (
+      <div style={{ padding: '2rem 3rem', background: 'var(--color-background)', border: '1px solid var(--surface-border)', borderRadius: 'var(--radius-card)' }}>
+        <Story />
+      </div>
+    ),
+  ],
 };
 
 /** The turtle brand mark before the name, as the nav shows it. */
 export const WithLogo: Story = {
   args: {
     name: 'Derek Mackley',
-    logoSrc: '/apple-touch-icon.png',
+    logoSrc: '/turtle.png',
   },
 };
 
 export const LongName: Story = {
   args: {
-    name: 'Dr. Jonathan Doe-Smith III',
+    name: 'Dr. Alexandria Montgomery-Whitfield III',
   },
 };
 
 export const CustomStyle: Story = {
   args: {
     name: 'Custom Style',
-    className: 'text-2xl text-purple-400',
+    className: 'text-2xl',
   },
 };
 
@@ -72,7 +80,7 @@ export const WithBackground: Story = {
     backgrounds: {
       default: 'dark',
       values: [
-        { name: 'dark', value: '#1a1a1a' },
+        { name: 'dark', value: '#0a192f' },
       ],
     },
   },

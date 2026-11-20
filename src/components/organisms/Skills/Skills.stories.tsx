@@ -5,14 +5,15 @@ import { within, userEvent, expect } from 'storybook/test';
 import PortfolioContext from '@context/PortfolioContext';
 import { AnimationContext } from '@context/AnimationContext';
 import { mockAnimationData } from '@stories-utils';
-import { mockPortfolioData } from '@stories-utils/mocks/data';
+import { siteData, withSiteData } from '../storyFixtures';
 import type { PortfolioData } from '@/types/portfolio';
 
 const meta = {
   title: 'Organisms/Skills',
   component: Skills,
   tags: ['autodocs'],
-  // Skills takes no props
+  // Skills takes no props; it reads the real site data from context
+  decorators: [withSiteData()],
   render: () => (
     <div style={{ margin: '2rem' }}>
       <Skills />
@@ -41,7 +42,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// Default story with full context
+// Default story: the real skills from the site data
 export const Default: Story = {
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
@@ -139,8 +140,8 @@ export const ManySkills: Story = {
 // This variant uses a customized context with many skills
 ManySkills.decorators = [
   (Story) => {
-    // Deep clone the mock data to avoid mutations
-    const extendedData: PortfolioData = JSON.parse(JSON.stringify(mockPortfolioData));
+    // Deep clone the site data to avoid mutations
+    const extendedData: PortfolioData = JSON.parse(JSON.stringify(siteData));
     
     // Add more skills
     const additionalSkills = [

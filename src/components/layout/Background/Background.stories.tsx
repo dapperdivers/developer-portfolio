@@ -122,32 +122,35 @@ export const Default: Story = {
         justifyContent: 'center',
       }}>
         <div style={{
-          backgroundColor: 'rgba(0, 0, 0, 0.6)',
-          padding: '20px',
-          borderRadius: '8px',
+          background: 'var(--surface-card)',
+          padding: 'var(--spacing-5)',
+          borderRadius: 'var(--radius-card)',
           maxWidth: '600px',
-          backdropFilter: 'blur(8px)',
-          boxShadow: '0 0 20px rgba(5, 213, 250, 0.3), 0 0 40px rgba(0, 0, 0, 0.2)',
-          border: '1px solid rgba(5, 213, 250, 0.3)',
+          boxShadow: 'var(--shadow-card)',
+          border: '1px solid var(--surface-border)',
         }}>
-          <h1 style={{
-            color: '#05d5fa',
-            marginBottom: '20px',
-            fontSize: '28px',
-            fontWeight: 'bold',
-            textShadow: '0 0 10px rgba(5, 213, 250, 0.7)'
+          <p style={{
+            margin: '0 0 var(--spacing-2)',
+            color: 'var(--color-primary)',
+            fontFamily: 'var(--font-family-jetbrains)',
+            fontSize: 'var(--font-size-xs)',
+            letterSpacing: 'var(--letter-spacing-technical)',
+            textTransform: 'uppercase',
           }}>
-            CYBERPUNK BACKGROUND
-          </h1>
-          <p style={{ marginBottom: '15px', color: '#ffffff' }}>
-            This cyberpunk-themed background creates an immersive digital environment
-            for your portfolio site. It features Matrix-style digital rain, animated
-            binary streams, circuit grid patterns, and a subtle scanline effect for
-            that retro-futuristic aesthetic.
+            ~/background
           </p>
-          <p style={{ color: '#dddddd' }}>
-            All effects are purely decorative and won't interfere with the content's
-            accessibility. The component also respects user preferences for reduced motion.
+          <h1 style={{
+            margin: '0 0 var(--spacing-3)',
+            color: 'var(--color-text)',
+            fontSize: 'var(--font-size-2xl)',
+            fontWeight: 'var(--font-weight-semibold)',
+          }}>
+            The page backdrop
+          </h1>
+          <p style={{ margin: 0, color: 'var(--color-text-muted)', lineHeight: 1.7 }}>
+            Digital rain, binary streams, a circuit grid and a faint scanline sit behind
+            the content. They are decorative only and switch off for visitors who prefer
+            reduced motion.
           </p>
         </div>
       </div>

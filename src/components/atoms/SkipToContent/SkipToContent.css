@@ -1,81 +1,54 @@
-/**
- * SkipToContent Component
- *
- * Styles for the skip to content accessibility component with security-themed variants.
+/*
+ * SkipToContent: accessibility link, hidden until focused.
+ * The default is solid cyan with navy text; security and terminal use the
+ * raised navy surface with a cyan edge.
  */
 
-/* Base styles */
 .skip-to-content {
   position: absolute;
   left: 0;
-  padding: 0.75rem 1.25rem;
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--control-height);
+  padding: 0 var(--control-padding-x);
   background-color: var(--color-primary);
-  /* Navy on cyan is about 14:1; white on cyan was about 1.2:1 */
+  /* Navy on cyan is about 14:1 */
   color: var(--color-navy);
-  border-radius: 0 0 4px 0;
+  border-radius: 0 0 var(--radius-control) 0;
   font-weight: var(--font-weight-semibold);
   z-index: 9999;
   font-size: var(--font-size-base);
   text-decoration: none;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--shadow-card);
 }
 
-/* Focus state - when the link gets focus, it moves into view */
-.skip-to-content:focus {
-  outline: 3px solid var(--color-primary-dark);
-  outline-offset: 2px;
+.skip-to-content:focus-visible {
+  box-shadow: var(--ring-focus);
+  outline: none;
 }
 
-/* Security-themed styles */
-.skip-to-content-security {
-  background-color: var(--color-navy);
-  color: var(--color-cyan);
-  border: 1px solid var(--color-cyan);
+.skip-to-content-security,
+.skip-to-content-terminal {
+  background-color: var(--surface-card-raised);
+  color: var(--color-primary);
+  border: 1px solid var(--surface-border-strong);
   font-family: var(--font-family-jetbrains);
   letter-spacing: var(--letter-spacing-technical);
-  padding: 0.75rem 1.5rem;
 }
 
-.skip-to-content-security:focus {
-  outline: 2px solid var(--color-cyan);
-  outline-offset: 2px;
-  box-shadow: 0 0 10px rgba(var(--color-cyan-rgb), 0.5);
-}
-
-/* Terminal-themed styles */
-.skip-to-content-terminal {
-  background-color: var(--color-navy);
-  color: var(--color-primary);
-  border: 1px solid var(--color-primary);
-  font-family: var(--font-family-mono);
-  padding: 0.75rem 1.5rem;
-}
-
-.skip-to-content-terminal:focus {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
-  box-shadow: 0 0 10px rgba(var(--color-primary-rgb), 0.5);
-}
-
-/* Active state */
 .skip-to-content:active {
-  box-shadow: none;
   transform: translateY(1px);
 }
 
-/* Hover interactions */
 .skip-to-content:hover {
   background-color: var(--color-primary-dark);
 }
 
-.skip-to-content-security:hover {
-  background-color: var(--color-background-muted);
-  color: var(--color-primary-light);
-}
-
+.skip-to-content-security:hover,
 .skip-to-content-terminal:hover {
-  background-color: var(--color-background-muted);
+  background-color: var(--surface-card-raised);
   color: var(--color-primary-light);
+  border-color: var(--color-primary);
 }
 
 /* Forced colors mode (Windows High Contrast Mode) */
@@ -89,9 +62,7 @@
     box-shadow: none;
   }
 
-  .skip-to-content:focus,
-  .skip-to-content-security:focus,
-  .skip-to-content-terminal:focus {
+  .skip-to-content:focus-visible {
     outline: 2px solid ButtonText;
     outline-offset: 2px;
   }

@@ -3,6 +3,7 @@ import type { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 import Section from './Section';
 import Button from '@atoms/Button';
 import Card from '@atoms/Card';
+import { projects } from '@/portfolio';
 
 const meta = {
   title: 'Layout/Section',
@@ -55,34 +56,31 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+const sampleBlock = (text: string) => (
+  <p style={{ margin: 0, color: 'var(--color-text-muted)', maxWidth: '40rem' }}>{text}</p>
+);
+
 /**
  * Default story showing a basic section
  */
 export const Default: Story = {
   args: {
-    title: 'Section Title',
-    subtitle: 'Section Subtitle',
-    children: (
-      <div style={{ padding: '20px' }}>
-        <p>This is the section content.</p>
-      </div>
-    ),
+    id: 'skills',
+    title: 'What I do',
+    subtitle: 'Principal security engineer across product security, platforms and AI agents',
+    children: sampleBlock('The section header (path kicker, title, subtitle and a hairline) is the same on every section of the site. Content goes below it.'),
   },
 };
 
 /**
- * Education section with a kicker from its id
+ * Education section: the kicker comes from the id
  */
 export const Education: Story = {
   args: {
     id: 'education',
     title: 'Education',
-    subtitle: 'My academic journey',
-    children: (
-      <div style={{ padding: '20px' }}>
-        <p>Education section content.</p>
-      </div>
-    ),
+    subtitle: 'Degree and certifications',
+    children: sampleBlock('The kicker above the title defaults to ~/education.'),
   },
 };
 
@@ -94,12 +92,8 @@ export const Experience: Story = {
     id: 'experience',
     kicker: '// 02 experience',
     title: 'Experience',
-    subtitle: 'Professional journey',
-    children: (
-      <div style={{ padding: '20px' }}>
-        <p>Experience section content.</p>
-      </div>
-    ),
+    subtitle: 'Where I have worked',
+    children: sampleBlock('A kicker passed in explicitly replaces the default.'),
   },
 };
 
@@ -108,13 +102,9 @@ export const Experience: Story = {
  */
 export const WithAnimation: Story = {
   args: {
-    title: 'Animated Section',
-    subtitle: 'With Framer Motion animation',
-    children: (
-      <div style={{ padding: '20px' }}>
-        <p>This section animates on mount.</p>
-      </div>
-    ),
+    title: 'Animated section',
+    subtitle: 'Entrance animation from Framer Motion',
+    children: sampleBlock('This section fades and slides in on mount.'),
     animation: {
       initial: { opacity: 0, y: 20 },
       animate: { opacity: 1, y: 0 },
@@ -128,39 +118,11 @@ export const WithAnimation: Story = {
  */
 export const FluidContainer: Story = {
   args: {
-    title: 'Fluid Section',
+    title: 'Fluid section',
     subtitle: 'Full-width container',
     fluid: true,
-    children: (
-      <div style={{ padding: '20px', backgroundColor: 'rgba(255,255,255,0.1)' }}>
-        <p>This section uses a fluid container that spans the full width.</p>
-      </div>
-    ),
+    children: sampleBlock('The container spans the full width of the page instead of stopping at the content width.'),
   },
-};
-
-/**
- * Five sections in a row. Section no longer takes a background prop (the global
- * background shows through), so they differ only in their subtitle.
- */
-export const BackgroundStyles: Story = {
-  args: {
-    title: 'Background Styles',
-    children: (
-      <div style={{ padding: '20px' }}>
-        <p>This section demonstrates different background options.</p>
-      </div>
-    ),
-  },
-  render: (args) => (
-    <>
-      <Section {...args} subtitle="Light Background" />
-      <Section {...args} subtitle="Dark Background" />
-      <Section {...args} subtitle="Primary Background" />
-      <Section {...args} subtitle="Secondary Background" />
-      <Section {...args} subtitle="Gray Background" />
-    </>
-  ),
 };
 
 /**
@@ -168,135 +130,60 @@ export const BackgroundStyles: Story = {
  */
 export const NoContainer: Story = {
   args: {
-    title: 'No Container',
+    title: 'No container',
     subtitle: 'Content spans full width',
     container: false,
-    children: (
-      <div style={{ padding: '20px', backgroundColor: 'rgba(255,255,255,0.1)' }}>
-        <p>This section has no container wrapper.</p>
-      </div>
-    ),
+    children: sampleBlock('The header keeps its container; the content wrapper does not.'),
   },
 };
 
 /**
- * Story showing a section in dark mode
+ * Sections stacked as they are on the page. Section takes no background prop:
+ * the global background shows through.
  */
-export const DarkMode: Story = {
-  args: {
-    title: 'Dark Mode Section',
-    subtitle: 'Optimized for dark theme',
-    children: (
-      <div style={{ padding: '20px' }}>
-        <p>This section is optimized for dark mode viewing.</p>
-      </div>
-    ),
-  },
-  parameters: {
-    backgrounds: {
-      default: 'dark',
-    },
-  },
+export const StackedSections: Story = {
+  args: { title: 'Stacked', children: null },
+  render: () => (
+    <>
+      <Section id="experience" title="Experience" subtitle="Where I have worked">
+        {sampleBlock('First section.')}
+      </Section>
+      <Section id="projects" title="Projects" subtitle="What I build at home">
+        {sampleBlock('Second section.')}
+      </Section>
+      <Section id="contact" title="Contact Me">
+        {sampleBlock('Third section.')}
+      </Section>
+    </>
+  ),
 };
 
-// Education section
-export const EducationSection: Story = {
-  args: {
-  title: 'Education',
-  subtitle: 'My educational background',
-  id: 'education',
-  children: <p style={{ padding: '20px' }}>Section content goes here.</p>,
-}
-};
-
-// Experience section
-export const ExperienceSection: Story = {
-  args: {
-  title: 'Experience',
-  subtitle: 'My professional journey',
-  id: 'experience',
-  children: <p style={{ padding: '20px' }}>Section content goes here.</p>,
-}
-};
-
-// Projects section
-export const ProjectsSection: Story = {
-  args: {
-  title: 'Projects',
-  subtitle: 'Some of my recent work',
-  id: 'projects',
-  children: <p style={{ padding: '20px' }}>Section content goes here.</p>,
-}
-};
-
-// Section with cards
+// Section holding a grid of cards, using the real project names
 export const SectionWithCards: StoryFn<typeof Section> = () => (
   <Section
     title="Projects"
-    subtitle="Check out some of my work"
+    subtitle="What I build at home"
     id="projects"
   >
-    <div style={{ 
-      display: 'grid', 
-      gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', 
-      gap: '20px',
-      padding: '20px 0'
+    <div style={{
+      display: 'grid',
+      gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+      gap: 'var(--spacing-5)',
+      padding: 'var(--spacing-5) 0'
     }}>
-      <Card title="Project 1" shadow hoverable>
-        <p>This is a description of project 1.</p>
-        <Button variant="primary" size="sm">View Project</Button>
-      </Card>
-      <Card title="Project 2" shadow hoverable>
-        <p>This is a description of project 2.</p>
-        <Button variant="primary" size="sm">View Project</Button>
-      </Card>
-      <Card title="Project 3" shadow hoverable>
-        <p>This is a description of project 3.</p>
-        <Button variant="primary" size="sm">View Project</Button>
-      </Card>
+      {projects.slice(0, 3).map((project) => (
+        <Card key={project.name} title={project.name} shadow hoverable>
+          <p>{project.desc}</p>
+          {project.github && (
+            <Button variant="primary" size="sm" href={project.github} target="_blank" rel="noopener noreferrer">
+              Code
+            </Button>
+          )}
+        </Card>
+      ))}
     </div>
   </Section>
 );
-
-// Section with dark background
-export const DarkSection: Story = {
-  args: {
-  title: 'Contact',
-  subtitle: 'Get in touch with me',
-  id: 'contact',
-  children: <p style={{ padding: '20px' }}>Section content goes here.</p>,
-}
-};
-
-// Section with animation
-export const AnimatedSection: StoryFn<typeof Section> = () => (
-  <Section
-    title="Animated Section"
-    subtitle="This section animates when it comes into view"
-    id="animated"
-    animation={{
-      initial: { opacity: 0, y: 50 },
-      animate: { opacity: 1, y: 0 },
-      transition: { duration: 0.6 }
-    }}
-  >
-    <div style={{ padding: '20px 0' }}>
-      <p>The entire section animates with Framer Motion when it renders.</p>
-    </div>
-  </Section>
-);
-
-// Fluid section
-export const FluidSection: Story = {
-  args: {
-  title: 'Full Width Section',
-  subtitle: 'This section uses a fluid container',
-  id: 'fluid',
-  container: true,
-  fluid: true,
-  children: <p style={{ padding: '20px' }}>Section content goes here.</p>,
-}
-};
 
 // Same header across sections: kicker, title, subtitle
 export const HeaderConsistency: Story = {
@@ -304,13 +191,13 @@ export const HeaderConsistency: Story = {
   render: () => (
     <>
       <Section id="skills" title="What I do" subtitle="Principal security engineer across product security, platforms and AI agents">
-        <p>Content</p>
+        {sampleBlock('Content')}
       </Section>
-      <Section id="projects" title="Projects" subtitle="Some of my recent work">
-        <p>Content</p>
+      <Section id="projects" title="Projects" subtitle="What I build at home">
+        {sampleBlock('Content')}
       </Section>
       <Section id="contact" title="Contact" kicker="">
-        <p>No kicker when it is set to an empty string.</p>
+        {sampleBlock('No kicker when it is set to an empty string.')}
       </Section>
     </>
   ),

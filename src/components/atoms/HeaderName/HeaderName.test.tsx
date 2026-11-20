@@ -10,7 +10,7 @@ vi.mock('./HeaderName.css', () => ({
 }));
 
 describe('HeaderName Component', () => {
-  const defaultName = 'John Doe';
+  const defaultName = 'Derek Mackley';
 
   beforeEach(() => {
     // Reset any mocks before each test

@@ -1,17 +1,13 @@
 /**
- * Education Organism Styles
- * Professional cybersecurity-themed education section with clean aesthetics
- * Now includes integrated testimonials section
+ * Education organism: lays out the education cards. The cards carry the
+ * shared surface; this only handles the grid and the empty state.
  */
 
-/* Base section styling - no background overrides */
 .education-section {
   position: relative;
   width: 100%;
-  /* Removed background overrides to respect base site background */
 }
 
-/* Main content wrapper - ensures full width */
 .education-content-wrapper {
   position: relative;
   width: 100%;
@@ -20,330 +16,63 @@
   z-index: 10;
 }
 
-/* Security status indicator */
-.education-security-status {
-  display: flex;
-  justify-content: center;
-  margin-bottom: var(--spacing-8);
-}
-
-.security-indicator {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-3);
-  padding: var(--spacing-3) var(--spacing-6);
-  background: rgba(var(--color-navy-rgb), 0.8);
-  border: 1px solid rgba(var(--color-cyan-rgb), 0.3);
-  border-radius: var(--border-radius-pill);
-  backdrop-filter: blur(10px);
-  box-shadow: 
-    0 4px 12px rgba(0, 0, 0, 0.15),
-    0 0 8px rgba(var(--color-cyan-rgb), 0.1);
-}
-
-.security-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--color-cyan);
-  box-shadow: 0 0 6px rgba(var(--color-cyan-rgb), 0.6);
-  animation: security-pulse 3s ease-in-out infinite;
-}
-
-.security-text {
-  font-family: var(--font-family-jetbrains, 'JetBrains Mono', monospace);
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-cyan);
-  text-shadow: 0 0 4px rgba(var(--color-cyan-rgb), 0.3);
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-}
-
-@keyframes security-pulse {
-  0%, 100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.8;
-    transform: scale(1.05);
-  }
-}
-
-/* Education cards container - full width grid */
 .education-cards-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-  gap: var(--spacing-8);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 31rem), 1fr));
+  gap: var(--spacing-6);
   width: 100%;
-  max-width: 100%;
   margin-bottom: var(--spacing-8);
-  perspective: 1000px;
 }
 
-/* Education card wrapper - ensures full width */
 .education-card-wrapper {
   position: relative;
   width: 100%;
-  max-width: 100%;
-  min-height: 300px;
-  transform-style: preserve-3d;
+  min-width: 0;
 }
 
-/* Subtle card glow effect */
-.education-card-glow {
-  position: absolute;
-  top: -2px;
-  left: -2px;
-  right: -2px;
-  bottom: -2px;
-  background: linear-gradient(
-    45deg,
-    rgba(var(--color-cyan-rgb), 0.1),
-    rgba(var(--color-cyan-rgb), 0.05),
-    rgba(var(--color-cyan-rgb), 0.1)
-  );
-  border-radius: var(--border-radius-lg);
-  filter: blur(4px);
-  opacity: 0;
-  pointer-events: none;
-  z-index: -1;
-}
-
-/* Testimonials Section Styles */
-.education-testimonials-section {
-  margin-top: var(--spacing-8);
-  width: 100%;
-}
-
-.testimonials-divider {
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(var(--color-cyan-rgb), 0.3) 20%,
-    rgba(var(--color-cyan-rgb), 0.6) 50%,
-    rgba(var(--color-cyan-rgb), 0.3) 80%,
-    transparent 100%
-  );
-  margin: var(--spacing-8) 0 var(--spacing-6) 0;
-  transform-origin: center;
-}
-
-.testimonials-header {
-  text-align: center;
-  margin-bottom: var(--spacing-8);
-}
-
-.testimonials-title {
-  font-size: var(--font-size-xl);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-offwhite);
-  margin-bottom: var(--spacing-2);
-  font-family: var(--font-family-heading);
-}
-
-.testimonials-subtitle {
-  font-size: var(--font-size-base);
-  color: rgba(var(--color-offwhite-rgb), 0.7);
-  margin: 0;
-  font-style: italic;
-}
-
-.testimonials-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: var(--spacing-6);
-  width: 100%;
-}
-
-.testimonials-grid:has(> :only-child) {
-  grid-template-columns: minmax(0, 640px);
-  justify-content: center;
-}
-
-.testimonial-card-compact {
-  position: relative;
-  background: rgba(var(--color-navy-rgb), 0.4);
-  border: 1px solid rgba(var(--color-cyan-rgb), 0.2);
-  border-radius: var(--border-radius-lg);
-  padding: var(--spacing-6);
-  backdrop-filter: blur(10px);
-  overflow: hidden;
-  transition: all 0.3s ease;
-}
-
-.testimonial-card-compact:hover {
-  border-color: rgba(var(--color-cyan-rgb), 0.4);
-  box-shadow: 
-    0 8px 25px rgba(0, 0, 0, 0.15),
-    0 0 15px rgba(var(--color-cyan-rgb), 0.1);
-}
-
-.testimonial-content {
-  position: relative;
-  z-index: 2;
-}
-
-.testimonial-rating {
-  display: flex;
-  gap: var(--spacing-1);
-  margin-bottom: var(--spacing-4);
-}
-
-.rating-star {
-  color: var(--color-cyan);
-  font-size: var(--font-size-sm);
-  text-shadow: 0 0 4px rgba(var(--color-cyan-rgb), 0.4);
-}
-
-.testimonial-highlight {
-  font-size: var(--font-size-base);
-  font-style: italic;
-  color: var(--color-offwhite);
-  line-height: 1.6;
-  margin: 0 0 var(--spacing-4) 0;
-  position: relative;
-  padding-left: var(--spacing-4);
-}
-
-.testimonial-highlight::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 2px;
-  background: linear-gradient(
-    to bottom,
-    var(--color-cyan),
-    rgba(var(--color-cyan-rgb), 0.3)
-  );
-  border-radius: 1px;
-}
-
-.testimonial-author {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-1);
-}
-
-.author-name {
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-cyan);
-  font-family: var(--font-family-jetbrains, 'JetBrains Mono', monospace);
-}
-
-.author-designation {
-  font-size: var(--font-size-xs);
-  color: rgba(var(--color-offwhite-rgb), 0.6);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  font-weight: var(--font-weight-medium);
-}
-
-.testimonial-bg-effect {
-  position: absolute;
-  top: -2px;
-  left: -2px;
-  right: -2px;
-  bottom: -2px;
-  background: linear-gradient(
-    135deg,
-    rgba(var(--color-cyan-rgb), 0.05),
-    rgba(var(--color-cyan-rgb), 0.02),
-    rgba(var(--color-cyan-rgb), 0.05)
-  );
-  border-radius: var(--border-radius-lg);
-  opacity: 0;
-  z-index: 1;
-  transition: opacity 0.3s ease;
-}
-
-/* Empty state styling */
+/* Empty state */
 .education-empty-state {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 400px;
+  min-height: 20rem;
 }
 
 .empty-state-content {
   text-align: center;
-  max-width: 400px;
+  max-width: 25rem;
   padding: var(--spacing-8);
-  background: rgba(var(--color-navy-rgb), 0.6);
-  border: 1px solid rgba(var(--color-cyan-rgb), 0.2);
-  border-radius: var(--border-radius-lg);
-  backdrop-filter: blur(10px);
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
 }
 
 .empty-state-icon {
   display: flex;
   justify-content: center;
   margin-bottom: var(--spacing-4);
-  color: var(--color-cyan);
+  color: var(--color-primary);
   opacity: 0.7;
 }
 
 .empty-state-title {
+  margin-bottom: var(--spacing-3);
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
-  color: var(--color-offwhite);
-  margin-bottom: var(--spacing-3);
+  color: var(--color-text);
 }
 
 .empty-state-description {
-  font-size: var(--font-size-base);
-  color: rgba(var(--color-offwhite-rgb), 0.8);
-  line-height: 1.6;
   margin: 0;
-}
-
-/* Responsive design */
-@media (max-width: 1024px) {
-  .education-cards-container {
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-    gap: var(--spacing-6);
-  }
-  
-  .testimonials-grid {
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: var(--spacing-5);
-  }
+  font-size: var(--font-size-base);
+  line-height: 1.6;
+  color: var(--color-text-muted);
 }
 
 @media (max-width: 768px) {
   .education-content-wrapper {
     padding: var(--spacing-6) var(--spacing-3);
-  }
-  
-  .education-cards-container {
-    grid-template-columns: 1fr;
-    gap: var(--spacing-6);
-  }
-  
-  .testimonials-grid {
-    grid-template-columns: 1fr;
-    gap: var(--spacing-4);
-  }
-  
-  .testimonial-card-compact {
-    padding: var(--spacing-5);
-  }
-  
-  .testimonials-title {
-    font-size: var(--font-size-lg);
-  }
-  
-  .security-indicator {
-    padding: var(--spacing-2) var(--spacing-4);
-  }
-  
-  .security-text {
-    font-size: var(--font-size-xs);
   }
 }
 
@@ -351,99 +80,9 @@
   .education-content-wrapper {
     padding: var(--spacing-4) var(--spacing-2);
   }
-  
-  .education-cards-container {
-    grid-template-columns: 1fr;
-    gap: var(--spacing-4);
-  }
-  
-  .testimonials-grid {
-    grid-template-columns: 1fr;
-    gap: var(--spacing-4);
-  }
-  
-  .testimonial-card-compact {
-    padding: var(--spacing-4);
-  }
-  
-  .testimonials-header {
-    margin-bottom: var(--spacing-6);
-  }
-  
-  .testimonials-title {
-    font-size: var(--font-size-base);
-  }
-  
-  .testimonials-subtitle {
-    font-size: var(--font-size-sm);
-  }
-  
-  .security-indicator {
-    flex-direction: column;
-    text-align: center;
-    gap: var(--spacing-2);
-  }
-  
+
   .empty-state-content {
     margin: 0 var(--spacing-2);
     padding: var(--spacing-6);
-  }
-}
-
-/* Reduced motion preferences */
-@media (prefers-reduced-motion: reduce) {
-  .security-dot {
-    animation: none;
-  }
-  
-  .testimonial-card-compact {
-    transition: none;
-  }
-  
-  .testimonial-bg-effect {
-    transition: none;
-  }
-}
-
-/* High contrast mode */
-@media (prefers-contrast: high) {
-  .security-indicator {
-    border-width: 2px;
-  }
-  
-  .empty-state-content {
-    border-width: 2px;
-  }
-  
-  .testimonial-card-compact {
-    border-width: 2px;
-  }
-  
-  .testimonial-highlight::before {
-    width: 3px;
-  }
-}
-
-/* Print styles */
-@media print {
-  .education-card-glow,
-  .testimonial-bg-effect {
-    display: none;
-  }
-  
-  .education-section {
-    background: white;
-    color: black;
-  }
-  
-  .security-indicator,
-  .empty-state-content,
-  .testimonial-card-compact {
-    background: white;
-    border-color: black;
-  }
-  
-  .testimonials-divider {
-    background: black;
   }
 }

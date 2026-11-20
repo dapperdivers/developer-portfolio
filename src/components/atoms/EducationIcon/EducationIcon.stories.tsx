@@ -1,5 +1,5 @@
-import type { CSSProperties, ReactNode } from 'react';
-import type { Meta, StoryFn } from '@storybook/react-vite';
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { FaCertificate, FaUniversity } from 'react-icons/fa';
 import EducationIcon from './EducationIcon';
 
 const meta = {
@@ -7,92 +7,34 @@ const meta = {
   component: EducationIcon,
   tags: ['autodocs'],
   parameters: {
-    componentSubtitle: 'Graduation cap icon with interactive animations and size variants',
     docs: {
       description: {
-        component: 'A visually appealing education icon component featuring gradient backgrounds, hover effects, and responsive sizing. Perfect for education-related sections and academic achievements.'
-      }
-    }
+        component: 'An education glyph in an inset tile with the shared border. Defaults to the graduation cap in brand cyan; pass `icon` and `color` for the card variants.',
+      },
+    },
   },
   argTypes: {
-    className: {
-      control: 'text',
-      description: 'Additional CSS classes for customization',
-      table: {
-        type: { summary: 'string' },
-        defaultValue: { summary: '""' }
-      }
-    },
-    animated: {
-      control: 'boolean',
-      description: 'Whether to animate the component',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'true' }
-      }
-    }
-  }
+    className: { control: 'text', description: 'Additional CSS classes' },
+    animated: { control: 'boolean', description: 'Whether the tile scales in' },
+    color: { control: 'text', description: 'Glyph colour' },
+  },
 } satisfies Meta<typeof EducationIcon>;
-
 export default meta;
 
-// Container for consistent display
-const IconContainer = ({ children, style = {} }: { children: ReactNode; style?: CSSProperties }) => (
-  <div style={{ 
-    padding: '20px',
-    background: 'var(--color-background, #0a192f)',
-    borderRadius: '8px',
-    maxWidth: '800px',
-    ...style
-  }}>
-    {children}
-  </div>
-);
+type Story = StoryObj<typeof meta>;
 
-// Default icon
-export const Default: StoryFn<typeof EducationIcon> = () => (
-  <IconContainer>
-    <EducationIcon />
-  </IconContainer>
-);
+export const Default: Story = {};
 
-// Size variants
-export const Sizes: StoryFn<typeof EducationIcon> = () => (
-  <IconContainer>
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-      <div>
-        <h4 style={{ color: '#fff', marginBottom: '1rem' }}>Default Size</h4>
-        <EducationIcon />
-      </div>
-      
-      <div>
-        <h4 style={{ color: '#fff', marginBottom: '1rem' }}>Large Size</h4>
-        <EducationIcon className="education-icon-large" />
-      </div>
+export const Variants: Story = {
+  render: (args) => (
+    <div style={{ display: 'flex', gap: '1rem' }}>
+      <EducationIcon {...args} />
+      <EducationIcon {...args} icon={FaUniversity} color="var(--color-success)" />
+      <EducationIcon {...args} icon={FaCertificate} color="var(--color-danger)" />
     </div>
-  </IconContainer>
-);
+  ),
+};
 
-// With labels
-export const WithLabels: StoryFn<typeof EducationIcon> = () => (
-  <IconContainer>
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-      <div style={{ 
-        display: 'flex', 
-        alignItems: 'center', 
-        gap: '1rem',
-        padding: '1rem',
-        background: 'rgba(100, 255, 218, 0.1)',
-        borderRadius: '8px'
-      }}>
-        <EducationIcon />
-        <div style={{ color: '#fff' }}>
-          <div style={{ fontWeight: 'bold' }}>Bachelor of Science</div>
-          <div style={{ color: 'var(--color-text-muted, #8892b0)', fontSize: '0.875rem' }}>
-            Computer Science
-          </div>
-        </div>
-      </div>
-    </div>
-  </IconContainer>
-);
+export const ReducedMotion: Story = {
+  args: { animated: false },
+};

@@ -17,6 +17,7 @@
 @import './tokens/transitions.css';
 @import './tokens/breakpoints.css';
 @import './tokens/z-index.css';
+@import './tokens/surfaces.css';
 
 /* All design tokens are now in the main token files */
 

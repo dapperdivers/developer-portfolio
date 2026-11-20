@@ -113,21 +113,8 @@ const Education = () => {
               variants={cardVariants}
               custom={index}
               className="education-card-wrapper"
-              whileHover={{
-                y: -4,
-                scale: 1.01,
-                transition: { duration: 0.2 }
-              }}
             >
-              {/* Subtle card glow effect */}
-              <motion.div 
-                className="education-card-glow"
-                initial={{ opacity: 0 }}
-                whileHover={{ opacity: 1 }}
-                transition={{ duration: 0.3 }}
-              />
-              
-              <EducationCard 
+              <EducationCard
                 education={education}
                 index={index}
                 animated={animationEnabled}

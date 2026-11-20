@@ -55,7 +55,7 @@ export const Customized: Story = {
     height: 400,
     width: 40,
     fontSize: 24,
-    color: '#00ff99',
+    color: '#64ffda',
     speed: 1,
     moveSpeed: 0.2,
   },
@@ -65,9 +65,9 @@ export const Customized: Story = {
 export const MultipleStreams: Story = {
   render: () => (
     <div className="binary-stream-repeat">
-      <BinaryStream height={200} moveSpeed={0.2} speed={1} color="#0F0" />
-      <BinaryStream height={250} moveSpeed={0.3} speed={1} color="#00ff99" />
-      <BinaryStream height={180} moveSpeed={0.4} speed={1} color="#66ff66" />
+      <BinaryStream height={200} moveSpeed={0.2} speed={1} color="#64ffda" />
+      <BinaryStream height={250} moveSpeed={0.3} speed={1} color="#64ffda" />
+      <BinaryStream height={180} moveSpeed={0.4} speed={1} color="#a7f3d0" />
     </div>
   ),
 };
@@ -75,7 +75,7 @@ export const MultipleStreams: Story = {
 // Positioned streams
 export const PositionedStreams: Story = {
   render: () => (
-    <div style={{ position: 'relative', width: '400px', height: '300px', border: '1px solid #ccc' }}>
+    <div style={{ position: 'relative', width: '400px', height: '300px', border: '1px solid var(--surface-border)', borderRadius: 'var(--radius-card)', background: 'var(--color-navy)' }}>
       <BinaryStream className="binary-stream-left" height={300} moveSpeed={0.2} speed={1} />
       <BinaryStream className="binary-stream-right" height={300} moveSpeed={0.2} speed={1} />
     </div>
@@ -105,7 +105,7 @@ export const SpeedComparison: Story = {
 // Background example
 export const AsBackground: Story = {
   render: () => (
-    <div style={{ position: 'relative', width: '400px', height: '300px', border: '1px solid #ccc', padding: '20px' }}>
+    <div style={{ position: 'relative', width: '400px', height: '300px', border: '1px solid var(--surface-border)', borderRadius: 'var(--radius-card)', background: 'var(--color-navy)', padding: '20px' }}>
       <BinaryStream 
         isBackground 
         width={400} 
@@ -154,9 +154,8 @@ export const DecorativeBorder: Story = {
       <div style={{ 
         margin: '0 25px',
         padding: '20px',
-        background: 'white',
-        border: '1px solid #ccc',
-        borderRadius: '8px',
+        border: '1px solid var(--surface-border)', borderRadius: 'var(--radius-card)', background: 'var(--color-navy)',
+        color: 'var(--color-text)',
         textAlign: 'center'
       }}>
         <h2>Binary Borders</h2>
@@ -172,15 +171,15 @@ export const ColorVariations: Story = {
     <div className="binary-stream-repeat">
       <div style={{ textAlign: 'center' }}>
         <p style={{ marginBottom: '10px' }}>Classic Green</p>
-        <BinaryStream height={200} color="#0F0" />
+        <BinaryStream height={200} color="#64ffda" />
       </div>
       <div style={{ textAlign: 'center' }}>
         <p style={{ marginBottom: '10px' }}>Cyan</p>
-        <BinaryStream height={200} color="#00ffff" />
+        <BinaryStream height={200} color="#22d3ee" />
       </div>
       <div style={{ textAlign: 'center' }}>
         <p style={{ marginBottom: '10px' }}>Blue</p>
-        <BinaryStream height={200} color="#0088ff" />
+        <BinaryStream height={200} color="#38bdf8" />
       </div>
     </div>
   ),

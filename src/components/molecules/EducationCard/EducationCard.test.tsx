@@ -17,13 +17,17 @@ vi.mock('framer-motion', () => {
     return filteredProps;
   };
 
+  // Any motion.<tag> renders the plain tag
+  const motion = new Proxy({}, {
+    get: (_target, tag: string) => {
+      const Tag = tag as 'div';
+      const Mock = ({ children, ...props }: MockMotionProps) => <Tag {...filterMotionProps(props)}>{children}</Tag>;
+      return Mock;
+    }
+  });
+
   return {
-    motion: {
-      article: ({ children, ...props }: MockMotionProps) => <article {...filterMotionProps(props)}>{children}</article>,
-      header: ({ children, ...props }: MockMotionProps) => <header {...filterMotionProps(props)}>{children}</header>,
-      div: ({ children, ...props }: MockMotionProps) => <div {...filterMotionProps(props)}>{children}</div>,
-      h3: ({ children, ...props }: MockMotionProps) => <h3 {...filterMotionProps(props)}>{children}</h3>
-    },
+    motion,
     useReducedMotion: () => false,
     AnimatePresence: ({ children }: { children?: ReactNode }) => <div data-testid="animate-presence">{children}</div>
   };
@@ -33,7 +37,6 @@ vi.mock('framer-motion', () => {
 vi.mock('react-icons/fa', () => ({
   FaGraduationCap: () => <div data-testid="graduation-cap-icon">🎓</div>,
   FaCertificate: () => <div data-testid="certificate-icon">📜</div>,
-  FaCalendarAlt: () => <div data-testid="calendar-icon">📅</div>,
   FaUniversity: () => <div data-testid="university-icon">🏛️</div>
 }));
 

@@ -1,6 +1,7 @@
-import React, { memo, useEffect, useRef } from 'react';
+import { memo, useMemo } from 'react';
 import { motion, useReducedMotion, HTMLMotionProps, MotionStyle, Variants } from 'framer-motion';
 import { useMotionEnabled } from '@utils/motion';
+import { tokenize } from './highlight';
 import './CodeSnippet.css';
 
 export interface CodeSnippetProps extends Omit<HTMLMotionProps<'div'>, 'children'> {
@@ -52,7 +53,6 @@ const CodeSnippet = ({
   animated = true,
   ...rest
 }: CodeSnippetProps) => {
-  const codeRef = useRef<HTMLElement>(null);
   const motionOn = useMotionEnabled(animated);
   const reducedMotion = useReducedMotion();
 
@@ -85,38 +85,14 @@ const CodeSnippet = ({
     }
   };
 
-  // Apply basic syntax highlighting
-  useEffect(() => {
-    if (!codeRef.current || !language) return;
-    
-    // Very simple syntax highlighting for JavaScript/TypeScript
-    if (language === 'javascript' || language === 'typescript') {
-      let content = code;
-      
-      // Highlight keywords
-      const keywords = ['function', 'const', 'let', 'var', 'return', 'if', 'else', 'for', 'while', 'class', 'new', 'import', 'export', 'from', 'true', 'false', 'null', 'undefined'];
-      keywords.forEach(keyword => {
-        // Use word boundary to match whole words only
-        const regex = new RegExp(`\\b${keyword}\\b`, 'g');
-        content = content.replace(regex, `<span class="token-keyword">${keyword}</span>`);
-      });
-      
-      // Highlight strings
-      content = content.replace(/(["'])(.*?)\1/g, '<span class="token-string">$&</span>');
-      
-      // Highlight comments (line and block)
-      content = content.replace(/\/\/.*$/gm, '<span class="token-comment">$&</span>');
-      content = content.replace(/\/\*[\s\S]*?\*\//g, '<span class="token-comment">$&</span>');
-      
-      // Highlight function names
-      content = content.replace(/function\s+([a-zA-Z_$][a-zA-Z0-9_$]*)/g, 'function <span class="token-function">$1</span>');
-      
-      // Set the highlighted content
-      codeRef.current.innerHTML = content;
-    } else {
-      // For other languages, just use the original content
-      codeRef.current.textContent = code;
-    }
+  // Highlight as React text nodes; code is never parsed as HTML
+  const highlighted = useMemo(() => {
+    if (language !== 'javascript' && language !== 'typescript') return code;
+    return tokenize(code).map((token, i) =>
+      token.type === 'plain' ? token.text : (
+        <span key={i} className={`token-${token.type}`}>{token.text}</span>
+      ),
+    );
   }, [code, language]);
 
   // Determine class names based on props
@@ -142,7 +118,7 @@ const CodeSnippet = ({
       data-testid="code-snippet"
       initial={motionOn ? "hidden" : "visible"}
       animate="visible"
-      variants={snippetVariants}
+      variants={{ ...snippetVariants, ...glitchVariants }}
       whileHover={motionOn && !isDecorative ? "glitch" : "idle"}
       {...a11yProps}
       {...rest}
@@ -150,10 +126,8 @@ const CodeSnippet = ({
       <pre>
         <code 
           className={language ? `language-${language}` : ''}
-          ref={codeRef}
         >
-          {/* Content will be set by useEffect for syntax highlighting */}
-          {code}
+          {highlighted}
         </code>
       </pre>
     </motion.div>

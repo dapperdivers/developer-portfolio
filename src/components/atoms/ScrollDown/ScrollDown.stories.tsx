@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { ComponentProps } from 'react';
 import { action } from 'storybook/actions';
 import ScrollDown from './ScrollDown';
 
@@ -48,10 +49,38 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+// The indicator is absolutely positioned at the bottom of its section
+const HeroFrame = (args: ComponentProps<typeof ScrollDown>) => (
+  <div
+    style={{
+      position: 'relative',
+      width: 'min(32rem, 90vw)',
+      height: '22rem',
+      background: 'var(--surface-card)',
+      border: '1px solid var(--surface-border)',
+      borderRadius: 'var(--radius-card)',
+      overflow: 'hidden',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: '0.5rem',
+      color: 'var(--color-text)',
+    }}
+  >
+    <h2 style={{ margin: 0, fontSize: 'var(--font-size-3xl, 2rem)' }}>Derek Mackley</h2>
+    <p style={{ margin: 0, color: 'var(--color-text-muted)', fontFamily: 'var(--font-family-jetbrains)' }}>
+      Principal Security Engineer
+    </p>
+    <ScrollDown {...args} />
+  </div>
+);
+
 export const Default: Story = {
+  render: (args) => <HeroFrame {...args} />,
   args: {
     onClick: action('scroll-clicked'),
-    label: 'SCROLL_DOWN',
+    label: '>>_NEXT',
     className: ''
   }
 };

@@ -33,9 +33,16 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     size: 'md',
-    variant: '',
+    variant: 'security',
     type: 'spinner',
   },
+  decorators: [
+    (Story) => (
+      <div style={{ width: 'min(24rem, 90vw)' }}>
+        <Story />
+      </div>
+    ),
+  ],
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
     
@@ -99,7 +106,7 @@ ConstrainedContainer.parameters = {
 
 // Loading as an overlay - demonstrates how to use the spinner as an overlay on content
 export const ContentOverlay: StoryFn<typeof Loading> = () => (
-  <div style={{ position: 'relative', width: '300px', height: '200px', border: '1px solid #ccc', padding: '1rem' }}>
+  <div style={{ position: 'relative', width: '300px', height: '200px', border: '1px solid var(--surface-border)', borderRadius: 'var(--radius-card)', background: 'var(--surface-card)', color: 'var(--color-text)', padding: '1rem', overflow: 'hidden' }}>
     <p>This content is being updated...</p>
     <div style={{ 
       position: 'absolute', 
@@ -107,7 +114,7 @@ export const ContentOverlay: StoryFn<typeof Loading> = () => (
       left: 0, 
       right: 0, 
       bottom: 0, 
-      backgroundColor: 'rgba(255, 255, 255, 0.8)',
+      backgroundColor: 'rgba(var(--color-navy-rgb), 0.85)',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center'
@@ -129,13 +136,15 @@ export const InCard: StoryFn<typeof Loading> = () => (
   <div style={{ 
     maxWidth: '300px',
     padding: '1rem',
-    borderRadius: '8px',
-    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-    backgroundColor: '#fff'
+    borderRadius: 'var(--radius-card)',
+    border: '1px solid var(--surface-border)',
+    boxShadow: 'var(--shadow-card)',
+    backgroundColor: 'var(--surface-card)',
+    color: 'var(--color-text)'
   }}>
     <h3 style={{ margin: '0 0 1rem 0' }}>Loading Data</h3>
     <Loading />
-    <p style={{ textAlign: 'center', marginTop: '1rem', color: '#666' }}>
+    <p style={{ textAlign: 'center', marginTop: '1rem', color: 'var(--color-text-muted)' }}>
       Please wait while we fetch your data...
     </p>
   </div>

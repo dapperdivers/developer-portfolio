@@ -3,28 +3,21 @@ import type { Decorator, Meta, StoryObj } from '@storybook/react-vite';
 import { within, expect, userEvent } from 'storybook/test';
 import Greetings from './Greetings';
 import PortfolioContext from '@context/PortfolioContext';
-import { mockPortfolioData } from '@data/mockPortfolioData';
+import { siteData } from '../storyFixtures';
 import type { Greeting, PortfolioData } from '@/types/portfolio';
 
 // Helper function to create context with custom greeting data
 const createContextWithGreetings = (greetingsData: Greeting): Decorator => {
-  // The src/data mock predates the current data shape, hence the cast below
-  const customContext = { ...mockPortfolioData, greetings: greetingsData };
+  const customContext: PortfolioData = { ...siteData, greetings: greetingsData };
   return (Story) => (
-    <PortfolioContext.Provider value={customContext as unknown as PortfolioData}>
+    <PortfolioContext.Provider value={customContext}>
       <Story />
     </PortfolioContext.Provider>
   );
 };
 
-const derek: Greeting = {
-  name: 'Derek Mackley',
-  title: "Hi There, I'm Derek Mackley",
-  jobTitle: 'Principal Security Engineer',
-  location: 'Canton, GA',
-  description:
-    "I'm a Principal Security Engineer who builds security programs the way I used to build software: automated, measurable and easy for developers to live with. I lead product security across a logistics software company.",
-};
+// The real greeting from the site data
+const derek: Greeting = siteData.greetings;
 
 const meta = {
   title: 'Organisms/Greetings',
@@ -122,7 +115,7 @@ export const LongContent: Story = {
     createContextWithGreetings({
       ...derek,
       description:
-        "A passionate security engineer with extensive experience building secure systems. I specialize in robust, scalable solutions that solve real-world problems. Let's collaborate.",
+        `${derek.description} ${derek.description}`,
     }),
   ],
 };
@@ -130,7 +123,7 @@ export const LongContent: Story = {
 export const MissingOptionalFields: Story = {
   decorators: [
     createContextWithGreetings({
-      name: 'Jane Developer',
+      name: 'Alex Example',
       title: 'Hello World!',
       description: 'Frontend developer and UI/UX enthusiast.',
     }),

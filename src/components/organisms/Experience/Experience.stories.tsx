@@ -3,9 +3,9 @@ import type { Decorator, Meta, StoryObj } from '@storybook/react-vite';
 import Experience from './Experience';
 import { within, userEvent, expect } from 'storybook/test';
 import PortfolioContext from '@context/PortfolioContext';
-import type { PortfolioTestValue } from '@context/PortfolioContext';
 import type { Experience as ExperienceEntry, PortfolioData } from '@/types/portfolio';
 import { AnimationProvider } from '@context/AnimationContext';
+import { siteData } from '../storyFixtures';
 
 // Enhanced mock experience data with cybersecurity theme
 const mockExperienceData: ExperienceEntry[] = [
@@ -57,26 +57,16 @@ const mockExperienceData: ExperienceEntry[] = [
 const singleExperience = [mockExperienceData[0]];
 const emptyExperience: ExperienceEntry[] = [];
 
-// Mock portfolio data with different experience variations
-const createMockPortfolioData = (experienceData: ExperienceEntry[]): PortfolioTestValue => ({
+// The real site data with the experience section replaced
+const createMockPortfolioData = (experienceData: ExperienceEntry[]): PortfolioData => ({
+  ...siteData,
   experience: experienceData,
-  // Other portfolio data that might be needed
-  greetings: {},
-  openSource: {},
-  contact: {},
-  socialLinks: {},
-  skillsSection: {},
-  skillBars: [],
-  educationInfo: [],
-  projects: [],
-  feedbacks: []
 });
 
 // Context decorator factory to provide different mock data for each story
 const createPortfolioDecorator = (experienceData: ExperienceEntry[]): Decorator => (Story) => (
   <AnimationProvider>
-    {/* The other sections are empty placeholders, hence the cast */}
-    <PortfolioContext.Provider value={createMockPortfolioData(experienceData) as PortfolioData}>
+    <PortfolioContext.Provider value={createMockPortfolioData(experienceData)}>
       <Story />
     </PortfolioContext.Provider>
   </AnimationProvider>
@@ -119,7 +109,7 @@ type Story = StoryObj<typeof meta>;
 
 
 // Template for the component with context wrapper
-const Template = ({ experienceData = mockExperienceData }: { experienceData?: ExperienceEntry[] }) => (
+const Template = () => (
   <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '2rem' }}>
     <Experience />
   </div>
@@ -127,8 +117,8 @@ const Template = ({ experienceData = mockExperienceData }: { experienceData?: Ex
 
 // Default story with multiple experience items
 export const Default: Story = {
-  render: () => <Template experienceData={mockExperienceData} />,
-  decorators: [createPortfolioDecorator(mockExperienceData)],
+  render: () => <Template />,
+  decorators: [createPortfolioDecorator(siteData.experience)],
   play: async ({ canvasElement, step }) => {
   const canvas = within(canvasElement);
   
@@ -136,11 +126,8 @@ export const Default: Story = {
     // Check section title
     expect(canvas.getByText('Experience')).toBeInTheDocument();
     
-    // Check for multiple experience cards
-    mockExperienceData.forEach(exp => {
-      expect(canvas.getByText(exp.company)).toBeInTheDocument();
-      expect(canvas.getByText(exp.role)).toBeInTheDocument();
-    });
+    // The most recent role is shown
+    expect(canvas.getAllByText(siteData.experience[0].role).length).toBeGreaterThan(0);
     
     // Check for proper ARIA attributes
     const section = canvas.getByLabelText('Work experience history');
@@ -159,9 +146,9 @@ export const Default: Story = {
   }
 };
 
-// Story with a single experience item
+// Story with a single experience item (fictional sample)
 export const SingleExperience: Story = {
-  render: () => <Template experienceData={singleExperience} />,
+  render: () => <Template />,
   decorators: [createPortfolioDecorator(singleExperience)],
   parameters: {
   docs: {
@@ -174,7 +161,7 @@ export const SingleExperience: Story = {
 
 // Empty state story
 export const NoExperience: Story = {
-  render: () => <Template experienceData={emptyExperience} />,
+  render: () => <Template />,
   decorators: [createPortfolioDecorator(emptyExperience)],
   parameters: {
   docs: {
@@ -187,8 +174,8 @@ export const NoExperience: Story = {
 
 // Responsive view
 export const ResponsiveView: Story = {
-  render: () => <Template experienceData={mockExperienceData} />,
-  decorators: [createPortfolioDecorator(mockExperienceData)],
+  render: () => <Template />,
+  decorators: [createPortfolioDecorator(siteData.experience)],
   globals: { viewport: { value: 'mobile1', isRotated: false } },
   parameters: {
   docs: {

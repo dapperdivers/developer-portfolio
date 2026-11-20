@@ -56,21 +56,14 @@ const SocialLinks = ({ className = '', animated = true, links = {} }: SocialLink
                 stiffness: 300,
                 damping: 15
             }
-        }
-    };
-
-    // Hover animation for social links
-    const hoverVariants: Variants = {
+        },
+        // Hover and tap are named on each link via whileHover / whileTap
         hover: {
-            y: -5,
-            scale: 1.1,
-            backgroundColor: 'var(--color-gray-700)',
-            color: 'var(--color-primary)',
-            boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+            y: -1,
             transition: { duration: 0.2 }
         },
         tap: {
-            scale: 0.95,
+            scale: 0.97,
             transition: { duration: 0.1 }
         }
     };

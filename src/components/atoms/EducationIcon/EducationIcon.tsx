@@ -1,10 +1,15 @@
 import React from "react";
 import { motion } from 'framer-motion';
 import { FaGraduationCap } from 'react-icons/fa';
+import type { IconType } from 'react-icons';
 import { useMotionEnabled, scaleVariants } from '@utils/motion';
 import './EducationIcon.css';
 
 export interface EducationIconProps {
+  /** Glyph to show; defaults to the graduation cap */
+  icon?: IconType;
+  /** Glyph colour; defaults to the brand cyan */
+  color?: string;
   /** Additional CSS classes */
   className?: string;
   /** Whether to animate the component */
@@ -12,32 +17,22 @@ export interface EducationIconProps {
 }
 
 /**
- * A component displaying an education icon with styling.
- * 
+ * An education glyph in an inset tile (the same surface as the other chips).
+ *
  * @component
- * @param {Object} props - Component props
- * @param {string} [props.className] - Additional CSS classes
- * @param {boolean} [props.animated=true] - Whether to animate the component
- * @returns {React.ReactElement} EducationIcon component
  */
-const EducationIcon = ({ className = "", animated = true }: EducationIconProps) => {
+const EducationIcon = ({ icon: Icon = FaGraduationCap, color, className = "", animated = true }: EducationIconProps) => {
   // Animate only when the prop is on and reduced motion is not requested
   const shouldAnimate = useMotionEnabled(animated);
 
   return (
-    <motion.div 
+    <motion.div
       className={`education-icon-container ${className}`}
       initial={shouldAnimate ? "hidden" : "visible"}
       animate="visible"
-      variants={scaleVariants}
-      whileHover={shouldAnimate ? { 
-        y: -3, 
-        scale: 1.05,
-        boxShadow: "0 6px 12px rgba(0, 0, 0, 0.15)",
-        transition: { duration: 0.3, ease: "easeOut" }
-      } : {}}
+      variants={shouldAnimate ? scaleVariants : {}}
     >
-      <FaGraduationCap className="education-icon" aria-hidden="true" />
+      <Icon className="education-icon" style={color ? { color } : undefined} aria-hidden="true" />
     </motion.div>
   );
 };

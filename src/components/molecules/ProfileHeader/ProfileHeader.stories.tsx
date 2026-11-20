@@ -9,7 +9,7 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component: 'Profile header component that combines a security badge with a title for profile sections.',
+        component: 'Header of the Contact card: a badge with the job title, then the title with its first word highlighted in cyan. The site shows "Garage Headquarters".',
       },
     },
     componentSubtitle: 'A molecule component for profile section headers',
@@ -24,7 +24,6 @@ const meta = {
     <motion.div
       initial="hidden"
       animate="visible"
-      style={{ padding: '2rem', background: '#121212' }}
     >
       <ProfileHeader {...args} />
     </motion.div>
@@ -35,37 +34,37 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 /**
- * Default story shows the profile header with default settings.
+ * The header as the Contact card shows it.
  */
 export const Default: Story = {
   args: {
     title: 'Headquarters',
-    subtitle: 'Security Engineer',
-    highlightText: 'Security',
+    subtitle: 'Principal Security Engineer',
+    highlightText: 'Garage',
     animate: true,
   },
 };
 
 /**
- * Custom highlight example.
+ * Another highlight word and title.
  */
 export const CustomHighlight: Story = {
   args: {
     title: 'Operations',
-    subtitle: 'Cybersecurity Analyst',
-    highlightText: 'Cyber',
+    subtitle: 'Product Security',
+    highlightText: 'Security',
     animate: true,
   },
 };
 
 /**
- * Different title example.
+ * A long subtitle stays on one line inside the badge.
  */
-export const DifferentTitle: Story = {
+export const LongSubtitle: Story = {
   args: {
-    title: 'Command Center',
-    subtitle: 'Chief Security Officer',
-    highlightText: 'Security',
+    title: 'Headquarters',
+    subtitle: 'Product Security, Platforms and AI Agents',
+    highlightText: 'Garage',
     animate: true,
   },
 };
@@ -76,8 +75,8 @@ export const DifferentTitle: Story = {
 export const NoAnimation: Story = {
   args: {
     title: 'Headquarters',
-    subtitle: 'Security Engineer',
-    highlightText: 'Security',
+    subtitle: 'Principal Security Engineer',
+    highlightText: 'Garage',
     animate: false,
   },
 };

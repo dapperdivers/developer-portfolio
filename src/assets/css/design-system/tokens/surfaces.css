@@ -1,0 +1,30 @@
+:root {
+  /*
+   * Surfaces: the shared look of anything that sits on the page as a panel.
+   * Cards, terminal windows, badges and buttons all draw from these so they
+   * read as one family. Values are built from the colour tokens.
+   */
+
+  /* Panels */
+  --surface-card: rgba(var(--color-navy-rgb), 0.88);
+  --surface-card-raised: #0d2137;
+  --surface-inset: rgba(var(--color-primary-rgb), 0.04);
+  --surface-border: rgba(var(--color-primary-rgb), 0.2);
+  --surface-border-strong: rgba(var(--color-primary-rgb), 0.5);
+  --surface-divider: rgba(var(--color-primary-rgb), 0.12);
+
+  /* Shape */
+  --radius-card: var(--border-radius-lg);
+  --radius-control: var(--border-radius-md);
+  --radius-chip: var(--border-radius-pill);
+
+  /* Elevation and glow */
+  --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.35);
+  --shadow-card-hover: 0 14px 40px rgba(0, 0, 0, 0.45), 0 0 0 1px var(--surface-border-strong), 0 0 24px rgba(var(--color-primary-rgb), 0.15);
+  --ring-focus: 0 0 0 3px rgba(var(--color-primary-rgb), 0.45);
+
+  /* Interactive controls */
+  --control-height-sm: 2rem;
+  --control-height: 2.5rem;
+  --control-padding-x: var(--spacing-4);
+}

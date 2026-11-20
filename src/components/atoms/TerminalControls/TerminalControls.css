@@ -6,13 +6,12 @@
 
 /* Base variables */
 :root {
-  --terminal-background: var(--color-navy, #0a192f);
-  --terminal-text: var(--color-text, #e6f1ff);
-  --terminal-prompt: var(--color-primary, #64ffda);
-  --terminal-border: rgba(var(--color-primary-rgb, 100, 255, 218), 0.3);
-  --terminal-glow: rgba(var(--color-primary-rgb, 100, 255, 218), 0.15);
-  --terminal-header: rgba(var(--color-background-alt-rgb, 20, 40, 70), 0.8);
-  --terminal-font: var(--font-family-jetbrains, 'JetBrains Mono', monospace);
+  --terminal-background: var(--surface-card);
+  --terminal-text: var(--color-text);
+  --terminal-prompt: var(--color-primary);
+  --terminal-border: var(--surface-border);
+  --terminal-header: var(--surface-card-raised);
+  --terminal-font: var(--font-family-jetbrains);
 }
 
 /* Terminal window controls */
@@ -43,46 +42,28 @@
   justify-content: space-between;
   padding: 0.5rem 1rem;
   background-color: var(--terminal-header);
-  border-bottom: 1px solid var(--terminal-border);
-  border-top-left-radius: var(--border-radius-md);
-  border-top-right-radius: var(--border-radius-md);
+  border-bottom: 1px solid var(--surface-divider);
+  border-top-left-radius: var(--radius-card);
+  border-top-right-radius: var(--radius-card);
   position: relative;
   z-index: 2;
 }
 
-/* Terminal footer with enhanced cyberpunk styling */
+/* Terminal footer: inset strip on the card surface */
 .terminal-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: var(--spacing-2) var(--spacing-3);
-  border-top: 1px solid var(--terminal-border);
+  border-top: 1px solid var(--surface-divider);
   font-family: var(--terminal-font);
   font-size: var(--font-size-xs);
+  letter-spacing: var(--letter-spacing-technical);
   color: var(--terminal-prompt);
-  background-color: rgba(0, 0, 0, 0.4); /* Darker for better contrast */
+  background-color: var(--surface-inset);
   position: relative;
   z-index: 2;
-  box-shadow: inset 0 5px 10px rgba(0, 0, 0, 0.2);
   overflow: hidden;
-}
-
-/* Add cyberpunk circuit pattern to footer */
-.terminal-footer::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: 
-    radial-gradient(circle at 30% 30%, rgba(var(--color-primary-rgb), 0.1) 1px, transparent 1px),
-    linear-gradient(to right, rgba(var(--color-primary-rgb), 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(var(--color-primary-rgb), 0.05) 1px, transparent 1px);
-  background-size: 25px 25px, 15px 15px, 15px 15px;
-  opacity: 0.2;
-  pointer-events: none;
-  z-index: 0;
 }
 
 .status-indicator {
@@ -90,7 +71,6 @@
   height: 8px;
   border-radius: 50%;
   margin-right: var(--spacing-2);
-  box-shadow: 0 0 10px currentColor;
   position: relative;
   animation: pulse 2s infinite ease-in-out;
   background-color: var(--color-primary);
@@ -129,7 +109,7 @@
 
 @keyframes levelPulse {
   0%, 100% { color: var(--terminal-prompt); }
-  50% { color: #ffffff; }
+  50% { color: var(--color-text); }
 }
 
 @keyframes blinkCursor {
@@ -150,72 +130,23 @@
   background-color: #27c93f;
 }
 
-/* KITTY TERMINAL CONTROLS - Refined and elegant */
+/* Kitty controls: flat dots */
 .terminal-controls-kitty {
-  gap: 8px; /* Improved spacing */
+  gap: 8px;
 }
 
 .terminal-controls-kitty .terminal-circle {
-  width: 14px; /* Slightly larger */
+  width: 14px;
   height: 14px;
-  border-radius: 50%;
-  margin-right: 0; /* Use gap instead */
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  position: relative;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-  backdrop-filter: blur(10px);
-  box-shadow: 
-    0 2px 4px rgba(0, 0, 0, 0.2),
-    inset 0 1px 2px rgba(255, 255, 255, 0.1);
-  transition: all 0.2s ease;
+  margin-right: 0;
 }
 
-.terminal-controls-kitty .terminal-circle-close {
-  background: linear-gradient(135deg, #ff6b6b, #e74c3c);
-  border-color: rgba(231, 76, 60, 0.3);
-  box-shadow: 
-    0 2px 6px rgba(231, 76, 60, 0.3),
-    inset 0 1px 2px rgba(255, 255, 255, 0.2);
-}
+.terminal-controls-kitty .terminal-circle-close { background: #ff5f56; }
+.terminal-controls-kitty .terminal-circle-minimize { background: #ffbd2e; }
+.terminal-controls-kitty .terminal-circle-maximize { background: #27c93f; }
 
-.terminal-controls-kitty .terminal-circle-minimize {
-  background: linear-gradient(135deg, #ffd93d, #f39c12);
-  border-color: rgba(243, 156, 18, 0.3);
-  box-shadow: 
-    0 2px 6px rgba(243, 156, 18, 0.3),
-    inset 0 1px 2px rgba(255, 255, 255, 0.2);
-}
-
-.terminal-controls-kitty .terminal-circle-maximize {
-  background: linear-gradient(135deg, #6bcf7f, #27ae60);
-  border-color: rgba(39, 174, 96, 0.3);
-  box-shadow: 
-    0 2px 6px rgba(39, 174, 96, 0.3),
-    inset 0 1px 2px rgba(255, 255, 255, 0.2);
-}
-
-/* Kitty hover effects */
 .terminal-controls-interactive.terminal-controls-kitty .terminal-circle:hover {
-  transform: scale(1.1);
-  filter: brightness(1.1);
-}
-
-.terminal-controls-interactive.terminal-controls-kitty .terminal-circle-close:hover {
-  box-shadow: 
-    0 3px 8px rgba(231, 76, 60, 0.4),
-    inset 0 1px 2px rgba(255, 255, 255, 0.3);
-}
-
-.terminal-controls-interactive.terminal-controls-kitty .terminal-circle-minimize:hover {
-  box-shadow: 
-    0 3px 8px rgba(243, 156, 18, 0.4),
-    inset 0 1px 2px rgba(255, 255, 255, 0.3);
-}
-
-.terminal-controls-interactive.terminal-controls-kitty .terminal-circle-maximize:hover {
-  box-shadow: 
-    0 3px 8px rgba(39, 174, 96, 0.4),
-    inset 0 1px 2px rgba(255, 255, 255, 0.3);
+  filter: brightness(1.15);
 }
 
 /* Terminal controls for Windows */
@@ -229,12 +160,12 @@
   height: 14px;
   border-radius: 0;
   background-color: transparent;
-  border: 1px solid #999;
+  border: 1px solid var(--color-text-muted);
 }
 
 .terminal-controls-windows .terminal-circle-close {
-  background-color: #d83b3b;
-  border-color: #a12828;
+  background-color: #ff5f56;
+  border-color: #ff5f56;
   position: relative;
 }
 
@@ -244,7 +175,7 @@
   position: absolute;
   width: 8px;
   height: 1px;
-  background-color: white;
+  background-color: var(--color-text);
   top: 50%;
   left: 50%;
 }
@@ -266,7 +197,7 @@
   position: absolute;
   width: 8px;
   height: 1px;
-  background-color: #999;
+  background-color: var(--color-text-muted);
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -274,19 +205,19 @@
 
 .terminal-controls-windows .terminal-circle-maximize {
   position: relative;
-  border: 1px solid #999;
+  border: 1px solid var(--color-text-muted);
 }
 
 /* Terminal controls for Linux */
 .terminal-controls-linux .terminal-circle {
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  border: 1px solid var(--color-text-muted);
   background-color: transparent;
 }
 
 .terminal-controls-linux .terminal-circle-close {
-  border-color: #d83b3b;
+  border-color: #ff5f56;
   position: relative;
-  background-color: rgba(216, 59, 59, 0.5);
+  background-color: rgba(255, 95, 86, 0.5);
 }
 
 .terminal-controls-linux .terminal-circle-close::before,
@@ -295,7 +226,7 @@
   position: absolute;
   width: 6px;
   height: 1px;
-  background-color: white;
+  background-color: var(--color-text);
   top: 50%;
   left: 50%;
 }
@@ -315,9 +246,9 @@
 }
 
 /* Hover effect removed - now handled by framer-motion */
-.terminal-controls-interactive .terminal-circle:focus {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
+.terminal-controls-interactive .terminal-circle:focus-visible {
+  box-shadow: var(--ring-focus);
+  outline: none;
 }
 
 /* Media queries */

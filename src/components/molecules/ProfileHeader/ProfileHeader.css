@@ -12,14 +12,15 @@
 }
 
 .profile-header__title {
+  font-family: var(--font-family-base);
   font-size: var(--font-size-3xl);
-  font-weight: var(--font-weight-bold);
+  font-weight: var(--font-weight-semibold);
   margin-bottom: var(--spacing-2);
-  color: var(--color-white);
+  color: var(--color-text);
 }
 
 .profile-header__highlight {
-  color: var(--color-cyan);
+  color: var(--color-primary);
 }
 
 /* Responsive adjustments */

@@ -7,6 +7,7 @@ import './Button.css';
 export type ButtonVariant =
   | 'primary'
   | 'secondary'
+  | 'ghost'
   | 'success'
   | 'danger'
   | 'warning'
@@ -64,8 +65,8 @@ export interface ButtonProps
  * @param {Object} props - The component props
  * @param {ReactNode} props.children - The button content
  * @param {Function} [props.onClick] - Click handler function
- * @param {string} [props.variant='primary'] - Button style variant (primary, secondary, success, danger, link)
- * @param {string} [props.size='md'] - Button size (sm, md, lg)
+ * @param {string} [props.variant='primary'] - Button style variant (primary, secondary, ghost; status and legacy aliases map onto them)
+ * @param {string} [props.size='md'] - Button size (sm, md; lg is an alias of md)
  * @param {string} [props.className] - Additional CSS classes
  * @param {string} [props.href] - URL to navigate to (renders as anchor when provided)
  * @param {string} [props.icon] - Iconify icon name (e.g. 'mdi:home')
@@ -114,13 +115,12 @@ const Button = ({
     sizeClass,
     className,
     icon && !children ? 'btn-icon' : '',
-    disabled ? 'disabled' : '',
-    variant === 'cyberpunk' ? 'group' : ''
+    disabled ? 'disabled' : ''
   ].filter(Boolean).join(' ');
 
-  // Icon element with potential pulse animation for cyberpunk variant
+  // Icon slot
   const iconElement = icon && (
-    <span className={`btn-icon-${iconPosition} ${variant === 'cyberpunk' ? 'group-hover:animate-pulse' : ''}`}>
+    <span className={`btn-icon-${iconPosition}`} aria-hidden="true">
       <Icon icon={icon} />
     </span>
   );
@@ -136,24 +136,6 @@ const Button = ({
       scale: 0.95,
       transition: { duration: 0.1 }
     };
-
-    // Cyberpunk-specific animations
-    if (variant === 'cyberpunk') {
-      return {
-        initial: { opacity: 0, scale: 0.9 },
-        animate: { 
-          opacity: 1, 
-          scale: 1,
-          transition: { duration: 0.4 }
-        },
-        whileHover: { 
-          scale: 1.05,
-          boxShadow: "0 0 8px rgba(5, 213, 250, 0.5)",
-          transition: { duration: 0.2 }
-        },
-        whileTap: tapAnimation
-      };
-    }
 
     // Standard animation variants
     switch (animationVariant) {
@@ -174,20 +156,6 @@ const Button = ({
     }
   };
 
-  // Cyberpunk glint effect
-  const GlintEffect = variant === 'cyberpunk' && (
-    <motion.span 
-      className="absolute inset-0 bg-linear-to-r/srgb from-transparent via-theme-cyan/10 to-transparent"
-      initial={{ x: "-100%", opacity: 0 }}
-      whileHover={{
-        x: "100%",
-        opacity: [0, 0.3, 0],
-        transition: { duration: 1.5 }
-      }}
-      style={{ rotate: 45 }}
-    />
-  );
-
   // Common props
   const commonProps = {
     className: baseClasses,
@@ -197,17 +165,7 @@ const Button = ({
     ...rest
   };
 
-  // Wrap children for cyberpunk variant
-  const wrappedChildren = variant === 'cyberpunk' ? (
-    <>
-      <span className="relative font-mono text-base sm:text-lg tracking-widest whitespace-nowrap z-10 flex items-center justify-center gap-2">
-        {iconPosition === 'left' && iconElement}
-        {children}
-        {iconPosition === 'right' && iconElement}
-      </span>
-      {GlintEffect}
-    </>
-  ) : (
+  const content = (
     <>
       {iconPosition === 'left' && iconElement}
       {children}
@@ -225,7 +183,7 @@ const Button = ({
         tabIndex={disabled ? -1 : 0}
         {...commonProps}
       >
-        {wrappedChildren}
+        {content}
       </motion.a>
     );
   }
@@ -238,7 +196,7 @@ const Button = ({
       disabled={disabled}
       {...commonProps}
     >
-      {wrappedChildren}
+      {content}
     </motion.button>
   );
 };

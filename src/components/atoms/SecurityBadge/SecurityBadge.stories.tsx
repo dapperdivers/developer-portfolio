@@ -17,7 +17,7 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component: 'Security-themed badge component with icon and text for displaying security credentials or roles.',
+        component: 'Chip-family badge with an icon and text, for credentials or roles: inset fill, 1px border, JetBrains Mono xs text.',
       },
     },
     componentSubtitle: 'A security component for displaying credentials and roles',
@@ -39,7 +39,7 @@ const Template = (args: SecurityBadgeProps) => (
   <motion.div
     initial="hidden"
     animate="visible"
-    style={{ padding: '2rem', background: '#121212', display: 'flex', justifyContent: 'center' }}
+    style={{ display: 'flex', justifyContent: 'center' }}
   >
     <SecurityBadge variants={entranceVariants} {...args} />
   </motion.div>
@@ -62,7 +62,7 @@ export const Default: Story = {
 export const WithLockIcon: Story = {
   render: Template,
   args: {
-    text: 'Security Clearance: Level 5',
+    text: 'Zero Trust Architect',
     icon: FaLock,
     animate: true,
   },
@@ -74,7 +74,7 @@ export const WithLockIcon: Story = {
 export const WithUserShieldIcon: Story = {
   render: Template,
   args: {
-    text: 'Security Administrator',
+    text: 'Incident Commander',
     icon: FaUserShield,
     animate: true,
   },

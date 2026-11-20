@@ -124,7 +124,7 @@ const TerminalTitleBar = ({
       {...rest}
     >
       {/* Animated background effects */}
-      {variant === 'security' && (
+      {variant === 'security' && motionOn && (
         <motion.div 
           className="terminal-title-bar__security-scan"
           initial={{ x: '-100%' }}
@@ -172,7 +172,7 @@ const TerminalTitleBar = ({
         {variant === 'hacker' && (
           <motion.span 
             className="terminal-title-bar__cursor"
-            animate={{ opacity: [1, 0] }}
+            animate={motionOn ? { opacity: [1, 0] } : undefined}
             transition={{ duration: 0.8, repeat: Infinity, repeatType: "reverse" }}
           >
             █
@@ -190,13 +190,13 @@ const TerminalTitleBar = ({
         >
           <motion.span 
             className="status-indicator status-indicator--secure"
-            animate={{ 
+            animate={motionOn ? { 
               boxShadow: [
-                "0 0 5px rgba(0, 255, 0, 0.3)",
-                "0 0 15px rgba(0, 255, 0, 0.6)",
-                "0 0 5px rgba(0, 255, 0, 0.3)"
+                "0 0 0px rgba(52, 199, 89, 0.3)",
+                "0 0 8px rgba(52, 199, 89, 0.6)",
+                "0 0 0px rgba(52, 199, 89, 0.3)"
               ]
-            }}
+            } : undefined}
             transition={{ duration: 2, repeat: Infinity }}
           />
           <span className="status-text">SECURE</span>
@@ -212,13 +212,13 @@ const TerminalTitleBar = ({
         >
           <motion.span 
             className="status-indicator status-indicator--breach"
-            animate={{ 
+            animate={motionOn ? { 
               boxShadow: [
-                "0 0 5px rgba(255, 0, 0, 0.5)",
-                "0 0 20px rgba(255, 0, 0, 0.8)",
-                "0 0 5px rgba(255, 0, 0, 0.5)"
+                "0 0 0px rgba(255, 45, 85, 0.4)",
+                "0 0 8px rgba(255, 45, 85, 0.8)",
+                "0 0 0px rgba(255, 45, 85, 0.4)"
               ]
-            }}
+            } : undefined}
             transition={{ duration: 1, repeat: Infinity }}
           />
           <span className="status-text">BREACH MODE</span>

@@ -1,70 +1,60 @@
 /**
- * TerminalFooter Atom Component Styles
- * Isolated terminal-style footer with prompt and cursor
+ * TerminalFooter: prompt-and-cursor strip on the shared card surface.
+ * Secure is green, breach is red, critical is amber: status colours only.
  */
 
 .terminal-footer {
-  margin-top: 1.5rem;
-  padding: 0.75rem 1rem;
-  background: rgba(var(--color-navy-rgb), 0.8);
-  border: 1px solid rgba(var(--color-cyan-rgb), 0.3);
-  border-radius: 6px;
+  margin-top: var(--spacing-5);
+  padding: var(--spacing-3) var(--spacing-4);
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
   font-family: var(--font-family-jetbrains);
-  font-size: 0.8rem;
+  font-size: var(--font-size-xs);
+  letter-spacing: var(--letter-spacing-technical);
   display: flex;
   align-items: center;
 }
 
 .terminal-footer__prompt {
-  color: var(--color-cyan);
-  margin-right: 0.5rem;
-  text-shadow: 0 0 8px rgba(var(--color-cyan-rgb), 0.5);
+  color: var(--color-primary);
+  margin-right: var(--spacing-2);
 }
 
 .terminal-footer__cursor {
-  color: var(--color-cyan);
-  font-weight: bold;
-  text-shadow: 0 0 8px rgba(var(--color-cyan-rgb), 0.5);
-}
-
-/* Variant Styles */
-.terminal-footer--secure {
-  border-color: rgba(34, 197, 94, 0.3);
+  color: var(--color-primary);
+  font-weight: var(--font-weight-bold);
 }
 
 .terminal-footer--secure .terminal-footer__prompt,
 .terminal-footer--secure .terminal-footer__cursor {
-  color: var(--color-green-400);
-  text-shadow: 0 0 8px rgba(34, 197, 94, 0.5);
+  color: var(--color-success);
 }
 
 .terminal-footer--breach {
-  border-color: rgba(248, 113, 113, 0.3);
+  border-color: var(--color-danger);
 }
 
 .terminal-footer--breach .terminal-footer__prompt,
 .terminal-footer--breach .terminal-footer__cursor {
-  color: var(--color-red-400);
-  text-shadow: 0 0 8px rgba(248, 113, 113, 0.5);
+  color: var(--color-danger);
 }
 
 .terminal-footer--critical {
-  border-color: rgba(251, 191, 36, 0.3);
+  border-color: var(--color-warning);
 }
 
 .terminal-footer--critical .terminal-footer__prompt,
 .terminal-footer--critical .terminal-footer__cursor {
-  color: var(--color-yellow-400);
-  text-shadow: 0 0 8px rgba(251, 191, 36, 0.5);
+  color: var(--color-warning);
 }
 
-/* Accessibility */
 .terminal-footer:focus-within {
-  outline: 2px solid rgba(var(--color-cyan-rgb), 0.7);
-  outline-offset: 2px;
+  box-shadow: var(--ring-focus);
+  outline: none;
 }
 
-/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .terminal-footer__cursor {
     animation: none;

@@ -3,46 +3,45 @@ import type { Decorator, Meta, StoryObj } from '@storybook/react-vite';
 import Education from './Education';
 import { expect, within } from 'storybook/test';
 import PortfolioContext from '@context/PortfolioContext';
-import type { PortfolioTestValue } from '@context/PortfolioContext';
 import type { Education as EducationEntry, PortfolioData } from '@/types/portfolio';
 import { AnimationContext } from '@context/AnimationContext';
 import { mockAnimationData } from '@stories-utils';
+import { siteData } from '../storyFixtures';
 
-// Mock portfolio data for stories
+// Fictional sample data for the stories that vary the content
 const mockEducationData: EducationEntry[] = [
   {
-    schoolName: "CyberSec University",
+    schoolName: "Example University",
     degree: "Master of Science",
     major: "Cybersecurity",
     minor: "Computer Networks",
-    duration: "2020 - 2022",
+    duration: "May 2022",
     certifications: [
       {
-        name: "CISSP",
-        issuer: "ISC2",
-        date: "2022",
-        credentialId: "CSP-12345"
+        name: "Example Security Practitioner",
+        issuer: "Example Certification Board",
+        date: "Mar 2022",
+        credentialId: "EX-104233"
       },
       {
-        name: "CEH",
-        issuer: "EC-Council",
-        date: "2021",
-        credentialId: "CEH-67890"
+        name: "Example Ethical Hacking Associate",
+        issuer: "Example Security Council",
+        date: "Nov 2021"
       }
     ]
   },
   {
-    schoolName: "Tech Institute",
+    schoolName: "Example Institute of Technology",
     degree: "Bachelor of Science",
     major: "Computer Science",
     minor: "Mathematics",
-    duration: "2016 - 2020",
+    duration: "May 2020",
     certifications: [
       {
-        name: "CompTIA Security+",
-        issuer: "CompTIA",
-        date: "2020",
-        credentialId: "COMP-11111"
+        name: "Example Systems Foundations",
+        issuer: "Example Certification Board",
+        date: "Jun 2020",
+        credentialId: "EX-208841"
       }
     ]
   }
@@ -55,7 +54,7 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component: 'Cybersecurity-themed Education section that displays educational background and professional credentials. Degrees with a crisp certification list.',
+        component: 'The Education section: a grid of EducationCards (school, degree, major, minor and a ruled certification list) with an empty state.',
       },
     },
     a11y: {
@@ -83,16 +82,9 @@ type Story = StoryObj<typeof meta>;
 
 // Helper function to create a context with specific education data
 const createContextWithEducation = (educationData: EducationEntry[]): Decorator => {
-  const customContext: PortfolioTestValue = { 
-    educationInfo: educationData,
-    // Add other required context properties with defaults
-    experience: [],
-    projects: [],
-    contact: {}
-  };
+  const customContext: PortfolioData = { ...siteData, educationInfo: educationData };
   return (Story) => (
-    // Partial data on purpose
-    <PortfolioContext.Provider value={customContext as PortfolioData}>
+    <PortfolioContext.Provider value={customContext}>
       <Story />
     </PortfolioContext.Provider>
   );
@@ -104,11 +96,11 @@ const createContextWithEducation = (educationData: EducationEntry[]): Decorator 
  * with multiple education items and certifications
  */
 export const CybersecurityTheme: Story = {
-  decorators: [createContextWithEducation(mockEducationData)],
+  decorators: [createContextWithEducation(siteData.educationInfo)],
   parameters: {
     docs: {
       description: {
-        story: 'The main cybersecurity-themed education section with terminal aesthetics, and a ruled certification list.',
+        story: 'The real education section from the site data.',
       }
     }
   },
@@ -125,8 +117,7 @@ export const CybersecurityTheme: Story = {
     });
   
     await step('Check education cards', () => {
-      expect(canvas.getByText('CyberSec University')).toBeInTheDocument();
-      expect(canvas.getByText('Tech Institute')).toBeInTheDocument();
+      expect(canvas.getByText(siteData.educationInfo[0].schoolName)).toBeInTheDocument();
     });
   
   },
@@ -142,7 +133,7 @@ export const SingleEducation: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Shows how the cybersecurity-themed layout adapts when there\'s only one education item. The grid layout adjusts appropriately while maintaining the professional cyber aesthetic.',
+        story: 'How the layout adapts when there is only one education item.',
       }
     }
   },
@@ -150,13 +141,13 @@ export const SingleEducation: Story = {
     const canvas = within(canvasElement);
   
     await step('Check single education item', () => {
-      expect(canvas.getByText('CyberSec University')).toBeInTheDocument();
-      expect(canvas.queryByText('Tech Institute')).not.toBeInTheDocument();
+      expect(canvas.getByText('Example University')).toBeInTheDocument();
+      expect(canvas.queryByText('Example Institute of Technology')).not.toBeInTheDocument();
     });
   
     await step('Check certifications are displayed', () => {
-      expect(canvas.getByText('CISSP')).toBeInTheDocument();
-      expect(canvas.getByText('CEH')).toBeInTheDocument();
+      expect(canvas.getByText('Example Security Practitioner')).toBeInTheDocument();
+      expect(canvas.getByText('Example Ethical Hacking Associate')).toBeInTheDocument();
     });
   },
 };
@@ -194,10 +185,10 @@ export const WithoutCertifications: Story = {
   decorators: [
     createContextWithEducation([
       {
-        schoolName: "Basic University",
+        schoolName: "Example Community College",
         degree: "Bachelor of Arts",
         major: "Liberal Arts",
-        duration: "2015 - 2019"
+        duration: "May 2019"
         // No certifications
       }
     ])
@@ -219,16 +210,16 @@ export const MultipleEducationItems: Story = {
     createContextWithEducation([
       ...mockEducationData,
       {
-        schoolName: "Advanced Cyber Academy",
+        schoolName: "Example Security Academy",
         degree: "Certificate",
         major: "Penetration Testing",
-        duration: "2023",
+        duration: "Sep 2023",
         certifications: [
           {
-            name: "OSCP",
-            issuer: "Offensive Security",
-            date: "2023",
-            credentialId: "OS-54321"
+            name: "Example Penetration Tester",
+            issuer: "Example Security Council",
+            date: "Sep 2023",
+            credentialId: "EX-543210"
           }
         ]
       }

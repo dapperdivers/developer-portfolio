@@ -1,5 +1,6 @@
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { expect } from 'storybook/test';
 import Button from './Button';
 
 const meta = {
@@ -7,17 +8,17 @@ const meta = {
   component: Button,
   tags: ['autodocs'],
   parameters: {
-    componentSubtitle: 'Interactive button component with cyberpunk-inspired design',
+    componentSubtitle: 'One button system: primary, secondary and ghost, in two sizes',
     docs: {
       description: {
-        component: 'The Button component provides a versatile, accessible interface element with multiple variants, sizes, and states. It features cyberpunk-inspired styling, icon support, and security-themed variants. The component supports both button and anchor tag rendering, with full keyboard navigation and ARIA support.'
+        component: 'Three canonical variants (primary: solid cyan; secondary: outlined cyan; ghost: low emphasis), two heights (sm 2rem, md 2.5rem), one radius, JetBrains Mono type and a shared focus ring. Status variants (success, danger, warning, info, critical, high, medium, low) are outlined tints; link, cyberpunk, light and dark are kept as aliases. Renders a button, or an anchor when href is given.'
       }
     }
   },
   argTypes: {
     variant: {
       control: 'select',
-      options: ['primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark', 'link', 'critical', 'high', 'medium', 'low', 'cyberpunk'],
+      options: ['primary', 'secondary', 'ghost', 'success', 'danger', 'warning', 'info', 'light', 'dark', 'link', 'critical', 'high', 'medium', 'low', 'cyberpunk'],
       description: 'Visual style variant of the button',
       table: {
         type: { summary: 'string' },
@@ -27,7 +28,7 @@ const meta = {
     size: {
       control: 'select',
       options: ['sm', 'md', 'lg'],
-      description: 'Size of the button',
+      description: 'Size of the button (lg is an alias of md)',
       table: {
         type: { summary: 'string' },
         defaultValue: { summary: 'md' }
@@ -93,210 +94,168 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// Container for consistent display
-const ButtonContainer = ({ children, background = 'var(--color-background)' }: { children: ReactNode; background?: string }) => (
-  <div style={{
-    padding: '2rem',
-    background,
-    borderRadius: '8px',
-    margin: '1rem 0'
-  }}>
+const Stack = ({ children, column = false }: { children: ReactNode; column?: boolean }) => (
+  <div style={{ display: 'flex', flexDirection: column ? 'column' : 'row', flexWrap: 'wrap', gap: '1rem', alignItems: column ? 'flex-start' : 'center' }}>
     {children}
   </div>
 );
 
+const label: CSSProperties = {
+  margin: '0 0 0.5rem',
+  fontFamily: 'var(--font-family-jetbrains)',
+  fontSize: 'var(--font-size-xs)',
+  letterSpacing: 'var(--letter-spacing-technical)',
+  textTransform: 'uppercase',
+  color: 'var(--color-text-muted)',
+};
+
 // Default button
 export const Default: Story = {
   args: {
-    children: 'Button',
+    children: 'View project',
     variant: 'primary',
-    size: 'md'
+    size: 'md',
+    icon: 'mdi:arrow-right',
+    iconPosition: 'right',
   },
-  render: (args) => (
-    <ButtonContainer>
-      <Button {...args} />
-    </ButtonContainer>
-  )
 };
 
-// Button Variants
-export const Variants: Story = {
+// Every variant in both sizes
+export const AllVariants: Story = {
+  name: 'All variants',
   render: () => (
-    <ButtonContainer>
-      <div style={{ display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))' }}>
-        <Button variant="primary">Primary</Button>
-        <Button variant="secondary">Secondary</Button>
-        <Button variant="success">Success</Button>
-        <Button variant="danger">Danger</Button>
-        <Button variant="warning">Warning</Button>
-        <Button variant="info">Info</Button>
-        <Button variant="light">Light</Button>
-        <Button variant="dark">Dark</Button>
-        <Button variant="link">Link</Button>
+    <div style={{ display: 'grid', gap: '1.5rem' }}>
+      {(['md', 'sm'] as const).map((size) => (
+        <div key={size}>
+          <p style={label}>{size === 'md' ? 'Default (2.5rem)' : 'Small (2rem)'}</p>
+          <Stack>
+            <Button size={size} variant="primary">Primary</Button>
+            <Button size={size} variant="secondary">Secondary</Button>
+            <Button size={size} variant="ghost">Ghost</Button>
+            <Button size={size} variant="primary" icon="mdi:download" iconPosition="right">With icon</Button>
+            <Button size={size} variant="secondary" icon="mdi:github" iconPosition="left">With icon</Button>
+            <Button size={size} variant="ghost" icon="mdi:github" ariaLabel="GitHub" />
+          </Stack>
+        </div>
+      ))}
+      <div>
+        <p style={label}>Status (outlined tints)</p>
+        <Stack>
+          <Button variant="success">Success</Button>
+          <Button variant="warning">Warning</Button>
+          <Button variant="info">Info</Button>
+          <Button variant="danger">Danger</Button>
+          <Button variant="critical">Critical</Button>
+          <Button variant="high">High</Button>
+          <Button variant="medium">Medium</Button>
+          <Button variant="low">Low</Button>
+        </Stack>
       </div>
-    </ButtonContainer>
-  )
+      <div>
+        <p style={label}>Aliases (map onto the set above)</p>
+        <Stack>
+          <Button variant="link">link (ghost text)</Button>
+          <Button variant="cyberpunk">cyberpunk (secondary)</Button>
+          <Button variant="light">light (neutral outline)</Button>
+          <Button variant="dark">dark (card surface)</Button>
+        </Stack>
+      </div>
+    </div>
+  ),
 };
 
-// Security Variants
-export const SecurityVariants: Story = {
+// States side by side. Hover and focus are forced with data-state styles via
+// inline equivalents so they can be seen without interacting.
+const hoverStyle = (variant: 'primary' | 'secondary' | 'ghost'): CSSProperties => {
+  if (variant === 'primary') return { background: 'var(--color-primary-light)', borderColor: 'var(--color-primary-light)' };
+  if (variant === 'secondary') return { background: 'rgba(var(--color-primary-rgb), 0.1)', borderColor: 'var(--color-primary)' };
+  return { background: 'var(--surface-inset)', color: 'var(--color-primary)' };
+};
+
+export const States: Story = {
   render: () => (
-    <ButtonContainer>
-      <div style={{ display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))' }}>
-        <Button variant="critical">Critical</Button>
-        <Button variant="high">High</Button>
-        <Button variant="medium">Medium</Button>
-        <Button variant="low">Low</Button>
-        <Button variant="cyberpunk">Cyberpunk</Button>
-      </div>
-    </ButtonContainer>
-  )
+    <div style={{ display: 'grid', gap: '1.5rem' }}>
+      {(['primary', 'secondary', 'ghost'] as const).map((variant) => (
+        <div key={variant}>
+          <p style={label}>{variant}</p>
+          <Stack>
+            <Button variant={variant}>Rest</Button>
+            <Button variant={variant} style={hoverStyle(variant)}>Hover</Button>
+            <Button variant={variant} style={{ boxShadow: 'var(--ring-focus)' }}>Focus</Button>
+            <Button variant={variant} disabled>Disabled</Button>
+          </Stack>
+        </div>
+      ))}
+      <p style={{ ...label, textTransform: 'none' }}>
+        Hover and Focus are drawn statically here; press Tab to see the real focus ring.
+      </p>
+    </div>
+  ),
 };
 
-// Button Sizes
+// Sizes
 export const Sizes: Story = {
   render: () => (
-    <ButtonContainer>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'flex-start' }}>
-        <Button size="sm">Small Button</Button>
-        <Button size="md">Medium Button</Button>
-        <Button size="lg">Large Button</Button>
-      </div>
-    </ButtonContainer>
-  )
+    <Stack>
+      <Button size="sm">Small</Button>
+      <Button size="md">Default</Button>
+    </Stack>
+  ),
 };
 
 // Icons
 export const WithIcons: Story = {
   render: () => (
-    <ButtonContainer>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'flex-start' }}>
-        <Button icon="mdi:home" iconPosition="left">Left Icon</Button>
-        <Button icon="mdi:arrow-right" iconPosition="right">Right Icon</Button>
-        <Button icon="mdi:github" />
-        <Button icon="mdi:security" variant="critical" />
-      </div>
-    </ButtonContainer>
-  )
-};
-
-// States
-export const States: Story = {
-  render: () => (
-    <ButtonContainer>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'flex-start' }}>
-        <Button>Normal</Button>
-        <Button disabled>Disabled</Button>
-        <Button variant="primary" className="hover">Hover</Button>
-        <Button variant="primary" className="active">Active/Pressed</Button>
-        <Button variant="primary" className="focus">Focused</Button>
-      </div>
-    </ButtonContainer>
-  )
+    <Stack>
+      <Button icon="mdi:home" iconPosition="left">Left icon</Button>
+      <Button icon="mdi:arrow-right" iconPosition="right" variant="secondary">Right icon</Button>
+      <Button icon="mdi:github" variant="secondary" ariaLabel="GitHub" />
+      <Button icon="mdi:security" variant="critical" ariaLabel="Security alert" />
+    </Stack>
+  ),
 };
 
 // Links
 export const Links: Story = {
   render: () => (
-    <ButtonContainer>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'flex-start' }}>
-        <Button href="https://example.com" target="_blank">External Link</Button>
-        <Button href="#" variant="secondary">Internal Link</Button>
-        <Button href="#" variant="link" icon="mdi:external-link" iconPosition="right">
-          Text Link
-        </Button>
-        <Button href="#" disabled>Disabled Link</Button>
-      </div>
-    </ButtonContainer>
-  )
+    <Stack column>
+      <Button href="https://github.com/DapperDivers" target="_blank" rel="noopener noreferrer">External link</Button>
+      <Button href="#" variant="secondary">Internal link</Button>
+      <Button href="#" variant="link" icon="mdi:external-link" iconPosition="right">Text link</Button>
+      <Button href="#" disabled>Disabled link</Button>
+    </Stack>
+  ),
 };
 
-// Form Buttons
+// Form buttons
 export const FormButtons: Story = {
   render: () => (
-    <ButtonContainer>
-      <form onSubmit={(e) => e.preventDefault()} style={{ display: 'flex', gap: '1rem' }}>
-        <Button type="submit" variant="success">Submit</Button>
+    <form onSubmit={(e) => e.preventDefault()}>
+      <Stack>
+        <Button type="submit">Send message</Button>
         <Button type="reset" variant="secondary">Reset</Button>
-        <Button type="button" variant="danger">Cancel</Button>
-      </form>
-    </ButtonContainer>
-  )
+        <Button type="button" variant="ghost">Cancel</Button>
+      </Stack>
+    </form>
+  ),
 };
 
-// Loading States
-export const LoadingStates: Story = {
-  render: () => (
-    <ButtonContainer>
-      <div style={{ display: 'flex', gap: '1rem' }}>
-        <Button icon="mdi:loading" disabled>Loading...</Button>
-        <Button icon="mdi:refresh" variant="secondary" className="spin">
-          Refreshing
-        </Button>
-        <Button icon="mdi:progress-upload" variant="success">
-          Uploading
-        </Button>
-      </div>
-    </ButtonContainer>
-  )
+// Keyboard focus: tab to the button to see the ring
+export const KeyboardFocus: Story = {
+  render: () => <Button>Tab to focus</Button>,
+  play: async ({ canvasElement }) => {
+    const button = canvasElement.querySelector('button');
+    button?.focus();
+    await expect(button).toHaveFocus();
+  },
 };
 
-// Responsive Example
-export const Responsive: Story = {
+// Responsive: full-width stack on a narrow column
+export const Narrow: Story = {
   render: () => (
-    <div>
-      <div style={{ marginBottom: '2rem' }}>
-        <h3 style={{ marginBottom: '1rem' }}>Desktop View</h3>
-        <ButtonContainer>
-          <div style={{ display: 'flex', gap: '1rem' }}>
-            <Button variant="primary" size="lg">Primary Action</Button>
-            <Button variant="secondary" size="lg">Secondary Action</Button>
-          </div>
-        </ButtonContainer>
-      </div>
-      <div>
-        <h3 style={{ marginBottom: '1rem' }}>Mobile View</h3>
-        <ButtonContainer>
-          <div style={{ 
-            maxWidth: '320px',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '0.5rem'
-          }}>
-            <Button variant="primary">Primary Action</Button>
-            <Button variant="secondary">Secondary Action</Button>
-          </div>
-        </ButtonContainer>
-      </div>
+    <div style={{ maxWidth: 320, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+      <Button>Primary action</Button>
+      <Button variant="secondary">Secondary action</Button>
     </div>
-  )
-};
-
-// Accessibility Example
-export const Accessibility: Story = {
-  render: () => (
-    <ButtonContainer>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'flex-start' }}>
-        <Button 
-          icon="mdi:account" 
-          ariaLabel="User profile"
-        />
-        <Button
-          icon="mdi:delete"
-          variant="danger"
-          ariaLabel="Delete item"
-        >
-          Delete
-        </Button>
-        <Button
-          variant="success"
-          icon="mdi:check"
-          ariaLabel="Confirm selection"
-          type="submit"
-        >
-          Confirm
-        </Button>
-      </div>
-    </ButtonContainer>
-  )
+  ),
 };

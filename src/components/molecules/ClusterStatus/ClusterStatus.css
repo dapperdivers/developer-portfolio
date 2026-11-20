@@ -1,6 +1,6 @@
 .cluster-status {
   font-family: var(--font-family-jetbrains);
-  color: var(--color-gray-400);
+  color: var(--color-text-muted);
 }
 
 .cluster-status__header {
@@ -10,7 +10,7 @@
   gap: var(--spacing-3);
   margin-bottom: var(--spacing-2);
   padding-bottom: var(--spacing-1);
-  border-bottom: 1px solid rgba(var(--color-cyan-rgb), 0.3);
+  border-bottom: 1px solid var(--surface-divider);
 }
 
 .cluster-status--compact .cluster-status__header {
@@ -19,18 +19,19 @@
 }
 
 .cluster-status__title {
-  font-size: 0.75rem;
-  font-weight: bold;
-  color: var(--color-cyan);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--letter-spacing-technical);
+  color: var(--color-primary);
 }
 
 .cluster-status__badge {
   display: inline-flex;
   align-items: center;
   gap: var(--spacing-2);
-  font-size: 0.6875rem;
-  letter-spacing: 0.04em;
-  color: var(--color-gray-300);
+  font-size: var(--font-size-xs);
+  letter-spacing: var(--letter-spacing-technical);
+  color: var(--color-text);
 }
 
 .cluster-status__dot {
@@ -41,8 +42,8 @@
 }
 
 .cluster-status__dot--live {
-  background: var(--color-cyan);
-  box-shadow: 0 0 6px rgba(var(--color-cyan-rgb), 0.7);
+  background: var(--color-primary);
+  box-shadow: 0 0 6px rgba(var(--color-primary-rgb), 0.7);
 }
 
 .cluster-status__dot--degraded {
@@ -56,8 +57,8 @@
 
 .cluster-status__note {
   margin: 0;
-  font-size: 0.6875rem;
-  color: var(--color-gray-400);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
 }
 
 .cluster-status__grid {
@@ -75,21 +76,21 @@
 }
 
 .cluster-status__label {
-  font-size: 0.625rem;
-  color: var(--color-gray-400);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
 }
 
 .cluster-status__value {
   margin: 0;
-  font-size: 0.6875rem;
-  font-weight: bold;
-  color: var(--color-cyan);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
 }
 
 .cluster-status__updated {
   margin: var(--spacing-2) 0 0;
-  font-size: 0.625rem;
-  color: var(--color-gray-400);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
 }
 
 /* Compact: readings flow in one wrapping line */

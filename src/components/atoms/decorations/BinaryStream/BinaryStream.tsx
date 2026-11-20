@@ -4,7 +4,7 @@ import { useMotionEnabled } from '@utils/motion';
 import './BinaryStream.css';
 
 export interface BinaryStreamProps extends Omit<HTMLMotionProps<'div'>, 'color'> {
-  /** Text color for the binary stream (default: #0F0) */
+  /** Text color for the binary stream (default: #64ffda) */
   color?: string;
   /** Font size for the characters (default: 20) */
   fontSize?: number;
@@ -26,7 +26,7 @@ export interface BinaryStreamProps extends Omit<HTMLMotionProps<'div'>, 'color'>
 
 const BinaryStream = (props: BinaryStreamProps) => {
   const {
-    color = '#0F0',
+    color = '#64ffda',
     fontSize = 20,
     speed = 1,
     moveSpeed = 0.3,

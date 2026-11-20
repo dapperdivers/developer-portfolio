@@ -20,7 +20,7 @@ const meta = {
     },
     variant: {
       control: { type: 'select' },
-      options: ['kitty', 'security', 'hacker'],
+      options: ['kitty', 'terminal', 'security', 'hacker'],
       description: 'Visual variant of the title bar'
     },
     interactive: {
@@ -42,11 +42,11 @@ const meta = {
   },
   render: (args) => (
     <div style={{
-      width: '600px',
-      border: '1px solid var(--color-border)',
-      borderRadius: '8px',
+      width: 'min(100%, 600px)',
+      border: '1px solid var(--surface-border)',
+      borderRadius: 'var(--radius-card)',
       overflow: 'hidden',
-      background: 'var(--color-background)'
+      background: 'var(--surface-card)'
     }}>
       <TerminalTitleBar {...args} />
       <div style={{
@@ -106,9 +106,9 @@ export const AllVariants: StoryFn<typeof TerminalTitleBar> = () => (
     <div>
       <h4 style={{ marginBottom: '1rem', color: 'var(--color-text-muted)' }}>Kitty Terminal</h4>
       <div style={{
-        width: '600px',
-        border: '1px solid var(--color-border)',
-        borderRadius: '8px',
+        width: 'min(100%, 600px)',
+        border: '1px solid var(--surface-border)',
+        borderRadius: 'var(--radius-card)',
         overflow: 'hidden'
       }}>
         <TerminalTitleBar variant="kitty" />
@@ -118,9 +118,9 @@ export const AllVariants: StoryFn<typeof TerminalTitleBar> = () => (
     <div>
       <h4 style={{ marginBottom: '1rem', color: 'var(--color-text-muted)' }}>Security Terminal</h4>
       <div style={{
-        width: '600px',
-        border: '1px solid var(--color-border)',
-        borderRadius: '8px',
+        width: 'min(100%, 600px)',
+        border: '1px solid var(--surface-border)',
+        borderRadius: 'var(--radius-card)',
         overflow: 'hidden'
       }}>
         <TerminalTitleBar variant="security" />
@@ -130,9 +130,9 @@ export const AllVariants: StoryFn<typeof TerminalTitleBar> = () => (
     <div>
       <h4 style={{ marginBottom: '1rem', color: 'var(--color-text-muted)' }}>Hacker Terminal</h4>
       <div style={{
-        width: '600px',
-        border: '1px solid var(--color-border)',
-        borderRadius: '8px',
+        width: 'min(100%, 600px)',
+        border: '1px solid var(--surface-border)',
+        borderRadius: 'var(--radius-card)',
         overflow: 'hidden'
       }}>
         <TerminalTitleBar variant="hacker" />

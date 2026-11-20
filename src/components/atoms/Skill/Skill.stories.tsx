@@ -132,8 +132,9 @@ const exampleSkills = [
 const SkillContainer = ({ children, style = {} }: { children: ReactNode; style?: CSSProperties }) => (
   <div style={{ 
     padding: '20px',
-    background: 'var(--color-background, #0a192f)',
-    borderRadius: '8px',
+    background: 'var(--color-background)',
+    border: '1px solid var(--surface-border)',
+    borderRadius: 'var(--radius-card)',
     ...style
   }}>
     {children}
@@ -142,8 +143,15 @@ const SkillContainer = ({ children, style = {} }: { children: ReactNode; style?:
 
 // Default skill
 export const Default: StoryFn = () => (
-  <SkillContainer>
-    <Skill skill={exampleSkills[0]} />
+  <SkillContainer style={{ maxWidth: '28rem' }}>
+    <h4 style={{ color: 'var(--color-text)', margin: '0 0 0.75rem', fontFamily: 'var(--font-family-jetbrains)', fontSize: 'var(--font-size-xs)', letterSpacing: 'var(--letter-spacing-technical)', textTransform: 'uppercase' }}>
+      Toolbox
+    </h4>
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+      {exampleSkills.map((skill, index) => (
+        <Skill key={skill.skillName} skill={skill} variant="security" showLevel index={index} />
+      ))}
+    </div>
   </SkillContainer>
 );
 
@@ -152,15 +160,15 @@ export const Sizes: StoryFn = () => (
   <SkillContainer>
     <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
       <div>
-        <h4 style={{ color: '#fff', marginBottom: '10px' }}>Small</h4>
+        <h4 style={{ color: 'var(--color-text)', marginBottom: '10px' }}>Small</h4>
         <Skill skill={exampleSkills[0]} size="sm" />
       </div>
       <div>
-        <h4 style={{ color: '#fff', marginBottom: '10px' }}>Medium</h4>
+        <h4 style={{ color: 'var(--color-text)', marginBottom: '10px' }}>Medium</h4>
         <Skill skill={exampleSkills[0]} size="md" />
       </div>
       <div>
-        <h4 style={{ color: '#fff', marginBottom: '10px' }}>Large</h4>
+        <h4 style={{ color: 'var(--color-text)', marginBottom: '10px' }}>Large</h4>
         <Skill skill={exampleSkills[0]} size="lg" />
       </div>
     </div>
@@ -172,11 +180,11 @@ export const Variants: StoryFn = () => (
   <SkillContainer>
     <div style={{ display: 'flex', gap: '24px', alignItems: 'flex-start' }}>
       <div>
-        <h4 style={{ color: '#fff', marginBottom: '10px' }}>Default</h4>
+        <h4 style={{ color: 'var(--color-text)', marginBottom: '10px' }}>Default</h4>
         <Skill skill={exampleSkills[0]} />
       </div>
       <div>
-        <h4 style={{ color: '#fff', marginBottom: '10px' }}>Security</h4>
+        <h4 style={{ color: 'var(--color-text)', marginBottom: '10px' }}>Security</h4>
         <Skill skill={exampleSkills[0]} variant="security" />
       </div>
     </div>
@@ -189,7 +197,7 @@ export const WithLevels: StoryFn = () => (
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))', gap: '20px' }}>
       {exampleSkills.slice(0, 5).map((skill, index) => (
         <div key={index}>
-          <h4 style={{ color: '#fff', marginBottom: '10px', fontSize: '14px' }}>Level {skill.level}</h4>
+          <h4 style={{ color: 'var(--color-text)', marginBottom: '10px', fontSize: '14px' }}>Level {skill.level}</h4>
           <Skill 
             skill={skill} 
             variant="security"
@@ -224,7 +232,7 @@ export const SkillGrid: StoryFn = () => (
   <SkillContainer style={{ maxWidth: '800px' }}>
     <div style={{ display: 'flex', flexDirection: 'column', gap: '30px' }}>
       <div>
-        <h4 style={{ color: '#fff', marginBottom: '15px' }}>Frontend</h4>
+        <h4 style={{ color: 'var(--color-text)', marginBottom: '15px' }}>Frontend</h4>
         <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
           {exampleSkills
             .filter(skill => skill.category === 'frontend')
@@ -241,7 +249,7 @@ export const SkillGrid: StoryFn = () => (
       </div>
       
       <div>
-        <h4 style={{ color: '#fff', marginBottom: '15px' }}>Backend</h4>
+        <h4 style={{ color: 'var(--color-text)', marginBottom: '15px' }}>Backend</h4>
         <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
           {exampleSkills
             .filter(skill => skill.category === 'backend')
@@ -258,7 +266,7 @@ export const SkillGrid: StoryFn = () => (
       </div>
       
       <div>
-        <h4 style={{ color: '#fff', marginBottom: '15px' }}>DevOps & Cloud</h4>
+        <h4 style={{ color: 'var(--color-text)', marginBottom: '15px' }}>DevOps & Cloud</h4>
         <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
           {exampleSkills
             .filter(skill => ['devops', 'cloud'].includes(skill.category))
@@ -281,7 +289,7 @@ export const SkillGrid: StoryFn = () => (
 export const Responsive: StoryFn = () => (
   <div>
     <SkillContainer style={{ maxWidth: '800px', marginBottom: '30px' }}>
-      <h4 style={{ color: '#fff', marginBottom: '15px' }}>Desktop View</h4>
+      <h4 style={{ color: 'var(--color-text)', marginBottom: '15px' }}>Desktop View</h4>
       <div style={{ 
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fit, minmax(80px, 1fr))',
@@ -300,7 +308,7 @@ export const Responsive: StoryFn = () => (
     </SkillContainer>
 
     <SkillContainer style={{ maxWidth: '300px' }}>
-      <h4 style={{ color: '#fff', marginBottom: '15px' }}>Mobile View</h4>
+      <h4 style={{ color: 'var(--color-text)', marginBottom: '15px' }}>Mobile View</h4>
       <div style={{ 
         display: 'grid',
         gridTemplateColumns: 'repeat(3, 1fr)',

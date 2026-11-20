@@ -3,6 +3,7 @@ import ProjectsCard from './ProjectsCard';
 import type { Project } from '@/types/portfolio';
 import { within, userEvent, expect } from 'storybook/test';
 import { placeholderImage } from '@stories-utils/placeholderImage';
+import { projects } from '@/portfolio';
 
 const meta = {
   title: 'Molecules/ProjectsCard',
@@ -48,33 +49,50 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-// Sample project data for stories
+// The real flagship project from the site data
+const realProject = projects[0];
+
+// Fictional samples for the stories that need a screenshot or a demo link
 const exampleProjects: Project[] = [
   {
-    name: "React Dashboard",
-    desc: "A comprehensive admin dashboard with multiple views and data visualization components",
+    name: "Release Dashboard",
+    desc: "Shows which build is live in each environment, who approved it and what changed, so a release review takes minutes instead of an afternoon.",
     image: placeholderImage(800, 450, { label: 'dashboard' }),
-    github: "https://github.com/username/react-dashboard",
-    link: "https://react-dashboard-demo.example.com",
-    stack: ["React", "Redux", "Material UI", "Chart.js"]
+    github: "https://github.com/example/release-dashboard",
+    link: "https://release-dashboard.example.com",
+    stack: ["TypeScript", "React", "PostgreSQL", "Grafana"]
   },
   {
-    name: "E-commerce Platform",
-    desc: "Full-featured online store with product listings, cart functionality, and payment integration",
-    image: placeholderImage(800, 450, { label: 'ecommerce', accent: 'blue' }),
-    github: "https://github.com/username/ecommerce-platform",
-    link: "https://ecommerce-demo.example.com",
-    stack: ["React", "Node.js", "MongoDB", "Stripe"]
+    name: "Freight Tracker",
+    desc: "Live shipment status for Northwind Freight dispatchers, with alerts when a load falls behind.",
+    image: placeholderImage(800, 450, { label: 'tracker', accent: 'blue' }),
+    github: "https://github.com/example/freight-tracker",
+    link: "https://freight-tracker.example.com",
+    stack: ["C#", ".NET", "SQL Server"]
   },
   {
-    name: "Weather App",
-    desc: "Simple weather application that shows current and forecasted weather conditions",
-    github: "https://github.com/username/weather-app",
-    stack: ["JavaScript", "CSS", "Weather API"]
+    name: "Cert Watcher",
+    desc: "Checks every public certificate the company owns and opens a ticket two weeks before one expires.",
+    github: "https://github.com/example/cert-watcher",
+    stack: ["Python", "Kubernetes"]
   }
 ];
 
-// Default story - Complete project with image and links
+// Default story: a real project from the site, as it appears on the page
+export const Default: Story = {
+  args: {
+    data: realProject,
+    index: 0,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByText(realProject.name)).toBeInTheDocument();
+    await expect(canvas.getByText('Kubernetes')).toBeInTheDocument();
+    await expect(canvas.getByText('Code')).toBeInTheDocument();
+  },
+};
+
+// Complete project with image and both links
 export const WithFullDetails: Story = {
   args: {
   data: exampleProjects[0],
@@ -85,7 +103,7 @@ export const WithFullDetails: Story = {
   
     await step('Initial render check', async () => {
       // Check title is rendered
-      await expect(canvas.getByText('React Dashboard')).toBeInTheDocument();
+      await expect(canvas.getByText('Release Dashboard')).toBeInTheDocument();
     
       // Check tech stack tags are rendered
       await expect(canvas.getByText('React')).toBeInTheDocument();
@@ -114,7 +132,7 @@ export const WithoutImage: Story = {
 // Project with no links: no empty button row
 export const WithoutLinks: Story = {
   args: {
-    data: { name: "Security Lab", desc: "Policy as code at admission and a segmented network behind my own firewall.", stack: ["Kyverno", "OPNsense"] },
+    data: projects[2],
     index: 0,
   },
   play: async ({ canvasElement }) => {
@@ -131,7 +149,7 @@ export const WithLongText: Story = {
     name: "Project with Very Long Title That Should Wrap to Multiple Lines",
     desc: "This is a project with an extremely long description that should be truncated or handled gracefully by the component. The description explains all the features and technologies used in great detail.",
     image: placeholderImage(800, 450, { label: 'code', accent: 'amber' }),
-    github: "https://github.com/username/long-title-project",
+    github: "https://github.com/example/long-title-project",
     link: "https://demo.example.com",
     stack: ["React", "GraphQL", "Node.js", "PostgreSQL", "Redis", "WebSockets", "AWS", "Docker", "Kubernetes"]
   },
@@ -148,10 +166,10 @@ export const WithLongText: Story = {
  * function MyComponent() {
  *   // Project data object with required properties
  *   const projectData = {
- *     name: "My Awesome Project",
+ *     name: "Release Dashboard",
  *     desc: "A description of the project",
  *     image: "/path/to/image.jpg", // Optional
- *     github: "https://github.com/username/repo", // Optional
+ *     github: "https://github.com/example/repo", // Optional
  *     link: "https://demo-link.com", // Optional
  *     stack: ["React", "Node.js", "MongoDB"] // Optional
  *   };
@@ -190,7 +208,7 @@ export const MissingRequiredProps: Story = {
   args: {
   // Deliberately partial: name and desc are left out
   data: {
-    github: "https://github.com/username/project",
+    github: "https://github.com/example/project",
     stack: ["JavaScript"]
   } as Project,
 }

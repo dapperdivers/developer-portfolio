@@ -1,131 +1,64 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import CertificationBadge from './CertificationBadge';
+import { educationInfo } from '@/portfolio';
+
+const certs = educationInfo[0].certifications ?? [];
+const practical = certs[1];
+const divemaster = certs[3];
 
 const meta = {
   title: 'Molecules/CertificationBadge',
   component: CertificationBadge,
   tags: ['autodocs'],
-  argTypes: {
-    animated: {
-      control: 'boolean',
-      description: 'Whether the badge lifts on hover',
-    },
-    name: {
-      control: 'text',
-      description: 'Name of the certification',
-    },
-    issuer: {
-      control: 'text',
-      description: 'Organization that issued the certification',
-    },
-    date: {
-      control: 'text',
-      description: 'Date of certification',
-    },
-    credentialId: {
-      control: 'text',
-      description: 'Credential ID if available',
-    },
-    iconName: {
-      control: 'text',
-      description: 'Icon name to override the default medal icon',
-    },
-    className: {
-      control: 'text',
-      description: 'Additional CSS classes',
-    },
-  },
   parameters: {
     docs: {
       description: {
-        component: 'CertificationBadge is a component that displays certification information, including the certification name, issuer, date, and credential ID.',
-      },
-    },
-    a11y: {
-      config: {
-        rules: [
-          { id: 'heading-order', enabled: true },
-        ],
+        component: 'One certification as a single row of the ruled list: the name on the left; issuer, date and ID in small mono on the right, with a hairline below. Use `as="li"` inside a `ul` (CertificationList does).',
       },
     },
   },
+  argTypes: {
+    name: { control: 'text', description: 'Name of the certification' },
+    issuer: { control: 'text', description: 'Issuing organization' },
+    date: { control: 'text', description: 'Date of certification' },
+    credentialId: { control: 'text', description: 'Credential ID' },
+    as: { control: 'select', options: ['div', 'li'], description: 'Element to render' },
+    className: { control: 'text', description: 'Additional CSS classes' },
+    animated: { control: 'boolean', description: 'Whether the row fades in' },
+  },
+  decorators: [(Story) => <div style={{ maxWidth: '40rem' }}><Story /></div>],
 } satisfies Meta<typeof CertificationBadge>;
 export default meta;
 
 type Story = StoryObj<typeof meta>;
-// Stories that render their own badges and take no args
-type RenderStory = StoryObj<typeof CertificationBadge>;
 
-
-// Default story
+/** A real certification, with a credential ID */
 export const Default: Story = {
-  args: {
-    name: 'AWS Certified Developer',
-    issuer: 'Amazon Web Services',
-    date: 'Jan 2023',
-    credentialId: 'AWS-DEV-12345',
-  }
+  args: { name: practical.name, issuer: practical.issuer, date: practical.date, credentialId: practical.credentialId },
 };
 
-// Without Credential ID
 export const WithoutCredentialId: Story = {
-  args: {
-    name: 'Certified Scrum Master',
-    issuer: 'Scrum Alliance',
-    date: 'Mar 2022',
-  }
+  args: { name: divemaster.name, issuer: divemaster.issuer, date: divemaster.date },
 };
 
-// Without Date and Credential
-export const MinimalInformation: Story = {
-  args: {
-    name: 'JavaScript Fundamentals',
-    issuer: 'Frontend Masters',
-  }
+export const NameOnly: Story = {
+  args: { name: 'Example Security Practitioner' },
 };
 
-// Multiple Certifications
-export const MultipleCertifications: RenderStory = {
-  render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-      <CertificationBadge 
-        name="React Developer" 
-        issuer="Meta" 
-        date="Feb 2023" 
-        credentialId="REACT-123" 
-      />
-      <CertificationBadge 
-        name="Node.js Specialist" 
-        issuer="OpenJS Foundation" 
-        date="Nov 2022" 
-      />
-      <CertificationBadge 
-        name="UI/UX Design" 
-        issuer="Google" 
-        date="Sep 2022" 
-        credentialId="DESIGN-456" 
-      />
-    </div>
-  )
-};
-
-// Long Certification Names
-export const LongCertificationNames: Story = {
+export const LongName: Story = {
   args: {
-    name: 'Advanced Machine Learning and Artificial Intelligence with TensorFlow and PyTorch Specialization',
-    issuer: 'Comprehensive Data Science Institute of Technology and Advanced Studies',
-    date: 'Dec 2022',
-    credentialId: 'MLAI-987654321',
-  }
-};
-
-// Responsive behavior example
-export const Responsive: Story = {
-  args: {
-    name: 'Mobile-Friendly Certification',
-    issuer: 'Responsive Design Institute',
-    date: 'June 2023',
-    credentialId: 'RWD-789',
+    name: 'Example Professional Cloud Solutions Architect with Advanced Networking and Security Specialization',
+    issuer: 'Example Certification Board',
+    date: 'Mar 2021',
+    credentialId: 'EX-104233',
   },
-  globals: { viewport: { value: 'mobile1', isRotated: false } },
+};
+
+export const Narrow: Story = {
+  args: { name: practical.name, issuer: practical.issuer, date: practical.date, credentialId: practical.credentialId },
+  decorators: [(Story) => <div style={{ maxWidth: '20rem' }}><Story /></div>],
+};
+
+export const ReducedMotion: Story = {
+  args: { name: practical.name, issuer: practical.issuer, date: practical.date, animated: false },
 };

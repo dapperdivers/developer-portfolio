@@ -5,11 +5,12 @@ import { within, userEvent, expect } from 'storybook/test';
 import PortfolioContext from '@context/PortfolioContext';
 import type { PortfolioTestValue } from '@context/PortfolioContext';
 import type { PortfolioData } from '@/types/portfolio';
+import { withSiteData } from '../../organisms/storyFixtures';
 
 // Context with only a name: no resume link, so the Resume link falls back to the default PDF
 const minimalPortfolioData: PortfolioTestValue = {
   greetings: {
-    name: "Jane Smith"
+    name: "Alex Example"
   }
 };
 
@@ -48,6 +49,7 @@ const meta = {
   title: 'Layout/Footer',
   component: Footer,
   tags: ['autodocs'],
+  decorators: [withSiteData()],
   parameters: {
     layout: 'fullscreen',
     docs: {
@@ -75,7 +77,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 /**
- * The footer with the site data from the global context
+ * The footer with the real site data
  */
 export const Default: Story = {
   play: async ({ canvasElement, step }) => {
@@ -159,7 +161,7 @@ export const MinimalData: Story = {
   decorators: [createPortfolioDecorator(minimalPortfolioData)],
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await expect(canvas.getByText(/Jane Smith/)).toBeInTheDocument();
+    await expect(canvas.getByText(/Alex Example/)).toBeInTheDocument();
     await expect(canvas.getByText("Resume")).toHaveAttribute('href', '/files/Cybersecurity_2025.pdf');
   },
 };

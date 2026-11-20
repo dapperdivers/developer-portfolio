@@ -1,25 +1,33 @@
+/**
+ * OffTheClock: a quiet strip on the shared card surface.
+ * Not interactive, so no hover lift.
+ */
+
 .off-the-clock {
   margin-top: var(--spacing-6);
-  padding: var(--spacing-4) var(--spacing-5);
-  border: 1px dashed rgba(100, 255, 218, 0.3);
-  border-radius: var(--border-radius-lg);
-  background: rgba(100, 255, 218, 0.03);
+  padding: var(--spacing-5);
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
 }
 
 .off-the-clock__title {
-  margin: 0 0 var(--spacing-3);
+  margin: 0 0 var(--spacing-4);
+  padding-bottom: var(--spacing-3);
+  border-bottom: 1px solid var(--surface-divider);
   color: var(--color-primary);
   font-family: var(--font-family-jetbrains);
-  font-size: 0.85rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--letter-spacing-technical);
   text-transform: uppercase;
 }
 
 .off-the-clock__list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: var(--spacing-4);
+  gap: var(--spacing-5);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -33,11 +41,13 @@
 
 .off-the-clock__name {
   color: var(--color-text);
-  font-weight: 600;
+  font-family: var(--font-family-base);
+  font-weight: var(--font-weight-semibold);
 }
 
 .off-the-clock__desc {
   color: var(--color-text-muted);
-  font-size: 0.9rem;
-  line-height: 1.5;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-sm);
+  line-height: 1.7;
 }

@@ -1,48 +1,54 @@
 /**
  * Feedback Quote Component Styles
+ * Reading text in Inter, upright, with small quotation marks as a cue.
  */
 
 .feedback-quote {
   position: relative;
-  padding: var(--spacing-4) var(--spacing-3);
-  margin-bottom: var(--spacing-5);
+  margin: 0;
+  padding: var(--spacing-1) 0;
 }
 
-.quote-icon {
+.feedback-quote .quote-icon {
   color: var(--color-primary);
-  opacity: 0.8;
-  font-size: 1.5rem;
-  margin-bottom: var(--spacing-2);
+  opacity: 0.6;
+  font-size: var(--font-size-sm);
 }
 
-.quote-content {
-  font-size: var(--font-size-base);
-  line-height: 1.8;
+.feedback-quote .quote-content {
+  margin: 0;
+  padding: 0 var(--spacing-6);
+  border: 0;
   color: var(--color-text);
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-sm);
+  font-style: normal;
+  line-height: 1.7;
+  letter-spacing: normal;
+  text-align: left;
+  white-space: pre-line;
   overflow-wrap: break-word;
-  word-wrap: break-word;
-  font-style: italic;
-  letter-spacing: 0.01em;
-  text-shadow: 0 0 1px rgba(255, 255, 255, 0.1);
+  text-shadow: none;
+}
+
+.feedback-quote .quote-content:focus-visible {
+  outline: none;
+  box-shadow: var(--ring-focus);
+  border-radius: var(--radius-control);
 }
 
 /* Add paragraph spacing within quotes */
-.quote-content p {
+.feedback-quote .quote-content p {
   margin-bottom: var(--spacing-3);
 }
 
-.quote-content p:last-child {
+.feedback-quote .quote-content p:last-child {
   margin-bottom: 0;
 }
 
 /* Responsive styles */
 @media (max-width: 768px) {
-  .quote-content {
-    font-size: var(--font-size-sm);
-    line-height: 1.7;
-  }
-  
-  .feedback-quote {
-    padding: var(--spacing-3) var(--spacing-2);
+  .feedback-quote .quote-content {
+    padding: 0 var(--spacing-5);
   }
 }

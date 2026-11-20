@@ -1,312 +1,81 @@
-import type { ReactNode } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { expect, fn, userEvent, within } from 'storybook/test';
 import DateBubble from './DateBubble';
+import { educationInfo } from '@/portfolio';
 
 const meta = {
   title: 'Atoms/DateBubble',
   component: DateBubble,
   tags: ['autodocs'],
   parameters: {
-    componentSubtitle: 'Futuristic date display with holographic effects and security levels',
     docs: {
       description: {
-        component: 'The DateBubble component presents dates in a cyberpunk-inspired, interactive format. It features holographic effects, scanning animations, and security level indicators. Perfect for timelines, security dashboards, and futuristic interfaces, it includes accessibility features, responsive design, and respects reduced motion preferences. The component supports various sizes, security levels, and visual variants with distinctive hover effects and keyboard navigation.'
-      }
-    }
+        component: 'A date in the shared mono metadata style: small, muted, technical letter spacing, no glow. The security and terminal variants add the inset chip surface; a click handler makes it a keyboard-operable button.',
+      },
+    },
   },
   argTypes: {
-    animated: {
-      control: 'boolean',
-      description: 'Whether the bubble fades in, scans and reacts to hover',
-    },
-    date: {
-      control: 'text',
-      description: 'Date text to display',
-      table: {
-        type: { summary: 'string' },
-        defaultValue: { summary: 'undefined' },
-      }
-    },
+    animated: { control: 'boolean', description: 'Whether the date fades in' },
+    date: { control: 'text', description: 'Date text to display' },
     level: {
       control: 'select',
       options: ['', 'low', 'medium', 'high', 'critical'],
-      description: 'Security level affecting the visual appearance',
-      table: {
-        type: { summary: 'string' },
-        defaultValue: { summary: '""' },
-      }
+      description: "Emphasis level. Only 'critical' changes colour, as a warning",
     },
     variant: {
       control: 'select',
       options: ['', 'security', 'terminal'],
-      description: 'Visual style variant',
-      table: {
-        type: { summary: 'string' },
-        defaultValue: { summary: '""' },
-      }
+      description: 'Plain text, or an inset chip',
     },
-    size: {
-      control: 'select',
-      options: ['sm', 'md', 'lg'],
-      description: 'Size of the bubble component',
-      table: {
-        type: { summary: 'string' },
-        defaultValue: { summary: '"md"' },
-      }
-    },
-    animation: {
-      description: 'Framer Motion animation props',
-      table: {
-        type: { summary: 'object' },
-        defaultValue: { summary: 'null' },
-      }
-    },
-    className: {
-      control: 'text',
-      description: 'Additional CSS classes',
-      table: {
-        type: { summary: 'string' },
-        defaultValue: { summary: '""' },
-      }
-    },
-    onClick: {
-      action: 'clicked',
-      description: 'Click handler function',
-      table: {
-        type: { summary: 'function' },
-        defaultValue: { summary: 'undefined' },
-      }
-    },
-    id: {
-      control: 'text',
-      description: 'Unique ID for ARIA relationships',
-      table: {
-        type: { summary: 'string' },
-        defaultValue: { summary: 'undefined' },
-      }
-    },
-    ariaLabel: {
-      control: 'text',
-      description: 'Custom ARIA label',
-      table: {
-        type: { summary: 'string' },
-        defaultValue: { summary: 'undefined' },
-      }
-    }
-  }
-} satisfies Meta<typeof DateBubble>;
-
-export default meta;
-type Story = StoryObj<typeof meta>;
-// Showcase stories render fixed examples and take no args.
-type ShowcaseStory = StoryObj<typeof DateBubble>;
-
-// Container component for consistent display
-const BubbleContainer = ({ children, background = 'var(--color-background)' }: { children: ReactNode; background?: string }) => (
-  <div style={{
-    padding: '2rem',
-    background,
-    borderRadius: '8px',
-    margin: '1rem 0'
-  }}>
-    {children}
-  </div>
-);
-
-// Default date bubble
-export const Default: Story = {
-  args: {
-    date: '2024',
-    size: 'md'
+    size: { control: 'select', options: ['sm', 'md', 'lg'], description: 'Size of the date text' },
+    className: { control: 'text', description: 'Additional CSS classes' },
   },
+} satisfies Meta<typeof DateBubble>;
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+/** The graduation date from the real site data */
+export const Default: Story = {
+  args: { date: educationInfo[0].duration, size: 'md' },
+};
+
+export const Sizes: Story = {
+  args: { date: 'Jan 2024' },
   render: (args) => (
-    <BubbleContainer>
-      <DateBubble {...args} />
-    </BubbleContainer>
-  )
-};
-
-// Size variations
-export const Sizes: ShowcaseStory = {
-  render: () => (
-    <BubbleContainer>
-      <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
-        <div>
-          <h4 style={{ marginBottom: '1rem', color: 'var(--color-text-muted)' }}>Small</h4>
-          <DateBubble date="2024" size="sm" />
-        </div>
-        <div>
-          <h4 style={{ marginBottom: '1rem', color: 'var(--color-text-muted)' }}>Medium</h4>
-          <DateBubble date="2024" size="md" />
-        </div>
-        <div>
-          <h4 style={{ marginBottom: '1rem', color: 'var(--color-text-muted)' }}>Large</h4>
-          <DateBubble date="2024" size="lg" />
-        </div>
-      </div>
-    </BubbleContainer>
-  )
-};
-
-// Security level variations
-export const SecurityLevels: ShowcaseStory = {
-  render: () => (
-    <BubbleContainer>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-        <div>
-          <h4 style={{ marginBottom: '1rem', color: 'var(--color-text-muted)' }}>Low Security</h4>
-          <DateBubble date="2024" level="low" variant="security" />
-        </div>
-        <div>
-          <h4 style={{ marginBottom: '1rem', color: 'var(--color-text-muted)' }}>Medium Security</h4>
-          <DateBubble date="2024" level="medium" variant="security" />
-        </div>
-        <div>
-          <h4 style={{ marginBottom: '1rem', color: 'var(--color-text-muted)' }}>High Security</h4>
-          <DateBubble date="2024" level="high" variant="security" />
-        </div>
-        <div>
-          <h4 style={{ marginBottom: '1rem', color: 'var(--color-text-muted)' }}>Critical Security</h4>
-          <DateBubble date="2024" level="critical" variant="security" />
-        </div>
-      </div>
-    </BubbleContainer>
-  )
-};
-
-// Visual variants
-export const Variants: ShowcaseStory = {
-  render: () => (
-    <BubbleContainer>
-      <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
-        <div>
-          <h4 style={{ marginBottom: '1rem', color: 'var(--color-text-muted)' }}>Default</h4>
-          <DateBubble date="2024" />
-        </div>
-        <div>
-          <h4 style={{ marginBottom: '1rem', color: 'var(--color-text-muted)' }}>Security</h4>
-          <DateBubble date="2024" variant="security" />
-        </div>
-        <div>
-          <h4 style={{ marginBottom: '1rem', color: 'var(--color-text-muted)' }}>Terminal</h4>
-          <DateBubble date="2024" variant="terminal" />
-        </div>
-      </div>
-    </BubbleContainer>
-  )
-};
-
-// Interactive examples
-export const Interactive: ShowcaseStory = {
-  render: () => (
-    <BubbleContainer>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-        <div>
-          <h4 style={{ marginBottom: '1rem', color: 'var(--color-text-muted)' }}>Clickable</h4>
-          <DateBubble 
-            date="2024" 
-            onClick={() => alert('DateBubble clicked!')}
-            ariaLabel="Click to view details for year 2024"
-          />
-        </div>
-        <div>
-          <h4 style={{ marginBottom: '1rem', color: 'var(--color-text-muted)' }}>With Animation</h4>
-          <DateBubble 
-            date="2024"
-            animation={{
-              initial: { scale: 0.9, opacity: 0 },
-              animate: { scale: 1, opacity: 1 },
-              transition: { duration: 0.5 }
-            }}
-          />
-        </div>
-      </div>
-    </BubbleContainer>
-  )
-};
-
-// Timeline example
-export const InTimeline: ShowcaseStory = {
-  render: () => (
-    <BubbleContainer>
-      <div className="timeline-entry" style={{ 
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '2rem',
-        position: 'relative'
-      }}>
-        <div style={{
-          position: 'absolute',
-          left: '50%',
-          top: '0',
-          bottom: '0',
-          width: '2px',
-          background: 'var(--color-border)',
-          transform: 'translateX(-50%)'
-        }} />
-        <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
-          <DateBubble date="2024" variant="security" level="critical" />
-          <span style={{ color: 'var(--color-text-muted)' }}>System Security Breach</span>
-        </div>
-        <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
-          <DateBubble date="2023" variant="security" level="high" />
-          <span style={{ color: 'var(--color-text-muted)' }}>Security Audit</span>
-        </div>
-        <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
-          <DateBubble date="2022" variant="security" level="low" />
-          <span style={{ color: 'var(--color-text-muted)' }}>System Implementation</span>
-        </div>
-      </div>
-    </BubbleContainer>
-  )
-};
-
-// Responsive example
-export const Responsive: ShowcaseStory = {
-  render: () => (
-    <div>
-      <div style={{ marginBottom: '2rem' }}>
-        <h3 style={{ marginBottom: '1rem' }}>Desktop View</h3>
-        <BubbleContainer>
-          <DateBubble date="2024" size="lg" variant="security" level="high" />
-        </BubbleContainer>
-      </div>
-      <div>
-        <h3 style={{ marginBottom: '1rem' }}>Mobile View</h3>
-        <BubbleContainer>
-          <div style={{ maxWidth: '320px' }}>
-            <DateBubble date="2024" size="sm" variant="security" level="high" />
-          </div>
-        </BubbleContainer>
-      </div>
+    <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
+      <DateBubble {...args} size="sm" />
+      <DateBubble {...args} size="md" />
+      <DateBubble {...args} size="lg" />
     </div>
-  )
+  ),
 };
 
-// Accessibility example
-export const Accessibility: ShowcaseStory = {
-  render: () => (
-    <BubbleContainer>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-        <div>
-          <h4 style={{ marginBottom: '1rem', color: 'var(--color-text-muted)' }}>With Custom ARIA Label</h4>
-          <DateBubble 
-            date="2024" 
-            ariaLabel="Security incident from 2024"
-            variant="security"
-            level="high"
-          />
-        </div>
-        <div>
-          <h4 style={{ marginBottom: '1rem', color: 'var(--color-text-muted)' }}>With ID for Relationships</h4>
-          <DateBubble 
-            date="2024"
-            id="timeline-2024"
-            variant="security"
-            level="medium"
-          />
-        </div>
-      </div>
-    </BubbleContainer>
-  )
+export const Chip: Story = {
+  args: { date: 'Apr 2022', variant: 'security' },
+};
+
+export const Terminal: Story = {
+  args: { date: 'Apr 2022', variant: 'terminal' },
+};
+
+/** A critical date is a warning, so it turns red */
+export const Critical: Story = {
+  args: { date: 'Expires Dec 2026', level: 'critical', variant: 'security' },
+};
+
+export const Clickable: Story = {
+  args: { date: 'Oct 2016', onClick: fn() },
+  play: async ({ canvasElement, args }) => {
+    const button = within(canvasElement).getByRole('button', { name: 'Date: Oct 2016' });
+    await userEvent.click(button);
+    await expect(args.onClick).toHaveBeenCalledTimes(1);
+    button.focus();
+    await userEvent.keyboard('{Enter}');
+    await expect(args.onClick).toHaveBeenCalledTimes(2);
+  },
+};
+
+export const ReducedMotion: Story = {
+  args: { date: 'Jan 2015', animated: false },
 };

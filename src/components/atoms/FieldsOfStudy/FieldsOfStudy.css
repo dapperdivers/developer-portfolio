@@ -1,55 +1,36 @@
 /**
- * Fields of Study Component Styles
+ * Fields of Study: MAJOR and MINOR, side by side when there is room.
  */
 
 .fields-of-study {
-  margin-bottom: var(--spacing-3);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-3) var(--spacing-5);
+  min-width: 0;
+}
+
+.fields-of-study__field {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-3);
+  gap: var(--spacing-1);
+  flex: 1 1 10rem;
+  min-width: 0;
 }
 
 .field-label {
-  display: block;
+  font-family: var(--font-family-jetbrains);
   font-size: var(--font-size-xs);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: var(--color-text-muted);
-  margin-bottom: var(--spacing-1);
   font-weight: var(--font-weight-medium);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-technical);
+  color: var(--color-text-muted);
 }
 
-.major-container,
-.minor-container {
-  position: relative;
-}
-
-.major-value,
-.minor-value {
-  font-size: var(--font-size-md);
+.field-value {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
   font-weight: var(--font-weight-semibold);
-  padding-left: var(--spacing-2);
-}
-
-.major-value {
+  line-height: 1.4;
   color: var(--color-text);
-  border-left: 3px solid var(--color-primary-light);
-}
-
-.minor-value {
-  color: var(--color-primary);
-  border-left: 3px solid var(--color-primary-dark);
-}
-
-/* Responsive adaptations */
-@media (min-width: 768px) {
-  .fields-of-study {
-    flex-direction: row;
-    gap: var(--spacing-4);
-  }
-  
-  .major-container,
-  .minor-container {
-    flex: 1;
-  }
+  overflow-wrap: anywhere;
 }

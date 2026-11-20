@@ -5,6 +5,13 @@ const meta = {
   title: 'Molecules/FeedbackHighlight',
   component: FeedbackHighlight,
   tags: ['autodocs'],
+  decorators: [
+    (Story) => (
+      <div style={{ maxWidth: '480px' }}>
+        <Story />
+      </div>
+    ),
+  ],
   argTypes: {
     text: {
       control: 'text',
@@ -16,13 +23,13 @@ const meta = {
     },
     animated: {
       control: 'boolean',
-      description: 'Whether to play the entrance and hover animations',
+      description: 'Whether to play the entrance animation',
     },
   },
   parameters: {
     docs: {
       description: {
-        component: 'Pull quote that highlights the key line of a testimonial. Renders nothing without text.',
+        component: 'Pull quote that highlights the key line of a testimonial, on the inset surface with a cyan rule. Renders nothing without text.',
       },
     },
   },
@@ -31,10 +38,10 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-// Short pull quote
+// The pull quote from the real testimonial
 export const Default: Story = {
   args: {
-    text: 'Finds the root cause, fixes it, and leaves the runbook better than he found it.',
+    text: 'He has my highest recommendation.',
   }
 };
 
@@ -42,6 +49,14 @@ export const Default: Story = {
 export const LongHighlight: Story = {
   args: {
     text: 'During the incident he rebuilt the detection pipeline overnight, closed the gap that let the alert slip through, and walked the whole team through the change the next morning.',
+  }
+};
+
+// With the entrance animation off
+export const WithoutAnimation: Story = {
+  args: {
+    text: 'He has my highest recommendation.',
+    animated: false,
   }
 };
 

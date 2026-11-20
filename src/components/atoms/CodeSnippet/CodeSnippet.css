@@ -1,21 +1,16 @@
-/**
- * CodeSnippet Component Styles
- * Styling for the CodeSnippet component with syntax highlighting and cyberpunk effects
- * Note: Animations are now managed by framer-motion through the AnimationContext
- */
-
-/* Base styles */
+/* CodeSnippet: code panel with simple token colours on the shared card surface */
 .code-snippet {
   font-family: var(--font-family-jetbrains);
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-card);
   overflow: hidden;
   margin: 0;
   position: relative;
-  box-shadow: var(--box-shadow-sm);
+  box-shadow: var(--shadow-card);
   width: 100%;
   max-width: 100%;
-  border: 1px solid var(--color-border);
-  /* Transition removed - now handled by framer-motion */
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  color: var(--color-text);
 }
 
 .code-snippet pre {
@@ -24,14 +19,11 @@
   overflow: auto;
   max-height: 400px;
   scrollbar-width: thin;
-  scrollbar-color: var(--color-border) transparent;
+  scrollbar-color: var(--surface-border) transparent;
   text-align: left;
   white-space: pre-wrap;
   word-break: break-word;
-  word-wrap: break-word;
   line-height: var(--line-height-code);
-  position: relative;
-  z-index: 2;
 }
 
 .code-snippet code {
@@ -39,97 +31,35 @@
   font-family: var(--font-family-jetbrains);
   letter-spacing: var(--letter-spacing-technical);
   tab-size: 2;
-  position: relative;
 }
 
-/* Theme variations */
-.code-snippet-dark {
-  background-color: rgba(var(--color-navy-rgb), 0.85);
-  color: var(--color-text);
-  backdrop-filter: blur(2px);
-}
-
+/* Themes: both stay dark; "light" is the raised navy */
 .code-snippet-light {
-  background-color: var(--color-background-alt);
-  color: var(--color-text);
+  background: var(--surface-card-raised);
 }
 
-/* Visual variants with enhanced cyberpunk styling */
+/* Variants */
 .code-snippet-security {
-  border-color: var(--color-primary);
-  box-shadow: 0 0 15px rgba(var(--color-primary-rgb), 0.2);
-  border-width: 1.5px;
-  background: linear-gradient(
-    rgba(var(--color-navy-rgb), 0.9),
-    rgba(var(--color-navy-rgb), 0.85)
-  );
-}
-
-.code-snippet-security::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    repeating-linear-gradient(
-      to bottom,
-      transparent,
-      transparent 2px,
-      rgba(var(--color-primary-rgb), 0.03) 2px,
-      rgba(var(--color-primary-rgb), 0.03) 4px
-    );
-  pointer-events: none;
-  z-index: 1;
-  opacity: 0.5;
+  border-color: var(--surface-border-strong);
 }
 
 .code-snippet-terminal {
-  border-color: var(--color-info);
-  box-shadow: 0 0 15px rgba(var(--color-info-rgb), 0.2);
-  border-width: 1.5px;
-  background: linear-gradient(
-    rgba(0, 20, 40, 0.95),
-    rgba(0, 20, 40, 0.9)
-  );
+  background: var(--surface-inset);
+  border-color: var(--surface-border);
 }
 
-.code-snippet-terminal::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    repeating-linear-gradient(
-      to bottom,
-      transparent,
-      transparent 2px,
-      rgba(var(--color-info-rgb), 0.03) 2px,
-      rgba(var(--color-info-rgb), 0.03) 4px
-    );
-  pointer-events: none;
-  z-index: 1;
-  opacity: 0.5;
+.code-snippet-terminal code {
+  color: var(--color-success);
 }
 
-/* Syntax highlighting tokens with enhanced cyberpunk colors */
+/* Tokens */
 .code-snippet .token-keyword {
   color: var(--color-primary);
   font-weight: var(--font-weight-medium);
-  text-shadow: 0 0 4px rgba(var(--color-primary-rgb), 0.6);
-}
-
-.code-snippet-terminal .token-keyword {
-  color: var(--color-info);
-  text-shadow: 0 0 4px rgba(var(--color-info-rgb), 0.6);
 }
 
 .code-snippet .token-string {
   color: var(--color-success);
-  text-shadow: 0 0 4px rgba(var(--color-success-rgb), 0.4);
 }
 
 .code-snippet .token-comment {
@@ -139,50 +69,16 @@
 
 .code-snippet .token-function {
   color: var(--color-warning);
-  text-shadow: 0 0 4px rgba(var(--color-warning-rgb), 0.4);
 }
 
-/* Glitch effect for certain elements - Static styling only, animation now handled by framer-motion */
-.code-snippet .token-keyword,
-.code-snippet .token-function {
-  position: relative;
-  display: inline-block;
-}
-
-/* 
- * Removed CSS animation for token glitching
- * Now implemented using framer-motion in the component
- */
-.code-snippet .token-keyword::after,
-.code-snippet .token-function::after {
-  content: attr(data-content, '');
-  position: absolute;
-  left: 0;
-  top: 0;
-  color: inherit;
-  background: transparent;
-  overflow: hidden;
-  clip: rect(0, 900px, 0, 0);
-  /* animation removed - now handled by framer-motion */
-  opacity: 0.3;
-  text-shadow: none;
-}
-
-/* 
- * Keyframes removed - now implemented with framer-motion variants
- * @keyframes noise-anim {...} 
- */
-
-/* Decorative code snippets used as background elements */
+/* Decorative snippets used as background elements */
 .code-snippet[aria-hidden="true"] {
   opacity: 0.5;
   max-width: 200px;
-  /* Hover transitions now handled by framer-motion */
 }
 
 .code-snippet[aria-hidden="true"]:hover {
   opacity: 0.8;
-  /* Transition handled by framer-motion */
 }
 
 .code-snippet[aria-hidden="true"] pre {
@@ -192,22 +88,6 @@
 
 .code-snippet[aria-hidden="true"] code {
   font-size: var(--font-size-xs);
-}
-
-.code-snippet[aria-hidden="true"]::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, 
-    var(--color-info), 
-    var(--color-primary), 
-    var(--color-danger)
-  );
-  box-shadow: 0 0 10px rgba(var(--color-primary-rgb), 0.7);
-  /* Matrix scan animation removed - now handled by framer-motion */
 }
 
 @media (max-width: 768px) {
@@ -222,12 +102,8 @@
 }
 
 .code-snippet:focus-visible {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
-}
-
-.code-snippet-terminal:focus-visible {
-  outline-color: var(--color-info);
+  box-shadow: var(--ring-focus);
+  outline: none;
 }
 
 .sr-only {
@@ -240,22 +116,4 @@
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border-width: 0;
-}
-
-/* Respect user preferences for reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  .code-snippet {
-    /* No transitions needed as framer-motion handles reduced motion preferences through AnimationContext */
-  }
-  
-  .code-snippet[aria-hidden="true"]::after,
-  .code-snippet .token-keyword::after,
-  .code-snippet .token-function::after {
-    /* Animations removed - now controlled by AnimationContext with reduced motion detection */
-  }
-  
-  .code-snippet[aria-hidden="true"],
-  .code-snippet[aria-hidden="true"]:hover {
-    /* Transitions removed - now handled by framer-motion */
-  }
 }

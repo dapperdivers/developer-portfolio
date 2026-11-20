@@ -1,14 +1,14 @@
 /**
- * Enhanced Feedback Card Component Styles
- * 
- * This file contains container and decorative styles for the FeedbackCard component.
- * Specific functional styles for sub-components are in their respective CSS files:
+ * Feedback Card Component Styles
+ *
+ * Container styles for the FeedbackCard. The card sits on the shared card
+ * surface; specific styles for the parts are in their own CSS files:
  * - RatingStars.css
- * - FeedbackQuote.css 
+ * - FeedbackQuote.css
  * - FeedbackAuthor.css
  * - FeedbackHighlight.css
- * 
- * Animations are now managed by framer-motion through AnimationContext
+ *
+ * Entry animation is handled by framer-motion.
  */
 
 /* Card container styles */
@@ -19,55 +19,30 @@
   margin-left: auto;
   margin-right: auto;
   margin-bottom: var(--spacing-5);
-  perspective: 1000px;
 }
 
-/* Card styling */
-.feedback-card {
-  border-radius: var(--border-radius-lg);
-  border: 1px solid rgba(100, 255, 218, 0.1);
+/* Shared card surface (not interactive, so no hover lift) */
+.feedback-card-wrapper .feedback-card.card {
+  height: 100%;
+  max-height: none;
+  padding: var(--spacing-5);
+  background: var(--surface-card);
+  backdrop-filter: none;
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
 }
 
 /* Main content container */
 .feedback-content {
   display: flex;
   flex-direction: column;
+  gap: var(--spacing-3);
   height: 100%;
-  max-height: 450px;
-  overflow-y: auto;
+  /* Grows with the quote like every other card; no inner scroll box */
+  max-height: none;
+  overflow: visible;
   position: relative;
-  z-index: 1;
-}
-
-/* Decorative elements */
-.feedback-decoration-top {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 120px;
-  height: 120px;
-  background: radial-gradient(circle, 
-    rgba(100, 255, 218, 0.05) 0%, 
-    rgba(100, 255, 218, 0) 70%
-  );
-  z-index: 0;
-  pointer-events: none;
-  border-radius: 50%;
-}
-
-.feedback-decoration-bottom {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 150px;
-  height: 150px;
-  background: radial-gradient(circle, 
-    rgba(100, 255, 218, 0.05) 0%, 
-    rgba(100, 255, 218, 0) 70%
-  );
-  z-index: 0;
-  pointer-events: none;
-  border-radius: 50%;
 }
 
 /* Responsive adjustments */
@@ -75,10 +50,8 @@
   .feedback-card-wrapper {
     min-width: 100%;
   }
-  
-  .feedback-decoration-top,
-  .feedback-decoration-bottom {
-    width: 80px;
-    height: 80px;
+
+  .feedback-card-wrapper .feedback-card.card {
+    padding: var(--spacing-4);
   }
 }

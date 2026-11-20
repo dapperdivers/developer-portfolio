@@ -44,7 +44,7 @@ const meta = {
   },
   decorators: [
     (Story) => (
-      <div style={{ maxWidth: 320, padding: 16, background: 'var(--color-background-alt)', border: '1px solid var(--color-cyan)', borderRadius: 8 }}>
+      <div style={{ maxWidth: 320, padding: 16, background: 'var(--surface-card-raised)', border: '1px solid var(--surface-border)', borderRadius: 'var(--radius-card)', boxShadow: 'var(--shadow-card)' }}>
         <Story />
       </div>
     ),

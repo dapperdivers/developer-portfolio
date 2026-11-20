@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { fn, expect, mocked, waitFor } from 'storybook/test';
+import { fn, expect, mocked, waitFor, within } from 'storybook/test';
 import ErrorBoundary from './ErrorBoundary';
 
 // Component that throws an error for testing
@@ -7,14 +7,14 @@ const BuggyComponent = ({ shouldThrow = false }: { shouldThrow?: boolean }) => {
   if (shouldThrow) {
     throw new Error('Test error from BuggyComponent');
   }
-  return <div>Working component</div>;
+  return <div style={{ color: 'var(--color-text)' }}>Working component</div>;
 };
 
 // Custom fallback component
 const CustomFallback = ({ error }: { error?: Error }) => (
-  <div style={{ padding: '20px', border: '2px solid red', borderRadius: '4px' }}>
-    <h3>Custom Error View</h3>
-    <p>{error?.message}</p>
+  <div>
+    <h3 style={{ margin: '0 0 var(--spacing-2)', color: 'var(--color-text)' }}>Custom error view</h3>
+    <p style={{ margin: 0, color: 'var(--color-text-muted)' }}>{error?.message ?? 'The weather panel is unavailable.'}</p>
   </div>
 );
 
@@ -25,7 +25,7 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component: 'A component that catches JavaScript errors in child components and displays a fallback UI.',
+        component: 'Catches JavaScript errors in child components and shows a fallback. The default fallback is a security-console error on the shared card surface: terminal title bar, ERR code, a short message, error details and a Retry button that renders the children again. A custom fallback is shown inside the same card.',
       },
     },
   },
@@ -64,6 +64,11 @@ export const WithError: Story = {
   args: {
     children: <BuggyComponent shouldThrow={true} />,
   },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(await canvas.findByText('ERR')).toBeInTheDocument();
+    await expect(canvas.getByRole('button', { name: 'Retry' })).toBeInTheDocument();
+  },
 };
 
 /**
@@ -83,9 +88,9 @@ export const WithFallbackFunction: Story = {
   args: {
     children: <BuggyComponent shouldThrow={true} />,
     fallback: (error) => (
-      <div style={{ padding: '20px', borderRadius: 'var(--border-radius-lg)', border: '1px solid var(--color-danger)', backgroundColor: 'rgba(var(--color-danger-rgb), 0.12)', color: 'var(--color-text)' }}>
-        <h3>Function Fallback</h3>
-        <p>{error?.message}</p>
+      <div>
+        <h3 style={{ margin: '0 0 var(--spacing-2)', color: 'var(--color-text)' }}>Function fallback</h3>
+        <p style={{ margin: 0, color: 'var(--color-text-muted)', fontFamily: 'var(--font-family-jetbrains)' }}>{error?.message}</p>
       </div>
     ),
   },
@@ -117,10 +122,10 @@ export const WithNestedComponents: Story = {
   args: {
     children: (
       <div>
-        <h4>Parent Component</h4>
+        <h4 style={{ color: 'var(--color-text)' }}>Parent component</h4>
         <BuggyComponent shouldThrow={false} />
         <div>
-          <h4>Nested Component</h4>
+          <h4 style={{ color: 'var(--color-text)' }}>Nested component</h4>
           <BuggyComponent shouldThrow={true} />
         </div>
       </div>

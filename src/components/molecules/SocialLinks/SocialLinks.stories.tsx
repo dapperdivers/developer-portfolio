@@ -5,18 +5,18 @@ import SocialLinks from './SocialLinks';
 // Sample link sets passed through the `links` prop
 const sampleLinks = {
   both: {
-    github: 'https://github.com/username',
-    linkedin: 'https://www.linkedin.com/in/username',
-    contactCard: '/contact/Example_Person.vcf',
+    github: 'https://github.com/DapperDivers',
+    linkedin: 'https://www.linkedin.com/in/dmackley',
+    contactCard: '/contact/Derek_Mackley.vcf',
   },
   githubOnly: {
-    github: 'https://github.com/username',
+    github: 'https://github.com/DapperDivers',
   },
   linkedinOnly: {
-    linkedin: 'https://www.linkedin.com/in/username',
+    linkedin: 'https://www.linkedin.com/in/dmackley',
   },
   contactCardOnly: {
-    contactCard: '/contact/Example_Person.vcf',
+    contactCard: '/contact/Derek_Mackley.vcf',
   },
 };
 
@@ -28,7 +28,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'A row of round icon links: GitHub, LinkedIn and a contact card download, all from the `links` prop. ' +
+          'A row of square icon links that match the Button system (--control-height, --radius-control, shared focus ring): GitHub, LinkedIn and a contact card download, all from the `links` prop. ' +
           'An icon shows only if its link is given. The block reads no site data itself. ' +
           'Each link has an `aria-label`, since the links are icon-only.',
       },
@@ -130,11 +130,11 @@ export const ContactCardOnly: Story = {
 };
 
 /**
- * Extra classes on the container, here a bordered panel around the icons
+ * Extra classes on the container
  */
 export const CustomStyling: Story = {
   args: {
-    className: 'p-4 rounded-lg border border-gray-700 bg-gray-900',
+    className: 'p-4 rounded-lg',
   },
 };
 

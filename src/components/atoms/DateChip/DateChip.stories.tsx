@@ -1,4 +1,3 @@
-import type { ReactNode } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import DateChip from './DateChip';
 
@@ -7,53 +6,25 @@ const meta = {
   component: DateChip,
   tags: ['autodocs'],
   parameters: {
-    componentSubtitle: 'Cybersecurity-themed date and duration display with professional styling',
+    componentSubtitle: 'A date or duration chip',
     docs: {
       description: {
-        component: 'The DateChip component presents dates and durations in a professional cybersecurity-themed format. It features dark navy backgrounds with cyan accents, technical typography using JetBrains Mono, subtle grid patterns, and enhanced readability. The component includes multiple security variants (default, secure, breach, critical) with appropriate visual styling and animations. Perfect for timelines, experience sections, and security dashboards.'
-      }
+        component:
+          'A chip-family pill for dates and durations: --radius-chip, --surface-inset fill, 1px border, JetBrains Mono xs text. Variants only change the tone: default cyan, secure green, breach amber, critical red.',
+      },
     },
     layout: 'centered',
-    backgrounds: {
-      default: 'dark',
-      values: [
-        { name: 'dark', value: '#0a192f' },
-        { name: 'navy', value: '#0f172a' },
-        { name: 'black', value: '#000000' }
-      ]
-    }
   },
   argTypes: {
-    animated: {
-      control: 'boolean',
-      description: 'Whether the chip lifts and glows on hover',
-    },
-    date: {
-      control: 'text',
-      description: 'The date or duration text to display',
-      table: {
-        type: { summary: 'string' },
-        defaultValue: { summary: 'undefined' },
-      }
-    },
+    animated: { control: 'boolean', description: 'Whether the chip fades in on mount' },
+    date: { control: 'text', description: 'The date or duration text to display' },
     variant: {
       control: { type: 'select' },
       options: ['default', 'secure', 'breach', 'critical'],
-      description: 'Visual variant for different security contexts',
-      table: {
-        type: { summary: 'string' },
-        defaultValue: { summary: 'default' },
-      }
+      description: 'Tone of the chip',
     },
-    className: {
-      control: 'text',
-      description: 'Additional CSS classes for custom styling',
-      table: {
-        type: { summary: 'string' },
-        defaultValue: { summary: '""' },
-      }
-    }
-  }
+    className: { control: 'text', description: 'Additional CSS classes' },
+  },
 } satisfies Meta<typeof DateChip>;
 
 export default meta;
@@ -61,330 +32,32 @@ type Story = StoryObj<typeof meta>;
 // Showcase stories render fixed examples and take no args.
 type ShowcaseStory = StoryObj<typeof DateChip>;
 
-// Container component for consistent display with cybersecurity theme
-const ChipContainer = ({ children, background = '#0a192f', title }: { children: ReactNode; background?: string; title?: string }) => (
-  <div style={{
-    padding: '2rem',
-    background,
-    borderRadius: '8px',
-    margin: '1rem 0',
-    border: '1px solid rgba(100, 255, 218, 0.2)',
-    backdropFilter: 'blur(10px)'
-  }}>
-    {title && (
-      <h4 style={{ 
-        marginBottom: '1rem', 
-        color: '#64ffda',
-        fontFamily: 'JetBrains Mono, monospace',
-        fontSize: '0.9rem',
-        fontWeight: 'bold',
-        textTransform: 'uppercase',
-        letterSpacing: '0.5px'
-      }}>
-        {title}
-      </h4>
-    )}
-    {children}
-  </div>
-);
-
-// Default cybersecurity date chip
 export const Default: Story = {
-  args: {
-    date: '2020 - 2024',
-    variant: 'default'
-  },
-  render: (args) => (
-    <ChipContainer title="Default Variant">
-      <DateChip {...args} />
-    </ChipContainer>
-  )
+  args: { date: '2020 - 2024', variant: 'default' },
 };
 
-// Security Variants Showcase
-export const SecurityVariants: ShowcaseStory = {
+export const Variants: ShowcaseStory = {
   render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-      <ChipContainer title="Default - Standard Security Level">
-        <DateChip date="2020 - 2024" variant="default" />
-      </ChipContainer>
-      <ChipContainer title="Secure - Enhanced Security Level">
-        <DateChip date="2022 - Present" variant="secure" />
-      </ChipContainer>
-      <ChipContainer title="Breach - Security Warning Level">
-        <DateChip date="Security Event" variant="breach" />
-      </ChipContainer>
-      <ChipContainer title="Critical - Critical Security Level">
-        <DateChip date="Incident Alert" variant="critical" />
-      </ChipContainer>
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center' }}>
+      <DateChip date="2020 - Present" variant="default" />
+      <DateChip date="Verified 2025" variant="secure" />
+      <DateChip date="Incident 2024" variant="breach" />
+      <DateChip date="Critical 2024" variant="critical" />
     </div>
-  )
+  ),
 };
 
-// Date Format Examples
-export const DateFormats: ShowcaseStory = {
+export const Formats: ShowcaseStory = {
   render: () => (
-    <ChipContainer title="Various Date Formats">
-      <div style={{ 
-        display: 'flex', 
-        flexDirection: 'column', 
-        gap: '1.5rem',
-        alignItems: 'flex-start'
-      }}>
-        <div>
-          <p style={{ 
-            marginBottom: '0.5rem', 
-            color: 'rgba(100, 255, 218, 0.8)',
-            fontFamily: 'JetBrains Mono, monospace',
-            fontSize: '0.8rem'
-          }}>
-            Year Range
-          </p>
-          <DateChip date="2020 - 2024" />
-        </div>
-        <div>
-          <p style={{ 
-            marginBottom: '0.5rem', 
-            color: 'rgba(100, 255, 218, 0.8)',
-            fontFamily: 'JetBrains Mono, monospace',
-            fontSize: '0.8rem'
-          }}>
-            Single Year
-          </p>
-          <DateChip date="2024" />
-        </div>
-        <div>
-          <p style={{ 
-            marginBottom: '0.5rem', 
-            color: 'rgba(100, 255, 218, 0.8)',
-            fontFamily: 'JetBrains Mono, monospace',
-            fontSize: '0.8rem'
-          }}>
-            Present Date
-          </p>
-          <DateChip date="2022 - Present" />
-        </div>
-        <div>
-          <p style={{ 
-            marginBottom: '0.5rem', 
-            color: 'rgba(100, 255, 218, 0.8)',
-            fontFamily: 'JetBrains Mono, monospace',
-            fontSize: '0.8rem'
-          }}>
-            Month Range
-          </p>
-          <DateChip date="Jan 2023 - Dec 2023" />
-        </div>
-      </div>
-    </ChipContainer>
-  )
-};
-
-// Duration Format Examples
-export const DurationFormats: ShowcaseStory = {
-  render: () => (
-    <ChipContainer title="Duration Formats">
-      <div style={{ 
-        display: 'flex', 
-        flexDirection: 'column', 
-        gap: '1.5rem',
-        alignItems: 'flex-start'
-      }}>
-        <div>
-          <p style={{ 
-            marginBottom: '0.5rem', 
-            color: 'rgba(100, 255, 218, 0.8)',
-            fontFamily: 'JetBrains Mono, monospace',
-            fontSize: '0.8rem'
-          }}>
-            Years
-          </p>
-          <DateChip date="3 Years" />
-        </div>
-        <div>
-          <p style={{ 
-            marginBottom: '0.5rem', 
-            color: 'rgba(100, 255, 218, 0.8)',
-            fontFamily: 'JetBrains Mono, monospace',
-            fontSize: '0.8rem'
-          }}>
-            Months
-          </p>
-          <DateChip date="6 Months" />
-        </div>
-        <div>
-          <p style={{ 
-            marginBottom: '0.5rem', 
-            color: 'rgba(100, 255, 218, 0.8)',
-            fontFamily: 'JetBrains Mono, monospace',
-            fontSize: '0.8rem'
-          }}>
-            Combined Duration
-          </p>
-          <DateChip date="2 Years 3 Months" />
-        </div>
-      </div>
-    </ChipContainer>
-  )
-};
-
-// Security Timeline Example
-export const SecurityTimeline: ShowcaseStory = {
-  render: () => (
-    <ChipContainer title="Cybersecurity Timeline Example">
-      <div style={{ 
-        display: 'flex', 
-        flexDirection: 'column', 
-        gap: '1.5rem',
-        position: 'relative'
-      }}>
-        {/* Timeline line */}
-        <div style={{
-          position: 'absolute',
-          left: '50%',
-          top: '0',
-          bottom: '0',
-          width: '2px',
-          background: 'linear-gradient(to bottom, rgba(100, 255, 218, 0.6), rgba(100, 255, 218, 0.2))',
-          transform: 'translateX(-50%)',
-          borderRadius: '1px'
-        }} />
-        
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'relative' }}>
-          <DateChip date="2024" variant="secure" />
-          <span style={{ 
-            color: '#e6f1ff', 
-            fontFamily: 'JetBrains Mono, monospace',
-            fontSize: '0.9rem'
-          }}>
-            Security Certification Achieved
-          </span>
-        </div>
-        
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'relative' }}>
-          <DateChip date="2023" variant="breach" />
-          <span style={{ 
-            color: '#e6f1ff', 
-            fontFamily: 'JetBrains Mono, monospace',
-            fontSize: '0.9rem'
-          }}>
-            Security Incident Response
-          </span>
-        </div>
-        
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'relative' }}>
-          <DateChip date="2022" variant="default" />
-          <span style={{ 
-            color: '#e6f1ff', 
-            fontFamily: 'JetBrains Mono, monospace',
-            fontSize: '0.9rem'
-          }}>
-            Security Training Completed
-          </span>
-        </div>
-      </div>
-    </ChipContainer>
-  )
-};
-
-// Interactive Playground
-export const Playground: Story = {
-  args: {
-    date: '2020 - Present',
-    variant: 'default'
-  },
-  render: (args) => (
-    <ChipContainer title="Interactive Playground">
-      <div style={{ textAlign: 'center' }}>
-        <DateChip {...args} />
-        <p style={{ 
-          marginTop: '1rem', 
-          color: 'rgba(100, 255, 218, 0.7)',
-          fontFamily: 'JetBrains Mono, monospace',
-          fontSize: '0.8rem'
-        }}>
-          Hover to see cybersecurity effects • Try different variants above
-        </p>
-      </div>
-    </ChipContainer>
-  )
-};
-
-// Responsive Example
-export const Responsive: ShowcaseStory = {
-  render: () => (
-    <div>
-      <ChipContainer title="Desktop View">
-        <DateChip date="2020 - Present" variant="secure" />
-      </ChipContainer>
-      
-      <ChipContainer title="Mobile View">
-        <div style={{ maxWidth: '320px' }}>
-          <DateChip date="2020 - Present" variant="secure" />
-        </div>
-      </ChipContainer>
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center' }}>
+      <DateChip date="2024" />
+      <DateChip date="Jan 2022 - Present" />
+      <DateChip date="3 yrs 4 mos" />
+      <DateChip date="Q4 2025" />
     </div>
-  )
+  ),
 };
 
-// Security Dashboard Grid
-export const SecurityDashboard: ShowcaseStory = {
-  render: () => (
-    <ChipContainer title="Security Dashboard Layout">
-      <div style={{ 
-        display: 'grid', 
-        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-        gap: '1.5rem',
-        padding: '1rem'
-      }}>
-        <div style={{ textAlign: 'center' }}>
-          <DateChip date="Last Scan" variant="secure" />
-          <p style={{ 
-            marginTop: '0.5rem', 
-            color: 'rgba(100, 255, 218, 0.7)',
-            fontSize: '0.8rem',
-            fontFamily: 'JetBrains Mono, monospace'
-          }}>
-            System Secure
-          </p>
-        </div>
-        
-        <div style={{ textAlign: 'center' }}>
-          <DateChip date="Threat Detected" variant="breach" />
-          <p style={{ 
-            marginTop: '0.5rem', 
-            color: 'rgba(255, 204, 0, 0.8)',
-            fontSize: '0.8rem',
-            fontFamily: 'JetBrains Mono, monospace'
-          }}>
-            Warning Level
-          </p>
-        </div>
-        
-        <div style={{ textAlign: 'center' }}>
-          <DateChip date="Critical Alert" variant="critical" />
-          <p style={{ 
-            marginTop: '0.5rem', 
-            color: 'rgba(255, 45, 85, 0.8)',
-            fontSize: '0.8rem',
-            fontFamily: 'JetBrains Mono, monospace'
-          }}>
-            Immediate Action
-          </p>
-        </div>
-        
-        <div style={{ textAlign: 'center' }}>
-          <DateChip date="Next Update" variant="default" />
-          <p style={{ 
-            marginTop: '0.5rem', 
-            color: 'rgba(230, 241, 255, 0.8)',
-            fontSize: '0.8rem',
-            fontFamily: 'JetBrains Mono, monospace'
-          }}>
-            Scheduled
-          </p>
-        </div>
-      </div>
-    </ChipContainer>
-  )
+export const WithoutAnimation: Story = {
+  args: { date: '2022 - Present', animated: false },
 };

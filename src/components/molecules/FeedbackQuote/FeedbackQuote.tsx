@@ -26,7 +26,7 @@ const FeedbackQuote = ({ text, className = "", animated = true }: FeedbackQuoteP
   const quoteIconVariants: Variants = {
     hidden: { opacity: 0, scale: 0 },
     visible: {
-      opacity: 0.8,
+      opacity: 0.6,
       scale: 1,
       transition: { duration: 0.5, type: "spring" }
     }
@@ -43,7 +43,7 @@ const FeedbackQuote = ({ text, className = "", animated = true }: FeedbackQuoteP
 
   return (
     <motion.div 
-      className={`relative grow mb-5 feedback-quote ${className}`}
+      className={`feedback-quote ${className}`}
       initial={shouldAnimate ? "hidden" : "visible"}
       animate="visible"
       variants={shouldAnimate ? fadeInVariants : {}}
@@ -54,13 +54,13 @@ const FeedbackQuote = ({ text, className = "", animated = true }: FeedbackQuoteP
         animate="visible"
       >
         <FaQuoteLeft 
-          className="text-text-muted text-lg absolute top-0 left-0 quote-icon" 
+          className="quote-icon absolute top-0 left-0" 
           aria-hidden="true" 
         />
       </motion.div>
       
       <motion.p 
-        className="pl-7 pr-7 text-text italic text-sm leading-relaxed relative border-l border-primary quote-content" 
+        className="quote-content" 
         tabIndex={0}
         variants={shouldAnimate ? contentVariants : {}}
       >
@@ -73,7 +73,7 @@ const FeedbackQuote = ({ text, className = "", animated = true }: FeedbackQuoteP
         animate="visible"
       >
         <FaQuoteRight 
-          className="text-text-muted text-lg absolute bottom-0 right-0 quote-icon" 
+          className="quote-icon absolute bottom-0 right-0" 
           aria-hidden="true" 
         />
       </motion.div>

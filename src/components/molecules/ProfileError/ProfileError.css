@@ -1,83 +1,70 @@
-/* ProfileError Component Styles */
+/* ProfileError Component Styles: an error state on the shared card surface */
 
 .profile-error {
-  padding: var(--spacing-9) var(--spacing-6);
-  text-align: center;
+  width: 100%;
   max-width: 600px;
   margin: 0 auto;
+  padding: var(--spacing-8) var(--spacing-6);
+  text-align: center;
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
 }
 
+/* Errors may use red: the icon badge carries it */
 .profile-error__icon-container {
-  width: 64px;
-  height: 64px;
-  background-color: rgba(var(--color-primary-rgb), 0.3);
-  border-radius: var(--border-radius-circle);
+  width: 56px;
+  height: 56px;
+  background: rgba(var(--color-danger-rgb), 0.08);
+  border: 1px solid rgba(var(--color-danger-rgb), 0.45);
+  border-radius: var(--radius-card);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto var(--spacing-6);
+  margin: 0 auto var(--spacing-5);
 }
 
 .profile-error__icon {
-  font-size: var(--font-size-2xl);
-  color: var(--color-primary-light);
+  font-size: var(--font-size-xl);
+  color: var(--color-danger);
 }
 
 .profile-error__title {
-  font-size: var(--font-size-2xl);
-  font-weight: var(--font-weight-bold);
-  margin-bottom: var(--spacing-4);
-  color: var(--color-white);
+  margin: 0 0 var(--spacing-3);
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
 }
 
 .profile-error__message {
-  font-size: var(--font-size-lg);
-  color: var(--color-offwhite);
-  margin-bottom: var(--spacing-8);
+  margin: 0 0 var(--spacing-6);
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  color: var(--color-text-muted);
   line-height: var(--line-height-base);
-}
-
-.profile-error__button {
-  padding: var(--spacing-2) var(--spacing-6);
-  font-weight: var(--font-weight-semibold);
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .profile-error {
-    padding: var(--spacing-8) var(--spacing-4);
+    padding: var(--spacing-6) var(--spacing-4);
   }
-  
+
   .profile-error__title {
-    font-size: var(--font-size-xl);
-  }
-  
-  .profile-error__message {
-    font-size: var(--font-size-md);
+    font-size: var(--font-size-lg);
   }
 }
 
 @media (max-width: 480px) {
   .profile-error {
-    padding: var(--spacing-6) var(--spacing-3);
+    padding: var(--spacing-5) var(--spacing-3);
   }
-  
+
   .profile-error__icon-container {
     width: 48px;
     height: 48px;
     margin-bottom: var(--spacing-4);
-  }
-  
-  .profile-error__icon {
-    font-size: var(--font-size-xl);
-  }
-  
-  .profile-error__title {
-    font-size: var(--font-size-lg);
-    margin-bottom: var(--spacing-3);
-  }
-  
-  .profile-error__message {
-    margin-bottom: var(--spacing-6);
   }
 }

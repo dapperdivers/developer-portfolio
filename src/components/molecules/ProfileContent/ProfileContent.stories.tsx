@@ -1,5 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import ProfileContent from './ProfileContent';
+import { greetings, profileLinks } from '@/portfolio';
+
+// The call to action the Contact card shows
+const callToAction = (
+  <>
+    Product security. AI agent security. Homelabs that got out of hand.
+    <br />
+    If one of those is your problem, email me.
+  </>
+);
 
 const meta = {
   title: 'Molecules/ProfileContent',
@@ -8,21 +18,18 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component: 'Profile content component that displays description, security fact, and contact information.',
+        component: 'Body of the Contact card: a short call to action, the social links and the email button. An optional security fact can be shown between them; the site does not use it.',
       },
     },
     componentSubtitle: 'A molecule component for profile content and contact information',
   },
   argTypes: {
     description: { control: 'text' },
-    securityFact: { control: 'text' },
     email: { control: 'text' },
     animate: { control: 'boolean' },
   },
   render: (args) => (
-    <div style={{ padding: '2rem', background: '#121212' }}>
-      <ProfileContent {...args} />
-    </div>
+    <ProfileContent {...args} />
   ),
 } satisfies Meta<typeof ProfileContent>;
 export default meta;
@@ -30,37 +37,37 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 /**
- * Default story shows the profile content with all information.
+ * The content as the Contact card shows it, with the real links.
  */
 export const Default: Story = {
   args: {
-    description: 'I am a security professional with expertise in secure architecture. Need to discuss secure architecture? My inbox is always open!',
-    securityFact: 'Multi-factor authentication adds an extra layer of security by requiring multiple forms of verification.',
-    email: 'contact@example.com',
+    description: callToAction,
+    email: greetings.emailAddress ?? 'contact@chelonianlabs.com',
+    links: profileLinks,
     animate: true,
   },
 };
 
 /**
- * Without security fact example.
+ * With the optional security fact line.
  */
-export const WithoutSecurityFact: Story = {
+export const WithSecurityFact: Story = {
   args: {
-    description: 'I am a security professional with expertise in secure architecture. Need to discuss secure architecture? My inbox is always open!',
-    securityFact: undefined,
-    email: 'contact@example.com',
+    description: callToAction,
+    securityFact: 'Two-factor authentication can prevent 99.9% of automated attacks.',
+    email: greetings.emailAddress ?? 'contact@chelonianlabs.com',
+    links: profileLinks,
     animate: true,
   },
 };
 
 /**
- * Different description example.
+ * A plain-string description, with no social links.
  */
-export const DifferentDescription: Story = {
+export const DescriptionOnly: Story = {
   args: {
-    description: 'Have a security concern? Want to discuss secure architecture? Or just want to talk tech? My inbox is secure and always open!',
-    securityFact: 'Zero Trust security is a model that requires strict identity verification for every person and device trying to access resources on a private network.',
-    email: 'security@example.com',
+    description: 'Have a security question or a homelab that got out of hand? My inbox is open.',
+    email: greetings.emailAddress ?? 'contact@chelonianlabs.com',
     animate: true,
   },
 };
@@ -70,9 +77,9 @@ export const DifferentDescription: Story = {
  */
 export const NoAnimation: Story = {
   args: {
-    description: 'I am a security professional with expertise in secure architecture. Need to discuss secure architecture? My inbox is always open!',
-    securityFact: 'Multi-factor authentication adds an extra layer of security by requiring multiple forms of verification.',
-    email: 'contact@example.com',
+    description: callToAction,
+    email: greetings.emailAddress ?? 'contact@chelonianlabs.com',
+    links: profileLinks,
     animate: false,
   },
 };

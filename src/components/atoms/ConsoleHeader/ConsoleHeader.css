@@ -1,88 +1,64 @@
-/**
- * ConsoleHeader Component Styles
- * Styling for the ConsoleHeader component with terminal aesthetics
- * Note: Animations are now managed by framer-motion through the AnimationContext
+/*
+ * ConsoleHeader: a terminal window on the shared card surface.
+ * Title bar uses the raised surface, the input row the card surface.
+ * Variants only change the accent (security: cyan, terminal: green).
  */
 
-/* Base styles */
 .console-header {
+  --console-accent: var(--color-primary);
   width: 100%;
-  border-radius: var(--border-radius-md);
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
   overflow: hidden;
   margin-bottom: var(--spacing-5);
-  transition: var(--transition-base);
+  transition: box-shadow var(--transition-base), border-color var(--transition-base);
   position: relative;
 }
 
-/* Subtle breathing animation to draw attention */
-.console-header::before {
-  content: '';
-  position: absolute;
-  top: -2px;
-  left: -2px;
-  right: -2px;
-  bottom: -2px;
-  background: linear-gradient(45deg, transparent, rgba(var(--color-cyan-rgb), 0.1), transparent);
-  border-radius: var(--border-radius-md);
-  z-index: -1;
-  opacity: 0;
-  transition: opacity var(--transition-slow);
+.console-header-security {
+  border-color: var(--surface-border-strong);
 }
 
-/* Interactive console styles - FIXED: Removed transform that causes disappearing */
+.console-header-terminal {
+  --console-accent: var(--color-success);
+}
+
 .console-header-interactive {
   cursor: text;
 }
 
 .console-header-interactive:hover {
-  /* REMOVED: transform: translateY(-1px); - This was causing the disappearing issue */
-  box-shadow: 0 8px 25px rgba(var(--color-cyan-rgb), 0.15);
+  box-shadow: var(--shadow-card-hover);
 }
 
-.console-header-interactive:hover::before {
-  opacity: 1;
-}
-
-.console-header-interactive .console-content {
-  cursor: text;
-}
-
-/* Hint animation for first-time users */
-.console-header-interactive .console-content {
-  animation: subtle-pulse 3s ease-in-out infinite;
-  animation-delay: 2s;
-}
-
-.console-header-interactive:hover .console-content,
-.console-header-interactive .console-content:focus-within {
-  animation: none;
-}
-
-@keyframes subtle-pulse {
-  0%, 100% { background-color: var(--color-navy); }
-  50% { background-color: rgba(var(--color-cyan-rgb), 0.05); }
-}
-
-/* Terminal header/title bar */
+/* Title bar */
 .console-header-top {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: var(--spacing-2) var(--spacing-4);
-  background-color: var(--color-background-alt);
-  border-bottom: 1px solid var(--color-border);
+  background-color: var(--surface-card-raised);
+  border-bottom: 1px solid var(--surface-divider);
 }
 
 .console-title {
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-xs);
   color: var(--color-text-muted);
-  font-family: var(--font-family-base);
+  font-family: var(--font-family-jetbrains);
+  letter-spacing: var(--letter-spacing-technical);
   text-align: center;
   flex-grow: 1;
   margin-right: var(--spacing-4);
   user-select: none;
 }
 
+.console-header-security .console-title {
+  color: var(--color-primary);
+}
+
+/* Input / command row */
 .console-content {
   display: flex;
   align-items: center;
@@ -90,48 +66,26 @@
   font-family: var(--font-family-jetbrains);
   line-height: var(--line-height-code);
   letter-spacing: var(--letter-spacing-technical);
-  background-color: var(--color-navy);
-  border-bottom: 1px solid var(--color-border);
+  background-color: transparent;
   white-space: nowrap;
   overflow-x: auto;
   overflow-y: hidden;
-  transition: var(--transition-base);
   position: relative;
 }
 
-.console-content::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--color-cyan), transparent);
-  opacity: 0;
-  transition: opacity var(--transition-base);
-}
-
-.console-header-interactive .console-content:hover::after,
-.console-header-interactive .console-content:focus-within::after {
-  opacity: 0.6;
-}
-
-/* Prompt styles */
 .console-prompt {
-  color: var(--color-level-low);
+  color: var(--console-accent);
   margin-right: var(--spacing-2);
   font-weight: var(--font-weight-medium);
   user-select: none;
   flex-shrink: 0;
 }
 
-/* Command styles */
 .console-command {
   color: var(--color-text);
   font-weight: var(--font-weight-normal);
 }
 
-/* Interactive input container */
 .console-input-container {
   position: relative;
   display: flex;
@@ -139,7 +93,6 @@
   flex-grow: 1;
 }
 
-/* Interactive input styles */
 .console-input {
   background: transparent;
   border: none;
@@ -154,41 +107,29 @@
   min-width: 0;
   padding: 0;
   margin: 0;
-  transition: var(--transition-fast);
 }
 
 .console-input::placeholder {
   color: var(--color-text-muted);
-  opacity: 0.5;
-  transition: var(--transition-fast);
+  opacity: 0.6;
 }
 
-.console-input:hover::placeholder {
-  opacity: 0.7;
-  color: var(--color-cyan);
-}
-
+.console-input:hover::placeholder,
 .console-input:focus::placeholder {
-  opacity: 0.3;
-  color: var(--color-cyan);
+  color: var(--console-accent);
+  opacity: 0.5;
 }
 
-.console-input:focus {
-  text-shadow: 0 0 2px rgba(var(--color-cyan-rgb), 0.3);
-}
-
-/* ENHANCED CURSOR STYLES - Now more visible and refined */
+/* Block cursor */
 .console-cursor {
   display: inline-block;
-  width: 10px; /* Slightly wider for better visibility */
-  height: 18px; /* Slightly taller for better visibility */
-  background-color: var(--color-info);
+  width: 10px;
+  height: 18px;
+  background-color: var(--console-accent);
   vertical-align: middle;
   margin-left: var(--spacing-1);
   flex-shrink: 0;
-  transition: var(--transition-fast);
-  box-shadow: 0 0 6px rgba(var(--color-info-rgb), 0.6); /* Enhanced glow */
-  border-radius: 1px; /* Slight rounding for elegance */
+  border-radius: 1px;
 }
 
 .console-cursor-input {
@@ -196,208 +137,38 @@
   margin-right: 2px;
 }
 
-/* Enhanced cursor visibility on focus */
-.console-header-interactive .console-content:focus-within .console-cursor {
-  background-color: var(--color-cyan);
-  box-shadow: 0 0 10px rgba(var(--color-cyan-rgb), 0.8);
-  width: 12px; /* Wider when focused */
-  height: 20px; /* Taller when focused */
-}
-
-/* Visual variants */
-.console-header-security .console-header-top {
-  background-color: var(--color-navy-dark, #0c1e2f);
-  border-color: var(--color-primary);
-}
-
-.console-header-security .console-title {
-  color: var(--color-primary);
-  font-weight: var(--font-weight-semibold);
-  letter-spacing: 0.5px;
-}
-
-.console-header-security .console-content {
-  background-color: var(--color-navy, #162b3d);
-  border-color: var(--color-cyan);
-  box-shadow: inset 0 0 10px rgba(var(--color-cyan-rgb), 0.1);
-  backdrop-filter: blur(10px);
-}
-
-.console-header-security:hover .console-content {
-  background-color: rgba(var(--color-navy-rgb), 0.9);
-  box-shadow: 
-    inset 0 0 15px rgba(var(--color-cyan-rgb), 0.15),
-    0 0 20px rgba(var(--color-cyan-rgb), 0.1);
-}
-
-.console-header-security .console-content:focus-within {
-  background-color: rgba(var(--color-navy-rgb), 0.85);
-  border-color: var(--color-cyan);
-  box-shadow: 
-    inset 0 0 20px rgba(var(--color-cyan-rgb), 0.2),
-    0 0 25px rgba(var(--color-cyan-rgb), 0.15);
-}
-
-.console-header-security .console-prompt {
-  color: var(--color-cyan);
-  text-shadow: 0 0 5px rgba(var(--color-cyan-rgb), 0.5);
-  transition: var(--transition-fast);
-}
-
-.console-header-security:hover .console-prompt {
-  text-shadow: 0 0 8px rgba(var(--color-cyan-rgb), 0.7);
-}
-
-.console-header-security .console-content:focus-within .console-prompt {
-  text-shadow: 0 0 10px rgba(var(--color-cyan-rgb), 0.9);
-}
-
-.console-header-security .console-command,
-.console-header-security .console-input {
-  color: var(--color-text);
-  text-shadow: 0 0 2px rgba(var(--color-text-rgb), 0.3);
-}
-
-.console-header-security .console-input::placeholder {
-  color: var(--color-text-muted);
-  text-shadow: none;
-  opacity: 0.5;
-  transition: var(--transition-fast);
-}
-
-.console-header-security .console-input:hover::placeholder {
-  color: var(--color-cyan);
-  opacity: 0.7;
-  text-shadow: 0 0 3px rgba(var(--color-cyan-rgb), 0.3);
-}
-
-.console-header-security .console-input:focus::placeholder {
-  color: var(--color-cyan);
-  opacity: 0.3;
-  text-shadow: 0 0 5px rgba(var(--color-cyan-rgb), 0.5);
-}
-
-.console-header-security .console-cursor {
-  background-color: var(--color-cyan);
-  box-shadow: 0 0 8px var(--color-cyan);
-}
-
-.console-header-terminal .console-header-top {
-  background-color: var(--color-dark, #1e1e1e);
-  border-color: var(--color-info);
-}
-
-.console-header-terminal .console-title {
-  color: var(--color-text);
-}
-
-.console-header-terminal .console-content {
-  background-color: var(--color-black, #000);
-  border-color: var(--color-info);
-}
-
-.console-header-terminal:hover .console-content {
-  background-color: rgba(var(--color-info-rgb), 0.02);
-  box-shadow: 0 0 15px rgba(var(--color-info-rgb), 0.1);
-}
-
-.console-header-terminal .console-content:focus-within {
-  background-color: rgba(var(--color-info-rgb), 0.05);
-  border-color: var(--color-info);
-  box-shadow: 0 0 20px rgba(var(--color-info-rgb), 0.15);
-}
-
-.console-header-terminal .console-prompt {
-  color: var(--color-info);
-  transition: var(--transition-fast);
-}
-
-.console-header-terminal:hover .console-prompt {
-  text-shadow: 0 0 5px rgba(var(--color-info-rgb), 0.5);
-}
-
-.console-header-terminal .console-content:focus-within .console-prompt {
-  text-shadow: 0 0 8px rgba(var(--color-info-rgb), 0.7);
-}
-
-.console-header-terminal .console-input {
-  color: var(--color-text);
-}
-
-.console-header-terminal .console-input::placeholder {
-  color: var(--color-text-muted);
-  opacity: 0.5;
-  transition: var(--transition-fast);
-}
-
-.console-header-terminal .console-input:hover::placeholder {
-  color: var(--color-info);
-  opacity: 0.7;
-}
-
-.console-header-terminal .console-input:focus::placeholder {
-  color: var(--color-info);
-  opacity: 0.3;
-}
-
-.console-header-terminal .console-cursor {
-  background-color: var(--color-info);
-}
-
-/* Responsive styles */
-@media (max-width: 768px) {
-  .console-content {
-    padding: var(--spacing-2) var(--spacing-3);
-    font-size: var(--font-size-sm);
-  }
-  
-  .console-cursor {
-    height: 16px;
-    width: 8px;
-  }
-  
-  .console-header-interactive .console-content:focus-within .console-cursor {
-    height: 18px;
-    width: 10px;
-  }
-}
-
-/* Interactive hint for users */
+/* Hint chip that appears on hover */
 .console-header-interactive[data-hint]::after {
   content: attr(data-hint);
   position: absolute;
-  top: -8px;
+  top: var(--spacing-1);
   right: var(--spacing-4);
   font-size: var(--font-size-xs);
-  color: var(--color-cyan);
-  background: var(--color-navy);
+  color: var(--color-primary);
+  background: var(--surface-card-raised);
   padding: var(--spacing-1) var(--spacing-2);
-  border-radius: var(--border-radius-sm);
+  border-radius: var(--radius-chip);
+  border: 1px solid var(--surface-border);
   opacity: 0;
-  transform: translateY(10px);
-  transition: all var(--transition-slow);
+  transform: translateY(4px);
+  transition: opacity var(--transition-base), transform var(--transition-base);
   pointer-events: none;
   font-family: var(--font-family-jetbrains);
-  letter-spacing: var(--letter-spacing-wide);
+  letter-spacing: var(--letter-spacing-technical);
   z-index: 10;
-  border: 1px solid rgba(var(--color-cyan-rgb), 0.3);
-  box-shadow: 0 2px 8px rgba(var(--color-cyan-rgb), 0.1);
 }
 
 .console-header-interactive:hover::after {
-  opacity: 0.8;
+  opacity: 0.9;
   transform: translateY(0);
 }
 
-.console-header-interactive .console-content:focus-within + * ~ *::after,
 .console-header-interactive.console-header-active::after {
   opacity: 0;
-  transform: translateY(-10px);
 }
 
-/* Loading state indicator */
+/* Loading state: a soft sweep across the input row */
 .console-header-loading .console-content {
-  position: relative;
   overflow: hidden;
 }
 
@@ -408,7 +179,7 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(var(--color-cyan-rgb), 0.1), transparent);
+  background: linear-gradient(90deg, transparent, var(--surface-inset), transparent);
   animation: loading-sweep 2s infinite;
 }
 
@@ -417,33 +188,32 @@
   100% { left: 100%; }
 }
 
-/* Enhanced accessibility for focus states */
 .console-header:focus-within {
-  outline: 2px solid var(--color-cyan);
-  outline-offset: 2px;
+  box-shadow: var(--ring-focus);
 }
 
-/* Reduced motion preferences - No longer needed as handled by AnimationContext */
-@media (prefers-reduced-motion: reduce) {
+@media (max-width: 768px) {
+  .console-content {
+    padding: var(--spacing-2) var(--spacing-3);
+    font-size: var(--font-size-sm);
+  }
+
   .console-cursor {
-    /* No CSS animations to disable - framer-motion handles reduced motion preferences */
+    height: 16px;
+    width: 8px;
   }
-  
-  .console-header-interactive .console-content {
-    animation: none;
-  }
-  
-  .console-header::before,
-  .console-header-interactive::after {
-    transition: none;
-  }
-  
+}
+
+@media (prefers-reduced-motion: reduce) {
   .console-header-loading .console-content::before {
     animation: none;
   }
+
+  .console-header-interactive[data-hint]::after {
+    transition: none;
+  }
 }
 
-/* Screen reader only class */
 .sr-only {
   position: absolute;
   width: 1px;

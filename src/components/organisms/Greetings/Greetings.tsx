@@ -107,7 +107,7 @@ const Greetings = () => {
 
         <div className="greetings__actions">
           <Button
-            variant="cyberpunk"
+            variant="primary"
             onClick={downloadResume}
             icon="fa:download"
             iconPosition="right"

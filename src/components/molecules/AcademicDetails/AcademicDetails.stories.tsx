@@ -1,5 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import AcademicDetails from './AcademicDetails';
+import { educationInfo } from '@/portfolio';
+
+const real = educationInfo[0];
 
 const meta = {
   title: 'Molecules/AcademicDetails',
@@ -8,149 +11,73 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component: 'A composite component that displays academic information including school name, degree, fields of study, and graduation date.',
+        component: 'School, degree, fields of study and graduation date on the shared card surface. The same pieces as EducationCard (SchoolHeader, DegreeInfo, FieldsOfStudy, DateBubble), without the icon and certifications.',
       },
     },
   },
   argTypes: {
-    schoolName: {
-      control: 'text',
-      description: 'Name of the school or institution',
-    },
-    degree: {
-      control: 'text',
-      description: 'Degree title',
-    },
-    major: {
-      control: 'text',
-      description: 'Major field of study',
-    },
-    minor: {
-      control: 'text',
-      description: 'Minor field of study (optional)',
-    },
-    graduationDate: {
-      control: 'text',
-      description: 'Graduation date',
-    },
-    className: {
-      control: 'text',
-      description: 'Additional CSS classes',
-    },
+    schoolName: { control: 'text', description: 'Name of the school or institution' },
+    degree: { control: 'text', description: 'Degree title' },
+    major: { control: 'text', description: 'Major field of study' },
+    minor: { control: 'text', description: 'Minor field of study (optional)' },
+    graduationDate: { control: 'text', description: 'Graduation date' },
+    className: { control: 'text', description: 'Additional CSS classes' },
+    animated: { control: 'boolean', description: 'Whether the block animates in' },
   },
+  decorators: [(Story) => <div style={{ maxWidth: '40rem' }}><Story /></div>],
 } satisfies Meta<typeof AcademicDetails>;
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-/**
- * Default story showing complete academic details
- */
+/** The real site data */
 export const Default: Story = {
   args: {
-    schoolName: 'University of Technology',
+    schoolName: real.schoolName,
+    degree: real.degree,
+    major: real.major,
+    minor: real.minor,
+    graduationDate: real.duration,
+  },
+};
+
+export const NoMinor: Story = {
+  args: {
+    schoolName: 'Example University',
+    degree: 'Bachelor of Science',
+    major: 'Computer Science',
+    graduationDate: 'May 2018',
+  },
+};
+
+export const LongSchoolName: Story = {
+  args: {
+    schoolName: 'Example University, School of Engineering and Applied Sciences, Department of Computer Science',
     degree: 'Bachelor of Science',
     major: 'Computer Science',
     minor: 'Mathematics',
-    graduationDate: 'May 2024',
+    graduationDate: 'May 2018',
   },
 };
 
-/**
- * Story showing academic details without a minor
- */
-export const NoMinor: Story = {
+export const Narrow: Story = {
   args: {
-    schoolName: 'State University',
-    degree: 'Master of Engineering',
-    major: 'Electrical Engineering',
-    graduationDate: 'December 2023',
+    schoolName: 'Example University',
+    degree: 'Bachelor of Science',
+    major: 'Computer Science',
+    minor: 'Mathematics',
+    graduationDate: 'May 2018',
   },
+  decorators: [(Story) => <div style={{ maxWidth: '20rem' }}><Story /></div>],
 };
 
-/**
- * Story showing a long school name
- */
-export const LongSchoolName: Story = {
+export const ReducedMotion: Story = {
   args: {
-    schoolName: 'Massachusetts Institute of Technology and Advanced Studies',
-    degree: 'Doctor of Philosophy',
-    major: 'Artificial Intelligence',
-    minor: 'Robotics',
-    graduationDate: 'June 2025',
+    schoolName: 'Example University',
+    degree: 'Bachelor of Science',
+    major: 'Computer Science',
+    minor: 'Mathematics',
+    graduationDate: 'May 2018',
+    animated: false,
   },
 };
-
-/**
- * Story showing multiple majors
- */
-export const MultipleMajors: Story = {
-  args: {
-    schoolName: 'Liberal Arts College',
-    degree: 'Bachelor of Arts',
-    major: 'Psychology and Sociology',
-    minor: 'Business Administration',
-    graduationDate: 'May 2023',
-  },
-};
-
-/**
- * Story showing custom styling
- */
-export const CustomStyling: Story = {
-  args: {
-    schoolName: 'Design Institute',
-    degree: 'Bachelor of Fine Arts',
-    major: 'Digital Design',
-    minor: 'Web Development',
-    graduationDate: 'August 2024',
-    className: 'bg-gray-900 border border-gray-700 p-6 rounded-lg shadow-md',
-  },
-};
-
-/**
- * Story showing the component in dark mode
- */
-export const DarkMode: Story = {
-  args: {
-    schoolName: 'Night University',
-    degree: 'Master of Science',
-    major: 'Cybersecurity',
-    minor: 'Digital Forensics',
-    graduationDate: 'October 2024',
-  },
-  parameters: {
-    backgrounds: {
-      default: 'dark',
-    },
-  },
-};
-
-/**
- * Story showing the component in mobile viewport
- */
-export const MobileView: Story = {
-  args: {
-    schoolName: 'Mobile University',
-    degree: 'Bachelor of Technology',
-    major: 'Mobile Development',
-    minor: 'UX Design',
-    graduationDate: 'July 2024',
-  },
-  globals: {
-    viewport: { value: 'mobile1', isRotated: false },
-  },
-};
-
-/**
- * Story showing international date format
- */
-export const InternationalDate: Story = {
-  args: {
-    schoolName: 'International University',
-    degree: 'Master of Business Administration',
-    major: 'International Business',
-    minor: 'Economics',
-    graduationDate: '15 March 2024',
-  },
-}; 
