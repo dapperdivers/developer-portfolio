@@ -1,7 +1,7 @@
 import ExperienceToggle from './ExperienceToggle';
 
 export default {
-  title: 'atoms/ExperienceToggle',
+  title: 'Atoms/ExperienceToggle',
   component: ExperienceToggle,
   parameters: {
     layout: 'centered',
@@ -78,12 +78,5 @@ export const CriticalExpanded = {
   args: {
     variant: 'critical',
     expanded: true
-  }
-};
-
-export const Playground = {
-  args: {
-    variant: 'default',
-    expanded: false
   }
 };

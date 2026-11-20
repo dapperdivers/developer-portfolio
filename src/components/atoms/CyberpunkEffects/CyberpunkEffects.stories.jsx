@@ -1,7 +1,7 @@
 import CyberpunkEffects from './CyberpunkEffects';
 
 export default {
-  title: 'atoms/CyberpunkEffects',
+  title: 'Atoms/CyberpunkEffects',
   component: CyberpunkEffects,
   parameters: {
     layout: 'centered',
@@ -172,18 +172,6 @@ export const Collapsed = {
   args: {
     variant: 'default',
     expanded: false,
-    isHovered: false,
-    showGlow: true,
-    showCorners: true,
-    showScanLines: true,
-    showDataStream: true
-  }
-};
-
-export const Playground = {
-  args: {
-    variant: 'default',
-    expanded: true,
     isHovered: false,
     showGlow: true,
     showCorners: true,

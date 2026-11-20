@@ -3,7 +3,7 @@ import ContactButton from './ContactButton';
 import { FaRocket, FaEnvelope, FaPaperPlane } from 'react-icons/fa';
 
 export default {
-  title: 'GitHub Profile/Atoms/Contact/ContactButton',
+  title: 'Atoms/ContactButton',
   component: ContactButton,
   tags: ['autodocs'],
   parameters: {

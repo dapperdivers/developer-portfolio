@@ -2,7 +2,7 @@ import React from 'react';
 import DateChip from './DateChip';
 
 const meta = {
-  title: 'atoms/DateChip',
+  title: 'Atoms/DateChip',
   component: DateChip,
   tags: ['autodocs'],
   parameters: {

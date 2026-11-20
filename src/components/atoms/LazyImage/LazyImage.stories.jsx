@@ -1,6 +1,7 @@
 import React from 'react';
 import LazyImage from './LazyImage';
 import { within, userEvent, expect } from 'storybook/test';
+import { placeholderImage } from '@stories-utils/placeholderImage';
 
 const meta = {
   title: 'Atoms/LazyImage',
@@ -68,7 +69,7 @@ const Template = (args) => <div style={{ maxWidth: '500px' }}><LazyImage {...arg
 // Default story
 export const Default = {
   args: {
-    src: 'https://via.placeholder.com/300x200',
+    src: placeholderImage(300, 200),
     alt: 'Placeholder image',
   }
 };
@@ -83,7 +84,7 @@ Default.play = async ({ canvasElement, step }) => {
 // With aspect ratio
 export const WithAspectRatio = {
   args: {
-    src: 'https://source.unsplash.com/featured/800x450/?landscape',
+    src: placeholderImage(800, 450, { label: 'landscape', accent: 'blue' }),
     alt: 'Landscape with 16:9 aspect ratio',
     aspectRatio: '16:9',
   }
@@ -92,9 +93,9 @@ export const WithAspectRatio = {
 // With low-res placeholder
 export const WithPlaceholder = {
   args: {
-    src: 'https://source.unsplash.com/featured/800x600/?mountains',
+    src: placeholderImage(800, 600, { label: 'mountains', accent: 'amber' }),
     alt: 'Mountain landscape',
-    lowResSrc: 'https://source.unsplash.com/featured/80x60/?mountains',
+    lowResSrc: placeholderImage(80, 60, { label: 'mountains', accent: 'green' }),
   }
 };
 
@@ -151,20 +152,16 @@ export const ErrorState = {
 // Responsive behavior example
 export const Responsive = {
   args: {
-    src: 'https://source.unsplash.com/featured/600x400/?technology',
+    src: placeholderImage(600, 400, { label: 'technology', accent: 'red' }),
     alt: 'Technology image',
     aspectRatio: '3:2',
   }
 };
-Responsive.parameters = {
-  viewport: {
-    defaultViewport: 'mobile1',
-  },
-};
+Responsive.globals = { viewport: { value: 'mobile1', isRotated: false } };
 
 export const WithCustomClass = {
   args: {
-    src: 'https://via.placeholder.com/300x200',
+    src: placeholderImage(300, 200),
     alt: 'Placeholder image with custom class',
     className: 'rounded-lg shadow-md',
   }
@@ -172,7 +169,7 @@ export const WithCustomClass = {
 
 export const LoadingState = {
   args: {
-    src: 'https://via.placeholder.com/800x600',
+    src: placeholderImage(800, 600, { accent: 'blue' }),
     alt: 'Large image to demonstrate loading',
   }
 };

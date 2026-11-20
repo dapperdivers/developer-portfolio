@@ -11,24 +11,6 @@
   overflow: hidden;
 }
 
-/* Animated gradient background */
-.bg-gradient-info {
-  background: linear-gradient(
-    135deg, 
-    var(--info) 0%, 
-    var(--primary) 50%, 
-    var(--primary-700) 100%
-  ) !important;
-  background-size: 200% 200% !important;
-  animation: gradientAnimation 15s ease infinite;
-}
-
-@keyframes gradientAnimation {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
 /* Improve text legibility */
 .cyberpunk-text {
   text-shadow: 0 0 10px rgba(5, 213, 250, 0.5);
@@ -160,47 +142,9 @@
   }
 }
 
-/* Cyberpunk terminal effect styles - not animated anymore */
-.cyberpunk-terminal {
-  font-family: monospace;
-  color: var(--cyan);
-  text-shadow: 0 0 3px var(--cyan-glow);
-}
-
 /* Cyberpunk glitch effect - now handled by framer-motion */
 .cyberpunk-glitch {
   position: relative;
-}
-
-.cyberpunk-glitch:after {
-  content: attr(data-text);
-  position: absolute;
-  left: 2px;
-  top: 0;
-  color: var(--cyan);
-  overflow: hidden;
-  clip: rect(0, 900px, 0, 0);
-  /* Animation now handled by framer-motion */
-}
-
-/* Cursor styling */
-.blink-cursor {
-  display: inline-block;
-  width: 2px;
-  height: 1em;
-  background-color: var(--cyan);
-  vertical-align: text-bottom;
-  margin-left: 2px;
-  /* Animation now handled by framer-motion */
-}
-
-/* Typing effect container */
-.typing-effect {
-  display: inline-block;
-  overflow: hidden;
-  white-space: nowrap;
-  border-right: 2px solid var(--cyan);
-  /* Animations now handled by framer-motion */
 }
 
 /* Responsive adjustments */

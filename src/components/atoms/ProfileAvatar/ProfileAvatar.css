@@ -40,7 +40,7 @@
   background-color: var(--color-cyan);
   color: var(--color-navy);
   padding: var(--spacing-1) var(--spacing-2);
-  border-radius: var(--border-radius-full);
+  border-radius: var(--border-radius-pill);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-bold);
   font-family: var(--font-family-jetbrains);

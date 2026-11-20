@@ -1,6 +1,7 @@
 import React from 'react';
 import ResponsiveImage from './ResponsiveImage';
 import { within, userEvent, expect } from 'storybook/test';
+import { placeholderImage } from '@stories-utils/placeholderImage';
 
 export default {
   title: 'Atoms/ResponsiveImage',
@@ -96,7 +97,7 @@ const Template = (args) => (
 // Default story - Basic responsive image
 export const Default = {
   args: {
-  src: 'https://source.unsplash.com/featured/600x400/?nature',
+  src: placeholderImage(600, 400, { label: 'nature' }),
   alt: 'Nature landscape',
   objectFit: 'cover'
 }
@@ -114,9 +115,9 @@ Default.play = async ({ canvasElement, step }) => {
 // With Placeholder - Using a low-res placeholder
 export const WithPlaceholder = {
   args: {
-  src: 'https://source.unsplash.com/featured/600x400/?mountains',
+  src: placeholderImage(600, 400, { label: 'mountains', accent: 'blue' }),
   alt: 'Mountain landscape',
-  placeholderSrc: 'https://source.unsplash.com/featured/60x40/?mountains', // Low-res version
+  placeholderSrc: placeholderImage(60, 40, { label: 'mountains', accent: 'amber' }), // Low-res version
   objectFit: 'cover'
 }
 };
@@ -124,7 +125,7 @@ export const WithPlaceholder = {
 // With Animation - Demonstrates animation capabilities
 export const WithAnimation = {
   args: {
-  src: 'https://source.unsplash.com/featured/600x400/?ocean',
+  src: placeholderImage(600, 400, { label: 'ocean', accent: 'green' }),
   alt: 'Ocean view',
   animation: {
     initial: { opacity: 0, scale: 0.8 },
@@ -137,7 +138,7 @@ export const WithAnimation = {
 // Eager Loading - Non-lazy loaded image
 export const EagerLoading = {
   args: {
-  src: 'https://source.unsplash.com/featured/600x400/?city',
+  src: placeholderImage(600, 400, { label: 'city', accent: 'red' }),
   alt: 'City skyline',
   lazy: false,
   objectFit: 'cover'
@@ -207,12 +208,12 @@ export const ErrorState = {
 // With SrcSet - Responsive images with different sizes
 export const WithSrcSet = {
   args: {
-  src: 'https://source.unsplash.com/featured/800x600/?landscape',
+  src: placeholderImage(800, 600, { label: 'landscape' }),
   alt: 'Responsive landscape image',
   srcSet: `
-    https://source.unsplash.com/featured/400x300/?landscape 400w,
-    https://source.unsplash.com/featured/800x600/?landscape 800w,
-    https://source.unsplash.com/featured/1200x900/?landscape 1200w
+    ${placeholderImage(400, 300, { label: 'landscape' })} 400w,
+    ${placeholderImage(800, 600, { label: 'landscape' })} 800w,
+    ${placeholderImage(1200, 900, { label: 'landscape' })} 1200w
   `,
   sizes: '(max-width: 600px) 400px, (max-width: 1200px) 800px, 1200px'
 }
@@ -221,13 +222,9 @@ export const WithSrcSet = {
 // Responsive behavior example
 export const ResponsiveViewport = {
   args: {
-  src: 'https://source.unsplash.com/featured/600x400/?technology',
+  src: placeholderImage(600, 400, { label: 'technology', accent: 'blue' }),
   alt: 'Technology image',
   objectFit: 'contain'
 }
 };
-ResponsiveViewport.parameters = {
-  viewport: {
-    defaultViewport: 'mobile1',
-  },
-};
+ResponsiveViewport.globals = { viewport: { value: 'mobile1', isRotated: false } };

@@ -1,8 +1,9 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import ProfileHeader from './ProfileHeader';
 
 export default {
-  title: 'GitHub Profile/Molecules/Profile/ProfileHeader',
+  title: 'Molecules/ProfileHeader',
   component: ProfileHeader,
   tags: ['autodocs'],
   parameters: {
@@ -21,11 +22,16 @@ export default {
   },
 };
 
-// Template for the component
+// The motion parent drives the entrance, as the profile card does;
+// `animate={false}` opts the header out of it
 const Template = (args) => (
-  <div style={{ padding: '2rem', background: '#121212' }}>
+  <motion.div
+    initial="hidden"
+    animate="visible"
+    style={{ padding: '2rem', background: '#121212' }}
+  >
     <ProfileHeader {...args} />
-  </div>
+  </motion.div>
 );
 
 /**
@@ -62,7 +68,7 @@ DifferentTitle.args = {
 };
 
 /**
- * Without animation example.
+ * Without animation: the badge and title skip the slide-up entrance and render in place.
  */
 export const NoAnimation = Template.bind({});
 NoAnimation.args = {

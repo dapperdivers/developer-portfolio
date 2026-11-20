@@ -3,7 +3,7 @@ import SecurityFact from './SecurityFact';
 import { FaTerminal, FaInfoCircle, FaExclamationTriangle, FaShieldAlt } from 'react-icons/fa';
 
 export default {
-  title: 'atoms/SecurityFact',
+  title: 'Atoms/SecurityFact',
   component: SecurityFact,
   tags: ['autodocs'],
   parameters: {

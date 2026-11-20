@@ -1,31 +1,16 @@
 import React from 'react';
 import FeedbackAuthor from './FeedbackAuthor';
+import { placeholderImage } from '@stories-utils/placeholderImage';
 
 
 export default {
   title: 'Molecules/FeedbackAuthor',
   component: FeedbackAuthor,
   tags: ['autodocs'],
-  argTypes: {
-    // Add component props here
-    // Example:
-    // variant: {
-    //   control: 'select',
-    //   options: ['primary', 'secondary'],
-    //   description: 'The button variant',
-    // },
-  },
   parameters: {
     docs: {
       description: {
-        component: 'Description of the FeedbackAuthor component',
-      },
-    },
-    a11y: {
-      config: {
-        rules: [
-          // Component-specific accessibility rules
-        ],
+        component: 'Avatar, name and role of a testimonial author.',
       },
     },
   },
@@ -37,16 +22,14 @@ export const Default = {
   args: {
     name: 'Alex Example',
     role: 'Director of Software Development',
-    avatar: 'https://ui-avatars.com/api/?name=AE&background=3563E9&color=fff&bold=true',
+    avatar: placeholderImage(80, 80, { label: 'AE' }),
   }
 };
 
-// Responsive behavior example
+// Same content at a 320px viewport
 export const Responsive = {
   args: Default.args,
-  parameters: {
-    viewport: {
-      defaultViewport: 'mobile1',
-    },
-  }
+  globals: {
+    viewport: { value: 'mobile1', isRotated: false },
+  },
 };

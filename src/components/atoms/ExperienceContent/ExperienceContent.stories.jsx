@@ -1,7 +1,7 @@
 import ExperienceContent from './ExperienceContent';
 
 export default {
-  title: 'atoms/ExperienceContent',
+  title: 'Atoms/ExperienceContent',
   component: ExperienceContent,
   parameters: {
     layout: 'centered',
@@ -101,13 +101,5 @@ export const Collapsed = {
     ...sampleData,
     variant: 'default',
     expanded: false
-  }
-};
-
-export const Playground = {
-  args: {
-    ...sampleData,
-    variant: 'default',
-    expanded: true
   }
 };

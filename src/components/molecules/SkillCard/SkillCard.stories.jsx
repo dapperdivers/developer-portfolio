@@ -48,21 +48,21 @@ export default {
 const skillMocks = {
   security: {
     skillName: 'Penetration Testing',
-    iconName: 'security',
+    iconName: 'carbon:security',
     description: 'Identifying and exploiting security vulnerabilities in systems',
     securityDomain: 'Offensive Security',
     level: 4
   },
   development: {
     skillName: 'React',
-    iconName: 'react',
+    iconName: 'logos:react',
     description: 'Building user interfaces with the React library',
     securityDomain: 'Development',
     level: 5
   },
   infrastructure: {
     skillName: 'Kubernetes',
-    iconName: 'kubernetes',
+    iconName: 'logos:kubernetes',
     description: 'Container orchestration for microservices architecture',
     securityDomain: 'Infrastructure',
     level: 3
@@ -125,16 +125,14 @@ export const MultipleSkills = {
   )
 };
 
-// Responsive behavior example
+// Mobile viewport
 export const Responsive = {
   args: {
     skill: skillMocks.development,
     index: 0,
     reducedMotion: true,
   },
-  parameters: {
-    viewport: {
-      defaultViewport: 'mobile1',
-    },
+  globals: {
+    viewport: { value: 'mobile1', isRotated: false },
   }
 };

@@ -3,28 +3,10 @@ import Footer from './Footer';
 import { within, userEvent, expect } from 'storybook/test';
 import PortfolioContext from '@context/PortfolioContext';
 
-// Mock data for PortfolioContext
-const mockPortfolioData = {
-  greetings: {
-    name: "John Doe",
-    title: "Full Stack Developer",
-    description: "I build things for the web.",
-    resumeLink: "https://example.com/resume"
-  },
-  socialLinks: {
-    github: "https://github.com/username",
-    linkedin: "https://linkedin.com/in/username",
-    twitter: "https://twitter.com/username"
-  }
-};
-
-// Create additional mock data variations
+// Context with only a name: no resume link, so the Resume link falls back to the default PDF
 const minimalPortfolioData = {
   greetings: {
     name: "Jane Smith"
-  },
-  socialLinks: {
-    github: "https://github.com/janesmith"
   }
 };
 
@@ -43,7 +25,10 @@ export default {
     layout: 'fullscreen',
     docs: {
       description: {
-        component: 'Footer component displaying copyright information, navigation links, and social media links.',
+        component:
+          'Site footer with the copyright line, in-page navigation links, resume and contact card downloads, and the social links. ' +
+          'It takes no props: the name and resume link come from `PortfolioContext` (`greetings`) through the `useFooter` hook. ' +
+          'Below the `md` breakpoint the three groups stack and centre.',
       },
     },
     a11y: {
@@ -60,212 +45,65 @@ export default {
 };
 
 /**
- * Default story showing the footer in its standard configuration
+ * The footer with the site data from the global context
  */
 export const Default = {
-  args: {},
-};
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
 
-/**
- * Story showing the footer with dark mode enabled
- */
-export const DarkMode = {
-  parameters: {
-    backgrounds: {
-      default: 'dark',
-    },
+    await step('Initial render check', async () => {
+      // Name from context, with the current year
+      const currentYear = new Date().getFullYear().toString();
+      await expect(canvas.getByText(new RegExp(`© ${currentYear} Derek Mackley`))).toBeInTheDocument();
+
+      // Essential links
+      await expect(canvas.getByText("Experience")).toBeInTheDocument();
+      await expect(canvas.getByText("Projects")).toBeInTheDocument();
+      await expect(canvas.getByText("Contact")).toBeInTheDocument();
+    });
+
+    await step('Keyboard navigation test', async () => {
+      // Tab through the footer and count the links that take focus
+      let focusCount = 0;
+      for (let i = 0; i < 10; i++) {
+        await userEvent.tab();
+        const focused = document.activeElement;
+        if (focused && focused.tagName === 'A') {
+          focusCount++;
+        }
+      }
+      await expect(focusCount).toBeGreaterThan(3);
+    });
   },
 };
 
 /**
- * Story showing the footer in a mobile viewport
+ * Mobile viewport: the groups stack and the "Made with" line moves under the social links
  */
 export const Mobile = {
-  parameters: {
-    viewport: {
-      defaultViewport: 'mobile1',
-    },
+  globals: {
+    viewport: { value: 'mobile1', isRotated: false },
   },
 };
 
 /**
- * Story showing the footer in a tablet viewport
+ * Tablet viewport
  */
 export const Tablet = {
-  parameters: {
-    viewport: {
-      defaultViewport: 'tablet',
-    },
+  globals: {
+    viewport: { value: 'tablet', isRotated: false },
   },
 };
 
 /**
- * Story showing the footer with mock data for testing
+ * Context that supplies only a name. The copyright line uses it and the Resume link
+ * falls back to the default PDF.
  */
-export const WithMockData = {
-  args: {},
-  parameters: {
-    mockData: {
-      greetings: {
-        name: 'John Doe',
-      },
-      socialLinks: [
-        {
-          name: 'GitHub',
-          url: 'https://github.com/johndoe',
-          icon: 'github',
-        },
-        {
-          name: 'LinkedIn',
-          url: 'https://linkedin.com/in/johndoe',
-          icon: 'linkedin',
-        },
-      ],
-    },
+export const MinimalData = {
+  decorators: [createPortfolioDecorator(minimalPortfolioData)],
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByText(/Jane Smith/)).toBeInTheDocument();
+    await expect(canvas.getByText("Resume")).toHaveAttribute('href', '/files/Cybersecurity_2025.pdf');
   },
-};
-
-/**
- * Story showing the footer with all links disabled for testing
- */
-export const DisabledLinks = {
-  args: {},
-  parameters: {
-    a11y: {
-      disable: true,
-    },
-  },
-};
-
-/**
- * Story showing the footer with high contrast mode for accessibility testing
- */
-export const HighContrast = {
-  parameters: {
-    themes: {
-      default: 'high-contrast',
-    },
-  },
-};
-
-// Standard footer with complete data
-export const DefaultStory = () => <Footer />;
-DefaultStory.decorators = [createPortfolioDecorator(mockPortfolioData)];
-DefaultStory.play = async ({ canvasElement, step }) => {
-  const canvas = within(canvasElement);
-  
-  await step('Initial render check', () => {
-    // Check that the footer contains the name from context
-    expect(canvas.getByText(/John Doe/)).toBeInTheDocument();
-
-    // Check that the essential links are present
-    expect(canvas.getByText("Experience")).toBeInTheDocument();
-    expect(canvas.getByText("Projects")).toBeInTheDocument();
-    expect(canvas.getByText("Contact")).toBeInTheDocument();
-
-    // Check that copyright notice contains the current year
-    const currentYear = new Date().getFullYear().toString();
-    expect(canvas.getByText(new RegExp(`© ${currentYear}`))).toBeInTheDocument();
-  });
-
-  await step('Keyboard navigation test', async () => {
-    // Focus should move through the various links in the footer
-    let focusCount = 0;
-    // Multiple tabs to navigate through links
-    for (let i = 0; i < 10; i++) {
-      await userEvent.tab();
-      const focused = document.activeElement;
-      if (focused && focused.tagName === 'A') {
-        focusCount++;
-      }
-    }
-    // Ensure we've found at least a few focusable links
-    expect(focusCount).toBeGreaterThan(3);
-  });
-};
-
-// Footer with minimal data
-export const MinimalData = () => <Footer />;
-MinimalData.decorators = [createPortfolioDecorator(minimalPortfolioData)];
-MinimalData.parameters = {
-  docs: {
-    description: {
-      story: 'Shows how the footer appears with minimal data in the portfolio context.'
-    }
-  }
-};
-
-// Documentation for component usage - this is used internally in the story development
- 
-const componentDocumentation = `
-## Component Usage
-
-\`\`\`jsx
-import Footer from './Footer';
-
-function App() {
-  return (
-    <>
-      <main>
-        {/* Main content */}
-      </main>
-      <Footer />
-    </>
-  );
-}
-\`\`\`
-
-## Context Dependencies
-
-This component relies on the PortfolioContext and specifically uses:
-- \`greetings.name\` for displaying the developer name
-- \`socialLinks\` object for social media profiles
-
-The component also uses the useFooter hook which provides:
-- \`currentYear\` - Current year for copyright
-- \`scrollToTop\` - Function to smoothly scroll to top of page
-
-## Accessibility Features
-
-- Uses semantic \`<footer>\` element with role="contentinfo"
-- Proper heading structure with h4 and h5 headings
-- Link text is descriptive and clear
-- Interactive elements have appropriate focus states
-- Back to top button has an aria-label
-- Icons used for decoration have aria-hidden="true"
-
-## Implementation Details
-
-- Uses Reactstrap's Container, Row, and Col for responsive layout
-- Social links are provided by the SocialLinks component
-- Back to top button uses smooth scrolling behavior
-- Current year is dynamically calculated for copyright notices
-`;
-
-// Mobile viewport display
-export const MobileView = () => <Footer />;
-MobileView.decorators = [createPortfolioDecorator(mockPortfolioData)];
-MobileView.parameters = {
-  viewport: {
-    defaultViewport: 'mobile1',
-  },
-  docs: {
-    description: {
-      story: 'Shows how the footer adapts to mobile viewport sizes with a stacked layout.'
-    }
-  }
-};
-
-// Tablet viewport display
-export const TabletView = () => <Footer />;
-TabletView.decorators = [createPortfolioDecorator(mockPortfolioData)];
-TabletView.parameters = {
-  viewport: {
-    defaultViewport: 'tablet',
-  },
-  docs: {
-    description: {
-      story: 'Shows how the footer appears on tablet sized screens.'
-    }
-  }
 };

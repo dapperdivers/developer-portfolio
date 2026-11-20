@@ -40,7 +40,7 @@ const ProfileLocation = ({
   className = '',
   ...props
 }) => {
-  const { isAnimationEnabled } = useAnimation();
+  const { animationEnabled: isAnimationEnabled } = useAnimation();
   const [isLive, setIsLive] = useState(true);
   
   // Only use animations if enabled

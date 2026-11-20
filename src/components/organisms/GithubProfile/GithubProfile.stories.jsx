@@ -6,7 +6,7 @@ import { mockGithubProfile } from '@data/mockPortfolioData';
 import { openSource } from '@/portfolio';
 
 export default {
-  title: 'GitHub Profile/Organisms/GithubProfile',
+  title: 'Organisms/GithubProfile',
   component: GithubProfile,
   tags: ['autodocs'],
   parameters: {

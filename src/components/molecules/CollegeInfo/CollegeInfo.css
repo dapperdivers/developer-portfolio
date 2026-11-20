@@ -7,7 +7,7 @@
   flex-direction: column;
   padding: var(--spacing-4);
   width: 100%;
-  background-color: var(--color-card-bg);
+  background-color: var(--color-background-alt);
 }
 
 /* College/University name styling */
@@ -81,7 +81,7 @@
 .minor-value {
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-semibold);
-  color: var(--color-text-bright);
+  color: var(--color-text);
   border-left: 3px solid var(--color-primary-dark);
   padding-left: var(--spacing-2);
 }

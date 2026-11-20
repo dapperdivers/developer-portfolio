@@ -136,7 +136,7 @@ const MapComponent = ({ location }) => {
   const tileLayerRef = useRef(null);
   
   // Get animation context
-  const { isAnimationEnabled } = useAnimation();
+  const { animationEnabled: isAnimationEnabled } = useAnimation();
   
   useEffect(() => {
     // Initialize map

@@ -4,6 +4,7 @@ import { within, expect } from 'storybook/test';
 import PortfolioContext from '@context/PortfolioContext';
 import { mockPortfolioData } from '@data/mockPortfolioData';
 import { withViewport } from '@stories-utils';
+import { placeholderImage } from '@stories-utils/placeholderImage';
 
 // Helper function to create context with specific feedback data
 const createContextWithFeedbacks = (feedbackData) => {
@@ -54,7 +55,7 @@ const sampleFeedbacks = [
     feedback: "Working with Derek was a pleasure. He understood our requirements perfectly and delivered beyond expectations.",
     designation: "Product Manager",
     rating: 5,
-    avatar: "https://via.placeholder.com/150"
+    avatar: placeholderImage(150, 150)
   },
   {
     name: "Michael Williams",
@@ -184,9 +185,9 @@ Mobile.parameters = {
 export const LongContent = Template.bind({});
 LongContent.decorators = [
   createContextWithFeedbacks([{
-    name: "Long Feedback",
-    feedback: "This is an example of a very long feedback that tests how the component handles extensive text content. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nisl eget ultricies tincidunt, nisl nisl aliquam nisl, eget ultricies nisl nisl eget nisl. Nullam auctor, nisl eget ultricies tincidunt, nisl nisl aliquam nisl, eget ultricies nisl nisl eget nisl.",
-    designation: "Verbose Client",
+    name: "Priya Raman",
+    feedback: "Derek led the security review for our platform rebuild and it changed how the whole team works. He started by threat modelling each service with the engineers who owned it, then turned the findings into pipeline checks instead of a report nobody would read. When a dependency vulnerability landed in the middle of the launch week he had a patched build, a rollout plan and a clear summary for leadership within a few hours. He is patient with questions, direct about risk, and he documents everything so the knowledge stays with the team after the project ends.",
+    designation: "Director of Platform Engineering",
     rating: 4
   }, ...sampleFeedbacks])
 ];

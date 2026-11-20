@@ -91,7 +91,7 @@
 }
 
 .terminal-command-line__input::placeholder {
-  color: var(--color-text-secondary);
+  color: var(--color-text-muted);
   opacity: 0.5;
   transition: var(--transition-fast);
 }
@@ -140,7 +140,7 @@
 }
 
 .terminal-command-line--security .terminal-command-line__input::placeholder {
-  color: var(--color-text-secondary);
+  color: var(--color-text-muted);
   text-shadow: none;
   opacity: 0.5;
 }
@@ -179,7 +179,7 @@
 }
 
 .terminal-command-line--terminal .terminal-command-line__input::placeholder {
-  color: var(--color-text-secondary);
+  color: var(--color-text-muted);
   opacity: 0.5;
 }
 

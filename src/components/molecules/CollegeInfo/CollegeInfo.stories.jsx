@@ -6,26 +6,10 @@ export default {
   title: 'Molecules/CollegeInfo',
   component: CollegeInfo,
   tags: ['autodocs'],
-  argTypes: {
-    // Add component props here
-    // Example:
-    // variant: {
-    //   control: 'select',
-    //   options: ['primary', 'secondary'],
-    //   description: 'The button variant',
-    // },
-  },
   parameters: {
     docs: {
       description: {
-        component: 'Description of the CollegeInfo component',
-      },
-    },
-    a11y: {
-      config: {
-        rules: [
-          // Component-specific accessibility rules
-        ],
+        component: 'School name, degree, major, optional minor and graduation date for one education entry.',
       },
     },
   },
@@ -43,12 +27,10 @@ export const Default = {
   }
 };
 
-// Responsive behavior example
+// Same content at a 320px viewport
 export const Responsive = {
   args: Default.args,
-  parameters: {
-    viewport: {
-      defaultViewport: 'mobile1',
-    },
-  }
+  globals: {
+    viewport: { value: 'mobile1', isRotated: false },
+  },
 };

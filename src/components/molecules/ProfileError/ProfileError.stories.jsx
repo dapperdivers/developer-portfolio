@@ -2,7 +2,7 @@ import React from 'react';
 import ProfileError from './ProfileError';
 
 export default {
-  title: 'GitHub Profile/Molecules/Profile/ProfileError',
+  title: 'Molecules/ProfileError',
   component: ProfileError,
   tags: ['autodocs'],
   parameters: {

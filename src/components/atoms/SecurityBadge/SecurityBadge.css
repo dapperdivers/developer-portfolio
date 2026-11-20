@@ -12,7 +12,7 @@
     rgba(var(--color-navy-rgb), 0.95) 100%
   );
   padding: var(--spacing-2) var(--spacing-4);
-  border-radius: var(--border-radius-full);
+  border-radius: var(--border-radius-pill);
   font-family: var(--font-family-jetbrains);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
@@ -45,7 +45,7 @@
     );
   opacity: 0.7;
   pointer-events: none;
-  border-radius: var(--border-radius-full);
+  border-radius: var(--border-radius-pill);
 }
 
 .security-badge__icon {

@@ -4,7 +4,6 @@
 body {
   font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   line-height: 1.6;
-  color: var(--dark);
 }
 
 /* Heading styles with Inter font */
@@ -68,13 +67,6 @@ p {
   .display-4 { font-size: 2rem; }
 }
 
-/* Text highlights */
-.text-primary { color: var(--primary) !important; }
-.text-secondary { color: var(--secondary) !important; }
-.text-accent { color: var(--accent) !important; }
-.text-light { color: var(--light) !important; }
-.text-dark { color: var(--dark) !important; }
-
 /* Font weights */
 .font-light { font-weight: 300; }
 .font-normal { font-weight: 400; }
@@ -89,13 +81,12 @@ p {
 
 /* Improve link aesthetics */
 a {
-  color: var(--primary);
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
 a:hover {
-  color: var(--primary-700);
+  color: var(--color-link-hover);
   text-decoration: underline;
 }
 
@@ -113,13 +104,13 @@ li {
 code, pre {
   font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
   font-size: 0.9em;
-  background-color: var(--primary-50);
+  background-color: rgba(var(--color-primary-rgb), 0.1);
   border-radius: 4px;
 }
 
 code {
   padding: 0.2em 0.4em;
-  color: var(--primary-800);
+  color: var(--color-primary-light);
 }
 
 pre {
@@ -130,8 +121,6 @@ pre {
 /* Blockquote styling */
 blockquote {
   padding: 1rem 1.5rem;
-  border-left: 4px solid var(--primary);
-  background-color: var(--primary-50);
   margin: 1.5rem 0;
   font-style: italic;
 }

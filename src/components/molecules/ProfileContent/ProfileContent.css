@@ -8,10 +8,10 @@
 
 .profile-content__description {
   font-size: var(--font-size-xl);
-  color: var(--color-primary-100);
+  color: var(--color-offwhite);
   margin-bottom: var(--spacing-6);
   text-align: center;
-  line-height: var(--line-height-relaxed);
+  line-height: var(--line-height-base);
 }
 
 .profile-content__fact-container {

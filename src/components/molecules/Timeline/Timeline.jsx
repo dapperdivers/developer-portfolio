@@ -126,7 +126,7 @@ const Timeline = ({
   className = '',
   onTerminalCommand = null // New prop to detect terminal commands
 }) => {
-  const { isAnimationEnabled } = useAnimation();
+  const { animationEnabled: isAnimationEnabled } = useAnimation();
   
   // Easter egg states
   const [konamiProgress, setKonamiProgress] = useState(0);

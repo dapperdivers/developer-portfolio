@@ -1,7 +1,7 @@
 import TerminalTitleBar from './TerminalTitleBar';
 
 export default {
-  title: 'molecules/TerminalTitleBar',
+  title: 'Molecules/TerminalTitleBar',
   component: TerminalTitleBar,
   parameters: { 
     layout: 'centered',

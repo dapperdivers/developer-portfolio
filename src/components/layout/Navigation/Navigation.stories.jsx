@@ -1,7 +1,6 @@
 import React from 'react';
 import Navigation from './Navigation';
-import { within, userEvent, expect } from 'storybook/test';
-import PortfolioContext from '@context/PortfolioContext';
+import { within, userEvent, expect, waitFor } from 'storybook/test';
 
 export default {
   title: 'Layout/Navigation',
@@ -10,8 +9,14 @@ export default {
   parameters: {
     docs: {
       description: {
-        component: 'Navigation component for the site header. Handles scroll behavior, branding, and provides a responsive design that adapts to different device sizes.',
+        component:
+          'Fixed site header showing the name and, from the `lg` breakpoint up, the social links. ' +
+          'It takes no props: the name comes from `PortfolioContext` and the scroll behaviour from the `useNavigation` hook. ' +
+          'The header is transparent at the top of the page, gains a blurred backdrop once the page has scrolled, ' +
+          'and slides out of view when scrolling down past the hero section (`#greetings`), returning on scroll up.',
       },
+      // The header is position: fixed, so each docs story gets its own iframe
+      story: { inline: false, height: '400px' },
     },
     a11y: {
       config: {
@@ -35,31 +40,48 @@ export default {
   },
 };
 
-// Helper for simulating window scroll
-const simulateScroll = (y = 100) => {
-  window.scrollY = y;
-  window.dispatchEvent(new Event('scroll'));
-};
+// Height of the mock hero. The header only hides once the page has scrolled past it.
+const HERO_HEIGHT = 600;
 
-// Background decorator to make the navigation visible against a dark background
+const pageSections = [
+  ['Experience', 'Roles, responsibilities and the security programmes built along the way.'],
+  ['Projects', 'Tooling, detection content and infrastructure work.'],
+  ['Contact', 'How to get in touch.'],
+];
+
+// Mock page behind the header: a hero with the id the scroll logic looks for,
+// then enough content to scroll through.
 const withBackground = (Story) => (
-  <div style={{ 
-    background: 'linear-gradient(#4286f4, #373B44)', 
-    height: '100vh', 
-    width: '100%', 
-    padding: '0',
-    position: 'relative'
-  }}>
+  <div style={{ background: 'linear-gradient(#0a192f, #162b3d)', color: 'white' }}>
     <Story />
-    <div style={{ padding: '100px 20px', color: 'white' }}>
-      <h2>Scroll down to see navigation behavior</h2>
-      <p>The navigation will change appearance on scroll</p>
-      {Array(10).fill(0).map((_, i) => (
-        <p key={i}>Scroll content {i+1}</p>
-      ))}
-    </div>
+    <section
+      id="greetings"
+      style={{ height: `${HERO_HEIGHT}px`, padding: '140px 24px 0', boxSizing: 'border-box' }}
+    >
+      <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>Security engineer</h1>
+      <p>Scroll the page: the header gains a backdrop, hides on the way down and returns on the way up.</p>
+    </section>
+    {pageSections.map(([title, text]) => (
+      <section
+        key={title}
+        style={{ height: '500px', padding: '24px', borderTop: '1px solid rgba(255, 255, 255, 0.1)' }}
+      >
+        <h2 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>{title}</h2>
+        <p>{text}</p>
+      </section>
+    ))}
   </div>
 );
+
+// Decorator that scrolls the story page to a position on mount
+const scrolledTo = (y) => (Story) => {
+  React.useEffect(() => {
+    window.scrollTo({ top: y, behavior: 'instant' });
+    return () => window.scrollTo({ top: 0, behavior: 'instant' });
+  }, []);
+
+  return <Story />;
+};
 
 // Template for the component
 const Template = (args) => <Navigation {...args} />;
@@ -69,77 +91,60 @@ export const Default = Template.bind({});
 Default.decorators = [withBackground];
 Default.play = async ({ canvasElement, step }) => {
   const canvas = within(canvasElement);
-  
+
   await step('Initial render check', async () => {
     // Check navbar exists
     const navbar = canvas.getByRole('navigation');
     await expect(navbar).toBeInTheDocument();
-    
+
     // Check brand name
     const brandText = canvas.getByText('Derek Mackley');
     await expect(brandText).toBeInTheDocument();
   });
 };
 
-// Scrolled state
+// Scrolled state: still inside the hero, so the header stays and gains its backdrop
 export const Scrolled = Template.bind({});
-Scrolled.decorators = [
-  withBackground,
-  (Story) => {
-    // Simulate scrolled state
-    React.useEffect(() => {
-      simulateScroll(200);
-      return () => simulateScroll(0);
-    }, []);
-    
-    return <Story />;
-  }
-];
+Scrolled.decorators = [scrolledTo(200), withBackground];
 Scrolled.parameters = {
   docs: {
     description: {
-      story: 'Navigation appearance changes when the user scrolls down the page.',
+      story: 'The page has scrolled 200px, still within the hero. The header stays in place and gains a blurred dark backdrop.',
     },
   },
 };
+Scrolled.play = async ({ canvasElement }) => {
+  const header = within(canvasElement).getByRole('banner');
+  await waitFor(() => expect(header.className).toContain('backdrop-blur-md'));
+};
 
-// Hidden Navigation - Simulates the user scrolling down quickly (navigation hides)
+// Hidden state: scrolled down past the hero, so the header slides out of view
 export const Hidden = Template.bind({});
-Hidden.decorators = [
-  withBackground,
-  (Story) => {
-    // Simulate scrolled down state with hidden nav
-    React.useEffect(() => {
-      simulateScroll(300);
-      // Simulate scroll movement to hide nav
-      const scrollEvent = new Event('scroll');
-      window.scrollY = 400;
-      window.dispatchEvent(scrollEvent);
-      
-      return () => simulateScroll(0);
-    }, []);
-    
-    return <Story />;
-  }
-];
+Hidden.decorators = [scrolledTo(HERO_HEIGHT + 300), withBackground];
 Hidden.parameters = {
   docs: {
     description: {
-      story: 'Navigation hides when the user scrolls down quickly.',
+      story: 'The page has scrolled down past the hero, so the header has moved out of view. Scroll up to bring it back.',
     },
   },
+};
+Hidden.play = async ({ canvasElement }) => {
+  const header = within(canvasElement).getByRole('banner');
+  // The scroll handler has run once the backdrop class is applied
+  await waitFor(() => expect(header.className).toContain('backdrop-blur-md'));
+  await waitFor(() => expect(header.style.transform).toContain('-100px'));
 };
 
 // Mobile viewport version
 export const Mobile = Template.bind({});
 Mobile.decorators = [withBackground];
+Mobile.globals = {
+  viewport: { value: 'mobile1', isRotated: false },
+};
 Mobile.parameters = {
-  viewport: {
-    defaultViewport: 'mobile1',
-  },
   docs: {
     description: {
-      story: 'Navigation displayed on mobile devices with a hamburger menu for navigation links.',
+      story: 'Below the `lg` breakpoint the social links are hidden and only the name is shown.',
     },
   },
 };
@@ -149,70 +154,19 @@ export const KeyboardNavigation = Template.bind({});
 KeyboardNavigation.decorators = [withBackground];
 KeyboardNavigation.play = async ({ canvasElement, step }) => {
   const canvas = within(canvasElement);
-  
+
   await step('Focus navigation with keyboard', async () => {
-    // Tab to focus on the first interactive element
-    await userEvent.tab();
-    
-    // Check the focus is within the navigation
     const navbar = canvas.getByRole('navigation');
-    const focused = document.activeElement;
-    
-    // Verify focus is within the navbar
-    await expect(navbar.contains(focused)).toBeTruthy();
+    // Role queries skip hidden elements. The social links are the only
+    // interactive elements and are hidden below the lg breakpoint.
+    const links = within(navbar).queryAllByRole('link');
+
+    await userEvent.tab();
+
+    if (links.length > 0) {
+      await expect(navbar.contains(document.activeElement)).toBeTruthy();
+    } else {
+      await expect(navbar.contains(document.activeElement)).toBeFalsy();
+    }
   });
-};
-
-// Documentation block
-export const Documentation = () => null;
-Documentation.parameters = {
-  docs: {
-    source: { code: 'This is documentation only' },
-    description: {
-      story: `
-## Component Usage
-
-\`\`\`jsx
-import Navigation from './Navigation';
-import { PortfolioProvider } from '@context/PortfolioContext';
-
-function App() {
-  return (
-    <PortfolioProvider>
-      <Navigation />
-      <main>
-        // Main content would go here
-      </main>
-    </PortfolioProvider>
-  );
-}
-\`\`\`
-
-## Context Dependencies
-
-This component depends on data from the PortfolioContext through the useNavigation hook:
-
-| Data | Description |
-|------|-------------|
-| greetings.name | The name displayed in the navigation |
-
-## Accessibility Features
-
-This component implements these accessibility best practices:
-- Semantic HTML with appropriate header and navigation elements
-- ARIA roles and labels for navigation and buttons
-- Keyboard navigation with focus management
-- Escape key support for closing menus
-- Focus trap for modal navigation on mobile devices
-
-## Behavior Enhancements
-
-The navigation includes several enhanced behaviors:
-- Transparent to solid background transition on scroll
-- Auto-hide on scroll down, reveal on scroll up
-- Mobile-responsive design with hamburger menu
-- Keyboard navigation support
-      `,
-    },
-  },
 };

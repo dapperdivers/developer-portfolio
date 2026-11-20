@@ -1,4 +1,4 @@
-import { fn } from 'storybook/test';
+import { fn, expect, waitFor } from 'storybook/test';
 import React from 'react';
 import ErrorBoundary from './ErrorBoundary';
 
@@ -89,15 +89,19 @@ export const WithFallbackFunction = {
 };
 
 /**
- * Story showing the error boundary with an error callback
+ * Renders the same fallback as "With Error". The difference is behavioural: the
+ * `onError` callback is called with the caught error (see the Actions and
+ * Interactions panels).
  */
 export const WithErrorCallback = {
   args: {
     children: <BuggyComponent shouldThrow={true} />,
-    onError: (error, errorInfo) => {
-      console.log('Error caught:', error);
-      console.log('Error info:', errorInfo);
-    },
+  },
+  play: async ({ args }) => {
+    await waitFor(() => expect(args.onError).toHaveBeenCalled());
+    const [error, errorInfo] = args.onError.mock.calls[0];
+    await expect(error.message).toBe('Test error from BuggyComponent');
+    await expect(errorInfo.componentStack).toBeTruthy();
   },
 };
 
@@ -118,17 +122,3 @@ export const WithNestedComponents = {
     ),
   },
 };
-
-/**
- * Story showing the error boundary in dark mode
- */
-export const DarkMode = {
-  args: {
-    children: <BuggyComponent shouldThrow={true} />,
-  },
-  parameters: {
-    backgrounds: {
-      default: 'dark',
-    },
-  },
-}; 

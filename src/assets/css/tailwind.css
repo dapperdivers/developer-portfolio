@@ -252,7 +252,6 @@ a.btn[aria-disabled="true"] {
 
 .social-link-button {
   @apply flex items-center justify-center w-11 h-11 rounded-full bg-white/95 text-primary border-none transition-all duration-200 ease-in-out no-underline shadow-sm hover:bg-white hover:text-primary-dark hover:shadow-md focus:outline-hidden focus:shadow focus:ring-2 focus:ring-primary/50;
-  color: var(--primary); /* Tailwind 3 @apply text-primary also applied typography.css .text-primary */
 }
 
 .social-link-button:hover {
@@ -355,19 +354,8 @@ a.btn[aria-disabled="true"] {
 }
 
 /* Navigation Component */
-.header-global {
-  transform: translateY(0); /* was @apply translate-y-0 */
-  @apply fixed w-full top-0 left-0 z-fixed transition-transform backdrop-blur-md;
-  background-color: var(--color-primary-alpha-05);
-}
-
 .header-hidden {
   transform: translateY(-100%); /* was @apply -translate-y-full */
-}
-
-.header-global.scrolled {
-  @apply pt-1 pb-1 backdrop-blur-xl shadow-md;
-  background-color: var(--color-primary-alpha-15);
 }
 
 /* Fallback for browsers that don't support backdrop-filter */
@@ -478,11 +466,6 @@ a.btn[aria-disabled="true"] {
 
 /* Mobile menu */
 @media (max-width: 1024px) {
-  .navbar-collapse-header {
-    @apply flex justify-between items-center p-4 mb-2 rounded-md;
-    background-color: var(--color-primary-100);
-  }
-  
   .navbar-collapse {
     @apply bg-white rounded-lg p-2 shadow-lg absolute left-4 right-4 opacity-0 z-dropdown transition-all duration-300 ease-out;
     top: 100%;
@@ -498,11 +481,6 @@ a.btn[aria-disabled="true"] {
     @apply p-4;
   }
   
-  .nav-link-icon {
-    @apply text-primary shadow-none;
-    color: var(--primary); /* Tailwind 3 @apply text-primary also applied typography.css .text-primary */
-  }
-  
   .nav-link-icon:hover {
     color: var(--color-accent);
   }
@@ -513,11 +491,6 @@ a.btn[aria-disabled="true"] {
   
   .nav-item:last-child {
     @apply border-b-0;
-  }
-  
-  .nav-link {
-    @apply text-primary block py-3 px-4;
-    color: var(--primary); /* Tailwind 3 @apply text-primary also applied typography.css .text-primary */
   }
   
   .nav-link:hover {
@@ -613,41 +586,13 @@ a.btn[aria-disabled="true"] {
   @apply font-bold text-lg mb-1 text-white;
 }
 
-.job-title {
-  @apply font-semibold text-base mb-2;
-  color: var(--color-text-primary);
-}
-
-.date-range {
-  @apply text-sm mb-4 font-medium;
-  color: var(--color-text-secondary);
-}
-
 /* Job description */
-.description {
-  @apply grow;
-  color: var(--color-text-secondary);
-  font-size: var(--font-size-base);
-  line-height: var(--line-height-relaxed);
-}
-
 .description ul {
   @apply pl-4 mt-3 mb-0;
 }
 
 .description li {
   @apply mb-2;
-}
-
-/* Accessibility focus styles */
-.company-name:focus,
-.job-title:focus,
-.date-range:focus,
-.description:focus,
-.description li:focus {
-  outline-width: 2px; /* Tailwind 3 outline-2 (width only) */
-  @apply outline-offset-2 rounded-sm;
-  outline-color: var(--color-focus-ring);
 }
 
 /* Reduced motion preferences */
@@ -692,11 +637,6 @@ a.btn[aria-disabled="true"] {
 
 .feedback-card .card {
   @apply flex flex-col p-4 h-full rounded-lg max-h-[450px] overflow-y-auto shadow-md;
-}
-
-.rating {
-  @apply text-primary mb-3 flex gap-1;
-  color: var(--primary); /* Tailwind 3 @apply text-primary also applied typography.css .text-primary */
 }
 
 .star {
@@ -1097,18 +1037,6 @@ a.btn[aria-disabled="true"] {
   @apply relative overflow-hidden pt-28 pb-60;
 }
 
-/* Animated gradient background */
-.bg-gradient-info {
-  background: linear-gradient(
-    135deg, 
-    var(--info) 0%, 
-    var(--primary) 50%, 
-    var(--primary-700) 100%
-  ) !important;
-  background-size: 200% 200% !important;
-  animation: gradientAnimation 15s ease infinite;
-}
-
 @keyframes gradientAnimation {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
@@ -1178,11 +1106,6 @@ a.btn[aria-disabled="true"] {
   @apply shadow-lg;
 }
 
-.hero-section .btn-white {
-  @apply bg-white text-primary;
-  color: var(--primary); /* Tailwind 3 @apply text-primary also applied typography.css .text-primary */
-}
-
 .hero-section .btn-white:hover {
   @apply bg-light;
 }
@@ -1193,11 +1116,6 @@ a.btn[aria-disabled="true"] {
 }
 
 /* Enhanced Resume Download Button */
-.resume-download-btn {
-  @apply py-3 px-6 font-semibold text-base shadow-md bg-white/95 border-white/95 text-primary relative overflow-hidden rounded-full transition-all duration-300 self-start;
-  color: var(--primary); /* Tailwind 3 @apply text-primary also applied typography.css .text-primary */
-}
-
 .resume-download-btn:hover {
   transform: translateY(-3px); /* was @apply -translate-y-[3px] */
   @apply bg-white border-white shadow-lg;
@@ -1273,12 +1191,10 @@ a.btn[aria-disabled="true"] {
 
 .proficiency-section h1 {
   @apply font-sans font-bold text-dark mb-8 relative inline-block;
-  color: var(--dark); /* Tailwind 3 @apply text-dark also applied typography.css .text-dark */
 }
 
 .proficiency-section h1::after {
   @apply content-[''] absolute -bottom-2 left-0 w-[60px] h-1 rounded;
-  background: var(--accent);
 }
 
 /* Progress bar container */
@@ -1289,12 +1205,10 @@ a.btn[aria-disabled="true"] {
 /* Progress label and percentage */
 .progress-label {
   @apply inline-block font-semibold text-dark text-lg mb-2;
-  color: var(--dark); /* Tailwind 3 @apply text-dark also applied typography.css .text-dark */
 }
 
 .progress-percentage {
   @apply float-right font-medium text-primary text-base;
-  color: var(--primary); /* Tailwind 3 @apply text-primary also applied typography.css .text-primary */
 }
 
 /* Enhanced progress bar styling */
@@ -1333,14 +1247,6 @@ a.btn[aria-disabled="true"] {
   @apply bg-primary;
 }
 
-.progress-bar-accent {
-  background-color: var(--accent);
-}
-
-.progress-bar-info {
-  background: linear-gradient(to right, var(--primary), var(--accent));
-}
-
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
@@ -1363,7 +1269,7 @@ a.btn[aria-disabled="true"] {
 .proficiency-section button:focus {
   outline-width: 2px; /* Tailwind 3 outline-2 (width only) */
   @apply outline-offset-2;
-  outline-color: var(--primary);
+  outline-color: var(--color-primary);
 }
 
 /* Reduced motion preference */
@@ -1432,13 +1338,6 @@ a.btn[aria-disabled="true"] {
 /* 2. Timeline layout (default for large screens) */
 .experience-timeline {
   @apply flex flex-col relative max-w-[1200px] mx-auto;
-}
-
-/* Timeline connector line */
-.experience-timeline::before {
-  @apply content-[''] absolute top-0 bottom-0 left-1/2 w-1 rounded-full;
-  background-color: var(--color-accent-light);
-  transform: translateX(-50%);
 }
 
 /* Entry container for timeline items */
@@ -1681,16 +1580,6 @@ a.btn[aria-disabled="true"] {
   @apply inline-flex items-center bg-white py-2 px-4 rounded-full shadow-md mb-6;
 }
 
-.location-icon {
-  @apply mr-2 text-xl;
-  color: var(--accent);
-}
-
-.location-text {
-  @apply font-medium;
-  color: var(--secondary);
-}
-
 /* Social links in contact section */
 .contact-social-links {
   @apply mt-6;
@@ -1700,41 +1589,9 @@ a.btn[aria-disabled="true"] {
   @apply inline-flex items-center justify-center w-[42px] h-[42px] rounded-full bg-white/20 text-white mr-4 transition-all duration-300;
 }
 
-.contact-social-links a:hover {
-  transform: translateY(-3px); /* was @apply -translate-y-[3px] */
-  @apply bg-white shadow-md;
-  color: var(--accent);
-}
-
 /* Fallback styling */
-.github-fallback {
-  @apply text-center p-8 rounded-2xl mb-8;
-  background-color: var(--primary-100);
-}
-
 .fallback-image {
   @apply w-[100px] h-[100px] rounded-full mb-4 bg-light p-4;
-}
-
-.fallback-title {
-  @apply mb-4 font-semibold;
-  color: var(--primary);
-}
-
-.fallback-message {
-  @apply mb-6;
-  color: var(--secondary);
-}
-
-.refresh-button {
-  @apply text-white border-none py-2 px-6 rounded-full font-medium cursor-pointer transition-all duration-300;
-  background-color: var(--primary);
-}
-
-.refresh-button:hover {
-  transform: translateY(-2px); /* was @apply -translate-y-[2px] */
-  @apply shadow-md;
-  background-color: var(--accent);
 }
 
 /* Reduced motion preferences */
@@ -1746,13 +1603,6 @@ a.btn[aria-disabled="true"] {
   .contact-social-links a:hover {
     @apply transform-none;
   }
-}
-
-/* 1. Background Gradient */
-.bg-gradient-accent {
-  @apply bg-linear-to-tr/srgb;
-  background-color: var(--accent);
-  background-image: linear-gradient(to top right, var(--accent-dark), var(--accent));
 }
 
 /* Feedbacks Section Styles */
@@ -1770,11 +1620,6 @@ a.btn[aria-disabled="true"] {
   background: linear-gradient(to right, rgba(255, 255, 255, 1), rgb(243 244 246));
 }
 
-.feedbacks-title {
-  @apply text-3xl font-bold text-primary mb-0;
-  color: var(--primary); /* Tailwind 3 @apply text-primary also applied typography.css .text-primary */
-}
-
 /* Feedback cards container */
 .feedbacks-grid {
   @apply grid gap-8;
@@ -1788,11 +1633,6 @@ a.btn[aria-disabled="true"] {
 
 .carousel-controls {
   @apply flex justify-center mt-8 gap-4;
-}
-
-.carousel-control {
-  @apply w-10 h-10 rounded-full bg-white border border-solid border-primary-100 text-primary flex items-center justify-center cursor-pointer transition-all duration-200;
-  color: var(--primary); /* Tailwind 3 @apply text-primary also applied typography.css .text-primary */
 }
 
 .carousel-control:hover {
@@ -1938,10 +1778,6 @@ a.btn[aria-disabled="true"] {
   color: var(--color-text);
   margin-bottom: 1rem;
   transition: color 0.3s ease;
-}
-
-.skill-text:hover {
-  color: var(--color-text-primary);
 }
 
 .skills-grid-loading {

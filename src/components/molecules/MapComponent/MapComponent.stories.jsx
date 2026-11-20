@@ -64,11 +64,7 @@ export const MobileView = {
   args: {
     location: 'San Francisco, CA',
   },
-  parameters: {
-    viewport: {
-      defaultViewport: 'mobile1',
-    },
-  },
+  globals: { viewport: { value: 'mobile1', isRotated: false } },
 };
 
 /**
@@ -78,11 +74,7 @@ export const TabletView = {
   args: {
     location: 'San Francisco, CA',
   },
-  parameters: {
-    viewport: {
-      defaultViewport: 'tablet',
-    },
-  },
+  globals: { viewport: { value: 'tablet', isRotated: false } },
 };
 
 /**

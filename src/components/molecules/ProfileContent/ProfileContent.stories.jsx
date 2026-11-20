@@ -2,7 +2,7 @@ import React from 'react';
 import ProfileContent from './ProfileContent';
 
 export default {
-  title: 'GitHub Profile/Molecules/Profile/ProfileContent',
+  title: 'Molecules/ProfileContent',
   component: ProfileContent,
   tags: ['autodocs'],
   parameters: {

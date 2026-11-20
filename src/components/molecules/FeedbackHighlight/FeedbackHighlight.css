@@ -10,7 +10,7 @@
 
 .highlight-container {
   position: relative;
-  background-color: var(--color-gradient-start);
+  background-color: var(--color-background-alt);
   border-radius: var(--border-radius-md);
   padding: var(--spacing-4) var(--spacing-5);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);

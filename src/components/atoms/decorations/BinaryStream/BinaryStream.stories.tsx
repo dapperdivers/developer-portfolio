@@ -4,44 +4,20 @@ import BinaryStream from './BinaryStream';
 import { AnimationProvider } from '@context/AnimationContext';
 
 /**
- * # BinaryStream
- * 
- * The BinaryStream component displays animated binary digits (0s and 1s) that flow along 
- * one side of a container. It's used to create cyberpunk-style UI elements in timeline 
- * decorations.
- * 
- * ## Features
- * 
- * - Can be positioned on any side of a container (left, right, top, bottom)
- * - Customizable number of binary digits
- * - Configurable animation speed through delay settings
- * 
- * ## Usage
- * 
- * ```jsx
- * import BinaryStream from '@components/decorations/BinaryStream';
- * 
- * // Default usage (left side)
- * <BinaryStream />
- * 
- * // With custom options
- * <BinaryStream 
- *   position="right" 
- *   count={30} 
- *   baseDelay={0.1} 
- * />
- * ```
- * 
- * ## Accessibility
- * 
- * This is a decorative element and should not receive keyboard focus.
- * It is automatically set with appropriate ARIA attributes.
+ * BinaryStream draws a falling column of 0s and 1s on a canvas.
+ * It is decorative: size it with `width` and `height`, and position it
+ * with the `binary-stream-left` / `binary-stream-right` helper classes
+ * or `isBackground`.
  */
 const meta: Meta<typeof BinaryStream> = {
   title: 'Atoms/Decorations/BinaryStream',
   component: BinaryStream,
   parameters: {
     layout: 'centered',
+    // The global matcher treats any prop ending in "background" as a colour, which catches isBackground
+    controls: {
+      matchers: { color: /^color$/i }
+    },
     docs: {
       description: {
         component: 'BinaryStream component with canvas-based animation for cyberpunk binary effects.'
@@ -49,6 +25,16 @@ const meta: Meta<typeof BinaryStream> = {
     }
   },
   tags: ['autodocs'],
+  argTypes: {
+    color: { control: 'color', description: 'Character colour' },
+    fontSize: { control: { type: 'number', min: 8, max: 48, step: 1 }, description: 'Character size in pixels' },
+    speed: { control: { type: 'range', min: 0.5, max: 10, step: 0.5 }, description: 'How often characters change' },
+    moveSpeed: { control: { type: 'range', min: 0.1, max: 5, step: 0.1 }, description: 'Downward speed' },
+    width: { control: { type: 'number', min: 10, max: 800, step: 10 }, description: 'Stream width in pixels' },
+    height: { control: { type: 'number', min: 50, max: 800, step: 10 }, description: 'Stream height in pixels' },
+    isBackground: { control: 'boolean', description: 'Render fixed behind the content' },
+    className: { control: 'text' }
+  },
   decorators: [
     (Story) => (
       <AnimationProvider>

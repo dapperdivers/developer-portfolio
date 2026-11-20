@@ -32,7 +32,7 @@ const DataStream = ({
   className = '',
   ...props 
 }) => {
-  const { isAnimationEnabled } = useAnimation();
+  const { animationEnabled: isAnimationEnabled } = useAnimation();
 
   const getStreamColor = () => {
     switch (variant) {

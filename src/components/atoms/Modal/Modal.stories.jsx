@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from './Modal';
 
 export default {
@@ -9,8 +9,13 @@ export default {
     docs: {
       description: {
         component: 'A full-screen modal component that uses React portals to escape parent constraints. Perfect for displaying detailed content with cybersecurity theming.'
-      }
+      },
+      // Each story opens its modal, so give every docs example its own frame
+      story: { inline: false, iframeHeight: 600 }
     }
+  },
+  args: {
+    isOpen: true
   },
   argTypes: {
     isOpen: {
@@ -42,9 +47,22 @@ export default {
 };
 
 // Template for creating stories
+const sizeLabels = { sm: 'Small (400px)', md: 'Medium (600px)', lg: 'Large (800px)', xl: 'Extra large (1000px)' };
+
 const Template = (args) => {
-  const [isOpen, setIsOpen] = useState(false);
-  
+  // Open by default; the isOpen control and the button can reopen it
+  const [isOpen, setIsOpen] = useState(args.isOpen ?? true);
+
+  useEffect(() => {
+    setIsOpen(args.isOpen ?? true);
+  }, [args.isOpen]);
+
+  const closeHints = [
+    args.showCloseButton !== false && 'the close button',
+    args.closeOnEscape !== false && 'Escape',
+    args.closeOnBackdropClick !== false && 'a backdrop click'
+  ].filter(Boolean);
+
   return (
     <>
       <button 
@@ -65,7 +83,10 @@ const Template = (args) => {
       <Modal
         {...args}
         isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
+        onClose={() => {
+          setIsOpen(false);
+          args.onClose?.();
+        }}
       >
         <div style={{ color: 'var(--color-offwhite)', fontFamily: 'var(--font-family-inter)' }}>
           <h2 style={{ 
@@ -75,6 +96,14 @@ const Template = (args) => {
           }}>
             Modal Content
           </h2>
+          <p style={{
+            fontFamily: 'var(--font-family-jetbrains)',
+            fontSize: '0.875rem',
+            color: 'var(--color-gray-400)',
+            marginBottom: '1rem'
+          }}>
+            Size: {sizeLabels[args.size] || sizeLabels.md} · Closes with: {closeHints.join(', ') || 'nothing (controlled by the parent)'}
+          </p>
           <p style={{ lineHeight: '1.6', marginBottom: '1rem' }}>
             This is a full-screen modal that uses React portals to render at the document body level,
             ensuring it escapes any parent container constraints.
@@ -162,7 +191,7 @@ NoBackdropClose.args = {
 
 // Skill card content example
 export const SkillCardExample = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   
   const mockSkill = {
     skillName: 'Advanced Threat Detection',

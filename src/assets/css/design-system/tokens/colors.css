@@ -54,10 +54,13 @@
   --color-background: #2a2a2a; /* Much lighter gray to test visibility */
   --color-background-alt: var(--color-gray-900); /* Dark alt background */
   --color-background-muted: var(--color-gray-800); /* Dark muted background */
+  --color-skeleton-bg: rgba(255, 255, 255, 0.08); /* Loading placeholder blocks */
   
   /* RGB Values for Opacity Variants */
   --color-primary-rgb: 100, 255, 218; /* Updated to match new primary */
   --color-secondary-rgb: 108, 117, 125;
+  --color-text-rgb: 255, 255, 255;
+  --color-background-alt-rgb: 33, 37, 41;
   --color-success-rgb: 52, 199, 89; /* Updated to match severity-low */
   --color-info-rgb: 90, 200, 250; /* Updated to match severity-info */
   --color-warning-rgb: 255, 204, 0; /* Updated to match severity-medium */
