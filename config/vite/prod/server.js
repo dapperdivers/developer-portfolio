@@ -14,7 +14,9 @@ const prodConfig = {
   buildPath: path.join(__dirname, '../../../build'),
   storybookPath: path.join(__dirname, '../../../storybook-static'),
   docsPath: path.join(__dirname, '../../../docs-static'),
-  rateLimitMax: 100, // Stricter in production
+  // Per visitor. A cold page load is about 25 requests, so this allows a
+  // few dozen page loads per 15 minutes before limiting.
+  rateLimitMax: 600,
   rateLimitWindow: 15 * 60 * 1000,
   cacheMaxAge: '1y' // Aggressive caching in production
 };
