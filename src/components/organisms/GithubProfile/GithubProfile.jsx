@@ -97,7 +97,9 @@ const GithubProfile = ({ id = 'contact' }) => {
                 setProf(sanitizedData);
             } catch (err) {
                 if (!axios.isCancel(err)) {
-                    console.error('GitHub Profile Error:', err);
+                    // Handled: the card falls back to site data, so this is a
+                    // warning rather than an error.
+                    console.warn('GitHub profile request failed:', err.message);
                     
                     // Use cached data as fallback if available
                     try {
