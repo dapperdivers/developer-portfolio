@@ -116,21 +116,6 @@
   box-shadow: none;
 }
 
-/* Security Footer */
-.profile-location__security-footer {
-  background: var(--color-navy);
-  border-top: 1px solid var(--color-cyan);
-  padding: 8px 16px;
-  font-size: 12px;
-}
-
-.security-metrics {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
 .metric {
   display: flex;
   align-items: center;
@@ -149,28 +134,8 @@
   font-size: 11px;
 }
 
-.metric-value--default {
-  color: var(--color-cyan);
-}
-
-.metric-value--secure {
-  color: var(--color-success);
-}
-
-.metric-value--breach {
-  color: var(--color-warning);
-}
-
-.metric-value--critical {
-  color: var(--color-danger);
-}
-
 .status-online {
   color: var(--color-success);
-}
-
-.status-offline {
-  color: var(--color-gray-400);
 }
 
 /* Security Variants */
@@ -274,12 +239,6 @@
     font-size: 10px;
   }
 
-  .security-metrics {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
-  }
-
   .status-left {
     flex-direction: column;
     align-items: flex-start;
@@ -311,10 +270,6 @@
 
   .metric-value {
     font-size: 9px;
-  }
-
-  .security-metrics {
-    gap: 2px;
   }
 
   .refresh-btn {

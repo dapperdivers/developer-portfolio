@@ -250,36 +250,11 @@ a.btn[aria-disabled="true"] {
   @apply flex items-center flex-wrap gap-3;
 }
 
-.social-link-button {
-  @apply flex items-center justify-center w-11 h-11 rounded-full bg-white/95 text-primary border-none transition-all duration-200 ease-in-out no-underline shadow-sm hover:bg-white hover:text-primary-dark hover:shadow-md focus:outline-hidden focus:shadow focus:ring-2 focus:ring-primary/50;
-}
-
-.social-link-button:hover {
-  transform: translateY(-3px); /* was @apply hover:translate-y-[-3px] */
-}
-
-.social-icon {
-  @apply w-6 h-6;
-}
-
 /* Responsive styles for social links */
 @media (max-width: 768px) {
   .social-links {
     @apply gap-2;
   }
-  
-  .social-link-button {
-    @apply w-10 h-10;
-  }
-  
-  .social-icon {
-    @apply w-5 h-5;
-  }
-}
-
-
-.animation-status {
-  @apply text-sm text-white ml-1;
 }
 
 .sr-only {
@@ -287,39 +262,9 @@ a.btn[aria-disabled="true"] {
   clip: rect(0, 0, 0, 0);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .animation-controls {
-    @apply opacity-100;
-  }
-}
-
 /* Badge Component */
 .badge {
   @apply inline-flex items-center justify-center px-2 py-1 text-xs font-medium rounded;
-}
-
-.badge-primary {
-  @apply bg-primary text-white;
-}
-
-.badge-secondary {
-  @apply bg-secondary text-white;
-}
-
-.badge-success {
-  @apply bg-success text-white;
-}
-
-.badge-danger {
-  @apply bg-danger text-white;
-}
-
-.badge-warning {
-  @apply bg-warning text-gray-900;
-}
-
-.badge-info {
-  @apply bg-info text-white;
 }
 
 /* Loading Component */
@@ -353,21 +298,7 @@ a.btn[aria-disabled="true"] {
   }
 }
 
-/* Navigation Component */
-.header-hidden {
-  transform: translateY(-100%); /* was @apply -translate-y-full */
-}
-
 /* Fallback for browsers that don't support backdrop-filter */
-@supports not ((backdrop-filter: blur(8px)) or (-webkit-backdrop-filter: blur(8px))) {
-  .header-global {
-    background-color: rgba(0, 98, 204, 0.9);
-  }
-  
-  .header-global.scrolled {
-    background-color: rgba(0, 98, 204, 0.95) !important;
-  }
-}
 
 .navbar-main {
   @apply py-2;
@@ -387,131 +318,9 @@ a.btn[aria-disabled="true"] {
   background-color: var(--color-accent);
 }
 
-.navbar-brand:hover #nav-title::after {
-  @apply w-full;
-}
-
-.navbar-brand {
-  @apply flex items-center;
-}
-
-.navbar-toggler {
-  @apply border-none p-2 bg-transparent cursor-pointer;
-}
-
-.navbar-toggler:focus {
-  @apply outline-hidden shadow-none;
-}
-
-.navbar-toggler-icon {
-  background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='rgba(255, 255, 255, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
-}
-
-/* Navigation items */
-.nav-item {
-  @apply ml-4;
-}
-
-.nav-link {
-  @apply font-medium py-2 px-3 transition-all duration-200 relative;
-  color: rgba(255, 255, 255, 0.9);
-}
-
-.nav-link:hover {
-  @apply text-white;
-}
-
-.nav-link.active {
-  color: var(--color-accent);
-}
-
-.nav-link.active::after {
-  @apply absolute -bottom-0.5 left-3 right-3 h-0.5;
-  content: '';
-  background-color: var(--color-accent);
-}
-
-.nav-link-icon {
-  @apply flex items-center p-2 text-white transition-all duration-200 relative;
-  font-size: 1.75rem;
-  text-shadow: 0 0 10px rgba(11, 11, 11, 0.3);
-}
-
-.nav-link-icon:hover {
-  transform: translateY(-0.125rem); /* was @apply -translate-y-0.5 */
-  color: var(--color-accent);
-}
-
-/* Animation for icon hover */
-.nav-link-icon::after {
-  @apply absolute w-full h-0.5 bottom-0 left-0 transition-transform duration-300 ease-out;
-  content: '';
-  background-color: var(--color-accent);
-  transform: scaleX(0);
-  transform-origin: bottom right;
-}
-
-.nav-link-icon:hover::after {
-  transform: scaleX(1);
-  transform-origin: bottom left;
-}
-
-/* Focus styles for accessibility */
-.nav-link-icon:focus {
-  outline-width: 2px; /* Tailwind 3 outline-2 (width only) */
-  @apply outline-offset-2;
-  outline-color: var(--color-accent);
-  color: var(--color-accent);
-}
-
 /* Mobile menu */
-@media (max-width: 1024px) {
-  .navbar-collapse {
-    @apply bg-white rounded-lg p-2 shadow-lg absolute left-4 right-4 opacity-0 z-dropdown transition-all duration-300 ease-out;
-    top: 100%;
-    transform: translateY(-10px);
-  }
-  
-  .navbar-collapse.show {
-    @apply opacity-100;
-    transform: translateY(5px);
-  }
-  
-  .nav-items-container {
-    @apply p-4;
-  }
-  
-  .nav-link-icon:hover {
-    color: var(--color-accent);
-  }
-  
-  .nav-item {
-    @apply m-0 py-2 border-b border-gray-200;
-  }
-  
-  .nav-item:last-child {
-    @apply border-b-0;
-  }
-  
-  .nav-link:hover {
-    @apply bg-gray-100 rounded-sm;
-  }
-}
 
 /* Desktop scroll behavior */
-@media (min-width: 1024px) {
-  .header-global.scrolled .nav-link-icon {
-    @apply text-white;
-  }
-  
-  .header-global.scrolled .nav-link-icon:hover {
-    @apply text-white;
-  }
-  
-  .header-global.scrolled #nav-title {
-    @apply text-white!;
-  }
-}
 
 /* Experience Card Component */
 .experience-card {
@@ -551,40 +360,7 @@ a.btn[aria-disabled="true"] {
   @apply p-4 border-b-0 flex items-center justify-center;
 }
 
-/* Company logo */
-.company-logo-container {
-  @apply mb-4 flex justify-center;
-}
-
-.company-logo {
-  @apply w-[6.25rem] h-[6.25rem] rounded-full object-contain p-2 bg-white border border-solid border-border shadow-sm transition-transform;
-  /* Hardware acceleration for better performance */
-  will-change: transform;
-  transform: translateZ(0);
-  backface-visibility: hidden;
-}
-
-.experience-card:hover .company-logo,
-.experience-card:active .company-logo {
-  transform: scale(1.1); /* was @apply scale-110 */
-}
-
 /* Touch alternative for logo hover effect */
-@media (hover: none) {
-  .experience-card:hover .company-logo {
-    transform: scale(1); /* was @apply scale-100 */
-  }
-  
-  .experience-card:active .company-logo {
-    transform: scale(1.05); /* was @apply scale-105 */
-    transition: transform 0.1s ease-in-out;
-  }
-}
-
-/* Company name and job title */
-.company-name {
-  @apply font-bold text-lg mb-1 text-white;
-}
 
 /* Job description */
 .description ul {
@@ -614,20 +390,6 @@ a.btn[aria-disabled="true"] {
   .experience-card {
     @apply flex-1 basis-[18.75rem];
   }
-  
-  .company-logo {
-    @apply w-[5.625rem] h-[5.625rem];
-  }
-}
-
-@media (max-width: 767.98px) {
-  .company-logo {
-    @apply w-20 h-20;
-  }
-  
-  .job-title {
-    font-size: var(--font-size-base);
-  }
 }
 
 /* FeedbackCard Component */
@@ -643,20 +405,8 @@ a.btn[aria-disabled="true"] {
   @apply w-[18px] h-[18px];
 }
 
-.quote-container {
-  @apply relative p-3 mb-4 flex-1;
-}
-
 .quote-icon {
   @apply text-primary-light opacity-60 text-lg;
-}
-
-.quote-icon-left {
-  @apply absolute top-0 left-0;
-}
-
-.quote-icon-right {
-  @apply absolute bottom-0 right-0;
 }
 
 .quote-content {
@@ -769,10 +519,6 @@ a.btn[aria-disabled="true"] {
 
 .project-button {
   @apply flex-1 flex items-center justify-center gap-1 transition-all;
-}
-
-.github-button {
-  @apply bg-gray-800 text-white;
 }
 
 .demo-button {
@@ -1032,11 +778,6 @@ a.btn[aria-disabled="true"] {
   }
 }
 
-/* Hero Section Component (Greetings) */
-.hero-section {
-  @apply relative overflow-hidden pt-28 pb-60;
-}
-
 @keyframes gradientAnimation {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
@@ -1053,31 +794,6 @@ a.btn[aria-disabled="true"] {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-.shape-style-1 span:first-child {
-  @apply w-[120px] h-[120px] bottom-auto left-auto top-[-60px] right-[-10px];
-  animation: floatingAnimation 3s ease-in-out infinite alternate;
-}
-
-.shape-style-1 span:nth-child(2) {
-  @apply w-[60px] h-[60px] top-[5%] right-[5%];
-  animation: floatingAnimation 5s ease-in-out infinite alternate;
-}
-
-.shape-style-1 span:nth-child(3) {
-  @apply w-[40px] h-[40px] top-[50%] right-[50%];
-  animation: floatingAnimation 7s ease-in-out infinite alternate;
-}
-
-.shape-style-1 span:nth-child(4) {
-  @apply w-[80px] h-[80px] bottom-[70px] right-[25%];
-  animation: floatingAnimation 6s ease-in-out infinite alternate;
-}
-
-.shape-style-1 span:nth-child(5) {
-  @apply w-[100px] h-[100px] top-[10%] right-[10%];
-  animation: floatingAnimation 8s ease-in-out infinite alternate;
-}
-
 @keyframes floatingAnimation {
   0% {
     transform: translateY(0px) rotate(0deg);
@@ -1087,102 +803,18 @@ a.btn[aria-disabled="true"] {
   }
 }
 
-/* Text styling */
-.hero-section .display-3 {
-  @apply font-bold mb-6 text-4xl md:text-5xl leading-tight tracking-tight;
-}
-
-.hero-section .lead {
-  @apply text-base md:text-xl leading-relaxed font-normal mb-8 max-w-[600px];
-}
-
-/* Button styling */
-.hero-section .btn {
-  @apply px-6 py-3 font-medium transition-all duration-300 rounded-lg;
-}
-
-.hero-section .btn:hover {
-  transform: translateY(-3px); /* was @apply -translate-y-[3px] */
-  @apply shadow-lg;
-}
-
-.hero-section .btn-white:hover {
-  @apply bg-light;
-}
-
-/* Hero action container for social links and resume button */
-.hero-action-container {
-  @apply flex flex-row items-center gap-6 mt-10 flex-wrap;
-}
-
-/* Enhanced Resume Download Button */
-.resume-download-btn:hover {
-  transform: translateY(-3px); /* was @apply -translate-y-[3px] */
-  @apply bg-white border-white shadow-lg;
-  box-shadow: 0 7px 14px rgba(255, 255, 255, 0.2), 0 3px 6px rgba(0, 0, 0, 0.1) !important;
-}
-
-/* Add a subtle download icon animation */
-.resume-download-btn .btn-icon-left svg {
-  @apply transition-transform duration-300;
-}
-
-.resume-download-btn:hover .btn-icon-left svg {
-  transform: translateY(3px); /* was @apply translate-y-[3px] */
-}
-
 /* SVG separator styling */
 .separator {
   @apply absolute left-0 right-0 w-full overflow-hidden leading-0;
-}
-
-.separator-bottom {
-  @apply bottom-0;
-}
-
-.separator-skew {
-  @apply h-[70px];
 }
 
 .separator svg {
   @apply w-full h-full block;
 }
 
-/* Improved accessibility */
-.hero-section a:focus {
-  outline-width: 2px; /* Tailwind 3 outline-2 (width only) */
-  @apply outline-white outline-offset-2;
-}
-
 /* Responsive adjustments */
-@media (max-width: 768px) {
-  .hero-section {
-    @apply pt-20 pb-48;
-  }
-  
-  .hero-section .display-3 {
-    @apply text-2xl md:text-4xl;
-  }
-  
-  .hero-section .lead {
-    @apply text-base md:text-lg;
-  }
-}
 
 /* Skip animation based on user preference */
-@media (prefers-reduced-motion: reduce) {
-  .bg-gradient-info {
-    @apply animate-none;
-  }
-  
-  .shape-style-1 span {
-    @apply animate-none;
-  }
-  
-  .hero-section .btn:hover {
-    @apply transform-none;
-  }
-}
 
 /* Proficiency Component */
 .proficiency-section {
@@ -1216,37 +848,11 @@ a.btn[aria-disabled="true"] {
   @apply h-[10px] rounded bg-light-200 shadow-none mb-2 overflow-hidden;
 }
 
-/* Progress bar animation */
-.progress-bar {
-  @apply rounded relative overflow-hidden;
-  transition-property: width;
-  transition-duration: 1.5s;
-  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.progress-bar::after {
-  @apply content-[''] absolute inset-0;
-  background: linear-gradient(
-    90deg, 
-    rgba(255, 255, 255, 0) 0%, 
-    rgba(255, 255, 255, 0.15) 50%, 
-    rgba(255, 255, 255, 0) 100%
-  );
-  animation: shimmer 2s infinite;
-  transform: translateX(-100%);
-}
-
 @keyframes shimmer {
   100% {
     transform: translateX(100%);
   }
 }
-
-/* Custom progress bar colors */
-.progress-bar-primary {
-  @apply bg-primary;
-}
-
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
@@ -1273,15 +879,6 @@ a.btn[aria-disabled="true"] {
 }
 
 /* Reduced motion preference */
-@media (prefers-reduced-motion: reduce) {
-  .progress-bar {
-    @apply transition-none;
-  }
-  
-  .progress-bar::after {
-    @apply animate-none;
-  }
-}
 
 /* Custom Progress Component */
 .tailwind-progress {
@@ -1373,50 +970,6 @@ a.btn[aria-disabled="true"] {
   @apply w-[45%] max-w-[500px] m-0;
 }
 
-/* Date marker for timeline display */
-.timeline-date {
-  @apply absolute top-[54px] text-text-primary font-bold bg-background py-1 px-3 rounded-full shadow-sm z-20;
-}
-
-.timeline-entry:nth-child(odd) .timeline-date {
-  @apply right-[55%];
-  transform: translateX(2.5rem);
-}
-
-.timeline-entry:nth-child(even) .timeline-date {
-  @apply left-[55%];
-  transform: translateX(-2.5rem);
-}
-
-/* Animations for timeline display */
-.timeline-animate-in .timeline-entry {
-  transform: translateY(30px); /* was @apply translate-y-[30px] */
-  @apply opacity-0 transition-all duration-500 ease-out;
-}
-
-.timeline-animate-in .timeline-entry.visible {
-  transform: translateY(0); /* was @apply translate-y-0 */
-  @apply opacity-100;
-}
-
-/* Loading and view setting controls */
-.view-controls {
-  @apply flex justify-center mb-5 gap-3;
-}
-
-.view-toggle {
-  @apply inline-flex items-center border-none bg-background-alt text-text py-2 px-4 rounded-full font-medium cursor-pointer transition-all duration-200;
-}
-
-.view-toggle.active {
-  @apply text-white;
-  background-color: var(--color-accent);
-}
-
-.view-icon {
-  @apply mr-2 text-lg;
-}
-
 /* Responsive adjustments */
 @media (max-width: 1024px) {
   .experience-grid {
@@ -1429,29 +982,6 @@ a.btn[aria-disabled="true"] {
   }
   
   .experience-grid {
-    @apply flex;
-  }
-  
-  .view-controls {
-    @apply hidden;
-  }
-}
-
-@media (min-width: 1024px) {
-  /* Default to timeline on larger screens */
-  .layout-timeline .experience-timeline {
-    @apply flex;
-  }
-  
-  .layout-timeline .experience-grid {
-    @apply hidden;
-  }
-  
-  .layout-grid .experience-timeline {
-    @apply hidden;
-  }
-  
-  .layout-grid .experience-grid {
     @apply flex;
   }
 }
@@ -1477,11 +1007,6 @@ a.btn[aria-disabled="true"] {
   
   .timeline-entry .experience-card {
     @apply w-4/5;
-  }
-  
-  .timeline-entry:nth-child(odd) .timeline-date,
-  .timeline-entry:nth-child(even) .timeline-date {
-    @apply left-[26px] transform-none;
   }
 }
 
@@ -1528,171 +1053,27 @@ a.btn[aria-disabled="true"] {
   }
 }
 
-/* Contact Section Styles */
-.contact-section {
-  padding-top: 2rem; /* Tailwind 3 @apply pt-8 resolved to the plugin value (2rem), not --spacing-8 */
-  @apply pb-0 relative bg-transparent mb-0;
-}
-
-/* Card styling */
-.contact-card {
-  @apply border-none rounded-t-2xl overflow-hidden shadow-lg transition-all duration-300;
-}
-
-.contact-card-inner {
-  @apply p-12 md:p-8 sm:p-6;
-}
-
-/* Profile image */
-.profile-image-container {
-  @apply relative mb-6;
-}
-
-.profile-image {
-  @apply w-[150px] h-[150px] rounded-full object-cover border-4 border-white shadow-lg transition-all duration-300;
-}
-
-.profile-image-container::after {
-  @apply content-[''] absolute -top-[10px] -left-[10px] -right-[10px] -bottom-[10px] rounded-full border-2 border-dashed border-white/50 -z-10;
-  animation: rotate 15s linear infinite;
-}
-
 @keyframes rotate {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
 
-/* Profile content */
-.profile-title {
-  @apply text-4xl font-bold mb-4 text-white md:text-2xl;
-}
-
-.profile-subtitle {
-  @apply text-xl font-normal mb-6 text-white/90 md:text-base;
-}
-
-.profile-bio {
-  @apply text-base leading-relaxed mb-6 text-white/80;
-}
-
-/* Location badge */
-.location-badge {
-  @apply inline-flex items-center bg-white py-2 px-4 rounded-full shadow-md mb-6;
-}
-
-/* Social links in contact section */
-.contact-social-links {
-  @apply mt-6;
-}
-
-.contact-social-links a {
-  @apply inline-flex items-center justify-center w-[42px] h-[42px] rounded-full bg-white/20 text-white mr-4 transition-all duration-300;
-}
-
-/* Fallback styling */
-.fallback-image {
-  @apply w-[100px] h-[100px] rounded-full mb-4 bg-light p-4;
-}
-
 /* Reduced motion preferences */
-@media (prefers-reduced-motion: reduce) {
-  .profile-image-container::after {
-    @apply animate-none;
-  }
-  
-  .contact-social-links a:hover {
-    @apply transform-none;
-  }
-}
 
 /* Feedbacks Section Styles */
 .feedbacks-section {
   @apply py-16 bg-background relative;
 }
 
-/* Section title and icon */
-.feedbacks-title-container {
-  @apply flex items-center mb-6;
-}
-
-.feedbacks-icon {
-  @apply w-[30px] h-[30px] flex items-center justify-center rounded-full mr-4 shadow;
-  background: linear-gradient(to right, rgba(255, 255, 255, 1), rgb(243 244 246));
-}
-
-/* Feedback cards container */
-.feedbacks-grid {
-  @apply grid gap-8;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-}
-
-/* Testimonial carousel styles */
-.carousel-container {
-  @apply w-full relative;
-}
-
-.carousel-controls {
-  @apply flex justify-center mt-8 gap-4;
-}
-
-.carousel-control:hover {
-  @apply bg-primary text-white;
-}
-
-.carousel-indicators {
-  @apply flex justify-center mt-6 gap-2;
-}
-
-.carousel-indicator {
-  @apply w-2 h-2 rounded-full transition-all duration-300;
-  background-color: rgb(229 231 235);
-}
-
-.carousel-indicator.active {
-  @apply w-6 rounded bg-primary;
-}
-
 /* Responsive adjustments */
-@media (max-width: 1024px) {
-  .feedbacks-grid {
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    @apply gap-6;
-  }
-  
-  .feedbacks-title {
-    @apply text-2xl;
-  }
-}
 
 @media (max-width: 768px) {
   .feedbacks-section {
     @apply py-16;
   }
-  
-  .feedbacks-title-container {
-    @apply mb-8;
-  }
-  
-  .feedbacks-icon {
-    @apply w-[50px] h-[50px];
-  }
-  
-  .feedbacks-title {
-    @apply text-xl;
-  }
-  
-  .feedbacks-grid {
-    @apply grid-cols-1;
-  }
 }
 
 /* Reduced motion preferences */
-@media (prefers-reduced-motion: reduce) {
-  .carousel-control,
-  .carousel-indicator {
-    @apply transition-none;
-  }
-}
 
 /* We'll add more component styles as we migrate */
 
@@ -1707,15 +1088,6 @@ a.btn[aria-disabled="true"] {
 
 .transition-colors {
   transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
-}
-
-/* Tailwind 3 space-y-* behaviour, kept verbatim. Tailwind 4 changed the selector to
-   :where(.space-y-N > :not(:last-child)) with margin-bottom and zero specificity, which changes the
-   layout where children set their own margins (e.g. .progress-info { margin-bottom }). The v4 versions
-   of these classes are excluded with `@source not inline()` above. */
-.space-y-1 > :not([hidden]) ~ :not([hidden]) {
-  margin-top: var(--spacing-1);
-  margin-bottom: 0;
 }
 
 .space-y-2 > :not([hidden]) ~ :not([hidden]) {
@@ -1750,11 +1122,6 @@ a.btn[aria-disabled="true"] {
   .md\:pt-8 {
     padding-top: 2rem;
   }
-}
-
-/* Custom utilities that extend Tailwind */
-.text-gradient {
-  @apply bg-clip-text text-transparent bg-linear-to-r/srgb from-primary to-accent;
 }
 
 /* Skills Grid Utilities */
@@ -1796,14 +1163,4 @@ a.btn[aria-disabled="true"] {
 .skills-empty-state p {
   font-size: var(--font-size-lg);
   color: var(--color-text-muted);
-}
-
-/* Performance Optimizations */
-.will-change-transform {
-  will-change: transform;
-}
-
-.hardware-accelerated {
-  transform: translateZ(0);
-  backface-visibility: hidden;
 }

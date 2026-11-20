@@ -1,46 +1,4 @@
-/**
- * Professional Font System
- * 
- * This file implements a centralized font loading strategy using CSS variables
- * from the design system typography tokens. Fonts are loaded via fontLoader.js
- * with proper fallbacks and performance optimizations.
- * 
- * Font Stack:
- * - Inter: Base/body text font
- * - JetBrains Mono: Monospace/terminal/code font  
- * - Orbitron: Display/heading/tech accent font
- */
 
-/* Base Font Classes Using Design System Variables */
-
-/* Primary body font class */
-.font-base,
-.font-inter {
-  font-family: var(--font-family-base);
-  font-display: swap;
-  
-  /* Modern font rendering optimizations */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
-}
-
-/* Display/heading font class */
-.font-display,
-.font-heading,
-.font-luxurious-script,
-.font-orbitron {
-  font-family: var(--font-family-heading);
-  font-display: swap;
-  font-weight: var(--font-weight-medium);
-  letter-spacing: var(--letter-spacing-normal);
-  text-transform: none;
-  
-  /* Enhanced rendering for display fonts */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
-}
 
 /* Monospace font class for code/terminal */
 .font-mono,
@@ -57,12 +15,6 @@
   text-rendering: optimizeSpeed;
 }
 
-/* System font fallback for maximum compatibility */
-.font-system {
-  font-family: var(--font-family-base);
-  font-display: swap;
-}
-
 /* Legacy class support - now using Luxurious Script via CSS variables */
 .font-agustina {
   font-family: var(--font-family-heading);
@@ -74,15 +26,6 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-}
-
-/* Font Loading State Classes */
-
-/* Loading state */
-.font-loading {
-  font-family: var(--font-family-base);
-  opacity: 0.7;
-  transition: opacity 0.3s ease;
 }
 
 /* Successful font loading states */
@@ -97,17 +40,8 @@
   font-family: var(--font-family-base);
 }
 
-/* Partial failure state - use system fonts */
-.fonts-partial-failure .font-base {
-  font-family: system-ui, -apple-system, sans-serif;
-}
-
 .fonts-partial-failure .font-mono {
   font-family: 'Courier New', monospace;
-}
-
-.fonts-partial-failure .font-display {
-  font-family: Impact, 'Arial Black', sans-serif;
 }
 
 /* Font Optimization Settings */

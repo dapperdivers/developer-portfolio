@@ -41,43 +41,8 @@ p {
   line-height: 1.7;
 }
 
-/* Improve readability for large blocks of text */
-.text-block {
-  max-width: 70ch;
-  margin: 0 auto;
-}
-
-/* Optimized display headings */
-.display-1, .display-2, .display-3, .display-4 {
-  font-family: 'Inter', sans-serif;
-  font-weight: 700;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-}
-
-.display-1 { font-size: 5.5rem; }
-.display-2 { font-size: 4.5rem; }
-.display-3 { font-size: 3.5rem; }
-.display-4 { font-size: 2.5rem; }
-
-@media (max-width: 768px) {
-  .display-1 { font-size: 4rem; }
-  .display-2 { font-size: 3.5rem; }
-  .display-3 { font-size: 2.7rem; }
-  .display-4 { font-size: 2rem; }
-}
-
-/* Font weights */
-.font-light { font-weight: 300; }
-.font-normal { font-weight: 400; }
-.font-medium { font-weight: 500; }
 .font-semibold { font-weight: 600; }
 .font-bold { font-weight: 700; }
-
-/* Text utilities */
-.text-uppercase { text-transform: uppercase; letter-spacing: 0.05em; }
-.text-underline { text-decoration: underline; }
-.text-no-underline { text-decoration: none; }
 
 /* Improve link aesthetics */
 a {
@@ -127,11 +92,4 @@ blockquote {
 
 blockquote p:last-child {
   margin-bottom: 0;
-}
-
-/* Text truncation */
-.text-truncate {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
