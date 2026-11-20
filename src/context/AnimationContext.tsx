@@ -8,13 +8,6 @@ import useAnimationOptimization from '@hooks/useAnimationOptimization';
 // framer-motion 14 no longer exports AnimationControls
 type AnimationControls = ReturnType<typeof useFramerAnimation>;
 
-// Add process env declaration for TypeScript
-declare const process: {
-  env: {
-    NODE_ENV: 'development' | 'production' | 'test';
-  };
-};
-
 // At the top of the file, add this declaration for the global window object
 declare global {
   interface Window {

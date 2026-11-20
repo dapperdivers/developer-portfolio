@@ -43,8 +43,7 @@ export type AnimationQuality = 'high' | 'medium' | 'low';
  * Calculate animation delay based on index and quality settings
  */
 export const getAnimationDelay = vi.fn((
-  index: number, 
-  quality: AnimationQuality = 'medium',
+  index: number,
   baseDelay: number = 0.1,
   staggerAmount: number = 0.05
 ): number => {
@@ -55,8 +54,7 @@ export const getAnimationDelay = vi.fn((
  * Get optimized animation variants based on quality setting
  */
 export const getOptimizedVariants = vi.fn((
-  variants: any,
-  quality: AnimationQuality = 'medium'
+  variants: any
 ): any => {
   return variants;
 });

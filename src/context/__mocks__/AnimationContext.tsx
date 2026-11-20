@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from 'react';
+import React, { createContext } from 'react';
 import { vi } from 'vitest';
 import type { ReactNode } from 'react';
 
