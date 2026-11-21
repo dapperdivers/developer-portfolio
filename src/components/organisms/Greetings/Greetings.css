@@ -19,7 +19,27 @@
 .greetings__inner {
   width: 100%;
   max-width: 46rem;
+  /* Auto block margins centre the terminal in the space the scroll cue leaves */
+  margin: auto;
+}
+
+/* The scroll cue sits in the flow under the actions rather than pinned to the
+   bottom edge, so it can never cover the button when the hero runs taller than
+   the screen (large text, short phones). */
+.greetings__scroll {
+  margin-top: var(--spacing-6);
+}
+
+.greetings__scroll .scroll-down-container {
+  position: relative;
+  bottom: auto;
+  left: auto;
+  transform: none;
   margin: 0 auto;
+}
+
+.greetings__scroll .scroll-down-container:hover {
+  transform: translateY(2px);
 }
 
 .greetings__title {

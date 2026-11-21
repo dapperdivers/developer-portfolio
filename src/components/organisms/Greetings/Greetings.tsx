@@ -120,6 +120,7 @@ const Greetings = () => {
 
       {/* Scroll down indicator using the ScrollDown atom component */}
       <motion.div
+        className="greetings__scroll"
         variants={slideUpVariants}
         initial={animationEnabled ? 'hidden' : false}
         animate="visible"
