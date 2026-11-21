@@ -55,10 +55,10 @@
 }
 
 /* Responsive adjustments */
-@media (max-width: 480px) {
+@media (max-width: 640px) {
   .profile-avatar__image {
-    width: 120px;
-    height: 120px;
+    width: 96px;
+    height: 96px;
   }
   
   .profile-avatar__clearance {

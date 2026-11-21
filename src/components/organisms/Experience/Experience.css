@@ -40,7 +40,6 @@
   padding: 1rem min(1.25rem, 5.2vw);
   margin: 1rem 0;
   font-family: var(--font-family-jetbrains);
-  backdrop-filter: blur(20px);
   box-shadow: 
     0 8px 25px rgba(0, 0, 0, 0.3),
     0 0 20px rgba(var(--color-cyan-rgb), 0.1),
@@ -93,7 +92,6 @@
   border-radius: 12px;
   padding: 1.5rem min(1.5rem, 6.2vw);
   margin: 1rem 0;
-  backdrop-filter: blur(25px);
   box-shadow: 
     0 10px 30px rgba(0, 0, 0, 0.4),
     0 0 25px rgba(var(--color-cyan-rgb), 0.15),
@@ -211,7 +209,6 @@
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
-  backdrop-filter: blur(20px);
   overflow: hidden;
   box-shadow: 
     0 8px 25px rgba(0, 0, 0, 0.3),
@@ -296,7 +293,6 @@
   );
   border: 1px solid rgba(var(--color-cyan-rgb), 0.3);
   border-radius: 8px;
-  backdrop-filter: blur(15px);
   box-shadow: 
     0 4px 15px rgba(0, 0, 0, 0.2),
     0 0 15px rgba(var(--color-cyan-rgb), 0.1);
@@ -361,6 +357,7 @@
 
 .data-stream {
   position: absolute;
+  top: 0;
   width: 2px;
   height: 100px;
   background: linear-gradient(
@@ -394,7 +391,7 @@
 
 @keyframes dataFlow {
   0% {
-    top: -100px;
+    transform: translateY(-100px);
     opacity: 0;
   }
   10% {
@@ -404,7 +401,7 @@
     opacity: 1;
   }
   100% {
-    top: 100vh;
+    transform: translateY(100vh);
     opacity: 0;
   }
 }

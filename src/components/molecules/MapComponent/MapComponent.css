@@ -18,18 +18,20 @@
     0 8px 32px rgba(var(--color-cyan-rgb), 0.15),
     0 4px 16px rgba(0, 0, 0, 0.3),
     inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.2);
-  backdrop-filter: blur(10px);
   z-index: 10;
-  transform: translateZ(0);
-  transition: all 0.3s ease;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
 
-.map-container-wrapper:hover {
-  box-shadow: 
-    0 12px 40px rgba(var(--color-cyan-rgb), 0.2),
-    0 8px 24px rgba(0, 0, 0, 0.4),
-    inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.3);
-  transform: translateY(-2px) translateZ(0);
+/* Lift on hover only where there is a pointer that can hover; on touch the
+   hover state sticks after a tap. */
+@media (hover: hover) {
+  .map-container-wrapper:hover {
+    box-shadow: 
+      0 12px 40px rgba(var(--color-cyan-rgb), 0.2),
+      0 8px 24px rgba(0, 0, 0, 0.4),
+      inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.3);
+    transform: translateY(-2px);
+  }
 }
 
 /* Main Status Bar */
@@ -42,7 +44,6 @@
   justify-content: space-between;
   align-items: center;
   font-size: 13px;
-  backdrop-filter: blur(5px);
 }
 
 .status-left {
@@ -101,12 +102,11 @@
 }
 
 .security-metrics-panel {
-  background: rgba(var(--color-background-alt-rgb), 0.85);
+  background: rgba(var(--color-background-alt-rgb), 0.92);
   border: 1px solid var(--color-cyan);
   border-radius: 8px;
   padding: 16px;
   min-width: 200px;
-  backdrop-filter: blur(12px);
   box-shadow: 
     0 8px 24px rgba(0, 0, 0, 0.4),
     inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.2);
@@ -176,7 +176,6 @@
   border-radius: 0 0 10px 10px;
   padding: 16px 20px;
   font-size: 13px;
-  backdrop-filter: blur(5px);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -218,8 +217,20 @@
   font-family: inherit;
   font-size: 12px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(4px);
+  transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+/* Icons are for phones; wide screens show the terminal `[Label]` text */
+.control-button__icon {
+  display: none;
+}
+
+.control-button__text::before {
+  content: '[';
+}
+
+.control-button__text::after {
+  content: ']';
 }
 
 .control-button:hover {
@@ -235,7 +246,8 @@
   background: rgba(var(--color-cyan-rgb), 0.2);
 }
 
-/* Special Toggle Layers Button */
+/* Special Toggle Layers Button. Its glow pulses as opacity on ::after;
+   animating box-shadow itself repaints the button every frame. */
 .toggle-layers-special {
   background: linear-gradient(135deg, 
     rgba(var(--color-cyan-rgb), 0.1),
@@ -249,31 +261,49 @@
   font-size: 13px;
   font-weight: bold;
   cursor: pointer;
-  backdrop-filter: blur(8px);
   position: relative;
-  overflow: hidden;
-  transition: all 0.3s ease;
+  box-shadow: 0 0 8px rgba(var(--color-cyan-rgb), 0.3);
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
+.toggle-layers-special::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow: 0 0 16px rgba(var(--color-cyan-rgb), 0.6);
+  opacity: 0;
+  will-change: opacity;
+  animation: map-glow-pulse 2s ease-in-out infinite;
+}
+
+.toggle-layers-special--still::after {
+  animation: none;
+}
+
+@keyframes map-glow-pulse {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+
+/* Hover sheen: a one-off sweep of a gradient across the button */
 .toggle-layers-special::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, 
-    transparent,
-    rgba(var(--color-cyan-rgb), 0.3),
-    transparent
-  );
-  transition: left 0.6s ease;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(var(--color-cyan-rgb), 0.3), transparent) no-repeat;
+  background-size: 60% 100%;
+  background-position: -100% 0;
+  transition: background-position 0.6s ease;
 }
 
 .toggle-layers-special:hover::before {
-  left: 100%;
+  background-position: 200% 0;
 }
 
 .toggle-layers-special:hover {
@@ -284,7 +314,6 @@
   border-color: rgba(var(--color-cyan-rgb), 0.9);
   color: #ffffff;
   text-shadow: 0 0 8px rgba(var(--color-cyan-rgb), 0.8);
-  transform: translateY(-1px);
 }
 
 .toggle-layers-special:active {
@@ -505,6 +534,7 @@
   pointer-events: none;
   z-index: 400;
   container-type: size;
+  contain: paint;
   --grid-line: rgba(5, 213, 250, 0.08);
   --grid-point: rgba(5, 213, 250, 0.3);
 }
@@ -598,125 +628,6 @@
   max-width: 80%;
 }
 
-/* Media queries for responsive design */
-@media (max-width: 768px) {
-  
-  .location-info {
-    font-size: 90%;
-  }
-}
-
-/* Responsive Design for Terminal Interface */
-@media (max-width: 768px) {
-  .map-container-wrapper {
-    font-size: 12px;
-  }
-
-  .map-terminal-header,
-  .map-status-bar,
-  .map-info-bar {
-    padding: 6px 12px;
-    font-size: 11px;
-  }
-
-  .security-metrics-panel {
-    min-width: 150px;
-    padding: 8px;
-  }
-
-  .panel-title {
-    font-size: 10px;
-  }
-
-  .metric-label {
-    font-size: 8px;
-  }
-
-  .metric-value {
-    font-size: 9px;
-  }
-
-  .controls-left {
-    font-size: 11px;
-  }
-
-  .control-button {
-    padding: 3px 6px;
-    font-size: 10px;
-  }
-
-  .map-status-bar .metric-label {
-    font-size: 10px;
-  }
-
-  .map-status-bar .metric-value {
-    font-size: 10px;
-  }
-}
-
-@media (max-width: 480px) {
-  .map-container-wrapper {
-    font-size: 11px;
-  }
-
-  .map-terminal-header,
-  .map-status-bar,
-  .map-info-bar {
-    padding: 4px 8px;
-    font-size: 10px;
-  }
-
-  .status-left {
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .security-metrics-panel {
-    min-width: 120px;
-    padding: 6px;
-  }
-
-  .controls-left {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
-  }
-
-  .controls-center {
-    flex-direction: row;
-    justify-content: center;
-    gap: 8px;
-  }
-
-  .map-controls-bar {
-    flex-direction: column;
-    gap: 8px;
-    align-items: stretch;
-  }
-
-  .controls-right {
-    justify-content: center;
-  }
-
-  .toggle-layers-special {
-    padding: 6px 12px;
-    font-size: 12px;
-  }
-
-  .control-button {
-    padding: 2px 4px;
-    font-size: 9px;
-  }
-
-  .map-status-bar .metric-label {
-    font-size: 9px;
-  }
-
-  .map-status-bar .metric-value {
-    font-size: 9px;
-  }
-}
-
 /* High contrast mode */
 @media (prefers-contrast: high) {
   .map-container-wrapper {
@@ -756,17 +667,127 @@
   filter: invert(1) hue-rotate(180deg) brightness(0.85) contrast(0.9) saturate(0.6);
 }
 
-/* On phones the metrics panel covers most of the map, so leave it out. */
+/* Phones.
+   - One-finger swipes scroll the page (the map's own drag is off, see
+     useLeafletMap), the map is shorter, the telemetry becomes a readout strip
+     under the map instead of an overlay, and the controls become one wrapped
+     toolbar of 44px targets. Everything stays; it is only rearranged. */
 @media (max-width: 640px) {
+  .map-container-wrapper {
+    font-size: 12px;
+  }
+
+  .map-status-bar {
+    padding: 6px 10px;
+    font-size: 11px;
+  }
+
+  .map-status-bar .status-left {
+    flex-direction: row;
+    gap: 2px 8px;
+  }
+
+  .map-container {
+    height: clamp(240px, 72vw, 300px);
+  }
+
+  .map-display-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .map-data-overlay {
+    position: static;
+    order: 2;
+    pointer-events: auto;
+  }
+
   .security-metrics-panel {
+    min-width: 0;
+    padding: 8px 10px;
+    border-width: 1px 0 0;
+    border-radius: 0;
+    box-shadow: none;
+    background: var(--color-navy);
+  }
+
+  .security-metrics-panel .cluster-status__header {
+    margin-bottom: 4px;
+  }
+
+  .security-metrics-panel .cluster-status__grid {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr));
+    gap: 2px 20px;
+  }
+
+  .security-metrics-panel .cluster-status__row {
+    gap: var(--spacing-2);
+  }
+
+  .security-metrics-panel .cluster-status__updated {
+    margin-top: 4px;
+  }
+
+  .map-controls-bar {
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 8px 10px;
+  }
+
+  /* All buttons become siblings in one wrapping row */
+  .controls-left,
+  .controls-center,
+  .controls-right {
+    display: contents;
+  }
+
+  .controls-label,
+  .control-text,
+  .map-controls-bar .separator {
     display: none;
   }
 
-  /* Keep just the coordinates; the decorative readouts wrap into a tall
-     column at this width. */
-  .map-status-bar .metric-label,
-  .map-status-bar .metric-value,
-  .map-status-bar .separator {
+  .map-controls-bar .control-button {
+    flex: 1 1 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0 12px;
+    font-size: 12px;
+  }
+
+  .control-button__icon {
+    display: block;
+    flex-shrink: 0;
+  }
+
+  .control-button__text::before,
+  .control-button__text::after {
+    content: none;
+  }
+
+  /* + and - are icons only */
+  .control-button__text--glyph {
     display: none;
+  }
+
+  .toggle-layers-special {
+    flex-basis: 100%;
+    padding: 0 16px;
+    font-size: 12px;
+  }
+}
+
+/* Touch devices: keep page scrolling and pinch-zoom of the page working over the map */
+.map--page-scroll {
+  touch-action: pan-x pan-y pinch-zoom !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toggle-layers-special::after {
+    animation: none;
   }
 }

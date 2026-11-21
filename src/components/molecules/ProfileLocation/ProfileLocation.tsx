@@ -58,7 +58,7 @@ const ProfileLocation = ({ location = 'Canton, GA', variant = 'default', animate
           <span className="system-label">SECURITY SYSTEM:</span>
           <span className={`system-status system-status--${variant}`}>{STATUS_TEXT[variant]}</span>
           <span className="separator">|</span>
-          <span>Location: {location}</span>
+          <span className="profile-location__place">Location: {location}</span>
         </div>
         <div className="status-right">
           <span className={`live-indicator ${isLive ? 'active' : ''}`}>[{isLive ? 'LIVE' : 'OFF'}]</span>

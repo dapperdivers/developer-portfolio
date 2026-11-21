@@ -27,9 +27,9 @@ const Navigation = () => {
   return (
     <motion.header
       // Transparent over the hero; once the page scrolls the header gets a
-      // backdrop so it stays readable on top of section content.
+      // backdrop so it stays readable (blurred on wide screens; a nearly solid fill on phones, where re-blurring the scrolling page behind a fixed header is costly) on top of section content.
       className={`fixed top-0 left-0 right-0 z-50 pt-2 pb-1 sm:pt-4 sm:pb-2 transition-colors duration-300 ${
-        isScrolled ? 'bg-gray-900/85 backdrop-blur-md shadow-lg' : 'bg-transparent'
+        isScrolled ? 'bg-gray-900/95 shadow-lg md:bg-gray-900/85 md:backdrop-blur-md' : 'bg-transparent'
       }`}
       role="banner"
       initial={{ y: -100 }}

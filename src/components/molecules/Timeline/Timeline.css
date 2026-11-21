@@ -78,7 +78,33 @@
   );
   box-shadow: 0 0 10px rgba(100, 255, 218, 0.5);
   transform-origin: top;
-  animation: pulseGlow 3s ease-in-out infinite;
+  --glow-rgb: 100, 255, 218;
+  --glow-duration: 3s;
+}
+
+/* The line's glow pulses as opacity on a pseudo-element. Animating box-shadow
+   itself repaints the full-height line on every frame. */
+.timeline__line::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  box-shadow: 0 0 20px rgba(var(--glow-rgb), 0.8);
+  opacity: 0.3;
+  will-change: opacity;
+  animation: timelineGlow var(--glow-duration) ease-in-out infinite;
+}
+
+@keyframes timelineGlow {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+/* Off screen, or reduced motion: the looping CSS effects hold still */
+.timeline--idle *,
+.timeline--idle *::before,
+.timeline--idle *::after {
+  animation-play-state: paused !important;
 }
 
 /* Enhanced data particles */
@@ -156,7 +182,23 @@
   box-shadow: 
     0 0 0 4px rgba(100, 255, 218, 0.4),
     0 0 20px rgba(100, 255, 218, 0.6);
-  animation: pulseGlow 2s ease-in-out infinite;
+}
+
+.timeline__node {
+  position: relative;
+}
+
+/* Active node glow pulses as opacity on a pseudo-element */
+.timeline__node--active::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  pointer-events: none;
+  box-shadow: 0 0 24px rgba(var(--glow-rgb, 100, 255, 218), 0.9);
+  opacity: 0.2;
+  will-change: opacity;
+  animation: timelineGlow 2s ease-in-out infinite;
 }
 
 /* Pulse rings for active nodes */
@@ -259,6 +301,7 @@
     rgba(34, 197, 94, 0.8) 100%
   );
   box-shadow: 0 0 10px rgba(34, 197, 94, 0.5);
+  --glow-rgb: 34, 197, 94;
 }
 
 .timeline--secure .timeline__node--active {
@@ -281,7 +324,8 @@
     rgba(239, 68, 68, 0.8) 100%
   );
   box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
-  animation: pulseGlow 1s ease-in-out infinite;
+  --glow-rgb: 239, 68, 68;
+  --glow-duration: 1s;
 }
 
 .timeline--breach .timeline__node--active {
@@ -316,7 +360,8 @@
     rgba(251, 191, 36, 0.8) 100%
   );
   box-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
-  animation: pulseGlow 1.5s ease-in-out infinite;
+  --glow-rgb: 251, 191, 36;
+  --glow-duration: 1.5s;
 }
 
 .timeline--critical .timeline__node--active {
@@ -343,8 +388,12 @@
   box-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
 }
 
-/* Performance optimizations */
-.timeline * {
+/* Performance: only the layers that actually move get promoted. Promoting
+   every descendant (as `.timeline *` did) cost a compositor layer per element. */
+.timeline__security-scan,
+.timeline__hack-scanline,
+.timeline__radar-sweep,
+.timeline__matrix-column {
   will-change: transform;
 }
 

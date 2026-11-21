@@ -60,6 +60,18 @@
   margin-top: min(var(--spacing-5), 6.2vw);
 }
 
+/* Phones: size to the content and drop the cue, so the top of the next
+   section peeks into the first screen as the scroll hint. */
+@media (max-width: 767px) {
+  .greetings {
+    min-height: 0;
+  }
+
+  .greetings__scroll {
+    display: none;
+  }
+}
+
 @media (min-width: 768px) {
   .greetings {
     --greetings-nav-clearance: min(8rem, 31vw);
