@@ -8,7 +8,6 @@
   position: relative;
   width: 100%;
   overflow: hidden;
-  min-height: 100vh;
 }
 
 /* Main experience container - simplified to prevent z-index conflicts */
@@ -17,13 +16,13 @@
   width: 100%;
   max-width: 1400px;
   margin: 0 auto;
-  padding: min(2rem, 8.3vw) min(1rem, 4.2vw);
+  padding: 0 min(1rem, 4.2vw);
   /* Removed z-index to allow natural stacking */
 }
 
 /* Experience header section */
 .experience-header {
-  margin-bottom: min(3rem, 12.4vw);
+  margin-bottom: var(--section-header-gap);
   position: relative;
   width: 100%;
   /* Removed high z-index to prevent stacking issues */
@@ -191,7 +190,7 @@
 .experience-load-more {
   display: flex;
   justify-content: center;
-  margin: 3rem 0 2rem;
+  margin: var(--section-header-gap) 0 0;
   position: relative;
   /* Removed explicit z-index to prevent stacking conflicts */
 }
@@ -414,7 +413,7 @@
 @media (max-width: 1024px) {
   .experience-container {
     max-width: 1200px;
-    padding: 1.5rem min(1rem, 4.2vw);
+    padding: 0 min(1rem, 4.2vw);
   }
   
   .console-help__grid {
@@ -428,11 +427,7 @@
 
 @media (max-width: 768px) {
   .experience-container {
-    padding: 1rem min(0.75rem, 3.1vw);
-  }
-  
-  .experience-header {
-    margin-bottom: 2rem;
+    padding: 0 min(0.75rem, 3.1vw);
   }
   
   .console-feedback,

@@ -13,6 +13,11 @@
   --spacing-10: 5rem;
   
   /* Semantic Spacing */
+  /* Vertical rhythm: padding on each side of a section, and the gap between a
+     section header and its content. Tighter on phones, roomier on desktop;
+     the vw caps keep it from doubling with large text. */
+  --section-gap: min(1.5rem, 8vw);
+  --section-header-gap: min(1.5rem, 6.2vw);
   --section-padding-y: var(--spacing-8);
   --section-padding-y-sm: var(--spacing-6);
   --container-padding-x: min(var(--spacing-6), 8.3vw);
@@ -21,4 +26,18 @@
   --card-padding: var(--spacing-4);
   --button-padding-x: var(--spacing-4);
   --button-padding-y: var(--spacing-2);
+}
+
+@media (min-width: 768px) {
+  :root {
+    --section-gap: min(2.5rem, 8vw);
+    --section-header-gap: min(2rem, 6.2vw);
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --section-gap: min(4rem, 8vw);
+    --section-header-gap: min(2.5rem, 6.2vw);
+  }
 }

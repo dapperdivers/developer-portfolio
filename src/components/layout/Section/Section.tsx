@@ -95,7 +95,7 @@ const Section = ({
   const contentWrapper = (content: React.ReactNode) => (
     <motion.div 
       variants={slideUpVariants}
-      className="relative z-10 pt-2"
+      className="relative z-10"
     >
       {content}
     </motion.div>
@@ -103,7 +103,7 @@ const Section = ({
 
   // Content with optional container
   const content = container ? (
-    <div className={`${containerClasses} py-16`}>
+    <div className={containerClasses}>
       {sectionHeader}
       <motion.div 
         className="section-content"

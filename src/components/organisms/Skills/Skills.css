@@ -190,10 +190,6 @@
 /* Media queries for responsive design */
 @media (max-width: 768px) {
   
-  .skills-container, 
-  .terminal-container {
-    margin-bottom: 2rem;
-  }
   
   /* Phone layout: the old overrides here shrank card text below 9px, and the
      nested paddings left about 120px of usable width. */

@@ -2,17 +2,13 @@
  * Projects Styles
  */
 
-.projects-section {
-  padding: min(var(--section-padding-y), 12.4vw) 0;
-}
-
 .projects-grid {
   display: grid;
   /* At most two columns: the cards carry long descriptions, and an even
      number of projects lays out as a clean grid */
   grid-template-columns: repeat(auto-fill, minmax(min(100%, max(18.75rem, calc(50% - var(--spacing-5)))), 1fr));
   gap: min(var(--spacing-5), 6.2vw);
-  margin-top: min(var(--spacing-6), 8.3vw);
+  margin-top: 0;
 }
 
 .projects-grid-loading {
@@ -130,13 +126,8 @@
 }
 
 @media (max-width: 768px) {
-  .projects-section {
-    padding: min(var(--section-padding-y-sm), 8.3vw) 0;
-  }
-  
   .projects-grid {
     gap: min(var(--spacing-3), 3.1vw);
-    margin-top: min(var(--spacing-4), 4.2vw);
   }
 }
 

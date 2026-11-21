@@ -5,13 +5,13 @@
 
 .cluster-telemetry {
   position: relative;
-  padding: min(3rem, 10vw) 0;
+  padding: var(--section-gap) 0;
 }
 
 .cluster-telemetry__inner {
   display: flex;
   flex-direction: column;
-  gap: min(var(--spacing-5), 6vw);
+  gap: var(--section-header-gap);
   box-sizing: border-box;
   width: 100%;
   max-width: 1200px;
@@ -25,7 +25,7 @@
   align-items: flex-end;
   justify-content: space-between;
   gap: var(--spacing-3) var(--spacing-5);
-  padding-bottom: min(var(--spacing-4), 5vw);
+  padding-bottom: min(var(--spacing-5), 6.2vw);
   border-bottom: 1px solid rgba(var(--color-cyan-rgb), 0.2);
 }
 

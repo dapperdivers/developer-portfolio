@@ -41,7 +41,7 @@ const HeaderName: React.FC<HeaderNameProps> = ({
       onHoverEnd={() => controls.start('initial')}
     >
       <h2 
-        className="header-name__title font-agustina text-cyan-400 relative tracking-wide flex items-center gap-3"
+        className="header-name__title relative flex items-center gap-3"
         data-content={name}
         aria-label={name}
       >

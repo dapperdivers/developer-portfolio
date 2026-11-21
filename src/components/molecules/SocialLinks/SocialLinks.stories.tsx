@@ -39,6 +39,11 @@ const meta = {
       control: 'object',
       description: 'URLs for `github`, `linkedin` and `contactCard` (a vCard to download). A missing key hides that icon.',
     },
+    size: {
+      control: 'radio',
+      options: ['default', 'large'],
+      description: '`large` makes each icon a 44px touch target; the hero uses it on phones',
+    },
     animated: {
       control: 'boolean',
       description: 'Whether the icons animate in and react to hover',
@@ -153,5 +158,18 @@ export const WithoutAnimation: Story = {
 export const MobileView: Story = {
   globals: {
     viewport: { value: 'mobile1', isRotated: false },
+  },
+};
+
+/**
+ * 44px touch targets, as shown in the phone hero
+ */
+export const Large: Story = {
+  args: {
+    size: 'large',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByLabelText('GitHub Profile').parentElement).toHaveClass('social-links--large');
   },
 };

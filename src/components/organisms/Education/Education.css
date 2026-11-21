@@ -12,7 +12,7 @@
   position: relative;
   width: 100%;
   max-width: 100%;
-  padding: var(--spacing-8) min(var(--spacing-4), 4.2vw);
+  padding: 0;
   z-index: 10;
 }
 
@@ -21,7 +21,6 @@
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 31rem), 1fr));
   gap: var(--spacing-6);
   width: 100%;
-  margin-bottom: var(--spacing-8);
 }
 
 .education-card-wrapper {
@@ -35,7 +34,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 20rem;
+  min-height: 0;
 }
 
 .empty-state-content {
@@ -72,13 +71,13 @@
 
 @media (max-width: 768px) {
   .education-content-wrapper {
-    padding: var(--spacing-6) min(var(--spacing-3), 3.1vw);
+    padding: 0;
   }
 }
 
 @media (max-width: 480px) {
   .education-content-wrapper {
-    padding: var(--spacing-4) min(var(--spacing-2), 2.1vw);
+    padding: 0;
   }
 
   .empty-state-content {
