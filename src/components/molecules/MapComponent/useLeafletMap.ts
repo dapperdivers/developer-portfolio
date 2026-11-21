@@ -29,6 +29,19 @@ const RINGS: Array<{ radius: number; options: L.CircleMarkerOptions }> = [
   { radius: 100000, options: { color: `rgba(${RING_COLOR}, 0.2)`, fillColor: `rgba(${RING_COLOR}, 0.02)`, fillOpacity: 0.1, weight: 1, dashArray: '3, 7' } },
 ];
 
+/**
+ * True on touch-first devices. There a one-finger swipe on the map must scroll
+ * the page, so the map's own drag and pinch handlers are left off and the
+ * zoom buttons are the way to zoom.
+ */
+const isTouchFirst = (): boolean => {
+  try {
+    return Boolean(L.Browser.mobile) || (typeof window.matchMedia === 'function' && window.matchMedia('(pointer: coarse)').matches);
+  } catch {
+    return false;
+  }
+};
+
 const el = (tag: string, className: string, text?: string): HTMLElement => {
   const node = document.createElement(tag);
   node.className = className;
@@ -98,8 +111,12 @@ const useLeafletMap = (containerRef: RefObject<HTMLElement | null>, view: MapVie
     if (!container) return undefined;
 
     let map: L.Map;
+    const touchFirst = isTouchFirst();
     try {
       map = L.map(container, {
+        dragging: !touchFirst,
+        touchZoom: !touchFirst,
+        doubleClickZoom: !touchFirst,
         center: [0, 0],
         zoom: 2,
         scrollWheelZoom: false,
@@ -112,6 +129,7 @@ const useLeafletMap = (containerRef: RefObject<HTMLElement | null>, view: MapVie
       setError(`Error initializing map: ${cause instanceof Error ? cause.message : String(cause)}`);
       return undefined;
     }
+    if (touchFirst) container.classList.add('map--page-scroll');
     L.control.attribution({ position: 'bottomright', prefix: 'Map by <a href="https://leafletjs.com">Leaflet</a>' }).addTo(map);
     mapRef.current = map;
     setReady(true);
@@ -123,6 +141,7 @@ const useLeafletMap = (containerRef: RefObject<HTMLElement | null>, view: MapVie
 
     return () => {
       observer?.disconnect();
+      container.classList.remove('map--page-scroll');
       map.remove();
       mapRef.current = null;
       tilesRef.current = null;

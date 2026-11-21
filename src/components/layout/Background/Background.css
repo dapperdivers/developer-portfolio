@@ -33,8 +33,6 @@ html, body {
   overflow: hidden;
   background-color: var(--color-background);
   z-index: 0;
-  /* Apply will-change judiciously */
-  will-change: opacity;
 }
 
 /* Vignette effect - optimized to reduce gradient complexity */

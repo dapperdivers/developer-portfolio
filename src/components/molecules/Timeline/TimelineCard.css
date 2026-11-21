@@ -1,8 +1,8 @@
 @reference "../../../assets/css/tailwind.css";
 
 @keyframes borderScan {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(-50%); }
 }
 
 /* Enhanced experience card */
@@ -11,7 +11,6 @@
   /* Padding is capped by the viewport so large text keeps a readable column */
   padding: min(2rem, 8.3vw);
   background: linear-gradient(135deg, rgba(31, 41, 55, 0.95), rgba(17, 24, 39, 0.95));
-  backdrop-filter: blur(10px);
   transition: all 0.3s ease;
   overflow: hidden;
 }
@@ -295,6 +294,21 @@
     transparent 70%
   );
   background-size: 200% 200%;
+  overflow: hidden;
+  /* The sheen is a pseudo-element that slides (transform) instead of an
+     animated background-position, which repaints the whole card. */
+  background: none;
+}
+
+.timeline__border-effect::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: 0;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent 30%, rgba(100, 255, 218, 0.1) 50%, transparent 70%);
+  will-change: transform;
   animation: borderScan 3s ease-in-out infinite;
 }
 

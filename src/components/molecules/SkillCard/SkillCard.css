@@ -26,7 +26,6 @@
     0 0 12px rgba(var(--color-cyan-rgb), 0.1),
     inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.12),
     inset 0 -1px 0 rgba(var(--color-cyan-rgb), 0.05);
-  backdrop-filter: blur(12px);
   height: 100%;
   position: relative;
   cursor: pointer;
@@ -204,7 +203,6 @@
     0 2px 8px rgba(0, 0, 0, 0.4),
     0 0 8px rgba(var(--color-cyan-rgb), 0.25),
     inset 0 1px 0 rgba(var(--color-cyan-rgb), 0.1);
-  backdrop-filter: blur(6px);
   z-index: 2;
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   /* Subtle pulse animation to draw attention */

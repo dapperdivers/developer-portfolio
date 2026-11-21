@@ -45,7 +45,7 @@
 
 /* Hint animation for first-time users */
 .console-header--interactive .terminal-command-line {
-  animation: subtle-pulse 3s ease-in-out infinite;
+  animation: subtle-pulse 3s ease-in-out 3; /* a hint, not a permanent repaint */
   animation-delay: 2s;
 }
 

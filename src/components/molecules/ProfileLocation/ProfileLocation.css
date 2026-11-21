@@ -219,62 +219,57 @@
 }
 
 /* Responsive Design */
+.refresh-btn {
+  position: relative;
+}
+
 @media (max-width: 768px) {
   .profile-location {
     font-size: 12px;
   }
-
-  .profile-location__system-status,
-  .profile-location__security-footer {
-    padding: 6px 12px;
-    font-size: 11px;
-  }
-
-  .system-label,
-  .metric-label {
-    font-size: 10px;
-  }
-
-  .metric-value {
-    font-size: 10px;
-  }
-
-  .status-left {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
-  }
-
-  .refresh-btn {
-    padding: 2px 4px;
-    font-size: 10px;
-  }
 }
 
-@media (max-width: 480px) {
+/* Phones: the status bar is two tidy rows (system and live controls, then the
+   place) instead of a column of fragments; the button keeps a 44px hit area. */
+@media (max-width: 640px) {
   .profile-location {
-    font-size: 11px;
     margin-bottom: var(--spacing-4);
   }
 
-  .profile-location__system-status,
-  .profile-location__security-footer {
-    padding: 4px 8px;
-    font-size: 10px;
+  .profile-location__system-status {
+    padding: 6px 10px;
+    font-size: 11px;
+    gap: 4px 8px;
   }
 
-  .system-label,
-  .metric-label {
-    font-size: 9px;
+  .status-left {
+    flex: 1 1 0;
+    min-width: 0;
+    gap: 0 6px;
   }
 
-  .metric-value {
-    font-size: 9px;
+  .profile-location__system-status .separator {
+    display: none;
+  }
+
+  .profile-location__place {
+    flex-basis: 100%;
+    overflow-wrap: anywhere;
+  }
+
+  .system-label {
+    margin-right: 0;
   }
 
   .refresh-btn {
-    padding: 1px 3px;
-    font-size: 9px;
+    padding: 2px 6px;
+    font-size: 10px;
+  }
+
+  .refresh-btn::after {
+    content: '';
+    position: absolute;
+    inset: -10px -6px;
   }
 }
 

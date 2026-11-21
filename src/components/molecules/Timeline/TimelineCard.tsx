@@ -48,6 +48,8 @@ export interface TimelineCardProps {
   clickCount?: number;
   /** Easter-egg effects to apply: matrix, glitch, hack */
   effects?: TimelineEffects;
+  /** Whether looping decoration (data streams, blinking cursor) runs; the timeline turns it off while off screen */
+  ambient?: boolean;
 }
 
 /**
@@ -58,7 +60,7 @@ export interface TimelineCardProps {
  *
  * @component
  */
-const TimelineCard = ({ experience, expanded = false, onToggle = () => {}, clickCount = 0, effects = {} }: TimelineCardProps) => {
+const TimelineCard = ({ experience, expanded = false, onToggle = () => {}, clickCount = 0, effects = {}, ambient = true }: TimelineCardProps) => {
   const { matrix = false, glitch = false, hack = false } = effects;
   const status = statusFor(clickCount);
 
@@ -89,7 +91,7 @@ const TimelineCard = ({ experience, expanded = false, onToggle = () => {}, click
       transition={glitch ? loop(0.2, { repeatType: 'reverse' }) : {}}
       style={{ cursor: 'pointer' }}
     >
-      {(matrix || hack) && (
+      {ambient && (matrix || hack) && (
         <motion.div
           className="timeline__hologram"
           animate={{
@@ -212,8 +214,8 @@ const TimelineCard = ({ experience, expanded = false, onToggle = () => {}, click
               <span className="timeline__prompt">user@portfolio:~$</span>
               <motion.span
                 className="timeline__cursor"
-                animate={{ opacity: [1, 0, 1], scale: hack ? [1, 1.2, 1] : [1, 1, 1] }}
-                transition={{ opacity: loop(1), scale: hack ? loop(0.5) : {} }}
+                animate={ambient ? { opacity: [1, 0, 1], scale: hack ? [1, 1.2, 1] : [1, 1, 1] } : { opacity: 1 }}
+                transition={ambient ? { opacity: loop(1), scale: hack ? loop(0.5) : {} } : { duration: 0 }}
               >
                 _
               </motion.span>
@@ -241,7 +243,7 @@ const TimelineCard = ({ experience, expanded = false, onToggle = () => {}, click
         transition={expanded && hack ? loop(2) : {}}
       />
 
-      {expanded && (
+      {expanded && ambient && (
         <div className="timeline__data-streams" aria-hidden="true">
           {[1, 2, 3, 4, 5].map((stream) => (
             <motion.div

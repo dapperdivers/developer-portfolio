@@ -1,4 +1,5 @@
 import { motion, type Variants } from 'framer-motion';
+import { FaCrosshairs, FaMinus, FaPlus, FaTh } from 'react-icons/fa';
 import ClusterStatus from '@molecules/ClusterStatus';
 import type { ClusterStatusResult } from '@/types/cluster';
 import type { MapTileMode } from './useLeafletMap';
@@ -52,42 +53,48 @@ export interface MapControlsBarProps {
   gridVisible: boolean;
   /** Current tile mode; the tiles button offers the other one */
   tileMode: MapTileMode;
+  /** Whether the light-map button glows */
+  animated?: boolean;
 }
 
-/** The row of map controls under the map. */
-export const MapControlsBar = ({ onZoomIn, onZoomOut, onRecenter, onToggleGrid, onToggleTiles, gridVisible, tileMode }: MapControlsBarProps) => (
+/**
+ * The row of map controls under the map. On wide screens each button reads
+ * `[Label]`; on phones the same buttons show an icon and a short label and
+ * wrap into one compact toolbar of 44px targets.
+ */
+export const MapControlsBar = ({ onZoomIn, onZoomOut, onRecenter, onToggleGrid, onToggleTiles, gridVisible, tileMode, animated = true }: MapControlsBarProps) => (
   <div className="map-controls-bar">
     <div className="controls-left">
       <span className="controls-label">Controls:</span>
       <button type="button" className="control-button zoom-in" onClick={onZoomIn} aria-label="Zoom in">
-        [+]
+        <FaPlus className="control-button__icon" aria-hidden="true" />
+        <span className="control-button__text control-button__text--glyph">+</span>
       </button>
       <button type="button" className="control-button zoom-out" onClick={onZoomOut} aria-label="Zoom out">
-        [-]
+        <FaMinus className="control-button__icon" aria-hidden="true" />
+        <span className="control-button__text control-button__text--glyph">-</span>
       </button>
       <span className="control-text">Zoom</span>
     </div>
     <div className="controls-center">
       <button type="button" className="control-button center-view" onClick={onRecenter} aria-label="Center view">
-        [Center]
+        <FaCrosshairs className="control-button__icon" aria-hidden="true" />
+        <span className="control-button__text">Center</span>
       </button>
       <span className="separator">|</span>
       <button type="button" className="control-button refresh" onClick={onToggleGrid} aria-label="Toggle grid overlay" aria-pressed={gridVisible}>
-        [Grid]
+        <FaTh className="control-button__icon" aria-hidden="true" />
+        <span className="control-button__text">Grid</span>
       </button>
     </div>
     <div className="controls-right">
       <motion.button
         type="button"
-        className="control-button toggle-layers-special"
+        className={`control-button toggle-layers-special ${animated ? '' : 'toggle-layers-special--still'}`}
         onClick={onToggleTiles}
         aria-label={tileMode === 'dark' ? 'Switch to light map' : 'Switch to dark map'}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        animate={{
-          boxShadow: ['0 0 8px rgba(var(--color-cyan-rgb), 0.3)', '0 0 16px rgba(var(--color-cyan-rgb), 0.6)', '0 0 8px rgba(var(--color-cyan-rgb), 0.3)'],
-        }}
-        transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+        whileHover={animated ? { scale: 1.05 } : undefined}
+        whileTap={animated ? { scale: 0.95 } : undefined}
       >
         {tileMode === 'dark' ? '☀ LIGHT MAP' : '☾ DARK MAP'}
       </motion.button>

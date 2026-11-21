@@ -90,6 +90,7 @@ const MapComponent = ({ location, clusterStatus, animated = true }: MapComponent
           onToggleTiles={() => setTileMode((mode) => (mode === 'dark' ? 'light' : 'dark'))}
           gridVisible={gridVisible}
           tileMode={tileMode}
+          animated={motionOn}
         />
       </div>
     </motion.div>

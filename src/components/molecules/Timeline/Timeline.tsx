@@ -1,5 +1,7 @@
 import React, { useMemo } from 'react';
 import { motion, Transition, Variants } from 'framer-motion';
+import useIntersectionObserver from '@hooks/useIntersectionObserver';
+import { useMotionEnabled } from '@utils/motion';
 import TimelineCard from './TimelineCard';
 import type { TimelineEffects, TimelineExperience } from './TimelineCard';
 import './Timeline.css';
@@ -27,25 +29,22 @@ const loop = (duration: number, extra: Transition = {}): Transition => ({ durati
 interface TimelineNodeProps {
   active?: boolean;
   hack?: boolean;
+  /** Whether the looping effects run: false when off screen or motion is off */
+  ambient?: boolean;
 }
 
 /** The node on the centre line for one entry, with pulse rings while its card is open. */
-const TimelineNode = ({ active, hack }: TimelineNodeProps) => (
+const TimelineNode = ({ active, hack, ambient = true }: TimelineNodeProps) => (
   <div className="timeline__connector" aria-hidden="true">
     <motion.div
       className={`timeline__node ${active ? 'timeline__node--active' : ''}`}
       whileHover={{ scale: 1.3 }}
-      animate={
-        active
-          ? {
-              boxShadow: ['0 0 0 rgba(100, 255, 218, 0.5)', '0 0 30px rgba(100, 255, 218, 1)', '0 0 0 rgba(100, 255, 218, 0.5)'],
-              rotate: hack ? [0, 360] : [0, 0],
-            }
-          : {}
-      }
-      transition={loop(2, { ease: hack ? 'linear' : 'easeInOut' })}
+      // The glow pulse is drawn by CSS on a pseudo-element (opacity only)
+      animate={active && ambient && hack ? { rotate: [0, 360] } : {}}
+      transition={loop(2, { ease: 'linear' })}
     />
     {active &&
+      ambient &&
       [
         { scale: [1, 3], opacity: [0.7, 0], delay: 0 },
         { scale: [1, 2.5], opacity: [0.5, 0], delay: 0.5 },
@@ -102,6 +101,11 @@ const Timeline = ({
 }: TimelineProps) => {
   const { matrix = false, glitch = false, hack = false, shake = false } = effects;
 
+  // Looping decoration runs only while the timeline is on screen and motion is allowed
+  const motionOn = useMotionEnabled(animated);
+  const [rootRef, inView] = useIntersectionObserver<HTMLDivElement>({ rootMargin: '150px 0px' });
+  const ambient = motionOn && inView;
+
   // Random placement for the matrix extras, fixed for as long as the mode is on
   const matrixParticles = useMemo(
     () =>
@@ -138,20 +142,20 @@ const Timeline = ({
     hack && 'timeline--hack',
     shake && 'timeline--shake',
     timeOfDay && `timeline--${timeOfDay}`,
+    !ambient && 'timeline--idle',
   ]
     .filter(Boolean)
     .join(' ');
 
   return (
-    <motion.div className={rootClass} variants={containerVariants} initial={animated ? 'hidden' : false} animate={animated ? 'visible' : false}>
+    <motion.div ref={rootRef} className={rootClass} variants={containerVariants} initial={animated ? 'hidden' : false} animate={animated ? 'visible' : false}>
       <motion.div
         className="timeline__line"
         aria-hidden="true"
         variants={lineVariants}
-        animate={{ boxShadow: [0.3, 0.8, 0.3].map((alpha, i) => `0 0 ${i === 1 ? 20 : 10}px rgba(100, 255, 218, ${alpha})`) }}
-        transition={loop(3, { ease: 'easeInOut' })}
       >
-        {Array.from({ length: 6 }, (_, i) => (
+        {ambient &&
+          Array.from({ length: 6 }, (_, i) => (
           <motion.div
             key={`particle-${i}`}
             className={`timeline__particle timeline__particle--${(i % 3) + 1}`}
@@ -160,7 +164,8 @@ const Timeline = ({
           />
         ))}
 
-        {matrixParticles.map((particle, i) => (
+        {ambient &&
+          matrixParticles.map((particle, i) => (
           <motion.div
             key={`matrix-${i}`}
             className="timeline__matrix-particle"
@@ -183,13 +188,14 @@ const Timeline = ({
               variants={entryVariants}
               whileHover={hack ? { scale: 1.05, rotateY: 5, rotateX: 2 } : {}}
             >
-              <TimelineNode active={expanded} hack={hack} />
+              <TimelineNode active={expanded} hack={hack} ambient={ambient} />
               <TimelineCard
                 experience={experience}
                 expanded={expanded}
                 onToggle={() => onCardToggle(index)}
                 clickCount={clickCounts[index] || 0}
                 effects={effects}
+                ambient={ambient}
               />
             </motion.div>
           );
@@ -197,17 +203,20 @@ const Timeline = ({
       </div>
 
       <div className="timeline__background-effects" aria-hidden="true">
-        <motion.div
-          className="timeline__security-scan"
-          animate={{ x: ['-100vw', '100vw'], opacity: [0, 1, 1, 0], height: hack ? ['2px', '4px', '2px'] : ['2px', '2px', '2px'] }}
-          transition={loop(hack ? 6 : 8, { ease: 'linear', repeatDelay: hack ? 2 : 4 })}
-        />
+        {ambient && (
+          <motion.div
+            className="timeline__security-scan"
+            animate={{ x: ['-100vw', '100vw'], opacity: [0, 1, 1, 0] }}
+            transition={loop(hack ? 6 : 8, { ease: 'linear', repeatDelay: hack ? 2 : 4 })}
+          />
+        )}
         <motion.div
           className="timeline__grid-overlay"
-          animate={{ opacity: matrix ? [0.1, 0.4, 0.1] : [0.3, 0.6, 0.3] }}
-          transition={loop(matrix ? 2 : 4, { ease: 'easeInOut' })}
+          initial={{ opacity: matrix ? 0.1 : 0.3 }}
+          animate={ambient ? { opacity: matrix ? [0.1, 0.4, 0.1] : [0.3, 0.6, 0.3] } : { opacity: matrix ? 0.1 : 0.3 }}
+          transition={ambient ? loop(matrix ? 2 : 4, { ease: 'easeInOut' }) : { duration: 0 }}
         />
-        {hack && (
+        {ambient && hack && (
           <>
             <motion.div className="timeline__hack-scanline" animate={{ y: ['-10px', '100vh'], opacity: [0, 1, 0] }} transition={loop(3, { ease: 'linear' })} />
             <motion.div className="timeline__radar-sweep" animate={{ rotate: [0, 360] }} transition={loop(4, { ease: 'linear' })} />
@@ -215,7 +224,7 @@ const Timeline = ({
         )}
       </div>
 
-      {matrix && (
+      {ambient && matrix && (
         <div className="timeline__matrix-rain" aria-hidden="true">
           {matrixRain.map((column, i) => (
             <motion.div
