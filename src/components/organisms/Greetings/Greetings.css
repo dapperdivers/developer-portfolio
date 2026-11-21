@@ -70,4 +70,49 @@
   .greetings .greetings__socials {
     display: none;
   }
+
+  /* On desktop the terminal grows with the screen so the hero reads as a
+     full-size window, not a small card floating in the middle. */
+  .greetings__inner {
+    max-width: min(72rem, 70vw);
+  }
+
+  .greetings .terminal-window {
+    max-width: none;
+  }
+
+  .greetings .terminal-window__body {
+    padding: clamp(1.25rem, 1.6vw, 2rem);
+  }
+
+  .greetings__title {
+    font-size: clamp(2.5rem, 3.4vw, 4.25rem);
+  }
+
+  .greetings .terminal-window__log,
+  .greetings .terminal-window__input-row,
+  .greetings .terminal-window__input {
+    font-size: clamp(1rem, 1.05vw, 1.375rem);
+  }
+
+  .greetings .terminal-window__log {
+    min-height: min(18rem, 34svh);
+    max-height: min(30rem, 50svh);
+  }
+
+  .greetings .terminal-window__chip {
+    padding: var(--spacing-2) var(--spacing-4);
+    font-size: clamp(0.8125rem, 0.8vw, 1.0625rem);
+  }
+}
+
+/* Big monitors: keep the window in proportion instead of capping at 72rem */
+@media (min-width: 1800px) {
+  .greetings__inner {
+    max-width: min(96rem, 66vw);
+  }
+
+  .greetings .terminal-window__log {
+    min-height: min(26rem, 38svh);
+  }
 }
