@@ -1,0 +1,48 @@
+.telemetry-status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-1) var(--spacing-3);
+  margin: 0;
+  font-family: var(--font-family-jetbrains);
+  font-size: var(--font-size-sm);
+  letter-spacing: var(--letter-spacing-technical);
+  color: var(--color-text-muted);
+}
+
+.telemetry-status__dot {
+  width: 10px;
+  height: 10px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--color-primary);
+  box-shadow: 0 0 8px rgba(var(--color-primary-rgb), 0.7);
+}
+
+.telemetry-status--degraded .telemetry-status__dot {
+  background: var(--color-warning);
+  box-shadow: 0 0 8px rgba(var(--color-warning-rgb), 0.7);
+}
+
+.telemetry-status--loading .telemetry-status__dot,
+.telemetry-status--offline .telemetry-status__dot {
+  background: var(--color-gray-600);
+  box-shadow: none;
+}
+
+.telemetry-status__state {
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
+}
+
+.telemetry-status--up .telemetry-status__state {
+  color: var(--color-primary);
+}
+
+.telemetry-status--degraded .telemetry-status__state {
+  color: var(--color-warning);
+}
+
+.telemetry-status__updated {
+  color: var(--color-text-muted);
+}

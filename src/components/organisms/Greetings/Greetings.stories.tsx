@@ -28,7 +28,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Hero section built as a terminal. It types a short whoami sequence (any key or click skips it; reduced motion shows it at once) and leaves an interactive prompt. Commands: help, whoami, ls (ls -a), cd/open <section>, cat resume, contact, uptime, ping, clear, sudo hire derek. The h1, a Download Resume button and the scroll cue stay visible for people who never type.',
+          'Hero section built as a terminal. It types a short whoami sequence (any key or click skips it; reduced motion shows it at once) and leaves an interactive prompt. Commands: help, whoami, ls (ls -a), cd/open <section>, cat resume, contact, uptime, status, kubectl get nodes, neofetch (real cluster numbers), ping, clear, sudo hire derek. The h1, a Download Resume button and the scroll cue stay visible for people who never type.',
       },
     },
     a11y: {
@@ -77,7 +77,7 @@ export const TypeCommands: Story = {
 
     await step('help lists the commands', async () => {
       await userEvent.type(input, 'help{Enter}');
-      await expect(await canvas.findByText(/cat resume/)).toBeInTheDocument();
+      await expect(await canvas.findByText(/download the resume/)).toBeInTheDocument();
     });
 
     await step('ls -a reveals the hidden entry and cat points at the timeline', async () => {

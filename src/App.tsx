@@ -31,6 +31,7 @@ import { HelmetProvider } from 'react-helmet-async';
 
 // Lazy load components
 const Greetings = lazy(() => import("@organisms/Greetings"));
+const ClusterTelemetry = lazy(() => import("@organisms/ClusterTelemetry"));
 const Skills = lazy(() => import("@organisms/Skills"));
 const Education = lazy(() => import("@organisms/Education"));
 const Experience = lazy(() => import("@organisms/Experience"));
@@ -54,6 +55,7 @@ const componentsToDebug = {
   
   // Organism components
   Greetings,
+  ClusterTelemetry,
   Skills,
   Experience,
   Projects,
@@ -150,6 +152,7 @@ function App() {
                 <main id="main-content">
                   <Suspense fallback={<Loading />}>
                     <Greetings />
+                    <ClusterTelemetry />
                     <Skills />
                     <Experience />
                     <Projects />

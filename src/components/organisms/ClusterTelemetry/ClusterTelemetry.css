@@ -1,0 +1,93 @@
+/*
+ * ClusterTelemetry: compact band under the hero. Same header voice as the
+ * other sections (mono kicker, bold title) but tighter.
+ */
+
+.cluster-telemetry {
+  position: relative;
+  padding: min(3rem, 10vw) 0;
+}
+
+.cluster-telemetry__inner {
+  display: flex;
+  flex-direction: column;
+  gap: min(var(--spacing-5), 6vw);
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 min(1rem, 4vw);
+}
+
+.cluster-telemetry__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--spacing-3) var(--spacing-5);
+  padding-bottom: min(var(--spacing-4), 5vw);
+  border-bottom: 1px solid rgba(var(--color-cyan-rgb), 0.2);
+}
+
+.cluster-telemetry__kicker {
+  margin: 0 0 var(--spacing-2);
+  font-family: var(--font-family-jetbrains);
+  font-size: var(--font-size-sm);
+  letter-spacing: var(--letter-spacing-technical);
+  color: var(--color-cyan);
+}
+
+.cluster-telemetry__title {
+  margin: 0;
+  font-family: var(--font-family-inter);
+  font-size: min(var(--font-size-2xl), 8vw);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  color: var(--color-white);
+}
+
+.cluster-telemetry__lede {
+  margin: var(--spacing-2) 0 0;
+  max-width: 44rem;
+  font-family: var(--font-family-inter);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  color: var(--color-text-muted);
+}
+
+.cluster-telemetry__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-3) var(--spacing-5);
+}
+
+.cluster-telemetry__link {
+  overflow-wrap: anywhere;
+  font-family: var(--font-family-jetbrains);
+  font-size: var(--font-size-sm);
+  letter-spacing: var(--letter-spacing-technical);
+  color: var(--color-primary);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+
+.cluster-telemetry__link:hover {
+  border-bottom-color: var(--color-primary);
+}
+
+.cluster-telemetry__link:focus-visible {
+  outline: none;
+  box-shadow: var(--ring-focus);
+  border-radius: var(--border-radius-sm);
+}
+
+.cluster-telemetry__sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

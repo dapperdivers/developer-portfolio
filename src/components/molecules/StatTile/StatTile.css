@@ -1,0 +1,113 @@
+/* StatTile: one live number in a card. Figure is the hero. */
+
+.stat-tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  box-sizing: border-box;
+  min-width: 0;
+  margin: 0;
+  padding: var(--spacing-4) min(var(--spacing-4), 4vw);
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+
+/* Thin tone rule along the top edge */
+.stat-tile::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 2px;
+  background: var(--stat-tile-accent, var(--surface-border));
+}
+
+.stat-tile--success {
+  --stat-tile-accent: var(--color-success);
+}
+
+.stat-tile--warning {
+  --stat-tile-accent: var(--color-warning);
+}
+
+.stat-tile__label {
+  font-family: var(--font-family-jetbrains);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--letter-spacing-technical);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  overflow-wrap: anywhere;
+}
+
+.stat-tile__reading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 var(--spacing-1);
+  margin: 0;
+  min-height: 2.75rem;
+  font-family: var(--font-family-jetbrains);
+}
+
+.stat-tile__value {
+  font-size: min(2.5rem, 8.5vw);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text);
+  overflow-wrap: anywhere;
+}
+
+.stat-tile--success .stat-tile__value {
+  color: var(--color-success);
+}
+
+.stat-tile--warning .stat-tile__value {
+  color: var(--color-warning);
+}
+
+.stat-tile__unit {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--letter-spacing-technical);
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
+/* Loading shimmer */
+.stat-tile__skeleton {
+  display: block;
+  width: min(6rem, 70%);
+  height: 2rem;
+  border-radius: var(--border-radius-sm, 4px);
+  background: var(--color-skeleton-bg);
+}
+
+.stat-tile--animated .stat-tile__skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-skeleton-bg) 0%,
+    rgba(var(--color-primary-rgb), 0.16) 50%,
+    var(--color-skeleton-bg) 100%
+  );
+  background-size: 200% 100%;
+  animation: stat-tile-shimmer 1.4s ease-in-out infinite;
+}
+
+.stat-tile__sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@keyframes stat-tile-shimmer {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
