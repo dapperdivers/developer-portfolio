@@ -14,6 +14,8 @@ export interface SocialLinksProps {
   animated?: boolean;
   /** Profile URLs and the vCard to download; an icon shows only if its link is given */
   links?: Partial<ProfileLinks>;
+  /** `large` makes each icon a 44px touch target, for phones */
+  size?: 'default' | 'large';
 }
 
 /**
@@ -22,7 +24,7 @@ export interface SocialLinksProps {
  *
  * @component
  */
-const SocialLinks = ({ className = '', animated = true, links = {} }: SocialLinksProps) => {
+const SocialLinks = ({ className = '', animated = true, links = {}, size = 'default' }: SocialLinksProps) => {
     const socialLinks = links;
     const shouldAnimate = useMotionEnabled(animated);
 
@@ -70,7 +72,7 @@ const SocialLinks = ({ className = '', animated = true, links = {} }: SocialLink
 
     return (
         <motion.div
-            className={`flex items-center flex-wrap gap-3 ${className}`}
+            className={`flex items-center flex-wrap gap-3 ${size === 'large' ? 'social-links--large' : ''} ${className}`.trim()}
             initial={shouldAnimate ? "hidden" : "visible"}
             animate="visible"
             variants={shouldAnimate ? containerVariants : {}}

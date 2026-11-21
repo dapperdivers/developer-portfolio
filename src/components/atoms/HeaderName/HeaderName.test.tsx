@@ -6,7 +6,7 @@ import HeaderName from './HeaderName';
 
 // Mock CSS imports to avoid actual CSS loading in tests
 vi.mock('./HeaderName.css', () => ({
-  default: '.cyber-text-animation { font-family: Agustina; }'
+  default: '.cyber-text-animation { font-family: monospace; }'
 }));
 
 describe('HeaderName Component', () => {
@@ -56,7 +56,7 @@ describe('HeaderName Component', () => {
     expect(element).toHaveClass('relative', 'cyber-text-animation');
   });
 
-  it('uses the Agustina font', () => {
+  it('uses the mono name style', () => {
     const { container } = render(<HeaderName name={defaultName} />);
     const element = container.firstChild as HTMLElement;
     // Since we're mocking the CSS, we'll check for the class instead

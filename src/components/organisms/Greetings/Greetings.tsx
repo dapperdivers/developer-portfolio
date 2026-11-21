@@ -2,6 +2,8 @@ import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useGreetings } from '@context/PortfolioContext';
 import Button from '@atoms/Button';
+import SocialLinks from '@molecules/SocialLinks';
+import { profileLinks } from '@/portfolio';
 import ScrollDown from '@atoms/ScrollDown';
 import TerminalWindow from '@molecules/TerminalWindow';
 import type { TerminalWindowLine } from '@molecules/TerminalWindow';
@@ -120,6 +122,13 @@ const Greetings = () => {
           >
             Download Resume
           </Button>
+          {/* The nav shows these from lg up; phones get them here */}
+          <SocialLinks
+            className="greetings__socials"
+            links={profileLinks}
+            size="large"
+            animated={animationEnabled}
+          />
         </div>
       </div>
 

@@ -157,7 +157,7 @@ const GithubProfile = ({ id = 'contact' }: GithubProfileProps) => {
                     variants={slideUpVariants}
                     initial={animationEnabled ? "hidden" : "visible"}
                     animate="visible"
-                    className="mt-8"
+                    className=""
                 >
                     <GithubProfileCard
                         prof={prof}
