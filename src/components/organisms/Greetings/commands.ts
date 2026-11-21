@@ -1,7 +1,9 @@
 import type { TerminalLineKind } from '@molecules/TerminalWindow';
+import type { ClusterStatusData } from '@/types/cluster';
+import { ageSentence, badgeText, splitBadgeValue } from '@utils/clusterTelemetry';
 
 /** Page sections the terminal can open, in page order. */
-export const SECTIONS = ['skills', 'experience', 'projects', 'education', 'contact'] as const;
+export const SECTIONS = ['cluster', 'skills', 'experience', 'projects', 'education', 'contact'] as const;
 export type SectionName = (typeof SECTIONS)[number];
 
 export interface CommandContext {
@@ -10,6 +12,8 @@ export interface CommandContext {
   location: string;
   /** Seconds since the page loaded */
   uptimeSeconds: number;
+  /** Latest cluster reading, or null/absent when telemetry is not available */
+  cluster?: ClusterStatusData | null;
 }
 
 export interface CommandOutput {
@@ -34,7 +38,10 @@ export const COMMAND_LIST: ReadonlyArray<readonly [string, string]> = [
   ['cd <section>', 'jump to a section (also: open <section>)'],
   ['cat resume', 'download the resume'],
   ['contact', 'jump to the contact section'],
-  ['uptime', 'how long you have been here'],
+  ['uptime', 'how long the cluster has been up'],
+  ['status', 'live cluster summary'],
+  ['kubectl get nodes', 'the cluster nodes'],
+  ['neofetch', 'the cluster at a glance'],
   ['ping', 'check that Derek is reachable'],
   ['clear', 'clear the screen'],
 ];
@@ -51,6 +58,97 @@ const asSection = (arg: string | undefined): SectionName | 'top' | null => {
 const formatUptime = (seconds: number): string => {
   if (seconds < 60) return `${seconds} sec`;
   return `${Math.floor(seconds / 60)} min`;
+};
+
+const OFFLINE = 'telemetry offline: the cluster is not reporting right now';
+
+const TURTLE = [
+  '     ______',
+  '   /  _  _ \\_',
+  '  | _| || |_ _>o',
+  '   \\_\\_||_/_/',
+  '    /_/  \\_\\',
+];
+
+const withUnit = (raw: string | null): string | null => {
+  if (!raw) return null;
+  const { number, unit } = splitBadgeValue(raw);
+  if (unit === '%') return `${number}%`;
+  return unit ? `${number} ${unit}` : number;
+};
+
+const uptimeOutput = (ctx: CommandContext): CommandOutput[] => {
+  const data = ctx.cluster ?? null;
+  const days = badgeText(data, 'cluster_uptime_days');
+  if (!data || !days) {
+    return [out(`up ${formatUptime(ctx.uptimeSeconds)} on this page, 1 visitor`), out(OFFLINE, 'muted')];
+  }
+  const { number } = splitBadgeValue(days);
+  const parts = [
+    `up ${number} ${number === '1' ? 'day' : 'days'}`,
+    withUnit(badgeText(data, 'cluster_node_count')) && `${withUnit(badgeText(data, 'cluster_node_count'))} nodes`,
+    withUnit(badgeText(data, 'cluster_pod_count')) && `${withUnit(badgeText(data, 'cluster_pod_count'))} pods`,
+  ].filter(Boolean);
+  const cpu = withUnit(badgeText(data, 'cluster_cpu_usage'));
+  const mem = withUnit(badgeText(data, 'cluster_memory_usage'));
+  const load = [cpu && `${cpu} cpu`, mem && `${mem} memory`].filter(Boolean).join(', ');
+  return [
+    out(parts.join(', ')),
+    ...(load ? [out(`load average: ${load}`)] : []),
+    out(`you have been here ${formatUptime(ctx.uptimeSeconds)}`, 'muted'),
+  ];
+};
+
+const nodesOutput = (data: ClusterStatusData | null): CommandOutput[] => {
+  const nodes = withUnit(badgeText(data, 'cluster_node_count'));
+  if (!data || !nodes) return [out(OFFLINE, 'error')];
+  const status = badgeText(data, 'cluster_status') ?? 'unknown';
+  const k8s = badgeText(data, 'kubernetes_version');
+  const talos = badgeText(data, 'talos_version');
+  const header = ['NODES'.padEnd(7), 'STATUS'.padEnd(10), talos ? 'TALOS'.padEnd(8) : '', k8s ? 'KUBERNETES' : ''];
+  const row = [nodes.padEnd(7), status.padEnd(10), talos ? talos.padEnd(8) : '', k8s ?? ''];
+  return [out(header.join('').trimEnd()), out(row.join('').trimEnd())];
+};
+
+const statusOutput = (data: ClusterStatusData | null): CommandOutput[] => {
+  if (!data) return [out(OFFLINE, 'error')];
+  const rows: Array<[string, string | null]> = [
+    ['cluster', badgeText(data, 'cluster_status')],
+    ['nodes', withUnit(badgeText(data, 'cluster_node_count'))],
+    ['pods', withUnit(badgeText(data, 'cluster_pod_count'))],
+    ['services', badgeText(data, 'services_up')],
+    ['uptime', badgeText(data, 'cluster_uptime_days')],
+    ['age', badgeText(data, 'cluster_age_days')],
+    ['cpu', withUnit(badgeText(data, 'cluster_cpu_usage'))],
+    ['memory', withUnit(badgeText(data, 'cluster_memory_usage'))],
+    ['power', withUnit(badgeText(data, 'cluster_power_usage'))],
+    ['alerts', badgeText(data, 'cluster_alert_count')],
+  ];
+  const lines = rows.flatMap(([k, v]) => (v ? [out(`${k.padEnd(10)}${v}`)] : []));
+  if (lines.length === 0) return [out(OFFLINE, 'error')];
+  const age = ageSentence(data);
+  return [...lines, ...(age ? [out(age, 'muted')] : [])];
+};
+
+const neofetchOutput = (data: ClusterStatusData | null): CommandOutput[] => {
+  const talos = badgeText(data, 'talos_version');
+  const k8s = badgeText(data, 'kubernetes_version');
+  const flux = badgeText(data, 'flux_version');
+  const power = withUnit(badgeText(data, 'cluster_power_usage'));
+  const facts = [
+    talos && `OS: Talos ${talos}`,
+    k8s && `Kubernetes: ${k8s}`,
+    flux && `Flux: ${flux}`,
+    withUnit(badgeText(data, 'cluster_node_count')) && `Nodes: ${withUnit(badgeText(data, 'cluster_node_count'))}`,
+    withUnit(badgeText(data, 'cluster_pod_count')) && `Pods: ${withUnit(badgeText(data, 'cluster_pod_count'))}`,
+    power && `Power: ${power}`,
+  ].filter((f): f is string => Boolean(f));
+  if (!data || facts.length === 0) return [out(OFFLINE, 'error')];
+  const width = Math.max(...TURTLE.map((l) => l.length)) + 2;
+  const rows = Math.max(TURTLE.length, facts.length);
+  return Array.from({ length: rows }, (_, i) =>
+    out(`${(TURTLE[i] ?? '').padEnd(width)}${facts[i] ?? ''}`.trimEnd(), 'success'),
+  );
 };
 
 /**
@@ -136,11 +234,20 @@ export const runCommand = (raw: string, ctx: CommandContext): CommandResult => {
       return { output: [], effect: { type: 'clear' } };
 
     case 'uptime':
-      return {
-        output: [
-          out(`up ${formatUptime(ctx.uptimeSeconds)}, 1 visitor, load average: mostly agents`),
-        ],
-      };
+      return { output: uptimeOutput(ctx) };
+
+    case 'status':
+      return { output: statusOutput(ctx.cluster ?? null) };
+
+    case 'neofetch':
+      return { output: neofetchOutput(ctx.cluster ?? null) };
+
+    case 'kubectl': {
+      if (arg === 'get' && /^(nodes?|no)$/.test(args[1] ?? '')) {
+        return { output: nodesOutput(ctx.cluster ?? null) };
+      }
+      return { output: [out('kubectl: this demo only knows: kubectl get nodes', 'error')] };
+    }
 
     case 'ping': {
       const host = arg ?? 'derek';

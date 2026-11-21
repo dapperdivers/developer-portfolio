@@ -1,0 +1,15 @@
+.stat-tile-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr));
+  gap: min(var(--spacing-3), 3vw);
+  margin: 0;
+  padding: 0;
+}
+
+/* Wide screens: two even rows of four */
+@media (min-width: 900px) {
+  .stat-tile-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--spacing-4);
+  }
+}

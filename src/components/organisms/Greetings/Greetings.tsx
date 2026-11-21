@@ -6,6 +6,7 @@ import ScrollDown from '@atoms/ScrollDown';
 import TerminalWindow from '@molecules/TerminalWindow';
 import type { TerminalWindowLine } from '@molecules/TerminalWindow';
 import useCallbackHandlers from '@/hooks/useCallbackHandlers';
+import useClusterStatus from '@hooks/useClusterStatus';
 import { useAnimation } from '@context/AnimationContext';
 import { slideUpVariants, useMotionEnabled } from '@utils/motion';
 import { runCommand } from './commands';
@@ -14,7 +15,7 @@ import './Greetings.css';
 
 const RESUME_PATH = '/resume/Cybersecurity_2025.pdf';
 const RESUME_NAME = 'Cybersecurity_2025.pdf';
-const SUGGESTIONS = ['help', 'ls', 'cat resume', 'contact'];
+const SUGGESTIONS = ['help', 'ls', 'neofetch', 'cat resume'];
 const MAX_LINES = 80;
 
 // Second line of the opening story; the first comes from the greeting data
@@ -34,6 +35,9 @@ const Greetings = () => {
   const motionOn = useMotionEnabled(animationEnabled);
   const jobTitle = greetings.jobTitle ?? 'Principal Security Engineer';
   const location = greetings.location ?? '';
+  const { data: cluster } = useClusterStatus();
+  const clusterRef = useRef(cluster);
+  clusterRef.current = cluster;
   const counter = useRef(0);
   const loadedAt = useRef(Date.now());
   const nextId = () => `line-${counter.current++}`;
@@ -74,6 +78,7 @@ const Greetings = () => {
       jobTitle,
       location,
       uptimeSeconds: Math.round((Date.now() - loadedAt.current) / 1000),
+      cluster: clusterRef.current,
     });
     if (result.effect?.type === 'clear') {
       setLines([]);
