@@ -4,7 +4,7 @@ import { existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, 
 import { createServer, type Server } from 'node:http';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { convertBody, describeNote, exportNote, indexImages, slugify } from './export.ts';
+import { convertBody, describeNote, exportNote, indexImages, slugify, stripComments } from './export.ts';
 import { linkTargets, listPosts, pushArticle, pushedArticles, safeNotePath, unpushArticle } from './store.ts';
 import { createDesk } from './server.ts';
 
@@ -103,6 +103,13 @@ describe('export', () => {
     const index = exportNote(vault, 'Projects/Blog/Long.md', new Map()).files.get('index.md')!.toString();
     assert.match(index, /Intro\.\n\n## Part two\n\nMore\./);
     assert.ok(!index.includes('private planning'));
+  });
+
+  it('strips comments completely and refuses unclosed ones', () => {
+    assert.equal(stripComments('a <!-- x --> b %% y %% c'), 'a  b  c');
+    assert.throws(() => stripComments('text <!-- never closed secret'), /unclosed comment/);
+    assert.throws(() => stripComments('text %% never closed secret'), /unclosed comment/);
+    assert.throws(() => stripComments('<!<!---->-- secret'), /unclosed comment/);
   });
 
   it('maps Obsidian callouts and leaves code alone', () => {

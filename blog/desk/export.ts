@@ -171,10 +171,26 @@ export interface ConvertContext {
   warn: (message: string) => void;
 }
 
+/**
+ * Removes Obsidian (%% %%) and HTML (<!-- -->) comments: private asides that must not ship.
+ * Repeats until nothing changes, so nested or overlapping markers can't leave a comment
+ * opener behind, then fails closed: an opener that is still there (an unclosed comment)
+ * stops the export rather than publishing whatever follows it.
+ */
+export const stripComments = (text: string): string => {
+  let out = text;
+  for (let prev = ''; prev !== out; ) {
+    prev = out;
+    out = out.replace(/%%[\s\S]*?%%/g, '').replace(/<!--[\s\S]*?-->/g, '');
+  }
+  if (out.includes('%%') || out.includes('<!--')) {
+    throw new Error('unclosed comment in the draft (%% or <!--): close it or remove it');
+  }
+  return out;
+};
+
 const convertProse = (text: string, ctx: ConvertContext): string =>
-  text
-    .replace(/%%[\s\S]*?%%/g, '')
-    .replace(/<!--[\s\S]*?-->/g, '')
+  stripComments(text)
     // Callout headers: > [!info] Title  →  > [!NOTE] Title
     .replace(/^(\s*>\s*)\[!([A-Za-z-]+)\]([+-]?)/gm, (_m, lead: string, type: string) =>
       `${lead}[!${CALLOUTS[type.toLowerCase()] ?? 'NOTE'}]`)
