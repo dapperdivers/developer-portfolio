@@ -1,0 +1,97 @@
+name: Blog builder
+
+# The blog is built in the cluster from pushed articles (blog/scripts/publish.ts). This
+# workflow tests the builder and publishes its image, ghcr.io/<repo>-blog. It runs when the
+# blog or the portfolio source it imports (tokens, components, site links) changes.
+on:
+  push:
+    branches: [master]
+    paths:
+      - blog/**
+      - src/**
+      - .github/workflows/blog.yml
+  pull_request:
+    paths:
+      - blog/**
+      - src/**
+      - .github/workflows/blog.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Test the blog builder
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: blog
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: yarn
+          cache-dependency-path: blog/yarn.lock
+
+      - name: Install
+        run: yarn install --frozen-lockfile
+
+      - name: Publish script tests
+        run: yarn test
+
+      - name: Type check
+        run: yarn check
+        env:
+          ASTRO_TELEMETRY_DISABLED: 1
+
+      - name: Build the sample articles
+        run: yarn build:fixtures
+        env:
+          ASTRO_TELEMETRY_DISABLED: 1
+          NODE_ENV: production
+
+  image:
+    name: Publish the builder image
+    needs: test
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository }}-blog
+          tags: |
+            type=sha,format=short
+            type=raw,value=latest,enable={{is_default_branch}}
+          labels: |
+            org.opencontainers.image.title=Blog builder for derekmackley.com/blog
+            org.opencontainers.image.description=Builds the blog from pushed articles and switches the live site atomically. Never reads the vault.
+
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: blog/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: BUILD_ID=${{ github.sha }}
+          platforms: linux/amd64
+          cache-from: type=gha,scope=blog
+          cache-to: type=gha,mode=max,scope=blog
