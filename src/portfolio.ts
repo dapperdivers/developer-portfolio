@@ -145,7 +145,7 @@ export const profileLinks: ProfileLinks = {
 };
 
 // The rest of the site: docs, component library, blog and source.
-// /blog redirects to the blog inside the Jekyll docs build.
+// /blog is served by the Express server from a mounted volume (BLOG_PATH).
 export const siteLinks: SiteLink[] = [
     { id: 'docs', label: 'Docs', href: '/docs/' },
     { id: 'storybook', label: 'Components', href: '/storybook/' },
