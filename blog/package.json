@@ -12,7 +12,7 @@
     "build:fixtures": "ARTICLES_DIR=fixtures/articles astro build",
     "preview": "astro preview --port 4322",
     "publish:site": "node scripts/publish.ts",
-    "check": "astro check",
+    "typecheck": "astro check",
     "test": "node --test 'scripts/**/*.test.ts'"
   },
   "dependencies": {

@@ -43,7 +43,7 @@ jobs:
         run: yarn test
 
       - name: Type check
-        run: yarn check
+        run: yarn typecheck
         env:
           ASTRO_TELEMETRY_DISABLED: 1
 
