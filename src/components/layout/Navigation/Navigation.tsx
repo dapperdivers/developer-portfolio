@@ -45,7 +45,7 @@ const Navigation = () => {
         id="navbar-main"
         aria-label="Main navigation"
       >
-        <div className="flex items-center justify-between">
+        <div className="flex flex-wrap items-center justify-between">
           {/* HeaderName - no longer clickable */}
           <div className="px-0 sm:px-2">
             <HeaderName
@@ -56,14 +56,10 @@ const Navigation = () => {
             />
           </div>
 
-          <div className="flex items-center gap-4 px-2">
-            {/* Docs, Storybook and blog. The source link stays in the footer.
-                Hidden on phones, where the footer and terminal carry them. */}
-            <SiteLinks
-              className="hidden sm:block"
-              links={headerLinks}
-              label="Docs, components and blog"
-            />
+          {/* On phones the links take their own centred row under the name */}
+          <div className="flex w-full items-center justify-center gap-4 sm:w-auto sm:justify-end sm:px-2">
+            {/* Docs, Storybook and blog. The source link stays in the footer. */}
+            <SiteLinks links={headerLinks} label="Docs, components and blog" />
             {/* Social Links - Hidden on mobile, visible on lg screens */}
             <div className="hidden lg:flex items-center">
               <SocialLinks animated={animationEnabled} links={profileLinks} />

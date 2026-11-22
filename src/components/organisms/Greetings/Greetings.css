@@ -72,6 +72,14 @@
   }
 }
 
+/* Below 640px the header's docs/components/blog links sit on a second row: clear it too */
+@media (max-width: 639px) {
+  .greetings {
+    --greetings-nav-clearance: calc(min(6rem, 25vw) + var(--control-height));
+  }
+}
+
+
 @media (min-width: 768px) {
   .greetings {
     --greetings-nav-clearance: min(8rem, 31vw);
