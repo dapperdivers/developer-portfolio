@@ -63,6 +63,36 @@
   gap: var(--spacing-3) var(--spacing-5);
 }
 
+/* Versions with the Flux object counts and reconcile health under them */
+.cluster-telemetry__stack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--spacing-2);
+}
+
+.cluster-telemetry__gitops {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-2) var(--spacing-3);
+}
+
+/* Once the meta row wraps, line the stack up with the status line */
+@media (max-width: 767px) {
+  .cluster-telemetry__stack {
+    align-items: flex-start;
+  }
+}
+
+.cluster-telemetry__gitops-label {
+  font-family: var(--font-family-jetbrains);
+  font-size: var(--font-size-xs);
+  letter-spacing: var(--letter-spacing-technical);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
 .cluster-telemetry__link {
   overflow-wrap: anywhere;
   font-family: var(--font-family-jetbrains);

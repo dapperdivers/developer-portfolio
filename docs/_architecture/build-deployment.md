@@ -248,7 +248,7 @@ jobs:
       - name: Run Snyk security scan
         uses: snyk/actions/node@master
         env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+          SNYK_TOKEN: ${% raw %}{{ secrets.SNYK_TOKEN }}{% endraw %}
 
   build:
     needs: [validate, security]

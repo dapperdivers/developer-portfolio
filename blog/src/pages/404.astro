@@ -1,0 +1,13 @@
+---
+import Base from '../layouts/Base.astro';
+import { url } from '../lib/posts';
+---
+
+<Base title="Not found" description="There is no post at this address.">
+  <header class="page-intro">
+    <p class="kicker" aria-hidden="true">~/blog: no such file or directory</p>
+    <h1 class="page-intro__title">Not found</h1>
+    <p class="page-intro__lede">There is no post at this address. It may have moved or been unpublished.</p>
+  </header>
+  <p><a href={url()}>All posts</a></p>
+</Base>

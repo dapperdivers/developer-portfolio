@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="160" viewBox="0 0 640 160" role="img" aria-label="vault, push process, articles, builder, site">
+  <rect width="640" height="160" fill="#212529"/>
+  <g font-family="monospace" font-size="16" fill="#64ffda" text-anchor="middle">
+    <text x="80" y="86">vault</text><text x="200" y="86">push</text><text x="330" y="86">articles/</text><text x="450" y="86">builder</text><text x="570" y="86">site/</text>
+  </g>
+  <g stroke="#64ffda" stroke-width="2"><line x1="115" y1="80" x2="160" y2="80"/><line x1="240" y1="80" x2="280" y2="80"/><line x1="380" y1="80" x2="410" y2="80"/><line x1="495" y1="80" x2="535" y2="80"/></g>
+</svg>

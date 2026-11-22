@@ -5,7 +5,7 @@ import VersionChips from '@molecules/VersionChips';
 import useClusterStatus from '@hooks/useClusterStatus';
 import { useAnimation } from '@context/AnimationContext';
 import { slideUpVariants, useMotionEnabled } from '@utils/motion';
-import { ageSentence, telemetryTiles, versionItems } from '@utils/clusterTelemetry';
+import { ageSentence, gitopsSummary, telemetryTiles, versionItems } from '@utils/clusterTelemetry';
 import { clusterHealth } from '@molecules/ClusterStatus/clusterSummary';
 import type { ClusterStatusResult } from '@/types/cluster';
 import './ClusterTelemetry.css';
@@ -34,6 +34,7 @@ const ClusterTelemetry = ({ result }: ClusterTelemetryProps) => {
   const tiles = ok ? telemetryTiles(data) : [];
   const hasFigures = tiles.length > 0;
   const health = ok ? clusterHealth(data) : 'unknown';
+  const gitops = ok ? gitopsSummary(data) : null;
 
   const state = status === 'loading' ? 'loading' : !ok || (!hasFigures && health === 'unknown') ? 'offline' : health === 'degraded' ? 'degraded' : 'up';
 
@@ -87,7 +88,17 @@ const ClusterTelemetry = ({ result }: ClusterTelemetryProps) => {
                 updatedAt={ok ? data.updatedAt : undefined}
                 animated={animationEnabled}
               />
-              {ok && <VersionChips items={versionItems(data)} note={ageSentence(data) ?? undefined} />}
+              {ok && (
+                <div className="cluster-telemetry__stack">
+                  <VersionChips items={versionItems(data)} note={ageSentence(data) ?? undefined} />
+                  {gitops && (gitops.items.length > 0 || gitops.note) && (
+                    <div className="cluster-telemetry__gitops" data-testid="cluster-gitops">
+                      <span className="cluster-telemetry__gitops-label">GitOps</span>
+                      <VersionChips items={gitops.items} note={gitops.note ?? undefined} label="Flux objects" />
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           </>
         )}

@@ -5,6 +5,8 @@ import useClusterStatus from '@hooks/useClusterStatus';
 import { clusterHealth, healthLabel } from '@molecules/ClusterStatus/clusterSummary';
 import useFooter from '@hooks/useFooter';
 import useCallbackHandlers from '@/hooks/useCallbackHandlers';
+import SiteLinks from '@molecules/SiteLinks';
+import { siteLinks } from '@/portfolio';
 import './Footer.css';
 
 interface ClusterLine {
@@ -135,6 +137,11 @@ const Footer = () => {
                 );
               })}
             </AnimatePresence>
+          </motion.div>
+
+          {/* Docs, Storybook, blog and source */}
+          <motion.div className="w-full mb-2 md:mb-0" variants={itemVariants}>
+            <SiteLinks links={siteLinks} variant="footer" label="Docs, components, blog and source" />
           </motion.div>
 
           {/* Where the site runs, with live numbers */}

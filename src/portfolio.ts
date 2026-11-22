@@ -143,6 +143,9 @@ export const profileLinks: ProfileLinks = {
     contactCard: contact.vcfLink,
 };
 
+// Docs, Storybook, blog and source links live in their own module so the blog can share them
+export { siteLinks } from './data/siteLinks';
+
 export const skillsSection: SkillsSection = {
 	title: "What I do",
 	subTitle:

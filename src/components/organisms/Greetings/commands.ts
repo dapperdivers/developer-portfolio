@@ -1,6 +1,7 @@
 import type { TerminalLineKind } from '@molecules/TerminalWindow';
 import type { ClusterStatusData } from '@/types/cluster';
-import { ageSentence, badgeText, splitBadgeValue } from '@utils/clusterTelemetry';
+import { ageSentence, badgeText, gitopsSummary, splitBadgeValue } from '@utils/clusterTelemetry';
+import { siteLinks } from '@/portfolio';
 
 /** Page sections the terminal can open, in page order. */
 export const SECTIONS = ['cluster', 'skills', 'experience', 'projects', 'education', 'contact'] as const;
@@ -24,7 +25,8 @@ export interface CommandOutput {
 export type CommandEffect =
   | { type: 'clear' }
   | { type: 'scroll'; section: SectionName | 'top' }
-  | { type: 'download' };
+  | { type: 'download' }
+  | { type: 'navigate'; href: string; external: boolean };
 
 export interface CommandResult {
   output: CommandOutput[];
@@ -38,9 +40,14 @@ export const COMMAND_LIST: ReadonlyArray<readonly [string, string]> = [
   ['cd <section>', 'jump to a section (also: open <section>)'],
   ['cat resume', 'download the resume'],
   ['contact', 'jump to the contact section'],
+  ['docs', 'open the technical docs'],
+  ['storybook', 'browse the component library'],
+  ['blog', 'read the blog'],
+  ['source', 'the code for this site'],
   ['uptime', 'how long the cluster has been up'],
   ['status', 'live cluster summary'],
   ['kubectl get nodes', 'the cluster nodes'],
+  ['flux get all', 'what GitOps runs, and whether it is healthy'],
   ['neofetch', 'the cluster at a glance'],
   ['ping', 'check that Derek is reachable'],
   ['clear', 'clear the screen'],
@@ -54,6 +61,27 @@ const asSection = (arg: string | undefined): SectionName | 'top' | null => {
   if (clean === '' || clean === '~' || clean === '..' || clean === 'top' || clean === 'home') return 'top';
   return (SECTIONS as readonly string[]).includes(clean) ? (clean as SectionName) : null;
 };
+
+/** Commands (and `cd` targets) that leave the page, keyed to a site link id. */
+const SITE_COMMANDS: Record<string, string> = {
+  docs: 'docs',
+  doc: 'docs',
+  storybook: 'storybook',
+  components: 'storybook',
+  blog: 'blog',
+  source: 'source',
+  src: 'source',
+};
+
+const siteLinkFor = (word: string | undefined) => {
+  const id = SITE_COMMANDS[(word ?? '').toLowerCase().replace(/^(~\/|\.\/|\/)/, '').replace(/\/$/, '')];
+  return id ? siteLinks.find((link) => link.id === id) ?? null : null;
+};
+
+const navigateTo = (link: (typeof siteLinks)[number]): CommandResult => ({
+  output: [out(`Opening ${link.label.toLowerCase()}${link.external ? ' in a new tab' : ''}`, 'success')],
+  effect: { type: 'navigate', href: link.href, external: Boolean(link.external) },
+});
 
 const formatUptime = (seconds: number): string => {
   if (seconds < 60) return `${seconds} sec`;
@@ -83,9 +111,11 @@ const uptimeOutput = (ctx: CommandContext): CommandOutput[] => {
   if (!data || !days) {
     return [out(`up ${formatUptime(ctx.uptimeSeconds)} on this page, 1 visitor`), out(OFFLINE, 'muted')];
   }
-  const { number } = splitBadgeValue(days);
+  const { number, unit } = splitBadgeValue(days);
+  const one = number === '1';
+  const word = unit === 'hours' ? (one ? 'hour' : 'hours') : unit === 'min' ? 'min' : one ? 'day' : 'days';
   const parts = [
-    `up ${number} ${number === '1' ? 'day' : 'days'}`,
+    `up ${number} ${word}`,
     withUnit(badgeText(data, 'cluster_node_count')) && `${withUnit(badgeText(data, 'cluster_node_count'))} nodes`,
     withUnit(badgeText(data, 'cluster_pod_count')) && `${withUnit(badgeText(data, 'cluster_pod_count'))} pods`,
   ].filter(Boolean);
@@ -110,6 +140,19 @@ const nodesOutput = (data: ClusterStatusData | null): CommandOutput[] => {
   return [out(header.join('').trimEnd()), out(row.join('').trimEnd())];
 };
 
+const fluxOutput = (data: ClusterStatusData | null): CommandOutput[] => {
+  const { items, note } = gitopsSummary(data);
+  if (!data || (items.length === 0 && !note)) return [out(OFFLINE, 'error')];
+  const version = badgeText(data, 'flux_version');
+  const rows = items.map(({ label, value }) => out(`${label.padEnd(16)}${value}`));
+  const failing = note?.includes('failing');
+  return [
+    ...(version ? [out(`flux ${version}`, 'muted')] : []),
+    ...(rows.length > 0 ? [out(`${'KIND'.padEnd(16)}COUNT`), ...rows] : []),
+    ...(note ? [out(note, failing ? 'error' : note === 'all reconciled' ? 'success' : 'output')] : []),
+  ];
+};
+
 const statusOutput = (data: ClusterStatusData | null): CommandOutput[] => {
   if (!data) return [out(OFFLINE, 'error')];
   const rows: Array<[string, string | null]> = [
@@ -123,6 +166,7 @@ const statusOutput = (data: ClusterStatusData | null): CommandOutput[] => {
     ['memory', withUnit(badgeText(data, 'cluster_memory_usage'))],
     ['power', withUnit(badgeText(data, 'cluster_power_usage'))],
     ['alerts', badgeText(data, 'cluster_alert_count')],
+    ['gitops', gitopsSummary(data).note],
   ];
   const lines = rows.flatMap(([k, v]) => (v ? [out(`${k.padEnd(10)}${v}`)] : []));
   if (lines.length === 0) return [out(OFFLINE, 'error')];
@@ -135,10 +179,12 @@ const neofetchOutput = (data: ClusterStatusData | null): CommandOutput[] => {
   const k8s = badgeText(data, 'kubernetes_version');
   const flux = badgeText(data, 'flux_version');
   const power = withUnit(badgeText(data, 'cluster_power_usage'));
+  const gitops = gitopsSummary(data).note;
   const facts = [
     talos && `OS: Talos ${talos}`,
     k8s && `Kubernetes: ${k8s}`,
     flux && `Flux: ${flux}`,
+    gitops && `GitOps: ${gitops}`,
     withUnit(badgeText(data, 'cluster_node_count')) && `Nodes: ${withUnit(badgeText(data, 'cluster_node_count'))}`,
     withUnit(badgeText(data, 'cluster_pod_count')) && `Pods: ${withUnit(badgeText(data, 'cluster_pod_count'))}`,
     power && `Power: ${power}`,
@@ -167,7 +213,7 @@ export const runCommand = (raw: string, ctx: CommandContext): CommandResult => {
     case '?':
       return {
         output: [
-          ...COMMAND_LIST.map(([c, d]) => out(`${c.padEnd(14)}${d}`)),
+          ...COMMAND_LIST.map(([c, d]) => out(`${c.padEnd(18)}${d}`)),
           out('psst: there is more than the list shows. Try ls -a', 'muted'),
         ],
       };
@@ -183,7 +229,7 @@ export const runCommand = (raw: string, ctx: CommandContext): CommandResult => {
 
     case 'ls': {
       const all = args.some((a) => /^-[a-z]*a[a-z]*$/.test(a));
-      const entries = [...SECTIONS.map((s) => `${s}/`), 'resume.pdf'];
+      const entries = [...SECTIONS.map((s) => `${s}/`), 'resume.pdf', 'docs/', 'storybook/', 'blog/'];
       return { output: [out((all ? ['.secrets', ...entries] : entries).join('  '))] };
     }
 
@@ -193,6 +239,8 @@ export const runCommand = (raw: string, ctx: CommandContext): CommandResult => {
         return { output: [out(`${cmd}: which section? Try ls`, 'error')] };
       }
       const section = asSection(arg);
+      const site = section ? null : siteLinkFor(arg);
+      if (site) return navigateTo(site);
       if (!section) {
         return { output: [out(`${cmd}: ${arg}: no such section. Try ls`, 'error')] };
       }
@@ -229,6 +277,17 @@ export const runCommand = (raw: string, ctx: CommandContext): CommandResult => {
         effect: { type: 'scroll', section: 'contact' },
       };
 
+    case 'docs':
+    case 'doc':
+    case 'storybook':
+    case 'components':
+    case 'blog':
+    case 'source':
+    case 'src': {
+      const site = siteLinkFor(cmd);
+      return site ? navigateTo(site) : { output: [out(`${cmd}: not available`, 'error')] };
+    }
+
     case 'clear':
     case 'cls':
       return { output: [], effect: { type: 'clear' } };
@@ -241,6 +300,15 @@ export const runCommand = (raw: string, ctx: CommandContext): CommandResult => {
 
     case 'neofetch':
       return { output: neofetchOutput(ctx.cluster ?? null) };
+
+    case 'flux': {
+      if (arg === 'get' || arg === undefined) return { output: fluxOutput(ctx.cluster ?? null) };
+      if (arg === 'version' || arg === '--version' || arg === '-v') {
+        const v = badgeText(ctx.cluster ?? null, 'flux_version');
+        return { output: [v ? out(`flux: v${v}`) : out(OFFLINE, 'error')] };
+      }
+      return { output: [out('flux: this demo only knows: flux get all, flux version', 'error')] };
+    }
 
     case 'kubectl': {
       if (arg === 'get' && /^(nodes?|no)$/.test(args[1] ?? '')) {

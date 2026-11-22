@@ -12,6 +12,7 @@ build/
 dist/
 storybook-static/
 docs-static/
+blog-static/
 coverage/
 
 # Development files
@@ -138,3 +139,6 @@ DEVELOPMENT.md
 DEPLOYMENT.md
 SECURITY.md
 CLAUDE.md
+blog/node_modules/
+blog/dist/
+blog/.astro/

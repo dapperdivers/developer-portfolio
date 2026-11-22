@@ -515,7 +515,7 @@ The portfolio includes support for dark mode. To customize dark mode colors:
 function CustomButton() {
   
   return (
-    <button style={{ backgroundColor: 'var(--custom-primary)' }}>
+    <button style={% raw %}{{ backgroundColor: 'var(--custom-primary)' }}{% endraw %}>
       Custom Themed Button
     </button>
   );

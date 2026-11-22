@@ -11,6 +11,7 @@ node_modules/
 # production
 /build
 /docs-static
+/blog-static
 /logs
 
 # misc
@@ -64,4 +65,6 @@ dist/
 **/vendor
 **/.bundle
 **/.jekyll-cache
-**/_site
+**/_site/blog/node_modules
+/blog/dist
+/blog/.astro

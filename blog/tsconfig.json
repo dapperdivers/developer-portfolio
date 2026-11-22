@@ -1,0 +1,18 @@
+{
+  "extends": "astro/tsconfigs/strict",
+  "include": [".astro/types.d.ts", "src/**/*", "scripts/**/*", "desk/**/*", "astro.config.mjs"],
+  "exclude": ["dist", "node_modules"],
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "react",
+    "allowImportingTsExtensions": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["../src/*"],
+      "@molecules/*": ["../src/components/molecules/*"],
+      "@atoms/*": ["../src/components/atoms/*"],
+      "@utils/*": ["../src/utils/*"],
+      "@tokens/*": ["../src/assets/css/design-system/*"]
+    }
+  }
+}

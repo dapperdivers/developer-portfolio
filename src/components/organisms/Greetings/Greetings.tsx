@@ -71,6 +71,14 @@ const Greetings = () => {
     } else if (effect.type === 'scroll') {
       const target = effect.section === 'top' ? document.body : document.getElementById(effect.section);
       target?.scrollIntoView({ behavior: motionOn ? 'smooth' : 'auto', block: 'start' });
+    } else if (effect.type === 'navigate') {
+      if (effect.external) {
+        // Synchronous, inside the key handler, so popup blockers allow it
+        window.open(effect.href, '_blank', 'noopener,noreferrer');
+      } else {
+        // Short pause so the "Opening ..." line is seen before the page changes
+        window.setTimeout(() => window.location.assign(effect.href), 400);
+      }
     }
   }, [downloadResume, motionOn]);
 

@@ -37,3 +37,19 @@ export const Default: Story = {
 export const ChipsOnly: Story = { args: { note: undefined } };
 
 export const NoteOnly: Story = { args: { items: [] } };
+
+/** The telemetry band reuses the chips for Flux object counts, with its own list name. */
+export const FluxObjects: Story = {
+  args: {
+    items: [
+      { label: 'Kustomizations', value: '131' },
+      { label: 'HelmReleases', value: '110' },
+    ],
+    note: 'all reconciled',
+    label: 'Flux objects',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByRole('list', { name: 'Flux objects' })).toBeInTheDocument();
+  },
+};

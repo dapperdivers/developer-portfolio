@@ -22,6 +22,10 @@ const okData: ClusterStatusData = {
     talos_version: badge('Talos', '1.14.5', 'blue'),
     kubernetes_version: badge('Kubernetes', '1.37.2', 'blue'),
     flux_version: badge('Flux', '2.10.1', 'blue'),
+    flux_kustomization_count: badge('Kustomizations', '131', 'blue'),
+    flux_helmrelease_count: badge('HelmReleases', '110', 'blue'),
+    flux_waiting_count: badge('Flux waiting', '0'),
+    flux_failing_count: badge('Flux failing', '0'),
   },
 };
 
@@ -43,7 +47,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'The live telemetry band under the hero: stat tiles with the numbers from the cluster serving the page, a status line, version chips and a link to the repo. Colours follow the data with the site\'s own meaning: zero alerts green, any alerts amber (with the real count), degraded amber, cluster age never red. Loading shows shimmer tiles; when the feed is down it says "Telemetry offline" and shows no numbers. In the app it reads `useClusterStatus`; the stories pass `result` instead.',
+          'The live telemetry band under the hero: stat tiles with the numbers from the cluster serving the page, a status line, version chips, Flux object counts with their reconcile health (failing beats waiting; waiting on dependencies is normal right after a node roll), and a link to the repo. Colours follow the data with the site\'s own meaning: zero alerts green, any alerts amber (with the real count), degraded amber, cluster age never red. Loading shows shimmer tiles; when the feed is down it says "Telemetry offline" and shows no numbers. In the app it reads `useClusterStatus`; the stories pass `result` instead.',
       },
     },
   },
@@ -60,6 +64,56 @@ export const Ok: Story = {
     await waitFor(() => expect(canvas.getByText('1,074')).toBeInTheDocument(), { timeout: 3000 });
     await expect(canvas.getByText('cluster up')).toBeInTheDocument();
     await expect(canvas.getByText('running for 646 days')).toBeInTheDocument();
+    await expect(canvas.getByRole('list', { name: 'Flux objects' })).toBeInTheDocument();
+    await expect(canvas.getByText('all reconciled')).toBeInTheDocument();
+  },
+};
+
+/** Right after a rolling node upgrade: Kustomizations wait on their dependencies for a few minutes. */
+export const FluxCatchingUp: Story = {
+  args: {
+    result: {
+      status: 'ok',
+      data: { ...okData, badges: { ...okData.badges, flux_waiting_count: badge('Flux waiting', '49', 'orange') } },
+    },
+  },
+  play: async ({ canvasElement }) => {
+    await expect(within(canvasElement).getByText('49 waiting on dependencies')).toBeInTheDocument();
+  },
+};
+
+export const FluxFailing: Story = {
+  args: {
+    result: {
+      status: 'ok',
+      data: {
+        ...okData,
+        badges: {
+          ...okData.badges,
+          flux_waiting_count: badge('Flux waiting', '12', 'orange'),
+          flux_failing_count: badge('Flux failing', '2', 'red'),
+        },
+      },
+    },
+  },
+  play: async ({ canvasElement }) => {
+    await expect(within(canvasElement).getByText('2 failing to reconcile')).toBeInTheDocument();
+  },
+};
+
+/** Before the cluster publishes the Flux badges the GitOps row is left out. */
+export const WithoutFluxBadges: Story = {
+  args: {
+    result: {
+      status: 'ok',
+      data: {
+        ...okData,
+        badges: Object.fromEntries(Object.entries(okData.badges).filter(([id]) => !id.startsWith('flux_') || id === 'flux_version')),
+      },
+    },
+  },
+  play: async ({ canvasElement }) => {
+    await expect(within(canvasElement).queryByTestId('cluster-gitops')).toBeNull();
   },
 };
 

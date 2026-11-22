@@ -40,6 +40,20 @@ describe('runCommand', () => {
     expect(runCommand('cat resume.pdf', ctx).effect).toEqual({ type: 'download' });
   });
 
+  it('opens the docs, storybook and blog in this tab and the source in a new one', () => {
+    expect(runCommand('docs', ctx).effect).toEqual({ type: 'navigate', href: '/docs/', external: false });
+    expect(runCommand('storybook', ctx).effect).toEqual({ type: 'navigate', href: '/storybook/', external: false });
+    expect(runCommand('blog', ctx).effect).toEqual({ type: 'navigate', href: '/blog/', external: false });
+    expect(runCommand('source', ctx).effect).toMatchObject({ type: 'navigate', external: true });
+  });
+
+  it('treats docs, storybook and blog as cd targets and lists them', () => {
+    expect(runCommand('cd docs/', ctx).effect).toEqual({ type: 'navigate', href: '/docs/', external: false });
+    expect(runCommand('open components', ctx).effect).toMatchObject({ href: '/storybook/' });
+    expect(text('ls')).toContain('blog/');
+    expect(text('help')).toContain('storybook');
+  });
+
   it('clears the screen', () => {
     expect(runCommand('clear', ctx).effect).toEqual({ type: 'clear' });
   });
@@ -134,5 +148,48 @@ describe('runCommand', () => {
 
   it('is case-insensitive about the command', () => {
     expect(text('WHOAMI')).toContain('Derek Mackley');
+  });
+});
+
+describe('runCommand with flux and short uptimes', () => {
+  const b = (value: string) => ({ title: '', value, color: '' });
+  const data = (extra: Record<string, ReturnType<typeof b>>): ClusterStatusData => ({
+    updatedAt: '2026-11-21T19:00:00.000Z',
+    badges: { cluster_node_count: b('11'), flux_version: b('2.10.1'), ...extra },
+  });
+  const run = (raw: string, cluster: ClusterStatusData | null) =>
+    runCommand(raw, { ...ctx, cluster }).output.map((o) => o.text).join('\n');
+
+  it('reports flux objects and their health', () => {
+    const cluster = data({
+      flux_kustomization_count: b('131'),
+      flux_helmrelease_count: b('110'),
+      flux_waiting_count: b('0'),
+      flux_failing_count: b('0'),
+    });
+    const outText = run('flux get all', cluster);
+    expect(outText).toContain('Kustomizations');
+    expect(outText).toContain('110');
+    expect(outText).toContain('all reconciled');
+    expect(run('neofetch', cluster)).toContain('GitOps: all reconciled');
+    expect(run('status', cluster)).toContain('gitops');
+    expect(run('flux version', cluster)).toBe('flux: v2.10.1');
+  });
+
+  it('says flux is offline when the badges are missing', () => {
+    expect(runCommand('flux get all', { ...ctx, cluster: data({}) }).output[0].kind).toBe('error');
+    expect(runCommand('flux get all', { ...ctx, cluster: null }).output[0].kind).toBe('error');
+  });
+
+  it('flags failing objects as an error line', () => {
+    const cluster = data({ flux_waiting_count: b('3'), flux_failing_count: b('2') });
+    const last = runCommand('flux get', { ...ctx, cluster }).output.at(-1);
+    expect(last).toEqual({ kind: 'error', text: '2 failing to reconcile' });
+  });
+
+  it('words uptime in minutes, hours or days', () => {
+    expect(run('uptime', data({ cluster_uptime_days: b('52m') }))).toContain('up 52 min');
+    expect(run('uptime', data({ cluster_uptime_days: b('1h') }))).toContain('up 1 hour');
+    expect(run('uptime', data({ cluster_uptime_days: b('8d') }))).toContain('up 8 days');
   });
 });

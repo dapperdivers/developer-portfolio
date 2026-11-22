@@ -1,0 +1,43 @@
+---
+import Base from '../layouts/Base.astro';
+import PostCard from '../components/PostCard.astro';
+import { getPosts, getTopics, url } from '../lib/posts';
+
+const posts = await getPosts();
+const topics = await getTopics();
+---
+
+<Base title="Blog" description="Notes on security engineering, AI agents and the Kubernetes cluster in my garage that serves this site.">
+  <header class="page-intro">
+    <p class="kicker" aria-hidden="true">~/blog</p>
+    <h1 class="page-intro__title">Writing</h1>
+    <p class="page-intro__lede">
+      Security engineering, agents running real infrastructure, and the cluster in my garage that serves this page.
+      Decisions and trade-offs, with numbers from my own systems.
+    </p>
+  </header>
+
+  {posts.length === 0 ? (
+    <p class="empty-state">No posts yet. The first one is on its way.</p>
+  ) : (
+    <>
+      <div class="post-list">
+        {posts.map((post, i) => <PostCard post={post} featured={i === 0} />)}
+      </div>
+      {topics.size > 1 && (
+        <nav class="topic-index" aria-label="All topics">
+          <h2 class="topic-index__title">Topics</h2>
+          <ul class="topic-list">
+            {[...topics.entries()].map(([topic, list]) => (
+              <li>
+                <a class="topic-chip" href={url(`topics/${topic}/`)}>
+                  #{topic} <span class="topic-chip__count">{list.length}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )}
+    </>
+  )}
+</Base>

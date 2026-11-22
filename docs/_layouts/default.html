@@ -24,7 +24,7 @@
       <nav class="site-nav">
         <div class="nav-wrapper">
           {%- for section in site.nav_sections -%}
-          <a class="nav-link" href="{{ section.path | relative_url }}">
+          <a class="nav-link" href="{% if section.url %}{{ section.url }}{% else %}{{ section.path | relative_url }}{% endif %}">
             {{ section.title }}
           </a>
           {%- endfor -%}

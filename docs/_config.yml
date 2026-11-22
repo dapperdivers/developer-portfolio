@@ -36,6 +36,13 @@ nav_sections:
     path: "/guides/"
   - title: "Hooks"
     path: "/hooks/"
+  # `url` entries leave the docs build and are used as-is
+  - title: "Blog"
+    url: "/blog/"
+  - title: "Components"
+    url: "/storybook/"
+  - title: "← Main site"
+    url: "/"
 
 # Kramdown settings
 kramdown:

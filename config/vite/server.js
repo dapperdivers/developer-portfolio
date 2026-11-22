@@ -24,6 +24,9 @@ export function createBaseServer(config = {}) {
     buildPath = path.join(__dirname, '../../build'),
     storybookPath = path.join(__dirname, '../../storybook-static'),
     docsPath = path.join(__dirname, '../../docs-static'),
+    // The blog is not in the image: a publisher writes the built site to a
+    // volume that is mounted here (read-only). Empty or missing until then.
+    blogPath = process.env.BLOG_PATH || path.join(__dirname, '../../blog-static'),
     rateLimitMax = 100,
     rateLimitWindow = 15 * 60 * 1000, // 15 minutes
     cacheMaxAge = '1y',
@@ -169,6 +172,31 @@ export function createBaseServer(config = {}) {
       }
       
       res.set('Cache-Control', cacheControlFor(filePath));
+    }
+  });
+
+  // Blog: static files from the mounted volume. Content changes without a new
+  // image, so pages revalidate (ETag) while hashed assets stay immutable.
+  // `extensions` gives clean URLs (/blog/post -> post.html) whatever generator
+  // built it. Anything not found is a real 404, never the SPA homepage.
+  app.use('/blog', express.static(blogPath, {
+    etag: true,
+    lastModified: true,
+    index: 'index.html',
+    extensions: ['html'],
+    setHeaders: (res, filePath) => {
+      res.set('X-Content-Type-Options', 'nosniff');
+      res.set('X-Frame-Options', 'SAMEORIGIN');
+      res.set('Cache-Control', cacheControlFor(filePath));
+    }
+  }));
+  app.use('/blog', (req, res) => {
+    const notFoundPage = path.join(blogPath, '404.html');
+    res.status(404).set('Cache-Control', 'no-cache');
+    if (existsSync(notFoundPage)) {
+      res.sendFile(notFoundPage);
+    } else {
+      res.type('text/plain').send('Not found');
     }
   });
 

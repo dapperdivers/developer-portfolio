@@ -18,6 +18,10 @@ export const CLUSTER_BADGE_IDS = [
   'talos_version',
   'kubernetes_version',
   'flux_version',
+  'flux_kustomization_count',
+  'flux_helmrelease_count',
+  'flux_waiting_count',
+  'flux_failing_count',
 ];
 
 const DEFAULT_KROMGO_URL = 'https://kromgo.chelonianlabs.com';
