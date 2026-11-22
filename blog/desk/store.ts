@@ -43,7 +43,7 @@ export const listPosts = (p: Paths): NoteInfo[] => {
   };
   walk(root);
   // Closest to done first, then by title
-  const order = ['published', 'edit', 'draft', 'outline', 'idea', 'suggested'];
+  const order = ['published', 'edit', 'draft', 'drafting', 'outline', 'idea', 'suggested'];
   const rank = (stage: string) => (order.includes(stage) ? order.indexOf(stage) : order.length);
   return out.sort((a, b) => rank(a.stage) - rank(b.stage) || a.title.localeCompare(b.title));
 };
