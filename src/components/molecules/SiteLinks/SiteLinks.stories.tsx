@@ -31,6 +31,7 @@ const meta = {
       description: '`nav` is the compact lowercase header row; `footer` matches the footer text links',
     },
     label: { control: 'text', description: 'Accessible name for the nav landmark' },
+    currentId: { control: 'text', description: 'Id of the link for the current page; marked `aria-current="page"` and coloured' },
     className: { control: 'text', description: 'Additional CSS classes' },
   },
   args: {
@@ -47,6 +48,16 @@ export const Nav: Story = {
     const canvas = within(canvasElement);
     await expect(canvas.getByRole('navigation', { name: 'More from this site' })).toBeInTheDocument();
     await expect(canvas.getByText('Docs').closest('a')).toHaveAttribute('href', '/docs/');
+  },
+};
+
+/** The blog header marks its own link as the current page. */
+export const CurrentPage: Story = {
+  args: { currentId: 'blog' },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByText('Blog').closest('a')).toHaveAttribute('aria-current', 'page');
+    await expect(canvas.getByText('Docs').closest('a')).not.toHaveAttribute('aria-current');
   },
 };
 

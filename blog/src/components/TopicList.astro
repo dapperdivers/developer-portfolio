@@ -1,0 +1,27 @@
+---
+import { url } from '../lib/posts';
+
+interface Props {
+  topics: string[];
+  /** Topic of the page being viewed, if any */
+  current?: string;
+}
+
+const { topics, current } = Astro.props;
+---
+
+{topics.length > 0 && (
+  <ul class="topic-list" aria-label="Topics">
+    {topics.map((topic) => (
+      <li>
+        <a
+          class="topic-chip"
+          href={url(`topics/${topic}/`)}
+          aria-current={topic === current ? 'page' : undefined}
+        >
+          #{topic}
+        </a>
+      </li>
+    ))}
+  </ul>
+)}

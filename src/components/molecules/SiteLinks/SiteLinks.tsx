@@ -8,6 +8,8 @@ export interface SiteLinksProps {
   variant?: 'nav' | 'footer';
   /** Accessible name for the link list */
   label?: string;
+  /** Id of the link for the page being viewed; it is marked aria-current="page" */
+  currentId?: string;
   className?: string;
 }
 
@@ -16,7 +18,7 @@ export interface SiteLinksProps {
  * docs, the Storybook component library, the blog and the source.
  * Props only.
  */
-const SiteLinks = ({ links, variant = 'nav', label = 'More from this site', className = '' }: SiteLinksProps) => {
+const SiteLinks = ({ links, variant = 'nav', label = 'More from this site', currentId, className = '' }: SiteLinksProps) => {
   if (links.length === 0) return null;
   return (
     <nav className={`site-links site-links--${variant} ${className}`.trim()} aria-label={label}>
@@ -27,6 +29,7 @@ const SiteLinks = ({ links, variant = 'nav', label = 'More from this site', clas
               className="site-links__link"
               href={link.href}
               data-testid={`site-link-${link.id}`}
+              aria-current={link.id === currentId ? 'page' : undefined}
               {...(link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
             >
               {link.label}

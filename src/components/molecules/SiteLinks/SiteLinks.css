@@ -30,6 +30,10 @@
   color: var(--color-primary);
 }
 
+.site-links__link[aria-current='page'] {
+  color: var(--color-primary);
+}
+
 .site-links__link:focus-visible {
   outline: none;
   box-shadow: var(--ring-focus);

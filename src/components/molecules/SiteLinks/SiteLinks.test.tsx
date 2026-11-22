@@ -22,6 +22,12 @@ describe('SiteLinks', () => {
     expect(screen.getByRole('link', { name: 'Docs' })).not.toHaveAttribute('target');
   });
 
+  it('marks the current page', () => {
+    render(<SiteLinks links={links} currentId="docs" />);
+    expect(screen.getByRole('link', { name: 'Docs' })).toHaveAttribute('aria-current', 'page');
+    expect(screen.getByRole('link', { name: /Source/ })).not.toHaveAttribute('aria-current');
+  });
+
   it('applies the variant class', () => {
     const { container } = render(<SiteLinks links={links} variant="footer" />);
     expect(container.firstChild).toHaveClass('site-links--footer');

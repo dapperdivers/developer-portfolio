@@ -138,4 +138,6 @@ package-lock.json
 DEVELOPMENT.md
 DEPLOYMENT.md
 SECURITY.md
-CLAUDE.md
+CLAUDE.mdblog/node_modules/
+blog/dist/
+blog/.astro/

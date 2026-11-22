@@ -65,4 +65,6 @@ dist/
 **/vendor
 **/.bundle
 **/.jekyll-cache
-**/_site
+**/_site/blog/node_modules
+/blog/dist
+/blog/.astro

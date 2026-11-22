@@ -9,7 +9,6 @@ import type {
   ProfileLinks,
   Project,
   SecurityDomain,
-  SiteLink,
   SkillBar,
   SkillLevel,
   SkillsSection,
@@ -144,14 +143,8 @@ export const profileLinks: ProfileLinks = {
     contactCard: contact.vcfLink,
 };
 
-// The rest of the site: docs, component library, blog and source.
-// /blog is served by the Express server from a mounted volume (BLOG_PATH).
-export const siteLinks: SiteLink[] = [
-    { id: 'docs', label: 'Docs', href: '/docs/' },
-    { id: 'storybook', label: 'Components', href: '/storybook/' },
-    { id: 'blog', label: 'Blog', href: '/blog/' },
-    { id: 'source', label: 'Source', href: 'https://github.com/DapperDivers/developer-portfolio', external: true },
-];
+// Docs, Storybook, blog and source links live in their own module so the blog can share them
+export { siteLinks } from './data/siteLinks';
 
 export const skillsSection: SkillsSection = {
 	title: "What I do",
