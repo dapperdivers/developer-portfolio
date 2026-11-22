@@ -36,6 +36,13 @@ nav_sections:
     path: "/guides/"
   - title: "Hooks"
     path: "/hooks/"
+  - title: "Blog"
+    path: "/blog/"
+  # `url` entries leave the docs build and are used as-is
+  - title: "Components"
+    url: "/storybook/"
+  - title: "← Main site"
+    url: "/"
 
 # Kramdown settings
 kramdown:
@@ -78,6 +85,7 @@ defaults:
       type: "posts"
     values:
       layout: "post"
+      permalink: /blog/:year/:month/:title/
       author: "Derek Mackley"
   - scope:
       path: ""

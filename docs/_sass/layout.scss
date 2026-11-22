@@ -41,7 +41,8 @@
 .site-nav {
   .nav-wrapper {
     display: flex;
-    gap: 1.5em;
+    flex-wrap: wrap;
+    gap: 0.5em 1.5em;
     align-items: center;
   }
   
@@ -213,4 +214,42 @@
   h1 {
     font-size: 2em;
   }
+}
+// Blog
+.post-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.post-list__item {
+  padding: 1em 0;
+  border-bottom: 1px solid $cyber-border;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.post-list__date {
+  display: block;
+  font-family: $font-mono;
+  font-size: 0.85em;
+  color: $cyber-text-dim;
+}
+
+.post-list__title {
+  font-size: 1.25em;
+  font-weight: 600;
+}
+
+.post-list__summary {
+  margin: 0.25em 0 0;
+  color: $cyber-text-dim;
+}
+
+.post-list__feed,
+.post-back {
+  font-family: $font-mono;
+  font-size: 0.85em;
 }

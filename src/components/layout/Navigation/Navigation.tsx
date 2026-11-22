@@ -3,12 +3,15 @@ import { motion } from 'framer-motion';
 import useNavigation from '@hooks/useNavigation';
 import HeaderName from '@/components/atoms/HeaderName';
 import SocialLinks from '@/components/molecules/SocialLinks';
-import { profileLinks } from '@/portfolio';
+import SiteLinks from '@/components/molecules/SiteLinks';
+import { profileLinks, siteLinks } from '@/portfolio';
 import { useAnimation } from '@context/AnimationContext';
+
+const headerLinks = siteLinks.filter((link) => !link.external);
 
 /**
  * Navigation component for the site header.
- * Displays HeaderName and SocialLinks.
+ * Displays HeaderName, links to the docs, Storybook and blog, and SocialLinks.
  *
  * @component
  * @returns {React.ReactElement} Navigation component
@@ -53,9 +56,18 @@ const Navigation = () => {
             />
           </div>
 
-          {/* Social Links - Hidden on mobile, visible on lg screens */}
-          <div className="hidden lg:flex items-center px-2">
-            <SocialLinks animated={animationEnabled} links={profileLinks} />
+          <div className="flex items-center gap-4 px-2">
+            {/* Docs, Storybook and blog. The source link stays in the footer.
+                Hidden on phones, where the footer and terminal carry them. */}
+            <SiteLinks
+              className="hidden sm:block"
+              links={headerLinks}
+              label="Docs, components and blog"
+            />
+            {/* Social Links - Hidden on mobile, visible on lg screens */}
+            <div className="hidden lg:flex items-center">
+              <SocialLinks animated={animationEnabled} links={profileLinks} />
+            </div>
           </div>
         </div>
 

@@ -11,15 +11,17 @@ export interface VersionChipsProps {
   items: VersionChipItem[];
   /** Quiet text after the chips, e.g. "running for 646 days" */
   note?: string;
+  /** Accessible name for the chip list */
+  label?: string;
 }
 
 /** A row of "name version" chips with an optional quiet note. Props only. */
-const VersionChips = ({ items, note }: VersionChipsProps) => {
+const VersionChips = ({ items, note, label = 'Software versions' }: VersionChipsProps) => {
   if (items.length === 0 && !note) return null;
   return (
     <div className="version-chips">
       {items.length > 0 && (
-        <ul className="version-chips__list" aria-label="Software versions">
+        <ul className="version-chips__list" aria-label={label}>
           {items.map((item) => (
             <li className="version-chips__chip" key={item.label}>
               <span className="version-chips__name">{item.label}</span>

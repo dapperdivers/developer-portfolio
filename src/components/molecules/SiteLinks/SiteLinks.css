@@ -1,0 +1,66 @@
+/**
+ * SiteLinks
+ *
+ * Mono text links to docs, Storybook, blog and source.
+ * `nav`: compact header row with a separator dot between links.
+ * `footer`: plain row that sits with the footer's other text links.
+ */
+
+.site-links__list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.site-links__link {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-family-jetbrains);
+  letter-spacing: var(--letter-spacing-technical);
+  color: var(--color-text-muted);
+  text-decoration: none;
+  border-radius: var(--radius-control);
+  transition: color 0.2s ease;
+}
+
+.site-links__link:hover {
+  color: var(--color-primary);
+}
+
+.site-links__link:focus-visible {
+  outline: none;
+  box-shadow: var(--ring-focus);
+}
+
+/* Header: small text, dot separators, a full-height touch target */
+.site-links--nav .site-links__link {
+  min-height: var(--control-height);
+  padding: 0 var(--spacing-2);
+  font-size: var(--font-size-xs);
+  text-transform: lowercase;
+}
+
+.site-links--nav .site-links__item + .site-links__item::before {
+  content: '·';
+  color: var(--color-text-muted);
+  opacity: 0.6;
+}
+
+/* Footer: same size and spacing as the footer's other links */
+.site-links--footer .site-links__list {
+  justify-content: center;
+}
+
+.site-links--footer .site-links__link {
+  margin: var(--spacing-1) var(--spacing-2);
+  font-size: var(--font-size-sm);
+}
+
+@media (min-width: 768px) {
+  .site-links--footer .site-links__list {
+    justify-content: flex-end;
+  }
+}

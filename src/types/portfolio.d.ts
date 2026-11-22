@@ -139,6 +139,17 @@ export interface ProfileLinks extends SocialLinks {
   contactCard: string;
 }
 
+/** A link to another part of the site that lives outside the single page: docs, Storybook, blog, source. */
+export interface SiteLink {
+  /** Stable key, e.g. "docs" */
+  id: string;
+  /** Visible text */
+  label: string;
+  href: string;
+  /** Opens in a new tab (for off-site links such as the source repo) */
+  external?: boolean;
+}
+
 export interface Contact {
   /** Path to the downloadable vCard. */
   vcfLink: string;

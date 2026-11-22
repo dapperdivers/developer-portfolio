@@ -172,6 +172,13 @@ export function createBaseServer(config = {}) {
     }
   });
 
+  // The blog is built inside the Jekyll docs (/docs/blog/). /blog is the short
+  // address people share, so send it there. 302 so the blog can move later.
+  // req.url is relative to the mount, so the target always stays under /docs.
+  app.use('/blog', (req, res) => {
+    res.redirect(302, `/docs/blog${req.url}`);
+  });
+
   // Path-based routing for docs and storybook MUST come before general static serving
   // Serve documentation at /docs route
   app.use('/docs', express.static(docsPath, {

@@ -23,9 +23,9 @@ export interface VersionItem {
   value: string;
 }
 
-const UNIT_NAMES: Record<string, string> = { w: 'W', d: 'days', up: '', '%': '%' };
+const UNIT_NAMES: Record<string, string> = { w: 'W', d: 'days', h: 'hours', m: 'min', up: '', '%': '%' };
 
-/** Splits a badge value: "1,074w" -> 1,074 + W, "13.8%" -> 13.8 + %, "69 up" -> 69. */
+/** Splits a badge value: "1,074w" -> 1,074 + W, "13.8%" -> 13.8 + %, "69 up" -> 69, "52m" -> 52 + min. */
 export const splitBadgeValue = (raw: string): SplitValue => {
   const match = raw.trim().match(/^(\d[\d,]*(?:\.\d+)?)\s*(.*)$/);
   if (!match) return { number: raw.trim(), unit: '' };
@@ -100,3 +100,40 @@ export const formatUpdated = (iso: string): string | null => {
 /** Raw badge text, or null. */
 export const badgeText = (data: ClusterStatusData | null, id: string): string | null =>
   data?.badges[id]?.value.trim() || null;
+
+export interface GitopsSummary {
+  /** Object counts that were reported, e.g. Kustomizations 131 */
+  items: VersionItem[];
+  /** "all reconciled", "49 waiting on dependencies", "2 failing to reconcile", or null when unknown */
+  note: string | null;
+}
+
+/** Whole count from a badge, or null when the badge is missing or not a number. */
+const countOf = (data: ClusterStatusData | null, id: string): number | null => {
+  const text = badgeText(data, id);
+  return text === null ? null : parseNumber(splitBadgeValue(text).number);
+};
+
+/**
+ * Flux health from the GitOps badges. Failing wins over waiting: objects
+ * waiting on a dependency are normal for a while after a node roll, a failing
+ * one is not. Missing badges are left out, never guessed.
+ */
+export const gitopsSummary = (data: ClusterStatusData | null): GitopsSummary => {
+  const items = (
+    [
+      ['Kustomizations', 'flux_kustomization_count'],
+      ['HelmReleases', 'flux_helmrelease_count'],
+    ] as const
+  ).flatMap(([label, id]) => {
+    const value = badgeText(data, id);
+    return value ? [{ label, value }] : [];
+  });
+  const failing = countOf(data, 'flux_failing_count');
+  const waiting = countOf(data, 'flux_waiting_count');
+  let note: string | null = null;
+  if (failing !== null && failing > 0) note = `${failing.toLocaleString('en-US')} failing to reconcile`;
+  else if (waiting !== null && waiting > 0) note = `${waiting.toLocaleString('en-US')} waiting on dependencies`;
+  else if (failing === 0 && waiting === 0) note = 'all reconciled';
+  return { items, note };
+};

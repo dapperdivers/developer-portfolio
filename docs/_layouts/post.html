@@ -1,0 +1,24 @@
+---
+layout: default
+---
+<article class="page post" itemscope itemtype="https://schema.org/BlogPosting">
+  <header class="page-header">
+    <p class="post-back"><a href="{{ '/blog/' | relative_url }}">&larr; All posts</a></p>
+    <h1 class="page-title" itemprop="headline">
+      <span class="title-prefix">~/</span>{{ page.title | escape }}
+    </h1>
+    <div class="page-meta">
+      <time class="meta-value" datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">
+        {{ page.date | date: "%B %-d, %Y" }}
+      </time>
+      {%- if page.tags.size > 0 -%}
+      <span class="meta-label">&nbsp;·&nbsp;</span>
+      <span class="meta-value">{{ page.tags | join: ", " }}</span>
+      {%- endif -%}
+    </div>
+  </header>
+
+  <div class="page-content" itemprop="articleBody">
+    {{ content }}
+  </div>
+</article>

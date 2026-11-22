@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { ageSentence, splitBadgeValue, telemetryTiles, versionItems } from '../clusterTelemetry';
+import { ageSentence, gitopsSummary, splitBadgeValue, telemetryTiles, versionItems } from '../clusterTelemetry';
 import type { ClusterStatusData } from '@/types/cluster';
 
 const badge = (value: string, color = 'green') => ({ title: '', value, color });
@@ -55,5 +55,45 @@ describe('versions and age', () => {
   it('words the age without a verdict', () => {
     expect(ageSentence(data('0'))).toBe('running for 646 days');
     expect(ageSentence(null)).toBeNull();
+  });
+});
+
+describe('gitopsSummary', () => {
+  const b = (value: string) => ({ title: '', value, color: '' });
+  const withBadges = (badges: Record<string, ReturnType<typeof b>>): ClusterStatusData => ({
+    updatedAt: '2026-11-21T19:00:00.000Z',
+    badges,
+  });
+
+  it('lists the object counts and says all reconciled when nothing waits or fails', () => {
+    const s = gitopsSummary(withBadges({
+      flux_kustomization_count: b('131'),
+      flux_helmrelease_count: b('110'),
+      flux_waiting_count: b('0'),
+      flux_failing_count: b('0'),
+    }));
+    expect(s.items).toEqual([
+      { label: 'Kustomizations', value: '131' },
+      { label: 'HelmReleases', value: '110' },
+    ]);
+    expect(s.note).toBe('all reconciled');
+  });
+
+  it('prefers failing over waiting', () => {
+    expect(gitopsSummary(withBadges({ flux_waiting_count: b('49'), flux_failing_count: b('2') })).note).toBe('2 failing to reconcile');
+    expect(gitopsSummary(withBadges({ flux_waiting_count: b('1,049'), flux_failing_count: b('0') })).note).toBe('1,049 waiting on dependencies');
+  });
+
+  it('claims nothing when the health badges are missing', () => {
+    expect(gitopsSummary(withBadges({ flux_kustomization_count: b('131') })).note).toBeNull();
+    expect(gitopsSummary(withBadges({ flux_waiting_count: b('0') })).note).toBeNull();
+    expect(gitopsSummary(null)).toEqual({ items: [], note: null });
+  });
+});
+
+describe('splitBadgeValue short durations', () => {
+  it('names minutes and hours', () => {
+    expect(splitBadgeValue('52m')).toEqual({ number: '52', unit: 'min' });
+    expect(splitBadgeValue('7h')).toEqual({ number: '7', unit: 'hours' });
   });
 });
