@@ -8,6 +8,7 @@ import fs from 'fs/promises';
 import { existsSync } from 'fs';
 import fetch from 'node-fetch';
 import dotenv from 'dotenv';
+import { blogViewLogger } from './blogViews.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -35,6 +36,15 @@ export function createBaseServer(config = {}) {
 
   // Trust first proxy for secure headers
   app.set('trust proxy', 1);
+
+  // Our own hosts, so links between pages count as internal, not referrers
+  const blogOwnHosts = allowedDomains.flatMap((origin) => {
+    try {
+      return [new URL(origin.trim()).hostname];
+    } catch {
+      return [];
+    }
+  });
 
   // Security middleware
   app.use(helmet());
@@ -179,6 +189,10 @@ export function createBaseServer(config = {}) {
   // image, so pages revalidate (ETag) while hashed assets stay immutable.
   // `extensions` gives clean URLs (/blog/post -> post.html) whatever generator
   // built it. Anything not found is a real 404, never the SPA homepage.
+  // Page views are logged first (see blogViews.js); BLOG_VIEW_LOG=0 turns it off.
+  if (process.env.BLOG_VIEW_LOG !== '0') {
+    app.use('/blog', blogViewLogger({ ownHosts: blogOwnHosts }));
+  }
   app.use('/blog', express.static(blogPath, {
     etag: true,
     lastModified: true,
